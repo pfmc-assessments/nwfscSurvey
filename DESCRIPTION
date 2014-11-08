@@ -1,0 +1,9 @@
+Package: nwfscSurveyCode
+Type: Package
+Title: What the package does (short line)
+Version: 1.0
+Date: 2012-01-10
+Author: Allan Hicks
+Maintainer: Allan Hicks <allan.hicks@noaa.gov>
+Description: More about what it does (maybe more than one line)
+License: What license is it under?
