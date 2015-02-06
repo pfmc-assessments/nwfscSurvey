@@ -13,14 +13,11 @@ The following functions can be used to generate length comps for the NWFSC shelf
     
 
 	# Read length comps
-    
-	FullData = readInLengthComps.fn(...)
+	Data = readInLengthComps.fn(...)
     
 	# Plot sex ratio
-    
-	plotSexRatio.fn( len=Data)
+	plotSexRatio.fn( len=Data )
     
 	# Process data
-    
-	SS3 = SS3LF.fn(len=Data, fleet=12, nSamps=Ninput, lgthBins=seq(14,66,by=2)
+	SS3 = SS3LF.fn(len=Data, lgthBins=seq(14,66,by=2))
 
