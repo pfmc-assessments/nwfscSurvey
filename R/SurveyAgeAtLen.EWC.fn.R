@@ -23,8 +23,7 @@ SurveyAgeAtLen.EWC.fn <- function(datAL,datTows,strat.vars=NULL,strat.df=NULL,fe
     #set up length bins
     if(length(lgthBins)==1) {
         Lengths <- c(-999,seq(floor(min(datAL$LENGTH)),ceiling(max(datAL$LENGTH)),lgthBins),Inf)
-    }
-    else{
+    }else{
         Lengths <- c(-999,lgthBins,Inf)
     }
     #print(Lengths)
@@ -173,7 +172,9 @@ SurveyAgeAtLen.EWC.fn <- function(datAL,datTows,strat.vars=NULL,strat.df=NULL,fe
         out <- out[-nrow(out),]   #remove last row because Inf and always NA due to inside.all=T
         return(out)
     }
-    AL.year <- lapply(A.year.L.str,year.fn,Ages=Ages)
+    AL.year <- list()
+    for(i in 1:length(A.year.L.str)) AL.year[[i]] = year.fn(A.year.L.str[[i]],Ages=Ages)
+    names(AL.year) = names(A.year.L.str)
     if(!SS3out) {
         return(list(AL.year=AL.year,A.year.L.str=A.year.L.str))
     }
@@ -190,16 +191,16 @@ SurveyAgeAtLen.EWC.fn <- function(datAL,datTows,strat.vars=NULL,strat.df=NULL,fe
     AsF <- matrix(AsF,nrow=length(AL.year),byrow=T,
           dimnames=list(NULL,paste(rep("F",length(ages)),ages,sep="")))
     AsF[,2] <- AsF[,1]+AsF[,2]     #add in all ages before the minimum age to the first age bin that we have to specify by ourselves
-    numFzero <- sum(AsF[,"F.999"])
-    AsF <- AsF[,-match("F.999",dimnames(AsF)[[2]])]        #remove F0 column
+    numFzero <- sum(AsF[,"F-999"])
+    AsF <- AsF[,-match("F-999",dimnames(AsF)[[2]])]        #remove F0 column
 
     AsM <- unlist(lapply(AL.year,function(x){x$propM}))
     AsM[is.na(AsM)] <- 0
     AsM <- matrix(AsM,nrow=length(AL.year),byrow=T,
           dimnames=list(NULL,paste(rep("M",length(ages)),ages,sep="")))
     AsM[,2] <- AsM[,1]+AsM[,2]     #add in all ages before the minimum age to the first age bin
-    numMzero <- sum(AsM[,"M.999"])
-    AsM <- AsM[,-match("M.999",dimnames(AsM)[[2]])]
+    numMzero <- sum(AsM[,"M-999"])
+    AsM <- AsM[,-match("M-999",dimnames(AsM)[[2]])]
 
     outF <- data.frame(year=as.numeric(substring(names(AL.year),1,4)),Season=season,Fleet=fleet,gender=1,partition=partition,ageErr=ageerr,
                           LbinLo=as.numeric(substring(names(AL.year),6)),LbinHi=as.numeric(substring(names(AL.year),6)),nSamps="ENTER",AsF,AsF)
