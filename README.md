@@ -21,4 +21,3 @@ The following functions can be used to generate length comps for the NWFSC shelf
 	# Process data
 	SS3 = SS3LF.fn(len=Data, lgthBins=seq(14,66,by=2))
 
-test during meeting from Ian
