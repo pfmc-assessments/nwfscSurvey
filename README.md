@@ -3,6 +3,8 @@ nwfscSurvey
 
 Code for analysis of the NWFSC trawl surveys
 
+Note: this code was developed for use by scientists at the Northwest Fisheries Science Center and is intended to work on the specific data products that we have access to using methods specific to the needs of this group. Anyone interested in obtaining survey data should contact the NWFSC to make a formal data request.
+
 Overview
 =============
 
