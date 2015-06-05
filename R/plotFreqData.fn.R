@@ -33,10 +33,10 @@ plotFreqData.fn <- function(dat,inch=0.15,ylab="Bins",xlab="Year",zero2NAs=T,mai
         symbols(c(rep(x,length(y)),0),c(rep(y,each=length(x)),0),circles=z,main=main,inches=inch,xlab=xlab,ylab=ylab,xlim=xlim,...)
     }
     if(gender==3) {
-        if(is.null(main)) {main <- "Female"}
+        if(is.null(main[1])) {main <- "Female"}
         z <- c(unlist(dat[,1:numLens]),max(dat))
-        symbols(c(rep(x,length(y)),0),c(rep(y,each=length(x)),0),circles=z,main=main,inches=inch,xlab=xlab,ylab=ylab,xlim=xlim,...)
-        if(is.null(main)) {main <- "Male"}
+        symbols(c(rep(x,length(y)),0),c(rep(y,each=length(x)),0),circles=z,main=main[1],inches=inch,xlab=xlab,ylab=ylab,xlim=xlim,...)
+        if(is.na(main[2])) {main <- "Male"}
         z <- c(unlist(dat[,(numLens+1):ncol(dat)]),max(dat))
         symbols(c(rep(x,length(y)),0),c(rep(y,each=length(x)),0),circles=z,main=main,inches=inch,xlab=xlab,ylab=ylab,xlim=xlim,...)
     }
