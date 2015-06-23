@@ -81,6 +81,11 @@ SurveyLFs.EWC.fn <- function(datL,datTows,strat.vars=NULL,strat.df=NULL,femaleMa
     if(length(sexRatioUnsexed)==1 & !is.na(sexRatioUnsexed)) {
         datB$sexRatio <- datB$expF/(datB$expF+datB$expM)
         datB$sexRatio[datB$LENGTH <= maxSizeUnsexed] <- sexRatioUnsexed
+
+        #in case there are any NA's, we can temporarily put in zeros for calcualtions below
+        datB[is.na(datB$expF),"expF"] <- 0
+        datB[is.na(datB$expM),"expM"] <- 0
+
         #now fill in any missing ratios with ratios of that bin from other years and strata (can probably be done more efficiently)
         noRatio <- which(is.na(datB$sexRatio))
         if(length(noRatio)>0) cat("\nThese are sex ratios that were filled in using observations from the same lengths from different strata and years\n")
@@ -106,10 +111,15 @@ SurveyLFs.EWC.fn <- function(datL,datTows,strat.vars=NULL,strat.df=NULL,femaleMa
         if(length(noRatio)>0) cat("Some sex ratios were left unknown and omitted\n\n")
         if(length(noRatio)==0) cat("Done filling in sex ratios\n\n")
 
-        tmpFemUnsex <- round(datB$sexRatio*(datB$expU-datB$expF-datB$expM))
-        tmpMaleUnsex <- datB$expU - tmpFemUnsex
-        datB$NumF <- datB$expF + tmpFemUnsex
-        datB$NumM <- datB$expM + tmpMaleUnsex
+        #expanded values does not need to be a whole number.
+        #allow it to be decimal in case there is odd number of fish then they are nt always piled up in females
+        datB$expF <- datB$expF + datB$sexRatio*datB$expU
+        datB$expM <- datB$expM + (1-datB$sexRatio)*datB$expU
+
+        # tmpFemUnsex <- round(datB$sexRatio*(datB$expU-datB$expF-datB$expM))
+        # tmpMaleUnsex <- datB$expU - tmpFemUnsex
+        # datB$expF <- datB$expF + tmpFemUnsex
+        # datB$expM <- datB$expM + tmpMaleUnsex
         #print(unique(round(datB$sexRatio,1)))
     }
     
@@ -186,6 +196,7 @@ SurveyLFs.EWC.fn <- function(datL,datTows,strat.vars=NULL,strat.df=NULL,femaleMa
         out <- out[-nrow(out),]   #remove last row because Inf and always NA due to inside.all=T
         return(out)
     }
+
     L.year <- lapply(L.year.str,year.fn,Lengths=Lengths)
     if(!SS3out) {
         return(list(L.year=L.year,L.year.str=L.year.str))
