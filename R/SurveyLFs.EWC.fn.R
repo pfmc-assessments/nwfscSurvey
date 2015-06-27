@@ -10,7 +10,8 @@
     #       start the lgthBins argument at the 2nd length bin and F0 will be all fish smaller (hence the first length bin)
 #SS3out: if True the output is in a format pastable into SS3 dat file
 
-SurveyLFs.EWC.fn <- function(datL,datTows,strat.vars=NULL,strat.df=NULL,femaleMale=c(2,1),lgthBins=1,SS3out=F,meanRatioMethod=T,gender=3,NAs2zero=T,sexRatioUnsexed=NA,maxSizeUnsexed=NA)  {
+SurveyLFs.EWC.fn <- function(datL,datTows,strat.vars=NULL,strat.df=NULL,femaleMale=c(2,1),lgthBins=1,SS3out=F,meanRatioMethod=T,gender=3,NAs2zero=T,sexRatioUnsexed=NA,maxSizeUnsexed=NA,
+                              partition=0, fleet="Enter Fleet", nSamps="Enter Samps", season="Enter Season")  {
     row.names(strat.df) <- strat.df[,1]     #put in rownames to make easier to index later
     numStrata <- nrow(strat.df)
     ind <- !duplicated(datL$HAULJOIN)
@@ -138,7 +139,7 @@ SurveyLFs.EWC.fn <- function(datL,datTows,strat.vars=NULL,strat.df=NULL,femaleMa
         a.h <- sum(a.hi)  #total area swept in stratum
         A.h <- strat[strat$name==theStratum,"area"]
         x$LENGTH_cm <- as.numeric(as.character(x$LENGTH_cm))
-        noDups <- !duplicated(x$LENGTH_cm)
+        noDups <- !duplicated(x$LENGTH_cm)  #not sure what this is doing
         xcols <- c("year","stratum") #must be two or more columns to keep the selection a dataframe
         lgths <- split(x,x$LENGTH_cm)
         LjhU <- unlist(lapply(lgths,function(x){sum(x$expU)}))
@@ -160,7 +161,7 @@ SurveyLFs.EWC.fn <- function(datL,datTows,strat.vars=NULL,strat.df=NULL,femaleMa
         ntows <- numTows[as.character(theYear),theStratum]
         A.h <- strat[strat$name==theStratum,"area"]
         x$LENGTH_cm <- as.numeric(as.character(x$LENGTH))
-        noDups <- !duplicated(x$LENGTH)
+        noDups <- !duplicated(x$LENGTH) #not sure what this is doing
         xcols <- c("year","stratum") #must be two or more columns to keep the selection a dataframe
         lgths <- split(x,x$LENGTH)
         LjhU <- unlist(lapply(lgths,function(x){sum(x$expU/x$areaFished)}))
@@ -209,8 +210,8 @@ SurveyLFs.EWC.fn <- function(datL,datTows,strat.vars=NULL,strat.df=NULL,femaleMa
         if(NAs2zero){Ls[is.na(Ls)] <- 0}
         Ls <- matrix(Ls,nrow=length(L.year),byrow=T,
             dimnames=list(NULL,paste(rep("U",length(lgths)),lgths,sep="")))
-        out <- data.frame(year=as.numeric(names(L.year)),season=rep(NA,length(L.year)),fleet=rep(NA,length(L.year)),gender=rep(0,length(L.year)),
-            partition=rep(0,length(L.year)),Nsamp=rep(NA,length(L.year)),Ls)    
+        out <- data.frame(year=as.numeric(names(L.year)),season=season,fleet=fleet,gender=rep(0,length(L.year)),
+            partition=partition,Nsamp=nSamps,Ls)    
     }
     if(gender==3) {
         #females then males
@@ -219,8 +220,8 @@ SurveyLFs.EWC.fn <- function(datL,datTows,strat.vars=NULL,strat.df=NULL,femaleMa
         if(NAs2zero){Ls[is.na(Ls)] <- 0}
         Ls <- matrix(Ls,nrow=length(L.year),byrow=T,
             dimnames=list(NULL,paste(c(rep("F",length(lgths)),rep("M",length(lgths))),lgths,sep="")))
-        out <- data.frame(year=as.numeric(names(L.year)),season=rep(NA,length(L.year)),fleet=rep(NA,length(L.year)),gender=rep(3,length(L.year)),
-            partition=rep(0,length(L.year)),Nsamp=rep(NA,length(L.year)),Ls)
+        out <- data.frame(year=as.numeric(names(L.year)),season=season,fleet=fleet,gender=rep(3,length(L.year)),
+            partition=partition,Nsamp=nSamps,Ls)
     }
 
     cat("\nNOTE: You may need to add the column called F.999 and/or M.999 to your first length bin\n\tand delete that column.\n\tThese are the percentage of lengths smaller than the first length bin\n\n")
