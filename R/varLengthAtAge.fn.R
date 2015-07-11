@@ -21,7 +21,7 @@
 #' @export
 
 
-varLengthAtAge.fn <- function(dat,ageBin=1,bySex=T,parStart=c(52,0.09,1),estVB=T,bins=NULL,...) {
+varLengthAtAge.fn <- function(dat,ageBin=1,bySex=T,parStart=c(52,0.09,1),estVB=T,bins=NULL,legX="bottomleft",legY=NULL,...) {
     #calculate and plot the sd and cv for length at age
     #if you enter estVB=F, then it uses the parStart as the VB parameters
 
@@ -47,7 +47,6 @@ varLengthAtAge.fn <- function(dat,ageBin=1,bySex=T,parStart=c(52,0.09,1),estVB=T
     }
     
     par(mfcol=c(2,nn))
-    par(mar=c(5, 4, 4, 5) + 0.1)
 
     out <- vector(mode="list",length=nn)
     names(out) <- names(datL)
@@ -74,14 +73,14 @@ varLengthAtAge.fn <- function(dat,ageBin=1,bySex=T,parStart=c(52,0.09,1),estVB=T
         plot(ages,xcv,xlab="",ylab="",yaxt="n",type="b",pch=3,lty=2,...)
         axis(4)
         mtext("CV",side=4,line=2.6)
-        legend("bottomleft",c("SD","CV"),pch=c(16,3),lty=c(1,2))
+        legend(x=legX,y=legY,c("SD","CV"),pch=c(16,3),lty=c(1,2))
 
         plot(VB.fn(ages,xpar[1],xpar[2],xpar[3]),xsd,xlab="Predicted Length at Age",ylab="SD of L@A",type="b",pch=16,lty=1,main=names(datL)[i],...)
         par(new=T)
         plot(VB.fn(ages,xpar[1],xpar[2],xpar[3]),xcv,xlab="",ylab="",yaxt="n",type="b",pch=3,lty=2,...)
         axis(4)
         mtext("CV",side=4,line=2.6)
-        legend("bottomleft",c("SD","CV"),pch=c(16,3),lty=c(1,2))
+        legend(x=legX,y=legY,c("SD","CV"),pch=c(16,3),lty=c(1,2))
     }
 
     return(out)
