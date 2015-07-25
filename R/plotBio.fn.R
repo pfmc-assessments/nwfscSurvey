@@ -9,16 +9,18 @@ function(bio,CI=0.95,scalar=1e6,gap=0.03,ylab="Biomass ('000 mt)",xlab="Year",yl
     x <- as.numeric(as.character(bio$Year))
     se <- as.numeric(as.character(bio$seLogB))
     logB <- log(as.numeric(as.character(bio$Value)))
-    ci <- exp(rbind(c(logB + qnorm(1 - (1 - CI)/2) * se), c(logB - 
-        qnorm(1 - (1 - CI)/2) * se)))/scalar
+    ci <- exp(rbind(c(logB + qnorm(1 - (1 - CI)/2) * se), 
+                    c(logB - qnorm(1 - (1 - CI)/2) * se)))/scalar
     if (is.null(ylim)) {
         ylim <- c(0, 1.05 * max(ci, na.rm = TRUE))
     }
     gap <- gap * max(y)
-    if(add)
+    if(add) {
       points(x, y, col = col)
-    else
+    }
+    else {
        plot(x, y, ylab = ylab, xlab = xlab, ylim = ylim, col = col, ...)
+    }
     segments(x, y + gap, x, ci[1, ], col = col)
     segments(x, y - gap, x, ci[2, ], col = col)
 }
