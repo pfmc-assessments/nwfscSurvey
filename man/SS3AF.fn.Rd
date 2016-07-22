@@ -13,7 +13,7 @@ SS3AF.fn(Age.df, ageBins = 1, gender = 3, nSamps = "EnterNsamps", fleet = "Enter
 %- maybe also 'usage' for other objects documented here.
 \arguments{
   \item{Age.df}{
-%%     ~~Describe \code{len} here~~
+%%     ~~Describe \code{Age.df} here~~
 }
   \item{ageBins}{
 %%     ~~Describe \code{ageBins} here~~
@@ -74,7 +74,7 @@ SS3AF.fn(Age.df, ageBins = 1, gender = 3, nSamps = "EnterNsamps", fleet = "Enter
 %##--	or do  help(data=index)  for the standard data sets.
  
 %## The function is currently defined as
-%function (len, ageBins = 1, gender = 3, nSamps = "EnterNsamps", 
+%function (Age.df, ageBins = 1, gender = 3, nSamps = "EnterNsamps", 
 %    fleet = "EnterFleet", season = 1, partition = 0, NAs2zero = T, 
 %    sexRatioUnsexed = NA, maxSizeUnsexed = NA) 
 }
