@@ -8,14 +8,14 @@ Calculates age frequencies for input into SS3
 %%  ~~ A concise (1-5 lines) description of what the function does. ~~
 }
 \usage{
-SS3AF.fn(Age.df, lgthBins = 1, gender = 3, nSamps = "EnterNsamps", fleet = "EnterFleet", season = 1, partition = 0, NAs2zero = T, sexRatioUnsexed = NA, maxSizeUnsexed = NA)
+SS3AF.fn(Age.df, ageBins = 1, gender = 3, nSamps = "EnterNsamps", fleet = "EnterFleet", season = 1, partition = 0, NAs2zero = T, sexRatioUnsexed = NA, maxSizeUnsexed = NA)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
   \item{Age.df}{
 %%     ~~Describe \code{len} here~~
 }
-  \item{lgthBins}{
+  \item{ageBins}{
 %%     ~~Describe \code{lgthBins} here~~
 }
   \item{gender}{
