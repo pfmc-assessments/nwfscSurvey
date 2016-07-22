@@ -16,7 +16,7 @@ SS3AF.fn(Age.df, ageBins = 1, gender = 3, nSamps = "EnterNsamps", fleet = "Enter
 %%     ~~Describe \code{len} here~~
 }
   \item{ageBins}{
-%%     ~~Describe \code{lgthBins} here~~
+%%     ~~Describe \code{ageBins} here~~
 }
   \item{gender}{
 %%     ~~Describe \code{gender} here~~
