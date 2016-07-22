@@ -1,5 +1,5 @@
-\name{SS3LF.fn}
-\alias{SS3LF.fn}
+\name{SS3AF.fn}
+\alias{SS3AF.fn}
 %- Also NEED an '\alias' for EACH other topic documented here.
 \title{
 Calculates age frequencies for input into SS3
@@ -8,11 +8,11 @@ Calculates age frequencies for input into SS3
 %%  ~~ A concise (1-5 lines) description of what the function does. ~~
 }
 \usage{
-SS3LF.fn(len, lgthBins = 1, gender = 3, nSamps = "EnterNsamps", fleet = "EnterFleet", season = 1, partition = 0, NAs2zero = T, sexRatioUnsexed = NA, maxSizeUnsexed = NA)
+SS3AF.fn(Age.df, lgthBins = 1, gender = 3, nSamps = "EnterNsamps", fleet = "EnterFleet", season = 1, partition = 0, NAs2zero = T, sexRatioUnsexed = NA, maxSizeUnsexed = NA)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
-  \item{len}{
+  \item{Age.df}{
 %%     ~~Describe \code{len} here~~
 }
   \item{lgthBins}{
@@ -82,3 +82,4 @@ SS3LF.fn(len, lgthBins = 1, gender = 3, nSamps = "EnterNsamps", fleet = "EnterFl
 % R documentation directory.
 \keyword{ ~kwd1 }
 \keyword{ ~kwd2 }% __ONLY ONE__ keyword per line
+
