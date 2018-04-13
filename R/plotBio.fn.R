@@ -1,10 +1,20 @@
-plotBio.fn <-
-function(bio,CI=0.95,scalar=1e6,gap=0.03,ylab="Biomass ('000 mt)",xlab="Year",ylim=NULL, add = FALSE, col = 'black', ...) {
-    #Plots the biomass with confidence intervals
-    #uses data in the format of SS3, so you can use the GetTotalBiomass.fn or your own data.frame
-    #scalar is simply the divisor for the biomass
-    #gap is a value that introduces a slight gap between the point estimate and the start of the line for the CI
-    # careful because a gap too large will invert the CI, making it look huge. You should know when this happens
+#' Plots the biomass with confidence intervals
+#' 
+#' @param bio object created by the GetTotalBiomass.fn
+#' @param CI confidence interval
+#' @param scalar simply the divisor for the biomass
+#' @param gap  a value that introduces a slight gap between the point estimate and the start of the line for the CI
+#' @param ylab y-axis text label
+#' @param xlab x-axis text label
+#' @param ylim y-limits
+#' @param add add additional line to plot
+#' @param col color
+#'
+#' @author Allan Hicks 
+#' @export
+
+Bio.fn <-function(bio, CI=0.95, scalar=1e6, gap=0.03, ylab="Biomass ('000 mt)", xlab="Year", ylim=NULL, add = FALSE, col = 'black', ...) {
+
     y <- as.numeric(as.character(bio$Value))/scalar
     x <- as.numeric(as.character(bio$Year))
     se <- as.numeric(as.character(bio$seLogB))
