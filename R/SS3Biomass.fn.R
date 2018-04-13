@@ -1,8 +1,17 @@
-SS3Biomass.fn <-
-function(bio,fleet="EnterFleet",season=1,outputMedian=T) {
-    #This function outputs a dataframe in the abundance index format needed for SS3
-    #it calculates the standard error of log(B) by first finding the cv of B
-    #It can output the median biomass or the mean biomass. Median biomass is bias corrected so that log(Bmedian)=mean(log(B))
+#' This function outputs a dataframe in the abundance index format needed for SS3
+#' it calculates the standard error of log(B) by first finding the cv of B
+#' It can output the median biomass or the mean biomass. Median biomass is bias corrected so that log(Bmedian)=mean(log(B))
+#'
+#' @param bio object created by the readInBiomass.fn
+#' @param fleet fleet number
+#' @param season season
+#' @param outputMedian TRUE/FALSE
+#'
+#' @author Allan Hicks 
+#' @export
+
+SS3Biomass.fn <-function(bio, fleet="EnterFleet", season=1, outputMedian=T) {
+
     xxx <- split(bio[,c("AreaName","MinStratumDepth","MaxStratumDepth","Biomass","BiomassVar")],bio$Year)
     years <- names(xxx)
     bio <- unlist(lapply(xxx,function(x){sum(x$Biomass,na.rm=T)}))

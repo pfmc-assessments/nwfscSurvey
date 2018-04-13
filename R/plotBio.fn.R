@@ -3,7 +3,7 @@
 #' @param bio object created by the GetTotalBiomass.fn
 #' @param CI confidence interval
 #' @param scalar simply the divisor for the biomass
-#' @param gap  a value that introduces a slight gap between the point estimate and the start of the line for the CI
+#' @param gap  a value that introduces a slight gap between the point estimate and the start of the line for the CI. A gap too large will invert the CI, making it look huge. You should know when this happens
 #' @param ylab y-axis text label
 #' @param xlab x-axis text label
 #' @param ylim y-limits
