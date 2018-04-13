@@ -1,5 +1,13 @@
-plotSexRatio.fn <-
-function(len,fn=median,circleSize=0.1,...) {
+#' Function to plot sex ratio
+#'
+#' @param len data object
+#' @param fn value to calculate from the data (e.g., median, mean)
+#' @param circleSize circle size 
+#'
+#' @author Allan Hicks 
+#' @export
+
+plotSexRatio.fn <-function(len, fn=median, circleSize=0.1,...) {
     ratioF <- len$NumF/(len$NumF+len$NumM)
     yF <- lapply(split(ratioF,floor(len$Length)),fn,na.rm=TRUE)
     x <- names(split(ratioF,floor(len$Length)))
