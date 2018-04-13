@@ -1,16 +1,23 @@
-###############################################################################################
-#Reads in the triennial survey data and filters the data into what is necessary
-#It reads in catch and station data and makes sure only the species necessary are kept
-#### may want to keep NA (blank in Excel) to select the zero tows
-#removeCAN is a flag if you want tows in Canadian waters removed
-#   need the file called foreign_hauls.csv
-#
-#
-#Necessary column names
-#   SPECIES_CODE
-#   LENGTH
-###############################################################################
-ReadInLengths.EWC.fn <- function(dataFile,directory,species=c(NA),removeCAN=T,verbose=F) {
+#' Reads in the triennial survey data and filters the data into what is necessary
+#' It reads in catch and station data and makes sure only the species necessary are kept
+#' ### may want to keep NA (blank in Excel) to select the zero tows
+#' removeCAN is a flag if you want tows in Canadian waters removed
+#'    need the file called foreign_hauls.csv
+#' 
+#' Necessary column names
+#'    SPECIES_CODE
+#'    LENGTH
+#' 
+#' @param dataFile csv file name
+#' @param directory working directory where the dataFile is located
+#' @param species species name
+#' @param removeCAN switch to remove Canadian hauls
+#' @param verbose print out comments
+#'
+#' @author Allan Hicks 
+#' @export 
+
+ReadInLengths.EWC.fn <- function(dataFile, directory, species=c(NA), removeCAN=T, verbose=F) {
     dat <- read.csv(paste(directory,dataFile,sep="\\"))
     totRows <- nrow(dat)
     dat <- dat[dat$SPECIES_CODE %in% species,]
@@ -18,7 +25,9 @@ ReadInLengths.EWC.fn <- function(dataFile,directory,species=c(NA),removeCAN=T,ve
     totRows <- nrow(dat)
     
     if(removeCAN) {
-        foreignHauls <- read.csv(paste(directory,"foreign_hauls.csv",sep="\\"))
+        load("AFSCforeign_hauls.rda")
+        foreignHauls = AFSCforeign_hauls
+        #foreignHauls <- read.csv(paste(directory,"foreign_hauls.csv",sep="\\"))
         foreignInd <- !(dat$HAULJOIN %in% foreignHauls$HAULJOIN)
         dat <- dat[foreignInd,]
         if(verbose) {cat(sum(foreignInd),"rows kept (or",sum(!foreignInd),"removed) out of",totRows,"after removing foreign hauls\n")}

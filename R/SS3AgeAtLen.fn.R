@@ -1,13 +1,28 @@
-SS3AgeAtLen.fn <-
-function(ages,lgthBins=1,ageBins=1,fleet="EnterFleet",season=1,partition=0,ageerr="EnterAgeErr",raw=T,sexRatioUnsexed=NA,maxSizeUnsexed=NA) {
-    #calculates proportion of age at length and reformats into SS3 format
-    #Uses raw numbers at length, assuming that is a random sample conditioned on length and sex.
-    #To use expanded numbers, set raw=F
-    #Only gender codes 1 and 2 and puts males and females on separate lines because the age@L is conditioned on sex (a sample of females of length 25cm, for example)
-    #Gender=1: females only. Male values ignored
-    #Gender=2: males only. Female values ignored.
-    #lgthBins is either the interval between length bins or the actual length bins
-    #note that 0 and Inf are tacked on the ends to account for lengths and ages outside the interval. You may want to add these in to first and last bin.
+#' Calculates proportion of age at length and reformats into SS3 format
+#' Uses raw numbers at length, assuming that is a random sample conditioned on length and sex.
+#' To use expanded numbers, set raw=F
+#' Only gender codes 1 and 2 and puts males and females on separate lines because the age@L is conditioned on sex (a sample of females of length 25cm, for example)
+#' Gender=1: females only. Male values ignored
+#' Gender=2: males only. Female values ignored.
+#' lgthBins is either the interval between length bins or the actual length bins
+#' note that 0 and Inf are tacked on the ends to account for lengths and ages outside the interval. You may want to add these in to first and last bin.
+#' 
+#' @param age object
+#' @param lgthBins Either the interval between length bins or the actual length bins (e.g., lgthBins = 11:47)
+#' @param ageBins Either the interval between age bins or the actual age bins (e.g, ageBins = 1:40)
+#' @param fleet Fleet number 
+#' @param season Season number
+#' @param partition partition as defined by Stock Synthesis
+#' @param ageerr Age error value for Stock Synthesis
+#' @param raw raw=T/F, input to define whether or not to expand numbers in the csv file (column header "NumF" and "NumM")
+#' @param sexRatioUnsexed
+#' @param maxSizeUnsexed
+#'
+#' @author Allan Hicks 
+#' @export 
+
+SS3AgeAtLen.fn <-function(ages,lgthBins=1,ageBins=1,fleet="EnterFleet",season=1,partition=0,
+                          ageerr="EnterAgeErr",raw=T,sexRatioUnsexed=NA,maxSizeUnsexed=NA) {
 
     years <- sort(unique(ages$Year))
     if(length(lgthBins)==1) {

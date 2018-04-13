@@ -1,9 +1,18 @@
-readInExcelBiomass.fn <-
-function(file,sheet="BiomassAbundance",headerRow=6,colNames=NA) {
-    #Reads in the stratum biomasses from the Excel file provided by Beth (BiomassAbundance Sheet)
-    #headerRow is the row number of the column where the data start
-    #it doesn't read in the column names correctly, so I put in simplified names. Make sure that these match what is in your Excel spreadsheet
-    #written by Allan Hicks, 2009
+#' Reads in the stratum biomasses from the Excel file provided by Beth (BiomassAbundance Sheet)
+#' headerRow is the row number of the column where the data start
+#' it doesn't read in the column names correctly, so I put in simplified names.
+#' Make sure that these match what is in your Excel spreadsheet
+#' 
+#' @param file excel file name
+#' @param sheet sheet name in excel file
+#' @param headerRow line of header row in excel file
+#' @param colNames column names, the function replaces the column names
+#'
+#' @author Allan Hicks 
+#' @export 
+#' \code{\link{readDataFromExcel.fn}}
+
+readInExcelBiomass.fn <-function(file,sheet="BiomassAbundance",headerRow=6,colNames=NA) {
 
     xx <- readDataFromExcel.fn(file,sheet,headerRow)
     if(is.null(colNames[1])) {

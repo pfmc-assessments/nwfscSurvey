@@ -1,14 +1,36 @@
-    #calculates proportion of age at length and reformats into SS3 format
-    #Uses raw numbers at length, assuming that is a random sample conditioned on length and sex.
-    #To use expanded numbers (up to strata areas), set raw=F
-    #Only gender codes 1 and 2 and puts males and females on separate lines because the age@L is conditioned on sex (a sample of females of length 25cm, for example)
-    #Gender=1: females only. Male values ignored
-    #Gender=2: males only. Female values ignored.
-    #lgthBins is either the interval between length bins or the actual length bins
-    #note that 0 and Inf are tacked on the ends to account for lengths and ages outside the interval. You may want to add these in to first and last bin.
-    #I assume all fish are sexed for age data, thus do not apply sex ratios for unsexed fish
+#' Calculates proportion of age at length and reformats into SS3 format
+#' Uses raw numbers at length, assuming that is a random sample conditioned on length and sex.
+#' To use expanded numbers (up to strata areas), set raw=F
+#' Only gender codes 1 and 2 and puts males and females on separate lines because the age@L is conditioned on sex (a sample of females of length 25cm, for example)
+#' Gender=1: females only. Male values ignored
+#' Gender=2: males only. Female values ignored.
+#' lgthBins is either the interval between length bins or the actual length bins
+#' note that 0 and Inf are tacked on the ends to account for lengths and ages outside the interval. You may want to add these in to first and last bin.
+#' I assume all fish are sexed for age data, thus do not apply sex ratios for unsexed fish
+#' 
+#' @param datAL object
+#' @param datTows
+#' @param strat.vars
+#' @param strat.df 
+#' @param femaleMale
+#' @param lgthBins length bins
+#' @param ageBins age bins
+#' @param SS3out
+#' @param meanRatioMethod
+#' @param raw raw=T/F, input to define whether or not to expand numbers in the csv file (column header "NumF" and "NumM")
+#' @param NAs2zero change NAs to zeros
+#' @param season season
+#' @param fleet fleet number
+#' @param partition partition for Stock Synthesis
+#' @param ageerr age error value for Stock Synthesis
+#' @param returnSamps
+#'
+#' @author Allan Hicks 
+#' @export 
 
-SurveyAgeAtLen.EWC.fn <- function(datAL,datTows,strat.vars=NULL,strat.df=NULL,femaleMale=c(2,1),lgthBins=1,ageBins=1,SS3out=F,meanRatioMethod=T,raw=T,NAs2zero=T,season="ENTER",fleet="ENTER",partition="ETNER",ageerr="ENTER",returnSamps=F)  {
+SurveyAgeAtLen.EWC.fn <- function(datAL,datTows,strat.vars=NULL,strat.df=NULL,femaleMale=c(2,1),lgthBins=1,ageBins=1,
+                                    SS3out=F,meanRatioMethod=T,raw=T,NAs2zero=T,season="ENTER",fleet="ENTER",
+                                    partition="ETNER",ageerr="ENTER",returnSamps=F)  {
     row.names(strat.df) <- strat.df[,1]     #put in rownames to make easier to index later
     numStrata <- nrow(strat.df)
 

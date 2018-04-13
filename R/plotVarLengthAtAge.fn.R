@@ -2,7 +2,6 @@
 #'
 #' @details Plots the SD and CV of age at observed and predicted length
 #'
-#' @author Allan Hicks
 #'
 #' @param dat      The data loaded from the NWFSC database or the SexedLgthWtAge sheet
 #' @param ageBin   Currently fixed at 1, so a moot parameter
@@ -17,9 +16,9 @@
 #'   slwa <- read.csv(paste(directory,"SexedLgthWtAge.csv",sep="\\"),skip=8)
 #'   ageBin currently is fixed at 1 no matter what number you enter
 #'   res <- varLengthAtAge.fn(slwa,ageBin=1,bySex=T,parStart=c(52,0.09,1),estVB=T)
+#' @author Allan Hicks
 #'
 #' @export
-
 
 varLengthAtAge.fn <- function(dat,ageBin=1,bySex=T,parStart=c(52,0.09,1),estVB=T,bins=NULL,legX="bottomleft",legY=NULL,...) {
     #calculate and plot the sd and cv for length at age

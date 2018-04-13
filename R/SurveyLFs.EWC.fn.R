@@ -1,17 +1,38 @@
-#expands the lengths up to the total stratum area then sums over strata
-#Written by Allan Hicks 16 March 2009
-#modified to incorporate unsexed fish using sex ratios in May 2011
-#weighted by sample size and area
-#datL should have a column called "year" indicating year
-#femaleMale is a vector of codes for female then male (in that order)
-#lgthBin is the increment of each length bin or a vector of the actual bins
-    #NOTE: The length bin called F0 or M0 is retained to show proportion of lengths smaller than smallest bin
-    #      You will want to likely add this to your first length bin and delete this before putting in SS3, or
-    #       start the lgthBins argument at the 2nd length bin and F0 will be all fish smaller (hence the first length bin)
-#SS3out: if True the output is in a format pastable into SS3 dat file
+#' Epands the lengths up to the total stratum area then sums over strata
+#' Written by Allan Hicks 16 March 2009
+#' modified to incorporate unsexed fish using sex ratios in May 2011
+#' weighted by sample size and area
+#' datL should have a column called "year" indicating year
+#' femaleMale is a vector of codes for female then male (in that order)
+#' lgthBin is the increment of each length bin or a vector of the actual bins
+#' NOTE: The length bin called F0 or M0 is retained to show proportion of lengths smaller than smallest bin
+#' You will want to likely add this to your first length bin and delete this before putting in SS3, or
+#' start the lgthBins argument at the 2nd length bin and F0 will be all fish smaller (hence the first length bin)
+#' SS3out: if True the output is in a format pastable into SS3 dat file
+#' 
+#' @param datL object
+#' @param datTows
+#' @param strat.vars
+#' @param strat.df 
+#' @param femaleMale
+#' @param lgthBins length bins
+#' @param SS3out
+#' @param meanRatioMethod
+#' @param gender gender value for Stock Synthesis
+#' @param NAs2zero change NAs to zeros
+#' @param sexRatioUnsexed 
+#' @param maxSizeUnsexed
+#' @param partition partition for Stock Synthesis
+#' @param fleet fleet number
+#' @param nSamps effective sample size for Stock Synthesis
+#' @param season season
+#'
+#' @author Allan Hicks 
+#' @export 
 
-SurveyLFs.EWC.fn <- function(datL,datTows,strat.vars=NULL,strat.df=NULL,femaleMale=c(2,1),lgthBins=1,SS3out=F,meanRatioMethod=T,gender=3,NAs2zero=T,sexRatioUnsexed=NA,maxSizeUnsexed=NA,
-                              partition=0, fleet="Enter Fleet", nSamps="Enter Samps", season="Enter Season")  {
+SurveyLFs.EWC.fn <- function(datL,datTows,strat.vars=NULL,strat.df=NULL,femaleMale=c(2,1),lgthBins=1,SS3out=F,meanRatioMethod=T,
+                             gender=3,NAs2zero=T,sexRatioUnsexed=NA,maxSizeUnsexed=NA,
+                             partition=0, fleet="Enter Fleet", nSamps="Enter Samps", season="Enter Season")  {
     row.names(strat.df) <- strat.df[,1]     #put in rownames to make easier to index later
     numStrata <- nrow(strat.df)
     ind <- !duplicated(datL$HAULJOIN)
