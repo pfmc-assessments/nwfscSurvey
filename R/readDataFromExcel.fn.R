@@ -1,10 +1,19 @@
-readDataFromExcel.fn <-
-function(file,sheet,headerRow) {
-    #reads in the data from an Excel sheet
-    #the column names of the data are on row number headerRow
-    #this function is meant to be used by more specific functions below
-    #written in 2009 by Allan Hicks
-    #note that in later, 64-bit versions of R, the RODBC package is not working
+#' Reads in the data from an Excel sheet
+#' the column names of the data are on row number headerRow
+#' this function is meant to be used by more specific functions below
+#' written in 2009 by Allan Hicks
+#' note that in later, 64-bit versions of R, the RODBC package is not working
+#'
+#' @param file excel file
+#' @param sheet sheet name
+#' @param headerRow line of header row in excel file
+#'
+#' @author Allan Hicks 
+#' @export 
+#' @import RODBC
+
+readDataFromExcel.fn <-function(file, sheet, headerRow) {
+
     require(RODBC)
     channel <- odbcConnectExcel(file)
     info <- sqlFetch(channel,sheet,as.is=T,max=headerRow-2)        #read in info at top of sheet. It always puts the first row as header

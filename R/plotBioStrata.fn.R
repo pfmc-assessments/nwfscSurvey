@@ -12,6 +12,7 @@
 #'
 #' @author Allan Hicks 
 #' @export
+
 plotBioStrata.fn <-function(bio, CI=0.95, scalar=1e6, gap=0.03, ylab="Biomass ('000 mt)", xlab="Stratum", ylim=NULL,...) {
 
     y <- as.numeric(as.character(bio$Value/scalar))
