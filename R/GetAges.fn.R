@@ -4,15 +4,15 @@
 #' 
 #' @param file The csv file with your composition data.
 #' @param headerRow Line number indicating the header row of your csv file. (e.g., headerRow = 7)
-#' @param lgthBins Vector of length bins (e.g., lgthBins = 11:47)
-#' @param ageBins Vector of age bins (e.g, ageBins = 1:40)
+#' @param lgthBins Either the interval between length bins or the actual length bins (e.g., lgthBins = 11:47)
+#' @param ageBins Either the interval between age bins or the actual age bins (e.g, ageBins = 1:40)
 #' @param nSamps Vector of effective sample sizes by year for data.  Value will be written in the effN column. 
 #' @param fleet Fleet number 
 #' @param season Season number
-#' @param partition Partition value for composition data
-#' @param ageerr Age error value for SS
+#' @param partition partition as defined by Stock Synthesis
+#' @param ageerr Age error value for Stock Synthesis
 #' @param raw raw=T/F, input to define whether or not to expand numbers in the csv file (column header "NumF" and "NumM")
-#' @param sep The seperator in you file. Default function input is ",".
+#' @param sep Column separator in 'file'
 #'
 #' @author Allan Hicks 
 #' @export
