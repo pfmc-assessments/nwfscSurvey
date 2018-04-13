@@ -2,6 +2,7 @@
 #' 
 #' @param Age.df
 #' @param ageBins
+#' @param ... additional inputs
 #'
 #' @author Allan Hicks 
 #' @export 
