@@ -13,16 +13,16 @@ devtools::install_github("nwfsc-assess/nwfscSurvey", build_vignettes = TRUE)
 ```
 
 
-##Overview
+## Overview
 The following functions can be used to generate length comps for the NWFSC shelf-slope bottom trawl survey
 
 ```S    
-	# Read length comps
-	Data = readInLengthComps.fn(...)
+# Read length comps
+Data = readInLengthComps.fn(...)
     
-	# Plot sex ratio
-	plotSexRatio.fn( len=Data )
+# Plot sex ratio
+plotSexRatio.fn( len=Data )
     
-	# Process data
-	SS3 = SS3LF.fn(len=Data, lgthBins=seq(14,66,by=2))
+# Process data
+SS3 = SS3LF.fn(len=Data, lgthBins=seq(14,66,by=2))
 ```
