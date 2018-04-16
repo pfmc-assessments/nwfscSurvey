@@ -18,8 +18,28 @@ knitr::opts_chunk$set(
 
 ## Introduction
 
+The **nwfscSurvey** package was written by scientists at the Northwest Fisheries Science Center (NWFSC) to explore and process survey composition data for use in assessments.  The package can be used for the NWFSC shelf-slope survey, the NWFSC slope survey, the AFSC slope survey, and the Triennial survey.
+
 ## Use
 
+The **nwfscSurvey** can be used to create:
+
+* Calculate the design based indices based upon pre-specified stratification.
+
+* Create length composition data expanded by the design-based indices for use in Stock Synthesis.
+
+* Create age-composition data expanded by the design-based indices for use in Stock Synthesis.
+
+* Create conditional age-at-length compostion data for used in Stock Synthesis
+
+* Create plots to visualize the data; design-based index plots, bubble plots of length and age data, sex ratio. 
+
 ## Functions
+
+A list of all functions in the packages can be viewed by:
+
+```r
+ls("package:nwfscSurvey")
+```
 
 ## Examples

@@ -10,7 +10,7 @@
 #'    DISTANCE_FISHED is in km
 #'    NET_WIDTH is in m
 #' 
-#' @param dataFile data file name
+#' @param dat data file name, an R object pre-loaded
 #' @param directory working directory where the dataFile is located
 #' @param species species name to extract
 #' @param removeCAN removes Canadian hauls based on the AFSCforeign_hauls.rda file
@@ -19,8 +19,9 @@
 #' @author Allan Hicks 
 #' @export 
 
-ReadInBiomass.EWC.fn <- function(dataFile, directory, species=c(NA), removeCAN=T, verbose=F){ #, foreignfile="foreign_hauls.csv") {
-    dat <- read.csv(paste(directory,dataFile,sep="\\"))
+ReadInBiomass.EWC.fn <- function(dat, directory, species=c(NA), removeCAN=T, verbose=F){ #, foreignfile="foreign_hauls.csv") {
+    #dat <- read.csv(paste(directory,dataFile,sep="\\"))
+
     totRows <- nrow(dat)
     if("SPECIES_CODE" %in% names(dat)){
       dat <- dat[dat$SPECIES_CODE %in% species,]

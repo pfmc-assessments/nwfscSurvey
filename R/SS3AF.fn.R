@@ -10,7 +10,11 @@
 
 SS3AF.fn <- function(Age.df, ageBins, ...) {
 
-       names(Age.df)[names(Age.df %in% 'Age')] <- "Length"
+	   # this does not work because it only renames the column, but does not replace the values
+       #names(Age.df)[names(Age.df) %in% 'Age'] <- "Length"
+
+	   # this approach replaces the column name AND values 
+	   Age.df$Length <- Age.df$Age
        SS3LF.fn(Age.df, lgthBins = ageBins, ...)
 }
 
