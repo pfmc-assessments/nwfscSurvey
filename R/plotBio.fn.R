@@ -9,11 +9,12 @@
 #' @param ylim y-limits
 #' @param add add additional line to plot
 #' @param col color
+#' @param main plot label
 #'
-#' @author Allan Hicks 
+#' @author Allan Hicks and John Wallace
 #' @export
 
-plotBio.fn <-function(bio, CI=0.95, scalar=1e6, gap=0.03, ylab="Biomass ('000 mt)", xlab="Year", ylim=NULL, add = FALSE, col = 'black', ...) {
+plotBio.fn <-function(bio, CI=0.95, scalar=1e6, gap=0.03, ylab="Biomass ('000 mt)", xlab="Year", main = NULL, ylim=NULL, add = FALSE, col = 'black', ...) {
 
     y <- as.numeric(as.character(bio$Value))/scalar
     x <- as.numeric(as.character(bio$Year))
@@ -29,7 +30,7 @@ plotBio.fn <-function(bio, CI=0.95, scalar=1e6, gap=0.03, ylab="Biomass ('000 mt
       points(x, y, col = col)
     }
     else {
-       plot(x, y, ylab = ylab, xlab = xlab, ylim = ylim, col = col, ...)
+       plot(x, y, ylab = ylab, xlab = xlab, ylim = ylim, main = main, col = col, ...)
     }
     segments(x, y + gap, x, ci[1, ], col = col)
     segments(x, y - gap, x, ci[2, ], col = col)

@@ -43,3 +43,28 @@ ls("package:nwfscSurvey")
 ```
 
 ## Examples
+
+### NWFSC shelf-slope bottom trawl survey
+
+Calculate the design based index of abundance:
+
+```r
+bioSS = GetTotalBiomassExcel.fn(file = "Survey data file.xlsx", headerRow =7, fleet="EnterFleet", season=1, outputMedian=T)
+```
+
+The function will create a table of results by year:
+```{r, results = 'asis', echo = FALSE}
+  library(xtable)
+  library(kableExtra)
+
+  tab = rbind( c(2003, 1, "EnterFleet", 21055083, 0.357),
+               c("...", "", "", "", ""),
+               c(2015, 1, "EnterFleet", 9766200, 0.563))
+  
+  colnames(tab) = c("Year", "Season", "Fleet", "Value", "seLogB")
+  
+  table = tab 
+  kable(table, "html")
+```
+
+

@@ -12,7 +12,7 @@
 
 <meta name="author" content="Chantel Wetzel" />
 
-<meta name="date" content="2018-04-16" />
+<meta name="date" content="2018-04-26" />
 
 <title>nwfscSurvey</title>
 
@@ -70,7 +70,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 
 <h1 class="title toc-ignore">nwfscSurvey</h1>
 <h4 class="author"><em>Chantel Wetzel</em></h4>
-<h4 class="date"><em>2018-04-16</em></h4>
+<h4 class="date"><em>2018-04-26</em></h4>
 
 
 
@@ -96,6 +96,82 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 </div>
 <div id="examples" class="section level2">
 <h2>Examples</h2>
+<div id="nwfsc-shelf-slope-bottom-trawl-survey" class="section level3">
+<h3>NWFSC shelf-slope bottom trawl survey</h3>
+<p>Calculate the design based index of abundance:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">bioSS =<span class="st"> </span><span class="kw">GetTotalBiomassExcel.fn</span>(<span class="dt">file =</span> <span class="st">&quot;Survey data file.xlsx&quot;</span>, <span class="dt">headerRow =</span><span class="dv">7</span>, <span class="dt">fleet=</span><span class="st">&quot;EnterFleet&quot;</span>, <span class="dt">season=</span><span class="dv">1</span>, <span class="dt">outputMedian=</span>T)</code></pre></div>
+The function will create a table of results by year:
+<table>
+<thead>
+<tr>
+<th style="text-align:left;">
+Year
+</th>
+<th style="text-align:left;">
+Season
+</th>
+<th style="text-align:left;">
+Fleet
+</th>
+<th style="text-align:left;">
+Value
+</th>
+<th style="text-align:left;">
+seLogB
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+2003
+</td>
+<td style="text-align:left;">
+1
+</td>
+<td style="text-align:left;">
+EnterFleet
+</td>
+<td style="text-align:left;">
+21055083
+</td>
+<td style="text-align:left;">
+0.357
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+…
+</td>
+<td style="text-align:left;">
+</td>
+<td style="text-align:left;">
+</td>
+<td style="text-align:left;">
+</td>
+<td style="text-align:left;">
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2015
+</td>
+<td style="text-align:left;">
+1
+</td>
+<td style="text-align:left;">
+EnterFleet
+</td>
+<td style="text-align:left;">
+9766200
+</td>
+<td style="text-align:left;">
+0.563
+</td>
+</tr>
+</tbody>
+</table>
+</div>
 </div>
 
 

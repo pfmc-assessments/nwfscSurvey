@@ -11,9 +11,9 @@
 #' \code{\link{readDataFromExcel.fn}}
 
 
-readInExcelBiomass.fn <-function(file, sheet="BiomassAbundance", headerRow=6) { #, colNames=NA) {
+readInExcelBiomass.fn <-function(file, sheet="BiomassAbundance", headerRow) { #, colNames=NA) {
 
-    xx <- readDataFromExcel.fn(file,sheet,headerRow)
+    xx <- readDataFromExcel.fn(file, sheet, headerRow = headerRow - 1)
     #if(is.null(colNames[1])) {
     #    nombres <- c("Species","ScientificName","SpeciesCode","Year","Project","StrataAreaVersion",
     #                 "AreaSetId","AreaName","SouthernLatitude","NorthernLatitude","DepthStrataSet",

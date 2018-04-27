@@ -12,8 +12,12 @@
 #' \code{\link{readInExcelBiomass.fn}}, \code{\link{SS3Biomass.fn}}
 
 GetTotalBiomassExcel.fn <-
-function(file,sheet="BiomassAbundance",headerRow,fleet="EnterFleet",season=1,outputMedian=T) {
+function(file, sheet="BiomassAbundance", headerRow, fleet="EnterFleet", season=1, outputMedian=T) {
     #a wrapper for to output the biomass in SS3 format, reading directly from Excel
-    bio <- readInExcelBiomass.fn(file,sheet,headerRow)
-    SS3Biomass.fn(bio,fleet,season)
+    bio <- readInExcelBiomass.fn(file, sheet, headerRow)
+    out <- SS3Biomass.fn(bio,fleet,season)
+    # save output as a csv
+    dir.create(paste0(getwd(),"/forSS"), showWarnings = FALSE)
+    write.csv(out, file = "/forSS/NWFSC_BTS_design_based_indices.csv")
+    return(out)
 }
