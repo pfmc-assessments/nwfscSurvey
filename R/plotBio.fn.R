@@ -1,5 +1,6 @@
 #' Plots the biomass with confidence intervals
 #' 
+#' @param dir directory to save the file
 #' @param bio object created by the GetTotalBiomass.fn
 #' @param CI confidence interval
 #' @param scalar simply the divisor for the biomass
@@ -10,12 +11,21 @@
 #' @param add add additional line to plot
 #' @param col color
 #' @param main plot label
+#' @param dopng save the plot as a png inside plots folder
 #'
 #' @author Allan Hicks and John Wallace
 #' @export
 
-plotBio.fn <-function(bio, CI=0.95, scalar=1e6, gap=0.03, ylab="Biomass ('000 mt)", xlab="Year", main = NULL, ylim=NULL, add = FALSE, col = 'black', ...) {
+plotBio.fn <-function(dir, bio, CI=0.95, scalar=1e6, gap=0.03, ylab="Biomass ('000 mt)", xlab="Year", 
+                      main = NULL, ylim=NULL, add = FALSE, col = 'black', dopng = FALSE, ...) {
 
+    plotdir <- paste0(dir, "/plots")
+    plotdir.isdir <- file.info(plotdir)$isdir
+    if(is.na(plotdir.isdir) | !plotdir.isdir){
+      dir.create(plotdir)
+    }
+
+    if (dopng) { png(paste0(dir, "/plots/designed_based_index.png"), height=7, width=7, units="in",res=300) }
     y <- as.numeric(as.character(bio$Value))/scalar
     x <- as.numeric(as.character(bio$Year))
     se <- as.numeric(as.character(bio$seLogB))
@@ -34,4 +44,6 @@ plotBio.fn <-function(bio, CI=0.95, scalar=1e6, gap=0.03, ylab="Biomass ('000 mt
     }
     segments(x, y + gap, x, ci[1, ], col = col)
     segments(x, y - gap, x, ci[2, ], col = col)
+    if (dopng) { dev.off()}
+    
 }
