@@ -22,30 +22,31 @@
 #' 
 #' @param len object
 #' @param lgthBins Either the interval between length bins or the actual length bins (e.g., lgthBins = 11:47)
-#' @param gender ger for Stock Synthesis (0 = sexes combined, 1 = females only, 2 = males only, 3 = both sexes)
+#' @param gender gender code value for Stock Synthesis (0 = sexes combined, 1 = females only, 2 = males only, 3 = both sexes, females then males)
 #' @param nSamps effN
 #' @param fleet Fleet number 
 #' @param season Season number
-#' @param partition partition as defined by Stock Synthesis
-#' @param NAs2zero change NA value to 0
-#' @param sexRatioUnsexed
-#' @param maxSizeUnsexed
+#' @param partition partition as defined by Stock Synthesis (0 = whole catch in weight, 1 = discards in weight, 2 = retained catch in weight). Survey should have a value of 0.
+#' @param NAs2zero change NA value to 0 in the ouput length comps to use in SS
+#' @param sexRatioUnsexed sex ratio to apply to any length bins of a certain size or smaller as defined by the maxSizeUnsexed
+#' @param maxSizeUnsexed all sizes below this threshold will assign unsexed fish by sexRatio set equal to 0.50, fish larger than this size will have unsexed fish assigned by the calculated sex ratio in the data.
+#' @param folder where the length comps will be saved
 #'
-#' @author Allan Hicks 
+#' @author Allan Hicks and Chantel Wetzel
 #' @export 
 
-SS3LF.fn <-function(len,lgthBins=1,gender=3,nSamps="EnterNsamps",fleet="EnterFleet",season=1,partition=0,
-                    NAs2zero=T,sexRatioUnsexed=NA,maxSizeUnsexed=NA) {
+SS3LF.fn <-function(len, lgthBins=1, gender=3, nSamps="EnterNsamps", fleet="EnterFleet", season=1, partition=0,
+                    NAs2zero=T, sexRatioUnsexed=NA, maxSizeUnsexed=NA,printfolder = "forSS") {
     
     if(length(lgthBins)==1) {
         Lengths <- c(-999,seq(floor(min(len$Length)),ceiling(max(len$Length)),lgthBins),Inf)
     }
     else{
-        Lengths <- c(-999,lgthBins,Inf)        #put 0 and Inf on ends because all.inside=T in findInterval below. Treats these as minus and plus groups
+        Lengths <- c(-999,lgthBins,Inf) #put 0 and Inf on ends because all.inside=T in findInterval below. Treats these as minus and plus groups
     }
 
-    len$allLs <- Lengths[findInterval(len$Length,Lengths,all.inside=T)]
-    #print(table(len$allLs))
+    # Assign length bin to each observed length
+    len$allLs <- Lengths[findInterval(x = len$Length,vec = Lengths, all.inside=T)]
     
     if(length(sexRatioUnsexed)==1 & !is.na(sexRatioUnsexed)) {
         len$sexRatio <- len$NumF/(len$NumF+len$NumM)
@@ -123,6 +124,20 @@ SS3LF.fn <-function(len,lgthBins=1,gender=3,nSamps="EnterNsamps",fleet="EnterFle
         out <- data.frame(year=as.numeric(names(L.year)),Season=season,Fleet=fleet,gender=gender,partition=partition,nSamps=nSamps,Ls)
     }
 
-    cat("\nNOTE: You may need to add the column called F.999 and/or M.999 to your first length bin\n\tand delete that column.\n\tThese are the percentage of lengths smaller than the first length bin\n\n")
+    # save output as a csv
+    plotdir <- file.path(dir, printfolder)
+    plotdir.isdir <- file.info(plotdir)$isdir
+    if(is.na(plotdir.isdir) | !plotdir.isdir){
+      dir.create(plotdir)
+    }
+    write.csv(out, file = paste0(plotdir, "/NWFSCBT_Survey_Gender", gender, "_Bins_-999_", max(lgthBins),"_LengthComps.csv"), row.names = FALSE)
+
+    out$F11 <- out$F11 + out$F.999
+    out$M11 <- out$M11 + out$M.999
+    out <- out[,-which(names(out)%in%c("F.999","M.999"))]
+    write.csv(out, file = paste0(plotdir, "/NWFSCBT_Survey_Gender", gender, "_Bins_",min(lgthBins),"_", max(lgthBins),"_LengthComps.csv"), row.names = FALSE)
+
+    #cat("\nNOTE: You may need to add the column called F.999 and/or M.999 to your first length bin\n\tand delete that column.\n\tThese are the percentage of lengths smaller than the first length bin\n\n")
+    cat("\nNOTE: Two files have been saved the the printfolder directory.\n\tThe first has the -999 column showing fish smaller than the initial length bind. \n\tCheck to make sure there is not a large number of fish smaller than the initial length bin.\n\tThe second file has combined the -999 with the first length bin and is ready for use in SS.\n\n")
     return(out)
 }
