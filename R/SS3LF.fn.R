@@ -138,6 +138,6 @@ SS3LF.fn <-function(len, lgthBins=1, gender=3, nSamps="EnterNsamps", fleet="Ente
     write.csv(out, file = paste0(plotdir, "/NWFSCBT_Survey_Gender", gender, "_Bins_",min(lgthBins),"_", max(lgthBins),"_LengthComps.csv"), row.names = FALSE)
 
     #cat("\nNOTE: You may need to add the column called F.999 and/or M.999 to your first length bin\n\tand delete that column.\n\tThese are the percentage of lengths smaller than the first length bin\n\n")
-    cat("\nNOTE: Two files have been saved the the printfolder directory.\n\tThe first has the -999 column showing fish smaller than the initial length bind. \n\tCheck to make sure there is not a large number of fish smaller than the initial length bin.\n\tThe second file has combined the -999 with the first length bin and is ready for use in SS.\n\n")
+    cat("\nNOTE: Two files have been saved the the printfolder directory.\n\tThe first has the 999 column showing fish smaller than the initial length bind. \n\tCheck to make sure there is not a large number of fish smaller than the initial length bin.\n\tThe second file has combined the 999 with the first length bin and is ready for use in SS.\n\n")
     return(out)
 }
