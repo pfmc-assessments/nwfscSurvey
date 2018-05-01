@@ -23,7 +23,7 @@
 #'
 #' SA3 is provided in this package.
 #'
-#' @param strat.df A dataframe describing the strata name, area, and
+#' @param strata.df A dataframe describing the strata name, area, and
 #' boundaries.  Boundaries are determined by latitude and bottom depth. See
 #' Details.
 #' @param SA3 A dataframe of min and max latitude and min and max depth with
@@ -38,13 +38,16 @@
 #' @references %% ~put references to the literature/web site here ~
 #' @examples
 
-StrataAreas.fn <- function(strat.df,SA3,convertFactor=0.01) {
+StrataAreas.fn <- function(strata.df, convertFactor=0.01) {
     #calculates the area of your strata using John Wallace's SA3 file
+    fpath = system.file("data", "SA3.rda", package="nwfscSurvey")
+    load(fpath)
     #this code is stolen from within John Wallace's 2011 GLMM code
     ##-8/19/2013: ACH modified it to report error when a supplied latitude or depth is not exactly matched
     #a convertFactor of 0.01 convert hectares to km2
-    S <- strat.df
+    S <- strata.df
     S$area <- NA
+
 
     for ( i in 1:nrow(S)) {
         #first check that depths are exactly defined

@@ -10,8 +10,8 @@
 #'    DISTANCE_FISHED is in km
 #'    NET_WIDTH is in m
 #' 
+#' @param dir working directory where the dataFile is located
 #' @param dat data file name, an R object pre-loaded
-#' @param directory working directory where the dataFile is located
 #' @param species species name to extract
 #' @param removeCAN removes Canadian hauls based on the AFSCforeign_hauls.rda file
 #' @param verbose write out comments
@@ -19,8 +19,7 @@
 #' @author Allan Hicks 
 #' @export 
 
-ReadInBiomass.EWC.fn <- function(dat, directory, species=c(NA), removeCAN=T, verbose=F){ #, foreignfile="foreign_hauls.csv") {
-    #dat <- read.csv(paste(directory,dataFile,sep="\\"))
+ReadInBiomass.EWC.fn <- function(dir, dat, species=c(NA), removeCAN=TRUE, verbose=TRUE){ 
 
     totRows <- nrow(dat)
     if("SPECIES_CODE" %in% names(dat)){
@@ -32,7 +31,9 @@ ReadInBiomass.EWC.fn <- function(dat, directory, species=c(NA), removeCAN=T, ver
     totRows <- nrow(dat)
     
     if(removeCAN) {
-        load("AFSCforeign_hauls.rda")
+        fpath = system.file("data", "AFSCforeign_hauls.rda", package="nwfscSurvey")
+        load(fpath)
+        #load("AFSCforeign_hauls.rda")
         foreignHauls = AFSCforeign_hauls
         #foreignHauls <- read.csv(file.path(directory,foreignfile))
         foreignInd <- !(dat$HAULJOIN %in% foreignHauls$HAULJOIN)
@@ -45,6 +46,6 @@ ReadInBiomass.EWC.fn <- function(dat, directory, species=c(NA), removeCAN=T, ver
     tmp <- sum(is.na(dat$areaFished))
     if(tmp>0 | verbose) {cat("There are",tmp,"instances where area swept could not be calculated due to missing values.\n")}
     dat$kgPerKm2 <- dat$WEIGHT/dat$areaFished
-    dat$kgPerKm2[is.na(dat$kgPerKm2)&!is.na(dat$areaFished)] <- 0                                  #the tows with no observation of the species
+    dat$kgPerKm2[is.na(dat$kgPerKm2)&!is.na(dat$areaFished)] <- 0 #the tows with no observation of the species
     return(dat)
 }

@@ -13,7 +13,8 @@
 
 readInExcelLengthComps.fn <-function(file, sheet="LengthComps", headerRow=7) {
 
-    nombres <- c("SpeciesCode","ScientificName","Species","Year","Project","AreaSetIdentifier","AreaName","DepthStrataSet","MinStratumDepth","MaxStratumDepth","Length","NumF","NumM","NumUnsexed")
+    nombres <- c("SpeciesCode","ScientificName","Species","Year","Project","AreaSetIdentifier","AreaName","DepthStrataSet",
+    		     "MinStratumDepth","MaxStratumDepth","Length","NumF","NumM","NumUnsexed")
 
     xx <- readDataFromExcel.fn(file,sheet,headerRow)
     names(xx) <- nombres

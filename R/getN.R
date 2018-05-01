@@ -34,17 +34,28 @@ getN <- function(dir, file, type, headerRow = "default", species = "flatfish", p
 
 	if (type == "age"){
 		if (headerRow == "default") { headerRow = c(7,9) }
-		hauls = readDataFromExcel.fn(file, sheet = "Ages-StratumTowTallies", header = 7)
-		len.num = readDataFromExcel.fn(file, sheet = "Ages", header = 9)		
+		hauls = readDataFromExcel.fn(file, sheet = "Ages-SexBasedTowTallies", header = headerRow[1])
+		new.names = c("Species_Code", "Species", "Survey_Year", "Project", "INPFC_Area", "Min_Depth_m", "Max_Depth_m", "Number_of_Tows_Female", "Number_of_Tows_Male",              
+					   "Number_of_Tows_Unsexed", "Number_of_Tows_wo_respect_to_sex")
+		names(hauls) = new.names
+		age.num = readDataFromExcel.fn(file, sheet = "SexedLgthWtAge", header = headerRow[2])		
 	}
 
-	xx = aggregate(N_Tow_Tally_Stratum ~ Survey_Year, sum, data = hauls)
-	nSamp = xx[,2]
-	n = floor(n.unq * nSamp) 
+	if (type == "length"){
+		xx = aggregate(N_Tow_Tally_Stratum ~ Survey_Year, sum, data = hauls)
+		nSamp = xx[,2]
+		n = floor(n.unq * nSamp) 
+		fish = aggregate(LENGTH_CM ~ PROJECT_CYCLE, length, data = len.num)
+		samples = cbind(xx$Survey_Year, nSamp, fish$LENGTH_CM, n)
+	}
 
-	fish = aggregate(LENGTH_CM ~ PROJECT_CYCLE, length, data = len.num)
-
-	samples = cbind(xx$Survey_Year, nSamp, fish$LENGTH_CM, n)
+	if (type == "age"){
+		xx = aggregate(Number_of_Tows_wo_respect_to_sex ~ Survey_Year, sum, data = hauls)
+		nSamp = xx[,2]
+		n = floor(n.unq * nSamp) 
+		fish = aggregate(AGE_YRS ~ PROJECT_CYCLE, length, data = age.num)
+		samples = cbind(xx$Survey_Year, nSamp, fish$AGE_YRS, n)
+	}
 	colnames(samples) = c("Year", "Tows", "Fish", "Sample Size")
 
 	# save output as a csv
