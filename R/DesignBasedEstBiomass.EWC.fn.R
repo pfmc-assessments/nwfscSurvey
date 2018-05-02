@@ -13,13 +13,15 @@
 #' I work in normal space, then calculate the statistics if B is lognormal
 #' This is the Mean Ratio Estimate
 #' 
+#' @param dir directory of the excel file
 #' @param dat Dataframe of the data. It must have catch rate called catchPerArea and columns corresponding to strata variable names. It must also have a column called year.
 #' @param stat.vars A vector of the strata variable names (i.e., c("BEST_LATITUDE","BEST_DEPTH"))
 #' @param strat.df a dataframe with the first column the name of the stratum, the second column the area of the stratum, and the remaining columns are the high and low variables defining the strata.
-#' @author Allan Hicks 
+#' @param printfolder the folder where files will be saved
+#' @author Allan Hicks and Chantel Wetzel
 #' @export
 
-DesignBasedEstBiomass.EWC.fn <- function(dat,strat.vars,strat.df)  {
+DesignBasedEstBiomass.EWC.fn <- function(dir, dat, strat.vars, strat.df, printfodler = "forSS")  {
 
 
     if(is.null(dat$catchPerArea)) stop("There must be a column called catchPerArea in the dataframe")
@@ -50,9 +52,18 @@ DesignBasedEstBiomass.EWC.fn <- function(dat,strat.vars,strat.df)  {
     yrTotal.fn <- function(x) {
         data.frame(Bhat=sum(x$Bhat),seBhat=sqrt(sum(x$varBhat)),cv=sqrt(sum(x$varBhat))/sum(x$Bhat))
     }
-    ests <- as.data.frame(t(as.data.frame(lapply(lapply(yearlyStrataEsts,yrTotal.fn),t))))             #some crazy stuff to put into a dataframe with years as rows
+    ests <- as.data.frame(t(as.data.frame(lapply(lapply(yearlyStrataEsts,yrTotal.fn),t)))) #some crazy stuff to put into a dataframe with years as rows
     logVar <- log(ests$cv^2+1)
     ln <- data.frame(year=substring(row.names(ests),5),meanBhat=ests$Bhat/1000,medianBhat=ests$Bhat*exp(-0.5*logVar)/1000,SElogBhat=sqrt(logVar))
     
-    list(Strata=yearlyStrataEsts,Total=ests,LNtons=ln)
+    df = list(Strata=yearlyStrataEsts,Total=ests,LNtons=ln)
+    out <- data.frame(Year=df$LNtons$year, Value=df$Total$Bhat, seLogB=df$LNtons$SElogBhat)
+
+    plotdir <- file.path(dir,printfolder)
+    plotdir.isdir <- file.info(plotdir)$isdir
+    if(is.na(plotdir.isdir) | !plotdir.isdir){
+      dir.create(plotdir)
+    }
+    write.csv(out, file = paste0(plotdir,"/design_based_indices.csv"))
+    return(out)
 }

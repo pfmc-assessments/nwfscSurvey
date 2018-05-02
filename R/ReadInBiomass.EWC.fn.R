@@ -47,5 +47,9 @@ ReadInBiomass.EWC.fn <- function(dir, dat, species=c(NA), removeCAN=TRUE, verbos
     if(tmp>0 | verbose) {cat("There are",tmp,"instances where area swept could not be calculated due to missing values.\n")}
     dat$kgPerKm2 <- dat$WEIGHT/dat$areaFished
     dat$kgPerKm2[is.na(dat$kgPerKm2)&!is.na(dat$areaFished)] <- 0 #the tows with no observation of the species
+
+    # Add specific names for columns to be used later
+    dat$catchPerArea <- dat$kgPerKm2
+    dat$year <- dat$YEAR
     return(dat)
 }
