@@ -8,7 +8,7 @@
 #'    SPECIES_CODE
 #'    LENGTH
 #' 
-#' @param dir working directory where the dataFile is located
+#' @param dir working directory where the datis located - not currently used
 #' @param data data file name
 #' @param species species name
 #' @param survey name of survey data to use. Options are "Tri.Shelf" or "AFSC.Slope"
@@ -45,7 +45,7 @@ ReadInLengths.EWC.fn <- function(dir, dat, species=c(NA), survey, subset_years =
     dat$Weight      <- dat$SP_TOW_WGHT_KG
     dat$Number_fish <- dat$SP_TOW_NUM
     dat$year        <- dat$YEAR
-    
+
     if(verbose) {cat(nrow(dat),"rows kept out of",totRows,"after removing missing lengths\n")}
     
     return(dat)   

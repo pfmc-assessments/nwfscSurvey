@@ -32,8 +32,9 @@
 #'
 #' @author Allan Hicks and Chantel Wetzel
 #' @export 
+#' @seealso \code{\link{StrataFactors.fn.fn}}
 
-SurveyLFs.EWC.fn <- function(dir, datL, datTows, strat.vars=NULL, strat.df=NULL, femaleMale=c(2,1), lgthBins=1, SS3out=F, meanRatioMethod=T,
+SurveyLFs.EWC.fn <- function(dir, datL, datTows, strat.vars=NULL, strat.df=NULL, femaleMale=c(2,1), lgthBins=1, SS3out=FALSE, meanRatioMethod=TRUE,
                              gender=3, NAs2zero=T, sexRatioUnsexed=NA, maxSizeUnsexed=NA, partition=0, fleet="Enter Fleet", 
                              nSamps="Enter Samps", season="Enter Season", printfolder = "forSS", remove999 = TRUE)  {
 
@@ -49,49 +50,49 @@ SurveyLFs.EWC.fn <- function(dir, datL, datTows, strat.vars=NULL, strat.df=NULL,
     
     #set up length bins
     if(length(lgthBins)==1) {
-        Lengths <- c(-999,seq(floor(min(datL$LENGTH)),ceiling(max(datL$LENGTH)),lgthBins),Inf)
+        Lengths <- c(-999,seq(floor(min(datL$Length_cm)),ceiling(max(datL$Length_cm)),lgthBins),Inf)
     }
     else{
         Lengths <- c(-999,lgthBins,Inf)
     }
     #print(Lengths)
-    datL$allLs <- Lengths[findInterval(datL$LENGTH,Lengths,all.inside=T)]
+    datL$allLs <- Lengths[findInterval(datL$Length_cm,Lengths,all.inside=T)]
     #print(head(datL))
 
     
     #first create strata factors
-    datB <- data.frame(datB,stratum=StrataFactors.fn(datB,strat.vars,strat.df))        #create a new column for the stratum factor
-    numTows <- table(datTows$year,StrataFactors.fn(datTows,strat.vars,strat.df))        #strata for each individual tow
+    datB   <- data.frame(datB, stratum=StrataFactors.fn(datB,strat.vars,strat.df))        #create a new column for the stratum factor
+    numTows <- table(datTows$year, StrataFactors.fn(datTows,strat.vars,strat.df))        #strata for each individual tow
 
     #calculate expansion factor per tow
     #for all sexes
     TdatL.tows <- as.data.frame(table(datL$HAULJOIN))
     datB <- data.frame(datB[match(as.character(TdatL.tows$Var1),as.character(datB$HAULJOIN)),],TowExpFactorU=TdatL.tows$Freq)
-    datB$TowExpFactorU <- datB$NUMBER_FISH/datB$TowExpFactorU
+    datB$TowExpFactorU <- datB$Number_fish/datB$TowExpFactorU
     #for females and males only
     TdatL.tows <- as.data.frame(table(datL$HAULJOIN,datL$SEX%in%femaleMale))
     TdatL.tows <- TdatL.tows[TdatL.tows$Var2==TRUE,]
     datB <- data.frame(datB[match(as.character(TdatL.tows$Var1),as.character(datB$HAULJOIN)),],TowExpFactorMF=TdatL.tows$Freq)
-    datB$TowExpFactorMF <- datB$NUMBER_FISH/datB$TowExpFactorMF
+    datB$TowExpFactorMF <- datB$Number_fish/datB$TowExpFactorMF
     datB$TowExpFactorMF[datB$TowExpFactorMF==Inf] <- NA
     
     #find frequency of number of lengths
-    TdatL.lengths <- as.data.frame(table(datL$HAULJOIN,datL$LENGTH))  #first do all lengths, unsexed
-    names(TdatL.lengths) <- c("HAULJOIN","LENGTH","numU")
+    TdatL.lengths <- as.data.frame(table(datL$HAULJOIN,datL$Length_cm))  #first do all lengths, unsexed
+    names(TdatL.lengths) <- c("HAULJOIN","Length_cm","numU")
     TdatL.lengths <- TdatL.lengths[TdatL.lengths$numU>0,]
     datB <- merge(datB,TdatL.lengths,by="HAULJOIN",all=T)
     #Females and males
-    TdatL.lengths <- as.data.frame(table(datL$HAULJOIN,datL$LENGTH,datL$sex2))
-    names(TdatL.lengths) <- c("HAULJOIN","LENGTH","SEX","num")
+    TdatL.lengths <- as.data.frame(table(datL$HAULJOIN,datL$Length_cm,datL$sex2))
+    names(TdatL.lengths) <- c("HAULJOIN","Length_cm","SEX","num")
     TdatL.lengths <- TdatL.lengths[TdatL.lengths$num>0,]
     TdatL.lengths <- split(TdatL.lengths,TdatL.lengths$SEX)
-    temp <- TdatL.lengths[["f"]][,c("HAULJOIN","LENGTH","num")]
-    names(temp) <- c("HAULJOIN","LENGTH","numF")
-    datB <- merge(datB,temp,by=c("HAULJOIN","LENGTH"),all=T)
+    temp <- TdatL.lengths[["f"]][,c("HAULJOIN","Length_cm","num")]
+    names(temp) <- c("HAULJOIN","Length_cm","numF")
+    datB <- merge(datB,temp,by=c("HAULJOIN","Length_cm"),all=T)
     datB[is.na(datB$numF),"numF"] <- 0
-    temp <- TdatL.lengths[["m"]][,c("HAULJOIN","LENGTH","num")]
-    names(temp) <- c("HAULJOIN","LENGTH","numM")
-    datB <- merge(datB,temp,by=c("HAULJOIN","LENGTH"),all=T)
+    temp <- TdatL.lengths[["m"]][,c("HAULJOIN","Length_cm","num")]
+    names(temp) <- c("HAULJOIN","Length_cm","numM")
+    datB <- merge(datB,temp,by=c("HAULJOIN","Length_cm"),all=T)
     datB[is.na(datB$numM),"numM"] <- 0
 
     #now calculate the expanded lengths per tow
@@ -99,14 +100,14 @@ SurveyLFs.EWC.fn <- function(dir, datL, datTows, strat.vars=NULL, strat.df=NULL,
     datB$expF <- datB$numF*datB$TowExpFactorMF
     datB$expM <- datB$numM*datB$TowExpFactorMF
     
-    datB$LENGTH <- as.numeric(as.character(datB$LENGTH))
-    datB$allLs <- Lengths[findInterval(datB$LENGTH,Lengths,all.inside=T)]
+    datB$LENGTH <- as.numeric(as.character(datB$Length_cm))
+    datB$allLs <- Lengths[findInterval(datB$Length_cm,Lengths,all.inside=T)]
     #print(head(datB))
    
     #incorporate unsexed fish using sex ratios
     if(length(sexRatioUnsexed)==1 & !is.na(sexRatioUnsexed)) {
         datB$sexRatio <- datB$expF/(datB$expF+datB$expM)
-        datB$sexRatio[datB$LENGTH <= maxSizeUnsexed] <- sexRatioUnsexed
+        datB$sexRatio[as.numeric(datB$Length_cm) <= maxSizeUnsexed] <- sexRatioUnsexed
 
         #in case there are any NA's, we can temporarily put in zeros for calcualtions below
         datB[is.na(datB$expF),"expF"] <- 0
@@ -120,7 +121,7 @@ SurveyLFs.EWC.fn <- function(dir, datL, datTows, strat.vars=NULL, strat.df=NULL,
             tmpF <- sum(datB$expF[inds])
             tmpM <- sum(datB$expM[inds])
             datB$sexRatio[i] <- tmpF/(tmpF+tmpM)
-            print(datB[i,c("LENGTH","allLs","expF","expM","sexRatio")])
+            print(datB[i,c("Length_cm","allLs","expF","expM","sexRatio")])
         }
 
         noRatio <- which(is.na(datB$sexRatio))
@@ -131,7 +132,7 @@ SurveyLFs.EWC.fn <- function(dir, datL, datTows, strat.vars=NULL, strat.df=NULL,
             tmpF <- sum(datB$expF[inds])
             tmpM <- sum(datB$expM[inds])
             datB$sexRatio[i] <- tmpF/(tmpF+tmpM)
-            print(datB[i,c("LENGTH","allLs","expF","expM","sexRatio")])
+            print(datB[i,c("Length_cm","allLs","expF","expM","sexRatio")])
         }
         noRatio <- which(is.na(datB$sexRatio))
         if(length(noRatio)>0) cat("Some sex ratios were left unknown and omitted\n\n")
@@ -152,7 +153,8 @@ SurveyLFs.EWC.fn <- function(dir, datL, datTows, strat.vars=NULL, strat.df=NULL,
     #sum over strata within year
     datB.yrstr <- split(datB,as.character(datB$year))
     datB.yrstr <- lapply(datB.yrstr,function(x){split(x,as.character(x$stratum))})
-    names(datB.yrstr)
+    #names(datB.yrstr)
+
     lengthTotalRatio.fn <- function(x,strat) {
         #function to sum lengths within a stratum and a year
         #Uses the Total Ratio estimate and Mean ratio estimate
@@ -186,7 +188,7 @@ SurveyLFs.EWC.fn <- function(dir, datL, datTows, strat.vars=NULL, strat.df=NULL,
         if(!(as.character(theYear)%in%row.names(numTows))) stop(paste("The year",theYear,"is in the lengths file but is not in the tow file"))
         ntows <- numTows[as.character(theYear),theStratum]
         A.h <- strat[strat$name==theStratum,"area"]
-        x$LENGTH_cm <- as.numeric(as.character(x$LENGTH))
+        x$LENGTH_cm <- as.numeric(as.character(x$Length_cm))
         noDups <- !duplicated(x$LENGTH) #not sure what this is doing
         xcols <- c("year","stratum") #must be two or more columns to keep the selection a dataframe
         lgths <- split(x,x$LENGTH)
@@ -200,10 +202,10 @@ SurveyLFs.EWC.fn <- function(dir, datL, datTows, strat.vars=NULL, strat.df=NULL,
     }
 
     if(meanRatioMethod) {
-        L.year.str <- lapply(datB.yrstr,function(x){lapply(x,lengthMeanRatio.fn,strat=strat.df,numTows)})
+        L.year.str <- lapply(datB.yrstr, function(x){lapply(x,lengthMeanRatio.fn,strat=strat.df,numTows)})
     }
     else{
-        L.year.str <- lapply(datB.yrstr,function(x){lapply(x,lengthTotalRatio.fn,strat=strat.df)})
+        L.year.str <- lapply(datB.yrstr, function(x){lapply(x,lengthTotalRatio.fn,strat=strat.df)})
     }
 
      year.fn <- function(x,Lengths) {   #calculate the LFs by year
@@ -250,7 +252,7 @@ SurveyLFs.EWC.fn <- function(dir, datL, datTows, strat.vars=NULL, strat.df=NULL,
             partition=partition,Nsamp=nSamps,Ls)
     }
 
-        # save output as a csv
+    # save output as a csv
     plotdir <- file.path(dir, printfolder)
     plotdir.isdir <- file.info(plotdir)$isdir
     if(is.na(plotdir.isdir) | !plotdir.isdir){
@@ -260,15 +262,15 @@ SurveyLFs.EWC.fn <- function(dir, datL, datTows, strat.vars=NULL, strat.df=NULL,
 
     usableOut = out
     if (gender == 3){
-        usableOut$F11 <- usableOut$F11 + usableOut$F.999
-        usableOut$M11 <- usableOut$M11 + usableOut$M.999
+        usableOut[,paste0("F",min(lgthBins))] <- usableOut[,paste0("F",min(lgthBins))] + usableOut$F.999
+        usableOut[,paste0("M",min(lgthBins))] <- usableOut[,paste0("M",min(lgthBins))] + usableOut$M.999
         usableOut <- usableOut[,-which(names(usableOut)%in%c("F.999","M.999"))]
         write.csv(usableOut, file = paste0(plotdir, "/Survey_Gender", gender, "_Bins_",min(lgthBins),"_", max(lgthBins),"_LengthComps.csv"), row.names = FALSE)
     }
 
     if (gender == 0){
-        usableOut$U11   <- usableOut$U11 + usableOut$U.999
-        usableOut$U11.1 <- usableOut$U11.1 + usableOut$U.999.1
+        usableOut[,paste0("U",min(lgthBins))]  <- usableOut[,paste0("U",min(lgthBins))] + usableOut$U.999
+        usableOut[,paste0("U",min(lgthBins)), ".1"]  <- usableOut[,paste0("U",min(lgthBins)), ".1"] + usableOut$U.999.1
         usableOut <- usableOut[,-which(names(usableOut)%in%c("U.999","U.999.1"))]
         write.csv(usableOut, file = paste0(plotdir, "/Survey_Gender", gender, "_Bins_",min(lgthBins),"_", max(lgthBins),"_LengthComps.csv"), row.names = FALSE)
     }

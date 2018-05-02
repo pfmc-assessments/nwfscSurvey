@@ -4,6 +4,7 @@
 #' 
 #' @param dir directory to save files to
 #' @param dat object created by SS3LF.fn or SS3AF.fn
+#' @param survey survey name 
 #' @param inch input to the symbols plot: TRUE, FALSE or a positive number.
 #' @param ylab y-axis text label
 #' @param xlab x-axis text label
@@ -15,7 +16,7 @@
 #' @author Allan Hicks 
 #' @export
 
-plotFreqData.fn <- function(dir, dat, inch=0.15, ylab="Bins", xlab="Year", zero2NAs=T, main=NULL, xlim=NULL, dopng = FALSE, ...) {
+plotFreqData.fn <- function(dir, dat, survey = "Survey", inch=0.15, ylab="Bins", xlab="Year", zero2NAs=T, main=NULL, xlim=NULL, dopng = FALSE, ...) {
 
     plotdir <- paste0(dir, "/plots")
     plotdir.isdir <- file.info(plotdir)$isdir
@@ -51,7 +52,7 @@ plotFreqData.fn <- function(dir, dat, inch=0.15, ylab="Bins", xlab="Year", zero2
 
     if(is.null(xlim)) {xlim <- range(x)}
 
-    if (dopng) { png(paste0(dir,"/plots/NWFSC_BT_survey_", dataType,"_Frequency.png"), height=7, width=7, units="in",res=300) }
+    if (dopng) { png(paste0(dir,"/plots/", survey, "_", dataType,"_Frequency.png"), height=7, width=7, units="in",res=300) }
     if (gender == 3) { par(mfrow=c(2,1)) } 
     if (gender == 0) { par(mfrow=c(1,1)) } 
     

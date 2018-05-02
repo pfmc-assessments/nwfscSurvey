@@ -8,6 +8,7 @@
 #' @param sheet sheet name in excel file
 #' @param headerRow line of header row in excel file
 #' @param species species specific value to determine the number of unique samples per tow (flatfish, shelfrock, sloperock, thorny, others, all)
+#' @param printfolder name of the folder to create and save files. Location will be paste0(dir, printfolder)
 #'
 #' @author Allan Hicks 
 #' @export 
@@ -67,11 +68,15 @@ getN <- function(dir, file, type, survey, headerRow = "default", species = "flat
 	if (survey == "Tri.Shelf" | survey == "AFSC.Slope"){
 		if (type == "length"){
 			nSamp <- table(file$year,!duplicated(paste(file$CRUISEJOIN, file$HAULJOIN, file$HAUL, file$START_LATITUDE, file$BOTTOM_DEPTH)))[,"TRUE"]  
-			n = floor(n.unq * nSamp) 
-	
-			fish = table(file$YEAR)
-			samples = cbind(as.numeric(names(nSamp)), nSamp, as.numeric(fish), n)
 		}
+
+		if (type == "age"){
+			nSamp <- table(file$year,!duplicated(paste(file$CRUISEJOIN, file$HAULJOIN, file$HAUL, file$START_LATITUDE, file$BOTTOM_DEPTH)))[,"TRUE"]  
+		}
+
+		n = floor(n.unq * nSamp) 
+		fish = table(file$year)
+		samples = cbind(as.numeric(names(nSamp)), nSamp, as.numeric(fish), n)
 
 	}
 
