@@ -37,7 +37,7 @@
 #' @export 
 
 SS3LF.fn <-function(len, lgthBins=1, gender=3, nSamps="EnterNsamps", fleet="EnterFleet", season=1, partition=0,
-                    NAs2zero=T, sexRatioUnsexed=NA, maxSizeUnsexed=NA,printfolder = "forSS", remove999 = TRUE) {
+                    NAs2zero=T, sexRatioUnsexed=NA, maxSizeUnsexed=NA, printfolder = "forSS", remove999 = TRUE) {
     
     if(length(lgthBins)==1) {
         Lengths <- c(-999,seq(floor(min(len$Length)),ceiling(max(len$Length)),lgthBins),Inf)
@@ -135,15 +135,15 @@ SS3LF.fn <-function(len, lgthBins=1, gender=3, nSamps="EnterNsamps", fleet="Ente
 
     usableOut = out
     if (gender == 3){
-        usableOut$F11 <- usableOut$F11 + usableOut$F.999
-        usableOut$M11 <- usableOut$M11 + usableOut$M.999
+        usableOut[,paste0("F",min(lgthBins))] <- usableOut[,paste0("F",min(lgthBins))] + usableOut$F.999
+        usableOut[,paste0("M",min(lgthBins))] <- usableOut[,paste0("M",min(lgthBins))] + usableOut$M.999
         usableOut <- usableOut[,-which(names(usableOut)%in%c("F.999","M.999"))]
         write.csv(usableOut, file = paste0(plotdir, "/NWFSCBT_Survey_Gender", gender, "_Bins_",min(lgthBins),"_", max(lgthBins),"_LengthComps.csv"), row.names = FALSE)
     }
 
     if (gender == 0){
-        usableOut$U11   <- usableOut$U11 + usableOut$U.999
-        usableOut$U11.1 <- usableOut$U11.1 + usableOut$U.999.1
+        usableOut[,paste0("U",min(lgthBins))]   <- usableOut[,paste0("U",min(lgthBins))] + usableOut$U.999
+        usableOut[,paste0("U",min(lgthBins)), ".1"] <- usableOut[,paste0("U",min(lgthBins)), ".1"] + usableOut$U.999.1
         usableOut <- usableOut[,-which(names(usableOut)%in%c("U.999","U.999.1"))]
         write.csv(usableOut, file = paste0(plotdir, "/NWFSCBT_Survey_Gender", gender, "_Bins_",min(lgthBins),"_", max(lgthBins),"_LengthComps.csv"), row.names = FALSE)
     }

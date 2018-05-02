@@ -56,14 +56,17 @@ DesignBasedEstBiomass.EWC.fn <- function(dir, dat, strat.vars, strat.df, printfo
     logVar <- log(ests$cv^2+1)
     ln <- data.frame(year=substring(row.names(ests),5),meanBhat=ests$Bhat/1000,medianBhat=ests$Bhat*exp(-0.5*logVar)/1000,SElogBhat=sqrt(logVar))
     
-    df = list(Strata=yearlyStrataEsts,Total=ests,LNtons=ln)
-    out <- data.frame(Year=df$LNtons$year, Value=df$Total$Bhat, seLogB=df$LNtons$SElogBhat)
+    df.list = list()
+    df  <- list(Strata=yearlyStrataEsts,Total=ests,LNtons=ln)
+    bio <- data.frame(Year=df$LNtons$year, Value=df$Total$Bhat, seLogB=df$LNtons$SElogBhat)
 
     plotdir <- file.path(dir,printfolder)
     plotdir.isdir <- file.info(plotdir)$isdir
     if(is.na(plotdir.isdir) | !plotdir.isdir){
       dir.create(plotdir)
     }
-    write.csv(out, file = paste0(plotdir,"/design_based_indices.csv"))
-    return(out)
+    write.csv(bio, file = paste0(plotdir,"/design_based_indices.csv"), row.names = FALSE)
+    df.list[[1]] <- df
+    df.list[[2]] <- bio
+    return(df.list)
 }
