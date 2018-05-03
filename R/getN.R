@@ -77,7 +77,6 @@ getN <- function(dir, file, type, survey, headerRow = "default", species = "flat
 		n = floor(n.unq * nSamp) 
 		fish = table(file$year)
 		samples = cbind(as.numeric(names(nSamp)), nSamp, as.numeric(fish), n)
-
 	}
 
 	colnames(samples) = c("Year", "Tows", "Fish", "Sample Size")

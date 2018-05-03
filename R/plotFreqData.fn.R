@@ -13,7 +13,7 @@
 #' @param xlim x-limit values
 #' @param dopng save the plot as a png inside plots folder
 #'
-#' @author Allan Hicks 
+#' @author Allan Hicks and Chantel Wetzel
 #' @export
 
 plotFreqData.fn <- function(dir, dat, survey = "Survey", inch=0.15, ylab="Bins", xlab="Year", zero2NAs=T, main=NULL, xlim=NULL, dopng = FALSE, ...) {
@@ -24,12 +24,14 @@ plotFreqData.fn <- function(dir, dat, survey = "Survey", inch=0.15, ylab="Bins",
       dir.create(plotdir)
     }
 
-    dataType = sum(names(data) == "ageError")
+    dataType = sum(names(dat) == "ageErr")
     dataType = ifelse(dataType == 0,  "Length", "Age")
 
     x <- as.numeric(as.character(dat$year))
     gender <- dat$gender[1]
-    dat <- dat[,-c(1:6)]
+    if(dataType == "Length"){ dat <- dat[,-c(1:6)] }
+    if(dataType == "Age")   { dat <- dat[,-c(1:9)] }
+
     if(length(grep(".999",names(dat))>0)){
       # remove extra columns (if the user didn't remove them already)
       if(gender==0) {
@@ -45,9 +47,11 @@ plotFreqData.fn <- function(dir, dat, survey = "Survey", inch=0.15, ylab="Bins",
         dat <- dat[,-match("M.999",names(dat))]
       }
     }
+    
     numLens <- ncol(dat)/2
     y <- as.numeric(substring(names(dat),2))
     y <- y[1:numLens]
+
     if(zero2NAs) {dat[dat==0] <- NA}
 
     if(is.null(xlim)) {xlim <- range(x)}

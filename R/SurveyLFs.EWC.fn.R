@@ -32,7 +32,7 @@
 #'
 #' @author Allan Hicks and Chantel Wetzel
 #' @export 
-#' @seealso \code{\link{StrataFactors.fn.fn}}
+#' @seealso \code{\link{StrataFactors.fn}}
 
 SurveyLFs.EWC.fn <- function(dir, datL, datTows, strat.vars=NULL, strat.df=NULL, femaleMale=c(2,1), lgthBins=1, SS3out=FALSE, meanRatioMethod=TRUE,
                              gender=3, NAs2zero=T, sexRatioUnsexed=NA, maxSizeUnsexed=NA, partition=0, fleet="Enter Fleet", 
@@ -249,34 +249,38 @@ SurveyLFs.EWC.fn <- function(dir, datL, datTows, strat.vars=NULL, strat.df=NULL,
         Ls <- matrix(Ls,nrow=length(L.year),byrow=T,
             dimnames=list(NULL,paste(c(rep("F",length(lgths)),rep("M",length(lgths))),lgths,sep="")))
         out <- data.frame(year=as.numeric(names(L.year)),season=season,fleet=fleet,gender=rep(3,length(L.year)),
-            partition=partition,Nsamp=nSamps,Ls)
+            partition=partition, Nsamp=nSamps,Ls)
     }
 
     # save output as a csv
+    comp.type = ifelse(lgthBins[1] == 1, "Age", "Length")
     plotdir <- file.path(dir, printfolder)
     plotdir.isdir <- file.info(plotdir)$isdir
     if(is.na(plotdir.isdir) | !plotdir.isdir){
       dir.create(plotdir)
     }
-    write.csv(out, file = paste0(plotdir, "/Survey_Gender", gender, "_Bins_-999_", max(lgthBins),"_LengthComps.csv"), row.names = FALSE)
+    write.csv(out, file = paste0(plotdir, "/Survey_Gender", gender, "_Bins_-999_", max(lgthBins),"_", comp.type, "Comps.csv"), row.names = FALSE)
+
 
     usableOut = out
     if (gender == 3){
         usableOut[,paste0("F",min(lgthBins))] <- usableOut[,paste0("F",min(lgthBins))] + usableOut$F.999
         usableOut[,paste0("M",min(lgthBins))] <- usableOut[,paste0("M",min(lgthBins))] + usableOut$M.999
         usableOut <- usableOut[,-which(names(usableOut)%in%c("F.999","M.999"))]
-        write.csv(usableOut, file = paste0(plotdir, "/Survey_Gender", gender, "_Bins_",min(lgthBins),"_", max(lgthBins),"_LengthComps.csv"), row.names = FALSE)
+        write.csv(usableOut, file = paste0(plotdir, "/Survey_Gender", gender, "_Bins_",min(lgthBins),"_", max(lgthBins),"_", comp.type, "Comps.csv"), row.names = FALSE)
     }
 
     if (gender == 0){
         usableOut[,paste0("U",min(lgthBins))]  <- usableOut[,paste0("U",min(lgthBins))] + usableOut$U.999
         usableOut[,paste0("U",min(lgthBins)), ".1"]  <- usableOut[,paste0("U",min(lgthBins)), ".1"] + usableOut$U.999.1
         usableOut <- usableOut[,-which(names(usableOut)%in%c("U.999","U.999.1"))]
-        write.csv(usableOut, file = paste0(plotdir, "/Survey_Gender", gender, "_Bins_",min(lgthBins),"_", max(lgthBins),"_LengthComps.csv"), row.names = FALSE)
+        write.csv(usableOut, file = paste0(plotdir, "/Survey_Gender", gender, "_Bins_",min(lgthBins),"_", max(lgthBins),"_", comp.type, "Comps.csv"), row.names = FALSE)
     }
 
     #cat("\nNOTE: You may need to add the column called F.999 and/or M.999 to your first length bin\n\tand delete that column.\n\tThese are the percentage of lengths smaller than the first length bin\n\n")
-    cat("\nNOTE: Two files have been saved the the printfolder directory.\n\tThe first has the 999 column showing fish smaller than the initial length bind. \n\tCheck to make sure there is not a large number of fish smaller than the initial length bin.\n\tThe second file has combined the 999 with the first length bin and is ready for use in SS.\n\n")
+    if (comp.type == "Length"){
+        cat("\nNOTE: Two files have been saved the the printfolder directory.\n\tThe first has the 999 column showing fish smaller than the initial length bind. \n\tCheck to make sure there is not a large number of fish smaller than the initial length bin.\n\tThe second file has combined the 999 with the first length bin and is ready for use in SS.\n\n")
+    }
     if (!remove999) { return(out)}
     if (remove999)  { return(usableOut)}
 }
