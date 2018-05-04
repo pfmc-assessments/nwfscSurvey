@@ -3,12 +3,9 @@
 \name{readInExcelBiomass.fn}
 \alias{readInExcelBiomass.fn}
 \title{Reads in the stratum biomasses from the Excel file provided by Beth (BiomassAbundance Sheet)
-headerRow is the row number of the column where the data start
-it doesn't read in the column names correctly, so I put in simplified names.
-Make sure that these match what is in your Excel spreadsheet}
+headerRow is the row number of the column where the data start}
 \usage{
-readInExcelBiomass.fn(file, sheet = "BiomassAbundance", headerRow = 6,
-  colNames = NA)
+readInExcelBiomass.fn(file, sheet = "BiomassAbundance", headerRow)
 }
 \arguments{
 \item{file}{excel file name}
@@ -16,15 +13,11 @@ readInExcelBiomass.fn(file, sheet = "BiomassAbundance", headerRow = 6,
 \item{sheet}{sheet name in excel file}
 
 \item{headerRow}{line of header row in excel file}
-
-\item{colNames}{column names, the function replaces the column names}
 }
 \description{
 Reads in the stratum biomasses from the Excel file provided by Beth (BiomassAbundance Sheet)
 headerRow is the row number of the column where the data start
-it doesn't read in the column names correctly, so I put in simplified names.
-Make sure that these match what is in your Excel spreadsheet
 }
 \author{
-Allan Hicks
+Allan Hicks & Chantel Wetzel
 }

@@ -4,18 +4,18 @@
 \alias{StrataAreas.fn}
 \title{Determine strata area.}
 \usage{
-StrataAreas.fn(strat.df, SA3, convertFactor = 0.01)
+StrataAreas.fn(strat.df, convertFactor = 0.01)
 }
 \arguments{
 \item{strat.df}{A dataframe describing the strata name, area, and
 boundaries.  Boundaries are determined by latitude and bottom depth. See
 Details.}
 
-\item{SA3}{A dataframe of min and max latitude and min and max depth with
-area for each defined square.  See Details.}
-
 \item{convertFactor}{Multiplier on the area in SA3. Default = 0.01 to
 convert hectares to square km.}
+
+\item{SA3}{A dataframe of min and max latitude and min and max depth with
+area for each defined square.  See Details.}
 }
 \value{
 Returns the dataframe input with a column called area.

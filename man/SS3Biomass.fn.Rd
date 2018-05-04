@@ -23,5 +23,5 @@ it calculates the standard error of log(B) by first finding the cv of B
 It can output the median biomass or the mean biomass. Median biomass is bias corrected so that log(Bmedian)=mean(log(B))
 }
 \author{
-Allan Hicks
+Allan Hicks & Chantel Wetzel
 }

@@ -4,14 +4,19 @@
 \alias{DesignBasedEstBiomass.EWC.fn}
 \title{Calculates design based estimates from survey data for early West Coast surveys (e.g., Triennial, AFSC slope)}
 \usage{
-DesignBasedEstBiomass.EWC.fn(dat, strat.vars, strat.df)
+DesignBasedEstBiomass.EWC.fn(dir, dat, strat.vars, strat.df,
+  printfodler = "forSS")
 }
 \arguments{
+\item{dir}{directory of the excel file}
+
 \item{dat}{Dataframe of the data. It must have catch rate called catchPerArea and columns corresponding to strata variable names. It must also have a column called year.}
 
 \item{strat.df}{a dataframe with the first column the name of the stratum, the second column the area of the stratum, and the remaining columns are the high and low variables defining the strata.}
 
 \item{stat.vars}{A vector of the strata variable names (i.e., c("BEST_LATITUDE","BEST_DEPTH"))}
+
+\item{printfolder}{the folder where files will be saved}
 }
 \description{
 The variables defining the strata must begin with the name in strat.vars and end with ".1" or ".2" (i.e., BEST_DEPTH.1)
@@ -29,5 +34,5 @@ I work in normal space, then calculate the statistics if B is lognormal
 This is the Mean Ratio Estimate
 }
 \author{
-Allan Hicks
+Allan Hicks and Chantel Wetzel
 }

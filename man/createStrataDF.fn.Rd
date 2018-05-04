@@ -4,16 +4,16 @@
 \alias{createStrataDF.fn}
 \title{Function that is able to create strata data frame and will calculate strata areas using the StrataAreas.fn}
 \usage{
-createStrataDF.fn(names = NA, depths, lats, SA3)
+createStrataDF.fn(names = NA, depths, lats)
 }
 \arguments{
 \item{names}{vector of names for strata, if not specified the default with be A, B, ...}
 
 \item{lats}{vector of latitude splits for each strata}
 
-\item{SA3}{A dataframe of min and max latitude and min and max depth with area for each defined square.  See Details.}
-
 \item{depth}{vector depth splits for each strata}
+
+\item{SA3}{A dataframe of min and max latitude and min and max depth with area for each defined square.  See Details.}
 }
 \value{
 Returns the dataframe input with a column called area.

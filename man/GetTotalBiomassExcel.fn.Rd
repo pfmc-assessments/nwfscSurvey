@@ -4,13 +4,18 @@
 \alias{GetTotalBiomassExcel.fn}
 \title{Wrapper function  to create the designed based indices}
 \usage{
-GetTotalBiomassExcel.fn(file, sheet = "BiomassAbundance", headerRow,
-  fleet = "EnterFleet", season = 1, outputMedian = T)
+GetTotalBiomassExcel.fn(dir, file, sheet = "BiomassAbundance",
+  printfolder = "forSS", headerRow, fleet = "EnterFleet", season = 1,
+  outputMedian = T)
 }
 \arguments{
+\item{dir}{directory of the excel file}
+
 \item{file}{the excel file}
 
 \item{sheet}{sheet name}
+
+\item{printfolder}{the folder where files will be saved}
 
 \item{headerRow}{header row in the csv file}
 
@@ -24,5 +29,5 @@ GetTotalBiomassExcel.fn(file, sheet = "BiomassAbundance", headerRow,
 Wrapper function  to create the designed based indices
 }
 \author{
-Allan Hicks
+Allan Hicks and Chantel Wetzel
 }

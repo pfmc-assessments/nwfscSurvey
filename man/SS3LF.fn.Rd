@@ -26,14 +26,15 @@ maxSizeUnsexed determines the maximum size at which the sexRatioUnsexed is appli
 \usage{
 SS3LF.fn(len, lgthBins = 1, gender = 3, nSamps = "EnterNsamps",
   fleet = "EnterFleet", season = 1, partition = 0, NAs2zero = T,
-  sexRatioUnsexed = NA, maxSizeUnsexed = NA)
+  sexRatioUnsexed = NA, maxSizeUnsexed = NA, printfolder = "forSS",
+  remove999 = TRUE)
 }
 \arguments{
 \item{len}{object}
 
 \item{lgthBins}{Either the interval between length bins or the actual length bins (e.g., lgthBins = 11:47)}
 
-\item{gender}{ger for Stock Synthesis (0 = sexes combined, 1 = females only, 2 = males only, 3 = both sexes)}
+\item{gender}{gender code value for Stock Synthesis (0 = sexes combined, 1 = females only, 2 = males only, 3 = both sexes, females then males). Selecting gender 0 will give the user all fish combined males + females + unsexed.}
 
 \item{nSamps}{effN}
 
@@ -41,11 +42,17 @@ SS3LF.fn(len, lgthBins = 1, gender = 3, nSamps = "EnterNsamps",
 
 \item{season}{Season number}
 
-\item{partition}{partition as defined by Stock Synthesis}
+\item{partition}{partition as defined by Stock Synthesis (0 = whole catch in weight, 1 = discards in weight, 2 = retained catch in weight). Survey should have a value of 0.}
 
-\item{NAs2zero}{change NA value to 0}
+\item{NAs2zero}{change NA value to 0 in the ouput length comps to use in SS}
 
-\item{maxSizeUnsexed}{}
+\item{sexRatioUnsexed}{sex ratio to apply to any length bins of a certain size or smaller as defined by the maxSizeUnsexed}
+
+\item{maxSizeUnsexed}{all sizes below this threshold will assign unsexed fish by sexRatio set equal to 0.50, fish larger than this size will have unsexed fish assigned by the calculated sex ratio in the data.}
+
+\item{printfolder}{folder where the length comps will be saved}
+
+\item{remove999}{the output object by the function will have the 999 column combined with the first length bin}
 }
 \description{
 Calculates proportion at length and reformats into SS# format
@@ -71,5 +78,5 @@ sexRatioUnsexed is the proportion used to assign unsexed fish to females
 maxSizeUnsexed determines the maximum size at which the sexRatioUnsexed is applied. If sexRatioUnsexed is a vector, this is ignored
 }
 \author{
-Allan Hicks
+Allan Hicks and Chantel Wetzel
 }

@@ -12,13 +12,15 @@ lgthBins is either the interval between length bins or the actual length bins
 note that 0 and Inf are tacked on the ends to account for lengths and ages outside the interval. You may want to add these in to first and last bin.
 I assume all fish are sexed for age data, thus do not apply sex ratios for unsexed fish}
 \usage{
-SurveyAgeAtLen.EWC.fn(datAL, datTows, strat.vars = NULL, strat.df = NULL,
-  femaleMale = c(2, 1), lgthBins = 1, ageBins = 1, SS3out = F,
-  meanRatioMethod = T, raw = T, NAs2zero = T, season = "ENTER",
-  fleet = "ENTER", partition = "ETNER", ageerr = "ENTER",
-  returnSamps = F)
+SurveyAgeAtLen.EWC.fn(dir, datAL, datTows, strat.vars = NULL,
+  strat.df = NULL, femaleMale = c(2, 1), lgthBins = 1, ageBins = 1,
+  SS3out = F, meanRatioMethod = T, raw = TRUE, NAs2zero = T,
+  season = "ENTER", fleet = "ENTER", partition = "ENTER",
+  ageErr = "ENTER", returnSamps = F, printfolder = "forSS")
 }
 \arguments{
+\item{dir}{directory location}
+
 \item{datAL}{object}
 
 \item{strat.df}{}
@@ -37,9 +39,9 @@ SurveyAgeAtLen.EWC.fn(datAL, datTows, strat.vars = NULL, strat.df = NULL,
 
 \item{partition}{partition for Stock Synthesis}
 
-\item{ageerr}{age error value for Stock Synthesis}
+\item{printfolder}{folder where the length comps will be saved}
 
-\item{returnSamps}{}
+\item{ageerr}{age error value for Stock Synthesis}
 }
 \description{
 Calculates proportion of age at length and reformats into SS3 format
@@ -52,6 +54,9 @@ lgthBins is either the interval between length bins or the actual length bins
 note that 0 and Inf are tacked on the ends to account for lengths and ages outside the interval. You may want to add these in to first and last bin.
 I assume all fish are sexed for age data, thus do not apply sex ratios for unsexed fish
 }
+\seealso{
+\code{\link{StrataFactors.fn}}
+}
 \author{
-Allan Hicks
+Allan Hicks and Chantel Wetzel
 }

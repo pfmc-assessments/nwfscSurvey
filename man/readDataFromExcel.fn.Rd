@@ -5,8 +5,9 @@
 \title{Reads in the data from an Excel sheet
 the column names of the data are on row number headerRow
 this function is meant to be used by more specific functions below
-written in 2009 by Allan Hicks
-note that in later, 64-bit versions of R, the RODBC package is not working}
+originally written in 2009 by Allan Hicks
+note that in later, 64-bit versions of R, the RODBC package is not working
+updated in 2018 by Chantel Wetzel to use the readxl package}
 \usage{
 readDataFromExcel.fn(file, sheet, headerRow)
 }
@@ -21,9 +22,10 @@ readDataFromExcel.fn(file, sheet, headerRow)
 Reads in the data from an Excel sheet
 the column names of the data are on row number headerRow
 this function is meant to be used by more specific functions below
-written in 2009 by Allan Hicks
+originally written in 2009 by Allan Hicks
 note that in later, 64-bit versions of R, the RODBC package is not working
+updated in 2018 by Chantel Wetzel to use the readxl package
 }
 \author{
-Allan Hicks
+Allan Hicks & Chantel Wetzel
 }

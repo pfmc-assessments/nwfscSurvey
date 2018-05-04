@@ -7,13 +7,15 @@ It reads in catch and station data and makes sure only the species necessary are
 may want to keep NA (blank in Excel) to select the zero tows
 removeCAN is a flag if you want tows in Canadian waters removed}
 \usage{
-ReadInBiomass.EWC.fn(dataFile, directory, species = c(NA), removeCAN = T,
-  verbose = F)
+ReadInBiomass.EWC.fn(dir, dat, survey, species = c(NA), removeCAN = TRUE,
+  subset_years = NULL, verbose = TRUE)
 }
 \arguments{
-\item{dataFile}{data file name}
+\item{dir}{working directory where the dataFile is located}
 
-\item{directory}{working directory where the dataFile is located}
+\item{dat}{data file name, an R object pre-loaded}
+
+\item{survey}{name of the survey data to be extracted. Options are "Tri.Shelf" and "AFSC.Slope".}
 
 \item{species}{species name to extract}
 
@@ -29,5 +31,5 @@ Necessary column names
    NET_WIDTH is in m
 }
 \author{
-Allan Hicks
+Allan Hicks and Chantel Wetzel
 }
