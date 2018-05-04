@@ -31,7 +31,7 @@
 #' @export 
 #' @seealso \code{\link{StrataFactors.fn}}
 
-SurveyAgeAtLen.EWC.fn <- function(dir, datAL, datTows, strat.vars=NULL, strat.df=NULL, femaleMale=c(2,1), lgthBins=1, ageBins=1,
+SurveyAgeAtLen.EWC.fn <- function(dir, datAL, datTows, strat.vars=c("BOTTOM_DEPTH","START_LATITUDE"), strat.df=NULL, femaleMale=c(2,1), lgthBins=1, ageBins=1,
                                     SSout=F, meanRatioMethod=T, raw=TRUE, NAs2zero=T, month="Enter Month", fleet="Enter Fleet",
                                     partition="Enter Partition", ageErr="Enter Age Error", returnSamps=F, printfolder = "forSS")  {
 
