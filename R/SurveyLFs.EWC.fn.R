@@ -6,19 +6,19 @@
 #' femaleMale is a vector of codes for female then male (in that order)
 #' lgthBin is the increment of each length bin or a vector of the actual bins
 #' NOTE: The length bin called F0 or M0 is retained to show proportion of lengths smaller than smallest bin
-#' You will want to likely add this to your first length bin and delete this before putting in SS3, or
+#' You will want to likely add this to your first length bin and delete this before putting in SS, or
 #' start the lgthBins argument at the 2nd length bin and F0 will be all fish smaller (hence the first length bin)
-#' SS3out: if True the output is in a format pastable into SS3 dat file
+#' SSout: if True the output is in a format pastable into SS dat file
 #' 
-#' @param dir directory 
-#' @param datL object
-#' @param datTows
-#' @param strat.vars
-#' @param strat.df 
-#' @param femaleMale
+#' @param dir directory this is where the output files will be saved
+#' @param datL the read in length comps by the ReadInLengths.EWC.fn function
+#' @param datTows the read in catch data by the DesignBasedEstBiomass.EWC.fn function
+#' @param strat.vars the variables used define the stratas. Defaul is bottom depth and latitudes.
+#' @param strat.df the created strata matrix with the calculated areas by the createStrataDF.fn function
+#' @param femaleMale numbering for female and male fish in the data file. This is opposite to what is used in SS.
 #' @param lgthBins length bins
-#' @param SS3out if True the output is in a format pastable into SS3 dat file
-#' @param meanRatioMethod
+#' @param SSout if True the output is in a format pastable into SS dat file
+#' @param meanRatioMethod TRUE/FALSE
 #' @param gender gender value for Stock Synthesis
 #' @param NAs2zero change NAs to zeros
 #' @param sexRatioUnsexed sex ratio to apply to any length bins of a certain size or smaller as defined by the maxSizeUnsexed
@@ -26,7 +26,7 @@
 #' @param partition partition for Stock Synthesis
 #' @param fleet fleet number
 #' @param nSamps effective sample size for Stock Synthesis
-#' @param season season
+#' @param month month the samples were collected
 #' @param printfolder folder where the length comps will be saved
 #' @param remove999 the output object by the function will have the 999 column combined with the first length bin
 #'
@@ -34,9 +34,9 @@
 #' @export 
 #' @seealso \code{\link{StrataFactors.fn}}
 
-SurveyLFs.EWC.fn <- function(dir, datL, datTows, strat.vars=NULL, strat.df=NULL, femaleMale=c(2,1), lgthBins=1, SS3out=FALSE, meanRatioMethod=TRUE,
+SurveyLFs.EWC.fn <- function(dir, datL, datTows, strat.vars=c("BOTTOM_DEPTH","START_LATITUDE"), strat.df=NULL, femaleMale=c(2,1), lgthBins=1, SSout=TRUE, meanRatioMethod=TRUE,
                              gender=3, NAs2zero=T, sexRatioUnsexed=NA, maxSizeUnsexed=NA, partition=0, fleet="Enter Fleet", 
-                             nSamps="Enter Samps", season="Enter Season", printfolder = "forSS", remove999 = TRUE)  {
+                             nSamps="Enter Samps", month="Enter Month", printfolder = "forSS", remove999 = TRUE)  {
 
     row.names(strat.df) <- strat.df[,1]     #put in rownames to make easier to index later
     numStrata <- nrow(strat.df)
@@ -227,18 +227,18 @@ SurveyLFs.EWC.fn <- function(dir, datL, datTows, strat.vars=NULL, strat.df=NULL,
     }
 
     L.year <- lapply(L.year.str,year.fn,Lengths=Lengths)
-    if(!SS3out) {
+    if(!SSout) {
         return(list(L.year=L.year,L.year.str=L.year.str))
     }
     
-    #otherwise return SS3 output for gender type
+    #otherwise return SS output for gender type
     if(gender==0) {
         lgths <- as.character(L.year[[1]]$Length)
         Ls <- unlist(lapply(L.year,function(x){c(x$TotalLjU)}))
         if(NAs2zero){Ls[is.na(Ls)] <- 0}
         Ls <- matrix(Ls,nrow=length(L.year),byrow=T,
             dimnames=list(NULL,paste(rep("U",length(lgths)),lgths,sep="")))
-        out <- data.frame(year=as.numeric(names(L.year)),season=season,fleet=fleet,gender=rep(0,length(L.year)),
+        out <- data.frame(year=as.numeric(names(L.year)),month=month,fleet=fleet,gender=rep(0,length(L.year)),
             partition=partition,Nsamp=nSamps,Ls)    
     }
     if(gender==3) {
@@ -248,7 +248,7 @@ SurveyLFs.EWC.fn <- function(dir, datL, datTows, strat.vars=NULL, strat.df=NULL,
         if(NAs2zero){Ls[is.na(Ls)] <- 0}
         Ls <- matrix(Ls,nrow=length(L.year),byrow=T,
             dimnames=list(NULL,paste(c(rep("F",length(lgths)),rep("M",length(lgths))),lgths,sep="")))
-        out <- data.frame(year=as.numeric(names(L.year)),season=season,fleet=fleet,gender=rep(3,length(L.year)),
+        out <- data.frame(year=as.numeric(names(L.year)),month=month,fleet=fleet,gender=rep(3,length(L.year)),
             partition=partition, Nsamp=nSamps,Ls)
     }
 

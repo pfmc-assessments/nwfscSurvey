@@ -21,7 +21,7 @@
 #' @author Allan Hicks and Chantel Wetzel
 #' @export
 
-DesignBasedEstBiomass.EWC.fn <- function(dir, dat, strat.vars, strat.df, printfodler = "forSS")  {
+DesignBasedEstBiomass.EWC.fn <- function(dir, dat, strat.vars = c("BOTTOM_DEPTH","START_LATITUDE"), strat.df, printfolder = "forSS")  {
 
 
     if(is.null(dat$catchPerArea)) stop("There must be a column called catchPerArea in the dataframe")

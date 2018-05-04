@@ -6,19 +6,19 @@
 #' femaleMale is a vector of codes for female then male (in that order)
 #' lgthBin is the increment of each length bin or a vector of the actual bins
 #' NOTE: The length bin called F0 or M0 is retained to show proportion of lengths smaller than smallest bin
-#' You will want to likely add this to your first length bin and delete this before putting in SS3, or
+#' You will want to likely add this to your first length bin and delete this before putting in SS, or
 #' start the lgthBins argument at the 2nd length bin and F0 will be all fish smaller (hence the first length bin)
-#' SS3out: if True the output is in a format pastable into SS3 dat file
+#' SSout: if True the output is in a format pastable into SS dat file
 #' 
-#' @param dir directory 
-#' @param datA object
-#' @param datTows
-#' @param strat.vars
-#' @param strat.df 
-#' @param femaleMale
+#' @param dir directory this is where the output files will be saved
+#' @param datA the read in age data by the ReadInAges.EWC.fn function
+#' @param datTows the read in catch data by the DesignBasedEstBiomass.EWC.fn function
+#' @param strat.vars the variables used define the stratas. Defaul is bottom depth and latitudes.
+#' @param strat.df the created strata matrix with the calculated areas by the createStrataDF.fn function
+#' @param femaleMale numbering for female and male fish in the data file. This is opposite to what is used in SS.
 #' @param lageBins length bins
-#' @param SS3out if True the output is in a format pastable into SS3 dat file
-#' @param meanRatioMethod
+#' @param SSout if True the output is in a format pastable into SS dat file
+#' @param meanRatioMethod TRUE/FALSE
 #' @param gender gender value for Stock Synthesis
 #' @param NAs2zero change NAs to zeros
 #' @param sexRatioUnsexed sex ratio to apply to any length bins of a certain size or smaller as defined by the maxSizeUnsexed
@@ -29,16 +29,16 @@
 #' @param agehigh value for SS -1
 #' @param ageErr age error vector to apply
 #' @param nSamps effective sample size for Stock Synthesis
-#' @param season season
+#' @param month month when the samples were collected
 #' @param printfolder folder where the length comps will be saved
 #'
 #' @author Allan Hicks and Chantel Wetzel
 #' @export 
 #' @seealso \code{\link{SurveyLFs.EWC.fn}}
 
-SurveyAFs.EWC.fn <- function(dir, datA, datTows, strat.vars=NULL, strat.df=NULL, femaleMale=c(2,1), ageBins=1, SS3out=FALSE, meanRatioMethod=TRUE,
+SurveyAFs.EWC.fn <- function(dir, datA, datTows, strat.vars=c("BOTTOM_DEPTH","START_LATITUDE"), strat.df=NULL, femaleMale=c(2,1), ageBins=1, SSout=FALSE, meanRatioMethod=TRUE,
                              gender=3, NAs2zero=T, sexRatioUnsexed=NA, maxSizeUnsexed=NA, partition=0, fleet="Enter Fleet", agelow = "Enter", agehigh = "Enter", ageErr = "Enter",
-                             nSamps="Enter Samps", season="Enter Season", printfolder = "forSS")  {
+                             nSamps="Enter Samps", month="Enter Month", printfolder = "forSS")  {
 
     # Overwrite inputs to use the same code for lengths as ages
     datL = datA
@@ -47,10 +47,10 @@ SurveyAFs.EWC.fn <- function(dir, datA, datTows, strat.vars=NULL, strat.df=NULL,
     datL$Length_cm = datA$AGE
 
     out = SurveyLFs.EWC.fn(dir = dir, datL = datL, datTows = datTows, strat.vars = strat.vars, strat.df = strat.df, 
-                           femaleMale = femaleMale, lgthBins = lgthBins, SS3out = SS3out, meanRatioMethod = meanRatioMethod,
+                           femaleMale = femaleMale, lgthBins = lgthBins, SSout = SSout, meanRatioMethod = meanRatioMethod,
                            gender = gender, NAs2zero= NAs2zero,  sexRatioUnsexed = sexRatioUnsexed, maxSizeUnsexed = maxSizeUnsexed, 
                            partition = partition,  fleet = fleet, nSamps = nSamps, 
-                           season = season, printfolder = printfolder, remove999 = TRUE)
+                           month = month, printfolder = printfolder, remove999 = TRUE)
 
 
     Ages.out = cbind(out[,1:5],

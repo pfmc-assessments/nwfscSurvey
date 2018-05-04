@@ -12,7 +12,7 @@
 
 <meta name="author" content="Chantel Wetzel" />
 
-<meta name="date" content="2018-04-26" />
+<meta name="date" content="2018-05-04" />
 
 <title>nwfscSurvey</title>
 
@@ -70,7 +70,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 
 <h1 class="title toc-ignore">nwfscSurvey</h1>
 <h4 class="author"><em>Chantel Wetzel</em></h4>
-<h4 class="date"><em>2018-04-26</em></h4>
+<h4 class="date"><em>2018-05-04</em></h4>
 
 
 
@@ -100,7 +100,9 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <h3>NWFSC shelf-slope bottom trawl survey</h3>
 <p>Calculate the design based index of abundance:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">bioSS =<span class="st"> </span><span class="kw">GetTotalBiomassExcel.fn</span>(<span class="dt">file =</span> <span class="st">&quot;Survey data file.xlsx&quot;</span>, <span class="dt">headerRow =</span><span class="dv">7</span>, <span class="dt">fleet=</span><span class="st">&quot;EnterFleet&quot;</span>, <span class="dt">season=</span><span class="dv">1</span>, <span class="dt">outputMedian=</span>T)</code></pre></div>
-The function will create a table of results by year:
+<p>The function will create a table of results by year:</p>
+<pre><code>#&gt; Warning: package 'xtable' was built under R version 3.3.3
+#&gt; Warning: package 'kableExtra' was built under R version 3.3.3</code></pre>
 <table>
 <thead>
 <tr>
@@ -171,6 +173,139 @@ EnterFleet
 </tr>
 </tbody>
 </table>
+</div>
+<div id="triennial-shelf-survey-afsc-slope-survey" class="section level3">
+<h3>Triennial shelf survey &amp; AFSC slope survey</h3>
+<div id="biomass" class="section level4">
+<h4>Biomass</h4>
+<p>The data from both the Triennial and AFSC surveys are provided in DMP files and have different formatting than the NWFSC shelf-slope survey data. Hence, specific Early West Coast (EWC) survey functions were created to work up these data. Generally, the inputs and processes applied to these data are similar to those applied to the NWFSC shelf-slope survey data.</p>
+<p>Read in the catch, length and age data:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">setwd</span>(<span class="st">&quot;Directory where data file is located&quot;</span>)
+<span class="kw">load</span>(<span class="st">&quot;Cath data file.dmp&quot;</span>)
+catch.dat =<span class="st"> </span>Catch.data.file</code></pre></div>
+<p>Read in the catch biomass:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">triennial.catch &lt;-<span class="st"> </span><span class="kw">ReadInBiomass.EWC.fn</span>(<span class="dt">dir=</span><span class="kw">getwd</span>(), 
+                                        <span class="dt">dat =</span> catch.dat, 
+                                        <span class="dt">survey =</span> <span class="st">&quot;Tri.Shelf&quot;</span>, 
+                                        <span class="dt">species=</span>species_code, 
+                                        <span class="dt">subset_years =</span> <span class="dv">1980</span>:<span class="dv">2004</span>, 
+                                        <span class="dt">removeCAN=</span><span class="ot">TRUE</span>, 
+                                        <span class="dt">verbose=</span><span class="ot">TRUE</span>) </code></pre></div>
+<p>The ReadInBiomass.EWC.fn will read in the biomass from the catch data file for the specified survey. The survey input to the function specifies which survey data to access. The options are “Tri.Shelf” or “AFSC.Slope”. The species input should be a numerical value based on the “SPECIES_CODE” column in the catch data file. The subset_years input allows for the omission of years. The removeCAN input removes the tows in Canadian waters.</p>
+<p>Define the stratas that will be used to calculate the design based index and expand composition data:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">strata.tri &lt;-<span class="st"> </span><span class="kw">createStrataDF.fn</span>(<span class="dt">names=</span><span class="kw">c</span>(<span class="st">&quot;shallow&quot;</span>, <span class="st">&quot;deep&quot;</span>), 
+                                <span class="dt">depths =</span> <span class="kw">c</span>(<span class="dv">55</span>, <span class="dv">183</span>, <span class="dv">350</span>), 
+                                <span class="dt">lats =</span> <span class="kw">c</span>(<span class="fl">40.5</span>, <span class="dv">49</span>))</code></pre></div>
+<p>This example creates two stratas, a shallow strata from 55-183m between 40.5 to 49 degrees latitude and a deep strata from 183-350m between 40.5 to 49 degrees latitude.</p>
+<p>Calculate and plot the design based index of abundance:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">biomass &lt;-<span class="st"> </span><span class="kw">DesignBasedEstBiomass.EWC.fn</span>(<span class="dt">dir =</span> <span class="kw">getwd</span>(), 
+                                        <span class="dt">dat =</span> triennial.catch, 
+                                        <span class="dt">strat.df=</span>strata.tri)
+
+<span class="kw">plotBio.fn</span>(<span class="dt">dir =</span> <span class="kw">getwd</span>(), biomass[[<span class="dv">2</span>]], <span class="dt">pch=</span><span class="dv">16</span>, <span class="dt">main =</span> <span class="st">&quot;Triennial&quot;</span>, <span class="dt">dopng =</span> <span class="ot">TRUE</span>)</code></pre></div>
+<p>The DesignBasedEstBiomass.EWC.fn returns a list. The dat input is the read in biomass created by the ReadInBiomass.EWC.fn function. The design based index is calculated based on the defined stratas created by the createStrataDF.fn function. The function writes a csv file inside the dir input location to a “forSS” folder. The plotBio.fn plots the calculated design based index from the second list item from the DesignBasedEstBiomass.EWC.fn. If the dopng is set to true a “plot” folder will be created in the directory location and a png of the plot will be saved.</p>
+</div>
+<div id="length-compsosition-data" class="section level4">
+<h4>Length Compsosition Data</h4>
+<p>Read in the length data from the biological data file:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">load</span>(<span class="st">&quot;Biological data file.dmp&quot;</span>)
+bio.dat =<span class="st"> </span>Biological.data.file
+
+len &lt;-<span class="st"> </span><span class="kw">ReadInLengths.EWC.fn</span>(<span class="dt">dir=</span><span class="kw">getwd</span>(), 
+                            <span class="dt">dat =</span> bio.data,  
+                            <span class="dt">species=</span>species_code, 
+                            <span class="dt">survey =</span> <span class="st">&quot;Tri.Shelf&quot;</span>, 
+                            <span class="dt">subset_years =</span> <span class="dv">1980</span>:<span class="dv">2004</span>, 
+                            <span class="dt">removeCAN =</span> <span class="ot">TRUE</span>, 
+                            <span class="dt">verbose=</span><span class="ot">TRUE</span>)</code></pre></div>
+<p>The ReadInLengths.EWC.fn function reads in the length data from the DMP file.</p>
+<p>Calculate the effective sample sizes that will be used by SS:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">n =<span class="st"> </span><span class="kw">getN</span>(<span class="dt">dir =</span> <span class="kw">getwd</span>(), 
+         <span class="dt">file =</span> len, 
+         <span class="dt">type =</span> <span class="st">&quot;length&quot;</span>, 
+         <span class="dt">survey =</span> <span class="st">&quot;Tri.Shelf&quot;</span>, 
+         <span class="dt">species =</span> <span class="st">&quot;shelfrock&quot;</span>, 
+         <span class="dt">printfolder =</span> <span class="st">&quot;forSS&quot;</span>)</code></pre></div>
+<p>The calculated effective samples sizes is based on the Stewart and Hamel 2011 paper which determined the number of independent samples by tow for West Coast surveys. The species options are “flatfish”, “shelfrock”, “sloperock”, “thorny”, “others”, and “all”. A csv file will be saved to the directory location inside a “forSS” folder. This file contains the number of tows, samples, and the effective sample size by year. The getN function will return a vector of effective samples sizes that is then fed into the length frequency composition function.</p>
+<p>Create length composition data for use in SS:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">LFs &lt;-<span class="st"> </span><span class="kw">SurveyLFs.EWC.fn</span>(<span class="dt">dir =</span> <span class="kw">getwd</span>(), 
+                        <span class="dt">datL =</span> len, 
+                        <span class="dt">datTows =</span> triennial.catch,  
+                        <span class="dt">strat.df =</span> strata.tri,  
+                        <span class="dt">lgthBins =</span> len.bins, 
+                        <span class="dt">gender =</span> <span class="dv">3</span>, 
+                        <span class="dt">sexRatioUnsexed =</span> <span class="fl">0.5</span>, 
+                        <span class="dt">maxSizeUnsexed =</span> <span class="dv">20</span>,
+                        <span class="dt">fleet =</span> <span class="st">&quot;Fleet Number&quot;</span>, 
+                        <span class="dt">nSamps =</span> n, 
+                        <span class="dt">month =</span> <span class="st">&quot;Month&quot;</span>, 
+                        <span class="dt">remove999 =</span> <span class="ot">TRUE</span>)</code></pre></div>
+<p>The SurveyLFs.EWC.fn calculates the length frequencies by length bin and creates a file formatted for use by SS. Two csv files will be created and saved in the directory location within a “forSS” folder. The first is the length composition data with the 999 column for fish below the minimum length bin and the second removes the 999 column by combining it with the first length bin by year. The remove999 input removes the 999 column for fish less than the initial length bin.</p>
+<p>Plot the length frequencies:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">plotFreqData.fn</span>(<span class="dt">dir =</span> <span class="kw">getwd</span>(), 
+                <span class="dt">dat =</span> LFs, 
+                <span class="dt">survey =</span> <span class="st">&quot;Triennial&quot;</span>, 
+                <span class="dt">ylim =</span> <span class="kw">c</span>(<span class="dv">0</span>,<span class="dv">50</span>), 
+                <span class="dt">yaxs =</span> <span class="st">&quot;i&quot;</span>, 
+                <span class="dt">ylab =</span> <span class="st">&quot;Length (cm)&quot;</span>, 
+                <span class="dt">dopng =</span> <span class="ot">TRUE</span>)</code></pre></div>
+<p>Plots the length frequencies by year and sex. If dopng is TRUE then a png file will be saved inside a “plots” folder inside the directory. The survey input defines the name to use in the main input during plotting.</p>
+</div>
+<div id="marginal-age-composition-data" class="section level4">
+<h4>Marginal Age Composition Data</h4>
+<p>Read in the age data from the biological data file:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">age &lt;-<span class="st"> </span><span class="kw">ReadInAges.EWC.fn</span>(<span class="dt">dir =</span> <span class="kw">getwd</span>(), 
+                         <span class="dt">dat =</span> bio.data,  
+                         <span class="dt">species =</span> species_code, 
+                         <span class="dt">survey =</span> <span class="st">&quot;Tri.Shelf&quot;</span>, 
+                         <span class="dt">subset_years =</span> <span class="dv">1980</span>:<span class="dv">2004</span>, 
+                         <span class="dt">removeCAN =</span> <span class="ot">TRUE</span>, 
+                         <span class="dt">verbose=</span><span class="ot">TRUE</span>)</code></pre></div>
+<p>The ReadInAges.EWC.fn creates an R object with all the age data from the specified survey.</p>
+<p>Calculate the effective sample size to be used in SS:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">n =<span class="st"> </span><span class="kw">getN</span>(<span class="dt">dir =</span> <span class="kw">getwd</span>(), 
+         <span class="dt">file =</span> age, 
+         <span class="dt">type =</span> <span class="st">&quot;age&quot;</span>, 
+         <span class="dt">survey =</span> <span class="st">&quot;Tri.Shelf&quot;</span>, 
+         <span class="dt">species =</span> <span class="st">&quot;shelfrock&quot;</span>)</code></pre></div>
+<p>The calculated effective samples sizes is based on the Stewart and Hamel 2011 paper which determined the number of independent samples by tow for West Coast surveys. The species options are “flatfish”, “shelfrock”, “sloperock”, “thorny”, “others”, and “all”. A csv file will be saved to the directory location inside a “forSS” folder. This file contains the number of tows, samples, and the effective sample size by year. The getN function will return a vector of effective samples sizes that is then fed into the age frequency composition function.</p>
+<p>Calculate the age composition data to be used in SS:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">AFs &lt;-<span class="st"> </span><span class="kw">SurveyAFs.EWC.fn</span>(<span class="dt">dir =</span> <span class="kw">getwd</span>(), 
+                         <span class="dt">datA =</span> age, 
+                         <span class="dt">datTows =</span> triennial.catch, 
+                         <span class="dt">strat.df =</span> strata.tri, 
+                         <span class="dt">ageBins =</span> age.bins, 
+                         <span class="dt">agelow =</span> -<span class="dv">1</span>, 
+                         <span class="dt">agehigh =</span> -<span class="dv">1</span>, 
+                         <span class="dt">ageErr =</span> <span class="st">&quot;Enter AgeErr Vector&quot;</span>,
+                         <span class="dt">gender =</span> <span class="dv">3</span>, 
+                         <span class="dt">fleet =</span> <span class="st">&quot;Enter Fleet Number&quot;</span>, 
+                         <span class="dt">nSamps =</span> n, 
+                         <span class="dt">month =</span> <span class="st">&quot;Enter Month&quot;</span>)</code></pre></div>
+<p>The SurveyAFs.EWC.fn calculates the age frequencies by age bin and creates a file formatted for use by SS. Two csv files will be created and saved in the directory location within a “forSS” folder.</p>
+<p>Plot the age frequencies:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">plotFreqData.fn</span>(<span class="dt">dir =</span> <span class="kw">getwd</span>(), 
+                <span class="dt">dat =</span> AFs, 
+                <span class="dt">survey =</span> <span class="st">&quot;Triennial&quot;</span>, 
+                <span class="dt">ylim =</span> <span class="kw">c</span>(<span class="dv">0</span>,<span class="dv">42</span>), 
+                <span class="dt">yaxs =</span> <span class="st">&quot;i&quot;</span>, 
+                <span class="dt">ylab =</span> <span class="st">&quot;Age&quot;</span>, 
+                <span class="dt">dopng =</span> <span class="ot">TRUE</span>)</code></pre></div>
+<p>Plots the age frequencies by year and sex. If dopng is TRUE then a png file will be saved inside a “plots” folder inside the directory. The survey input defines the name to use in the main input during plotting.</p>
+</div>
+<div id="conditional-age-at-length-data" class="section level4">
+<h4>Conditional-Age-at-Length Data</h4>
+<p>Create conditional-age-at-length data to be used in SS:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">Ages &lt;-<span class="st"> </span><span class="kw">SurveyAgeAtLen.EWC.fn</span>(<span class="dt">dir =</span> <span class="kw">getwd</span>(), 
+                              <span class="dt">datAL =</span> age, 
+                              <span class="dt">datTows =</span> triennial.catch, 
+                              <span class="dt">strat.df =</span> strata.tri, 
+                              <span class="dt">lgthBins=</span>len.bins, 
+                              <span class="dt">ageBins =</span> age.bins,
+                              <span class="dt">partition =</span> <span class="dv">0</span>,  
+                              <span class="dt">fleet =</span> <span class="st">&quot;Enter Fleet Number&quot;</span>)</code></pre></div>
+<p>The SurveyAgeAtLen.EWC.fn function creates conditional-age-at-length data for the use in SS. Two csv files are created, females and males, and saved inside the “forSS” folder within the directory. The sample size is calculated based on the number of fish sampled for each length bin by year and sex.</p>
+</div>
 </div>
 </div>
 

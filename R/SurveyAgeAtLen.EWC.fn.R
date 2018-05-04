@@ -1,4 +1,4 @@
-#' Calculates proportion of age at length and reformats into SS3 format
+#' Calculates proportion of age at length and reformats into SS format
 #' Uses raw numbers at length, assuming that is a random sample conditioned on length and sex.
 #' To use expanded numbers (up to strata areas), set raw=F
 #' Only gender codes 1 and 2 and puts males and females on separate lines because the age@L is conditioned on sex (a sample of females of length 25cm, for example)
@@ -8,23 +8,23 @@
 #' note that 0 and Inf are tacked on the ends to account for lengths and ages outside the interval. You may want to add these in to first and last bin.
 #' I assume all fish are sexed for age data, thus do not apply sex ratios for unsexed fish
 #' 
-#' @param dir directory location
-#' @param datAL object
-#' @param datTows
-#' @param strat.vars
-#' @param strat.df 
-#' @param femaleMale
+#' @param dir directory this is where the output files will be saved
+#' @param datAL the read in length comps by the ReadInAges.EWC.fn function
+#' @param datTows the read in catch data by the DesignBasedEstBiomass.EWC.fn function
+#' @param strat.vars the variables used define the stratas. Defaul is bottom depth and latitudes.
+#' @param strat.df the created strata matrix with the calculated areas by the createStrataDF.fn function
+#' @param femaleMale numbering for female and male fish in the data file. This is opposite to what is used in SS.
 #' @param lgthBins length bins
 #' @param ageBins age bins
-#' @param SS3out
-#' @param meanRatioMethod
-#' @param raw raw=T/F, input to define whether or not to expand numbers in the csv file (column header "NumF" and "NumM")
+#' @param SSout TRUE/FALSE return comps formatted for SS or in a raw form
+#' @param meanRatioMethod TRUE/FALSE
+#' @param raw TRUE/FALSE, input to define whether or not to expand numbers in the csv file (column header "NumF" and "NumM")
 #' @param NAs2zero change NAs to zeros
-#' @param season season
+#' @param month month
 #' @param fleet fleet number
 #' @param partition partition for Stock Synthesis
 #' @param ageerr age error value for Stock Synthesis
-#' @param returnSamps
+#' @param returnSamps TRUE/FALSE stops the function after the sample size is calculated
 #' @param printfolder folder where the length comps will be saved
 #'
 #' @author Allan Hicks and Chantel Wetzel
@@ -32,8 +32,8 @@
 #' @seealso \code{\link{StrataFactors.fn}}
 
 SurveyAgeAtLen.EWC.fn <- function(dir, datAL, datTows, strat.vars=NULL, strat.df=NULL, femaleMale=c(2,1), lgthBins=1, ageBins=1,
-                                    SS3out=F, meanRatioMethod=T, raw=TRUE, NAs2zero=T, season="ENTER", fleet="ENTER",
-                                    partition="ENTER", ageErr="ENTER", returnSamps=F, printfolder = "forSS")  {
+                                    SSout=F, meanRatioMethod=T, raw=TRUE, NAs2zero=T, month="Enter Month", fleet="Enter Fleet",
+                                    partition="Enter Partition", ageErr="Enter Age Error", returnSamps=F, printfolder = "forSS")  {
 
     plotdir <- file.path(dir, printfolder)
     plotdir.isdir <- file.info(plotdir)$isdir
@@ -246,11 +246,11 @@ SurveyAgeAtLen.EWC.fn <- function(dir, datAL, datTows, strat.vars=NULL, strat.df
     AL.year <- list()
     for(i in 1:length(A.year.L.str)) AL.year[[i]] = year.fn(A.year.L.str[[i]],Ages=Ages)
     names(AL.year) = names(A.year.L.str)
-    if(!SS3out) {
+    if(!SSout) {
         return(list(AL.year=AL.year,A.year.L.str=A.year.L.str))
     }
 
-    #output SS3 format with gender on separate lines
+    #output SS format with gender on separate lines
     ages <- AL.year[[1]][,"Age"]
     
     #gender=1 (females only)
@@ -273,9 +273,9 @@ SurveyAgeAtLen.EWC.fn <- function(dir, datAL, datTows, strat.vars=NULL, strat.df
     numMzero <- sum(AsM[,"M-999"])
     AsM <- AsM[,-match("M-999",dimnames(AsM)[[2]])]
 
-    outF <- data.frame(year=as.numeric(substring(names(AL.year),1,4)),Season=season,Fleet=fleet,gender=1,partition=partition,ageErr=ageErr,
+    outF <- data.frame(year=as.numeric(substring(names(AL.year),1,4)),month=month,Fleet=fleet,gender=1,partition=partition,ageErr=ageErr,
                           LbinLo=as.numeric(substring(names(AL.year),6)),LbinHi=as.numeric(substring(names(AL.year),6)),nSamps="ENTER",AsF,AsF)
-    outM <- data.frame(year=as.numeric(substring(names(AL.year),1,4)),Season=season,Fleet=fleet,gender=2,partition=partition,ageErr=ageErr,
+    outM <- data.frame(year=as.numeric(substring(names(AL.year),1,4)),month=month,Fleet=fleet,gender=2,partition=partition,ageErr=ageErr,
                           LbinLo=as.numeric(substring(names(AL.year),6)),LbinHi=as.numeric(substring(names(AL.year),6)),nSamps="ENTER",AsM,AsM)
  
     indZero <- apply(outF[,-c(1:9)],1,sum)==0
