@@ -12,14 +12,27 @@
 #' 
 #' @param dir working directory where the dataFile is located
 #' @param dat data file name, an R object pre-loaded
+#' @param survey name of the survey data to be extracted. Options are "Tri.Shelf" and "AFSC.Slope".
 #' @param species species name to extract
 #' @param removeCAN removes Canadian hauls based on the AFSCforeign_hauls.rda file
 #' @param verbose write out comments
 #'
-#' @author Allan Hicks 
+#' @author Allan Hicks and Chantel Wetzel
 #' @export 
 
-ReadInBiomass.EWC.fn <- function(dir, dat, species=c(NA), removeCAN=TRUE, verbose=TRUE){ 
+ReadInBiomass.EWC.fn <- function(dir, dat, survey, species=c(NA), removeCAN=TRUE, subset_years = NULL, verbose=TRUE){ 
+
+    # Filter for the survey
+    ind = dat$SURVEY == survey
+    dat = dat[ind,]
+    if (dim(dat)[1] == 0) { stop(cat("The survey name did not match either Tri.Shelf or AFSC.Slope.\n"))}
+    cat("Catches from only the", survey, "have been retained.\n")
+
+    if(length(subset_years)>0) {
+        all.yrs = unique(dat$YEAR)
+        ind = which(all.yrs%in%subset_years)
+        dat = dat[dat$YEAR%in%subset_years,] 
+        cat("Catches from", all.yrs[-ind], "have been removed.\n")}
 
     totRows <- nrow(dat)
     if("SPECIES_CODE" %in% names(dat)){
