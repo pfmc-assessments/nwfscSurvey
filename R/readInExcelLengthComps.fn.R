@@ -9,7 +9,7 @@
 #'
 #' @author Allan Hicks 
 #' @export 
-#' \code{\link{readDataFromExcel.fn}}
+#' @seealso  \code{\link{readDataFromExcel.fn}}
 
 readInExcelLengthComps.fn <-function(file, sheet="LengthComps", headerRow=7) {
 

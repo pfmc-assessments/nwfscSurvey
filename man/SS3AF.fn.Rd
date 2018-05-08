@@ -16,6 +16,9 @@ SS3AF.fn(Age.df, ageBins, ...)
 \description{
 Wrapper function to create age frequency data in format for Stock Synthesis
 }
+\seealso{
+\code{\link{SS3.LF.fn}}
+}
 \author{
 Allan Hicks
 }

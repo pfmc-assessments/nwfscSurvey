@@ -9,7 +9,7 @@
 #'
 #' @author Allan Hicks 
 #' @export
-#' \code{\link{plotFreqData.fn}}
+#' @seealso  \code{\link{plotFreqData.fn}}
 
 plotLFs.fn <-function(dat, inch=0.15, ylab="Bins", xlab="Year", zero2NAs=T,...) {
     

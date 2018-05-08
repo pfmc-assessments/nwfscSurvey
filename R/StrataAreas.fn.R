@@ -29,8 +29,8 @@
 #' @param convertFactor Multiplier on the area in SA3. Default = 0.01 to
 #' convert hectares to square km.
 #' @return Returns the dataframe input with a column called area.
-#' @export
 #' @author Allan Hicks with help from John Wallace.
+#' @export
 
 
 StrataAreas.fn <- function(strat.df, convertFactor=0.01) {

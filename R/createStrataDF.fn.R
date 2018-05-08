@@ -16,7 +16,7 @@
 #' @return Returns the dataframe input with a column called area.
 #' @author Allan Hicks and Chantel Wetzel
 #' @export
-#' \code{\link{StrataAreas.fn}}
+#' @seealso \code{\link{StrataAreas.fn}}
 
 createStrataDF.fn <- function(names=NA, depths, lats) {
     fpath = system.file("data", "SA3.rda", package="nwfscSurvey")

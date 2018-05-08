@@ -28,6 +28,9 @@ name      area          BOTTOM_DEPTH.1 BOTTOM_DEPTH.2 START_LATITUDE.1 START_LAT
   shallow   2547.066      183            300            45.0             49.0          
   deep      2809.660      300            500            45.0             49.0
 }
+\seealso{
+\code{\link{StrataAreas.fn}}
+}
 \author{
 Allan Hicks and Chantel Wetzel
 }

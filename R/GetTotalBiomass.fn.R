@@ -9,7 +9,7 @@
 #'
 #' @author Allan Hicks 
 #' @export
-#' \code{\link{readInBiomass.fn}}, \code{\link{SS3Biomass.fn}}
+#' @seealso \code{\link{readInBiomass.fn}}, \code{\link{SS3Biomass.fn}}
 
 GetTotalBiomass.fn <-function(file, headerRow, fleet="EnterFleet", season=1, outputMedian=T) {
     #a wrapper for to output the biomass in SS3 format, reading in from a csv file

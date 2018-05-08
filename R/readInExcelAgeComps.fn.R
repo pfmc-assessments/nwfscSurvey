@@ -9,7 +9,7 @@
 #'
 #' @author Allan Hicks 
 #' @export 
-#' \code{\link{readDataFromExcel.fn}}
+#' @seealso  \code{\link{readDataFromExcel.fn}}
 
 readInExcelAgeComps.fn <-function(file,sheet="AgeComps",headerRow=7) {
 

@@ -6,7 +6,7 @@
 #'
 #' @author Allan Hicks 
 #' @export 
-#' \code{\link{SS3.LF.fn}}
+#' @seealso  \code{\link{SS3.LF.fn}}
 
 SS3AF.fn <- function(Age.df, ageBins, ...) {
 

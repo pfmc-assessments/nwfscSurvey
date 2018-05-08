@@ -29,6 +29,9 @@ getN(dir, dat, type, survey, headerRow = "default", species = "flatfish",
 Calculate effN input sample sizes
 based on Stewart & Hamel 2014
 }
+\seealso{
+\code{\link{readDataFromExcel.fn}}
+}
 \author{
 Chantel Wetzel
 }

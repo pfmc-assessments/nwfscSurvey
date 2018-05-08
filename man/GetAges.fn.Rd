@@ -36,6 +36,9 @@ GetAges.fn(file, headerRow, lgthBins = 1, ageBins = 1,
 Wrapper function that will read in age comp file and create age-at-length comps for SS 
 This function is used for the NWFSC shelf-slope and NWFSC slope survey
 }
+\seealso{
+\code{\link{readInAgeComps.fn}}, \code{\link{SS3AgeAtLen.fn}}
+}
 \author{
 Allan Hicks
 }

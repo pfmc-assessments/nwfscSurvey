@@ -18,6 +18,9 @@ readInExcelBiomass.fn(file, sheet = "BiomassAbundance", headerRow)
 Reads in the stratum biomasses from the Excel file provided by Beth (BiomassAbundance Sheet)
 headerRow is the row number of the column where the data start
 }
+\seealso{
+\code{\link{readDataFromExcel.fn}}
+}
 \author{
 Allan Hicks & Chantel Wetzel
 }

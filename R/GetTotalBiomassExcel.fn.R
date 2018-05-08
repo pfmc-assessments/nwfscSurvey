@@ -11,7 +11,7 @@
 #'
 #' @author Allan Hicks and Chantel Wetzel
 #' @export
-#' \code{\link{readInExcelBiomass.fn}}, \code{\link{SS3Biomass.fn}}
+#' @seealso \code{\link{readInExcelBiomass.fn}}, \code{\link{SS3Biomass.fn}}
 
 GetTotalBiomassExcel.fn <-
 function(dir, file, sheet="BiomassAbundance", printfolder = "forSS", headerRow, fleet="EnterFleet", season=1, outputMedian=T) {

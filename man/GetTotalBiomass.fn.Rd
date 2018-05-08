@@ -21,6 +21,9 @@ GetTotalBiomass.fn(file, headerRow, fleet = "EnterFleet", season = 1,
 \description{
 Wrapper function  to create the designed based indices
 }
+\seealso{
+\code{\link{readInBiomass.fn}}, \code{\link{SS3Biomass.fn}}
+}
 \author{
 Allan Hicks
 }

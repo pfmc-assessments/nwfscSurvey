@@ -16,7 +16,7 @@
 #'
 #' @author Allan Hicks 
 #' @export
-#' \code{\link{readInAgeComps.fn}}, \code{\link{SS3AgeAtLen.fn}}
+#' @seealso  \code{\link{readInAgeComps.fn}}, \code{\link{SS3AgeAtLen.fn}}
 
 
 GetAges.fn <-function(file, headerRow, lgthBins=1, ageBins=1, nSamps="EnterNsamps", fleet="EnterFleet",

@@ -23,6 +23,9 @@ plotLFs.fn(dat, inch = 0.15, ylab = "Bins", xlab = "Year", zero2NAs = T,
 A wrapper for the plotFreqData 
 because I originally called it plotLFs.fn and want to keep it compatible with already written analyses
 }
+\seealso{
+\code{\link{plotFreqData.fn}}
+}
 \author{
 Allan Hicks
 }

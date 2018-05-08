@@ -28,6 +28,9 @@ GetTotalBiomassExcel.fn(dir, file, sheet = "BiomassAbundance",
 \description{
 Wrapper function  to create the designed based indices
 }
+\seealso{
+\code{\link{readInExcelBiomass.fn}}, \code{\link{SS3Biomass.fn}}
+}
 \author{
 Allan Hicks and Chantel Wetzel
 }

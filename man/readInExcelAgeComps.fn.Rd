@@ -22,6 +22,9 @@ headerRow is the row number of the column where the data start
 it doesn't read in the column names correctly, so I put in simplified names. 
 Make sure that these match what is in your Excel spreadsheet
 }
+\seealso{
+\code{\link{readDataFromExcel.fn}}
+}
 \author{
 Allan Hicks
 }

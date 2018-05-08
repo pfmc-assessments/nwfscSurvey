@@ -8,7 +8,7 @@
 #'
 #' @author Allan Hicks & Chantel Wetzel
 #' @export 
-#' \code{\link{readDataFromExcel.fn}}
+#' @seealso  \code{\link{readDataFromExcel.fn}}
 
 
 readInExcelBiomass.fn <-function(file, sheet="BiomassAbundance", headerRow) { #, colNames=NA) {

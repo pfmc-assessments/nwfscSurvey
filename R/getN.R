@@ -12,7 +12,7 @@
 #'
 #' @author Chantel Wetzel
 #' @export 
-#' \code{\link{readDataFromExcel.fn}}
+#' @seealso  \code{\link{readDataFromExcel.fn}}
 
 getN <- function(dir, dat, type, survey, headerRow = "default", species = "flatfish", printfolder = "forSS"){
 

@@ -38,6 +38,9 @@ Wrapper function that will read in age comp file and create age-at-length comps 
 This function is used for the NWFSC shelf-slope and NWFSC slope survey
 Have not tested this function for reading from excel file
 }
+\seealso{
+\code{\link{readInExcelAgeComps.fn}}, \code{\link{SS3AgeAtLen.fn}}
+}
 \author{
 Allan Hicks
 }
