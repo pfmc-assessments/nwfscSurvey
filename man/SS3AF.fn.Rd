@@ -7,6 +7,10 @@
 SS3AF.fn(Age.df, ageBins, ...)
 }
 \arguments{
+\item{Age.df}{age data frame}
+
+\item{ageBins}{defined age bins}
+
 \item{...}{additional inputs}
 }
 \description{

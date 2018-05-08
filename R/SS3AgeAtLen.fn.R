@@ -7,7 +7,7 @@
 #' lgthBins is either the interval between length bins or the actual length bins
 #' note that 0 and Inf are tacked on the ends to account for lengths and ages outside the interval. You may want to add these in to first and last bin.
 #' 
-#' @param age object
+#' @param ages object
 #' @param lgthBins Either the interval between length bins or the actual length bins (e.g., lgthBins = 11:47)
 #' @param ageBins Either the interval between age bins or the actual age bins (e.g, ageBins = 1:40)
 #' @param fleet Fleet number 
@@ -15,8 +15,8 @@
 #' @param partition partition as defined by Stock Synthesis
 #' @param ageerr Age error value for Stock Synthesis
 #' @param raw raw=T/F, input to define whether or not to expand numbers in the csv file (column header "NumF" and "NumM")
-#' @param sexRatioUnsexed
-#' @param maxSizeUnsexed
+#' @param sexRatioUnsexed replace the sex ratio with set value
+#' @param maxSizeUnsexed maximum size to use the sexRatioUnsexed value
 #'
 #' @author Allan Hicks 
 #' @export 

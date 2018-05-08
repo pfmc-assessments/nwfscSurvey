@@ -47,7 +47,9 @@ SS3LFstrata.fn(len, Strata = "Year", lgthBins = 1, gender = 3,
 
 \item{NAs2zero}{change NA value to 0}
 
-\item{maxSizeUnsexed}{}
+\item{sexRatioUnsexed}{replace the sex ratio with a defined value}
+
+\item{maxSizeUnsexed}{the maximum size to replace the sex ratio with the sexRatioUnsexed value}
 }
 \description{
 calculates proportion at length and reformats into SS# format

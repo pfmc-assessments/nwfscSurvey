@@ -2,7 +2,7 @@
 % Please edit documentation in R/SurveyAgeAtLen.EWC.fn.R
 \name{SurveyAgeAtLen.EWC.fn}
 \alias{SurveyAgeAtLen.EWC.fn}
-\title{Calculates proportion of age at length and reformats into SS3 format
+\title{Calculates proportion of age at length and reformats into SS format
 Uses raw numbers at length, assuming that is a random sample conditioned on length and sex.
 To use expanded numbers (up to strata areas), set raw=F
 Only gender codes 1 and 2 and puts males and females on separate lines because the age@L is conditioned on sex (a sample of females of length 25cm, for example)
@@ -12,39 +12,52 @@ lgthBins is either the interval between length bins or the actual length bins
 note that 0 and Inf are tacked on the ends to account for lengths and ages outside the interval. You may want to add these in to first and last bin.
 I assume all fish are sexed for age data, thus do not apply sex ratios for unsexed fish}
 \usage{
-SurveyAgeAtLen.EWC.fn(dir, datAL, datTows, strat.vars = NULL,
-  strat.df = NULL, femaleMale = c(2, 1), lgthBins = 1, ageBins = 1,
-  SS3out = F, meanRatioMethod = T, raw = TRUE, NAs2zero = T,
-  season = "ENTER", fleet = "ENTER", partition = "ENTER",
-  ageErr = "ENTER", returnSamps = F, printfolder = "forSS")
+SurveyAgeAtLen.EWC.fn(dir, datAL, datTows, strat.vars = c("BOTTOM_DEPTH",
+  "START_LATITUDE"), strat.df = NULL, femaleMale = c(2, 1), lgthBins = 1,
+  ageBins = 1, SSout = F, meanRatioMethod = T, raw = TRUE,
+  NAs2zero = T, month = "Enter Month", fleet = "Enter Fleet",
+  partition = "Enter Partition", ageErr = "Enter Age Error",
+  returnSamps = F, printfolder = "forSS")
 }
 \arguments{
-\item{dir}{directory location}
+\item{dir}{directory this is where the output files will be saved}
 
-\item{datAL}{object}
+\item{datAL}{the read in length comps by the ReadInAges.EWC.fn function}
 
-\item{strat.df}{}
+\item{datTows}{the read in catch data by the DesignBasedEstBiomass.EWC.fn function}
+
+\item{strat.vars}{the variables used define the stratas. Defaul is bottom depth and latitudes.}
+
+\item{strat.df}{the created strata matrix with the calculated areas by the createStrataDF.fn function}
+
+\item{femaleMale}{numbering for female and male fish in the data file. This is opposite to what is used in SS.}
 
 \item{lgthBins}{length bins}
 
 \item{ageBins}{age bins}
 
-\item{raw}{raw=T/F, input to define whether or not to expand numbers in the csv file (column header "NumF" and "NumM")}
+\item{SSout}{TRUE/FALSE return comps formatted for SS or in a raw form}
+
+\item{meanRatioMethod}{TRUE/FALSE}
+
+\item{raw}{TRUE/FALSE, input to define whether or not to expand numbers in the csv file (column header "NumF" and "NumM")}
 
 \item{NAs2zero}{change NAs to zeros}
 
-\item{season}{season}
+\item{month}{month}
 
 \item{fleet}{fleet number}
 
 \item{partition}{partition for Stock Synthesis}
+
+\item{returnSamps}{TRUE/FALSE stops the function after the sample size is calculated}
 
 \item{printfolder}{folder where the length comps will be saved}
 
 \item{ageerr}{age error value for Stock Synthesis}
 }
 \description{
-Calculates proportion of age at length and reformats into SS3 format
+Calculates proportion of age at length and reformats into SS format
 Uses raw numbers at length, assuming that is a random sample conditioned on length and sex.
 To use expanded numbers (up to strata areas), set raw=F
 Only gender codes 1 and 2 and puts males and females on separate lines because the age@L is conditioned on sex (a sample of females of length 25cm, for example)

@@ -16,6 +16,8 @@ SS3AgeAtLen.fn(ages, lgthBins = 1, ageBins = 1, fleet = "EnterFleet",
   sexRatioUnsexed = NA, maxSizeUnsexed = NA)
 }
 \arguments{
+\item{ages}{object}
+
 \item{lgthBins}{Either the interval between length bins or the actual length bins (e.g., lgthBins = 11:47)}
 
 \item{ageBins}{Either the interval between age bins or the actual age bins (e.g, ageBins = 1:40)}
@@ -30,9 +32,9 @@ SS3AgeAtLen.fn(ages, lgthBins = 1, ageBins = 1, fleet = "EnterFleet",
 
 \item{raw}{raw=T/F, input to define whether or not to expand numbers in the csv file (column header "NumF" and "NumM")}
 
-\item{maxSizeUnsexed}{}
+\item{sexRatioUnsexed}{replace the sex ratio with set value}
 
-\item{age}{object}
+\item{maxSizeUnsexed}{maximum size to use the sexRatioUnsexed value}
 }
 \description{
 Calculates proportion of age at length and reformats into SS3 format

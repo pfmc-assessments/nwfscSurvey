@@ -13,9 +13,6 @@ Details.}
 
 \item{convertFactor}{Multiplier on the area in SA3. Default = 0.01 to
 convert hectares to square km.}
-
-\item{SA3}{A dataframe of min and max latitude and min and max depth with
-area for each defined square.  See Details.}
 }
 \value{
 Returns the dataframe input with a column called area.
@@ -44,15 +41,6 @@ in the example below).
 }
 
 SA3 is provided in this package.
-}
-\note{
-%% ~~further notes~~
-}
-\references{
-%% ~put references to the literature/web site here ~
-}
-\seealso{
-%% ~~objects to See Also as \code{\link{help}}, ~~~
 }
 \author{
 Allan Hicks with help from John Wallace.

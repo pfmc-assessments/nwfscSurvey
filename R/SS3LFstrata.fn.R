@@ -28,8 +28,8 @@
 #' @param season Season number
 #' @param partition partition as defined by Stock Synthesis
 #' @param NAs2zero change NA value to 0
-#' @param sexRatioUnsexed
-#' @param maxSizeUnsexed
+#' @param sexRatioUnsexed replace the sex ratio with a defined value
+#' @param maxSizeUnsexed the maximum size to replace the sex ratio with the sexRatioUnsexed value
 #'
 #' @author Allan Hicks 
 #' @export 

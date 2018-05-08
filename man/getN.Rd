@@ -5,13 +5,13 @@
 \title{Calculate effN input sample sizes
 based on Stewart & Hamel 2014}
 \usage{
-getN(dir, file, type, survey, headerRow = "default", species = "flatfish",
+getN(dir, dat, type, survey, headerRow = "default", species = "flatfish",
   printfolder = "forSS")
 }
 \arguments{
 \item{dir}{directory}
 
-\item{file}{excel file name}
+\item{dat}{excel file name for the NWFSC or data object for the Triennial or AKSFC survey data}
 
 \item{type}{specify whether doing "length" or "age". Used to read associatied excel sheets}
 
@@ -30,5 +30,5 @@ Calculate effN input sample sizes
 based on Stewart & Hamel 2014
 }
 \author{
-Allan Hicks
+Chantel Wetzel
 }

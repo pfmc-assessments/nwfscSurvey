@@ -10,27 +10,35 @@ datL should have a column called "year" indicating year
 femaleMale is a vector of codes for female then male (in that order)
 lgthBin is the increment of each length bin or a vector of the actual bins
 NOTE: The length bin called F0 or M0 is retained to show proportion of lengths smaller than smallest bin
-You will want to likely add this to your first length bin and delete this before putting in SS3, or
+You will want to likely add this to your first length bin and delete this before putting in SS, or
 start the lgthBins argument at the 2nd length bin and F0 will be all fish smaller (hence the first length bin)
-SS3out: if True the output is in a format pastable into SS3 dat file}
+SSout: if True the output is in a format pastable into SS dat file}
 \usage{
-SurveyLFs.EWC.fn(dir, datL, datTows, strat.vars = NULL, strat.df = NULL,
-  femaleMale = c(2, 1), lgthBins = 1, SS3out = FALSE,
-  meanRatioMethod = TRUE, gender = 3, NAs2zero = T,
+SurveyLFs.EWC.fn(dir, datL, datTows, strat.vars = c("BOTTOM_DEPTH",
+  "START_LATITUDE"), strat.df = NULL, femaleMale = c(2, 1), lgthBins = 1,
+  SSout = TRUE, meanRatioMethod = TRUE, gender = 3, NAs2zero = T,
   sexRatioUnsexed = NA, maxSizeUnsexed = NA, partition = 0,
-  fleet = "Enter Fleet", nSamps = "Enter Samps", season = "Enter Season",
+  fleet = "Enter Fleet", nSamps = "Enter Samps", month = "Enter Month",
   printfolder = "forSS", remove999 = TRUE)
 }
 \arguments{
-\item{dir}{directory}
+\item{dir}{directory this is where the output files will be saved}
 
-\item{datL}{object}
+\item{datL}{the read in length comps by the ReadInLengths.EWC.fn function}
 
-\item{strat.df}{}
+\item{datTows}{the read in catch data by the DesignBasedEstBiomass.EWC.fn function}
+
+\item{strat.vars}{the variables used define the stratas. Defaul is bottom depth and latitudes.}
+
+\item{strat.df}{the created strata matrix with the calculated areas by the createStrataDF.fn function}
+
+\item{femaleMale}{numbering for female and male fish in the data file. This is opposite to what is used in SS.}
 
 \item{lgthBins}{length bins}
 
-\item{SS3out}{if True the output is in a format pastable into SS3 dat file}
+\item{SSout}{if True the output is in a format pastable into SS dat file}
+
+\item{meanRatioMethod}{TRUE/FALSE}
 
 \item{gender}{gender value for Stock Synthesis}
 
@@ -46,7 +54,7 @@ SurveyLFs.EWC.fn(dir, datL, datTows, strat.vars = NULL, strat.df = NULL,
 
 \item{nSamps}{effective sample size for Stock Synthesis}
 
-\item{season}{season}
+\item{month}{month the samples were collected}
 
 \item{printfolder}{folder where the length comps will be saved}
 
@@ -61,9 +69,9 @@ datL should have a column called "year" indicating year
 femaleMale is a vector of codes for female then male (in that order)
 lgthBin is the increment of each length bin or a vector of the actual bins
 NOTE: The length bin called F0 or M0 is retained to show proportion of lengths smaller than smallest bin
-You will want to likely add this to your first length bin and delete this before putting in SS3, or
+You will want to likely add this to your first length bin and delete this before putting in SS, or
 start the lgthBins argument at the 2nd length bin and F0 will be all fish smaller (hence the first length bin)
-SS3out: if True the output is in a format pastable into SS3 dat file
+SSout: if True the output is in a format pastable into SS dat file
 }
 \seealso{
 \code{\link{StrataFactors.fn}}

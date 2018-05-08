@@ -1,7 +1,7 @@
 #' Wrapper function to create age frequency data in format for Stock Synthesis
 #' 
-#' @param Age.df
-#' @param ageBins
+#' @param Age.df age data frame 
+#' @param ageBins defined age bins
 #' @param ... additional inputs
 #'
 #' @author Allan Hicks 

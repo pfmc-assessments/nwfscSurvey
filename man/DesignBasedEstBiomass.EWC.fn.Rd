@@ -4,8 +4,8 @@
 \alias{DesignBasedEstBiomass.EWC.fn}
 \title{Calculates design based estimates from survey data for early West Coast surveys (e.g., Triennial, AFSC slope)}
 \usage{
-DesignBasedEstBiomass.EWC.fn(dir, dat, strat.vars, strat.df,
-  printfodler = "forSS")
+DesignBasedEstBiomass.EWC.fn(dir, dat, strat.vars = c("BOTTOM_DEPTH",
+  "START_LATITUDE"), strat.df, printfolder = "forSS")
 }
 \arguments{
 \item{dir}{directory of the excel file}
@@ -14,9 +14,9 @@ DesignBasedEstBiomass.EWC.fn(dir, dat, strat.vars, strat.df,
 
 \item{strat.df}{a dataframe with the first column the name of the stratum, the second column the area of the stratum, and the remaining columns are the high and low variables defining the strata.}
 
-\item{stat.vars}{A vector of the strata variable names (i.e., c("BEST_LATITUDE","BEST_DEPTH"))}
-
 \item{printfolder}{the folder where files will be saved}
+
+\item{stat.vars}{A vector of the strata variable names (i.e., c("BEST_LATITUDE","BEST_DEPTH"))}
 }
 \description{
 The variables defining the strata must begin with the name in strat.vars and end with ".1" or ".2" (i.e., BEST_DEPTH.1)
