@@ -30,7 +30,7 @@ plotSexRatio.fn <-function(dir, dat, fn=median, survey, circleSize=0.1, dopng = 
     	return(invisible(data.frame(length=x,fraction.female=as.numeric(yF))))
     }
 
-    if (survey == "Tri.Shelf"){
+    if (survey%in%c("Tri.Shelf", "AFSC.Slope")){
     	axis.name = ifelse(is.null(dat$AGE), "Length (cm)", "Age")
     	data.type = ifelse(is.null(dat$AGE), "length", "age")
     	if (dopng) { png(paste0(dir, "/plots/", survey, "_fraction_female_by_",data.type,".png"), height=7, width=7, units="in",res=300) }
