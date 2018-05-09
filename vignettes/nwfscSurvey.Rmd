@@ -81,7 +81,12 @@ catch.dat = Catch.data.file
 
 ```
 
-Read in the catch biomass:
+The catch data file: 
+<!--  ![](https://github.com/nwfsc-assess/nwfscSurvey/vignettes/images/TriAFS_catch_file.png) -->
+![](C:/Users/Chantel.Wetzel/Documents/GitHub/nwfscSurvey/vignettes/images/TriAFS_catch_file.png)
+
+
+Read in the catch biomass and calculate the area fished, kg per km^2^, and catch per area based on the catch data file:
 ```r
 triennial.catch <- ReadInBiomass.EWC.fn(dir=getwd(), 
                                         dat = catch.dat, 
@@ -101,6 +106,18 @@ strata.tri <- createStrataDF.fn(names=c("shallow", "deep"),
                                 lats = c(40.5, 49))
 ```
 This example creates two stratas, a shallow strata from 55-183m between 40.5 to 49 degrees latitude and a deep strata from 183-350m between 40.5 to 49 degrees latitude. 
+
+```{r, results = 'asis', echo = FALSE}
+  library(xtable)
+  library(kableExtra)
+  tab = rbind( c("shallow", 23042.389, 55, 183, 40.5, 49),
+               c("deep", 6065.469, 183, 350, 40.5, 49))
+  
+  colnames(tab) = c("Name", "Area", "BOTTOM_DEPTH.1", "BOTTOM_DEPTH.2", "START_LATITUDE.1", "START_LATITUDE.12")
+  
+  table = tab 
+  kable(table, "html")
+```
 
 Calculate and plot the design based index of abundance:
 ```r
