@@ -4,7 +4,7 @@
 #' @param dir directory
 #' @param dat excel file name for the NWFSC or data object for the Triennial or AKSFC survey data
 #' @param type specify whether doing "length" or "age". Used to read associatied excel sheets
-#' @param survey survey name, options = c("NWFSC", "Tri.Shelf", "AFSC.Slope")
+#' @param survey survey name, options = c("NWFSCBT", "Tri.Shelf", "AFSC.Slope")
 #' @param sheet sheet name in excel file
 #' @param headerRow line of header row in excel file
 #' @param species species specific value to determine the number of unique samples per tow (flatfish, shelfrock, sloperock, thorny, others, all)
@@ -28,10 +28,10 @@ getN <- function(dir, dat, type, survey, headerRow = "default", species = "flatf
 
 	cat("\nThe effN sample size is calculated as",n.unq,"multiplied by the number of tows in each year.\n")
 
-	check = survey %in% c("NWFSC", "Tri.Shelf", "AFSC.Slope")
-	if (!check) { cat("\nThe survey name must be speciefied. Options are: NWFSC, Tri.Shelf, AFSC.Slope\n")}
+	check = survey %in% c("NWFSCBT", "Tri.Shelf", "AFSC.Slope")
+	if (!check) { cat("\nThe survey name must be speciefied. Options are: NWFSCBT, Tri.Shelf, AFSC.Slope\n")}
 
-	if (survey == "NWFSC"){
+	if (survey == "NWFSCBT"){
 		if (type == "length"){
 		if (headerRow == "default") { headerRow = c(7,9) }
 			hauls = readDataFromExcel.fn(dat, sheet = "Lengths-StratumTowTallies", header = headerRow[1])

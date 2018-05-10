@@ -20,6 +20,7 @@
 #'   -- if it is NA, unsexed fish are omitted WHEN GENDER=3 (THIS IS THE DEFAULT)
 #' maxSizeUnsexed determines the maximum size at which the sexRatioUnsexed is applied. If sexRatioUnsexed is a vector, this is ignored
 #' 
+#' @param dir directory to save the file
 #' @param len object
 #' @param lgthBins Either the interval between length bins or the actual length bins (e.g., lgthBins = 11:47)
 #' @param gender gender code value for Stock Synthesis (0 = sexes combined, 1 = females only, 2 = males only, 3 = both sexes, females then males). Selecting gender 0 will give the user all fish combined males + females + unsexed.
@@ -36,7 +37,7 @@
 #' @author Allan Hicks and Chantel Wetzel
 #' @export 
 
-SS3LF.fn <-function(len, lgthBins=1, gender=3, nSamps="EnterNsamps", fleet="EnterFleet", season=1, partition=0,
+SS3LF.fn <-function(dir, len, lgthBins=1, gender=3, nSamps="EnterNsamps", fleet="EnterFleet", season=1, partition=0,
                     NAs2zero=T, sexRatioUnsexed=NA, maxSizeUnsexed=NA, printfolder = "forSS", remove999 = TRUE) {
     
     if(length(lgthBins)==1) {
