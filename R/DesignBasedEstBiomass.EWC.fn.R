@@ -52,7 +52,7 @@ DesignBasedEstBiomass.EWC.fn <- function(dir, dat, strat.vars = c("BOTTOM_DEPTH"
     yrTotal.fn <- function(x) {
         data.frame(Bhat=sum(x$Bhat),seBhat=sqrt(sum(x$varBhat)),cv=sqrt(sum(x$varBhat))/sum(x$Bhat))
     }
-    ests <- as.data.frame(t(as.data.frame(lapply(lapply(yearlyStrataEsts,yrTotal.fn),t)))) #some crazy stuff to put into a dataframe with years as rows
+    ests <- as.data.frame(t(as.data.frame(lapply(lapply(yearlyStrataEsts, yrTotal.fn),t)))) #some crazy stuff to put into a dataframe with years as rows
     logVar <- log(ests$cv^2+1)
     ln <- data.frame(year=substring(row.names(ests),5),meanBhat=ests$Bhat/1000,medianBhat=ests$Bhat*exp(-0.5*logVar)/1000,SElogBhat=sqrt(logVar))
     
@@ -66,6 +66,7 @@ DesignBasedEstBiomass.EWC.fn <- function(dir, dat, strat.vars = c("BOTTOM_DEPTH"
       dir.create(plotdir)
     }
     write.csv(bio, file = paste0(plotdir,"/design_based_indices.csv"), row.names = FALSE)
+    
     df.list[[1]] <- df
     df.list[[2]] <- bio
     return(df.list)
