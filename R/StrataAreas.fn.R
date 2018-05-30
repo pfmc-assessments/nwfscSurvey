@@ -26,25 +26,23 @@
 #' @param strat.df A dataframe describing the strata name, area, and
 #' boundaries.  Boundaries are determined by latitude and bottom depth. See
 #' Details.
-#' @param SA3 A dataframe of min and max latitude and min and max depth with
-#' area for each defined square.  See Details.
 #' @param convertFactor Multiplier on the area in SA3. Default = 0.01 to
 #' convert hectares to square km.
 #' @return Returns the dataframe input with a column called area.
-#' @note %% ~~further notes~~
-#' @export
 #' @author Allan Hicks with help from John Wallace.
-#' @seealso %% ~~objects to See Also as \code{\link{help}}, ~~~
-#' @references %% ~put references to the literature/web site here ~
-#' @examples
+#' @export
 
-StrataAreas.fn <- function(strat.df,SA3,convertFactor=0.01) {
+
+StrataAreas.fn <- function(strat.df, convertFactor=0.01) {
     #calculates the area of your strata using John Wallace's SA3 file
+    fpath = system.file("data", "SA3.rda", package="nwfscSurvey")
+    load(fpath)
     #this code is stolen from within John Wallace's 2011 GLMM code
     ##-8/19/2013: ACH modified it to report error when a supplied latitude or depth is not exactly matched
     #a convertFactor of 0.01 convert hectares to km2
     S <- strat.df
     S$area <- NA
+
 
     for ( i in 1:nrow(S)) {
         #first check that depths are exactly defined

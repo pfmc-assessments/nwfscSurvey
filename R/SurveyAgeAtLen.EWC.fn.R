@@ -1,19 +1,60 @@
-    #calculates proportion of age at length and reformats into SS3 format
-    #Uses raw numbers at length, assuming that is a random sample conditioned on length and sex.
-    #To use expanded numbers (up to strata areas), set raw=F
-    #Only gender codes 1 and 2 and puts males and females on separate lines because the age@L is conditioned on sex (a sample of females of length 25cm, for example)
-    #Gender=1: females only. Male values ignored
-    #Gender=2: males only. Female values ignored.
-    #lgthBins is either the interval between length bins or the actual length bins
-    #note that 0 and Inf are tacked on the ends to account for lengths and ages outside the interval. You may want to add these in to first and last bin.
-    #I assume all fish are sexed for age data, thus do not apply sex ratios for unsexed fish
+#' Calculates proportion of age at length and reformats into SS format
+#' Uses raw numbers at length, assuming that is a random sample conditioned on length and sex.
+#' To use expanded numbers (up to strata areas), set raw=F
+#' Only gender codes 1 and 2 and puts males and females on separate lines because the age@L is conditioned on sex (a sample of females of length 25cm, for example)
+#' Gender=1: females only. Male values ignored
+#' Gender=2: males only. Female values ignored.
+#' lgthBins is either the interval between length bins or the actual length bins
+#' note that 0 and Inf are tacked on the ends to account for lengths and ages outside the interval. You may want to add these in to first and last bin.
+#' I assume all fish are sexed for age data, thus do not apply sex ratios for unsexed fish
+#' 
+#' @param dir directory this is where the output files will be saved
+#' @param datAL the read in length comps by the ReadInAges.EWC.fn function
+#' @param datTows the read in catch data by the DesignBasedEstBiomass.EWC.fn function
+#' @param strat.vars the variables used define the stratas. Defaul is bottom depth and latitudes.
+#' @param strat.df the created strata matrix with the calculated areas by the createStrataDF.fn function
+#' @param femaleMale numbering for female and male fish in the data file. This is opposite to what is used in SS.
+#' @param lgthBins length bins
+#' @param ageBins age bins
+#' @param SSout TRUE/FALSE return comps formatted for SS or in a raw form
+#' @param meanRatioMethod TRUE/FALSE
+#' @param raw TRUE/FALSE, input to define whether or not to expand numbers in the csv file (column header "NumF" and "NumM")
+#' @param NAs2zero change NAs to zeros
+#' @param month month
+#' @param fleet fleet number
+#' @param partition partition for Stock Synthesis
+#' @param ageerr age error value for Stock Synthesis
+#' @param returnSamps TRUE/FALSE stops the function after the sample size is calculated
+#' @param printfolder folder where the length comps will be saved
+#'
+#' @author Allan Hicks and Chantel Wetzel
+#' @export 
+#' @seealso \code{\link{StrataFactors.fn}}
 
-SurveyAgeAtLen.EWC.fn <- function(datAL,datTows,strat.vars=NULL,strat.df=NULL,femaleMale=c(2,1),lgthBins=1,ageBins=1,SS3out=F,meanRatioMethod=T,raw=T,NAs2zero=T,season="ENTER",fleet="ENTER",partition="ETNER",ageerr="ENTER",returnSamps=F)  {
+SurveyAgeAtLen.EWC.fn <- function(dir, datAL, datTows, strat.vars=c("BOTTOM_DEPTH","START_LATITUDE"), strat.df=NULL, femaleMale=c(2,1), lgthBins=1, ageBins=1,
+                                    SSout=F, meanRatioMethod=T, raw=TRUE, NAs2zero=T, month="Enter Month", fleet="Enter Fleet",
+                                    partition="Enter Partition", ageErr="Enter Age Error", returnSamps=F, printfolder = "forSS")  {
+
+    plotdir <- file.path(dir, printfolder)
+    plotdir.isdir <- file.info(plotdir)$isdir
+    if(is.na(plotdir.isdir) | !plotdir.isdir){
+      dir.create(plotdir)
+    }
+
     row.names(strat.df) <- strat.df[,1]     #put in rownames to make easier to index later
     numStrata <- nrow(strat.df)
 
+    # remove tows that are outside of the stratum
+    datAL = data.frame(datAL,stratum=StrataFactors.fn(datAL,strat.vars,strat.df))
+    ind = !is.na(datAL$stratum)
+    datAL = datAL[ind,]
+
+    datTows = data.frame(datTows,stratum=StrataFactors.fn(datTows,strat.vars,strat.df))
+    ind = !is.na(datTows$stratum)
+    datTows = datTows[ind,]
+
     ind <- !duplicated(datAL$HAULJOIN)
-    datB <- datAL[ind,c("HAULJOIN","WEIGHT","NUMBER_FISH",strat.vars,"DISTANCE_FISHED","NET_WIDTH","year")]    #individual tow data
+    datB <- datAL[ind,c("HAULJOIN","Weight","Number_fish",strat.vars,"DISTANCE_FISHED","NET_WIDTH","year")] #individual tow data
     datB$areaFished <- datB$DISTANCE_FISHED*datB$NET_WIDTH/1000   #area swept for each tow in km2
 
     datAL$sex2 <- rep(NA,nrow(datAL))
@@ -22,7 +63,7 @@ SurveyAgeAtLen.EWC.fn <- function(datAL,datTows,strat.vars=NULL,strat.df=NULL,fe
     
     #set up length bins
     if(length(lgthBins)==1) {
-        Lengths <- c(-999,seq(floor(min(datAL$LENGTH)),ceiling(max(datAL$LENGTH)),lgthBins),Inf)
+        Lengths <- c(-999,seq(floor(min(datAL$Length_cm)),ceiling(max(datAL$Length_cm)),lgthBins),Inf)
     }else{
         Lengths <- c(-999,lgthBins,Inf)
     }
@@ -33,12 +74,13 @@ SurveyAgeAtLen.EWC.fn <- function(datAL,datTows,strat.vars=NULL,strat.df=NULL,fe
         Ages <- c(-999,ageBins,Inf)        #put -999 and Inf on ends because all.inside=T in findInterval below. Treats these as minus and plus groups
     }
 
-    datAL$allLs <- Lengths[findInterval(datAL$LENGTH,Lengths,all.inside=T)]
+    datAL$allLs <- Lengths[findInterval(datAL$Length_cm,Lengths,all.inside=T)]
     datAL$allAs <- Ages[findInterval(datAL$AGE,Ages,all.inside=T)]
     #print(head(datAL))
 
     #first create strata factors
     datB <- data.frame(datB,stratum=StrataFactors.fn(datB,strat.vars,strat.df))        #create a new column for the stratum factor
+    
     #print(head(datTows))
     numTows <- table(datTows$year,StrataFactors.fn(datTows,strat.vars,strat.df))        #strata for each individual tow
 
@@ -47,12 +89,12 @@ SurveyAgeAtLen.EWC.fn <- function(datAL,datTows,strat.vars=NULL,strat.df=NULL,fe
     #for all sexes
     TdatL.tows <- as.data.frame(table(datAL$HAULJOIN))
     datB <- data.frame(datB[match(as.character(TdatL.tows$Var1),as.character(datB$HAULJOIN)),],TowExpFactorU=TdatL.tows$Freq)
-    datB$TowExpFactorU <- datB$NUMBER_FISH/datB$TowExpFactorU
+    datB$TowExpFactorU <- datB$Number_fish/datB$TowExpFactorU
     #for females and males only
     TdatL.tows <- as.data.frame(table(datAL$HAULJOIN,datAL$SEX%in%femaleMale))
     TdatL.tows <- TdatL.tows[TdatL.tows$Var2==TRUE,]
     datB <- data.frame(datB[match(as.character(TdatL.tows$Var1),as.character(datB$HAULJOIN)),],TowExpFactorMF=TdatL.tows$Freq)
-    datB$TowExpFactorMF <- datB$NUMBER_FISH/datB$TowExpFactorMF
+    datB$TowExpFactorMF <- datB$Number_fish/datB$TowExpFactorMF
     datB$TowExpFactorMF[datB$TowExpFactorMF==Inf] <- NA
 
     #find frequency of number of age at lengths
@@ -65,7 +107,7 @@ SurveyAgeAtLen.EWC.fn <- function(datAL,datTows,strat.vars=NULL,strat.df=NULL,fe
     TdatL.al <- as.data.frame(table(datAL$HAULJOIN,datAL$allLs,datAL$allAs,datAL$sex2))
     names(TdatL.al) <- c("HAULJOIN","allLs","allAs","SEX","num")
     TdatL.al <- TdatL.al[TdatL.al$num>0,]
-    print(head(TdatL.al))
+    #print(head(TdatL.al))
     TdatL.al <- split(TdatL.al,TdatL.al$SEX)
     temp <- TdatL.al[["f"]][,c("HAULJOIN","allLs","allAs","num")]
     names(temp) <- c("HAULJOIN","allLs","allAs","numF")
@@ -75,14 +117,42 @@ SurveyAgeAtLen.EWC.fn <- function(datAL,datTows,strat.vars=NULL,strat.df=NULL,fe
     names(temp) <- c("HAULJOIN","allLs","allAs","numM")
     datB <- merge(datB,temp,by=c("HAULJOIN","allLs","allAs"),all=T)
     datB[is.na(datB$numM),"numM"] <- 0
-    print(head(datB))
+    #print(head(datB))
     
-    nSamps <- datB[!duplicated(paste(datB$HAULJOIN,datB$allLs)),]
-    nSamps.f <- nSamps[nSamps$numF>0,]
-    nSamps.m <- nSamps[nSamps$numM>0,]
-    nSamps.f <- table(nSamps.f$year,nSamps.f$allLs)
-    nSamps.m <- table(nSamps.m$year,nSamps.m$allLs)
+    # This sample size is based on haul
+    # nSamps <- datB[!duplicated(paste(datB$HAULJOIN,datB$allLs)),]
+    # nSamps.f <- nSamps[nSamps$numF>0,]
+    # nSamps.m <- nSamps[nSamps$numM>0,]
+    # nSamps.f <- table(nSamps.f$year,nSamps.f$allLs)
+    # nSamps.m <- table(nSamps.m$year,nSamps.m$allLs)
+    # if(returnSamps) return(list(nSamps.f,nSamps.m))
+
+
+    # I am modifying the output sample size to be fish rather than based on haul
+    ind = datB$numF>0
+    nSamps.f <- table(datB$year[ind], datB$allLs[ind])
+    ind = datB$numM>0
+    nSamps.m <- table(datB$year[ind], datB$allLs[ind])
+    cat("\nEffective sample size is based on number of fish.\n\n")
     if(returnSamps) return(list(nSamps.f,nSamps.m))
+    
+    getn.f = NULL
+    for(y in 1:dim(nSamps.f)[1]){
+        for (l in 1:dim(nSamps.f)[2]){
+            if(nSamps.f[y,l] > 0 ){
+                getn.f = c(getn.f, nSamps.f[y,l])
+            }        
+        }
+    }
+    
+    getn.m = NULL
+    for(y in 1:dim(nSamps.m)[1]){
+        for (l in 1:dim(nSamps.m)[2]){
+            if(nSamps.m[y,l] > 0 ){
+                getn.m = c(getn.m, nSamps.m[y,l])
+            }        
+        }
+    }
 
     #now calculate the expanded lengths per tow
     datB$expU <- datB$numU*datB$TowExpFactorU
@@ -91,7 +161,7 @@ SurveyAgeAtLen.EWC.fn <- function(datAL,datTows,strat.vars=NULL,strat.df=NULL,fe
     
     #sum over strata within year
     datB.yrLstr <- split(datB,as.character(paste(datB$year,datB$allLs)))
-    datB.yrLstr <- lapply(datB.yrLstr,function(x){split(x,as.character(x$stratum))})
+    datB.yrLstr <- lapply(datB.yrLstr, function(x){split(x,as.character(x$stratum))})
 
     #lengthTotalRatio.fn <- function(x,strat) {
     #    #function to sum lengths within a stratum and a year
@@ -148,13 +218,13 @@ SurveyAgeAtLen.EWC.fn <- function(datAL,datTows,strat.vars=NULL,strat.df=NULL,fe
     if(meanRatioMethod) {
         if(raw) cat("\nUsing raw numbers of age-at-length\n\n")
         if(!raw) cat("\nUsing expanded numbers of age-at-length\n\n")
-        A.year.L.str <- lapply(datB.yrLstr,function(x){lapply(x,MeanRatio.fn,strat=strat.df,numTows=numTows,raw=raw)})
+        A.year.L.str <- lapply(datB.yrLstr,function(x){lapply(x, MeanRatio.fn, strat=strat.df, numTows=numTows, raw=raw)})
     }  else{
       stop("Sorry. Only the mean Ratio Method is implemented")
       #  L.year.str <- lapply(datB.yrstr,function(x){lapply(x,lengthTotalRatio.fn,strat=strat.df)})
     }
 
-     year.fn <- function(x,Ages) {   #calculate the age-at-length by year
+    year.fn <- function(x,Ages) {   #calculate the age-at-length by year
         theAs <- unlist(lapply(x,function(x){x$AGE}))
         allAs <- Ages[findInterval(theAs,Ages,all.inside=T)]    #finds the interval that the age falls in (all.inside puts maximum age group into N-1 group, thus I padded with Inf.)
         Lengths <- rep(x[[1]]$allLs[1],length(Ages))
@@ -172,14 +242,15 @@ SurveyAgeAtLen.EWC.fn <- function(datAL,datTows,strat.vars=NULL,strat.df=NULL,fe
         out <- out[-nrow(out),]   #remove last row because Inf and always NA due to inside.all=T
         return(out)
     }
+
     AL.year <- list()
     for(i in 1:length(A.year.L.str)) AL.year[[i]] = year.fn(A.year.L.str[[i]],Ages=Ages)
     names(AL.year) = names(A.year.L.str)
-    if(!SS3out) {
+    if(!SSout) {
         return(list(AL.year=AL.year,A.year.L.str=A.year.L.str))
     }
 
-    #output SS3 format with gender on separate lines
+    #output SS format with gender on separate lines
     ages <- AL.year[[1]][,"Age"]
     
     #gender=1 (females only)
@@ -202,16 +273,25 @@ SurveyAgeAtLen.EWC.fn <- function(datAL,datTows,strat.vars=NULL,strat.df=NULL,fe
     numMzero <- sum(AsM[,"M-999"])
     AsM <- AsM[,-match("M-999",dimnames(AsM)[[2]])]
 
-    outF <- data.frame(year=as.numeric(substring(names(AL.year),1,4)),Season=season,Fleet=fleet,gender=1,partition=partition,ageErr=ageerr,
+    outF <- data.frame(year=as.numeric(substring(names(AL.year),1,4)),month=month,Fleet=fleet,gender=1,partition=partition,ageErr=ageErr,
                           LbinLo=as.numeric(substring(names(AL.year),6)),LbinHi=as.numeric(substring(names(AL.year),6)),nSamps="ENTER",AsF,AsF)
-    outM <- data.frame(year=as.numeric(substring(names(AL.year),1,4)),Season=season,Fleet=fleet,gender=2,partition=partition,ageErr=ageerr,
+    outM <- data.frame(year=as.numeric(substring(names(AL.year),1,4)),month=month,Fleet=fleet,gender=2,partition=partition,ageErr=ageErr,
                           LbinLo=as.numeric(substring(names(AL.year),6)),LbinHi=as.numeric(substring(names(AL.year),6)),nSamps="ENTER",AsM,AsM)
+ 
     indZero <- apply(outF[,-c(1:9)],1,sum)==0
     outF <- outF[!indZero,]   #remove any rows that have no female observations (they may be there because of male obs)
     indZero <- apply(outM[,-c(1:9)],1,sum)==0
     outM <- outM[!indZero,]   #remove any rows that have no male observations (they may be there because of female obs)
+
+    # Add in the eff N values
+    outF$nSamps = getn.f
+    outM$nSamps = getn.m
+
     rownames(outF) <- paste("F",1:nrow(outF),sep="")
     rownames(outM) <- paste("M",1:nrow(outM),sep="")
+
+    write.csv(outF, file = paste0(plotdir, "/Survey_CAAL_Female_Bins_",min(lgthBins),"_", max(lgthBins),"_",min(ageBins),"_", max(ageBins),".csv"), row.names = FALSE)
+    write.csv(outM, file = paste0(plotdir, "/Survey_CAAL_Male_Bins_",min(lgthBins),"_", max(lgthBins),"_",min(ageBins),"_", max(ageBins),".csv"), row.names = FALSE)
 
     cat("There are",numFzero,"females age 0 to age",ages[2],"minus group that were added into the first age bin\n")
     cat("There are",numMzero,"males age 0 to age",ages[2],"minus group that were added into the first age bin\n")

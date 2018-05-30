@@ -1,4 +1,13 @@
-#test svn
+#' test svn
+#' 
+#' @param local
+#' @param save
+#' @param revision
+#' @param env 
+#' @param pos
+#'
+#' @author Allan Hicks 
+#' @export 
 updateSurveyCode <- function (local = NULL, save = FALSE, revision = "newest",env="updatedSurveyCode",pos=2) 
 {
     if(!is.environment(env)) {  #if env is an environment simply wirte to that. If not, create a new environment

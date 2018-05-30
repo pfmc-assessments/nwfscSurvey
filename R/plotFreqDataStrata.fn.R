@@ -1,8 +1,18 @@
-plotFreqDataStrata.fn <-
-function(dat,inch=0.15,ylab="Bins",xlab="",zero2NAs=T,...) {
-    #This function plots frequency data as bubble plots when strata instead of years are used
-    #You may want to change all zeros to NA's so that those observations are not plotted.
-    #   If you don't then set zero2NAs=F
+#' I have not tested this function to make sure it works correctly: Chantel Wetzel
+#' This function plots frequency data as bubble plots when strata instead of years are used
+#' You may want to change all zeros to NA's so that those observations are not plotted.
+#' If you don't then set zero2NAs=F
+#'
+#' @param dat object created by SS3LF.fn or SS3AF.fn
+#' @param inch input to the symbols plot: TRUE, FALSE or a positive number.
+#' @param ylab y-axis text label
+#' @param xlab x-axis text label
+#' @param zero2NAs T/F change 0 values to NA
+#'
+#' @author Allan Hicks 
+#' @export
+
+plotFreqDataStrata.fn <-function(dat, inch=0.15, ylab="Bins", xlab="", zero2NAs=T,...) {
     x <- 1:nrow(dat)
     xlabels <- as.character(dat$year)
     gender <- dat$gender[1]

@@ -1,7 +1,15 @@
+#' Creates a vector of strata factors by name
+#'
+#' @param data object
+#' @param strat.vars strata 
+#' @param strat.df strata data frame 
+#'
+#' @author Allan Hicks 
+#' @export 
+
 StrataFactors.fn <- function(dat,strat.vars,strat.df) {
-#creates a vector of strata factors by name
-    numStrata <- nrow(strat.df)
-    
+
+    numStrata <- nrow(strat.df)   
     #create strata factors
     stratum <- rep(NA,nrow(dat))        #the stratum factor
     for(strat in 1:numStrata) {
