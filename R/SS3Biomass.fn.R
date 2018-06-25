@@ -30,7 +30,7 @@ SS3Biomass.fn <-function(bio, fleet="EnterFleet", season=1, outputMedian=T) {
     # }
     # row.names(out) <- NULL
 
-    xxx <- split(bio[,c("Area_Name","Min_Stratum_Depth_(m)","Max_Stratum_Depth_(m)","Biomass_(kg)","Biomass_Variance")],bio[,"Survey_Year"])
+    xxx <- split(bio[,c("Area_Name", "Min_Stratum_Depth_(m)", "Max_Stratum_Depth_(m)", "Biomass_(kg)", "Biomass_Variance")], bio[,"Survey_Year"])
     years <- names(xxx)
     bio <- unlist(lapply(xxx,function(x){sum(x[,"Biomass_(kg)"], na.rm=T)}))
     variance <- unlist(lapply(xxx,function(x){sum(x[,"Biomass_Variance"],na.rm=T)}))

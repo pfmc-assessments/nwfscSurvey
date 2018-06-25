@@ -7,6 +7,7 @@
 #' lgthBins is either the interval between length bins or the actual length bins
 #' note that 0 and Inf are tacked on the ends to account for lengths and ages outside the interval. You may want to add these in to first and last bin.
 #' 
+#' @param dir directory this is where the output files will be saved
 #' @param ages object
 #' @param lgthBins Either the interval between length bins or the actual length bins (e.g., lgthBins = 11:47)
 #' @param ageBins Either the interval between age bins or the actual age bins (e.g, ageBins = 1:40)
@@ -17,12 +18,13 @@
 #' @param raw raw=T/F, input to define whether or not to expand numbers in the csv file (column header "NumF" and "NumM")
 #' @param sexRatioUnsexed replace the sex ratio with set value
 #' @param maxSizeUnsexed maximum size to use the sexRatioUnsexed value
+#' @param printfolder folder where the length comps will be saved
 #'
 #' @author Allan Hicks 
 #' @export 
 
-SS3AgeAtLen.fn <-function(ages,lgthBins=1,ageBins=1,fleet="EnterFleet",season=1,partition=0,
-                          ageerr="EnterAgeErr",raw=T,sexRatioUnsexed=NA,maxSizeUnsexed=NA) {
+SS3AgeAtLen.fn <-function(dir, ages, lgthBins=1, ageBins=1, fleet="EnterFleet", season=1, partition=0,
+                          ageerr="EnterAgeErr", raw=T, sexRatioUnsexed=NA, maxSizeUnsexed=NA,  printfolder = "forSS") {
 
     years <- sort(unique(ages$Year))
     if(length(lgthBins)==1) {
@@ -144,8 +146,17 @@ SS3AgeAtLen.fn <-function(ages,lgthBins=1,ageBins=1,fleet="EnterFleet",season=1,
     rownames(outF) <- paste("F",1:nrow(outF),sep="")
     rownames(outM) <- paste("M",1:nrow(outM),sep="")
 
+    plotdir <- file.path(dir, printfolder)
+    plotdir.isdir <- file.info(plotdir)$isdir
+    if(is.na(plotdir.isdir) | !plotdir.isdir){
+      dir.create(plotdir)
+    }
+
+    write.csv(outF, paste0(plotdir, "/NWFSCBT_CAAL_female_", max(len.bins), "_", max(age.bins),".csv"),row.names=F)
+    write.csv(outM, paste0(plotdir, "/NWFSCBT_CAAL_male_", max(len.bins), "_", max(age.bins),".csv"),row.names=F)
+
     cat("There are",numFminus,"females less than age",ages[2],"that were added into the first age bin\n")
     cat("There are",numMminus,"males less than age",ages[2],"that were added into the first age bin\n")
-    cat("The number of fish in each sample were input into the nSamps column\nUse Beth's Excel file for the number of tows\n")
+    cat("The number of fish in each sample were input into the nSamps column")
     return(list(female=outF,male=outM))
 }

@@ -129,24 +129,25 @@ SS3LF.fn <-function(dir, len, lgthBins=1, gender=3, nSamps="EnterNsamps", fleet=
     # save output as a csv
     plotdir <- file.path(dir, printfolder)
     plotdir.isdir <- file.info(plotdir)$isdir
+    comp.type = ifelse(lgthBins[1] == 1, "Age", "Length")
     if(is.na(plotdir.isdir) | !plotdir.isdir){
       dir.create(plotdir)
     }
-    write.csv(out, file = paste0(plotdir, "/NWFSCBT_Survey_Gender", gender, "_Bins_-999_", max(lgthBins),"_LengthComps.csv"), row.names = FALSE)
+    write.csv(out, file = paste0(plotdir, "/NWFSCBT_Survey_Gender", gender, "_Bins_-999_", max(lgthBins),"_", comp.type, "Comps.csv"), row.names = FALSE)
 
     usableOut = out
     if (gender == 3){
         usableOut[,paste0("F",min(lgthBins))] <- usableOut[,paste0("F",min(lgthBins))] + usableOut$F.999
         usableOut[,paste0("M",min(lgthBins))] <- usableOut[,paste0("M",min(lgthBins))] + usableOut$M.999
         usableOut <- usableOut[,-which(names(usableOut)%in%c("F.999","M.999"))]
-        write.csv(usableOut, file = paste0(plotdir, "/NWFSCBT_Survey_Gender", gender, "_Bins_",min(lgthBins),"_", max(lgthBins),"_LengthComps.csv"), row.names = FALSE)
+        write.csv(usableOut, file = paste0(plotdir, "/NWFSCBT_Survey_Gender", gender, "_Bins_",min(lgthBins),"_", max(lgthBins),"_", comp.type, "Comps.csv"), row.names = FALSE)
     }
 
     if (gender == 0){
         usableOut[,paste0("U",min(lgthBins))]   <- usableOut[,paste0("U",min(lgthBins))] + usableOut$U.999
         usableOut[,paste0("U",min(lgthBins)), ".1"] <- usableOut[,paste0("U",min(lgthBins)), ".1"] + usableOut$U.999.1
         usableOut <- usableOut[,-which(names(usableOut)%in%c("U.999","U.999.1"))]
-        write.csv(usableOut, file = paste0(plotdir, "/NWFSCBT_Survey_Gender", gender, "_Bins_",min(lgthBins),"_", max(lgthBins),"_LengthComps.csv"), row.names = FALSE)
+        write.csv(usableOut, file = paste0(plotdir, "/NWFSCBT_Survey_Gender", gender, "_Bins_",min(lgthBins),"_", max(lgthBins),"_", comp.type, "Comps.csv"), row.names = FALSE)
     }
 
     #cat("\nNOTE: You may need to add the column called F.999 and/or M.999 to your first length bin\n\tand delete that column.\n\tThese are the percentage of lengths smaller than the first length bin\n\n")
