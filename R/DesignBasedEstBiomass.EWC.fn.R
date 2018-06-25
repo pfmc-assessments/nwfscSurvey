@@ -18,10 +18,12 @@
 #' @param stat.vars A vector of the strata variable names (i.e., c("BEST_LATITUDE","BEST_DEPTH"))
 #' @param strat.df a dataframe with the first column the name of the stratum, the second column the area of the stratum, and the remaining columns are the high and low variables defining the strata.
 #' @param printfolder the folder where files will be saved
+#' @param outputMedian T/F output median or the mean biomass estimate
+#'
 #' @author Allan Hicks and Chantel Wetzel
 #' @export
 
-DesignBasedEstBiomass.EWC.fn <- function(dir, dat, strat.vars = c("BOTTOM_DEPTH","START_LATITUDE"), strat.df, printfolder = "forSS")  {
+DesignBasedEstBiomass.EWC.fn <- function(dir, dat, strat.vars = c("BOTTOM_DEPTH","START_LATITUDE"), strat.df, printfolder = "forSS", outputMedian = TRUE)  {
 
 
     if(is.null(dat$catchPerArea)) stop("There must be a column called catchPerArea in the dataframe")
@@ -58,7 +60,9 @@ DesignBasedEstBiomass.EWC.fn <- function(dir, dat, strat.vars = c("BOTTOM_DEPTH"
     
     df.list = list()
     df  <- list(Strata=yearlyStrataEsts,Total=ests,LNtons=ln)
-    bio <- data.frame(Year=df$LNtons$year, Value=df$Total$Bhat, seLogB=df$LNtons$SElogBhat)
+    #bio <- data.frame(Year=df$LNtons$year, Value=df$Total$Bhat, seLogB=df$LNtons$SElogBhat)
+    if(outputMedian) { bio <- data.frame(Year=df$LNtons$year, Value=df$LNtons$medianBhat*1000, seLogB=df$LNtons$SElogBhat) }
+    if(!outputMedian){ bio <- data.frame(Year=df$LNtons$year, Value=df$LNtons$meanBhat*1000,   seLogB=df$LNtons$SElogBhat) }
 
     plotdir <- file.path(dir,printfolder)
     plotdir.isdir <- file.info(plotdir)$isdir
