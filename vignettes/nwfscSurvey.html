@@ -12,7 +12,7 @@
 
 <meta name="author" content="Chantel Wetzel" />
 
-<meta name="date" content="2018-05-08" />
+<meta name="date" content="2018-06-26" />
 
 <title>nwfscSurvey</title>
 
@@ -70,7 +70,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 
 <h1 class="title toc-ignore">nwfscSurvey</h1>
 <h4 class="author"><em>Chantel Wetzel</em></h4>
-<h4 class="date"><em>2018-05-08</em></h4>
+<h4 class="date"><em>2018-06-26</em></h4>
 
 
 
@@ -85,7 +85,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li><p>Calculate the design based indices based upon pre-specified stratification.</p></li>
 <li><p>Create length composition data expanded by the design-based indices for use in Stock Synthesis.</p></li>
 <li><p>Create age-composition data expanded by the design-based indices for use in Stock Synthesis.</p></li>
-<li><p>Create conditional age-at-length compostion data for used in Stock Synthesis</p></li>
+<li><p>Create conditional age-at-length composition data for used in Stock Synthesis</p></li>
 <li><p>Create plots to visualize the data; design-based index plots, bubble plots of length and age data, sex ratio.</p></li>
 </ul>
 </div>
@@ -98,8 +98,15 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <h2>Examples</h2>
 <div id="nwfsc-shelf-slope-bottom-trawl-survey" class="section level3">
 <h3>NWFSC shelf-slope bottom trawl survey</h3>
+<div id="index-of-abundance" class="section level4">
+<h4>Index of abundance</h4>
 <p>Calculate the design based index of abundance:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">bioSS =<span class="st"> </span><span class="kw">GetTotalBiomassExcel.fn</span>(<span class="dt">file =</span> <span class="st">&quot;Survey data file.xlsx&quot;</span>, <span class="dt">headerRow =</span><span class="dv">7</span>, <span class="dt">fleet=</span><span class="st">&quot;EnterFleet&quot;</span>, <span class="dt">season=</span><span class="dv">1</span>, <span class="dt">outputMedian=</span>T)</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">bioSS =<span class="st"> </span><span class="kw">GetTotalBiomassExcel.fn</span>(<span class="dt">dir =</span> <span class="kw">getwd</span>(), 
+                                <span class="dt">file =</span> <span class="st">&quot;Survey data file.xlsx&quot;</span>, 
+                                <span class="dt">headerRow =</span><span class="dv">6</span>,
+                                <span class="dt">fleet=</span><span class="st">&quot;EnterFleet&quot;</span>, 
+                                <span class="dt">season=</span><span class="dv">1</span>, 
+                                <span class="dt">outputMedian=</span>T)</code></pre></div>
 The function will create a table of results by year:
 <table>
 <thead>
@@ -171,11 +178,84 @@ EnterFleet
 </tr>
 </tbody>
 </table>
+<p>Plot the design based index of abundance:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">plotBio.fn</span>(<span class="dt">dir =</span> <span class="kw">getwd</span>(), 
+           <span class="dt">dat =</span> bioSS,  
+           <span class="dt">main =</span> <span class="st">&quot;NWFSC shelf-slope bottom trawl survey&quot;</span>, 
+           <span class="dt">dopng =</span> T)</code></pre></div>
+<p>The GetTotalBiomassExecel.fn returns an index of abundance. The file input is the Excel file provided by the survey team where the data are expanded based on a selected stratification. The design based index is calculated based on the defined stratas that the data within the spreadsheet are expanded upon. The function writes a csv file inside the dir input location to a “forSS” folder. The plotBio.fn plots the calculated design based index from the calculated index of abundance from the GetTotalBiomassExecel.fn. If the dopng is set to true a “plot” folder will be created in the directory location and a png of the plot will be saved.</p>
+</div>
+<div id="length-composition-data" class="section level4">
+<h4>Length composition data</h4>
+<p>Read in the length composition data within the Excel file:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">lfs =<span class="st"> </span><span class="kw">readInExcelLengthComps.fn</span>(<span class="dt">file =</span> <span class="st">&quot;FisheryIndices2017_POP.xlsx&quot;</span>, 
+                                <span class="dt">headerRow =</span> <span class="dv">7</span>)
+<span class="kw">View</span>(lfs)</code></pre></div>
+<p>The “View” command opens a seperate window where the data frame read in by the readInExcelLengthComps.fn can be viewed.</p>
+<p>A function to calculate the input sample size based on Stewart &amp; Hamel (2014) which determined that the input sample size was related to the species group (flatfish, shelf rockfish, slope rockfish, thornyhead, others, or all groups) and number of tows. The function writes a csv file with the “forSS” folder containing the number of tows and observed fish by year.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">n =<span class="st"> </span><span class="kw">getN</span>(<span class="dt">dir =</span> <span class="kw">getwd</span>(), 
+         <span class="dt">dat =</span> <span class="st">&quot;FisheryIndices2017_POP.xlsx&quot;</span>, 
+         <span class="dt">type =</span> <span class="st">&quot;length&quot;</span>, 
+         <span class="dt">survey =</span> <span class="st">&quot;NWFSCBT&quot;</span>, 
+         <span class="dt">species =</span> <span class="st">&quot;shelfrock&quot;</span>)</code></pre></div>
+<p>The SS3LF.fn calculates and formats the length composition data for Stock Synthesis:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">lfsSS &lt;-<span class="st"> </span><span class="kw">SS3LF.fn</span>(<span class="dt">dir =</span> <span class="kw">getwd</span>(), 
+                  <span class="dt">len =</span> lfs, 
+                  <span class="dt">lgthBins =</span> len.bins, 
+                  <span class="dt">gender =</span> <span class="dv">3</span>, 
+                  <span class="dt">nSamps =</span> n,
+                  <span class="dt">sexRatioUnsexed =</span> <span class="ot">NA</span>, 
+                  <span class="dt">maxSizeUnsexed =</span> <span class="ot">NA</span>)</code></pre></div>
+<p>The above call will calculate the length composition data for the length frequencies read in using the readInExcelLengthComps.fn and write the files inside the “forSS” folder. The example call does not assign unsexed fish to the sexed length comps but will produce csv files for both the sexed and unsexed fish. If you would like to assign the unsexed fish to a sex based on the sex ratio the user will need to specificy the sex ratio value (sexRatioUnsexed) to use for fish under a specified size (maxSizeUnsexed) where unsexed fish greater than the specified size will be assign based on the sex ratio from other observations.</p>
+<p>To plot the length frequency data:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">plotFreqData.fn</span>(<span class="dt">dir =</span> <span class="kw">getwd</span>(), 
+                <span class="dt">dat =</span> lfsSS, 
+                <span class="dt">ylim =</span> <span class="kw">c</span>(<span class="dv">0</span>,<span class="dv">50</span>), 
+                <span class="dt">yaxs =</span> <span class="st">&quot;i&quot;</span>,
+                <span class="dt">ylab =</span> <span class="st">&quot;Length (cm)&quot;</span>, 
+                <span class="dt">dopng =</span> <span class="ot">TRUE</span>)</code></pre></div>
+<p>If the dopng is set to true a “plot” folder will be created in the directory location and a png of the plot will be saved.</p>
+</div>
+<div id="marginal-age-composition-data" class="section level4">
+<h4>Marginal age composition data</h4>
+<p>Read in the age data:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">ages &lt;-<span class="st"> </span><span class="kw">readInExcelAgeComps.fn</span>(<span class="dt">file =</span> <span class="st">&quot;FisheryIndices2017_POP.xlsx&quot;</span>,
+                               <span class="dt">headerRow =</span> <span class="dv">7</span>)
+<span class="kw">View</span>(ages)</code></pre></div>
+<p>Calculate the marginal age sample size:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">n =<span class="st"> </span><span class="kw">getN</span>(<span class="dt">dir =</span> <span class="kw">getwd</span>(), 
+         <span class="dt">file =</span> <span class="st">&quot;FisheryIndices2017_POP.xlsx&quot;</span>, 
+         <span class="dt">type =</span> <span class="st">&quot;age&quot;</span>, 
+         <span class="dt">species =</span> <span class="st">&quot;shelfrock&quot;</span>)</code></pre></div>
+<p>The SS3AF.fn calculates and formats the age composition data for Stock Synthesis:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">afsSS &lt;-<span class="st"> </span><span class="kw">SS3AF.fn</span>(<span class="dt">dir =</span> <span class="kw">getwd</span>(), 
+                  <span class="dt">Age.df =</span> ages, 
+                  <span class="dt">ageBins =</span> age.bins, 
+                  <span class="dt">gender =</span> <span class="dv">3</span>, 
+                  <span class="dt">nSamps =</span> n)</code></pre></div>
+<p>The above call will calculate the marginal age composition data for the age data read in using the readInExcelAgeComps.fn and write the files inside the “forSS” folder.</p>
+<p>To plot the age frequency data:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">plotFreqData.fn</span>(<span class="dt">dir =</span> <span class="kw">getwd</span>(), 
+                <span class="dt">dat =</span> afsSS, 
+                <span class="dt">ylim =</span> <span class="kw">c</span>(<span class="dv">0</span>,<span class="dv">42</span>),
+                <span class="dt">ylab =</span> <span class="st">&quot;Age&quot;</span>, 
+                <span class="dt">dopng =</span> <span class="ot">TRUE</span>)</code></pre></div>
+<p>If the dopng is set to true a “plot” folder will be created in the directory location and a png of the plot will be saved.</p>
+</div>
+<div id="conditional-age-at-length-data" class="section level4">
+<h4>Conditional-age-at-length data</h4>
+<p>To calculate conditional-age-at-length data formatted for SS:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">AatL &lt;-<span class="st"> </span><span class="kw">SS3AgeAtLen.fn</span>(<span class="dt">dir =</span> <span class="kw">getwd</span>(), 
+                       <span class="dt">ages =</span> ages, 
+                       <span class="dt">lgthBins =</span> len.bins, 
+                       <span class="dt">ageBins =</span> age.bins)</code></pre></div>
+<p>The SS3AgeAtLen.fn creates unexpanded conditional-age-at-length data for both sexes with input sample sizes based on the observed number of fish in each length bin by year.</p>
+</div>
 </div>
 <div id="triennial-shelf-survey-afsc-slope-survey" class="section level3">
 <h3>Triennial shelf survey &amp; AFSC slope survey</h3>
-<div id="biomass" class="section level4">
-<h4>Biomass</h4>
+<div id="index-of-abundance-1" class="section level4">
+<h4>Index of abundance</h4>
 <p>The data from both the Triennial and AFSC surveys are provided in DMP files and have different formatting than the NWFSC shelf-slope survey data. Hence, specific Early West Coast (EWC) survey functions were created to work up these data. Generally, the inputs and processes applied to these data are similar to those applied to the NWFSC shelf-slope survey data.</p>
 <p>Read in the catch, length and age data:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">setwd</span>(<span class="st">&quot;Directory where data file is located&quot;</span>)
@@ -215,7 +295,7 @@ BOTTOM_DEPTH.2
 START_LATITUDE.1
 </th>
 <th style="text-align:left;">
-START_LATITUDE.12
+START_LATITUDE.2
 </th>
 </tr>
 </thead>
@@ -270,8 +350,8 @@ deep
 <span class="kw">plotBio.fn</span>(<span class="dt">dir =</span> <span class="kw">getwd</span>(), biomass[[<span class="dv">2</span>]], <span class="dt">pch=</span><span class="dv">16</span>, <span class="dt">main =</span> <span class="st">&quot;Triennial&quot;</span>, <span class="dt">dopng =</span> <span class="ot">TRUE</span>)</code></pre></div>
 <p>The DesignBasedEstBiomass.EWC.fn returns a list. The dat input is the read in biomass created by the ReadInBiomass.EWC.fn function. The design based index is calculated based on the defined stratas created by the createStrataDF.fn function. The function writes a csv file inside the dir input location to a “forSS” folder. The plotBio.fn plots the calculated design based index from the second list item from the DesignBasedEstBiomass.EWC.fn. If the dopng is set to true a “plot” folder will be created in the directory location and a png of the plot will be saved.</p>
 </div>
-<div id="length-compsosition-data" class="section level4">
-<h4>Length Compsosition Data</h4>
+<div id="length-composition-data-1" class="section level4">
+<h4>Length composition data</h4>
 <p>Read in the length data from the biological data file:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">load</span>(<span class="st">&quot;Biological data file.dmp&quot;</span>)
 bio.dat =<span class="st"> </span>Biological.data.file
@@ -316,8 +396,8 @@ len &lt;-<span class="st"> </span><span class="kw">ReadInLengths.EWC.fn</span>(<
                 <span class="dt">dopng =</span> <span class="ot">TRUE</span>)</code></pre></div>
 <p>Plots the length frequencies by year and sex. If dopng is TRUE then a png file will be saved inside a “plots” folder inside the directory. The survey input defines the name to use in the main input during plotting.</p>
 </div>
-<div id="marginal-age-composition-data" class="section level4">
-<h4>Marginal Age Composition Data</h4>
+<div id="marginal-age-composition-data-1" class="section level4">
+<h4>Marginal age composition data</h4>
 <p>Read in the age data from the biological data file:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">age &lt;-<span class="st"> </span><span class="kw">ReadInAges.EWC.fn</span>(<span class="dt">dir =</span> <span class="kw">getwd</span>(), 
                          <span class="dt">dat =</span> bio.data,  
@@ -358,8 +438,8 @@ len &lt;-<span class="st"> </span><span class="kw">ReadInLengths.EWC.fn</span>(<
                 <span class="dt">dopng =</span> <span class="ot">TRUE</span>)</code></pre></div>
 <p>Plots the age frequencies by year and sex. If dopng is TRUE then a png file will be saved inside a “plots” folder inside the directory. The survey input defines the name to use in the main input during plotting.</p>
 </div>
-<div id="conditional-age-at-length-data" class="section level4">
-<h4>Conditional-Age-at-Length Data</h4>
+<div id="conditional-age-at-length-data-1" class="section level4">
+<h4>Conditional-age-at-length data</h4>
 <p>Create conditional-age-at-length data to be used in SS:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">Ages &lt;-<span class="st"> </span><span class="kw">SurveyAgeAtLen.EWC.fn</span>(<span class="dt">dir =</span> <span class="kw">getwd</span>(), 
                               <span class="dt">datAL =</span> age, 

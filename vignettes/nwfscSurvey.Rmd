@@ -30,7 +30,7 @@ The **nwfscSurvey** can be used to create:
 
 * Create age-composition data expanded by the design-based indices for use in Stock Synthesis.
 
-* Create conditional age-at-length compostion data for used in Stock Synthesis
+* Create conditional age-at-length composition data for used in Stock Synthesis
 
 * Create plots to visualize the data; design-based index plots, bubble plots of length and age data, sex ratio. 
 
@@ -46,10 +46,17 @@ ls("package:nwfscSurvey")
 
 ### NWFSC shelf-slope bottom trawl survey
 
+#### Index of abundance
+
 Calculate the design based index of abundance:
 
 ```r
-bioSS = GetTotalBiomassExcel.fn(file = "Survey data file.xlsx", headerRow =7, fleet="EnterFleet", season=1, outputMedian=T)
+bioSS = GetTotalBiomassExcel.fn(dir = getwd(), 
+                                file = "Survey data file.xlsx", 
+                                headerRow =6,
+                                fleet="EnterFleet", 
+                                season=1, 
+                                outputMedian=T)
 ```
 
 The function will create a table of results by year:
@@ -67,10 +74,109 @@ The function will create a table of results by year:
   kable(table, "html")
 ```
 
+Plot the design based index of abundance:
+```r
+plotBio.fn(dir = getwd(), 
+           dat = bioSS,  
+           main = "NWFSC shelf-slope bottom trawl survey", 
+           dopng = T)
+```
+The GetTotalBiomassExecel.fn returns an index of abundance. The file input is the Excel file provided by the survey team where the data are expanded based on a selected stratification. The design based index is calculated based on the defined stratas that the data within the spreadsheet are expanded upon. The function writes a csv file inside the dir input location to a "forSS" folder. The plotBio.fn plots the calculated design based index from the calculated index of abundance from the GetTotalBiomassExecel.fn. If the dopng is set to true a "plot" folder will be created in the directory location and a png of the plot will be saved.
+
+#### Length composition data
+Read in the length composition data within the Excel file:
+```r
+lfs = readInExcelLengthComps.fn(file = "FisheryIndices2017_POP.xlsx", 
+                                headerRow = 7)
+View(lfs)
+```
+The "View" command opens a seperate window where the data frame read in by the readInExcelLengthComps.fn can be viewed.
+
+A function to calculate the input sample size based on Stewart & Hamel (2014) which determined that the input sample size was related to the species group (flatfish, shelf rockfish, slope rockfish, thornyhead, others, or all groups) and number of tows. The function writes a csv file with the "forSS" folder containing the number of tows and observed fish by year. 
+
+```r
+n = getN(dir = getwd(), 
+         dat = "FisheryIndices2017_POP.xlsx", 
+         type = "length", 
+         survey = "NWFSCBT", 
+         species = "shelfrock")
+
+```
+
+The SS3LF.fn calculates and formats the length composition data for Stock Synthesis:
+```r
+lfsSS <- SS3LF.fn(dir = getwd(), 
+                  len = lfs, 
+                  lgthBins = len.bins, 
+                  gender = 3, 
+                  nSamps = n,
+                  sexRatioUnsexed = NA, 
+                  maxSizeUnsexed = NA)
+```
+The above call will calculate the length composition data for the length frequencies read in using the readInExcelLengthComps.fn and write the files inside the "forSS" folder. The example call does not assign unsexed fish to the sexed length comps but will produce csv files for both the sexed and unsexed fish. If you would like to assign the unsexed fish to a sex based on the sex ratio the user will need to specificy the sex ratio value (sexRatioUnsexed) to use for fish under a specified size (maxSizeUnsexed) where unsexed fish greater than the specified size will be assign based on the sex ratio from other observations.
+
+To plot the length frequency data:
+```r
+plotFreqData.fn(dir = getwd(), 
+                dat = lfsSS, 
+                ylim = c(0,50), 
+                yaxs = "i",
+                ylab = "Length (cm)", 
+                dopng = TRUE)
+
+```
+If the dopng is set to true a "plot" folder will be created in the directory location and a png of the plot will be saved.
+
+#### Marginal age composition data
+Read in the age data:
+```r
+ages <- readInExcelAgeComps.fn(file = "FisheryIndices2017_POP.xlsx",
+                               headerRow = 7)
+View(ages)
+```
+
+Calculate the marginal age sample size:
+```r
+n = getN(dir = getwd(), 
+         file = "FisheryIndices2017_POP.xlsx", 
+         type = "age", 
+         species = "shelfrock")
+```
+
+The SS3AF.fn calculates and formats the age composition data for Stock Synthesis:
+```r
+afsSS <- SS3AF.fn(dir = getwd(), 
+                  Age.df = ages, 
+                  ageBins = age.bins, 
+                  gender = 3, 
+                  nSamps = n)
+```
+The above call will calculate the marginal age composition data for the age data read in using the readInExcelAgeComps.fn and write the files inside the "forSS" folder. 
+
+To plot the age frequency data:
+```r
+plotFreqData.fn(dir = getwd(), 
+                dat = afsSS, 
+                ylim = c(0,42),
+                ylab = "Age", 
+                dopng = TRUE)
+```
+If the dopng is set to true a "plot" folder will be created in the directory location and a png of the plot will be saved.
+
+#### Conditional-age-at-length data
+To calculate conditional-age-at-length data formatted for SS:
+```r
+AatL <- SS3AgeAtLen.fn(dir = getwd(), 
+                       ages = ages, 
+                       lgthBins = len.bins, 
+                       ageBins = age.bins)
+```
+The SS3AgeAtLen.fn creates unexpanded conditional-age-at-length data for both sexes with input sample sizes based on the observed number of fish in each length bin by year.
+
 
 ### Triennial shelf survey & AFSC slope survey
 
-#### Biomass
+#### Index of abundance
 The data from both the Triennial and AFSC surveys are provided in DMP files and have different formatting than the NWFSC shelf-slope survey data. Hence, specific Early West Coast (EWC) survey functions were created to work up these data. Generally, the inputs and processes applied to these data are similar to those applied to the NWFSC shelf-slope survey data.
 
 Read in the catch, length and age data:
@@ -113,7 +219,7 @@ This example creates two stratas, a shallow strata from 55-183m between 40.5 to 
   tab = rbind( c("shallow", 23042.389, 55, 183, 40.5, 49),
                c("deep", 6065.469, 183, 350, 40.5, 49))
   
-  colnames(tab) = c("Name", "Area", "BOTTOM_DEPTH.1", "BOTTOM_DEPTH.2", "START_LATITUDE.1", "START_LATITUDE.12")
+  colnames(tab) = c("Name", "Area", "BOTTOM_DEPTH.1", "BOTTOM_DEPTH.2", "START_LATITUDE.1", "START_LATITUDE.2")
   
   table = tab 
   kable(table, "html")
@@ -130,7 +236,7 @@ plotBio.fn(dir = getwd(), biomass[[2]], pch=16, main = "Triennial", dopng = TRUE
 ```
 The DesignBasedEstBiomass.EWC.fn returns a list. The dat input is the read in biomass created by the ReadInBiomass.EWC.fn function. The design based index is calculated based on the defined stratas created by the createStrataDF.fn function. The function writes a csv file inside the dir input location to a "forSS" folder. The plotBio.fn plots the calculated design based index from the second list item from the DesignBasedEstBiomass.EWC.fn. If the dopng is set to true a "plot" folder will be created in the directory location and a png of the plot will be saved.
 
-#### Length Compsosition Data
+#### Length composition data
 Read in the length data from the biological data file:
 ```r
 load("Biological data file.dmp")
@@ -187,7 +293,7 @@ plotFreqData.fn(dir = getwd(),
 ```
 Plots the length frequencies by year and sex. If dopng is TRUE then a png file will be saved inside a "plots" folder inside the directory. The survey input defines the name to use in the main input during plotting.
 
-#### Marginal Age Composition Data
+#### Marginal age composition data
 Read in the age data from the biological data file:
 ```r
 age <- ReadInAges.EWC.fn(dir = getwd(), 
@@ -241,7 +347,7 @@ plotFreqData.fn(dir = getwd(),
 ```
 Plots the age frequencies by year and sex. If dopng is TRUE then a png file will be saved inside a "plots" folder inside the directory. The survey input defines the name to use in the main input during plotting.
 
-#### Conditional-Age-at-Length Data
+#### Conditional-age-at-length data
 
 Create conditional-age-at-length data to be used in SS:
 ```r
