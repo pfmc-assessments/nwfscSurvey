@@ -84,8 +84,8 @@ plotBio.fn(dir = getwd(),
 The GetTotalBiomassExecel.fn returns an index of abundance. The file input is the Excel file provided by the survey team where the data are expanded based on a selected stratification. The design based index is calculated based on the defined stratas that the data within the spreadsheet are expanded upon. The function writes a csv file inside the dir input location to a "forSS" folder. The plotBio.fn plots the calculated design based index from the calculated index of abundance from the GetTotalBiomassExecel.fn. If the dopng is set to true a "plot" folder will be created in the directory location and a png of the plot will be saved.
 
 The plot of the design-based index of abundance: 
-<!--  !<center>[](https://github.com/nwfsc-assess/nwfscSurvey/vignettes/images/NWFSCBT_designed_based_index.png) {width=75%}<center>-->
-<center>![](C:/Users/Chantel.Wetzel/Documents/GitHub/nwfscSurvey/vignettes/images/NWFSCBT_designed_based_index.png){width=65%}<center>
+<center>![](https://github.com/nwfsc-assess/nwfscSurvey/vignettes/images/NWFSCBT_designed_based_index.png) {width=75%}<center>
+<!--  <center>![](C:/Users/Chantel.Wetzel/Documents/GitHub/nwfscSurvey/vignettes/images/NWFSCBT_designed_based_index.png){width=65%}<center> -->
 
 #### Length composition data
 Read in the length composition data within the Excel file:
@@ -131,8 +131,8 @@ plotFreqData.fn(dir = getwd(),
 ```
 If the dopng is set to true a "plot" folder will be created in the directory location and a png of the plot will be saved: 
 
-<!--  !<center>[](https://github.com/nwfsc-assess/nwfscSurvey/vignettes/images/Survey_Length_Frequency.png) {width=75%}<center>-->
-<center>![](C:/Users/Chantel.Wetzel/Documents/GitHub/nwfscSurvey/vignettes/images/Survey_Length_Frequency.png){width=65%}<center>
+<center>![](https://github.com/nwfsc-assess/nwfscSurvey/vignettes/images/Survey_Length_Frequency.png) {width=75%}<center>
+<!-- <center>![](C:/Users/Chantel.Wetzel/Documents/GitHub/nwfscSurvey/vignettes/images/Survey_Length_Frequency.png){width=65%}<center> -->
 
 #### Marginal age composition data
 Read in the age data:
@@ -195,8 +195,8 @@ catch.dat = Catch.data.file
 ```
 
 The catch data file: 
-<!--  ![](https://github.com/nwfsc-assess/nwfscSurvey/vignettes/images/TriAFS_catch_file.png) -->
-![](C:/Users/Chantel.Wetzel/Documents/GitHub/nwfscSurvey/vignettes/images/TriAFS_catch_file.png)
+![](https://github.com/nwfsc-assess/nwfscSurvey/vignettes/images/TriAFS_catch_file.png) 
+<!-- ![](C:/Users/Chantel.Wetzel/Documents/GitHub/nwfscSurvey/vignettes/images/TriAFS_catch_file.png) -->
 
 
 Read in the catch biomass and calculate the area fished, kg per km^2^, and catch per area based on the catch data file:
