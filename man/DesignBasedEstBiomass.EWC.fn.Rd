@@ -5,7 +5,7 @@
 \title{Calculates design based estimates from survey data for early West Coast surveys (e.g., Triennial, AFSC slope)}
 \usage{
 DesignBasedEstBiomass.EWC.fn(dir, dat, strat.vars = c("BOTTOM_DEPTH",
-  "START_LATITUDE"), strat.df, printfolder = "forSS")
+  "START_LATITUDE"), strat.df, printfolder = "forSS", outputMedian = TRUE)
 }
 \arguments{
 \item{dir}{directory of the excel file}
@@ -15,6 +15,8 @@ DesignBasedEstBiomass.EWC.fn(dir, dat, strat.vars = c("BOTTOM_DEPTH",
 \item{strat.df}{a dataframe with the first column the name of the stratum, the second column the area of the stratum, and the remaining columns are the high and low variables defining the strata.}
 
 \item{printfolder}{the folder where files will be saved}
+
+\item{outputMedian}{T/F output median or the mean biomass estimate}
 
 \item{stat.vars}{A vector of the strata variable names (i.e., c("BEST_LATITUDE","BEST_DEPTH"))}
 }

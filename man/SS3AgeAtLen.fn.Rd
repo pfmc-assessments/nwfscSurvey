@@ -11,11 +11,13 @@ Gender=2: males only. Female values ignored.
 lgthBins is either the interval between length bins or the actual length bins
 note that 0 and Inf are tacked on the ends to account for lengths and ages outside the interval. You may want to add these in to first and last bin.}
 \usage{
-SS3AgeAtLen.fn(ages, lgthBins = 1, ageBins = 1, fleet = "EnterFleet",
+SS3AgeAtLen.fn(dir, ages, lgthBins = 1, ageBins = 1, fleet = "EnterFleet",
   season = 1, partition = 0, ageerr = "EnterAgeErr", raw = T,
-  sexRatioUnsexed = NA, maxSizeUnsexed = NA)
+  sexRatioUnsexed = NA, maxSizeUnsexed = NA, printfolder = "forSS")
 }
 \arguments{
+\item{dir}{directory this is where the output files will be saved}
+
 \item{ages}{object}
 
 \item{lgthBins}{Either the interval between length bins or the actual length bins (e.g., lgthBins = 11:47)}
@@ -35,6 +37,8 @@ SS3AgeAtLen.fn(ages, lgthBins = 1, ageBins = 1, fleet = "EnterFleet",
 \item{sexRatioUnsexed}{replace the sex ratio with set value}
 
 \item{maxSizeUnsexed}{maximum size to use the sexRatioUnsexed value}
+
+\item{printfolder}{folder where the length comps will be saved}
 }
 \description{
 Calculates proportion of age at length and reformats into SS3 format

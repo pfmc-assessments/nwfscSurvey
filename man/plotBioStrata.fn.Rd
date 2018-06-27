@@ -2,15 +2,18 @@
 % Please edit documentation in R/plotBioStrata.fn.R
 \name{plotBioStrata.fn}
 \alias{plotBioStrata.fn}
-\title{Not recommended for use yet
-Name would imply that it would plot by strata but that is currently not happening
-Duplicate to the plotBio.fn but not as polished}
+\title{Plot the design based estimated biomass by strata and year
+Currently only works with the triennial or afsc survey data
+This is a new function and the results should be scrutinized}
 \usage{
-plotBioStrata.fn(bio, CI = 0.95, scalar = 1e+06, gap = 0.03,
-  ylab = "Biomass ('000 mt)", xlab = "Stratum", ylim = NULL, ...)
+plotBioStrata.fn(dir, dat, CI = 0.95, scalar = 1e+06, gap = 0.01,
+  legloc = "topright", single = TRUE, ylab = "Biomass ('000 mt)",
+  xlab = "Year", yliminput = NULL, dopng = FALSE, ...)
 }
 \arguments{
-\item{bio}{object created by the GetTotalBiomass.fn}
+\item{dir}{directory to save the file}
+
+\item{dat}{object created by the GetTotalBiomass.fn}
 
 \item{CI}{confidence interval}
 
@@ -18,17 +21,23 @@ plotBioStrata.fn(bio, CI = 0.95, scalar = 1e+06, gap = 0.03,
 
 \item{gap}{a value that introduces a slight gap between the point estimate and the start of the line for the CI. A gap too large will invert the CI, making it look huge. You should know when this happens}
 
+\item{legloc}{location to put legend in the single panel plot}
+
+\item{single}{TRUE/FALSE true plots each stratum on the same figure}
+
 \item{ylab}{y-axis text label}
 
 \item{xlab}{x-axis text label}
 
-\item{ylim}{y-limits}
+\item{yliminput}{user defined y-limits}
+
+\item{dopng}{TRUE/FALSE whether to save a png file}
 }
 \description{
-Not recommended for use yet
-Name would imply that it would plot by strata but that is currently not happening
-Duplicate to the plotBio.fn but not as polished
+Plot the design based estimated biomass by strata and year
+Currently only works with the triennial or afsc survey data
+This is a new function and the results should be scrutinized
 }
 \author{
-Allan Hicks
+Allan Hicks and Chantel Wetzel
 }

@@ -4,11 +4,16 @@
 \alias{varLengthAtAge.fn}
 \title{Plot variability of length at age}
 \usage{
-varLengthAtAge.fn(dat, ageBin = 1, bySex = T, parStart = c(52, 0.09, 1),
-  estVB = T, bins = NULL, legX = "bottomleft", legY = NULL, ...)
+varLengthAtAge.fn(dir, dat, survey, ageBin = 1, bySex = T,
+  parStart = c(52, 0.09, 1), estVB = T, bins = NULL,
+  legX = "bottomleft", legY = NULL, dopng = FALSE, ...)
 }
 \arguments{
+\item{dir}{directory to save the file}
+
 \item{dat}{The data loaded from the NWFSC database or the SexedLgthWtAge sheet}
+
+\item{survey}{specify the survey data set for calculations. Options are "NWFSCBT", "Tri.Shelf", "AFSC.Slope"}
 
 \item{ageBin}{Currently fixed at 1, so a moot parameter}
 
@@ -20,6 +25,8 @@ varLengthAtAge.fn(dat, ageBin = 1, bySex = T, parStart = c(52, 0.09, 1),
 it uses the paramters in \code{parStart}.}
 
 \item{bins}{The bins to put ages into. If NULL then simply uses the ages as recorded.}
+
+\item{dopng}{TRUE/FALSE whether to save a png file}
 
 \item{...}{Additional arguments for the plots}
 }
@@ -35,5 +42,5 @@ Plots the SD and CV of age at observed and predicted length
   res <- varLengthAtAge.fn(slwa,ageBin=1,bySex=T,parStart=c(52,0.09,1),estVB=T)
 }
 \author{
-Allan Hicks
+Allan Hicks and Chantel Wetzel
 }

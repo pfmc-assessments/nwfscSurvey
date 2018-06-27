@@ -15,7 +15,7 @@ getN(dir, dat, type, survey, headerRow = "default", species = "flatfish",
 
 \item{type}{specify whether doing "length" or "age". Used to read associatied excel sheets}
 
-\item{survey}{survey name, options = c("NWFSC", "Tri.Shelf", "AFSC.Slope")}
+\item{survey}{survey name, options = c("NWFSCBT", "Tri.Shelf", "AFSC.Slope")}
 
 \item{headerRow}{line of header row in excel file}
 

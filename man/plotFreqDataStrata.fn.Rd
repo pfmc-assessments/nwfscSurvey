@@ -2,7 +2,8 @@
 % Please edit documentation in R/plotFreqDataStrata.fn.R
 \name{plotFreqDataStrata.fn}
 \alias{plotFreqDataStrata.fn}
-\title{This function plots frequency data as bubble plots when strata instead of years are used
+\title{I have not tested this function to make sure it works correctly: Chantel Wetzel
+This function plots frequency data as bubble plots when strata instead of years are used
 You may want to change all zeros to NA's so that those observations are not plotted.
 If you don't then set zero2NAs=F}
 \usage{
@@ -21,6 +22,7 @@ plotFreqDataStrata.fn(dat, inch = 0.15, ylab = "Bins", xlab = "",
 \item{zero2NAs}{T/F change 0 values to NA}
 }
 \description{
+I have not tested this function to make sure it works correctly: Chantel Wetzel
 This function plots frequency data as bubble plots when strata instead of years are used
 You may want to change all zeros to NA's so that those observations are not plotted.
 If you don't then set zero2NAs=F

@@ -24,12 +24,14 @@ sexRatioUnsexed is the proportion used to assign unsexed fish to females
   -- if it is NA, unsexed fish are omitted WHEN GENDER=3 (THIS IS THE DEFAULT)
 maxSizeUnsexed determines the maximum size at which the sexRatioUnsexed is applied. If sexRatioUnsexed is a vector, this is ignored}
 \usage{
-SS3LF.fn(len, lgthBins = 1, gender = 3, nSamps = "EnterNsamps",
+SS3LF.fn(dir, len, lgthBins = 1, gender = 3, nSamps = "EnterNsamps",
   fleet = "EnterFleet", season = 1, partition = 0, NAs2zero = T,
   sexRatioUnsexed = NA, maxSizeUnsexed = NA, printfolder = "forSS",
   remove999 = TRUE)
 }
 \arguments{
+\item{dir}{directory to save the file}
+
 \item{len}{object}
 
 \item{lgthBins}{Either the interval between length bins or the actual length bins (e.g., lgthBins = 11:47)}

@@ -4,18 +4,25 @@
 \alias{plotSexRatio.fn}
 \title{Function to plot sex ratio}
 \usage{
-plotSexRatio.fn(len, fn = median, circleSize = 0.1, ...)
+plotSexRatio.fn(dir, dat, fn = median, survey, circleSize = 0.1,
+  dopng = FALSE, ...)
 }
 \arguments{
-\item{len}{data object}
+\item{dir}{directory location for saving the png}
+
+\item{dat}{data object}
 
 \item{fn}{value to calculate from the data (e.g., median, mean)}
 
+\item{survey}{specify the survey data set for calculations. Options are "NWFSCBT", "Tri.Shelf", "AFSC.Slope"}
+
 \item{circleSize}{circle size}
+
+\item{dopng}{TRUE/FALSE whether to save a png file}
 }
 \description{
 Function to plot sex ratio
 }
 \author{
-Allan Hicks
+Allan Hicks and Chantel Wetzel
 }

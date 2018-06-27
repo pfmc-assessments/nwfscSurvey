@@ -4,14 +4,16 @@
 \alias{plotBio.fn}
 \title{Plots the biomass with confidence intervals}
 \usage{
-plotBio.fn(dir, bio, CI = 0.95, scalar = 1e+06, gap = 0.03,
-  ylab = "Biomass ('000 mt)", xlab = "Year", main = NULL, ylim = NULL,
-  add = FALSE, col = "black", dopng = FALSE, ...)
+plotBio.fn(dir, dat, survey = "NWFSCBT", CI = 0.95, scalar = 1e+06,
+  gap = 0.03, ylab = "Biomass ('000 mt)", xlab = "Year", main = NULL,
+  ylim = NULL, add = FALSE, col = "black", dopng = FALSE, ...)
 }
 \arguments{
 \item{dir}{directory to save the file}
 
-\item{bio}{object created by the GetTotalBiomass.fn}
+\item{dat}{object created by the GetTotalBiomass.fn}
+
+\item{survey}{specify the survey data set for calculations. Options are "NWFSCBT", "Tri.Shelf", "AFSC.Slope"}
 
 \item{CI}{confidence interval}
 
