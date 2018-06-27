@@ -4,7 +4,7 @@ author: "Chantel Wetzel"
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{nwfscSurvye}
+  %\VignetteIndexEntry{nwfscSurvey}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
@@ -83,6 +83,10 @@ plotBio.fn(dir = getwd(),
 ```
 The GetTotalBiomassExecel.fn returns an index of abundance. The file input is the Excel file provided by the survey team where the data are expanded based on a selected stratification. The design based index is calculated based on the defined stratas that the data within the spreadsheet are expanded upon. The function writes a csv file inside the dir input location to a "forSS" folder. The plotBio.fn plots the calculated design based index from the calculated index of abundance from the GetTotalBiomassExecel.fn. If the dopng is set to true a "plot" folder will be created in the directory location and a png of the plot will be saved.
 
+The plot of the design-based index of abundance: 
+<!--  !<center>[](https://github.com/nwfsc-assess/nwfscSurvey/vignettes/images/NWFSCBT_designed_based_index.png) {width=75%}<center>-->
+<center>![](C:/Users/Chantel.Wetzel/Documents/GitHub/nwfscSurvey/vignettes/images/NWFSCBT_designed_based_index.png){width=65%}<center>
+
 #### Length composition data
 Read in the length composition data within the Excel file:
 ```r
@@ -125,7 +129,10 @@ plotFreqData.fn(dir = getwd(),
                 dopng = TRUE)
 
 ```
-If the dopng is set to true a "plot" folder will be created in the directory location and a png of the plot will be saved.
+If the dopng is set to true a "plot" folder will be created in the directory location and a png of the plot will be saved: 
+
+<!--  !<center>[](https://github.com/nwfsc-assess/nwfscSurvey/vignettes/images/Survey_Length_Frequency.png) {width=75%}<center>-->
+<center>![](C:/Users/Chantel.Wetzel/Documents/GitHub/nwfscSurvey/vignettes/images/Survey_Length_Frequency.png){width=65%}<center>
 
 #### Marginal age composition data
 Read in the age data:
