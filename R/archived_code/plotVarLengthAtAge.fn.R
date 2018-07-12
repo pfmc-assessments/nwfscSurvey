@@ -23,7 +23,7 @@
 #'
 #' @export
 
-PlotvarLengthAtAge.fn <- function(dir, dat, survey, ageBin=1, bySex=T, parStart=c(52,0.09,1), estVB=T, bins=NULL, legX="bottomleft", legY=NULL, dopng = FALSE,...) 
+varLengthAtAge.fn <- function(dir, dat, survey, ageBin=1, bySex=T, parStart=c(52,0.09,1), estVB=T, bins=NULL, legX="bottomleft", legY=NULL, dopng = FALSE,...) 
 {
     #calculate and plot the sd and cv for length at age
     #if you enter estVB=F, then it uses the parStart as the VB parameters
@@ -40,42 +40,36 @@ PlotvarLengthAtAge.fn <- function(dir, dat, survey, ageBin=1, bySex=T, parStart=
     }
     VBopt.fn <- function(x,age,lengths) {sum((lengths-VB.fn(age,Linf=x[1],k=x[2],t0=x[3]))^2)}
 
-    #if(survey%in%c("Tri.Shelf", "AFSC.Slope")){
-    #    #dat$LENGTH_CM <- dat$Length_cm
-    #    dat$Age   <- dat$AGE
-    #    dat <- dat[!is.na(dat$Age),]
-    #    ind = which(dat$SEX == 3)
-    #    dat = dat[-ind,]
-    #}
+    if(survey%in%c("Tri.Shelf", "AFSC.Slope")){
+        dat$LENGTH_CM <- dat$Length_cm
+        dat$AGE_YRS   <- dat$AGE
+        dat <- dat[!is.na(dat$AGE_YRS),]
+        ind = which(dat$SEX == 3)
+        dat = dat[-ind,]
+    }
 
-    #if(survey == "NWFSCBT"){
-        dat <- dat[!is.na(dat$Age),]
-        dat <- dat[dat$Sex%in%c("F", "M"), ]
-    #}
-
-    datL <- dat[!is.na(dat$Age),]
-    if(is.null(bins)) {datL$Age_2 <- datL$Age}
-    if(!is.null(bins)) {datL$Age_2 <- findInterval(datL$Age,bins)}
+    datL <- dat[!is.na(dat$AGE_YRS),]
+    if(is.null(bins)) {datL$AGE_YRS_2 <- datL$AGE_YRS}
+    if(!is.null(bins)) {datL$AGE_YRS_2 <- findInterval(datL$AGE_YRS,bins)}
 
     if(!bySex) {
         datL <- list(allSex=datL)
         nn <- 1
     }
-
     if(bySex) {
-        #if(survey%in%c("Tri.Shelf", "AFSC.Slope")){
-        #    datL$sex <- rep(NA,nrow(datL))
-        #    datL[datL$SEX==2,"sex"] <- "F"
-        #    datL[datL$SEX==1,"sex"] <- "M"
+        if(survey%in%c("Tri.Shelf", "AFSC.Slope")){
+            datL$sex <- rep(NA,nrow(datL))
+            datL[datL$SEX==2,"sex"] <- "f"
+            datL[datL$SEX==1,"sex"] <- "m"
 
-        #    datLf <- datL[datL$sex=="F",]
-        #    datLm <- datL[datL$sex=="M",]
-        #    datL <- list(female=datLf,male=datLm)
-        #}
+            datLf <- datL[datL$sex=="f",]
+            datLm <- datL[datL$sex=="m",]
+            datL <- list(female=datLf,male=datLm)
+        }
 
         if(survey == "NWFSCBT"){
-            datLf <- datL[datL$Sex=="F",]
-            datLm <- datL[datL$Sex=="M",]
+            datLf <- datL[datL$SEX=="f",]
+            datLm <- datL[datL$SEX=="m",]
             datL <- list(female=datLf,male=datLm)            
         }
         nn <- 2
@@ -88,16 +82,16 @@ PlotvarLengthAtAge.fn <- function(dir, dat, survey, ageBin=1, bySex=T, parStart=
     names(out) <- names(datL)
     for(i in 1:length(datL)) {
         if(estVB) {
-            xpar <- optim(parStart,VBopt.fn,age=datL[[i]]$Age,lengths=datL[[i]]$Length_cm)$par
+            xpar <- optim(parStart,VBopt.fn,age=datL[[i]]$AGE_YRS,lengths=datL[[i]]$LENGTH_CM)$par
             cat("Estimated VB parameters for",names(datL)[i],xpar,"\n")
         }
         if(!estVB) {
             xpar <- parStart
         }
-        predL <- VB.fn(1:max(datL[[i]]$Age),xpar[1],xpar[2],xpar[3])
-        names(predL) <- as.character(1:max(datL[[i]]$Age))
+        predL <- VB.fn(1:max(datL[[i]]$AGE_YRS),xpar[1],xpar[2],xpar[3])
+        names(predL) <- as.character(1:max(datL[[i]]$AGE_YRS))
 
-        x <- split(datL[[i]]$Length_cm,datL[[i]]$Age_2)
+        x <- split(datL[[i]]$LENGTH_CM,datL[[i]]$AGE_YRS_2)
         xsd <- unlist(lapply(x,sd))
         xcv <- xsd/predL[names(xsd)]
         if(is.null(bins)) {ages <- as.numeric(names(xsd))}

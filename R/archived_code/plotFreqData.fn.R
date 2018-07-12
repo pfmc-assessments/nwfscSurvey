@@ -16,7 +16,7 @@
 #' @author Allan Hicks and Chantel Wetzel
 #' @export
 
-PlotFreqData.fn <- function(dir, dat, survey = "Survey", inch=0.15, ylab="Bins", xlab="Year", zero2NAs=T, main=NULL, xlim=NULL, dopng = FALSE, ...) {
+plotFreqData.fn <- function(dir, dat, survey = "Survey", inch=0.15, ylab="Bins", xlab="Year", zero2NAs=T, main=NULL, xlim=NULL, dopng = FALSE, ...) {
 
     plotdir <- paste0(dir, "/plots")
     plotdir.isdir <- file.info(plotdir)$isdir

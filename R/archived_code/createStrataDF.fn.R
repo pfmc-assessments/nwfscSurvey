@@ -18,21 +18,22 @@
 #' @export
 #' @seealso \code{\link{StrataAreas.fn}}
 
-CreateStrataDF.fn <- function(names=NA, depths, lats) {
+createStrataDF.fn <- function(names=NA, depths, lats) {
     fpath = system.file("data", "SA3.rda", package="nwfscSurvey")
-    load(fpath)    
+    load(fpath)
+
     out <- data.frame(
         name=NA,
         area=NA,
-        Depth_m.1=rep(depths[-length(depths)],length(lats)-1),
-        Depth_m.2=rep(depths[-1],length(lats)-1),
-        Latitude_dd.1=rep(lats[-length(lats)],each=length(depths)-1),
-        Latitude_dd.2=rep(lats[-1],each=length(depths)-1)
+        BOTTOM_DEPTH.1=rep(depths[-length(depths)],length(lats)-1),
+        BOTTOM_DEPTH.2=rep(depths[-1],length(lats)-1),
+        START_LATITUDE.1=rep(lats[-length(lats)],each=length(depths)-1),
+        START_LATITUDE.2=rep(lats[-1],each=length(depths)-1)
     )
 
     if (is.na(names[1])) {
         out$name=LETTERS[1:nrow(out)] }
     if (!is.na(names[1])) {
         out$name=names[1:nrow(out)] }
-    out <- StrataAreas.fn(strat.df = out, df = SA3)
+    out <- StrataAreas.fn(out)
 }
