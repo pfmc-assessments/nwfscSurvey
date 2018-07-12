@@ -2,6 +2,7 @@
 #' 
 #' @param dir directory to save the file
 #' @param Age.df age data frame 
+#' @param gender gender for SS 
 #' @param ageBins defined age bins
 #' @param agelow SS value
 #' @param agehigh SS value
@@ -13,7 +14,7 @@
 #' @export 
 #' @seealso  \code{\link{SS3.LF.fn}}
 
-SS3AF.fn <- function(dir, Age.df, ageBins, agelow = -1, agehigh = -1, ageErr = "NA", printfolder = "forSS", ...) {
+SS3AF.fn <- function(dir, Age.df, gender, ageBins, agelow = -1, agehigh = -1, ageErr = "NA", printfolder = "forSS", ...) {
 
 	# this does not work because it only renames the column, but does not replace the values
     #names(Age.df)[names(Age.df) %in% 'Age'] <- "Length"
