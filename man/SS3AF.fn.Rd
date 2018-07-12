@@ -4,13 +4,15 @@
 \alias{SS3AF.fn}
 \title{Wrapper function to create age frequency data in format for Stock Synthesis}
 \usage{
-SS3AF.fn(dir, Age.df, ageBins, agelow = -1, agehigh = -1, ageErr = "NA",
-  printfolder = "forSS", ...)
+SS3AF.fn(dir, Age.df, gender, ageBins, agelow = -1, agehigh = -1,
+  ageErr = "NA", printfolder = "forSS", ...)
 }
 \arguments{
 \item{dir}{directory to save the file}
 
 \item{Age.df}{age data frame}
+
+\item{gender}{gender for SS}
 
 \item{ageBins}{defined age bins}
 
