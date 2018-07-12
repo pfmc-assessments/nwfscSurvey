@@ -4,12 +4,14 @@
 \alias{StrataAreas.fn}
 \title{Determine strata area.}
 \usage{
-StrataAreas.fn(strat.df, convertFactor = 0.01)
+StrataAreas.fn(strat.df, df = SA3, convertFactor = 100)
 }
 \arguments{
 \item{strat.df}{A dataframe describing the strata name, area, and
 boundaries.  Boundaries are determined by latitude and bottom depth. See
 Details.}
+
+\item{df}{the dataframe to calculate areas for the West Coast}
 
 \item{convertFactor}{Multiplier on the area in SA3. Default = 0.01 to
 convert hectares to square km.}
@@ -43,5 +45,5 @@ in the example below).
 SA3 is provided in this package.
 }
 \author{
-Allan Hicks with help from John Wallace.
+Allan Hicks and Chantel Wetzel with help from John Wallace.
 }
