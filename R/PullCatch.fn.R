@@ -96,6 +96,9 @@ PullCatch.fn <- function (Species = "Sebastes pinniger", YearRange = c(1000, 500
         }
     }
 
+    if (length(YearRange) == 1) {
+        YearRange <- c(YearRange, YearRange)    }
+
     # Pull data for the specific species for the following variables
     Vars <- c("scientific_name", "year", "subsample_count", "subsample_wt_kg","project", "cpue_kg_per_ha_der",
         	  "total_catch_numbers", "total_catch_wt_kg", "vessel", "tow")
@@ -108,6 +111,7 @@ PullCatch.fn <- function (Species = "Sebastes pinniger", YearRange = c(1000, 500
                ",date_dim$year>=", YearRange[1], ",date_dim$year<=", YearRange[2], "&variables=", 
                paste0(Vars, collapse = ","))
 
+    print("Pulling catch data. This can take up to ~ 30 seconds.")
     # Pull data from the warehouse
     DataPull <- try(jsonlite::fromJSON(UrlText))
     if(!is.data.frame(DataPull)) {
@@ -141,6 +145,14 @@ PullCatch.fn <- function (Species = "Sebastes pinniger", YearRange = c(1000, 500
     
     # Fill in zeros where needed
     Out$total_catch_wt_kg[is.na(Out$total_catch_wt_kg)] <- 0
+
+    Out$CPUE_kg_per_ha[is.na(Out$CPUE_kg_per_ha)] <- 0
+
+    Out$Subsample_count[is.na(Out$Subsample_count)] <- 0
+
+    Out$Subsample_wt_kg[is.na(Out$Subsample_wt_kg)] <- 0
+
+    Out$total_catch_numbers[is.na(Out$total_catch_numbers)] <- 0
 
     # Need to check what this is doing
     noArea = which(is.na(Out$Area_Swept_ha))

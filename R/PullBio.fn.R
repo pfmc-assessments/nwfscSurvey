@@ -63,7 +63,7 @@ PullBio.fn <- function (Species = "Sebastes pinniger", YearRange = c(1000, 5000)
         YearRange <- c(YearRange, YearRange)    }
 
     Vars <- c("project", "trawl_id", "scientific_name", "year", "vessel", "pass", 
-              "tow", "date_dim$full_date", "depth_ftm", "weight_kg", 
+              "tow", "date_dim$full_date", "depth_m", "weight_kg", 
               "length_cm", "sex", "age_years", "latitude_dd", "longitude_dd")
 
     UrlText  <- paste0(
@@ -74,21 +74,26 @@ PullBio.fn <- function (Species = "Sebastes pinniger", YearRange = c(1000, 5000)
                 ",date_dim$year>=",  YearRange[1], ",date_dim$year<=", YearRange[2], "&variables=", 
                 paste0(Vars, collapse = ","))
 
-
+    print("Pulling biological data. This can take upt ~ 30 seconds.")
     DataPull <- try(jsonlite::fromJSON(UrlText))
     if(!is.data.frame(DataPull)) {       
          stop(cat("\nNo data returned by the warehouse for the filters given.\n Make sure the year range is correct for the project selected, \n otherwise there may be no data for this species from this project.\n"))
     }
 
-    Data <- rename_columns(DataPull, newname = c("Trawl_id", "Year", "Vessel", "Project", "Pass", "Scientific_Name", "Tow", "Date", "Depth_ftm", "Weight_kg", "Length_cm", "Sex", "Age", "Latitude_dd", "Longitude_dd"))
+    Data <- rename_columns(DataPull, newname = c("Trawl_id", "Year", "Vessel", "Project", "Pass", "Scientific_Name", "Tow", "Date", "Depth_m", "Weight", "Length_cm", "Sex", "Age", "Latitude_dd", "Longitude_dd"))
 
-    Data <- Data[, c("Trawl_id", "Year", "Vessel", "Project", "Pass", "Tow", "Date", "Depth_ftm", "Scientific_Name", "Weight_kg", "Length_cm", "Sex", "Age", "Latitude_dd", "Longitude_dd")]
+    Data <- Data[, c("Trawl_id", "Year", "Vessel", "Project", "Pass", "Tow", "Date", "Depth_m", "Scientific_Name", "Weight", "Length_cm", "Sex", "Age", "Latitude_dd", "Longitude_dd")]
 
     Data$Date <- chron::chron(format(as.POSIXlt(Data$Date, format = "%Y-%m-%dT%H:%M:%S"), "%Y-%m-%d"), format = "y-m-d", out.format = "YYYY-m-d")
 
     Data$Trawl_id = as.character(Data$Trawl_id)
 
     Data$Project = projectShort
+
+
+    Data$Depth_m   <- as.numeric(as.character(Data$Depth_m))
+    Data$Length_cm <- as.numeric(as.character(Data$Length_cm))
+    Data$Age       <- as.numeric(as.character(Data$Age))
 
     if(SaveFile){
         time = Sys.time()

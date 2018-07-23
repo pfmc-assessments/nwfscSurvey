@@ -26,24 +26,8 @@
 #' @export
 
 Biomass.fn <- function(dir, dat, strat.vars = c("Depth_m","Latitude_dd"), strat.df, printfolder = "forSS", outputMedian = T, 
-                                     verbose = TRUE, convert = 100, season = NA, fleet = NA)  {
-
-    #if(removeCAN) {
-    #    # This filters by HAULJOIN which no longer is provided in the database
-    #    #fpath = system.file("data", "AFSCforeign_hauls.rda", package="nwfscSurvey")
-    #    #load(fpath)
-    #    #load("AFSCforeign_hauls.rda")
-    #    #foreignHauls = AFSCforeign_hauls
-    #    #foreignHauls <- read.csv(file.path(directory,foreignfile))
-    #    #foreignInd <- !(dat$HAULJOIN %in% foreignHauls$HAULJOIN)
-    #    #dat <- dat[foreignInd,]
-    #    # if(verbose) {cat(sum(foreignInd),"rows kept (or",sum(!foreignInd),"removed) out of",totRows,"after removing foreign hauls\n")}
-
-    #    # Simple split based on latitude
-    #    totRows = dim(dat)[1]
-    #    dat = dat[dat$Latitude_dd <= 49,]
-    #    if(verbose) {cat(dim(dat)[1],"rows kept (or",totRows - dim(dat)[1] ,"removed) out of", totRows,"after removing foreign hauls\n")}
-    #}     
+                                     verbose = TRUE, convert = 1, season = NA, fleet = NA)  {
+    
 
     if(is.null(dat$cpue_kg_km2)) stop("There must be a column called cpue_kg_km2 in the dataframe")
     row.names(strat.df) <- strat.df[,1]     #put in rownmaes to make easier to index later
@@ -70,9 +54,9 @@ Biomass.fn <- function(dir, dat, strat.vars = c("Depth_m","Latitude_dd"), strat.
         if(any(nobs<=1)) {
             cat("*****\nWARNING: At least one stratum in year",x[[1]][1,"year"],"has fewer than one observation.\n*****\n")
         }
-        meanCatchRateInStrata <- unlist(lapply(x,function(x){mean(x$cpue_kg_km2)}))
-        varCatchRateInStrata  <- unlist(lapply(x,function(x){var (x$cpue_kg_km2)}))
-        stratStats <- data.frame(name=namesStrat,area=strat.df[namesStrat,2],ntows=nobs,meanCatchRate=meanCatchRateInStrata,varCatchRate=varCatchRateInStrata)
+        meanCatchRateInStrata <- unlist(lapply(x, function(x) {mean(x$cpue_kg_km2)}))
+        varCatchRateInStrata  <- unlist(lapply(x, function(x) {var (x$cpue_kg_km2)}))
+        stratStats <- data.frame(name = namesStrat, area = strat.df[namesStrat,2], ntows = nobs, meanCatchRate = meanCatchRateInStrata, varCatchRate = varCatchRateInStrata)
         stratStats$Bhat <- stratStats$area*stratStats$meanCatchRate
         stratStats$varBhat <- stratStats$varCatchRate*(stratStats$area*stratStats$area)/stratStats$ntows
         stratStats

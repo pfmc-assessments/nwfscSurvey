@@ -50,7 +50,7 @@ SurveyAFs.fn <- function(dir, datA, datTows, strat.vars=c("Depth_m","Latitude_dd
                        lgthBins = lgthBins, SSout = SSout, meanRatioMethod = meanRatioMethod,
                        gender = gender, NAs2zero= NAs2zero,  sexRatioUnsexed = sexRatioUnsexed, maxSizeUnsexed = maxSizeUnsexed, 
                        partition = partition,  fleet = fleet, nSamps = nSamps, 
-                       month = month, printfolder = printfolder, remove999 = TRUE)
+                       month = month, printfolder = printfolder, remove999 = TRUE, switch = TRUE)
 
 
     Ages.out = cbind(out[,1:5],

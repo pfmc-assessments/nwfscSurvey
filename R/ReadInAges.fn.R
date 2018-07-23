@@ -18,59 +18,18 @@
 #' @author Allan Hicks and Chantel Wetzel
 #' @export 
 
-ReadInAges.fn <- function(dir, dat, species=c(NA), survey, subset_years = NULL, removeCAN=TRUE, verbose=TRUE) {
+ReadInAges.fn <- function(dat, subset_years = NULL, verbose=TRUE) {
 
-    if (survey != "NWFSCBT"){ 
-        dat = dat$Ages[dat$Ages$SURVEY==survey,]
-    
-        if(length(subset_years)>0) { dat = dat[dat$YEAR%in%subset_years,] }
-    
-        totRows <- nrow(dat)
-        dat <- dat[dat$SPECIES_CODE %in% species,]
-        if(verbose) {cat(nrow(dat),"rows kept out of",totRows,"after filtering by species\n")}
-        totRows <- nrow(dat)
-        
-        if(removeCAN) {
-            fpath = system.file("data", "AFSCforeign_hauls.rda", package="nwfscSurvey")
-            load(fpath)
 
-            foreignHauls = AFSCforeign_hauls
-            foreignInd <- !(dat$HAULJOIN %in% foreignHauls$HAULJOIN)
-            dat <- dat[foreignInd,]
-            if(verbose) {cat(sum(foreignInd),"rows kept (or",sum(!foreignInd),"removed) out of",totRows,"after removing foreign hauls\n")}
-            totRows <- nrow(dat)
-        }        
-        
-        dat <- dat[!is.na(dat$AGE),]
-        if(verbose) {cat(nrow(dat),"rows kept out of",totRows,"after removing missing ages\n")}
-    
-        dat$Length_cm   <- dat$LENGTH/10
-        dat$Weight      <- dat$SP_TOW_WGHT_KG
-        dat$Number_fish <- dat$SP_TOW_NUM
-        dat$year        <- dat$YEAR
-    }
+    if(length(subset_years)>0) { dat = dat[dat$Year%in%subset_years,] }
 
-    if (survey == "NWFSCBT"){
-        if(length(subset_years)>0) { dat = dat[dat$Year%in%subset_years,] 
-            if (!subset_years%in%2003:2020)
-                cat("There are subset years outside the range from the NWFSC bottom trawl survey\n")
-        }
+    totRows    <- nrow(dat)
+    dat        <- dat[!is.na(dat$Age),]
+    dat$Weight <- as.numeric(as.character(dat$Weight_kg)
+    dat$year   <- as.numeric(as.character(dat$Year)
 
-        totRows <- nrow(dat)
-        dat <- dat[!is.na(dat$Age),]
-        # Determine the number of fish captured in each haul
-        #num = table(as.character(dat$Trawl_id))
-        #Number_of_fish <- numeric(dim(dat)[1])
-        #for (i in 1:length(num)){
-        #    find = which(names(num)[i] == dat$Trawl_id)
-        #    Number_of_fish[find] = as.numeric(num[i])
-        #}
-        #dat$Number_of_fish = Number_of_fish
-        dat$Weight <- dat$Weight_kg
-        dat$year   <- dat$Year
+    if(verbose) {cat("There are ", nrow(dat)," of length kept out of",totRows,"after removing fish without ages\n")}
 
-        if(verbose) {cat("There are ", nrow(dat)," of length kept out of",totRows,"after removing fish without ages\n")}
-    }
     
     return(dat)   
 }

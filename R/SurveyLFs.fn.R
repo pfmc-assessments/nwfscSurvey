@@ -22,32 +22,42 @@
 #' @param NAs2zero change NAs to zeros
 #' @param sexRatioUnsexed sex ratio to apply to any length bins of a certain size or smaller as defined by the maxSizeUnsexed
 #' @param maxSizeUnsexed all sizes below this threshold will assign unsexed fish by sexRatio set equal to 0.50, fish larger than this size will have unsexed fish assigned by the calculated sex ratio in the data.
+#' @param sexRatioExpanded switch to allow the user to apply the sex ratio post expanded numbers based on strata or raw data from each tow
 #' @param partition partition for Stock Synthesis
 #' @param fleet fleet number
 #' @param nSamps effective sample size for Stock Synthesis
 #' @param month month the samples were collected
 #' @param printfolder folder where the length comps will be saved
 #' @param remove999 the output object by the function will have the 999 column combined with the first length bin
+#' @param switch determined length or age data being processed
+#' @param outputStage1 return the first stage expanded data without compiling it for SS
 #'
 #' @author Allan Hicks and Chantel Wetzel
 #' @export 
 #' @seealso \code{\link{StrataFactors.fn}}
+#' @seealso \code{\link{SexRatio.fn}}
 
 SurveyLFs.fn <- function(dir, datL, datTows, strat.vars=c("Depth_m","Latitude_dd"), strat.df=NULL, lgthBins=1, SSout=TRUE, meanRatioMethod=TRUE,
-                         gender=3, NAs2zero=T, sexRatioUnsexed=NA, maxSizeUnsexed=NA, partition=0, fleet="Enter Fleet", 
-                         nSamps="Enter Samps", month="Enter Month", printfolder = "forSS", remove999 = TRUE)  {
+                         gender=3, NAs2zero=T, sexRatioUnsexed=NA, maxSizeUnsexed=NA, sexRatioExpanded = FALSE, partition=0, fleet="Enter Fleet", 
+                         nSamps="Enter Samps", month="Enter Month", printfolder = "forSS", remove999 = TRUE, switch = NULL, outputStage1 = FALSE)  {
+
+    if(is.null(switch)){
+        totRows  <- nrow(datL)
+        datL      <- datL[!is.na(datL$Length_cm),]
+        cat("There are ", nrow(datL)," of length kept out of",totRows,"after removing missing lengths\n")
+    }
 
     row.names(strat.df) <- strat.df[,1]     #put in rownames to make easier to index later
     numStrata <- nrow(strat.df)
     ind <- !duplicated(datL$Trawl_id)
-    datB <- datL[ind,c("Trawl_id", "Weight", strat.vars, "year")]    #individual tow data
+    datB <- datL[ind,c("Trawl_id", "Weight", strat.vars, "Year")]    #individual tow data
     tows = unique(datL$Trawl_id)
     Area_Swept_km2 <- Area_Swept <- Total_fish_number <- Sub_fish_number <- Sexed_fish <- numeric(dim(datB)[1])
     for (i in 1:length(tows)){
         find = which(tows[i] == datTows$Trawl_id)
         area = datTows$Area_Swept_ha[find] / 0.01 #* 0.01
         tot.num = datTows$total_catch_numbers[find]
-        sub.num = datTows$subsample_count[find]
+        sub.num = datTows$Subsample_count[find]
 
         find = which(tows[i] == datL$Trawl_id)
         Sexed_fish[i] = sum(datL[find, "Sex"] %in% c("F", "M"))
@@ -135,45 +145,9 @@ SurveyLFs.fn <- function(dir, datL, datTows, strat.vars=c("Depth_m","Latitude_dd
     datB$Length_cm <- as.numeric(as.character(datB$Length_cm))
     datB$allLs <- Lengths[findInterval(datB$Length_cm, Lengths, all.inside=T)]
 
-   
-    #incorporate unsexed fish using sex ratios
-    if(length(sexRatioUnsexed)==1 & !is.na(sexRatioUnsexed)) {
-        datB$sexRatio <- datB$expF/(datB$expF+datB$expM)
-        # The below line was changed to as.character from as.numeric because it was not finding the correct lengths : CRW
-        datB$sexRatio[datB$Length_cm <= maxSizeUnsexed] <- sexRatioUnsexed
-
-        #in case there are any NA's, we can temporarily put in zeros for calcualtions below
-        datB[is.na(datB$expF),"expF"] <- 0
-        datB[is.na(datB$expM),"expM"] <- 0
-
-        #now fill in any missing ratios with ratios of that bin from other years and strata (can probably be done more efficiently)
-        noRatio <- which(is.na(datB$sexRatio))
-        if(length(noRatio)>0) cat("\nThese are sex ratios that were filled in using observations from the same lengths from different strata and years\n")
-        for(i in noRatio) {
-            inds <- datB$allLs==datB$allLs[i]
-            tmpF <- sum(datB$expF[inds])
-            tmpM <- sum(datB$expM[inds])
-            datB$sexRatio[i] <- tmpF/(tmpF+tmpM)
-            print(datB[i,c("Length_cm","allLs","expF","expM","sexRatio")])
-        }
-
-        noRatio <- which(is.na(datB$sexRatio))
-        if(length(noRatio)>0) cat("\nThese are sex ratios that were filled in using observations from nearby lengths\n")
-        for(i in noRatio) {
-            nearLens <- Lengths[c(which(Lengths==datB$allLs[i])-1,which(Lengths==datB$allLs[i])+1)]
-            inds <- datB$allLs %in% nearLens
-            tmpF <- sum(datB$expF[inds])
-            tmpM <- sum(datB$expM[inds])
-            datB$sexRatio[i] <- tmpF/(tmpF+tmpM)
-            print(datB[i,c("Length_cm","allLs","expF","expM","sexRatio")])
-        }
-        noRatio <- which(is.na(datB$sexRatio))
-        if(length(noRatio)>0) cat("Some sex ratios were left unknown and omitted\n\n")
-        if(length(noRatio)==0) cat("Done filling in sex ratios\n\n")
-
-        # These lines change to add the actual unsexed fish to the expansion factors -CRW
-        datB$expF <- datB$expF + datB$sexRatio*datB$expU
-        datB$expM <- datB$expM + (1-datB$sexRatio)*datB$expU
+    # Apply the sex ratio to the raw data based on each tow
+    if(sexRatioExpanded == FALSE){
+        datB = SexRatio.fn(datB = datB, maxSizeUnsexed = maxSizeUnsexed, sexRatioUnsexed = sexRatioUnsexed)
     }
 
     # If no sex ratio is used to fill in the unsexed fish, need to add replace NAs with 0 for female and male fish
@@ -184,14 +158,14 @@ SurveyLFs.fn <- function(dir, datL, datTows, strat.vars=c("Depth_m","Latitude_dd
     }
     
     #sum over strata within year
-    datB.yrstr <- split(datB,as.character(datB$year))
+    datB.yrstr <- split(datB,as.character(datB$Year))
     datB.yrstr <- lapply(datB.yrstr,function(x){split(x,as.character(x$stratum))})
 
 
     lengthTotalRatio.fn <- function(x,strat) {
         #function to sum lengths within a stratum and a year
         #Uses the Total Ratio estimate and Mean ratio estimate
-        theYear <- unique(x$year)
+        theYear <- unique(x$Year)
         theStratum <- unique(x$stratum)
         if(length(theYear)!=1) stop("there is a problem in length.fn. There should be exactly one year in each list item.\n")
         if(length(theStratum)!=1) stop("there is a problem in length.fn. There should be exactly one stratum in each list item.\n")
@@ -200,7 +174,7 @@ SurveyLFs.fn <- function(dir, datL, datTows, strat.vars=c("Depth_m","Latitude_dd
         a.h <- sum(a.hi)  #total area swept in stratum
         A.h <- strat[strat$name==theStratum,"area"]
         x$LENGTH_cm <- as.numeric(as.character(x$Length_cm))
-        xcols  <- c("year","stratum") #must be two or more columns to keep the selection a dataframe
+        xcols  <- c("Year","stratum") #must be two or more columns to keep the selection a dataframe
         lgths  <- split(x,x$LENGTH_cm)
         LjhAll <- unlist(lapply(lgths, function(x){sum(x$expAll)}))
         out    <- data.frame(x[rep(1, length(LjhAll)), xcols], area = A.h, areaSwept = a.h, 
@@ -217,7 +191,7 @@ SurveyLFs.fn <- function(dir, datL, datTows, strat.vars=c("Depth_m","Latitude_dd
     lengthMeanRatio.fn <- function(x, strat, numTows) {
         #function to sum lengths within a stratum and a year
         #Uses the Mean ratio estimate
-        theYear <- unique(x$year)
+        theYear <- unique(x$Year)
         theStratum <- unique(x$stratum)
         if(length(theYear)!=1) stop("there is a problem in length.fn. There should be exactly one year in each list item.\n")
         if(length(theStratum)!=1) stop("there is a problem in length.fn. There should be exactly one stratum in each list item.\n")
@@ -225,7 +199,7 @@ SurveyLFs.fn <- function(dir, datL, datTows, strat.vars=c("Depth_m","Latitude_dd
         ntows <- numTows[as.character(theYear),theStratum]
         A.h   <- strat[strat$name == theStratum, "area"]
         x$LENGTH_cm <- as.numeric(as.character(x$Length_cm))
-        xcols  <- c("year","stratum") #must be two or more columns to keep the selection a dataframe
+        xcols  <- c("Year","stratum") #must be two or more columns to keep the selection a dataframe
         lgths  <- split(x, x$LENGTH) # splits by length bin for year and stratum
         LjhAll <- unlist(lapply(lgths, function(x){sum( x$expAll / x$areaFished)})) # calculated the expansion for unsexed by length bin
         out    <- data.frame(x[rep(1, length(LjhAll)), xcols], area = A.h, 
@@ -245,6 +219,36 @@ SurveyLFs.fn <- function(dir, datL, datTows, strat.vars=c("Depth_m","Latitude_dd
     else{
         L.year.str <- lapply(datB.yrstr, function(x){lapply(x, lengthTotalRatio.fn, strat = strat.df)})
     }
+
+    # Apply the sex ratio to the raw data based on each tow
+    # if(sexRatioExpanded = FALSE){
+    #     datB = SexRatio.fn(datB = datB, maxSizeUnsexed = maxSizeUnsexed, sexRatioUnsexed = sexRatioUnsexed)
+    # }
+
+    if (outputStage1){
+        unlist.fn <- function(x){
+            ytmp    <- unlist(lapply(x, function(x){ x$Year}))
+            stmp    <- unlist(lapply(x, function(x){ as.character(x$stratum)}))
+            atmp    <- unlist(lapply(x, function(x){ as.numeric(as.character(x$area))}))
+            ltmp    <- unlist(lapply(x, function(x){ as.numeric(as.character(x$LENGTH))}))
+            alltmp  <- unlist(lapply(x, function(x){ as.numeric(as.character(x$TotalLjhAll))}))
+            ftmp    <- unlist(lapply(x, function(x){ as.numeric(as.character(x$TotalLjhF))}))
+            mtmp    <- unlist(lapply(x, function(x){ as.numeric(as.character(x$TotalLjhM))}))
+            utmp    <- unlist(lapply(x, function(x){ as.numeric(as.character(x$TotalLjhU))}))
+
+            df = data.frame(ytmp, stmp, atmp, ltmp, alltmp, ftmp, mtmp, utmp)
+            return(df)
+        }
+
+        df = NULL
+        for (a in 1:length(L.year.str)){
+            out <- unlist.fn(L.year.str[[a]])
+            df  <- rbind(df, out)
+        }
+        colnames(df) = c("Year", "Stratum", "Area", "Length", "TotalLjhAll", "TotalLjF","TotalLjM","TotalLjhU")
+        return(df)
+    }
+
 
     year.fn <- function(x,Lengths) {   #calculate the LFs by year
         theLs.yr    <- unlist(lapply(x, function(x){ as.numeric(as.character(x$LENGTH))}))
