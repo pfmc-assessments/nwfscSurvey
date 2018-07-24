@@ -50,12 +50,12 @@ SurveyLFs.fn <- function(dir, datL, datTows, strat.vars=c("Depth_m","Latitude_dd
     row.names(strat.df) <- strat.df[,1]     #put in rownames to make easier to index later
     numStrata <- nrow(strat.df)
     ind <- !duplicated(datL$Trawl_id)
-    datB <- datL[ind,c("Trawl_id", "Weight", strat.vars, "Year")]    #individual tow data
+    datB <- datL[ind,c("Trawl_id", "Weight", strat.vars, "Longitude_dd", "Year")]    #individual tow data
     tows = unique(datL$Trawl_id)
     Area_Swept_km2 <- Area_Swept <- Total_fish_number <- Sub_fish_number <- Sexed_fish <- numeric(dim(datB)[1])
     for (i in 1:length(tows)){
         find = which(tows[i] == datTows$Trawl_id)
-        area = datTows$Area_Swept_ha[find] / 0.01 #* 0.01
+        area = datTows$Area_Swept_ha[find] * 0.01 
         tot.num = datTows$total_catch_numbers[find]
         sub.num = datTows$Subsample_count[find]
 
@@ -68,7 +68,7 @@ SurveyLFs.fn <- function(dir, datL, datTows, strat.vars=c("Depth_m","Latitude_dd
         Total_fish_number[find] = tot.num
         Sub_fish_number[find] = sub.num
     }
-    #datB$areaFished <- Area_Swept_km2  #area swept for each tow in km2
+
     datB$areaFished <- Area_Swept
     datB$Number_fish<- Total_fish_number
     datB$Sub_fish_number <- Sub_fish_number
@@ -150,12 +150,23 @@ SurveyLFs.fn <- function(dir, datL, datTows, strat.vars=c("Depth_m","Latitude_dd
         datB = SexRatio.fn(datB = datB, maxSizeUnsexed = maxSizeUnsexed, sexRatioUnsexed = sexRatioUnsexed)
     }
 
-    # If no sex ratio is used to fill in the unsexed fish, need to add replace NAs with 0 for female and male fish
-    # in order to avoid the whole length bin resulting in an NA value when calculating the mean ratio
-    if(is.na(sexRatioUnsexed)) {
-        datB[is.na(datB$expF), "expF"] = 0
-        datB[is.na(datB$expM), "expM"] = 0
+
+    if (outputStage1){
+        stageOne = datB[,c("Trawl_id", "Year", "Length_cm", "Depth_m", "Latitude_dd", "Longitude_dd", "stratum", "areaFished", 
+                "Number_fish", "true_sub_Ufish", "true_sub_MFfish",  "expAll", "expF", "expM", "expU")]
+        # Rename columns
+        names(stageOne)[names(stageOne) == "expAll"] <- "Nall"
+        names(stageOne)[names(stageOne) == "expF"]   <- "Nf"
+        names(stageOne)[names(stageOne) == "expM"]   <- "Nm"
+        names(stageOne)[names(stageOne) == "expU"]   <- "Nu"
+        names(stageOne)[names(stageOne) == "true_sub_Ufish"]   <- "subsample_U"
+        names(stageOne)[names(stageOne) == "true_sub_MFfish"]   <- "subsample_MF"
+
+        cat("\nNOTE: Stage 1 expansion returned by the function.
+            \n\tComposition file not written for SS.\n\n")
+        return (stageOne)
     }
+
     
     #sum over strata within year
     datB.yrstr <- split(datB,as.character(datB$Year))
@@ -220,34 +231,11 @@ SurveyLFs.fn <- function(dir, datL, datTows, strat.vars=c("Depth_m","Latitude_dd
         L.year.str <- lapply(datB.yrstr, function(x){lapply(x, lengthTotalRatio.fn, strat = strat.df)})
     }
 
+
     # Apply the sex ratio to the raw data based on each tow
     # if(sexRatioExpanded = FALSE){
     #     datB = SexRatio.fn(datB = datB, maxSizeUnsexed = maxSizeUnsexed, sexRatioUnsexed = sexRatioUnsexed)
     # }
-
-    if (outputStage1){
-        unlist.fn <- function(x){
-            ytmp    <- unlist(lapply(x, function(x){ x$Year}))
-            stmp    <- unlist(lapply(x, function(x){ as.character(x$stratum)}))
-            atmp    <- unlist(lapply(x, function(x){ as.numeric(as.character(x$area))}))
-            ltmp    <- unlist(lapply(x, function(x){ as.numeric(as.character(x$LENGTH))}))
-            alltmp  <- unlist(lapply(x, function(x){ as.numeric(as.character(x$TotalLjhAll))}))
-            ftmp    <- unlist(lapply(x, function(x){ as.numeric(as.character(x$TotalLjhF))}))
-            mtmp    <- unlist(lapply(x, function(x){ as.numeric(as.character(x$TotalLjhM))}))
-            utmp    <- unlist(lapply(x, function(x){ as.numeric(as.character(x$TotalLjhU))}))
-
-            df = data.frame(ytmp, stmp, atmp, ltmp, alltmp, ftmp, mtmp, utmp)
-            return(df)
-        }
-
-        df = NULL
-        for (a in 1:length(L.year.str)){
-            out <- unlist.fn(L.year.str[[a]])
-            df  <- rbind(df, out)
-        }
-        colnames(df) = c("Year", "Stratum", "Area", "Length", "TotalLjhAll", "TotalLjF","TotalLjM","TotalLjhU")
-        return(df)
-    }
 
 
     year.fn <- function(x,Lengths) {   #calculate the LFs by year

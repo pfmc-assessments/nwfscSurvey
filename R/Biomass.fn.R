@@ -30,6 +30,9 @@ Biomass.fn <- function(dir, dat, strat.vars = c("Depth_m","Latitude_dd"), strat.
     
 
     if(is.null(dat$cpue_kg_km2)) stop("There must be a column called cpue_kg_km2 in the dataframe")
+    # Calculate the CPUE in terms of nubmer
+    dat$cpue_km2_count = 0.01 * ( dat$total_catch_numbers / (dat$Area_Swept_ha))
+
     row.names(strat.df) <- strat.df[,1]     #put in rownmaes to make easier to index later
     numStrata <- nrow(strat.df)
 
@@ -56,17 +59,28 @@ Biomass.fn <- function(dir, dat, strat.vars = c("Depth_m","Latitude_dd"), strat.
         }
         meanCatchRateInStrata <- unlist(lapply(x, function(x) {mean(x$cpue_kg_km2)}))
         varCatchRateInStrata  <- unlist(lapply(x, function(x) {var (x$cpue_kg_km2)}))
-        stratStats <- data.frame(name = namesStrat, area = strat.df[namesStrat,2], ntows = nobs, meanCatchRate = meanCatchRateInStrata, varCatchRate = varCatchRateInStrata)
+
+        meanNumbersInStrat    <- unlist(lapply(x, function(x) {mean(x$cpue_km2_count)}))
+        varNumbersInStrat     <- unlist(lapply(x, function(x) {var (x$cpue_km2_count)}))
+
+        stratStats <- data.frame(name = namesStrat, area = strat.df[namesStrat,2], ntows = nobs, 
+                                 meanCatchRate = meanCatchRateInStrata, varCatchRate = varCatchRateInStrata)
+
         stratStats$Bhat <- stratStats$area*stratStats$meanCatchRate
         stratStats$varBhat <- stratStats$varCatchRate*(stratStats$area*stratStats$area)/stratStats$ntows
+
+        stratStats$Nhat    <- stratStats$area*meanNumbersInStrat
+        stratStats$varNhat <- varNumbersInStrat*(stratStats$area*stratStats$area)/stratStats$ntows
         stratStats
     }
-    yearlyStrataEsts <- lapply(dat.yr,yr.fn)
+
+    yearlyStrataEsts <- lapply(dat.yr, yr.fn)
     names(yearlyStrataEsts) <- paste("Year",names(yearlyStrataEsts),sep="")
     
     yrTotal.fn <- function(x) {
         data.frame(Bhat=sum(x$Bhat),seBhat=sqrt(sum(x$varBhat)),cv=sqrt(sum(x$varBhat))/sum(x$Bhat))
     }
+
     ests <- as.data.frame(t(as.data.frame(lapply(lapply(yearlyStrataEsts, yrTotal.fn),t)))) #some crazy stuff to put into a dataframe with years as rows
     logVar <- log(ests$cv^2+1)
     ln <- data.frame(year=substring(row.names(ests),5),meanBhat=ests$Bhat/convert,medianBhat=ests$Bhat*exp(-0.5*logVar)/convert,SElogBhat=sqrt(logVar))
