@@ -8,20 +8,9 @@ It reads in catch and station data and makes sure only the species necessary are
 removeCAN is a flag if you want tows in Canadian waters removed
    need the file called foreign_hauls.csv}
 \usage{
-ReadInLengths.fn(dir, dat, species = c(NA), survey, subset_years = NULL,
-  removeCAN = TRUE, verbose = TRUE)
+ReadInLengths.fn(dat, verbose = TRUE)
 }
 \arguments{
-\item{dir}{working directory where the datis located - not currently used}
-
-\item{species}{species name}
-
-\item{survey}{name of survey data to use. Options are "NWFSCBT", "Tri.Shelf" or "AFSC.Slope"}
-
-\item{subset_years}{specify the years to retain, default is NULL which will provide 1977, alternative input would be 1980:2002 to remove only 1977.}
-
-\item{removeCAN}{switch to remove Canadian hauls}
-
 \item{verbose}{print out comments}
 
 \item{data}{data file name}

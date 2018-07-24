@@ -17,8 +17,9 @@ SSout: if True the output is in a format pastable into SS dat file}
 SurveyLFs.fn(dir, datL, datTows, strat.vars = c("Depth_m", "Latitude_dd"),
   strat.df = NULL, lgthBins = 1, SSout = TRUE, meanRatioMethod = TRUE,
   gender = 3, NAs2zero = T, sexRatioUnsexed = NA, maxSizeUnsexed = NA,
-  partition = 0, fleet = "Enter Fleet", nSamps = "Enter Samps",
-  month = "Enter Month", printfolder = "forSS", remove999 = TRUE)
+  sexRatioExpanded = FALSE, partition = 0, fleet = "Enter Fleet",
+  nSamps = "Enter Samps", month = "Enter Month", printfolder = "forSS",
+  remove999 = TRUE, switch = NULL, outputStage1 = FALSE)
 }
 \arguments{
 \item{dir}{directory this is where the output files will be saved}
@@ -45,6 +46,8 @@ SurveyLFs.fn(dir, datL, datTows, strat.vars = c("Depth_m", "Latitude_dd"),
 
 \item{maxSizeUnsexed}{all sizes below this threshold will assign unsexed fish by sexRatio set equal to 0.50, fish larger than this size will have unsexed fish assigned by the calculated sex ratio in the data.}
 
+\item{sexRatioExpanded}{switch to allow the user to apply the sex ratio post expanded numbers based on strata or raw data from each tow}
+
 \item{partition}{partition for Stock Synthesis}
 
 \item{fleet}{fleet number}
@@ -56,6 +59,10 @@ SurveyLFs.fn(dir, datL, datTows, strat.vars = c("Depth_m", "Latitude_dd"),
 \item{printfolder}{folder where the length comps will be saved}
 
 \item{remove999}{the output object by the function will have the 999 column combined with the first length bin}
+
+\item{switch}{determined length or age data being processed}
+
+\item{outputStage1}{return the first stage expanded data without compiling it for SS}
 }
 \description{
 Epands the lengths up to the total stratum area then sums over strata
@@ -72,6 +79,8 @@ SSout: if True the output is in a format pastable into SS dat file
 }
 \seealso{
 \code{\link{StrataFactors.fn}}
+
+\code{\link{SexRatio.fn}}
 }
 \author{
 Allan Hicks and Chantel Wetzel

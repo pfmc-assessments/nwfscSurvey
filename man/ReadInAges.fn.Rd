@@ -7,23 +7,22 @@ It reads in data and makes sure only the species necessary are kept
 may want to keep NA (blank in Excel) to select the zero tows
 removeCAN is a flag if you want tows in Canadian waters removed}
 \usage{
-ReadInAges.fn(dir, dat, species = c(NA), survey, subset_years = NULL,
-  removeCAN = TRUE, verbose = TRUE)
+ReadInAges.fn(dat, subset_years = NULL, verbose = TRUE)
 }
 \arguments{
-\item{dir}{working directory where the results with be saved - not currently used}
-
 \item{dat}{data file name}
+
+\item{subset_years}{specify the years to retain, default is NULL which will provide 1977, alternative input would be 1980:2002 to remove only 1977.}
+
+\item{verbose}{write out comments}
+
+\item{dir}{working directory where the results with be saved - not currently used}
 
 \item{species}{species name to extract}
 
 \item{survey}{name of survey data to use. Options are "Tri.Shelf" or "AFSC.Slope"}
 
-\item{subset_years}{specify the years to retain, default is NULL which will provide 1977, alternative input would be 1980:2002 to remove only 1977.}
-
 \item{removeCAN}{removes Canadian hauls based on the AFSCforeign_hauls.rda file}
-
-\item{verbose}{write out comments}
 }
 \description{
 Necessary column names

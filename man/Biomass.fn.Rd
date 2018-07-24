@@ -5,8 +5,8 @@
 \title{Calculates design based estimates from survey data for early West Coast surveys (e.g., Triennial, AFSC slope)}
 \usage{
 Biomass.fn(dir, dat, strat.vars = c("Depth_m", "Latitude_dd"), strat.df,
-  printfolder = "forSS", outputMedian = T, verbose = TRUE,
-  convert = 100, season = NA, fleet = NA)
+  printfolder = "forSS", outputMedian = T, verbose = TRUE, convert = 1,
+  season = NA, fleet = NA)
 }
 \arguments{
 \item{dir}{directory of the excel file}

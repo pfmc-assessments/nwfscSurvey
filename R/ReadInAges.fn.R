@@ -25,8 +25,8 @@ ReadInAges.fn <- function(dat, subset_years = NULL, verbose=TRUE) {
 
     totRows    <- nrow(dat)
     dat        <- dat[!is.na(dat$Age),]
-    dat$Weight <- as.numeric(as.character(dat$Weight_kg)
-    dat$year   <- as.numeric(as.character(dat$Year)
+    dat$Weight <- as.numeric(as.character(dat$Weight_kg))
+    dat$year   <- as.numeric(as.character(dat$Year))
 
     if(verbose) {cat("There are ", nrow(dat)," of length kept out of",totRows,"after removing fish without ages\n")}
 
