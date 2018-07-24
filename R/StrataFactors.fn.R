@@ -7,7 +7,7 @@
 #' @author Allan Hicks 
 #' @export 
 
-StrataFactors.fn <- function(dat,strat.vars,strat.df) {
+StrataFactors.fn <- function(dat, strat.vars, strat.df) {
 
     numStrata <- nrow(strat.df)   
     #create strata factors

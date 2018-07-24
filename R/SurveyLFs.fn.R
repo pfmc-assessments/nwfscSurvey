@@ -44,7 +44,7 @@ SurveyLFs.fn <- function(dir, datL, datTows, strat.vars=c("Depth_m","Latitude_dd
     if(is.null(switch)){
         totRows  <- nrow(datL)
         datL      <- datL[!is.na(datL$Length_cm),]
-        cat("There are ", nrow(datL)," of length kept out of",totRows,"after removing missing lengths\n")
+        cat("There are ", nrow(datL)," lengths kept out of",totRows,"records after removing missing lengths\n")
     }
 
     row.names(strat.df) <- strat.df[,1]     #put in rownames to make easier to index later
@@ -55,7 +55,7 @@ SurveyLFs.fn <- function(dir, datL, datTows, strat.vars=c("Depth_m","Latitude_dd
     Area_Swept_km2 <- Area_Swept <- Total_fish_number <- Sub_fish_number <- Sexed_fish <- numeric(dim(datB)[1])
     for (i in 1:length(tows)){
         find = which(tows[i] == datTows$Trawl_id)
-        area = datTows$Area_Swept_ha[find] * 0.01 
+        area = datTows$Area_Swept_ha[find] / 0.01 
         tot.num = datTows$total_catch_numbers[find]
         sub.num = datTows$Subsample_count[find]
 
@@ -196,6 +196,29 @@ SurveyLFs.fn <- function(dir, datL, datTows, strat.vars=c("Depth_m","Latitude_dd
         out    <- data.frame(out, LjhM = LjhM, TotalLjhM = round(A.h * LjhM / a.h))
         LjhU   <- unlist(lapply(lgths, function(x){sum(x$expU)}))
         out    <- data.frame(out, LjhU = LjhU, TotalLjhU = round(A.h * LjhU / a.h))
+
+        if(sexRatioExpanded == TRUE){
+            if(length(sexRatioUnsexed)==1 & !is.na(sexRatioUnsexed)) {
+                sexRatio = out$TotalLjhF / (out$TotalLjhF + out$TotalLjhM)
+                sexRatio[out$LENGTH <= maxSizeUnsexed] <- sexRatioUnsexed
+        
+                #now fill in any missing ratios with ratios of that bin from other years and strata (can probably be done more efficiently)
+                noRatio <- which(is.na(sexRatio))
+                if(length(noRatio)>0) {
+                    cat("\nThese are sex ratios that were filled in using observations from the similar lengths from the same strata and year.\n")
+                    for(i in noRatio) {
+                        lower <- sexRatio[i-1]
+                        upper <- sexRatio[i+1]
+                        sexRatio[i] <- mean(lower + upper)
+                        print(out$LENGTH[i], sexRatio[i])
+                    }
+                }
+                out$TotalLjhF    <- out$TotalLjhF + out$TotalLjhU * sexRatio
+                out$TotalLjhM    <- out$TotalLjhM + out$TotalLjhU * (1 - sexRatio)
+                out$TotalLjhU    <- round(out$TotalLjhU - out$TotalLjhU * sexRatio - out$TotalLjhU * (1 - sexRatio), 0)             
+            }
+        }
+
         return(out)
     }
 
@@ -221,6 +244,29 @@ SurveyLFs.fn <- function(dir, datL, datTows, strat.vars=c("Depth_m","Latitude_dd
         out  <- data.frame(out, LjhM = LjhM / ntows, TotalLjhM = round(A.h * LjhM / ntows))
         LjhU <- unlist(lapply(lgths, function(x){ sum( x$expU / x$areaFished )})) 
         out  <- data.frame(out, LjhU = LjhU / ntows, TotalLjhU = round(A.h * LjhU / ntows))
+
+        # Should move this into the SexRatio function 
+        if(sexRatioExpanded == TRUE){
+            if(length(sexRatioUnsexed)==1 & !is.na(sexRatioUnsexed)) {
+                sexRatio = out$TotalLjhF / (out$TotalLjhF + out$TotalLjhM)
+                sexRatio[out$LENGTH <= maxSizeUnsexed] <- sexRatioUnsexed
+        
+                #now fill in any missing ratios with ratios of that bin from other years and strata (can probably be done more efficiently)
+                noRatio <- which(is.na(sexRatio))
+                if(length(noRatio)>0) {
+                    cat("\nThese are sex ratios that were filled in using observations from the similar lengths from the same strata and year.\n")
+                    for(i in noRatio) {
+                        lower <- sexRatio[i-1]
+                        upper <- sexRatio[i+1]
+                        sexRatio[i] <- mean(lower + upper)
+                        print(out$LENGTH[i], sexRatio[i])
+                    }
+                }
+                out$TotalLjhF    <- out$TotalLjhF + out$TotalLjhU * sexRatio
+                out$TotalLjhM    <- out$TotalLjhM + out$TotalLjhU * (1 - sexRatio)
+                out$TotalLjhU    <- round(out$TotalLjhU - out$TotalLjhU * sexRatio - out$TotalLjhU * (1 - sexRatio), 0)             
+            }
+        }
         return(out)
     }
 
@@ -232,18 +278,13 @@ SurveyLFs.fn <- function(dir, datL, datTows, strat.vars=c("Depth_m","Latitude_dd
     }
 
 
-    # Apply the sex ratio to the raw data based on each tow
-    # if(sexRatioExpanded = FALSE){
-    #     datB = SexRatio.fn(datB = datB, maxSizeUnsexed = maxSizeUnsexed, sexRatioUnsexed = sexRatioUnsexed)
-    # }
-
-
     year.fn <- function(x,Lengths) {   #calculate the LFs by year
         theLs.yr    <- unlist(lapply(x, function(x){ as.numeric(as.character(x$LENGTH))}))
         TotalLjhAll <- unlist(lapply(x, function(x){ as.numeric(as.character(x$TotalLjhAll))}))
         TotalLjhF   <- unlist(lapply(x, function(x){ as.numeric(as.character(x$TotalLjhF))}))
         TotalLjhM   <- unlist(lapply(x, function(x){ as.numeric(as.character(x$TotalLjhM))}))
         TotalLjhU   <- unlist(lapply(x, function(x){ as.numeric(as.character(x$TotalLjhU))}))
+
         # Finds the interval that the length falls in and floors it (so 23.2 would be in 23 if 23 was a level in Lengths, 
         # all.inside puts maximum age group into N-1 group, thus I padded with Inf.)
         allLs       <- Lengths[findInterval(theLs.yr, Lengths, all.inside = T)] 
@@ -251,8 +292,9 @@ SurveyLFs.fn <- function(dir, datL, datTows, strat.vars=c("Depth_m","Latitude_dd
         TotalLjF    <- tapply(TotalLjhF, allLs, sum, na.rm = T)
         TotalLjM    <- tapply(TotalLjhM, allLs, sum, na.rm = T)
         TotalLjU    <- tapply(TotalLjhU, allLs, sum, na.rm = T)
+
         out         <- data.frame(Length = Lengths, TotalLjAll = rep(NA, length(Lengths)), TotalLjF = rep(NA, length(Lengths)), 
-                                  TotalLjM = rep(NA, length(Lengths)), TotalLjU = rep(NA, length(Lengths)))
+                                  TotalLjM = rep(NA, length(Lengths)), TotalLjU = rep(NA, length(Lengths)))        
         row.names(out) <- out$Length
         out[names(TotalLjAll),"TotalLjAll"] <- 100 * TotalLjAll / sum(TotalLjAll, na.rm = T)
         out[names(TotalLjF),"TotalLjF"]     <- 100 * TotalLjF / (sum(TotalLjF, na.rm = T) + sum(TotalLjM, na.rm = T)) 
@@ -263,6 +305,7 @@ SurveyLFs.fn <- function(dir, datL, datTows, strat.vars=c("Depth_m","Latitude_dd
     }
 
     L.year <- lapply(L.year.str, year.fn, Lengths = Lengths)
+
     if(!SSout) {
         return(list(L.year = L.year, L.year.str = L.year.str))
     }

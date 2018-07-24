@@ -4,17 +4,13 @@
 #' @param dir directory
 #' @param dat excel file name for the NWFSC or data object for the Triennial or AKSFC survey data
 #' @param type specify whether doing "length" or "age". Used to read associatied excel sheets
-#' @param survey survey name, options = c("NWFSCBT", "Tri.Shelf", "AFSC.Slope")
-#' @param sheet sheet name in excel file
-#' @param headerRow line of header row in excel file
 #' @param species species specific value to determine the number of unique samples per tow (flatfish, shelfrock, sloperock, thorny, others, all)
 #' @param printfolder name of the folder to create and save files. Location will be paste0(dir, printfolder)
 #'
 #' @author Chantel Wetzel
 #' @export 
-#' @seealso  \code{\link{readDataFromExcel.fn}}
 
-GetN.fn <- function(dir, dat, type, survey, headerRow = "default", species = "flatfish", printfolder = "forSS"){
+GetN.fn <- function(dir, dat, type, species = NULL, printfolder = "forSS"){
 
     n.unq = NA
     if (species == "flatfish")  { n.unq = 3.09 }
@@ -53,6 +49,6 @@ GetN.fn <- function(dir, dat, type, survey, headerRow = "default", species = "fl
     if(is.na(plotdir.isdir) | !plotdir.isdir){
       dir.create(plotdir)
     }
-    write.csv(samples, file = paste0(plotdir, "/", survey, "_", type, "_SampleSize.csv"), row.names = FALSE)
+    write.csv(samples, file = paste0(plotdir, "/", type, "_SampleSize.csv"), row.names = FALSE)
     return(n)
 }

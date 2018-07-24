@@ -9,7 +9,7 @@
 #' @export 
 
 
-SexRatio.fn <- function( datB, sexRatioUnsexed, maxSizeUnsexed){
+SexRatio.fn <- function(datB, sexRatioUnsexed, maxSizeUnsexed){
     #incorporate unsexed fish using sex ratios
     if(length(sexRatioUnsexed)==1 & !is.na(sexRatioUnsexed)) {
         datB$sexRatio <- datB$expF/(datB$expF+datB$expM)
