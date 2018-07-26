@@ -6,11 +6,13 @@
 The website is: https://www.nwfsc.noaa.gov/data
 Curently, this function only pulls data for a single specified survey.}
 \usage{
-PullBio.fn(Species = "Sebastes pinniger", YearRange = c(1000, 5000),
+PullBio.fn(Name = NULL, SciName = NULL, YearRange = c(1000, 5000),
   SurveyName = NULL, SaveFile = FALSE, Dir = NULL)
 }
 \arguments{
-\item{Species}{scientific name of species data to pull from the data warehouse}
+\item{Name}{common name of species data to pull from the data warehouse}
+
+\item{SciName}{scientific name of species data to pull from the data warehouse}
 
 \item{YearRange}{range of years to pull data}
 
