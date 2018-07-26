@@ -1,6 +1,6 @@
 #' Plot variability of length at age
 #'
-#' @details Plots the SD and CV of age at observed and predicted length
+#' Plots the SD and CV of age at observed and predicted length
 #'
 #'
 #' @param dir directory to save the file
@@ -9,17 +9,16 @@
 #' @param ageBin   Currently fixed at 1, so a moot parameter
 #' @param bySex    Logical to indicate if plot by sex
 #' @param parStart Vector of starting parameters for Linf, k, and t0 in VonB estimation
-#' @param estVB    Logical. Estimate vonB growth to plot against predicted length. If F,
-#'                 it uses the paramters in \code{parStart}.
+#' @param estVB    Logical. Estimate vonB growth to plot against predicted length. If F, it uses the paramters in \code{parStart}.
 #' @param bins     The bins to put ages into. If NULL then simply uses the ages as recorded.
+#' @param legX legend location
 #' @param dopng TRUE/FALSE whether to save a png file   
 #' @param ...      Additional arguments for the plots
 #'
 #' @author Allan Hicks and Chantel Wetzel
-#'
 #' @export
 
-PlotvarLengthAtAge.fn <- function(dir, dat, survey, ageBin=1, bySex=T, parStart=c(52,0.09,1), estVB=T, bins=NULL, legX="bottomleft", legY=NULL, dopng = FALSE,...) 
+PlotVarLengthAtAge.fn <- function(dir, dat, survey, ageBin=1, bySex=T, parStart=c(52, 0.09, 1), estVB=T, bins=NULL, legX="bottomleft", legY=NULL, dopng = FALSE,...) 
 {
     #calculate and plot the sd and cv for length at age
     #if you enter estVB=F, then it uses the parStart as the VB parameters
@@ -30,12 +29,13 @@ PlotvarLengthAtAge.fn <- function(dir, dat, survey, ageBin=1, bySex=T, parStart=
       dir.create(plotdir)
     }
 
-    VB.fn <- function(age,Linf,k,t0) {
+    VB.fn <- function(age, Linf ,k, t0) {
         out <- Linf*(1-exp(-k*(age-t0)))
         return(out)
     }
-    VBopt.fn <- function(x,age,lengths) {sum((lengths-VB.fn(age,Linf=x[1],k=x[2],t0=x[3]))^2)}
+    VBopt.fn <- function(x, age, lengths) {sum((lengths - VB.fn(age, Linf=x[1], k=x[2], t0=x[3]))^2)}
 
+    dat <- dat[!is.na(dat$Length_cm), ]
 
     dat <- dat[!is.na(dat$Age),]
     dat <- dat[dat$Sex%in%c("F", "M"), ]
@@ -60,11 +60,11 @@ PlotvarLengthAtAge.fn <- function(dir, dat, survey, ageBin=1, bySex=T, parStart=
     if (dopng) { png(paste0(dir, "/plots/", survey, "_VarLengthAtAge.png"), height=7, width=7, units="in",res=300) }
     par(mfcol=c(2,nn), mar =c(3,5,3,5))
 
-    out <- vector(mode="list",length=nn)
+    out <- vector(mode="list", length=nn)
     names(out) <- names(datL)
     for(i in 1:length(datL)) {
         if(estVB) {
-            xpar <- optim(parStart,VBopt.fn,age=datL[[i]]$Age,lengths=datL[[i]]$Length_cm)$par
+            xpar <- optim(parStart, VBopt.fn, age = datL[[i]]$Age , lengths=datL[[i]]$Length_cm)$par
             cat("Estimated VB parameters for",names(datL)[i],xpar,"\n")
         }
         if(!estVB) {
