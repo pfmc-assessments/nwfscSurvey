@@ -2,7 +2,8 @@
 #' The website is: https://www.nwfsc.noaa.gov/data
 #' Curently, this function only pulls data for a single specified survey.
 #' 
-#' @param Species scientific name of species data to pull from the data warehouse
+#' @param Name  common name of species data to pull from the data warehouse
+#' @param SciName scientific name of species data to pull from the data warehouse
 #' @param YearRange range of years to pull data
 #' @param SurveyName survey to pull the data for
 #' @param SaveFile option to save the file to the directory
@@ -15,7 +16,7 @@
 #' @import chron
 
 
-PullCatch.fn <- function (Species = "Sebastes pinniger", YearRange = c(1000, 5000), SurveyName = NULL, SaveFile = FALSE, Dir = NULL) 
+PullCatch.fn <- function (Name = NULL, SciName = NULL, YearRange = c(1000, 5000), SurveyName = NULL, SaveFile = FALSE, Dir = NULL) 
 {
 
 	if(SaveFile){
@@ -23,6 +24,10 @@ PullCatch.fn <- function (Species = "Sebastes pinniger", YearRange = c(1000, 500
             stop("The Dir input needs to be specified in order to save output file.")
         }
     }
+
+    if (is.null(Name)) { var.name = "scientific_name"; Species = SciName; new.name = "Scientific_name"; outName = Name}
+    if (is.null(SciName)) { var.name = "common_name"; Species = Name; new.name = "Common_name"; outName = SciName}
+    if (is.null(SciName) & is.null(Name)) { stop("Need to specifiy Name or SciName to pull data!")}
 
 	#   match.f function for combining data sets
 	#   AUTHOR:  John R. Wallace (John.Wallace@noaa.gov)  	
@@ -100,14 +105,14 @@ PullCatch.fn <- function (Species = "Sebastes pinniger", YearRange = c(1000, 500
         YearRange <- c(YearRange, YearRange)    }
 
     # Pull data for the specific species for the following variables
-    Vars <- c("scientific_name", "year", "subsample_count", "subsample_wt_kg","project", "cpue_kg_per_ha_der",
+    Vars <- c(var.name, "year", "subsample_count", "subsample_wt_kg","project", "cpue_kg_per_ha_der",
         	  "total_catch_numbers", "total_catch_wt_kg", "vessel", "tow")
 
 
     UrlText <- paste0("https://www.nwfsc.noaa.gov/data/api/v1/source/trawl.catch_fact/selection.json?filters=project=", paste(strsplit(project, " ")[[1]], collapse = "%20"),",", 
                "actual_station_design_dim$stn_invalid_for_trawl_date_whid=0,", 
                "performance=Satisfactory,", "depth_ftm>=30,depth_ftm<=700,", 
-               "field_identified_taxonomy_dim$scientific_name=", paste(strsplit(Species, " ")[[1]], collapse = "%20"), 
+               "field_identified_taxonomy_dim$", var.name,"=", paste(strsplit(Species, " ")[[1]], collapse = "%20"), 
                ",date_dim$year>=", YearRange[1], ",date_dim$year<=", YearRange[2], "&variables=", 
                paste0(Vars, collapse = ","))
 
@@ -115,13 +120,13 @@ PullCatch.fn <- function (Species = "Sebastes pinniger", YearRange = c(1000, 500
     # Pull data from the warehouse
     DataPull <- try(jsonlite::fromJSON(UrlText))
     if(!is.data.frame(DataPull)) {
-         stop(cat("\nNo data returned by the warehouse for the filters given.\n Make sure the year range is correct for the project selected, \n otherwise there may be no data for this species from this project.\n"))
+         stop(cat("\nNo data returned by the warehouse for the filters given.\n Make sure the year range is correct for the project selected and the input name is correct,\n otherwise there may be no data for this species from this project.\n"))
     }
 
 
-    Data <- rename_columns(DataPull, newname = c("Year", "Vessel", "Tow", "Project", "Scientific_name", "CPUE_kg_per_ha", "Subsample_count", "Subsample_wt_kg", "Total_sp_numbers", "Total_sp_wt_kg"))
+    Data <- rename_columns(DataPull, newname = c("Year", "Vessel", "Tow", "Project", new.name, "CPUE_kg_per_ha", "Subsample_count", "Subsample_wt_kg", "Total_sp_numbers", "Total_sp_wt_kg"))
 
-    Data <- Data[, c("Year", "Vessel", "Tow", "Project", "Scientific_name", "CPUE_kg_per_ha",  "Subsample_count", "Subsample_wt_kg", "total_catch_numbers", "total_catch_wt_kg")]
+    Data <- Data[, c("Year", "Vessel", "Tow", "Project", new.name, "CPUE_kg_per_ha",  "Subsample_count", "Subsample_wt_kg", "total_catch_numbers", "total_catch_wt_kg")]
 
 
     # Pull all tow data (includes tows where the species was not observed)
@@ -141,7 +146,7 @@ PullCatch.fn <- function (Species = "Sebastes pinniger", YearRange = c(1000, 500
      			c("Project", "Trawl_id", "Year", "Pass", "Vessel", "Tow", "Date", "Depth_m", "Longitude_dd", "Latitude_dd", "Area_Swept_ha")]
 
     # Link each data set together based on trawl_id
-    Out <- match.f(All.Tows, Data, c("Year", "Vessel", "Tow"), c("Year", "Vessel", "Tow"), c("Scientific_name", "CPUE_kg_per_ha", "Subsample_count", "Subsample_wt_kg", "total_catch_numbers", "total_catch_wt_kg"))
+    Out <- match.f(All.Tows, Data, c("Year", "Vessel", "Tow"), c("Year", "Vessel", "Tow"), c(new.name, "CPUE_kg_per_ha", "Subsample_count", "Subsample_wt_kg", "total_catch_numbers", "total_catch_wt_kg"))
     
     # Fill in zeros where needed
     Out$total_catch_wt_kg[is.na(Out$total_catch_wt_kg)] <- 0
@@ -163,7 +168,8 @@ PullCatch.fn <- function (Species = "Sebastes pinniger", YearRange = c(1000, 500
     }
     
     # Scientific Name is missing after the matching when Total_sp_wt_kg is zero  
-    Out$Scientific_name <- Species
+    if (!is.null(Name)) { Out$Common_name <- Species }
+    if (!is.null(SciName)) { Out$Scientific_name <- Species }
 
     Out$Date <- chron(format(as.POSIXlt(Out$Date, format = "%Y-%m-%dT%H:%M:%S"), "%Y-%m-%d"), format = "y-m-d", out.format = "YYYY-m-d")
     
@@ -179,7 +185,7 @@ PullCatch.fn <- function (Species = "Sebastes pinniger", YearRange = c(1000, 500
     if(SaveFile){
         time = Sys.time()
         time = substring(time, 1, 10)
-        save(Out, file = paste0(Dir, "/Catch_", time, "_", SurveyName, "_",  time, ".rda"))
+        save(Out, file = paste0(Dir, "/Catch_", time, "_", outName, "_", SurveyName, "_",  time, ".rda"))
         print(paste("Catch data file saved to following location:", Dir))
     }
 
