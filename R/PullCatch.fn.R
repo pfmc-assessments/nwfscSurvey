@@ -11,7 +11,7 @@
 #' @author Chantel Wetzel based on code by John Wallace
 #' @export
 #'
-#' @import jasonlite
+#' @import jsonlite
 #' @import chron
 
 
