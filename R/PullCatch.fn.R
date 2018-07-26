@@ -8,7 +8,7 @@
 #' @param SaveFile option to save the file to the directory
 #' @param Dir directory where the file should be saved
 #' 
-#' @author Chantel Wetzel based on code by John Wallac
+#' @author Chantel Wetzel based on code by John Wallace
 #' @export
 #'
 #' @import jasonlite

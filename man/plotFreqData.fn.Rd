@@ -30,6 +30,8 @@ PlotFreqData.fn(dir, dat, survey = "Survey", inch = 0.15, ylab = "Bins",
 \item{xlim}{x-limit values}
 
 \item{dopng}{save the plot as a png inside plots folder}
+
+\item{...}{Additional arguments for the plots}
 }
 \description{
 This function plots frequency data as bubble plots

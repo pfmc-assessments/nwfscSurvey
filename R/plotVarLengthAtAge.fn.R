@@ -15,10 +15,6 @@
 #' @param dopng TRUE/FALSE whether to save a png file   
 #' @param ...      Additional arguments for the plots
 #'
-#' @examples
-#'   slwa <- read.csv(paste(directory,"SexedLgthWtAge.csv",sep="\\"),skip=8)
-#'   ageBin currently is fixed at 1 no matter what number you enter
-#'   res <- varLengthAtAge.fn(slwa,ageBin=1,bySex=T,parStart=c(52,0.09,1),estVB=T)
 #' @author Allan Hicks and Chantel Wetzel
 #'
 #' @export
@@ -40,18 +36,10 @@ PlotvarLengthAtAge.fn <- function(dir, dat, survey, ageBin=1, bySex=T, parStart=
     }
     VBopt.fn <- function(x,age,lengths) {sum((lengths-VB.fn(age,Linf=x[1],k=x[2],t0=x[3]))^2)}
 
-    #if(survey%in%c("Tri.Shelf", "AFSC.Slope")){
-    #    #dat$LENGTH_CM <- dat$Length_cm
-    #    dat$Age   <- dat$AGE
-    #    dat <- dat[!is.na(dat$Age),]
-    #    ind = which(dat$SEX == 3)
-    #    dat = dat[-ind,]
-    #}
 
-    #if(survey == "NWFSCBT"){
-        dat <- dat[!is.na(dat$Age),]
-        dat <- dat[dat$Sex%in%c("F", "M"), ]
-    #}
+    dat <- dat[!is.na(dat$Age),]
+    dat <- dat[dat$Sex%in%c("F", "M"), ]
+    
 
     datL <- dat[!is.na(dat$Age),]
     if(is.null(bins)) {datL$Age_2 <- datL$Age}
@@ -63,21 +51,9 @@ PlotvarLengthAtAge.fn <- function(dir, dat, survey, ageBin=1, bySex=T, parStart=
     }
 
     if(bySex) {
-        #if(survey%in%c("Tri.Shelf", "AFSC.Slope")){
-        #    datL$sex <- rep(NA,nrow(datL))
-        #    datL[datL$SEX==2,"sex"] <- "F"
-        #    datL[datL$SEX==1,"sex"] <- "M"
-
-        #    datLf <- datL[datL$sex=="F",]
-        #    datLm <- datL[datL$sex=="M",]
-        #    datL <- list(female=datLf,male=datLm)
-        #}
-
-        if(survey == "NWFSCBT"){
-            datLf <- datL[datL$Sex=="F",]
-            datLm <- datL[datL$Sex=="M",]
-            datL <- list(female=datLf,male=datLm)            
-        }
+        datLf <- datL[datL$Sex=="F",]
+        datLm <- datL[datL$Sex=="M",]
+        datL <- list(female=datLf,male=datLm)            
         nn <- 2
     }
     

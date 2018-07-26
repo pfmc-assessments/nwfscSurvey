@@ -2,7 +2,7 @@
 % Please edit documentation in R/Biomass.fn.R
 \name{Biomass.fn}
 \alias{Biomass.fn}
-\title{Calculates design based estimates from survey data for early West Coast surveys (e.g., Triennial, AFSC slope)}
+\title{Calculates design based estimates from survey data for West Coast surveys}
 \usage{
 Biomass.fn(dir, dat, strat.vars = c("Depth_m", "Latitude_dd"), strat.df,
   printfolder = "forSS", outputMedian = T, verbose = TRUE, convert = 1,

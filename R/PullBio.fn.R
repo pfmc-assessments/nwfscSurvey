@@ -8,7 +8,7 @@
 #' @param SaveFile option to save the file to the directory
 #' @param Dir directory where the file should be saved
 #' 
-#' @author Chantel Wetzel based on code by John Wallac
+#' @author Chantel Wetzel based on code by John Wallace
 #' @export
 #'
 #' @import jasonlite
@@ -74,7 +74,7 @@ PullBio.fn <- function (Species = "Sebastes pinniger", YearRange = c(1000, 5000)
                 ",date_dim$year>=",  YearRange[1], ",date_dim$year<=", YearRange[2], "&variables=", 
                 paste0(Vars, collapse = ","))
 
-    print("Pulling biological data. This can take upt ~ 30 seconds.")
+    print("Pulling biological data. This can take up to ~ 30 seconds.")
     DataPull <- try(jsonlite::fromJSON(UrlText))
     if(!is.data.frame(DataPull)) {       
          stop(cat("\nNo data returned by the warehouse for the filters given.\n Make sure the year range is correct for the project selected, \n otherwise there may be no data for this species from this project.\n"))

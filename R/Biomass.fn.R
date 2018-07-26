@@ -1,4 +1,4 @@
-#' Calculates design based estimates from survey data for early West Coast surveys (e.g., Triennial, AFSC slope)
+#' Calculates design based estimates from survey data for West Coast surveys 
 #'
 #' The variables defining the strata must begin with the name in strat.vars and end with ".1" or ".2" (i.e., BEST_DEPTH.1)
 #' the strata are assumed to be continuous variables, thus have a lower and upper value defining them. The lower value does not necessarily have to be the same as the previous upper value.
@@ -22,6 +22,7 @@
 #' @param convert convert biomass 
 #' @param season season for SS
 #' @param fleet fleet number for SS
+#'
 #' @author Allan Hicks and Chantel Wetzel
 #' @export
 

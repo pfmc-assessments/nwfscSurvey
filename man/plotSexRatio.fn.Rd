@@ -19,6 +19,8 @@ PlotSexRatio.fn(dir, dat, fn = median, survey, circleSize = 0.1,
 \item{circleSize}{circle size}
 
 \item{dopng}{TRUE/FALSE whether to save a png file}
+
+\item{...}{Additional arguments for the plots}
 }
 \description{
 Function to plot sex ratio

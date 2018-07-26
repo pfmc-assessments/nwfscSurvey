@@ -4,10 +4,12 @@
 \alias{SexRatio.fn}
 \title{Sex ratio function that assigns a sex to unsexed fish when creatin length or age comps}
 \usage{
-SexRatio.fn(datB, sexRatioUnsexed, maxSizeUnsexed)
+SexRatio.fn(x, sexRatioStage, sexRatioUnsexed, maxSizeUnsexed)
 }
 \arguments{
-\item{datB}{the read in length comps by the ReadInLengths.EWC.fn function}
+\item{x}{the data frame being passed to the function from either the SurveyLFs.fn or th SurveyAFs.fn}
+
+\item{sexRatioStage}{the stage of the expansion to apply the sex ratio. Input either 1 or 2.}
 
 \item{sexRatioUnsexed}{sex ratio to apply to any length bins of a certain size or smaller as defined by the maxSizeUnsexed}
 

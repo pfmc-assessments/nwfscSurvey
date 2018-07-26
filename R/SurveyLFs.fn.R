@@ -1,14 +1,11 @@
-#' Epands the lengths up to the total stratum area then sums over strata
-#' Written by Allan Hicks 16 March 2009
-#' modified to incorporate unsexed fish using sex ratios in May 2011
+#' Expands the lengths up to the total stratum area then sums over strata
+#' Original Version Written by Allan Hicks 16 March 2009
+#' Modified by Chantel Wetzel to work with the data warehouse data formatting,
+#' add additional options of when to apply the sex ratio, and correct some treatment of unsexed fish
 #' weighted by sample size and area
-#' datL should have a column called "year" indicating year
-#' femaleMale is a vector of codes for female then male (in that order)
-#' lgthBin is the increment of each length bin or a vector of the actual bins
 #' NOTE: The length bin called F0 or M0 is retained to show proportion of lengths smaller than smallest bin
 #' You will want to likely add this to your first length bin and delete this before putting in SS, or
 #' start the lgthBins argument at the 2nd length bin and F0 will be all fish smaller (hence the first length bin)
-#' SSout: if True the output is in a format pastable into SS dat file
 #' 
 #' @param dir directory this is where the output files will be saved
 #' @param datL the read in length comps by the ReadInLengths.EWC.fn function
@@ -22,14 +19,16 @@
 #' @param NAs2zero change NAs to zeros
 #' @param sexRatioUnsexed sex ratio to apply to any length bins of a certain size or smaller as defined by the maxSizeUnsexed
 #' @param maxSizeUnsexed all sizes below this threshold will assign unsexed fish by sexRatio set equal to 0.50, fish larger than this size will have unsexed fish assigned by the calculated sex ratio in the data.
-#' @param sexRatioExpanded switch to allow the user to apply the sex ratio post expanded numbers based on strata or raw data from each tow
+#' @param sexRatioStage the stage of the expansion to apply the sex ratio. Input either 1 or 2. 
 #' @param partition partition for Stock Synthesis
 #' @param fleet fleet number
+#' @param agelow value for SS -1
+#' @param agehigh value for SS -1
+#' @param ageErr age error vector to apply
 #' @param nSamps effective sample size for Stock Synthesis
 #' @param month month the samples were collected
 #' @param printfolder folder where the length comps will be saved
 #' @param remove999 the output object by the function will have the 999 column combined with the first length bin
-#' @param switch determined length or age data being processed
 #' @param outputStage1 return the first stage expanded data without compiling it for SS
 #'
 #' @author Allan Hicks and Chantel Wetzel
@@ -38,14 +37,15 @@
 #' @seealso \code{\link{SexRatio.fn}}
 
 SurveyLFs.fn <- function(dir, datL, datTows, strat.vars=c("Depth_m","Latitude_dd"), strat.df=NULL, lgthBins=1, SSout=TRUE, meanRatioMethod=TRUE,
-                         gender=3, NAs2zero=T, sexRatioUnsexed=NA, maxSizeUnsexed=NA, sexRatioExpanded = FALSE, partition=0, fleet="Enter Fleet", 
-                         nSamps="Enter Samps", month="Enter Month", printfolder = "forSS", remove999 = TRUE, switch = NULL, outputStage1 = FALSE)  {
+                         gender=3, NAs2zero=T, sexRatioUnsexed=NA, maxSizeUnsexed=NA, sexRatioStage = 1, partition=0, fleet="Enter Fleet",
+                         agelow = "Enter", agehigh = "Enter", ageErr = "Enter", nSamps="Enter Samps", month="Enter Month", printfolder = "forSS", 
+                         remove999 = TRUE, outputStage1 = FALSE)  {
 
-    if(is.null(switch)){
-        totRows  <- nrow(datL)
-        datL      <- datL[!is.na(datL$Length_cm),]
-        cat("There are ", nrow(datL)," lengths kept out of",totRows,"records after removing missing lengths\n")
-    }
+
+    totRows  <- nrow(datL)
+    datL      <- datL[!is.na(datL$Length_cm),]
+    cat("There are ", nrow(datL)," records kept out of",totRows,"records after removing missing records.\n")
+
 
     row.names(strat.df) <- strat.df[,1]     #put in rownames to make easier to index later
     numStrata <- nrow(strat.df)
@@ -146,8 +146,9 @@ SurveyLFs.fn <- function(dir, datL, datTows, strat.vars=c("Depth_m","Latitude_dd
     datB$allLs <- Lengths[findInterval(datB$Length_cm, Lengths, all.inside=T)]
 
     # Apply the sex ratio to the raw data based on each tow
-    if(sexRatioExpanded == FALSE){
-        datB = SexRatio.fn(datB = datB, maxSizeUnsexed = maxSizeUnsexed, sexRatioUnsexed = sexRatioUnsexed)
+    if(sexRatioStage == 1){
+        datB = SexRatio.fn(x = datB, sexRatioStage = sexRatioStage, 
+                           sexRatioUnsexed = sexRatioUnsexed, maxSizeUnsexed =  maxSizeUnsexed)
     }
 
 
@@ -162,8 +163,7 @@ SurveyLFs.fn <- function(dir, datL, datTows, strat.vars=c("Depth_m","Latitude_dd
         names(stageOne)[names(stageOne) == "true_sub_Ufish"]   <- "subsample_U"
         names(stageOne)[names(stageOne) == "true_sub_MFfish"]   <- "subsample_MF"
 
-        cat("\nNOTE: Stage 1 expansion returned by the function.
-            \n\tComposition file not written for SS.\n\n")
+        cat("\nNOTE: Stage 1 expansion returned by the function. Composition file not written for SS.\n")
         return (stageOne)
     }
 
@@ -197,26 +197,9 @@ SurveyLFs.fn <- function(dir, datL, datTows, strat.vars=c("Depth_m","Latitude_dd
         LjhU   <- unlist(lapply(lgths, function(x){sum(x$expU)}))
         out    <- data.frame(out, LjhU = LjhU, TotalLjhU = round(A.h * LjhU / a.h))
 
-        if(sexRatioExpanded == TRUE){
-            if(length(sexRatioUnsexed)==1 & !is.na(sexRatioUnsexed)) {
-                sexRatio = out$TotalLjhF / (out$TotalLjhF + out$TotalLjhM)
-                sexRatio[out$LENGTH <= maxSizeUnsexed] <- sexRatioUnsexed
-        
-                #now fill in any missing ratios with ratios of that bin from other years and strata (can probably be done more efficiently)
-                noRatio <- which(is.na(sexRatio))
-                if(length(noRatio)>0) {
-                    cat("\nThese are sex ratios that were filled in using observations from the similar lengths from the same strata and year.\n")
-                    for(i in noRatio) {
-                        lower <- sexRatio[i-1]
-                        upper <- sexRatio[i+1]
-                        sexRatio[i] <- mean(lower + upper)
-                        print(out$LENGTH[i], sexRatio[i])
-                    }
-                }
-                out$TotalLjhF    <- out$TotalLjhF + out$TotalLjhU * sexRatio
-                out$TotalLjhM    <- out$TotalLjhM + out$TotalLjhU * (1 - sexRatio)
-                out$TotalLjhU    <- round(out$TotalLjhU - out$TotalLjhU * sexRatio - out$TotalLjhU * (1 - sexRatio), 0)             
-            }
+        if(sexRatioStage == 2){                      
+            out = SexRatio.fn(x = out, sexRatioStage = sexRatioStage, 
+                              sexRatioUnsexed = sexRatioUnsexed, maxSizeUnsexed =  maxSizeUnsexed)
         }
 
         return(out)
@@ -246,26 +229,9 @@ SurveyLFs.fn <- function(dir, datL, datTows, strat.vars=c("Depth_m","Latitude_dd
         out  <- data.frame(out, LjhU = LjhU / ntows, TotalLjhU = round(A.h * LjhU / ntows))
 
         # Should move this into the SexRatio function 
-        if(sexRatioExpanded == TRUE){
-            if(length(sexRatioUnsexed)==1 & !is.na(sexRatioUnsexed)) {
-                sexRatio = out$TotalLjhF / (out$TotalLjhF + out$TotalLjhM)
-                sexRatio[out$LENGTH <= maxSizeUnsexed] <- sexRatioUnsexed
-        
-                #now fill in any missing ratios with ratios of that bin from other years and strata (can probably be done more efficiently)
-                noRatio <- which(is.na(sexRatio))
-                if(length(noRatio)>0) {
-                    cat("\nThese are sex ratios that were filled in using observations from the similar lengths from the same strata and year.\n")
-                    for(i in noRatio) {
-                        lower <- sexRatio[i-1]
-                        upper <- sexRatio[i+1]
-                        sexRatio[i] <- mean(lower + upper)
-                        print(out$LENGTH[i], sexRatio[i])
-                    }
-                }
-                out$TotalLjhF    <- out$TotalLjhF + out$TotalLjhU * sexRatio
-                out$TotalLjhM    <- out$TotalLjhM + out$TotalLjhU * (1 - sexRatio)
-                out$TotalLjhU    <- round(out$TotalLjhU - out$TotalLjhU * sexRatio - out$TotalLjhU * (1 - sexRatio), 0)             
-            }
+        if(sexRatioStage == 2){
+            out = SexRatio.fn(x = out, sexRatioStage = sexRatioStage, 
+                              sexRatioUnsexed = sexRatioUnsexed, maxSizeUnsexed =  maxSizeUnsexed)
         }
         return(out)
     }
@@ -276,6 +242,8 @@ SurveyLFs.fn <- function(dir, datL, datTows, strat.vars=c("Depth_m","Latitude_dd
     else{
         L.year.str <- lapply(datB.yrstr, function(x){lapply(x, lengthTotalRatio.fn, strat = strat.df)})
     }
+
+    if(sexRatioStage == 2 ){ cat("Sex ratio for unsexed fish being applied to combined expanded numbers (stage 2) within a strata and year.\n") }
 
 
     year.fn <- function(x,Lengths) {   #calculate the LFs by year
@@ -363,10 +331,16 @@ SurveyLFs.fn <- function(dir, datL, datTows, strat.vars=c("Depth_m","Latitude_dd
         usableOut[,paste0("F",min(lgthBins))] <- usableOut[,paste0("F",min(lgthBins))] + usableOut$F.999
         usableOut[,paste0("M",min(lgthBins))] <- usableOut[,paste0("M",min(lgthBins))] + usableOut$M.999
         usableOut <- usableOut[,-which(names(usableOut)%in%c("F.999","M.999"))]
+        if (comp.type == "Age"){
+            usableOut = cbind(usableOut[,1:5], agelow, agehigh, ageErr, usableOut[,6:dim(usableOut)[2]])
+        }
         write.csv(usableOut, file = paste0(plotdir, "/Survey_Gender", gender, "_Bins_",min(lgthBins),"_", max(lgthBins),"_", comp.type, "Comps.csv"), row.names = FALSE)
         if(is.na(sexRatioUnsexed)){
             usableOut2[,paste0("U",min(lgthBins))]  <- usableOut2[,paste0("U",min(lgthBins))] + usableOut2$U.999
             usableOut2 <- usableOut2[,-which(names(usableOut2)%in%c("U.999","U.999.1"))]
+            if (comp.type == "Age"){
+                usableOut2 = cbind(usableOut2[,1:5], agelow, agehigh, ageErr, usableOut2[,6:dim(usableOut2)[2]])
+            }
             write.csv(usableOut2, file = paste0(plotdir, "/Survey_Gender_Unsexed_Bins_",min(lgthBins),"_", max(lgthBins),"_", comp.type, "Comps.csv"), row.names = FALSE)
         }
     }
@@ -374,15 +348,17 @@ SurveyLFs.fn <- function(dir, datL, datTows, strat.vars=c("Depth_m","Latitude_dd
     if (gender == 0){
         usableOut[,paste0("U",min(lgthBins))]  <- usableOut[,paste0("U",min(lgthBins))] + usableOut$U.999
         usableOut <- usableOut[,-which(names(usableOut)%in%c("U.999","U.999.1"))]
+        if (comp.type == "Age"){
+            usableOut = cbind(usableOut[,1:5], agelow, agehigh, ageErr, usableOut[,6:dim(usableOut)[2]])
+        }
         write.csv(usableOut, file = paste0(plotdir, "/Survey_Gender", gender, "_Bins_",min(lgthBins),"_", max(lgthBins),"_", comp.type, "Comps.csv"), row.names = FALSE)
     }
 
-    if (comp.type == "Length"){
-        cat("\nNOTE: Two files have been saved the the printfolder directory.
-            \n\tThe first has the 999 column showing fish smaller than the initial length bind. 
-            \n\tCheck to make sure there is not a large number of fish smaller than the initial length bin.
-            \n\tThe second file has combined the 999 with the first length bin and is ready for use in SS.\n\n")
-    }
+    cat("\nNOTE: Files have been saved the the printfolder directory.
+        The first has the 999 column showing fish smaller or younger than the initial bin. 
+        Check to make sure there is not a large number of fish smaller or younger than the initial bin.
+        The second file has combined the 999 with the first bin and is ready for use in SS.\n")
+
     if (!remove999) { return(out)}
     if (remove999)  { return(usableOut)}
 }

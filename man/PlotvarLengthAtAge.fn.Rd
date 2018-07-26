@@ -36,11 +36,6 @@ Plot variability of length at age
 \details{
 Plots the SD and CV of age at observed and predicted length
 }
-\examples{
-  slwa <- read.csv(paste(directory,"SexedLgthWtAge.csv",sep="\\\\"),skip=8)
-  ageBin currently is fixed at 1 no matter what number you enter
-  res <- varLengthAtAge.fn(slwa,ageBin=1,bySex=T,parStart=c(52,0.09,1),estVB=T)
-}
 \author{
 Allan Hicks and Chantel Wetzel
 }

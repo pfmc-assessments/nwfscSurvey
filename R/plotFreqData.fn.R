@@ -12,6 +12,7 @@
 #' @param main main plot text
 #' @param xlim x-limit values
 #' @param dopng save the plot as a png inside plots folder
+#' @param ...      Additional arguments for the plots
 #'
 #' @author Allan Hicks and Chantel Wetzel
 #' @export

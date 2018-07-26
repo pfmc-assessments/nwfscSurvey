@@ -26,5 +26,5 @@ The website is: https://www.nwfsc.noaa.gov/data
 Curently, this function only pulls data for a single specified survey.
 }
 \author{
-Chantel Wetzel based on code by John Wallac
+Chantel Wetzel based on code by John Wallace
 }

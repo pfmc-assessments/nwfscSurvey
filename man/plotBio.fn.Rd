@@ -32,6 +32,8 @@ PlotBio.fn(dir, dat, CI = 0.95, scalar = 1e+06, gap = 0.03,
 \item{col}{color}
 
 \item{dopng}{save the plot as a png inside plots folder}
+
+\item{...}{Additional arguments for the plots}
 }
 \description{
 Plots the biomass with confidence intervals

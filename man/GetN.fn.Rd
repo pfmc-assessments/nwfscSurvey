@@ -17,19 +17,10 @@ GetN.fn(dir, dat, type, species = NULL, printfolder = "forSS")
 \item{species}{species specific value to determine the number of unique samples per tow (flatfish, shelfrock, sloperock, thorny, others, all)}
 
 \item{printfolder}{name of the folder to create and save files. Location will be paste0(dir, printfolder)}
-
-\item{survey}{survey name, options = c("NWFSCBT", "Tri.Shelf", "AFSC.Slope")}
-
-\item{sheet}{sheet name in excel file}
-
-\item{headerRow}{line of header row in excel file}
 }
 \description{
 Calculate effN input sample sizes
 based on Stewart & Hamel 2014
-}
-\seealso{
-\code{\link{readDataFromExcel.fn}}
 }
 \author{
 Chantel Wetzel

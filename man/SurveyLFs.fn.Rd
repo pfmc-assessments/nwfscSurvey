@@ -2,24 +2,22 @@
 % Please edit documentation in R/SurveyLFs.fn.R
 \name{SurveyLFs.fn}
 \alias{SurveyLFs.fn}
-\title{Epands the lengths up to the total stratum area then sums over strata
-Written by Allan Hicks 16 March 2009
-modified to incorporate unsexed fish using sex ratios in May 2011
+\title{Expands the lengths up to the total stratum area then sums over strata
+Original Version Written by Allan Hicks 16 March 2009
+Modified by Chantel Wetzel to work with the data warehouse data formatting,
+add additional options of when to apply the sex ratio, and correct some treatment of unsexed fish
 weighted by sample size and area
-datL should have a column called "year" indicating year
-femaleMale is a vector of codes for female then male (in that order)
-lgthBin is the increment of each length bin or a vector of the actual bins
 NOTE: The length bin called F0 or M0 is retained to show proportion of lengths smaller than smallest bin
 You will want to likely add this to your first length bin and delete this before putting in SS, or
-start the lgthBins argument at the 2nd length bin and F0 will be all fish smaller (hence the first length bin)
-SSout: if True the output is in a format pastable into SS dat file}
+start the lgthBins argument at the 2nd length bin and F0 will be all fish smaller (hence the first length bin)}
 \usage{
 SurveyLFs.fn(dir, datL, datTows, strat.vars = c("Depth_m", "Latitude_dd"),
   strat.df = NULL, lgthBins = 1, SSout = TRUE, meanRatioMethod = TRUE,
   gender = 3, NAs2zero = T, sexRatioUnsexed = NA, maxSizeUnsexed = NA,
-  sexRatioExpanded = FALSE, partition = 0, fleet = "Enter Fleet",
+  sexRatioStage = 1, partition = 0, fleet = "Enter Fleet",
+  agelow = "Enter", agehigh = "Enter", ageErr = "Enter",
   nSamps = "Enter Samps", month = "Enter Month", printfolder = "forSS",
-  remove999 = TRUE, switch = NULL, outputStage1 = FALSE)
+  remove999 = TRUE, outputStage1 = FALSE)
 }
 \arguments{
 \item{dir}{directory this is where the output files will be saved}
@@ -46,11 +44,17 @@ SurveyLFs.fn(dir, datL, datTows, strat.vars = c("Depth_m", "Latitude_dd"),
 
 \item{maxSizeUnsexed}{all sizes below this threshold will assign unsexed fish by sexRatio set equal to 0.50, fish larger than this size will have unsexed fish assigned by the calculated sex ratio in the data.}
 
-\item{sexRatioExpanded}{switch to allow the user to apply the sex ratio post expanded numbers based on strata or raw data from each tow}
+\item{sexRatioStage}{the stage of the expansion to apply the sex ratio. Input either 1 or 2.}
 
 \item{partition}{partition for Stock Synthesis}
 
 \item{fleet}{fleet number}
+
+\item{agelow}{value for SS -1}
+
+\item{agehigh}{value for SS -1}
+
+\item{ageErr}{age error vector to apply}
 
 \item{nSamps}{effective sample size for Stock Synthesis}
 
@@ -60,22 +64,17 @@ SurveyLFs.fn(dir, datL, datTows, strat.vars = c("Depth_m", "Latitude_dd"),
 
 \item{remove999}{the output object by the function will have the 999 column combined with the first length bin}
 
-\item{switch}{determined length or age data being processed}
-
 \item{outputStage1}{return the first stage expanded data without compiling it for SS}
 }
 \description{
-Epands the lengths up to the total stratum area then sums over strata
-Written by Allan Hicks 16 March 2009
-modified to incorporate unsexed fish using sex ratios in May 2011
+Expands the lengths up to the total stratum area then sums over strata
+Original Version Written by Allan Hicks 16 March 2009
+Modified by Chantel Wetzel to work with the data warehouse data formatting,
+add additional options of when to apply the sex ratio, and correct some treatment of unsexed fish
 weighted by sample size and area
-datL should have a column called "year" indicating year
-femaleMale is a vector of codes for female then male (in that order)
-lgthBin is the increment of each length bin or a vector of the actual bins
 NOTE: The length bin called F0 or M0 is retained to show proportion of lengths smaller than smallest bin
 You will want to likely add this to your first length bin and delete this before putting in SS, or
 start the lgthBins argument at the 2nd length bin and F0 will be all fish smaller (hence the first length bin)
-SSout: if True the output is in a format pastable into SS dat file
 }
 \seealso{
 \code{\link{StrataFactors.fn}}

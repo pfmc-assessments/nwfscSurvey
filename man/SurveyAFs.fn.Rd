@@ -2,31 +2,29 @@
 % Please edit documentation in R/SurveyAFs.fn.R
 \name{SurveyAFs.fn}
 \alias{SurveyAFs.fn}
-\title{Epands the lengths up to the total stratum area then sums over strata
-Written by Allan Hicks 16 March 2009
-modified to incorporate unsexed fish using sex ratios in May 2011
+\title{Expands the ages up to the total stratum area then sums over strata
+Original Version Written by Allan Hicks 16 March 2009
+Modified by Chantel Wetzel to work with the data warehouse data formatting,
+add additional options of when to apply the sex ratio, and correct some treatment of unsexed fish
 weighted by sample size and area
-datA should have a column called "year" indicating year
-femaleMale is a vector of codes for female then male (in that order)
-lgthBin is the increment of each length bin or a vector of the actual bins
-NOTE: The length bin called F0 or M0 is retained to show proportion of lengths smaller than smallest bin
-You will want to likely add this to your first length bin and delete this before putting in SS, or
-start the lgthBins argument at the 2nd length bin and F0 will be all fish smaller (hence the first length bin)
-SSout: if True the output is in a format pastable into SS dat file}
+NOTE: The age bin called F0 or M0 is retained to show proportion of ages smaller than smallest bin
+You will want to likely add this to your first age bin and delete this before putting in SS, or
+start the ageBins argument at the 2nd age bin and F0 will be all fish smaller (hence the first age bin)}
 \usage{
 SurveyAFs.fn(dir, datA, datTows, strat.vars = c("Depth_m", "Latitude_dd"),
-  strat.df = NULL, ageBins = 1, SSout = FALSE, meanRatioMethod = TRUE,
+  strat.df = NULL, ageBins = 1, SSout = TRUE, meanRatioMethod = TRUE,
   gender = 3, NAs2zero = T, sexRatioUnsexed = NA, maxSizeUnsexed = NA,
-  partition = 0, fleet = "Enter Fleet", agelow = "Enter",
-  agehigh = "Enter", ageErr = "Enter", nSamps = "Enter Samps",
-  month = "Enter Month", printfolder = "forSS")
+  sexRatioStage = 1, partition = 0, fleet = "Enter Fleet",
+  agelow = "Enter", agehigh = "Enter", ageErr = "Enter",
+  nSamps = "Enter Samps", month = "Enter Month", printfolder = "forSS",
+  remove999 = TRUE, outputStage1 = FALSE)
 }
 \arguments{
 \item{dir}{directory this is where the output files will be saved}
 
-\item{datA}{the read in age data by the ReadInAges.EWC.fn function}
+\item{datA}{the biological data frame exctrated from the data warehouse using the PullBio.fn}
 
-\item{datTows}{the read in catch data by the DesignBasedEstBiomass.EWC.fn function}
+\item{datTows}{the catch data frame extracted from the data warehouse using the PullCatch.fn}
 
 \item{strat.vars}{the variables used define the stratas. Defaul is bottom depth and latitudes.}
 
@@ -44,6 +42,8 @@ SurveyAFs.fn(dir, datA, datTows, strat.vars = c("Depth_m", "Latitude_dd"),
 
 \item{maxSizeUnsexed}{all sizes below this threshold will assign unsexed fish by sexRatio set equal to 0.50, fish larger than this size will have unsexed fish assigned by the calculated sex ratio in the data.}
 
+\item{sexRatioStage}{the stage of the expansion to apply the sex ratio. Input either 1 or 2.}
+
 \item{partition}{partition for Stock Synthesis}
 
 \item{fleet}{fleet number}
@@ -60,25 +60,26 @@ SurveyAFs.fn(dir, datA, datTows, strat.vars = c("Depth_m", "Latitude_dd"),
 
 \item{printfolder}{folder where the length comps will be saved}
 
+\item{remove999}{the output object by the function will have the 999 column combined with the first length bin}
+
+\item{outputStage1}{return the first stage expanded data without compiling it for SS}
+
 \item{femaleMale}{numbering for female and male fish in the data file. This is opposite to what is used in SS.}
 
 \item{lageBins}{length bins}
 }
 \description{
-Epands the lengths up to the total stratum area then sums over strata
-Written by Allan Hicks 16 March 2009
-modified to incorporate unsexed fish using sex ratios in May 2011
+Expands the ages up to the total stratum area then sums over strata
+Original Version Written by Allan Hicks 16 March 2009
+Modified by Chantel Wetzel to work with the data warehouse data formatting,
+add additional options of when to apply the sex ratio, and correct some treatment of unsexed fish
 weighted by sample size and area
-datA should have a column called "year" indicating year
-femaleMale is a vector of codes for female then male (in that order)
-lgthBin is the increment of each length bin or a vector of the actual bins
-NOTE: The length bin called F0 or M0 is retained to show proportion of lengths smaller than smallest bin
-You will want to likely add this to your first length bin and delete this before putting in SS, or
-start the lgthBins argument at the 2nd length bin and F0 will be all fish smaller (hence the first length bin)
-SSout: if True the output is in a format pastable into SS dat file
+NOTE: The age bin called F0 or M0 is retained to show proportion of ages smaller than smallest bin
+You will want to likely add this to your first age bin and delete this before putting in SS, or
+start the ageBins argument at the 2nd age bin and F0 will be all fish smaller (hence the first age bin)
 }
 \seealso{
-\code{\link{SurveyLFs.EWC.fn}}
+\code{\link{SurveyLFs.fn}}
 }
 \author{
 Allan Hicks and Chantel Wetzel

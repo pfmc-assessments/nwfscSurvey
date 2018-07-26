@@ -6,6 +6,7 @@
 #' @param survey specify the survey data set for calculations. Options are "NWFSCBT", "Tri.Shelf", "AFSC.Slope"
 #' @param circleSize circle size 
 #' @param dopng TRUE/FALSE whether to save a png file
+#' @param ...      Additional arguments for the plots
 #'
 #' @author Allan Hicks and Chantel Wetzel
 #' @export
@@ -19,30 +20,17 @@ PlotSexRatio.fn <-function(dir, dat, fn=median, survey, circleSize=0.1, dopng = 
     }
 
     
-	#if (survey == "NWFSCBT") {
-        axis.name = ifelse(is.null(dat$Age), "Length (cm)", "Age")
-        data.type = ifelse(is.null(dat$Age), "length", "age")
-		if (dopng) { png(paste0(dir, "/plots/", survey, "_fraction_female.png"), height=7, width=7, units="in",res=300) }
-        if (data.type == "length") { temp =  table(dat$Length_cm, dat$Sex) }
-        if (data.type == "age")    { temp =  table(dat$Age, dat$Sex) }
+     axis.name = ifelse(is.null(dat$Age), "Length (cm)", "Age")
+     data.type = ifelse(is.null(dat$Age), "length", "age")
+	if (dopng) { png(paste0(dir, "/plots/", survey, "_fraction_female.png"), height=7, width=7, units="in",res=300) }
+     if (data.type == "length") { temp =  table(dat$Length_cm, dat$Sex) }
+     if (data.type == "age")    { temp =  table(dat$Age, dat$Sex) }
 
-        ratioF = temp[,"F"] / (temp[,"M"] + temp[,"F"])
-        nobs = temp[,"F"] + temp[,"M"]
-        plot(ratioF,type="l", col="red", xlab=axis.name, ylab="Fraction female",...)
-        symbols(ratioF,circles=nobs,inches=circleSize,fg="red",bg=rgb(1,0,0,alpha=0.5),add=T)
-    #}
+     ratioF = temp[,"F"] / (temp[,"M"] + temp[,"F"])
+     nobs = temp[,"F"] + temp[,"M"]
+     plot(ratioF,type="l", col="red", xlab=axis.name, ylab="Fraction female",...)
+     symbols(ratioF,circles=nobs,inches=circleSize,fg="red",bg=rgb(1,0,0,alpha=0.5),add=T)
 
-    #if (survey%in%c("Tri.Shelf", "AFSC.Slope")){
-    #	axis.name = ifelse(is.null(dat$AGE), "Length (cm)", "Age")
-    #	data.type = ifelse(is.null(dat$AGE), "length", "age")
-    #	if (dopng) { png(paste0(dir, "/plots/", survey, "_fraction_female_by_",data.type,".png"), height=7, width=7, units="in",res=300) }
-    #	if (data.type == "length") { temp =  table(dat$Length_cm, dat$SEX) }
-    #	if (data.type == "age")    { temp =  table(dat$AGE, dat$SEX) }
-    #	ratioF = temp[,2] / (temp[,1] + temp[,2])
-    #	nobs = temp[,1] + temp[,2]
-    #	plot(ratioF,type="l", col="red", xlab=axis.name, ylab="Fraction female",...)
-    #	symbols(ratioF,circles=nobs,inches=circleSize,fg="red",bg=rgb(1,0,0,alpha=0.5),add=T)
-    #}
     if (dopng) { dev.off()}
 
 }

@@ -13,17 +13,18 @@ note that 0 and Inf are tacked on the ends to account for lengths and ages outsi
 I assume all fish are sexed for age data, thus do not apply sex ratios for unsexed fish}
 \usage{
 SurveyAgeAtLen.fn(dir, datAL, datTows, strat.vars = c("Depth_m",
-  "Latitude_dd"), strat.df = NULL, lgthBins = 1, ageBins = 1, SSout = F,
-  meanRatioMethod = T, raw = TRUE, NAs2zero = T, month = "Enter Month",
-  fleet = "Enter Fleet", partition = "Enter Partition",
-  ageErr = "Enter Age Error", returnSamps = F, printfolder = "forSS")
+  "Latitude_dd"), strat.df = NULL, lgthBins = 1, ageBins = 1,
+  SSout = TRUE, meanRatioMethod = TRUE, raw = TRUE, NAs2zero = TRUE,
+  month = "Enter Month", fleet = "Enter Fleet",
+  partition = "Enter Partition", ageErr = "Enter Age Error",
+  returnSamps = FALSE, printfolder = "forSS")
 }
 \arguments{
 \item{dir}{directory this is where the output files will be saved}
 
-\item{datAL}{the read in length comps by the ReadInAges.EWC.fn function}
+\item{datAL}{the biological data frame exctrated from the data warehouse using the PullBio.fn}
 
-\item{datTows}{the read in catch data by the DesignBasedEstBiomass.EWC.fn function}
+\item{datTows}{the catch data frame extracted from the data warehouse using the PullCatch.fn}
 
 \item{strat.vars}{the variables used define the stratas. Defaul is bottom depth and latitudes.}
 
