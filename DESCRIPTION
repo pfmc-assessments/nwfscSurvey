@@ -10,5 +10,8 @@ License: What license is it under?
 Suggests:
     knitr,
     rmarkdown
+Imports:
+	chron,
+	jsonlite
 VignetteBuilder: knitr
 RoxygenNote: 6.0.1
