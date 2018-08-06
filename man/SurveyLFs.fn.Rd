@@ -22,9 +22,9 @@ SurveyLFs.fn(dir, datL, datTows, strat.vars = c("Depth_m", "Latitude_dd"),
 \arguments{
 \item{dir}{directory this is where the output files will be saved}
 
-\item{datL}{the read in length comps by the ReadInLengths.EWC.fn function}
+\item{datL}{the read in length comps by the PullBio.fn function}
 
-\item{datTows}{the read in catch data by the DesignBasedEstBiomass.EWC.fn function}
+\item{datTows}{the read in catch data by the PullCatch.fn function}
 
 \item{strat.vars}{the variables used define the stratas. Defaul is bottom depth and latitudes.}
 
@@ -32,19 +32,19 @@ SurveyLFs.fn(dir, datL, datTows, strat.vars = c("Depth_m", "Latitude_dd"),
 
 \item{lgthBins}{length bins}
 
-\item{SSout}{if True the output is in a format pastable into SS dat file}
+\item{SSout}{TRUE/FALSE if True the output is in a format pastable into SS dat file}
 
 \item{meanRatioMethod}{TRUE/FALSE}
 
-\item{gender}{gender value for Stock Synthesis}
+\item{gender}{(0, 1, 2, 3) gender value for Stock Synthesis}
 
-\item{NAs2zero}{change NAs to zeros}
+\item{NAs2zero}{TRUE/FALSE change NAs to zeros}
 
 \item{sexRatioUnsexed}{sex ratio to apply to any length bins of a certain size or smaller as defined by the maxSizeUnsexed}
 
 \item{maxSizeUnsexed}{all sizes below this threshold will assign unsexed fish by sexRatio set equal to 0.50, fish larger than this size will have unsexed fish assigned by the calculated sex ratio in the data.}
 
-\item{sexRatioStage}{the stage of the expansion to apply the sex ratio. Input either 1 or 2.}
+\item{sexRatioStage}{(1, 2) the stage of the expansion to apply the sex ratio. Input either 1 or 2.}
 
 \item{partition}{partition for Stock Synthesis}
 

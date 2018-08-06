@@ -52,8 +52,6 @@ SurveyAgeAtLen.fn(dir, datAL, datTows, strat.vars = c("Depth_m",
 
 \item{printfolder}{folder where the length comps will be saved}
 
-\item{femaleMale}{numbering for female and male fish in the data file. This is opposite to what is used in SS.}
-
 \item{ageerr}{age error value for Stock Synthesis}
 }
 \description{
