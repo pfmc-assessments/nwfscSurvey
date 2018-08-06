@@ -106,9 +106,9 @@ PlotBio.fn(dir = getwd(),
 ```
 The Biomass.fn returns a list with the second element containing the design-based index of abundance. The design based index is calculated based on the defined stratas. The function writes a csv file inside the dir input location to a "forSS" folder. The PlotBio.fn plots the calculated design based index from the Biomass.fn. If the dopng is set to true a "plot" folder will be created in the directory location and a png of the plot will be saved.
 
-The plot of the design-based index of abundance: 
+<!--The plot of the design-based index of abundance: 
 <center>![](https://github.com/nwfsc-assess/nwfscSurvey/vignettes/images/NWFSCBT_designed_based_index.png) {width=75%}<center>
-<!--<center>![](C:/Users/Chantel.Wetzel/Documents/GitHub/nwfscSurvey/vignettes/images/NWFSCBT_designed_based_index.png){width=65%}<center> -->
+<center>![](C:/Users/Chantel.Wetzel/Documents/GitHub/nwfscSurvey/vignettes/images/NWFSCBT_designed_based_index.png){width=65%}<center> -->
 
 #### Length composition data
 A function to calculate the input sample size based on Stewart & Hamel (2014) which determined that the input sample size was related to the species group (flatfish, shelf rockfish, slope rockfish, thornyhead, others, or all groups) and number of tows. The function writes a csv file with the "forSS" folder containing the number of tows and observed fish by year. 
@@ -146,10 +146,10 @@ PlotFreqData.fn(dir = getwd(),
                 ...)
 
 ```
-If the dopng is set to true a "plot" folder will be created in the directory location and a png of the plot will be saved: 
+If the dopng is set to true a "plot" folder will be created in the directory location and a png of the plot will be saved. 
 
-<center>![](https://github.com/nwfsc-assess/nwfscSurvey/vignettes/images/Survey_Length_Frequency.png) {width=75%}<center>
-<!-- <center>![](C:/Users/Chantel.Wetzel/Documents/GitHub/nwfscSurvey/vignettes/images/Survey_Length_Frequency.png){width=65%}<center> -->
+<!-- <center>![](https://github.com/nwfsc-assess/nwfscSurvey/vignettes/images/Survey_Length_Frequency.png) {width=75%}<center>
+<center>![](C:/Users/Chantel.Wetzel/Documents/GitHub/nwfscSurvey/vignettes/images/Survey_Length_Frequency.png){width=65%}<center> -->
 
 #### Marginal age composition data
 Calculate the marginal age sample size:
