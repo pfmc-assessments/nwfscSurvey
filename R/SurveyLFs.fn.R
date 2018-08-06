@@ -8,18 +8,18 @@
 #' start the lgthBins argument at the 2nd length bin and F0 will be all fish smaller (hence the first length bin)
 #' 
 #' @param dir directory this is where the output files will be saved
-#' @param datL the read in length comps by the ReadInLengths.EWC.fn function
-#' @param datTows the read in catch data by the DesignBasedEstBiomass.EWC.fn function
+#' @param datL the read in length comps by the PullBio.fn function
+#' @param datTows the read in catch data by the PullCatch.fn function
 #' @param strat.vars the variables used define the stratas. Defaul is bottom depth and latitudes.
 #' @param strat.df the created strata matrix with the calculated areas by the createStrataDF.fn function
 #' @param lgthBins length bins
-#' @param SSout if True the output is in a format pastable into SS dat file
+#' @param SSout TRUE/FALSE if True the output is in a format pastable into SS dat file
 #' @param meanRatioMethod TRUE/FALSE
-#' @param gender gender value for Stock Synthesis
-#' @param NAs2zero change NAs to zeros
+#' @param gender (0, 1, 2, 3) gender value for Stock Synthesis
+#' @param NAs2zero TRUE/FALSE change NAs to zeros
 #' @param sexRatioUnsexed sex ratio to apply to any length bins of a certain size or smaller as defined by the maxSizeUnsexed
 #' @param maxSizeUnsexed all sizes below this threshold will assign unsexed fish by sexRatio set equal to 0.50, fish larger than this size will have unsexed fish assigned by the calculated sex ratio in the data.
-#' @param sexRatioStage the stage of the expansion to apply the sex ratio. Input either 1 or 2. 
+#' @param sexRatioStage (1, 2) the stage of the expansion to apply the sex ratio. Input either 1 or 2. 
 #' @param partition partition for Stock Synthesis
 #' @param fleet fleet number
 #' @param agelow value for SS -1

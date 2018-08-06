@@ -13,7 +13,6 @@
 #' @param datTows the catch data frame extracted from the data warehouse using the PullCatch.fn
 #' @param strat.vars the variables used define the stratas. Defaul is bottom depth and latitudes.
 #' @param strat.df the created strata matrix with the calculated areas by the createStrataDF.fn function
-#' @param femaleMale numbering for female and male fish in the data file. This is opposite to what is used in SS.
 #' @param lgthBins length bins
 #' @param ageBins age bins
 #' @param SSout TRUE/FALSE return comps formatted for SS or in a raw form
