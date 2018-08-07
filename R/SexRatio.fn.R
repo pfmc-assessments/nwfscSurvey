@@ -28,24 +28,26 @@ SexRatio.fn <- function(x, sexRatioStage, sexRatioUnsexed, maxSizeUnsexed){
     
             #now fill in any missing ratios with ratios of that bin from other years and strata (can probably be done more efficiently)
             noRatio <- which(is.na(x$sexRatio))
-            if(length(noRatio)>0) cat("\nThese are sex ratios that were filled in using observations from the same lengths from different strata and years\n")
+            if(length(noRatio)>0) cat("\nThese are sex ratios that were filled in using observations from the same lengths from different strata and years:\n")
             for(i in noRatio) {
                 inds <- x$allLs == x$allLs[i]
                 tmpF <- sum(x$expF[inds])
                 tmpM <- sum(x$expM[inds])
                 x$sexRatio[i] <- tmpF/(tmpF+tmpM)
-                print(x[i,c("Length_cm","allLs","expF","expM","sexRatio")])
+                #print(x[i,c("Length_cm","allLs","expF","expM","sexRatio")])
+                message(cat("Length:", x[i,c("Length_cm")], "Bin:", x[i,c("allLs")], "Sex Ratio:", x[i,c("sexRatio")])) 
             }
     
             noRatio <- which(is.na(x$sexRatio))
             if(length(noRatio)>0) cat("\nThese are sex ratios that were filled in using observations from nearby lengths\n")
             for(i in noRatio) {
-                nearLens <- Lengths[c(which(Lengths==x$allLs[i])-1,which(Lengths==x$allLs[i])+1)]
+                nearLens <- Lengths[c(which(Lengths==x$allLs[i])-1, which(Lengths==x$allLs[i])+1)]
                 inds <- x$allLs %in% nearLens
                 tmpF <- sum(x$expF[inds])
                 tmpM <- sum(x$expM[inds])
                 x$sexRatio[i] <- tmpF/(tmpF+tmpM)
-                print(x[i,c("Length_cm","allLs","expF","expM","sexRatio")])
+                #print(x[i,c("Length_cm","allLs","expF","expM","sexRatio")])
+                message(cat("Length:", x[i,c("Length_cm")], "Bin:", x[i,c("allLs")], "Sex Ratio:", x[i,c("sexRatio")])) 
             }
             noRatio <- which(is.na(x$sexRatio))
             if(length(noRatio)>0) cat("Some sex ratios were left unknown and omitted\n\n")
@@ -62,16 +64,16 @@ SexRatio.fn <- function(x, sexRatioStage, sexRatioUnsexed, maxSizeUnsexed){
         if(length(sexRatioUnsexed)==1 & !is.na(sexRatioUnsexed)) {
            sexRatio = x$TotalLjhF / (x$TotalLjhF + x$TotalLjhM)
            sexRatio[x$LENGTH <= maxSizeUnsexed] <- sexRatioUnsexed
-        
-           #now fill in any missing ratios with ratios of that bin from other years and strata (can probably be done more efficiently)
-           noRatio <- which(is.na(sexRatio))
+           tmp = data.frame(LENGTH = x$LENGTH, sexRatio)
+           noRatio <- which(is.na(tmp$sexRatio))
            if(length(noRatio)>0) {
                cat("\nThese are sex ratios that were filled in using observations from the similar lengths from the same strata and year.\n")
                for(i in noRatio) {
-                   lower <- sexRatio[i-1]
-                   upper <- sexRatio[i+1]
-                   sexRatio[i] <- mean(lower + upper)
-                   print(x$LENGTH[i], sexRatio[i])
+                   lower <- ifelse(i != 1 , sexRatio[i-1], sexRatio[i+1])
+                   upper <- ifelse(i != dim(tmp)[1], sexRatio[i+1], sexRatio[i-1])
+                   sexRatio[i] <- mean( (lower + upper) / 2 )
+                   if(is.na(sexRatio[i])) { stop("!!! Not enough observations to fill in the sex ratio. Increase the maxSizeUnsexed input. !!!") }
+                   message(cat("Year:", x$Year[1], "Strata:", as.character(x$stratum[1]), "Length:", x$LENGTH[i], "Sex Ratio:", sexRatio[i]))
                }
            }
            x$TotalLjhF    <- x$TotalLjhF + x$TotalLjhU * sexRatio

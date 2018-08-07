@@ -147,8 +147,7 @@ SurveyLFs.fn <- function(dir, datL, datTows, strat.vars=c("Depth_m","Latitude_dd
 
     # Apply the sex ratio to the raw data based on each tow
     if(sexRatioStage == 1){
-        datB = SexRatio.fn(x = datB, sexRatioStage = sexRatioStage, 
-                           sexRatioUnsexed = sexRatioUnsexed, maxSizeUnsexed =  maxSizeUnsexed)
+        datB = SexRatio.fn(x = datB, sexRatioStage = sexRatioStage, sexRatioUnsexed = sexRatioUnsexed, maxSizeUnsexed =  maxSizeUnsexed)
     }
 
 
@@ -198,8 +197,7 @@ SurveyLFs.fn <- function(dir, datL, datTows, strat.vars=c("Depth_m","Latitude_dd
         out    <- data.frame(out, LjhU = LjhU, TotalLjhU = round(A.h * LjhU / a.h))
 
         if(sexRatioStage == 2){                      
-            out = SexRatio.fn(x = out, sexRatioStage = sexRatioStage, 
-                              sexRatioUnsexed = sexRatioUnsexed, maxSizeUnsexed =  maxSizeUnsexed)
+            out = SexRatio.fn(x = out, sexRatioStage = sexRatioStage, sexRatioUnsexed = sexRatioUnsexed, maxSizeUnsexed =  maxSizeUnsexed)
         }
 
         return(out)
@@ -220,18 +218,17 @@ SurveyLFs.fn <- function(dir, datL, datTows, strat.vars=c("Depth_m","Latitude_dd
         lgths  <- split(x, x$LENGTH) # splits by length bin for year and stratum
         LjhAll <- unlist(lapply(lgths, function(x){sum( x$expAll / x$areaFished)})) # calculated the expansion for unsexed by length bin
         out    <- data.frame(x[rep(1, length(LjhAll)), xcols], area = A.h, 
-                             LENGTH=as.numeric(names(LjhAll)), LjhAll = LjhAll / ntows, TotalLjhAll = round(A.h * LjhAll / ntows))
+                             LENGTH=as.numeric(names(LjhAll)), TotalLjhAll = round(A.h * LjhAll / ntows))
         LjhF <- unlist(lapply(lgths, function(x){ sum( x$expF / x$areaFished ) }))
-        out  <- data.frame(out, LjhF = LjhF / ntows, TotalLjhF = round(A.h * LjhF / ntows))
+        out  <- data.frame(out, TotalLjhF = round(A.h * LjhF / ntows))
         LjhM <- unlist(lapply(lgths, function(x){ sum( x$expM / x$areaFished )})) 
-        out  <- data.frame(out, LjhM = LjhM / ntows, TotalLjhM = round(A.h * LjhM / ntows))
+        out  <- data.frame(out, TotalLjhM = round(A.h * LjhM / ntows))
         LjhU <- unlist(lapply(lgths, function(x){ sum( x$expU / x$areaFished )})) 
-        out  <- data.frame(out, LjhU = LjhU / ntows, TotalLjhU = round(A.h * LjhU / ntows))
+        out  <- data.frame(out, TotalLjhU = round(A.h * LjhU / ntows))
 
         # Should move this into the SexRatio function 
         if(sexRatioStage == 2){
-            out = SexRatio.fn(x = out, sexRatioStage = sexRatioStage, 
-                              sexRatioUnsexed = sexRatioUnsexed, maxSizeUnsexed =  maxSizeUnsexed)
+            out = SexRatio.fn(x = out, sexRatioStage = sexRatioStage, sexRatioUnsexed = sexRatioUnsexed, maxSizeUnsexed =  maxSizeUnsexed)
         }
         return(out)
     }
