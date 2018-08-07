@@ -1,6 +1,6 @@
 #' Sex ratio function that assigns a sex to unsexed fish when creatin length or age comps
 #' 
-
+#' @param dir directory
 #' @param x the data frame being passed to the function from either the SurveyLFs.fn or th SurveyAFs.fn
 #' @param sexRatioStage the stage of the expansion to apply the sex ratio. Input either 1 or 2. 
 #' @param sexRatioUnsexed sex ratio to apply to any length bins of a certain size or smaller as defined by the maxSizeUnsexed
@@ -10,7 +10,7 @@
 #' @export 
 
 
-SexRatio.fn <- function(x, sexRatioStage, sexRatioUnsexed, maxSizeUnsexed){
+SexRatio.fn <- function(dir, x, sexRatioStage, sexRatioUnsexed, maxSizeUnsexed){
 
     if (sexRatioStage == 1){
         cat("Sex ratio for unsexed fish being applied to the expanded numbers within a tow (stage 1) when possible. 
@@ -64,6 +64,7 @@ SexRatio.fn <- function(x, sexRatioStage, sexRatioUnsexed, maxSizeUnsexed){
         if(length(sexRatioUnsexed)==1 & !is.na(sexRatioUnsexed)) {
            sexRatio = x$TotalLjhF / (x$TotalLjhF + x$TotalLjhM)
            sexRatio[x$LENGTH <= maxSizeUnsexed] <- sexRatioUnsexed
+
            tmp = data.frame(LENGTH = x$LENGTH, sexRatio)
            noRatio <- which(is.na(tmp$sexRatio))
            if(length(noRatio)>0) {

@@ -147,7 +147,7 @@ SurveyLFs.fn <- function(dir, datL, datTows, strat.vars=c("Depth_m","Latitude_dd
 
     # Apply the sex ratio to the raw data based on each tow
     if(sexRatioStage == 1){
-        datB = SexRatio.fn(x = datB, sexRatioStage = sexRatioStage, sexRatioUnsexed = sexRatioUnsexed, maxSizeUnsexed =  maxSizeUnsexed)
+        datB = SexRatio.fn(dir = dir, x = datB, sexRatioStage = sexRatioStage, sexRatioUnsexed = sexRatioUnsexed, maxSizeUnsexed =  maxSizeUnsexed)
     }
 
 
@@ -197,7 +197,7 @@ SurveyLFs.fn <- function(dir, datL, datTows, strat.vars=c("Depth_m","Latitude_dd
         out    <- data.frame(out, LjhU = LjhU, TotalLjhU = round(A.h * LjhU / a.h))
 
         if(sexRatioStage == 2){                      
-            out = SexRatio.fn(x = out, sexRatioStage = sexRatioStage, sexRatioUnsexed = sexRatioUnsexed, maxSizeUnsexed =  maxSizeUnsexed)
+            out = SexRatio.fn(dir = dir, x = out, sexRatioStage = sexRatioStage, sexRatioUnsexed = sexRatioUnsexed, maxSizeUnsexed =  maxSizeUnsexed)
         }
 
         return(out)
@@ -228,7 +228,7 @@ SurveyLFs.fn <- function(dir, datL, datTows, strat.vars=c("Depth_m","Latitude_dd
 
         # Should move this into the SexRatio function 
         if(sexRatioStage == 2){
-            out = SexRatio.fn(x = out, sexRatioStage = sexRatioStage, sexRatioUnsexed = sexRatioUnsexed, maxSizeUnsexed =  maxSizeUnsexed)
+            out = SexRatio.fn(dir = dir, x = out, sexRatioStage = sexRatioStage, sexRatioUnsexed = sexRatioUnsexed, maxSizeUnsexed =  maxSizeUnsexed)
         }
         return(out)
     }
