@@ -1,25 +1,20 @@
 #' Calculates design based estimates from survey data for West Coast surveys 
 #'
-#' The variables defining the strata must begin with the name in strat.vars and end with ".1" or ".2" (i.e., BEST_DEPTH.1)
+#' The variables defining the strata must begin with the name in strat.vars and end with ".1" or ".2" (i.e., Depth_m.1)
 #' the strata are assumed to be continuous variables, thus have a lower and upper value defining them. The lower value does not necessarily have to be the same as the previous upper value.
 #' the stat.df dataframe is difficult to build up with more than one variable becuase it turns into a design where you have to define all areas, thus repeat the variables for one (like a design)
 #' 
-#' An example strat.df
-#' data.frame(name=c("shallowS","shallowN","deepS","deepN"),area=c(1200,1400,2000,2500),BEST_DEPTH.1=c(rep(55,2),rep(100,2)),BEST_DEPTH.2=c(rep(100,2),rep(183,2)),INPFC=c(32,42,32,42),BEST_LATITUDE.2=c(42,49,42,49))
-#' I should think about adding in a routine that automatically puts in the latitude if stratifying by INPFC (or simply finds the strata by INPFC)
-#' The code below splits out the data by stratum and calculates the average density in each stratum. It then expands up by area to give an estimated weight in each stratum.
-#' The stratum weights are added together to get a total index for that year
 #' I calculate the variance given stratified sampling theory
 #' I work in normal space, then calculate the statistics if B is lognormal
 #' This is the Mean Ratio Estimate
 #' 
-#' @param dir directory of the excel file
-#' @param dat Dataframe of the data. It must have catch rate called catchPerArea and columns corresponding to strata variable names. It must also have a column called year.
-#' @param stat.vars A vector of the strata variable names (i.e., c("BEST_LATITUDE","BEST_DEPTH"))
-#' @param strat.df a dataframe with the first column the name of the stratum, the second column the area of the stratum, and the remaining columns are the high and low variables defining the strata.
+#' @param dir directory where the output file will be saved
+#' @param dat data-frame of the data that has been by the PullCatch.fn
+#' @param stat.vars A vector of the strata variable names (i.e., c("Depth_m","Latitude_dd"))
+#' @param strat.df a dataframe with the first column the name of the stratum, the second column the area of the stratum, and the remaining columns are the high and low variables defining the strata created by the CreateStrataDF.fn
 #' @param printfolder the folder where files will be saved
 #' @param outputMedian T/F output median or the mean biomass estimate
-#' @param convert convert biomass 
+#' @param convert convertion factor for the biomass by area units (e.g., hectare vs km2) 
 #' @param season season for SS
 #' @param fleet fleet number for SS
 #'
