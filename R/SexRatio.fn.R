@@ -1,6 +1,5 @@
 #' Sex ratio function that assigns a sex to unsexed fish when creatin length or age comps
 #' 
-#' @param dir directory
 #' @param x the data frame being passed to the function from either the SurveyLFs.fn or th SurveyAFs.fn
 #' @param sexRatioStage the stage of the expansion to apply the sex ratio. Input either 1 or 2. 
 #' @param sexRatioUnsexed sex ratio to apply to any length bins of a certain size or smaller as defined by the maxSizeUnsexed
@@ -10,7 +9,7 @@
 #' @export 
 
 
-SexRatio.fn <- function(dir, x, sexRatioStage, sexRatioUnsexed, maxSizeUnsexed){
+SexRatio.fn <- function(x, sexRatioStage, sexRatioUnsexed, maxSizeUnsexed){
 
     if (sexRatioStage == 1){
         cat("Sex ratio for unsexed fish being applied to the expanded numbers within a tow (stage 1) when possible. 
@@ -35,7 +34,7 @@ SexRatio.fn <- function(dir, x, sexRatioStage, sexRatioUnsexed, maxSizeUnsexed){
                 tmpM <- sum(x$expM[inds])
                 x$sexRatio[i] <- tmpF/(tmpF+tmpM)
                 #print(x[i,c("Length_cm","allLs","expF","expM","sexRatio")])
-                message(cat("Length:", x[i,c("Length_cm")], "Bin:", x[i,c("allLs")], "Sex Ratio:", x[i,c("sexRatio")])) 
+                message(cat("LengthAge:", x[i,c("Length_cm")], "Bin:", x[i,c("allLs")], "Sex Ratio:", x[i,c("sexRatio")])) 
             }
     
             noRatio <- which(is.na(x$sexRatio))
@@ -47,7 +46,7 @@ SexRatio.fn <- function(dir, x, sexRatioStage, sexRatioUnsexed, maxSizeUnsexed){
                 tmpM <- sum(x$expM[inds])
                 x$sexRatio[i] <- tmpF/(tmpF+tmpM)
                 #print(x[i,c("Length_cm","allLs","expF","expM","sexRatio")])
-                message(cat("Length:", x[i,c("Length_cm")], "Bin:", x[i,c("allLs")], "Sex Ratio:", x[i,c("sexRatio")])) 
+                message(cat("Length/Age:", x[i,c("Length_cm")], "Bin:", x[i,c("allLs")], "Sex Ratio:", x[i,c("sexRatio")])) 
             }
             noRatio <- which(is.na(x$sexRatio))
             if(length(noRatio)>0) cat("Some sex ratios were left unknown and omitted\n\n")
@@ -59,28 +58,63 @@ SexRatio.fn <- function(dir, x, sexRatioStage, sexRatioUnsexed, maxSizeUnsexed){
         }
     }
 
-    if (sexRatioStage == 2){
-        
-        if(length(sexRatioUnsexed)==1 & !is.na(sexRatioUnsexed)) {
-           sexRatio = x$TotalLjhF / (x$TotalLjhF + x$TotalLjhM)
-           sexRatio[x$LENGTH <= maxSizeUnsexed] <- sexRatioUnsexed
-
-           tmp = data.frame(LENGTH = x$LENGTH, sexRatio)
-           noRatio <- which(is.na(tmp$sexRatio))
-           if(length(noRatio)>0) {
-               cat("\nThese are sex ratios that were filled in using observations from the similar lengths from the same strata and year.\n")
-               for(i in noRatio) {
-                   lower <- ifelse(i != 1 , sexRatio[i-1], sexRatio[i+1])
-                   upper <- ifelse(i != dim(tmp)[1], sexRatio[i+1], sexRatio[i-1])
-                   sexRatio[i] <- mean( (lower + upper) / 2 )
-                   if(is.na(sexRatio[i])) { stop("!!! Not enough observations to fill in the sex ratio. Increase the maxSizeUnsexed input. !!!") }
-                   message(cat("Year:", x$Year[1], "Strata:", as.character(x$stratum[1]), "Length:", x$LENGTH[i], "Sex Ratio:", sexRatio[i]))
-               }
-           }
-           x$TotalLjhF    <- x$TotalLjhF + x$TotalLjhU * sexRatio
-           x$TotalLjhM    <- x$TotalLjhM + x$TotalLjhU * (1 - sexRatio)
-           x$TotalLjhU    <- round(x$TotalLjhU - x$TotalLjhU * sexRatio - x$TotalLjhU * (1 - sexRatio), 0)             
+    if (sexRatioStage == 2){       
+        # Take everything out of the list into a dataframe
+        out = NULL
+        for(a in 1:length(x)){
+          tmp1 = x[[a]]
+          for(b in 1:length(tmp1)){
+            tmp = tmp1[[b]]
+            init = data.frame(Year = tmp$Year, 
+                      stratum = tmp$stratum,
+                      area = tmp$area, 
+                      LENGTH = tmp$LENGTH, 
+                      TotalLjhAll = tmp$TotalLjhF,
+                      TotalLjhF = tmp$TotalLjhF,  
+                      TotalLjhM = tmp$TotalLjhM,  
+                      TotalLjhU = tmp$TotalLjhU)
+            out = rbind(out, init)
+          }
         }
+        # Calculate the sex ratio
+        out$sexRatio = out$TotalLjhF / (out$TotalLjhF + out$TotalLjhM)
+        # Fill in the input ratio for small fish
+        out$sexRatio[out$LENGTH <= maxSizeUnsexed] <- sexRatioUnsexed
+        
+        # Calculate the ratio across years and strata for missing ratios
+        noRatio <- which(is.na(out$sexRatio))
+        if(length(noRatio)>0) cat("\nThese are sex ratios that were filled in using observations from the same lengths from different strata and years\n")
+        for(i in noRatio) {
+            inds <- out$LENGTH == out$LENGTH[i]
+            tmpF <- sum(out$TotalLjhF[inds])
+            tmpM <- sum(out$TotalLjhM[inds])
+            out$sexRatio[i] <- tmpF/(tmpF+tmpM)
+            message(cat("Length/Age:", out[i,"LENGTH"], "Sex Ratio:", round(out[i,"sexRatio"],3)))
+        }
+        
+        # Calculate the ratio based upon near lengths 
+        noRatio <- which(is.na(out$sexRatio))
+        if(length(noRatio)>0) {
+          cat("\nThese are sex ratios that were filled in using observations from nearby lengths\n")
+          for(i in noRatio) {
+            unq.len = sort(unique(out$LENGTH))
+            find = which(unq.len == out$LENGTH[i])
+            if (out$LENGTH[i] == unq.len[length(unq.len)]) { nearLens <- which(out$LENGTH == unq.len[find-1]) }
+            if (out$LENGTH[i] != unq.len[length(unq.len)]) { nearLens <-c(which(out$LENGTH == unq.len[find-1]), which(out$LENGTH == unq.len[find+1])) }
+            tmpF <- sum(out$TotalLjhF[nearLens])
+            tmpM <- sum(out$TotalLjhM[nearLens])
+            out$sexRatio[i] <- tmpF/(tmpF+tmpM)
+            message(cat("Length/Age:", out[i,"LENGTH"], "Sex Ratio:", round(out[i,"sexRatio"],3)))
+          }
+        }
+        
+        out$TotalLjhF    <- out$TotalLjhF + out$TotalLjhU * out$sexRatio
+        out$TotalLjhM    <- out$TotalLjhM + out$TotalLjhU * (1 - out$sexRatio)
+        out$TotalLjhU    <- round(out$TotalLjhU - out$TotalLjhU * out$sexRatio - out$TotalLjhU * (1 - out$sexRatio), 0)    
+        
+         #sum over strata within year
+        list.yr <- split(out, as.character(out$Year))
+        x <- lapply(list.yr,function(x){split(x, as.character(x$stratum))})
     }
 
    return(x)   

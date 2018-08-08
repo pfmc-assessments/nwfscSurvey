@@ -147,7 +147,7 @@ SurveyLFs.fn <- function(dir, datL, datTows, strat.vars=c("Depth_m","Latitude_dd
 
     # Apply the sex ratio to the raw data based on each tow
     if(sexRatioStage == 1){
-        datB = SexRatio.fn(dir = dir, x = datB, sexRatioStage = sexRatioStage, sexRatioUnsexed = sexRatioUnsexed, maxSizeUnsexed =  maxSizeUnsexed)
+        datB = SexRatio.fn(x = datB, sexRatioStage = sexRatioStage, sexRatioUnsexed = sexRatioUnsexed, maxSizeUnsexed =  maxSizeUnsexed)
     }
 
 
@@ -195,11 +195,6 @@ SurveyLFs.fn <- function(dir, datL, datTows, strat.vars=c("Depth_m","Latitude_dd
         out    <- data.frame(out, LjhM = LjhM, TotalLjhM = round(A.h * LjhM / a.h))
         LjhU   <- unlist(lapply(lgths, function(x){sum(x$expU)}))
         out    <- data.frame(out, LjhU = LjhU, TotalLjhU = round(A.h * LjhU / a.h))
-
-        if(sexRatioStage == 2){                      
-            out = SexRatio.fn(dir = dir, x = out, sexRatioStage = sexRatioStage, sexRatioUnsexed = sexRatioUnsexed, maxSizeUnsexed =  maxSizeUnsexed)
-        }
-
         return(out)
     }
 
@@ -225,11 +220,6 @@ SurveyLFs.fn <- function(dir, datL, datTows, strat.vars=c("Depth_m","Latitude_dd
         out  <- data.frame(out, TotalLjhM = round(A.h * LjhM / ntows))
         LjhU <- unlist(lapply(lgths, function(x){ sum( x$expU / x$areaFished )})) 
         out  <- data.frame(out, TotalLjhU = round(A.h * LjhU / ntows))
-
-        # Should move this into the SexRatio function 
-        if(sexRatioStage == 2){
-            out = SexRatio.fn(dir = dir, x = out, sexRatioStage = sexRatioStage, sexRatioUnsexed = sexRatioUnsexed, maxSizeUnsexed =  maxSizeUnsexed)
-        }
         return(out)
     }
 
@@ -240,8 +230,9 @@ SurveyLFs.fn <- function(dir, datL, datTows, strat.vars=c("Depth_m","Latitude_dd
         L.year.str <- lapply(datB.yrstr, function(x){lapply(x, lengthTotalRatio.fn, strat = strat.df)})
     }
 
-    if(sexRatioStage == 2 ){ cat("Sex ratio for unsexed fish being applied to combined expanded numbers (stage 2) within a strata and year.\n") }
-
+    if(sexRatioStage == 2){                      
+        L.year.str = SexRatio.fn(x = L.year.str, sexRatioStage = sexRatioStage, sexRatioUnsexed = sexRatioUnsexed, maxSizeUnsexed =  maxSizeUnsexed)
+    }
 
     year.fn <- function(x,Lengths) {   #calculate the LFs by year
         theLs.yr    <- unlist(lapply(x, function(x){ as.numeric(as.character(x$LENGTH))}))
@@ -264,7 +255,7 @@ SurveyLFs.fn <- function(dir, datL, datTows, strat.vars=c("Depth_m","Latitude_dd
         out[names(TotalLjAll),"TotalLjAll"] <- 100 * TotalLjAll / sum(TotalLjAll, na.rm = T)
         out[names(TotalLjF),"TotalLjF"]     <- 100 * TotalLjF / (sum(TotalLjF, na.rm = T) + sum(TotalLjM, na.rm = T)) 
         out[names(TotalLjM),"TotalLjM"]     <- 100 * TotalLjM / (sum(TotalLjF, na.rm = T) + sum(TotalLjM, na.rm = T)) 
-        out[names(TotalLjU),"TotalLjU"]     <- 100 * TotalLjU / (sum(TotalLjF, na.rm = T))
+        out[names(TotalLjU),"TotalLjU"]     <- 100 * TotalLjU / (sum(TotalLjU, na.rm = T))
         out <- out[-nrow(out),]   #remove last row because Inf and always NA due to inside.all=T
         return(out)
     }

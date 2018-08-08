@@ -13,7 +13,7 @@
 #' @export
 #' @seealso \code{\link{StrataFactors.fn}}
 
-PlotSexRatioStrata.fn <-function(dir, dat, type = "length", strat.vars=c("Depth_m","Latitude_dd"), survey, circleSize=0.1, dopng = FALSE,...) {
+PlotSexRatioStrata.fn <-function(dir, dat, type = "length", strat.vars=c("Depth_m","Latitude_dd"), survey, circleSize=0.05, dopng = FALSE,...) {
 
     plotdir <- paste0(dir, "/plots")
     plotdir.isdir <- file.info(plotdir)$isdir
@@ -28,8 +28,12 @@ PlotSexRatioStrata.fn <-function(dir, dat, type = "length", strat.vars=c("Depth_
 
     datB   <- data.frame(datB, stratum = StrataFactors.fn(datB, strat.vars, strat.df))        #create a new column for the stratum factor
     
+    if (dopng) { pdf(paste0(dir, "/plots/", survey,"_fraction_female.pdf") ) }
+    par(mfrow = c(3,3))
+
     for(i in 1:length(row.names(strat.df))){
-        if (dopng) { png(paste0(dir, "/plots/", survey,"_", row.names(strat.df)[i], "_fraction_female.png"), height=7, width=7, units="in",res=300) }
+        #if (dopng) { png(paste0(dir, "/plots/", survey,"_", row.names(strat.df)[i], "_fraction_female.png"), height=7, width=7, units="in",res=300) }
+        #par(mfrow = c(5,3))
         z = which(datB$stratum == row.names(strat.df)[i])
         subDF = datB[z,]
 
@@ -38,9 +42,10 @@ PlotSexRatioStrata.fn <-function(dir, dat, type = "length", strat.vars=c("Depth_
 
         ratioF = temp[,"F"] / (temp[,"M"] + temp[,"F"])
         nobs = temp[,"F"] + temp[,"M"]
-        plot(ratioF,type="l", col="red", xlab=axis.name, ylab="Fraction female", main = row.names(strat.df)[i] ), #,...)
+        plot(ratioF,type="l", col="red", xlab=axis.name, ylab="Fraction female", main = row.names(strat.df)[i], ylim = c(0,1))# ,...)
         symbols(ratioF, circles=nobs, inches=circleSize, fg="red",bg=rgb(1,0,0,alpha=0.5),add=T)
-        if (dopng) {dev.off()}
+        #if (dopng) {dev.off()}
     }
+    if (dopng) {dev.off()}
 
 }
