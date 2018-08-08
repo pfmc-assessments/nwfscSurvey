@@ -41,6 +41,14 @@ SurveyLFs.fn <- function(dir, datL, datTows, strat.vars=c("Depth_m","Latitude_dd
                          agelow = "Enter", agehigh = "Enter", ageErr = "Enter", nSamps="Enter Samps", month="Enter Month", printfolder = "forSS", 
                          remove999 = TRUE, outputStage1 = FALSE)  {
 
+    # Check for the number of tows were fish were observed but not measured
+    postows = datTows[which(datTows$total_catch_numbers > 0),]
+    find =  !(postows$Trawl_id %in% datL$Trawl_id)
+    x = sum(find)
+    missing = sum(postows[find,"total_catch_numbers"])
+    percent = 100* round(missing/sum(datTows[,"total_catch_numbers"]),3)
+    cat("\nThere are", x, "tows where fish were observed but no lengths/ages taken. 
+        There are", missing, "lengths/ages that comprise", percent, "percent of total sampled fish.\n")
 
     totRows  <- nrow(datL)
     datL      <- datL[!is.na(datL$Length_cm),]
