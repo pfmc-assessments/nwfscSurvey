@@ -16,7 +16,7 @@ PullCatch.fn(Name = NULL, SciName = NULL, YearRange = c(1000, 5000),
 
 \item{YearRange}{range of years to pull data}
 
-\item{SurveyName}{survey to pull the data for}
+\item{SurveyName}{survey to pull the data for the options are: Triennial, AFSC.Slope, NWFSC.Combo, NWFSC.Slope, NWFSC.Shelf, NWFSC.Hypoxia, NWFSC.Santa.Barb.Basin, NWFSC.Shelf.Rockfish, NWFSC.Video}
 
 \item{SaveFile}{option to save the file to the directory}
 

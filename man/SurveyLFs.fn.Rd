@@ -6,10 +6,7 @@
 Original Version Written by Allan Hicks 16 March 2009
 Modified by Chantel Wetzel to work with the data warehouse data formatting,
 add additional options of when to apply the sex ratio, and correct some treatment of unsexed fish
-weighted by sample size and area
-NOTE: The length bin called F0 or M0 is retained to show proportion of lengths smaller than smallest bin
-You will want to likely add this to your first length bin and delete this before putting in SS, or
-start the lgthBins argument at the 2nd length bin and F0 will be all fish smaller (hence the first length bin)}
+weighted by sample size and area}
 \usage{
 SurveyLFs.fn(dir, datL, datTows, strat.vars = c("Depth_m", "Latitude_dd"),
   strat.df = NULL, lgthBins = 1, SSout = TRUE, meanRatioMethod = TRUE,
@@ -72,9 +69,6 @@ Original Version Written by Allan Hicks 16 March 2009
 Modified by Chantel Wetzel to work with the data warehouse data formatting,
 add additional options of when to apply the sex ratio, and correct some treatment of unsexed fish
 weighted by sample size and area
-NOTE: The length bin called F0 or M0 is retained to show proportion of lengths smaller than smallest bin
-You will want to likely add this to your first length bin and delete this before putting in SS, or
-start the lgthBins argument at the 2nd length bin and F0 will be all fish smaller (hence the first length bin)
 }
 \seealso{
 \code{\link{StrataFactors.fn}}
