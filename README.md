@@ -9,7 +9,12 @@ Note: this code was developed for use by scientists at the Northwest Fisheries S
 install.packages("devtools")
 library(devtools)
 
-devtools::install_github("nwfsc-assess/nwfscSurvey", ref = "documentation", build_vignettes = TRUE)
+devtools::install_github("nwfsc-assess/nwfscSurvey", ref = "development", build_vignettes = TRUE)
+```
+
+A vignette with example commands can be viewed using the command
+```S
+vignette("nwfscSurvey")
 ```
 
 
