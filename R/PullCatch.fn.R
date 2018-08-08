@@ -5,7 +5,7 @@
 #' @param Name  common name of species data to pull from the data warehouse
 #' @param SciName scientific name of species data to pull from the data warehouse
 #' @param YearRange range of years to pull data
-#' @param SurveyName survey to pull the data for
+#' @param SurveyName survey to pull the data for the options are: Triennial, AFSC.Slope, NWFSC.Combo, NWFSC.Slope, NWFSC.Shelf, NWFSC.Hypoxia, NWFSC.Santa.Barb.Basin, NWFSC.Shelf.Rockfish, NWFSC.Video
 #' @param SaveFile option to save the file to the directory
 #' @param Dir directory where the file should be saved
 #' 
