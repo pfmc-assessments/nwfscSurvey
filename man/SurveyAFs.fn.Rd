@@ -42,7 +42,7 @@ SurveyAFs.fn(dir, datA, datTows, strat.vars = c("Depth_m", "Latitude_dd"),
 
 \item{maxSizeUnsexed}{all sizes below this threshold will assign unsexed fish by sexRatio set equal to 0.50, fish larger than this size will have unsexed fish assigned by the calculated sex ratio in the data.}
 
-\item{sexRatioStage}{the stage of the expansion to apply the sex ratio. Input either 1 or 2.}
+\item{sexRatioStage}{1/2 apply the sex ratio based on the tows (1) or the expanded numbers (2)}
 
 \item{partition}{partition for Stock Synthesis}
 
