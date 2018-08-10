@@ -55,7 +55,10 @@ PullBio.fn <- function (Name = NULL, SciName = NULL, YearRange = c(1000, 5000), 
                      byrow = TRUE)
 
     if (!SurveyName %in% surveys[,1]) { 
-         stop(paste("The SurveyName does not match one of the available options:", surveys[,1])) }
+         stop(cat("The SurveyName does not match one of the available options:", surveys[,1])) }
+
+    if(SurveyName == "Triennial"){
+        cat("!!!! WARNING: The data warehouse is still working to incorporate the Triennial data. The Triennial biological data needs to be evaluated carefully.!!!") }
 
     for(i in 1:dim(surveys)[1]){
         if(SurveyName == surveys[i,1]){ 
@@ -71,16 +74,27 @@ PullBio.fn <- function (Name = NULL, SciName = NULL, YearRange = c(1000, 5000), 
               "tow", "date_dim$full_date", "depth_m", "weight_kg", 
               "length_cm", "sex", "age_years", "latitude_dd", "longitude_dd")
 
-    UrlText  <- paste0(
-                "https://www.nwfsc.noaa.gov/data/api/v1/source/trawl.individual_fact/selection.json?filters=project=", paste(strsplit(project, " ")[[1]], collapse = "%20"),",", 
-                "actual_station_design_dim$stn_invalid_for_trawl_date_whid=0,", 
-                "performance=Satisfactory,", "depth_ftm>=30,depth_ftm<=700,", 
-                "field_identified_taxonomy_dim$", var.name, "=", paste(strsplit(Species, " ")[[1]], collapse = "%20"), 
-                ",date_dim$year>=",  YearRange[1], ",date_dim$year<=", YearRange[2], "&variables=", 
-                paste0(Vars, collapse = ","))
+    if (SurveyName != "Triennial"){
+        UrlText  <- paste0(
+                    "https://www.nwfsc.noaa.gov/data/api/v1/source/trawl.individual_fact/selection.json?filters=project=", paste(strsplit(project, " ")[[1]], collapse = "%20"),",", 
+                    "actual_station_design_dim$stn_invalid_for_trawl_date_whid=0,", 
+                    "performance=Satisfactory,", "depth_ftm>=30,depth_ftm<=700,", 
+                    "field_identified_taxonomy_dim$", var.name, "=", paste(strsplit(Species, " ")[[1]], collapse = "%20"), 
+                    ",date_dim$year>=",  YearRange[1], ",date_dim$year<=", YearRange[2], "&variables=", 
+                    paste0(Vars, collapse = ","))        
+    }
 
+    if (SurveyName == "Triennial"){
+        UrlText  <- paste0(
+                    "https://www.nwfsc.noaa.gov/data/api/v1/source/trawl.triennial_length_fact/selection.json?",var.name, "=", paste(strsplit(Species, " ")[[1]], collapse = "%20"), 
+                    ",&year>=",  YearRange[1], "&year<=", YearRange[2], "&variables=", 
+                    paste0(Vars, collapse = ","))
+    }
+
+    if (SurveyName == "AFSC.Slope"){ cat("Warning: The data warehouse may not have the AFSC slope data included yet.") }
     print("Pulling biological data. This can take up to ~ 30 seconds.")
     DataPull <- try(jsonlite::fromJSON(UrlText))
+
     if(!is.data.frame(DataPull)) {       
          stop(cat("\nNo data returned by the warehouse for the filters given.\n Make sure the year range is correct for the project selected and the input name is correct, \n otherwise there may be no data for this species from this project.\n"))
     }
