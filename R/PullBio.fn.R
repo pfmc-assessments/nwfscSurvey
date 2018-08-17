@@ -57,8 +57,10 @@ PullBio.fn <- function (Name = NULL, SciName = NULL, YearRange = c(1000, 5000), 
     if (!SurveyName %in% surveys[,1]) { 
          stop(cat("The SurveyName does not match one of the available options:", surveys[,1])) }
 
-    if(SurveyName == "Triennial"){
-        cat("!!!! WARNING: The data warehouse is still working to incorporate the Triennial data. The Triennial biological data needs to be evaluated carefully.!!!") }
+    if (SurveyName == "Triennial"){ 
+        message("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
+        message("Warning: Foreign hauls are not excluded.")
+        message("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!") }
 
     for(i in 1:dim(surveys)[1]){
         if(SurveyName == surveys[i,1]){ 
@@ -74,51 +76,72 @@ PullBio.fn <- function (Name = NULL, SciName = NULL, YearRange = c(1000, 5000), 
               "tow", "date_dim$full_date", "depth_m", "weight_kg", 
               "length_cm", "sex", "age_years", "latitude_dd", "longitude_dd")
 
-    if (SurveyName != "Triennial"){
-        UrlText  <- paste0(
+
+    UrlText  <- paste0(
                     "https://www.nwfsc.noaa.gov/data/api/v1/source/trawl.individual_fact/selection.json?filters=project=", paste(strsplit(project, " ")[[1]], collapse = "%20"),",", 
                     "actual_station_design_dim$stn_invalid_for_trawl_date_whid=0,", 
                     "performance=Satisfactory,", "depth_ftm>=30,depth_ftm<=700,", 
                     "field_identified_taxonomy_dim$", var.name, "=", paste(strsplit(Species, " ")[[1]], collapse = "%20"), 
                     ",date_dim$year>=",  YearRange[1], ",date_dim$year<=", YearRange[2], "&variables=", 
-                    paste0(Vars, collapse = ","))        
-    }
+                    paste0(Vars, collapse = ",")) 
+    message("Pulling biological data. This can take up to ~ 30 seconds.")
+    DataPull <- try(jsonlite::fromJSON(UrlText))       
+
 
     if (SurveyName == "Triennial"){
-        UrlText  <- paste0(
-                    "https://www.nwfsc.noaa.gov/data/api/v1/source/trawl.triennial_length_fact/selection.json?",var.name, "=", paste(strsplit(Species, " ")[[1]], collapse = "%20"), 
+        DataPull = DataPull[!is.na(DataPull$age_years),]
+
+        UrlText <- paste0(
+                    "https://www.nwfsc.noaa.gov/data/api/v1/source/trawl.triennial_length_fact/selection.json?",
+                    var.name, "=", paste(strsplit(Species, " ")[[1]], collapse = "%20"), 
                     ",&year>=",  YearRange[1], "&year<=", YearRange[2], "&variables=", 
                     paste0(Vars, collapse = ","))
+
+        message("Pulling biological data. This can take up to ~ 30 seconds.")
+        LenPull <- try(jsonlite::fromJSON(UrlText))
+
+        colnames(LenPull)[2]  <- "Date" 
+        LenPull$Weight <- NA  
+        LenPull$Age <- NA 
+        Len <- rename_columns(LenPull, newname = c("Trawl_id", "Year", "Vessel", "Project", "Pass", new.name, "Tow", "Date", "Depth_m", "Weight", "Length_cm", "Sex", "Age", "Latitude_dd", "Longitude_dd"))
+        Len <- Len[, c("Trawl_id", "Year", "Vessel", "Project", "Pass", "Tow", "Date", "Depth_m", new.name, "Weight", "Length_cm", "Sex", "Age", "Latitude_dd", "Longitude_dd")]
+        Len$Date    <- chron::chron(format(as.POSIXlt(Len$Date, format = "%Y-%m-%dT%H:%M:%S"), "%Y-%m-%d"), format = "y-m-d", out.format = "YYYY-m-d")
+        Len$Trawl_id  <- as.character(Len$Trawl_id)
+        Len$Project   <- projectShort
+        Len$Depth_m   <- as.numeric(as.character(Len$Depth_m))
+        Len$Length_cm <- as.numeric(as.character(Len$Length_cm))
+        Len$Age       <- as.numeric(as.character(Len$Age))
     }
 
     if (SurveyName == "AFSC.Slope"){ cat("Warning: The data warehouse may not have the AFSC slope data included yet.") }
-    print("Pulling biological data. This can take up to ~ 30 seconds.")
-    DataPull <- try(jsonlite::fromJSON(UrlText))
-
     if(!is.data.frame(DataPull)) {       
-         stop(cat("\nNo data returned by the warehouse for the filters given.\n Make sure the year range is correct for the project selected and the input name is correct, \n otherwise there may be no data for this species from this project.\n"))
+         stop(cat("\nNo data returned by the warehouse for the filters given. 
+            Make sure the year range is correct for the project selected and the input name is correct, 
+            otherwise there may be no data for this species from this project.\n"))
     }
 
+
     Data <- rename_columns(DataPull, newname = c("Trawl_id", "Year", "Vessel", "Project", "Pass", new.name, "Tow", "Date", "Depth_m", "Weight", "Length_cm", "Sex", "Age", "Latitude_dd", "Longitude_dd"))
-
     Data <- Data[, c("Trawl_id", "Year", "Vessel", "Project", "Pass", "Tow", "Date", "Depth_m", new.name, "Weight", "Length_cm", "Sex", "Age", "Latitude_dd", "Longitude_dd")]
-
     Data$Date <- chron::chron(format(as.POSIXlt(Data$Date, format = "%Y-%m-%dT%H:%M:%S"), "%Y-%m-%d"), format = "y-m-d", out.format = "YYYY-m-d")
-
-    Data$Trawl_id = as.character(Data$Trawl_id)
-
-    Data$Project = projectShort
-
-
+    Data$Trawl_id  <- as.character(Data$Trawl_id)
+    Data$Project   <- projectShort
     Data$Depth_m   <- as.numeric(as.character(Data$Depth_m))
     Data$Length_cm <- as.numeric(as.character(Data$Length_cm))
     Data$Age       <- as.numeric(as.character(Data$Age))
 
+    if (SurveyName == "Triennial"){
+        Ages <- Data
+        Data <- list()
+        Data$Lengths <- Len
+        Data$Ages <- Ages 
+        message("Triennial data returned as a list: Data$Lengths and Data$Ages\n") }
+
     if(SaveFile){
-        time = Sys.time()
-        time = substring(time, 1, 10)
+        time <- Sys.time()
+        time <- substring(time, 1, 10)
         save(Data, file = paste0(Dir, "/Bio_", time, "_", outName, "_", SurveyName, "_",  time, ".rda"))
-        print(paste("Biological data file saved to following location:", Dir))
+        message(paste("Biological data file saved to following location:", Dir))
     }
 
     return(Data)
