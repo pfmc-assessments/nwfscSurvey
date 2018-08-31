@@ -20,18 +20,18 @@
 PlotBio.fn <-function(dir, dat, CI=0.95, scalar=1e6, gap=0.03, ylab="Biomass ('000 mt)", xlab="Year", 
                       main = NULL, ylim=NULL, add = FALSE, col = 'black', dopng = FALSE, ...) {
 
-    plotdir <- paste0(dir, "/plots")
-    plotdir.isdir <- file.info(plotdir)$isdir
-    if(is.na(plotdir.isdir) | !plotdir.isdir){
-      dir.create(plotdir)
-    }
-
     bio = dat[[2]]
 
-    if (dopng) { 
-        if ( is.null(main)) { png(paste0(dir, "/plots/designed_based_index.png"), height=7, width=7, units="in",res=300) }
-        if (!is.null(main)) { png(paste0(dir, "/plots/", main, "_designed_based_index.png"), height=7, width=7, units="in",res=300) } 
+    if (dopng) {
+      plotdir <- paste0(dir, "/plots")
+      plotdir.isdir <- file.info(plotdir)$isdir
+      if(is.na(plotdir.isdir) | !plotdir.isdir){
+        dir.create(plotdir)
+      }
+      if ( is.null(main)) { png(paste0(dir, "/plots/designed_based_index.png"), height=7, width=7, units="in",res=300) }
+      if (!is.null(main)) { png(paste0(dir, "/plots/", main, "_designed_based_index.png"), height=7, width=7, units="in",res=300) } 
     }
+    
     y <- as.numeric(as.character(bio$Value))/scalar
     x <- as.numeric(as.character(bio$Year))
     se <- as.numeric(as.character(bio$seLogB))

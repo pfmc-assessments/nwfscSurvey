@@ -19,12 +19,6 @@
 
 PlotFreqData.fn <- function(dir, dat, survey = "Survey", inch=0.15, ylab="Bins", xlab="Year", zero2NAs=T, main=NULL, xlim=NULL, dopng = FALSE, ...) {
 
-    plotdir <- paste0(dir, "/plots")
-    plotdir.isdir <- file.info(plotdir)$isdir
-    if(is.na(plotdir.isdir) | !plotdir.isdir){
-      dir.create(plotdir)
-    }
-
     dataType = sum(names(dat) == "ageErr")
     dataType = ifelse(dataType == 0,  "Length", "Age")
 
@@ -57,7 +51,12 @@ PlotFreqData.fn <- function(dir, dat, survey = "Survey", inch=0.15, ylab="Bins",
 
     if(is.null(xlim)) {xlim <- range(x)}
 
-    if (dopng) { png(paste0(dir,"/plots/", survey, "_", dataType,"_Frequency.png"), height=7, width=7, units="in",res=300) }
+    if (dopng) { png(paste0(dir,"/plots/", survey, "_", dataType,"_Frequency.png"), height=7, width=7, units="in",res=300) 
+      plotdir <- paste0(dir, "/plots")
+      plotdir.isdir <- file.info(plotdir)$isdir
+      if(is.na(plotdir.isdir) | !plotdir.isdir){
+        dir.create(plotdir)}
+    }
     if (gender == 3) { par(mfrow=c(2,1)) } 
     if (gender == 0) { par(mfrow=c(1,1)) } 
     

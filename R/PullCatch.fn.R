@@ -185,7 +185,7 @@ PullCatch.fn <- function (Name = NULL, SciName = NULL, YearRange = c(1000, 5000)
     if(SaveFile){
         time = Sys.time()
         time = substring(time, 1, 10)
-        save(Out, file = paste0(Dir, "/Catch_", time, "_", outName, "_", SurveyName, "_",  time, ".rda"))
+        save(Out, file = paste0(Dir, "/Catch_", outName, "_", SurveyName, "_",  time, ".rda"))
         print(paste("Catch data file saved to following location:", Dir))
     }
 

@@ -114,6 +114,7 @@ SurveyLFs.fn <- function(dir, datL, datTows, strat.vars=c("Depth_m","Latitude_dd
     # Find the numerator looking where the number of fish = sexed fish when all fish are sampled (e.g., sexed and unsexed in a fully sampled tow)
     # The previous approach expanded sexed fish relative to the full sample size resulting in expansions when there should not have been
     datB = data.frame(datB[match(as.character(TdatL.tows$Var1), as.character(datB$Trawl_id)),], true_sub_MFfish = TdatL.tows$Freq)
+    if(is.null(datB$true_sub_MFfish)) { datB$true_sub_MFfish = 0}
     datB$TowExpFactorMF <- datB$Number_fish / (datB$true_sub_MFfish + datB$true_sub_Ufish)
     datB$TowExpFactorMF[datB$TowExpFactorMF==Inf] <- NA
     
