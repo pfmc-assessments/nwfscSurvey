@@ -129,24 +129,33 @@ SurveyLFs.fn <- function(dir, datL, datTows, strat.vars=c("Depth_m","Latitude_dd
     names(TdatL.lengths) <- c("Trawl_id","Length_cm","Sex","num")
     TdatL.lengths <- TdatL.lengths[TdatL.lengths$num>0,]
     TdatL.lengths <- split(TdatL.lengths,TdatL.lengths$Sex)
-    temp <- TdatL.lengths[["F"]][,c("Trawl_id","Length_cm","num")]
-    names(temp) <- c("Trawl_id","Length_cm","numF")
-    datB <- merge(datB,temp,by=c("Trawl_id","Length_cm"),all=T)
-    datB[is.na(datB$numF),"numF"] <- 0
-    temp <- TdatL.lengths[["M"]][,c("Trawl_id","Length_cm","num")]
-    names(temp) <- c("Trawl_id","Length_cm","numM")
-    datB <- merge(datB,temp,by=c("Trawl_id","Length_cm"),all=T)
-    datB[is.na(datB$numM),"numM"] <- 0
-    temp <- TdatL.lengths[["U"]][,c("Trawl_id","Length_cm","num")]
-    names(temp) <- c("Trawl_id","Length_cm","numU")
-    datB <- merge(datB,temp,by=c("Trawl_id","Length_cm"),all=T)
-    datB[is.na(datB$numU),"numU"] <- 0
+    if (!is.null(TdatL.lengths[["F"]])){
+      temp <- TdatL.lengths[["F"]][,c("Trawl_id","Length_cm","num")]
+      names(temp) <- c("Trawl_id","Length_cm","numF")
+      datB <- merge(datB,temp,by=c("Trawl_id","Length_cm"),all=T)
+      datB[is.na(datB$numF),"numF"] <- 0
+    }
+    if(is.null(TdatL.lengths[["F"]])) { datB$numF <- 0}
+    if(!is.null(TdatL.lengths[["M"]])){
+      temp <- TdatL.lengths[["M"]][,c("Trawl_id","Length_cm","num")]
+      names(temp) <- c("Trawl_id","Length_cm","numM")
+      datB <- merge(datB,temp,by=c("Trawl_id","Length_cm"),all=T)
+      datB[is.na(datB$numM),"numM"] <- 0
+    }
+    if(is.null(TdatL.lengths[["M"]])) { datB$numM <- 0}
+    if(!is.null(TdatL.lengths[["U"]])){
+      temp <- TdatL.lengths[["U"]][,c("Trawl_id","Length_cm","num")]
+      names(temp) <- c("Trawl_id","Length_cm","numU")
+      datB <- merge(datB,temp,by=c("Trawl_id","Length_cm"),all=T)
+      datB[is.na(datB$numU),"numU"] <- 0
+    }
+    if(is.null(TdatL.lengths[["U"]])) { datB$numU <- 0}
 
     #now calculate the expanded lengths per tow
-    datB$expAll <- datB$numAll*datB$TowExpFactorAll
-    datB$expF   <- datB$numF*datB$TowExpFactorMF
-    datB$expM   <- datB$numM*datB$TowExpFactorMF
-    datB$expU   <- datB$numU*datB$TowExpFactorU
+    datB$expAll <- datB$numAll * datB$TowExpFactorAll
+    datB$expF   <-   datB$numF * datB$TowExpFactorMF
+    datB$expM   <-   datB$numM * datB$TowExpFactorMF
+    datB$expU   <-   datB$numU * datB$TowExpFactorU
     
     datB$Length_cm <- as.numeric(as.character(datB$Length_cm))
     datB$allLs <- Lengths[findInterval(datB$Length_cm, Lengths, all.inside=T)]
