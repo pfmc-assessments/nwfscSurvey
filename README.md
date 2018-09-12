@@ -14,10 +14,3 @@ devtools::install_github("nwfsc-assess/nwfscSurvey", build_vignettes = TRUE)
 ```
 
 
-## Overview
-The following functions can be used to generate length comps for the NWFSC shelf-slope bottom trawl survey
-
-```S    
-# Read length comps
-
-```
