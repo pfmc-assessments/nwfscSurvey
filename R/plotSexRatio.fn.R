@@ -12,14 +12,13 @@
 #' @export
 
 PlotSexRatio.fn <-function(dir, dat, data.type = "length",  survey, circleSize=0.1, dopng = FALSE,...) {
-
-    plotdir <- paste0(dir, "/plots")
-    plotdir.isdir <- file.info(plotdir)$isdir
-    if(is.na(plotdir.isdir) | !plotdir.isdir){
-      dir.create(plotdir)
-    }
     
-	if (dopng) { png(paste0(dir, "/plots/", survey, "_", data.type, "_fraction_female.png"), height=7, width=7, units="in",res=300) }
+	if (dopng) { 
+        plotdir <- paste0(dir, "/plots")
+        plotdir.isdir <- file.info(plotdir)$isdir
+        if(is.na(plotdir.isdir) | !plotdir.isdir){
+            dir.create(plotdir) }
+        png(paste0(dir, "/plots/", survey, "_", data.type, "_fraction_female.png"), height=7, width=7, units="in",res=300) }
 
     if (data.type == "length") { temp =  table(dat$Length_cm, dat$Sex); axis.name = "Length (cm)" }
     if (data.type == "age")    { temp =  table(dat$Age, dat$Sex); axis.name = "Age" }

@@ -12,11 +12,13 @@
 SexRatio.fn <- function(x, sexRatioStage, sexRatioUnsexed, maxSizeUnsexed){
 
     if (sexRatioStage == 1){
-        cat("Sex ratio for unsexed fish being applied to the expanded numbers within a tow (stage 1) when possible. 
-        If no data within a tow for bin then the sex ratio for the bin across all years applied to unsexed fish.
-        If no data for that bin across all years then the sex ratio for nearby bins was applied to unsexed fish.\n")
+
         #incorporate unsexed fish using sex ratios
         if(length(sexRatioUnsexed)==1 & !is.na(sexRatioUnsexed)) {
+            cat("Sex ratio for unsexed fish being applied to the expanded numbers within a tow (stage 1) when possible. 
+            If no data within a tow for bin then the sex ratio for the bin across all years applied to unsexed fish.
+            If no data for that bin across all years then the sex ratio for nearby bins was applied to unsexed fish.\n")
+
             x$sexRatio <- x$expF/(x$expF+x$expM)
             # The below line was changed to as.character from as.numeric because it was not finding the correct lengths : CRW
             x$sexRatio[x$Length_cm <= maxSizeUnsexed] <- sexRatioUnsexed
@@ -27,6 +29,10 @@ SexRatio.fn <- function(x, sexRatioStage, sexRatioUnsexed, maxSizeUnsexed){
     
             #now fill in any missing ratios with ratios of that bin from other years and strata (can probably be done more efficiently)
             noRatio <- which(is.na(x$sexRatio))
+            check = round(length(noRatio)/length(x$sexRatio),3)
+            if ( check > 0.10) {
+                cat("\n There are", check, "percent of tows with observations that the sex ratio will be filled based on other tows.
+                        Consider increasing the maxSizeUnsexed or create the comps as unsexed.\n")}
             if(length(noRatio)>0) cat("\nThese are sex ratios that were filled in using observations from the same lengths from different strata and years:\n")
             for(i in noRatio) {
                 inds <- x$allLs == x$allLs[i]
@@ -83,6 +89,11 @@ SexRatio.fn <- function(x, sexRatioStage, sexRatioUnsexed, maxSizeUnsexed){
         
         # Calculate the ratio across years and strata for missing ratios
         noRatio <- which(is.na(out$sexRatio))
+        check = round(length(noRatio)/length(out$sexRatio),3)
+        if ( check > 0.10) {
+            cat("\n There are", check, "percent of tows with observations that the sex ratio will be filled based on other tows.
+                    Consider increasing the maxSizeUnsexed or create the comps as unsexed.\n")}
+
         if(length(noRatio)>0) cat("\nThese are sex ratios that were filled in using observations from the same lengths from different strata and years\n")
         for(i in noRatio) {
             inds <- out$LENGTH == out$LENGTH[i]
