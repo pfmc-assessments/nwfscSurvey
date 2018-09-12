@@ -1,0 +1,20 @@
+Package: nwfscSurvey
+Type: Package
+Title: Northwest Fisheries Science Center Survey
+Version: 2.0
+Date: 2018-04-13
+Author: NWFSC
+Maintainer: chantel.wetzel <chantel.wetzel@noaa.gov>
+Description: Northwest Fisheries Science Center survey data processing package.
+License: What license is it under?
+Suggests:
+    knitr,
+    rmarkdown
+Imports:
+	chron,
+	jsonlite,
+	kableExtra,
+	reshape2,
+	xtable
+VignetteBuilder: knitr
+RoxygenNote: 6.0.1
