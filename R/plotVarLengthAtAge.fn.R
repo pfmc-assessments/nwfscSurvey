@@ -23,12 +23,6 @@ PlotVarLengthAtAge.fn <- function(dir, dat, survey, ageBin=1, bySex=T, parStart=
     #calculate and plot the sd and cv for length at age
     #if you enter estVB=F, then it uses the parStart as the VB parameters
 
-    plotdir <- paste0(dir, "/plots")
-    plotdir.isdir <- file.info(plotdir)$isdir
-    if(is.na(plotdir.isdir) | !plotdir.isdir){
-      dir.create(plotdir)
-    }
-
     VB.fn <- function(age, Linf ,k, t0) {
         out <- Linf*(1-exp(-k*(age-t0)))
         return(out)
@@ -57,7 +51,12 @@ PlotVarLengthAtAge.fn <- function(dir, dat, survey, ageBin=1, bySex=T, parStart=
         nn <- 2
     }
     
-    if (dopng) { png(paste0(dir, "/plots/", survey, "_VarLengthAtAge.png"), height=7, width=7, units="in",res=300) }
+    if (dopng) { 
+        plotdir <- paste0(dir, "/plots")
+        plotdir.isdir <- file.info(plotdir)$isdir
+        if(is.na(plotdir.isdir) | !plotdir.isdir){
+            dir.create(plotdir) }
+        png(paste0(dir, "/plots/", survey, "_VarLengthAtAge.png"), height=7, width=7, units="in",res=300) }
     par(mfcol=c(2,nn), mar =c(3,5,3,5))
 
     out <- vector(mode="list", length=nn)
