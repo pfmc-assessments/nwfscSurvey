@@ -18,6 +18,8 @@
 
 PullBio.fn <- function (Name = NULL, SciName = NULL, YearRange = c(1000, 5000), SurveyName = NULL, SaveFile = FALSE, Dir = NULL) 
 {
+    # increase the timeout period to avoid errors when pulling data
+    options(timeout= 4000000)
 
     if(SaveFile){
         if(is.null(Dir)){
@@ -89,7 +91,7 @@ PullBio.fn <- function (Name = NULL, SciName = NULL, YearRange = c(1000, 5000), 
 
 
     if (SurveyName == "Triennial"){
-        DataPull = DataPull[!is.na(DataPull$age_years),]
+        #DataPull = DataPull[!is.na(DataPull$age_years),]
 
         UrlText <- paste0(
                     "https://www.nwfsc.noaa.gov/data/api/v1/source/trawl.triennial_length_fact/selection.json?",
@@ -114,28 +116,34 @@ PullBio.fn <- function (Name = NULL, SciName = NULL, YearRange = c(1000, 5000), 
     }
 
     if (SurveyName == "AFSC.Slope"){ cat("Warning: The data warehouse may not have the AFSC slope data included yet.") }
-    if(!is.data.frame(DataPull)) {       
+    if(!is.data.frame(DataPull) & SurveyName != "Triennial") {       
          stop(cat("\nNo data returned by the warehouse for the filters given. 
             Make sure the year range is correct for the project selected and the input name is correct, 
             otherwise there may be no data for this species from this project.\n"))
     }
 
 
-    Data <- rename_columns(DataPull, newname = c("Trawl_id", "Year", "Vessel", "Project", "Pass", new.name, "Tow", "Date", "Depth_m", "Weight", "Length_cm", "Sex", "Age", "Latitude_dd", "Longitude_dd"))
-    Data <- Data[, c("Trawl_id", "Year", "Vessel", "Project", "Pass", "Tow", "Date", "Depth_m", new.name, "Weight", "Length_cm", "Sex", "Age", "Latitude_dd", "Longitude_dd")]
-    Data$Date <- chron::chron(format(as.POSIXlt(Data$Date, format = "%Y-%m-%dT%H:%M:%S"), "%Y-%m-%d"), format = "y-m-d", out.format = "YYYY-m-d")
-    Data$Trawl_id  <- as.character(Data$Trawl_id)
-    Data$Project   <- projectShort
-    Data$Depth_m   <- as.numeric(as.character(Data$Depth_m))
-    Data$Length_cm <- as.numeric(as.character(Data$Length_cm))
-    Data$Age       <- as.numeric(as.character(Data$Age))
+    Data = NULL
+    if (length(DataPull)>0){
+        Data <- rename_columns(DataPull, newname = c("Trawl_id", "Year", "Vessel", "Project", "Pass", new.name, "Tow", "Date", "Depth_m", "Weight", "Length_cm", "Sex", "Age", "Latitude_dd", "Longitude_dd"))
+        Data <- Data[, c("Trawl_id", "Year", "Vessel", "Project", "Pass", "Tow", "Date", "Depth_m", new.name, "Weight", "Length_cm", "Sex", "Age", "Latitude_dd", "Longitude_dd")]
+        Data$Date <- chron::chron(format(as.POSIXlt(Data$Date, format = "%Y-%m-%dT%H:%M:%S"), "%Y-%m-%d"), format = "y-m-d", out.format = "YYYY-m-d")
+        Data$Trawl_id  <- as.character(Data$Trawl_id)
+        Data$Project   <- projectShort
+        Data$Depth_m   <- as.numeric(as.character(Data$Depth_m))
+        Data$Length_cm <- as.numeric(as.character(Data$Length_cm))
+        Data$Age       <- as.numeric(as.character(Data$Age))
+    }
 
+    Ages = NULL
     if (SurveyName == "Triennial"){
-        Ages <- Data
+        if (!is.null(Data)) { Ages <- Data }
         Data <- list()
         Data$Lengths <- Len
-        Data$Ages <- Ages 
-        message("Triennial data returned as a list: Data$Lengths and Data$Ages\n") }
+        if (!is.null(Ages)) { Data$Ages <- Ages }
+        if (is.null(Ages))  { Data$Ages <- "no_ages_available"}
+        message("Triennial data returned as a list: Data$Lengths and Data$Ages\n") 
+    }
 
     if(SaveFile){
         time <- Sys.time()
