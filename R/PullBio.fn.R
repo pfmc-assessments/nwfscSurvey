@@ -94,9 +94,10 @@ PullBio.fn <- function (Name = NULL, SciName = NULL, YearRange = c(1000, 5000), 
         #DataPull = DataPull[!is.na(DataPull$age_years),]
 
         UrlText <- paste0(
-                    "https://www.nwfsc.noaa.gov/data/api/v1/source/trawl.triennial_length_fact/selection.json?",
-                    var.name, "=", paste(strsplit(Species, " ")[[1]], collapse = "%20"), 
-                    ",&year>=",  YearRange[1], "&year<=", YearRange[2], "&variables=", 
+                    "https://www.nwfsc.noaa.gov/data/api/v1/source/trawl.triennial_length_fact/selection.json?filters=project=", 
+                    paste(strsplit(project, " ")[[1]], collapse = "%20"),",",  "actual_station_design_dim$stn_invalid_for_trawl_date_whid=0,", "performance=Satisfactory,", 
+                    "field_identified_taxonomy_dim$", var.name, "=", paste(strsplit(Species, " ")[[1]], collapse = "%20"), 
+                    ",date_dim$year>=", YearRange[1], ",date_dim$year<=", YearRange[2], "&variables=", 
                     paste0(Vars, collapse = ","))
 
         message("Pulling biological data. This can take up to ~ 30 seconds.")
