@@ -76,7 +76,7 @@ PullBio.fn <- function (Name = NULL, SciName = NULL, YearRange = c(1000, 5000), 
 
     Vars <- c("project", "trawl_id", var.name, "year", "vessel", "pass", 
               "tow", "date_dim$full_date", "depth_m", "weight_kg", 
-              "length_cm", "sex", "age_years", "latitude_dd", "longitude_dd")
+              "length_cm", "width_cm", "sex", "age_years", "latitude_dd", "longitude_dd")
 
 
     UrlText  <- paste0(
@@ -93,6 +93,13 @@ PullBio.fn <- function (Name = NULL, SciName = NULL, YearRange = c(1000, 5000), 
     if (SurveyName == "Triennial"){
         #DataPull = DataPull[!is.na(DataPull$age_years),]
 
+        #UrlText <- paste0(
+        #            "https://www.nwfsc.noaa.gov/data/api/v1/source/trawl.triennial_length_fact/selection.json?filters=project=", 
+        #            paste(strsplit(project, " ")[[1]], collapse = "%20"),",",  "actual_station_design_dim$stn_invalid_for_trawl_date_whid=0,", "performance=Satisfactory,", 
+        #            "field_identified_taxonomy_dim$", var.name, "=", paste(strsplit(Species, " ")[[1]], collapse = "%20"), 
+        #            ",date_dim$year>=", YearRange[1], ",date_dim$year<=", YearRange[2], "&variables=", 
+        #            paste0(Vars, collapse = ","))
+
         UrlText <- paste0(
                     "https://www.nwfsc.noaa.gov/data/api/v1/source/trawl.triennial_length_fact/selection.json?filters=project=", 
                     paste(strsplit(project, " ")[[1]], collapse = "%20"),",",  "actual_station_design_dim$stn_invalid_for_trawl_date_whid=0,", "performance=Satisfactory,", 
@@ -106,8 +113,8 @@ PullBio.fn <- function (Name = NULL, SciName = NULL, YearRange = c(1000, 5000), 
         colnames(LenPull)[2]  <- "Date" 
         LenPull$Weight <- NA  
         LenPull$Age <- NA 
-        Len <- rename_columns(LenPull, newname = c("Trawl_id", "Year", "Vessel", "Project", "Pass", new.name, "Tow", "Date", "Depth_m", "Weight", "Length_cm", "Sex", "Age", "Latitude_dd", "Longitude_dd"))
-        Len <- Len[, c("Trawl_id", "Year", "Vessel", "Project", "Pass", "Tow", "Date", "Depth_m", new.name, "Weight", "Length_cm", "Sex", "Age", "Latitude_dd", "Longitude_dd")]
+        Len <- rename_columns(LenPull, newname = c("Trawl_id", "Year", "Vessel", "Project", "Pass", new.name, "Tow", "Date", "Depth_m", "Weight", "Length_cm", "Width_cm", "Sex", "Age", "Latitude_dd", "Longitude_dd"))
+        Len <- Len[, c("Trawl_id", "Year", "Vessel", "Project", "Pass", "Tow", "Date", "Depth_m", new.name, "Weight", "Length_cm", "Width_cm", "Sex", "Age", "Latitude_dd", "Longitude_dd")]
         Len$Date    <- chron::chron(format(as.POSIXlt(Len$Date, format = "%Y-%m-%dT%H:%M:%S"), "%Y-%m-%d"), format = "y-m-d", out.format = "YYYY-m-d")
         Len$Trawl_id  <- as.character(Len$Trawl_id)
         Len$Project   <- projectShort
@@ -126,8 +133,8 @@ PullBio.fn <- function (Name = NULL, SciName = NULL, YearRange = c(1000, 5000), 
 
     Data = NULL
     if (length(DataPull)>0){
-        Data <- rename_columns(DataPull, newname = c("Trawl_id", "Year", "Vessel", "Project", "Pass", new.name, "Tow", "Date", "Depth_m", "Weight", "Length_cm", "Sex", "Age", "Latitude_dd", "Longitude_dd"))
-        Data <- Data[, c("Trawl_id", "Year", "Vessel", "Project", "Pass", "Tow", "Date", "Depth_m", new.name, "Weight", "Length_cm", "Sex", "Age", "Latitude_dd", "Longitude_dd")]
+        Data <- rename_columns(DataPull, newname = c("Trawl_id", "Year", "Vessel", "Project", "Pass", new.name, "Tow", "Date", "Depth_m", "Weight", "Length_cm", "Width_cm", "Sex", "Age", "Latitude_dd", "Longitude_dd"))
+        Data <- Data[, c("Trawl_id", "Year", "Vessel", "Project", "Pass", "Tow", "Date", "Depth_m", new.name, "Weight", "Length_cm", "Width_cm", "Sex", "Age", "Latitude_dd", "Longitude_dd")]
         Data$Date <- chron::chron(format(as.POSIXlt(Data$Date, format = "%Y-%m-%dT%H:%M:%S"), "%Y-%m-%d"), format = "y-m-d", out.format = "YYYY-m-d")
         Data$Trawl_id  <- as.character(Data$Trawl_id)
         Data$Project   <- projectShort
