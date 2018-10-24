@@ -92,7 +92,8 @@ PullCatch.fn <- function (Name = NULL, SciName = NULL, YearRange = c(1000, 5000)
 
     # Check the input survey name against available options
     if (!SurveyName %in% surveys[,1]) { 
-         stop(paste("The SurveyName does not match one of the available options:", surveys[,1])) }
+         stop("The SurveyName argument does not match one of the available options:\n", 
+            paste(surveys[,1], collapse = "\n")) }
 
     # Find the long project name to extract data from the warehouse
     for(i in 1:dim(surveys)[1]){
