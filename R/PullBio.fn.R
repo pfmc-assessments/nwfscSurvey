@@ -8,6 +8,7 @@
 #' @param SurveyName survey to pull the data for the options are: Triennial, AFSC.Slope, NWFSC.Combo, NWFSC.Slope, NWFSC.Shelf, NWFSC.Hypoxia, NWFSC.Santa.Barb.Basin, NWFSC.Shelf.Rockfish, NWFSC.Video
 #' @param SaveFile option to save the file to the directory
 #' @param Dir directory where the file should be saved
+#' @param verbose opt to print out message statements
 #' 
 #' @author Chantel Wetzel based on code by John Wallace
 #' @export
@@ -16,7 +17,7 @@
 #' @import chron
 
 
-PullBio.fn <- function (Name = NULL, SciName = NULL, YearRange = c(1000, 5000), SurveyName = NULL, SaveFile = FALSE, Dir = NULL) 
+PullBio.fn <- function (Name = NULL, SciName = NULL, YearRange = c(1000, 5000), SurveyName = NULL, SaveFile = FALSE, Dir = NULL, verbose = TRUE) 
 {
     # increase the timeout period to avoid errors when pulling data
     options(timeout= 4000000)
@@ -86,7 +87,8 @@ PullBio.fn <- function (Name = NULL, SciName = NULL, YearRange = c(1000, 5000), 
                     "field_identified_taxonomy_dim$", var.name, "=", paste(strsplit(Species, " ")[[1]], collapse = "%20"), 
                     ",date_dim$year>=",  YearRange[1], ",date_dim$year<=", YearRange[2], "&variables=", 
                     paste0(Vars, collapse = ",")) 
-    message("Pulling biological data. This can take up to ~ 30 seconds.")
+    if (verbose){
+    message("Pulling biological data. This can take up to ~ 30 seconds.")}
     DataPull <- try(jsonlite::fromJSON(UrlText))       
 
 
@@ -107,7 +109,8 @@ PullBio.fn <- function (Name = NULL, SciName = NULL, YearRange = c(1000, 5000), 
                     ",date_dim$year>=", YearRange[1], ",date_dim$year<=", YearRange[2], "&variables=", 
                     paste0(Vars, collapse = ","))
 
-        message("Pulling biological data. This can take up to ~ 30 seconds.")
+        if (verbose){
+        message("Pulling biological data. This can take up to ~ 30 seconds.")}
         LenPull <- try(jsonlite::fromJSON(UrlText))
 
         colnames(LenPull)[2]  <- "Date" 
@@ -150,14 +153,16 @@ PullBio.fn <- function (Name = NULL, SciName = NULL, YearRange = c(1000, 5000), 
         Data$Lengths <- Len
         if (!is.null(Ages)) { Data$Ages <- Ages }
         if (is.null(Ages))  { Data$Ages <- "no_ages_available"}
-        message("Triennial data returned as a list: Data$Lengths and Data$Ages\n") 
+        if (verbose){
+        message("Triennial data returned as a list: Data$Lengths and Data$Ages\n") }
     }
 
     if(SaveFile){
         time <- Sys.time()
         time <- substring(time, 1, 10)
         save(Data, file = paste0(Dir, "/Bio_", outName, "_", SurveyName, "_",  time, ".rda"))
-        message(paste("Biological data file saved to following location:", Dir))
+        if (verbose){
+        message(paste("Biological data file saved to following location:", Dir)) }
     }
 
     return(Data)

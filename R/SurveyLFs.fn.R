@@ -27,6 +27,7 @@
 #' @param printfolder folder where the length comps will be saved
 #' @param remove999 the output object by the function will have the 999 column combined with the first length bin
 #' @param outputStage1 return the first stage expanded data without compiling it for SS
+#' @param verbose opt to print out message statements
 #'
 #' @author Allan Hicks and Chantel Wetzel
 #' @export 
@@ -36,7 +37,7 @@
 SurveyLFs.fn <- function(dir, datL, datTows, strat.vars=c("Depth_m","Latitude_dd"), strat.df=NULL, lgthBins=1, SSout=TRUE, meanRatioMethod=TRUE,
                          gender=3, NAs2zero=T, sexRatioUnsexed=NA, maxSizeUnsexed=NA, sexRatioStage = 1, partition=0, fleet="Enter Fleet",
                          agelow = "Enter", agehigh = "Enter", ageErr = "Enter", nSamps="Enter Samps", month="Enter Month", printfolder = "forSS", 
-                         remove999 = TRUE, outputStage1 = FALSE)  {
+                         remove999 = TRUE, outputStage1 = FALSE, verbose = TRUE)  {
 
     # Check for the number of tows were fish were observed but not measured
     postows = datTows[which(datTows$total_catch_numbers > 0),]
@@ -44,12 +45,14 @@ SurveyLFs.fn <- function(dir, datL, datTows, strat.vars=c("Depth_m","Latitude_dd
     x = sum(find)
     missing = sum(postows[find,"total_catch_numbers"])
     percent = 100* round(missing/sum(datTows[,"total_catch_numbers"]),3)
+    if (verbose){
     cat("\nThere are", x, "tows where fish were observed but no lengths/ages taken. 
-        There are", missing, "lengths/ages that comprise", percent, "percent of total sampled fish.\n")
+        There are", missing, "lengths/ages that comprise", percent, "percent of total sampled fish.\n")}
 
     totRows  <- nrow(datL)
     datL      <- datL[!is.na(datL$Length_cm),]
-    cat("There are ", nrow(datL)," records kept out of",totRows,"records after removing missing records.\n")
+    if (verbose){
+    cat("There are ", nrow(datL)," records kept out of",totRows,"records after removing missing records.\n")}
 
 
     row.names(strat.df) <- strat.df[,1]     #put in rownames to make easier to index later
@@ -177,7 +180,8 @@ SurveyLFs.fn <- function(dir, datL, datTows, strat.vars=c("Depth_m","Latitude_dd
         names(stageOne)[names(stageOne) == "true_sub_Ufish"]   <- "subsample_U"
         names(stageOne)[names(stageOne) == "true_sub_MFfish"]   <- "subsample_MF"
 
-        cat("\nNOTE: Stage 1 expansion returned by the function. Composition file not written for SS.\n")
+        if (verbose){
+        cat("\nNOTE: Stage 1 expansion returned by the function. Composition file not written for SS.\n")}
         return (stageOne)
     }
 
@@ -357,10 +361,11 @@ SurveyLFs.fn <- function(dir, datL, datTows, strat.vars=c("Depth_m","Latitude_dd
         write.csv(usableOut, file = paste0(plotdir, "/Survey_Gender", gender, "_Bins_",min(lgthBins),"_", max(lgthBins),"_", comp.type, "Comps.csv"), row.names = FALSE)
     }
 
+    if (verbose){
     cat("\nNOTE: Files have been saved the the printfolder directory.
         The first has the 999 column showing fish smaller or younger than the initial bin. 
         Check to make sure there is not a large number of fish smaller or younger than the initial bin.
-        The second file has combined the 999 with the first bin and is ready for use in SS.\n")
+        The second file has combined the 999 with the first bin and is ready for use in SS.\n") }
 
     if (!remove999) { return(out)}
     if (remove999)  { return(usableOut)}

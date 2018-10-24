@@ -8,6 +8,7 @@
 #' @param SurveyName survey to pull the data for the options are: Triennial, AFSC.Slope, NWFSC.Combo, NWFSC.Slope, NWFSC.Shelf, NWFSC.Hypoxia, NWFSC.Santa.Barb.Basin, NWFSC.Shelf.Rockfish, NWFSC.Video
 #' @param SaveFile option to save the file to the directory
 #' @param Dir directory where the file should be saved
+#' @param verbose opt to print out message statements
 #' 
 #' @author Chantel Wetzel based on code by John Wallace
 #' @export
@@ -16,7 +17,7 @@
 #' @import chron
 
 
-PullCatch.fn <- function (Name = NULL, SciName = NULL, YearRange = c(1000, 5000), SurveyName = NULL, SaveFile = FALSE, Dir = NULL) 
+PullCatch.fn <- function (Name = NULL, SciName = NULL, YearRange = c(1000, 5000), SurveyName = NULL, SaveFile = FALSE, Dir = NULL, verbose = TRUE) 
 {
 
 	if(SaveFile){
@@ -116,11 +117,12 @@ PullCatch.fn <- function (Name = NULL, SciName = NULL, YearRange = c(1000, 5000)
                ",date_dim$year>=", YearRange[1], ",date_dim$year<=", YearRange[2], "&variables=", 
                paste0(Vars, collapse = ","))
 
-    print("Pulling catch data. This can take up to ~ 30 seconds.")
+    if (verbose){
+    message("Pulling catch data. This can take up to ~ 30 seconds.")}
     # Pull data from the warehouse
     DataPull <- try(jsonlite::fromJSON(UrlText))
     if(!is.data.frame(DataPull)) {
-         stop(cat("\nNo data returned by the warehouse for the filters given.\n Make sure the year range is correct for the project selected and the input name is correct,\n otherwise there may be no data for this species from this project.\n"))
+        stop(cat("\nNo data returned by the warehouse for the filters given.\n Make sure the year range is correct for the project selected and the input name is correct,\n otherwise there may be no data for this species from this project.\n"))
     }
 
 
@@ -162,8 +164,9 @@ PullCatch.fn <- function (Name = NULL, SciName = NULL, YearRange = c(1000, 5000)
     # Need to check what this is doing
     noArea = which(is.na(Out$Area_Swept_ha))
     if (length(noArea) > 0) { 
+        if (verbose){
     	print(cat("\nThere are", length(noArea), "records with no area swept calculation. These record will be filled with the mean swept area across all tows.\n"))
-    	print(Out[noArea,c("Trawl_id", "Year", "Area_Swept_ha", "CPUE_kg_per_ha", "total_catch_numbers")])
+    	print(Out[noArea,c("Trawl_id", "Year", "Area_Swept_ha", "CPUE_kg_per_ha", "total_catch_numbers")]) }
     	Out$Area_Swept_ha[noArea,] <- mean(Out$Area_Swept_ha, trim = 0.05, na.rm = TRUE)
     }
     
@@ -186,7 +189,8 @@ PullCatch.fn <- function (Name = NULL, SciName = NULL, YearRange = c(1000, 5000)
         time = Sys.time()
         time = substring(time, 1, 10)
         save(Out, file = paste0(Dir, "/Catch_", outName, "_", SurveyName, "_",  time, ".rda"))
-        print(paste("Catch data file saved to following location:", Dir))
+        if (verbose){
+        message(paste("Catch data file saved to following location:", Dir))}
     }
 
     return(Out)

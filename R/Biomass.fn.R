@@ -17,12 +17,13 @@
 #' @param convert convertion factor for the biomass by area units (e.g., hectare vs km2) 
 #' @param season season for SS
 #' @param fleet fleet number for SS
+#' @param verbose opt to print out message statements
 #'
 #' @author Allan Hicks and Chantel Wetzel
 #' @export
 
 Biomass.fn <- function(dir, dat, strat.vars = c("Depth_m","Latitude_dd"), strat.df, printfolder = "forSS", outputMedian = T, 
-                                     verbose = TRUE, convert = 1, season = NA, fleet = NA)  {
+                                     verbose = TRUE, convert = 1, season = NA, fleet = NA, verbose = TRUE)  {
     
 
     if(is.null(dat$cpue_kg_km2)) stop("There must be a column called cpue_kg_km2 in the dataframe")
@@ -51,7 +52,8 @@ Biomass.fn <- function(dir, dat, strat.vars = c("Depth_m","Latitude_dd"), strat.
         namesStrat <- names(x)
         nobs <- unlist(lapply(x,function(x){nrow(x)}))
         if(any(nobs<=1)) {
-            cat("*****\nWARNING: At least one stratum in year",x[[1]][1,"year"],"has fewer than one observation.\n*****\n")
+            if (verbose){
+            cat("*****\nWARNING: At least one stratum in year",x[[1]][1,"year"],"has fewer than one observation.\n*****\n")}
         }
         meanCatchRateInStrata <- unlist(lapply(x, function(x) {mean(x$cpue_kg_km2)}))
         varCatchRateInStrata  <- unlist(lapply(x, function(x) {var (x$cpue_kg_km2)}))

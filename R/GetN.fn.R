@@ -6,11 +6,12 @@
 #' @param type specify whether doing "length" or "age". Used to read associatied excel sheets
 #' @param species species specific value to determine the number of unique samples per tow (flatfish, shelfrock, sloperock, thorny, others, all)
 #' @param printfolder name of the folder to create and save files. Location will be paste0(dir, printfolder)
+#' @param verbose opt to print out message statements
 #'
 #' @author Chantel Wetzel
 #' @export 
 
-GetN.fn <- function(dir, dat, type, species = NULL, printfolder = "forSS"){
+GetN.fn <- function(dir, dat, type, species = NULL, printfolder = "forSS", verbose = TRUE){
 
     n.unq = NA
     if (species == "flatfish")  { n.unq = 3.09 }
@@ -20,9 +21,11 @@ GetN.fn <- function(dir, dat, type, species = NULL, printfolder = "forSS"){
     if (species == "others")    { n.unq = 2.38 }
     if (species == "all")       { n.unq = 2.73 }
     if (is.na(n.unq)) {
-        cat("\nThe species input does not match one of the following options; flatfish, shelfrock, sloperock, thorny, others, or all\n")}
+        if (verbose){
+        message("\nThe species input does not match one of the following options; flatfish, shelfrock, sloperock, thorny, others, or all\n")} }
 
-    cat("\nThe effN sample size is calculated as",n.unq,"multiplied by the number of tows in each year.\n")
+    if (verbose){
+    message("\nThe effN sample size is calculated as",n.unq,"multiplied by the number of tows in each year.\n") }
 
 
     if (type == "length"){
