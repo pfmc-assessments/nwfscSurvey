@@ -165,7 +165,7 @@ SurveyLFs.fn <- function(dir, datL, datTows, strat.vars=c("Depth_m","Latitude_dd
 
     # Apply the sex ratio to the raw data based on each tow
     if(sexRatioStage == 1){
-        datB = SexRatio.fn(x = datB, sexRatioStage = sexRatioStage, sexRatioUnsexed = sexRatioUnsexed, maxSizeUnsexed =  maxSizeUnsexed)
+        datB = SexRatio.fn(x = datB, sexRatioStage = sexRatioStage, sexRatioUnsexed = sexRatioUnsexed, maxSizeUnsexed =  maxSizeUnsexed, verbose = verbose)
     }
 
 
@@ -250,7 +250,8 @@ SurveyLFs.fn <- function(dir, datL, datTows, strat.vars=c("Depth_m","Latitude_dd
     }
 
     if(sexRatioStage == 2){                      
-        L.year.str = SexRatio.fn(x = L.year.str, sexRatioStage = sexRatioStage, sexRatioUnsexed = sexRatioUnsexed, maxSizeUnsexed =  maxSizeUnsexed)
+        L.year.str = SexRatio.fn(x = L.year.str, sexRatioStage = sexRatioStage, sexRatioUnsexed = sexRatioUnsexed, 
+                                 maxSizeUnsexed =  maxSizeUnsexed, verbose = verbose)
     }
 
     year.fn <- function(x,Lengths) {   #calculate the LFs by year

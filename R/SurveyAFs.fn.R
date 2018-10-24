@@ -53,6 +53,7 @@ SurveyAFs.fn <- function(dir, datA, datTows, strat.vars=c("Depth_m","Latitude_dd
                        gender = gender, NAs2zero= NAs2zero,  sexRatioUnsexed = sexRatioUnsexed, maxSizeUnsexed = maxSizeUnsexed, 
                        sexRatioStage = sexRatioStage, partition = partition,  fleet = fleet, nSamps = nSamps, 
                        agelow = agelow, agehigh = agehigh, ageErr = ageErr, 
-                       month = month, printfolder = printfolder, remove999 = remove999,  outputStage1 = outputStage1)
+                       month = month, printfolder = printfolder, remove999 = remove999,  outputStage1 = outputStage1,
+                       verbose = verbose)
     return(out)
 }
