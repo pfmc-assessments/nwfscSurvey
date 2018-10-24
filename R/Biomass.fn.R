@@ -23,7 +23,7 @@
 #' @export
 
 Biomass.fn <- function(dir, dat, strat.vars = c("Depth_m","Latitude_dd"), strat.df, printfolder = "forSS", outputMedian = T, 
-                                     verbose = TRUE, convert = 1, season = NA, fleet = NA, verbose = TRUE)  {
+                       convert = 1, season = NA, fleet = NA, verbose = TRUE)  {
     
 
     if(is.null(dat$cpue_kg_km2)) stop("There must be a column called cpue_kg_km2 in the dataframe")

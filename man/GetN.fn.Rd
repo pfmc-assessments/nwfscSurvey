@@ -5,7 +5,8 @@
 \title{Calculate effN input sample sizes
 based on Stewart & Hamel 2014}
 \usage{
-GetN.fn(dir, dat, type, species = NULL, printfolder = "forSS")
+GetN.fn(dir, dat, type, species = NULL, printfolder = "forSS",
+  verbose = TRUE)
 }
 \arguments{
 \item{dir}{directory}
@@ -17,6 +18,8 @@ GetN.fn(dir, dat, type, species = NULL, printfolder = "forSS")
 \item{species}{species specific value to determine the number of unique samples per tow (flatfish, shelfrock, sloperock, thorny, others, all)}
 
 \item{printfolder}{name of the folder to create and save files. Location will be paste0(dir, printfolder)}
+
+\item{verbose}{opt to print out message statements}
 }
 \description{
 Calculate effN input sample sizes

@@ -7,7 +7,7 @@ The website is: https://www.nwfsc.noaa.gov/data
 Curently, this function only pulls data for a single specified survey.}
 \usage{
 PullBio.fn(Name = NULL, SciName = NULL, YearRange = c(1000, 5000),
-  SurveyName = NULL, SaveFile = FALSE, Dir = NULL)
+  SurveyName = NULL, SaveFile = FALSE, Dir = NULL, verbose = TRUE)
 }
 \arguments{
 \item{Name}{common name of species data to pull from the data warehouse}
@@ -21,6 +21,8 @@ PullBio.fn(Name = NULL, SciName = NULL, YearRange = c(1000, 5000),
 \item{SaveFile}{option to save the file to the directory}
 
 \item{Dir}{directory where the file should be saved}
+
+\item{verbose}{opt to print out message statements}
 }
 \description{
 Pull biological data from the NWFSC data warehouse

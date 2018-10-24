@@ -5,8 +5,8 @@
 \title{Calculates design based estimates from survey data for West Coast surveys}
 \usage{
 Biomass.fn(dir, dat, strat.vars = c("Depth_m", "Latitude_dd"), strat.df,
-  printfolder = "forSS", outputMedian = T, verbose = TRUE, convert = 1,
-  season = NA, fleet = NA)
+  printfolder = "forSS", outputMedian = T, convert = 1, season = NA,
+  fleet = NA, verbose = TRUE)
 }
 \arguments{
 \item{dir}{directory where the output file will be saved}
@@ -24,6 +24,8 @@ Biomass.fn(dir, dat, strat.vars = c("Depth_m", "Latitude_dd"), strat.df,
 \item{season}{season for SS}
 
 \item{fleet}{fleet number for SS}
+
+\item{verbose}{opt to print out message statements}
 
 \item{stat.vars}{A vector of the strata variable names (i.e., c("Depth_m","Latitude_dd"))}
 }

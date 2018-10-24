@@ -17,7 +17,7 @@ SurveyAgeAtLen.fn(dir, datAL, datTows, strat.vars = c("Depth_m",
   SSout = TRUE, meanRatioMethod = TRUE, raw = TRUE, NAs2zero = TRUE,
   month = "Enter Month", fleet = "Enter Fleet",
   partition = "Enter Partition", ageErr = "Enter Age Error",
-  returnSamps = FALSE, printfolder = "forSS")
+  returnSamps = FALSE, printfolder = "forSS", verbose = TRUE)
 }
 \arguments{
 \item{dir}{directory this is where the output files will be saved}
@@ -51,6 +51,8 @@ SurveyAgeAtLen.fn(dir, datAL, datTows, strat.vars = c("Depth_m",
 \item{returnSamps}{TRUE/FALSE stops the function after the sample size is calculated}
 
 \item{printfolder}{folder where the length comps will be saved}
+
+\item{verbose}{opt to print out message statements}
 
 \item{ageerr}{age error value for Stock Synthesis}
 }

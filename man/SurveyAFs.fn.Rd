@@ -17,7 +17,7 @@ SurveyAFs.fn(dir, datA, datTows, strat.vars = c("Depth_m", "Latitude_dd"),
   sexRatioStage = 1, partition = 0, fleet = "Enter Fleet",
   agelow = "Enter", agehigh = "Enter", ageErr = "Enter",
   nSamps = "Enter Samps", month = "Enter Month", printfolder = "forSS",
-  remove999 = TRUE, outputStage1 = FALSE)
+  remove999 = TRUE, outputStage1 = FALSE, verbose = TRUE)
 }
 \arguments{
 \item{dir}{directory this is where the output files will be saved}
@@ -63,6 +63,8 @@ SurveyAFs.fn(dir, datA, datTows, strat.vars = c("Depth_m", "Latitude_dd"),
 \item{remove999}{the output object by the function will have the 999 column combined with the first length bin}
 
 \item{outputStage1}{return the first stage expanded data without compiling it for SS}
+
+\item{verbose}{opt to print out message statements}
 
 \item{femaleMale}{numbering for female and male fish in the data file. This is opposite to what is used in SS.}
 
