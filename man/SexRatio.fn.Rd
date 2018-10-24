@@ -4,7 +4,7 @@
 \alias{SexRatio.fn}
 \title{Sex ratio function that assigns a sex to unsexed fish when creatin length or age comps}
 \usage{
-SexRatio.fn(x, sexRatioStage, sexRatioUnsexed, maxSizeUnsexed)
+SexRatio.fn(x, sexRatioStage, sexRatioUnsexed, maxSizeUnsexed, verbose)
 }
 \arguments{
 \item{x}{the data frame being passed to the function from either the SurveyLFs.fn or th SurveyAFs.fn}
@@ -14,6 +14,8 @@ SexRatio.fn(x, sexRatioStage, sexRatioUnsexed, maxSizeUnsexed)
 \item{sexRatioUnsexed}{sex ratio to apply to any length bins of a certain size or smaller as defined by the maxSizeUnsexed}
 
 \item{maxSizeUnsexed}{all sizes below this threshold will assign unsexed fish by sexRatio set equal to 0.50, fish larger than this size will have unsexed fish assigned by the calculated sex ratio in the data.}
+
+\item{verbose}{opt to print out message statements}
 }
 \description{
 Sex ratio function that assigns a sex to unsexed fish when creatin length or age comps
