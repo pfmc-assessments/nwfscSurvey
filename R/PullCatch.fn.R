@@ -1,6 +1,7 @@
 #' Pull catch data from the NWFSC data warehouse
 #' The website is: https://www.nwfsc.noaa.gov/data
-#' Curently, this function only pulls data for a single specified survey.
+#' This function can be used to pull a single species or all observed species
+#' In order to pull all species leave Name = NULL and SciName = NULL
 #' 
 #' @param Name  common name of species data to pull from the data warehouse
 #' @param SciName scientific name of species data to pull from the data warehouse
@@ -28,7 +29,8 @@ PullCatch.fn <- function (Name = NULL, SciName = NULL, YearRange = c(1000, 5000)
 
     if (is.null(Name)) { var.name = "scientific_name"; Species = SciName; new.name = "Scientific_name"; outName = Name}
     if (is.null(SciName)) { var.name = "common_name"; Species = Name; new.name = "Common_name"; outName = SciName}
-    if (is.null(SciName) & is.null(Name)) { stop("Need to specifiy Name or SciName to pull data!")}
+    if (is.null(SciName) & is.null(Name)) { var.name = "scientific_name"; Species = "pull all"; new.name = "Scientific_name"}#stop("Need to specifiy Name or SciName to pull data!")}
+
 
 	#   match.f function for combining data sets
 	#   AUTHOR:  John R. Wallace (John.Wallace@noaa.gov)  	
@@ -117,6 +119,14 @@ PullCatch.fn <- function (Name = NULL, SciName = NULL, YearRange = c(1000, 5000)
                "field_identified_taxonomy_dim$", var.name,"=", paste(strsplit(Species, " ")[[1]], collapse = "%20"), 
                ",date_dim$year>=", YearRange[1], ",date_dim$year<=", YearRange[2], "&variables=", 
                paste0(Vars, collapse = ","))
+
+    if (Species == "pull all"){
+        UrlText <- paste0("https://www.nwfsc.noaa.gov/data/api/v1/source/trawl.catch_fact/selection.json?filters=project=", paste(strsplit(project, " ")[[1]], collapse = "%20"),",", 
+                   "actual_station_design_dim$stn_invalid_for_trawl_date_whid=0,", 
+                   "performance=Satisfactory,", "depth_ftm>=30,depth_ftm<=700,", 
+                   "date_dim$year>=", YearRange[1], ",date_dim$year<=", YearRange[2], "&variables=", 
+                   paste0(Vars, collapse = ","))
+    }
 
     if (verbose){
     message("Pulling catch data. This can take up to ~ 30 seconds.")}

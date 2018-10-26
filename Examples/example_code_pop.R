@@ -3,7 +3,7 @@
 #===============================================================================
 
 # https://github.com/nwfsc-assess/nwfscSurvey
-devtools::install_github("nwfsc-assess/nwfscSurvey", ref = "development", build_vignettes = TRUE)
+devtools::install_github("nwfsc-assess/nwfscSurvey", build_vignettes = TRUE)
 
 # Load the packaged
 library(nwfscSurvey)
