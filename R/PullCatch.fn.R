@@ -109,23 +109,23 @@ PullCatch.fn <- function (Name = NULL, SciName = NULL, YearRange = c(1000, 5000)
         YearRange <- c(YearRange, YearRange)    }
 
     # Pull data for the specific species for the following variables
-    Vars <- c(var.name, "year", "subsample_count", "subsample_wt_kg","project", "cpue_kg_per_ha_der",
+    Vars <- c(var.name, "year", "subsample_count", "subsample_wt_kg","project", "cpue_kg_per_ha_der", 
         	  "total_catch_numbers", "total_catch_wt_kg", "vessel", "tow")
 
 
     UrlText <- paste0("https://www.nwfsc.noaa.gov/data/api/v1/source/trawl.catch_fact/selection.json?filters=project=", paste(strsplit(project, " ")[[1]], collapse = "%20"),",", 
-               "actual_station_design_dim$stn_invalid_for_trawl_date_whid=0,", 
+               "station_invalid=0,", 
                "performance=Satisfactory,", "depth_ftm>=30,depth_ftm<=700,", 
                "field_identified_taxonomy_dim$", var.name,"=", paste(strsplit(Species, " ")[[1]], collapse = "%20"), 
-               ",date_dim$year>=", YearRange[1], ",date_dim$year<=", YearRange[2], "&variables=", 
-               paste0(Vars, collapse = ","))
+               ",date_dim$year>=", YearRange[1], ",date_dim$year<=", YearRange[2], 
+               "&variables=", paste0(Vars, collapse = ","))
 
     if (Species == "pull all"){
         UrlText <- paste0("https://www.nwfsc.noaa.gov/data/api/v1/source/trawl.catch_fact/selection.json?filters=project=", paste(strsplit(project, " ")[[1]], collapse = "%20"),",", 
-                   "actual_station_design_dim$stn_invalid_for_trawl_date_whid=0,", 
+                   "station_invalid=0,", #"actual_station_design_dim$stn_invalid_for_trawl_date_whid=0,", 
                    "performance=Satisfactory,", "depth_ftm>=30,depth_ftm<=700,", 
-                   "date_dim$year>=", YearRange[1], ",date_dim$year<=", YearRange[2], "&variables=", 
-                   paste0(Vars, collapse = ","))
+                   "date_dim$year>=", YearRange[1], ",date_dim$year<=", YearRange[2], 
+                   "&variables=", paste0(Vars, collapse = ","))
     }
 
     if (verbose){
@@ -143,11 +143,12 @@ PullCatch.fn <- function (Name = NULL, SciName = NULL, YearRange = c(1000, 5000)
 
 
     # Pull all tow data (includes tows where the species was not observed)
-    Vars <- c("project", "year", "vessel", "pass", "tow", "date_dim$full_date", "depth_m", "longitude_dd", "latitude_dd", "area_swept_ha_der", "trawl_id")
+    Vars <- c("project", "year", "vessel", "pass", "tow", "datetime_utc_iso", "depth_m", "longitude_dd", "latitude_dd", "area_swept_ha_der", "trawl_id")
 
     UrlText <- paste0("https://www.nwfsc.noaa.gov/data/api/v1/source/trawl.operation_haul_fact/selection.json?filters=project=", paste(strsplit(project, " ")[[1]], collapse = "%20"),",", 
-               "actual_station_design_dim$stn_invalid_for_trawl_date_whid=0,", 
-               "performance=Satisfactory,", "depth_ftm>=30,depth_ftm<=700,", 
+               "station_invalid=0,", 
+               "performance=Satisfactory,",
+               "depth_ftm>=30,depth_ftm<=700,", 
                "date_dim$year>=", YearRange[1], ",date_dim$year<=", YearRange[2], 
                "&variables=", paste0(Vars, collapse = ","))
 
@@ -185,7 +186,7 @@ PullCatch.fn <- function (Name = NULL, SciName = NULL, YearRange = c(1000, 5000)
     if (!is.null(Name)) { Out$Common_name <- Species }
     if (!is.null(SciName)) { Out$Scientific_name <- Species }
 
-    Out$Date <- chron(format(as.POSIXlt(Out$Date, format = "%Y-%m-%dT%H:%M:%S"), "%Y-%m-%d"), format = "y-m-d", out.format = "YYYY-m-d")
+    Out$Date <- chron::chron(format(as.POSIXlt(Out$Date, format = "%Y-%m-%dT%H:%M:%S"), "%Y-%m-%d"), format = "y-m-d", out.format = "YYYY-m-d")
     
     Out$Project <- projectShort
 
