@@ -4,7 +4,8 @@
 \alias{PullBio.fn}
 \title{Pull biological data from the NWFSC data warehouse
 The website is: https://www.nwfsc.noaa.gov/data
-Curently, this function only pulls data for a single specified survey.}
+This function can be used to pull a single species or all observed species
+In order to pull all species leave Name = NULL and SciName = NULL}
 \usage{
 PullBio.fn(Name = NULL, SciName = NULL, YearRange = c(1000, 5000),
   SurveyName = NULL, SaveFile = FALSE, Dir = NULL, verbose = TRUE)
@@ -27,7 +28,8 @@ PullBio.fn(Name = NULL, SciName = NULL, YearRange = c(1000, 5000),
 \description{
 Pull biological data from the NWFSC data warehouse
 The website is: https://www.nwfsc.noaa.gov/data
-Curently, this function only pulls data for a single specified survey.
+This function can be used to pull a single species or all observed species
+In order to pull all species leave Name = NULL and SciName = NULL
 }
 \author{
 Chantel Wetzel based on code by John Wallace

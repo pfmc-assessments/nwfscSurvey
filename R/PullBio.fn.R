@@ -46,17 +46,7 @@ PullBio.fn <- function (Name = NULL, SciName = NULL, YearRange = c(1000, 5000), 
         return(DF_new)
     }
 
-    surveys = matrix(data = c("Triennial", 'Groundfish Triennial Shelf Survey',
-                     "AFSC.Slope", "NA",
-                     "NWFSC.Combo", 'Groundfish Slope and Shelf Combination Survey',
-                     "NWFSC.Slope", 'Groundfish Slope Survey',
-                     "NWFSC.Shelf", 'Groundfish Shelf Survey',
-                     "NWFSC.Hypoxia", 'Hypoxia Study',
-                     "NWFSC.Santa.Barb.Basin", 'Santa Barbara Basin Study',
-                     "NWFSC.Shelf.Rockfish", 'Shelf Rockfish [2004-2015]',
-                     "NWFSC.Video", 'Video Study'),
-                     ncol = 2, 
-                     byrow = TRUE)
+    surveys = createMatrix()
 
     if (!SurveyName %in% surveys[,1]) { 
          stop(cat("The SurveyName does not match one of the available options:", surveys[,1])) }
