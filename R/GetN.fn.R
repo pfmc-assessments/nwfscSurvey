@@ -11,7 +11,7 @@
 #' @author Chantel Wetzel
 #' @export 
 
-GetN.fn <- function(dir, dat, type, species = NULL, printfolder = "forSS", verbose = TRUE){
+GetN.fn <- function(dir=NULL, dat, type, species = NULL, printfolder = "forSS", verbose = TRUE){
 
     n.unq = NA
     if (species == "flatfish")  { n.unq = 3.09 }
@@ -25,7 +25,7 @@ GetN.fn <- function(dir, dat, type, species = NULL, printfolder = "forSS", verbo
         message("\nThe species input does not match one of the following options; flatfish, shelfrock, sloperock, thorny, others, or all\n")} }
 
     if (verbose){
-    message("\nThe effN sample size is calculated as",n.unq,"multiplied by the number of tows in each year.\n") }
+    message("\nThe effN sample size is calculated as ",n.unq," multiplied by the number of tows in each year.\n") }
 
 
     if (type == "length"){
@@ -47,11 +47,13 @@ GetN.fn <- function(dir, dat, type, species = NULL, printfolder = "forSS", verbo
                          Sample_Size = n)       
 
     # save output as a csv
-    plotdir <- file.path(dir,printfolder)
-    plotdir.isdir <- file.info(plotdir)$isdir
-    if(is.na(plotdir.isdir) | !plotdir.isdir){
-      dir.create(plotdir)
+    if(!is.null(dir)){
+        plotdir <- file.path(dir,printfolder)
+        plotdir.isdir <- file.info(plotdir)$isdir
+        if(is.na(plotdir.isdir) | !plotdir.isdir){
+          dir.create(plotdir)
+        }
+        write.csv(samples, file = file.path(plotdir, paste0(type, "_SampleSize.csv", sep="")), row.names = FALSE)
     }
-    write.csv(samples, file = paste0(plotdir, "/", type, "_SampleSize.csv"), row.names = FALSE)
     return(n)
 }

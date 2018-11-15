@@ -72,7 +72,7 @@ LFs <- SurveyLFs.fn(dir = getwd(), datL = len, datTows = catch,
 # NWFSC combo survey data in the past).
 
 
-PlotFreqData.fn(dir = getwd(), LFs, survey = "NWFSCBT", ylim=c(0, max(len.bins) + 4), yaxs="i", ylab="Length (cm)", dopng = TRUE)
+PlotFreqData.fn(dir = getwd(), dat = LFs, survey = "NWFSCBT", ylim=c(0, max(len.bins) + 4), yaxs="i", ylab="Length (cm)", dopng = TRUE)
 PlotSexRatio.fn(dir = getwd(), dat = len, data.type = "length", survey = "NWFSCBT", dopng = TRUE, main = "NWFSCBT")
 
 #============================================================================================

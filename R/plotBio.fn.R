@@ -17,13 +17,15 @@
 #' @author Allan Hicks and John Wallace
 #' @export
 
-PlotBio.fn <-function(dir, dat, CI=0.95, scalar=1e6, gap=0.03, ylab="Biomass ('000 mt)", xlab="Year", 
+PlotBio.fn <-function(dir = NULL, dat, CI=0.95, scalar=1e6, gap=0.03, ylab="Biomass ('000 mt)", xlab="Year", 
                       main = NULL, ylim=NULL, add = FALSE, col = 'black', dopng = FALSE, ...) {
 
     bio = dat[[2]]
 
     if (dopng) {
-      plotdir <- paste0(dir, "/plots")
+      #plotdir <- paste0(dir, "/plots")
+      if(!is.null(dir)){stop("Directory needs to be set.")}
+      plotdir <- file.path(dir, paste("plots", sep=""))
       plotdir.isdir <- file.info(plotdir)$isdir
       if(is.na(plotdir.isdir) | !plotdir.isdir){
         dir.create(plotdir)

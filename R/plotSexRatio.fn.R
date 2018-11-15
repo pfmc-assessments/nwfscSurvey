@@ -14,7 +14,8 @@
 PlotSexRatio.fn <-function(dir, dat, data.type = "length",  survey, circleSize=0.1, dopng = FALSE,...) {
     
 	if (dopng) { 
-        plotdir <- paste0(dir, "/plots")
+        #plotdir <- paste0(dir, "/plots")
+        plotdir <- file.path(dir, paste("plots", sep=""))
         plotdir.isdir <- file.info(plotdir)$isdir
         if(is.na(plotdir.isdir) | !plotdir.isdir){
             dir.create(plotdir) }

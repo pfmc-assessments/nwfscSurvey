@@ -13,12 +13,17 @@
 #' @export
 #' @seealso \code{\link{StrataFactors.fn}}
 
-PlotSexRatioStrata.fn <-function(dir, dat, type = "length", strat.vars=c("Depth_m","Latitude_dd"), survey, circleSize=0.05, dopng = FALSE,...) {
+PlotSexRatioStrata.fn <-function(dir = NULL, dat, type = "length", strat.vars=c("Depth_m","Latitude_dd"), survey, circleSize=0.05, dopng = FALSE,...) {
 
-    plotdir <- paste0(dir, "/plots")
-    plotdir.isdir <- file.info(plotdir)$isdir
-    if(is.na(plotdir.isdir) | !plotdir.isdir){
-      dir.create(plotdir)
+    if (dopng) { 
+      if(is.null(dir)) stop("Directory needs to be set.") 
+        #plotdir <- paste0(dir, "/plots")
+        plotdir <- file.path(dir, paste("plots", sep=""))
+        plotdir.isdir <- file.info(plotdir)$isdir
+        if(is.na(plotdir.isdir) | !plotdir.isdir){
+          dir.create(plotdir)
+        }
+      png(file.path(dir, paste("plots/", survey,"_fraction_female.png", sep ="")), height=7, width=7, units="in",res=300)   
     }
 
     row.names(strat.df) <- strat.df[,1]     #put in rownames to make easier to index later
@@ -28,7 +33,8 @@ PlotSexRatioStrata.fn <-function(dir, dat, type = "length", strat.vars=c("Depth_
 
     datB   <- data.frame(datB, stratum = StrataFactors.fn(datB, strat.vars, strat.df))        #create a new column for the stratum factor
     
-    if (dopng) { pdf(paste0(dir, "/plots/", survey,"_fraction_female.pdf") ) }
+    #if (dopng) { png(paste0(dir, "/plots/", survey,"_fraction_female.png") ) }
+    #if (dopng) { png(file.path(dir, paste("plots/", survey,"_fraction_female.png", sep ="")), height=7, width=7, units="in",res=300) }
     par(mfrow = c(3,3))
 
     for(i in 1:length(row.names(strat.df))){

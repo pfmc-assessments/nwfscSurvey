@@ -156,7 +156,8 @@ PullBio.fn <- function (Name = NULL, SciName = NULL, YearRange = c(1000, 5000), 
     if(SaveFile){
         time <- Sys.time()
         time <- substring(time, 1, 10)
-        save(Data, file = paste0(Dir, "/Bio_", outName, "_", SurveyName, "_",  time, ".rda"))
+        #save(Data, file = paste0(Dir, "/Bio_", outName, "_", SurveyName, "_",  time, ".rda"))
+        save(Data, file = file.path(Dir, paste("Bio_", outName, "_", SurveyName, "_",  time, ".rda", sep="")))
         if (verbose){
         message(paste("Biological data file saved to following location:", Dir)) }
     }

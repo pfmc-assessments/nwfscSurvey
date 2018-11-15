@@ -22,7 +22,7 @@
 #' @author Allan Hicks and Chantel Wetzel
 #' @export
 
-Biomass.fn <- function(dir, dat, strat.vars = c("Depth_m","Latitude_dd"), strat.df, printfolder = "forSS", outputMedian = T, 
+Biomass.fn <- function(dir = NULL, dat, strat.vars = c("Depth_m","Latitude_dd"), strat.df, printfolder = "forSS", outputMedian = T, 
                        convert = 1, season = NA, fleet = NA, verbose = TRUE)  {
     
 
@@ -89,13 +89,15 @@ Biomass.fn <- function(dir, dat, strat.vars = c("Depth_m","Latitude_dd"), strat.
     if(outputMedian) { bio <- data.frame(Year=df$LNtons$year, Season = season, Fleet = fleet, Value=df$LNtons$medianBhat, seLogB=df$LNtons$SElogBhat) }
     if(!outputMedian){ bio <- data.frame(Year=df$LNtons$year, Season = season, Fleet = fleet, Value=df$LNtons$meanBhat,   seLogB=df$LNtons$SElogBhat) }
 
-    plotdir <- file.path(dir,printfolder)
-    plotdir.isdir <- file.info(plotdir)$isdir
-    if(is.na(plotdir.isdir) | !plotdir.isdir){
-      dir.create(plotdir)
+    if(!is.null(dir)){
+        plotdir <- file.path(dir,printfolder)
+        plotdir.isdir <- file.info(plotdir)$isdir
+        if(is.na(plotdir.isdir) | !plotdir.isdir){
+          dir.create(plotdir)
+        }
+        write.csv(bio, file = file.path(plotdir, paste("design_based_indices.csv", sep="")), row.names = FALSE)
     }
-    write.csv(bio, file = paste0(plotdir,"/design_based_indices.csv"), row.names = FALSE)
-    
+
     df.list[[1]] <- df
     df.list[[2]] <- bio
     return(df.list)

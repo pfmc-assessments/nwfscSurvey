@@ -18,7 +18,7 @@
 #' @author Allan Hicks and Chantel Wetzel
 #' @export
 
-PlotVarLengthAtAge.fn <- function(dir, dat, survey, ageBin=1, bySex=T, parStart=c(52, 0.09, 1), estVB=T, bins=NULL, legX="bottomleft", legY=NULL, dopng = FALSE,...) 
+PlotVarLengthAtAge.fn <- function(dir = NULL, dat, survey, ageBin=1, bySex=T, parStart=c(52, 0.09, 1), estVB=T, bins=NULL, legX="bottomleft", legY=NULL, dopng = FALSE,...) 
 {
     #calculate and plot the sd and cv for length at age
     #if you enter estVB=F, then it uses the parStart as the VB parameters
@@ -51,12 +51,14 @@ PlotVarLengthAtAge.fn <- function(dir, dat, survey, ageBin=1, bySex=T, parStart=
         nn <- 2
     }
     
-    if (dopng) { 
-        plotdir <- paste0(dir, "/plots")
+    if (dopng) {
+        if(is.null(dir)){stop("Directory needs to be set.")} 
+        #plotdir <- paste0(dir, "/plots")
+        plotdir <- file.path(dir, paste("plots", sep=""))
         plotdir.isdir <- file.info(plotdir)$isdir
         if(is.na(plotdir.isdir) | !plotdir.isdir){
             dir.create(plotdir) }
-        png(paste0(dir, "/plots/", survey, "_VarLengthAtAge.png"), height=7, width=7, units="in",res=300) }
+        png(file.path(dir, paste("plots/", survey, "_VarLengthAtAge.png", sep = "")), height=7, width=7, units="in",res=300) }
     par(mfcol=c(2,nn), mar =c(3,5,3,5))
 
     out <- vector(mode="list", length=nn)

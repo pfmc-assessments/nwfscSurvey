@@ -17,7 +17,7 @@
 #' @author Allan Hicks and Chantel Wetzel
 #' @export
 
-PlotFreqData.fn <- function(dir, dat, survey = "Survey", inch=0.15, ylab="Bins", xlab="Year", zero2NAs=T, main=NULL, xlim=NULL, dopng = FALSE, ...) {
+PlotFreqData.fn <- function(dir = NULL, dat, survey = "Survey", inch=0.15, ylab="Bins", xlab="Year", zero2NAs=T, main=NULL, xlim=NULL, dopng = FALSE, ...) {
 
     dataType = sum(names(dat) == "ageErr")
     dataType = ifelse(dataType == 0,  "Length", "Age")
@@ -51,8 +51,11 @@ PlotFreqData.fn <- function(dir, dat, survey = "Survey", inch=0.15, ylab="Bins",
 
     if(is.null(xlim)) {xlim <- range(x)}
 
-    if (dopng) { png(paste0(dir,"/plots/", survey, "_", dataType,"_Frequency.png"), height=7, width=7, units="in",res=300) 
-      plotdir <- paste0(dir, "/plots")
+
+    if (dopng) { png( file.path(dir, paste("plots/", survey, "_", dataType,"_Frequency.png", sep = "")), height=7, width=7, units="in",res=300) 
+      if(is.null(dir)){stop("Directory needs to be set.")}
+      #plotdir <- paste0(dir, "/plots")
+      plotdir <- file.path(dir, paste("plots", sep=""))
       plotdir.isdir <- file.info(plotdir)$isdir
       if(is.na(plotdir.isdir) | !plotdir.isdir){
         dir.create(plotdir)}

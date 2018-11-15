@@ -34,7 +34,7 @@
 #' @seealso \code{\link{StrataFactors.fn}}
 #' @seealso \code{\link{SexRatio.fn}}
 
-SurveyLFs.fn <- function(dir, datL, datTows, strat.vars=c("Depth_m","Latitude_dd"), strat.df=NULL, lgthBins=1, SSout=TRUE, meanRatioMethod=TRUE,
+SurveyLFs.fn <- function(dir = NULL, datL, datTows, strat.vars=c("Depth_m","Latitude_dd"), strat.df=NULL, lgthBins=1, SSout=TRUE, meanRatioMethod=TRUE,
                          gender=3, NAs2zero=T, sexRatioUnsexed=NA, maxSizeUnsexed=NA, sexRatioStage = 1, partition=0, fleet="Enter Fleet",
                          agelow = "Enter", agehigh = "Enter", ageErr = "Enter", nSamps="Enter Samps", month="Enter Month", printfolder = "forSS", 
                          remove999 = TRUE, outputStage1 = FALSE, verbose = TRUE)  {
@@ -322,44 +322,56 @@ SurveyLFs.fn <- function(dir, datL, datTows, strat.vars=c("Depth_m","Latitude_dd
 
     # save output as a csv
     comp.type = ifelse(lgthBins[1] == 1, "Age", "Length")
-    plotdir <- file.path(dir, printfolder)
-    plotdir.isdir <- file.info(plotdir)$isdir
-    if(is.na(plotdir.isdir) | !plotdir.isdir){
-      dir.create(plotdir)
-    }
-    write.csv(out, file = paste0(plotdir, "/Survey_Gender", gender, "_Bins_-999_", max(lgthBins),"_", comp.type, "Comps.csv"), row.names = FALSE)
-    if(gender == 3 && is.na(sexRatioUnsexed)){
-        write.csv(out2, file = paste0(plotdir, "/Survey_Gender_Unsexed_Bins_-999_", max(lgthBins),"_", comp.type, "Comps.csv"), row.names = FALSE) }
 
+    if(is.null(dir) & verbose){ cat("\nDirectory not specified and csv will not be written.\n") }
+    if(!is.null(dir)){
+        plotdir <- file.path(dir, printfolder)
+        plotdir.isdir <- file.info(plotdir)$isdir
+        if(is.na(plotdir.isdir) | !plotdir.isdir){
+          dir.create(plotdir)
+        }
+        write.csv(out, file = file.path(plotdir, paste("Survey_Gender", gender, "_Bins_-999_", max(lgthBins),"_", comp.type, "Comps.csv", sep = "")), row.names = FALSE)
+        if(gender == 3 && is.na(sexRatioUnsexed)){
+            write.csv(out2, file = file.path(plotdir, paste("Survey_Gender_Unsexed_Bins_-999_", max(lgthBins),"_", comp.type, "Comps.csv", sep = "")), row.names = FALSE) }
+    }
 
     usableOut = out
     if(gender == 3 && is.na(sexRatioUnsexed)) { usableOut2 = out2 }
 
     if (gender == 3){
-        usableOut[,paste0("F",min(lgthBins))] <- usableOut[,paste0("F",min(lgthBins))] + usableOut$F.999
-        usableOut[,paste0("M",min(lgthBins))] <- usableOut[,paste0("M",min(lgthBins))] + usableOut$M.999
+        usableOut[, paste0("F",min(lgthBins))] <- usableOut[, paste0("F",min(lgthBins))] + usableOut$F.999
+        usableOut[, paste0("M",min(lgthBins))] <- usableOut[, paste0("M",min(lgthBins))] + usableOut$M.999
         usableOut <- usableOut[,-which(names(usableOut)%in%c("F.999","M.999"))]
         if (comp.type == "Age"){
             usableOut = cbind(usableOut[,1:5], agelow, agehigh, ageErr, usableOut[,6:dim(usableOut)[2]])
         }
-        write.csv(usableOut, file = paste0(plotdir, "/Survey_Gender", gender, "_Bins_",min(lgthBins),"_", max(lgthBins),"_", comp.type, "Comps.csv"), row.names = FALSE)
+        if(is.null(dir) & verbose){ cat("\nDirectory not specified and csv will not be written.\n") }
+        if(!is.null(dir)){
+            write.csv(usableOut, file = file.path(plotdir, paste("Survey_Gender", gender, "_Bins_",min(lgthBins),"_", max(lgthBins),"_", comp.type, "Comps.csv", sep="")), row.names = FALSE)
+        }
         if(is.na(sexRatioUnsexed)){
-            usableOut2[,paste0("U",min(lgthBins))]  <- usableOut2[,paste0("U",min(lgthBins))] + usableOut2$U.999
+            usableOut2[, paste0("U",min(lgthBins))]  <- usableOut2[,paste0("U",min(lgthBins))] + usableOut2$U.999
             usableOut2 <- usableOut2[,-which(names(usableOut2)%in%c("U.999","U.999.1"))]
             if (comp.type == "Age"){
                 usableOut2 = cbind(usableOut2[,1:5], agelow, agehigh, ageErr, usableOut2[,6:dim(usableOut2)[2]])
             }
-            write.csv(usableOut2, file = paste0(plotdir, "/Survey_Gender_Unsexed_Bins_",min(lgthBins),"_", max(lgthBins),"_", comp.type, "Comps.csv"), row.names = FALSE)
+        if(is.null(dir) & verbose){ cat("\nDirectory not specified and csv will not be written.\n") }
+        if(!is.null(dir)){
+            write.csv(usableOut2, file = file.path(plotdir, paste("Survey_Gender_Unsexed_Bins_",min(lgthBins),"_", max(lgthBins),"_", comp.type, "Comps.csv", sep = "")), row.names = FALSE)
+        }
         }
     }
 
     if (gender == 0){
-        usableOut[,paste0("U",min(lgthBins))]  <- usableOut[,paste0("U",min(lgthBins))] + usableOut$U.999
+        usableOut[, paste0("U",min(lgthBins))]  <- usableOut[, paste0("U",min(lgthBins))] + usableOut$U.999
         usableOut <- usableOut[,-which(names(usableOut)%in%c("U.999","U.999.1"))]
         if (comp.type == "Age"){
             usableOut = cbind(usableOut[,1:5], agelow, agehigh, ageErr, usableOut[,6:dim(usableOut)[2]])
         }
-        write.csv(usableOut, file = paste0(plotdir, "/Survey_Gender", gender, "_Bins_",min(lgthBins),"_", max(lgthBins),"_", comp.type, "Comps.csv"), row.names = FALSE)
+        if(is.null(dir) & verbose){ cat("\nDirectory not specified and csv will not be written.\n") }
+        if(!is.null(dir)){
+        write.csv(usableOut, file = file.path(plotdir, paste("Survey_Gender", gender, "_Bins_",min(lgthBins),"_", max(lgthBins),"_", comp.type, "Comps.csv", sep = "")), row.names = FALSE)
+        }
     }
 
     if (verbose){
