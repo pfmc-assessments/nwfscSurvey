@@ -46,6 +46,7 @@ Biomass.fn <- function(dir = NULL, dat, strat.vars = c("Depth_m","Latitude_dd"),
     stratum <- factor(stratum,levels=as.character(strat.df[,1]))
     dat <- data.frame(dat, stratum)  
     dat.yr <- split(dat,dat$Year)
+    dat.stratum <- split(dat, dat$stratum)
 
     yr.fn <- function(x) {
         x <- split(x,x$stratum)
@@ -72,8 +73,43 @@ Biomass.fn <- function(dir = NULL, dat, strat.vars = c("Depth_m","Latitude_dd"),
         stratStats
     }
 
+    strata.fn <- function(x) {
+        nameStrat = unique(x$stratum)
+        ind = strat.df$name == nameStrat
+        x <- split(x, x$Year)
+
+        namesYear <- names(x)
+        nobs <- unlist(lapply(x,function(x){nrow(x)}))
+        if(any(nobs<=1)) {
+            if (verbose){
+            cat("*****\nWARNING: At least one stratum in year",x[[1]][1,"year"],"has fewer than one observation.\n*****\n")}
+        }
+        meanCatchRateInStrata <- unlist(lapply(x, function(x) {mean(x$cpue_kg_km2)}))
+        varCatchRateInStrata  <- unlist(lapply(x, function(x) {var (x$cpue_kg_km2)}))
+
+        meanNumbersInStrat    <- unlist(lapply(x, function(x) {mean(x$cpue_km2_count)}))
+        varNumbersInStrat     <- unlist(lapply(x, function(x) {var (x$cpue_km2_count)}))
+
+        stratStats <- data.frame(name = namesYear, area = strat.df[ind,2], ntows = nobs, 
+                                 meanCatchRate = meanCatchRateInStrata, varCatchRate = varCatchRateInStrata)
+
+        stratStats$Bhat <- stratStats$area*stratStats$meanCatchRate
+        stratStats$varBhat <- stratStats$varCatchRate*(stratStats$area*stratStats$area)/stratStats$ntows
+
+        stratStats$Nhat    <- stratStats$area*meanNumbersInStrat
+        stratStats$varNhat <- varNumbersInStrat*(stratStats$area*stratStats$area)/stratStats$ntows
+        stratStats$seBhat  <- sqrt(stratStats$varBhat) 
+        stratStats$cv      <- stratStats$seBhat/ sum(stratStats$Bhat)
+        stratStats$logVar  <- log(stratStats$cv^2 + 1)
+        stratStats$medianBhat <- stratStats$Bhat*exp(-0.5*stratStats$logVar) / convert
+        stratStats$SElogBhat <- sqrt(stratStats$logVar)
+        stratStats
+    }
+
     yearlyStrataEsts <- lapply(dat.yr, yr.fn)
     names(yearlyStrataEsts) <- paste("Year",names(yearlyStrataEsts),sep="")
+
+    stratumEsts <- lapply(dat.stratum, strata.fn)
     
     yrTotal.fn <- function(x) {
         data.frame(Bhat=sum(x$Bhat),seBhat=sqrt(sum(x$varBhat)),cv=sqrt(sum(x$varBhat))/sum(x$Bhat))
@@ -81,7 +117,10 @@ Biomass.fn <- function(dir = NULL, dat, strat.vars = c("Depth_m","Latitude_dd"),
 
     ests <- as.data.frame(t(as.data.frame(lapply(lapply(yearlyStrataEsts, yrTotal.fn),t)))) #some crazy stuff to put into a dataframe with years as rows
     logVar <- log(ests$cv^2+1)
-    ln <- data.frame(year=substring(row.names(ests),5),meanBhat=ests$Bhat/convert,medianBhat=ests$Bhat*exp(-0.5*logVar)/convert,SElogBhat=sqrt(logVar))
+    ln <- data.frame(year=substring(row.names(ests),5), 
+                     meanBhat=ests$Bhat/convert,
+                     medianBhat=ests$Bhat*exp(-0.5*logVar)/convert,
+                     SElogBhat=sqrt(logVar))
 
     
     df.list = list()
@@ -98,7 +137,8 @@ Biomass.fn <- function(dir = NULL, dat, strat.vars = c("Depth_m","Latitude_dd"),
         write.csv(bio, file = file.path(plotdir, paste("design_based_indices.csv", sep="")), row.names = FALSE)
     }
 
-    df.list[[1]] <- df
-    df.list[[2]] <- bio
+    df.list$StrataEsts <- stratumEsts
+    df.list$All <- df
+    df.list$Bio <- bio
     return(df.list)
 }

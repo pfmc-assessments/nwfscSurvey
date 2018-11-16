@@ -20,7 +20,7 @@
 PlotBio.fn <-function(dir = NULL, dat, CI=0.95, scalar=1e6, gap=0.03, ylab="Biomass ('000 mt)", xlab="Year", 
                       main = NULL, ylim=NULL, add = FALSE, col = 'black', dopng = FALSE, ...) {
 
-    bio = dat[[2]]
+    bio = dat$Bio
 
     if (dopng) {
       #plotdir <- paste0(dir, "/plots")
@@ -34,6 +34,7 @@ PlotBio.fn <-function(dir = NULL, dat, CI=0.95, scalar=1e6, gap=0.03, ylab="Biom
       if (!is.null(main)) { png(paste0(dir, "/plots/", main, "_designed_based_index.png"), height=7, width=7, units="in",res=300) } 
     }
     
+    par(mfrow = c(1,1))
     y <- as.numeric(as.character(bio$Value))/scalar
     x <- as.numeric(as.character(bio$Year))
     se <- as.numeric(as.character(bio$seLogB))

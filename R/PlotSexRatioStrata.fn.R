@@ -4,7 +4,7 @@
 #' @param dat data object
 #' @param type length/age which data type to use
 #' @param strat.vars the parameters to stratify the data
-#' @param survey specify the survey data set for calculations. Options are "NWFSCBT", "Tri.Shelf", "AFSC.Slope"
+#' @param strat.df the created strata matrix with the calculated areas by the createStrataDF.fn function
 #' @param circleSize circle size 
 #' @param dopng TRUE/FALSE whether to save a png file
 #' @param ...      Additional arguments for the plots
@@ -13,7 +13,7 @@
 #' @export
 #' @seealso \code{\link{StrataFactors.fn}}
 
-PlotSexRatioStrata.fn <-function(dir = NULL, dat, type = "length", strat.vars=c("Depth_m","Latitude_dd"), survey, circleSize=0.05, dopng = FALSE,...) {
+PlotSexRatioStrata.fn <-function(dir = NULL, dat, type = "length", strat.vars=c("Depth_m","Latitude_dd"), strat.df=NULL, circleSize=0.05, dopng = FALSE,...) {
 
     if (dopng) { 
       if(is.null(dir)) stop("Directory needs to be set.") 

@@ -26,6 +26,7 @@ PlotSexRatio.fn <-function(dir, dat, data.type = "length",  survey, circleSize=0
 
     ratioF = temp[,"F"] / (temp[,"M"] + temp[,"F"])
     nobs = temp[,"F"] + temp[,"M"]
+    par(mfrow = c(1,1))
     plot(x = names(ratioF), y = ratioF, type="l", col="red", xlab=axis.name, ylab="Fraction female",...)
     symbols(x = names(ratioF), y = ratioF, circles=nobs, inches=circleSize, fg="red", bg=rgb(1,0,0,alpha=0.5), add=T)
 

@@ -25,7 +25,7 @@ GetN.fn <- function(dir=NULL, dat, type, species = NULL, printfolder = "forSS", 
         message("\nThe species input does not match one of the following options; flatfish, shelfrock, sloperock, thorny, others, or all\n")} }
 
     if (verbose){
-    message("\nThe effN sample size is calculated as ",n.unq," multiplied by the number of tows in each year.\n") }
+    message("\nThe effN sample size is calculated as ", n.unq, " multiplied by the number of tows in each year.\n") }
 
 
     if (type == "length"){
