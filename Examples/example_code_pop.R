@@ -35,8 +35,10 @@ head(bio)
 # Create Stratafication:
 # The stratafication areas are calculated from the SA3 file which is attached to the package.
 strata = CreateStrataDF.fn(names=c("shallow_s", "mid_s", "deep_s", "shallow_n", "mid_n", "deep_n"), 
-                           depths = c(55, 200, 300, 549),
-                           lats = c(32, 42, 49))
+                           depths.shallow = c(55,  200, 300,  55, 200, 300),
+                           depths.deep    = c(200, 300, 549, 200, 300, 549),
+                           lats.south     = c(32,   32,  32,  42,  42,  42),
+                           lats.north     = c(42,   42,  42,  49,  49,  49))
 
 strata
 
