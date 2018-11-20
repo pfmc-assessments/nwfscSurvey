@@ -5,7 +5,7 @@
 \title{Calculate effN input sample sizes
 based on Stewart & Hamel 2014}
 \usage{
-GetN.fn(dir, dat, type, species = NULL, printfolder = "forSS",
+GetN.fn(dir = NULL, dat, type, species = NULL, printfolder = "forSS",
   verbose = TRUE)
 }
 \arguments{

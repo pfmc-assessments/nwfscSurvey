@@ -6,9 +6,9 @@
 You may want to change all zeros to NA's so that those observations are not plotted.
 If you don't then set zero2NAs=F}
 \usage{
-PlotFreqData.fn(dir, dat, survey = "Survey", inch = 0.15, ylab = "Bins",
-  xlab = "Year", zero2NAs = T, main = NULL, xlim = NULL,
-  dopng = FALSE, ...)
+PlotFreqData.fn(dir = NULL, dat, survey = "Survey", inch = 0.15,
+  ylab = "Bins", xlab = "Year", zero2NAs = T, main = NULL,
+  xlim = NULL, dopng = FALSE, ...)
 }
 \arguments{
 \item{dir}{directory to save files to}

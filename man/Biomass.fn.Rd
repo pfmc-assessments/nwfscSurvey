@@ -4,9 +4,9 @@
 \alias{Biomass.fn}
 \title{Calculates design based estimates from survey data for West Coast surveys}
 \usage{
-Biomass.fn(dir, dat, strat.vars = c("Depth_m", "Latitude_dd"), strat.df,
-  printfolder = "forSS", outputMedian = T, convert = 1, season = NA,
-  fleet = NA, verbose = TRUE)
+Biomass.fn(dir = NULL, dat, strat.vars = c("Depth_m", "Latitude_dd"),
+  strat.df, printfolder = "forSS", outputMedian = T, convert = 1,
+  season = NA, fleet = NA, verbose = TRUE)
 }
 \arguments{
 \item{dir}{directory where the output file will be saved}

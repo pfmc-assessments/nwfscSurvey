@@ -18,7 +18,7 @@
 #' @export
 #' @seealso \code{\link{StrataAreas.fn}}
 
-CreateStrataDF.fn <- function(names=NA, depths.shallow, depths.deep, lat.south, lat.north) {
+CreateStrataDF.fn <- function(names=NA, depths.shallow, depths.deep, lats.south, lats.north) {
     fpath = system.file("data", "SA3.rda", package="nwfscSurvey")
     load(fpath)
 
