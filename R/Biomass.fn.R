@@ -98,11 +98,9 @@ Biomass.fn <- function(dir = NULL, dat, strat.vars = c("Depth_m","Latitude_dd"),
 
         stratStats$Nhat    <- stratStats$area*meanNumbersInStrat
         stratStats$varNhat <- varNumbersInStrat*(stratStats$area*stratStats$area)/stratStats$ntows
-        stratStats$seBhat  <- sqrt(stratStats$varBhat) 
-        stratStats$cv      <- stratStats$seBhat/ sum(stratStats$Bhat)
-        stratStats$logVar  <- log(stratStats$cv^2 + 1)
-        stratStats$medianBhat <- stratStats$Bhat*exp(-0.5*stratStats$logVar) / convert
-        stratStats$SElogBhat <- sqrt(stratStats$logVar)
+        stratStats$cv      <- sqrt(stratStats$varBhat) / (stratStats$Bhat + 0.000000001)
+        stratStats$logVar  <- sqrt(log(stratStats$cv^2 + 1))
+        #stratStats$medianBhat <- stratStats$Bhat*exp(-0.5*stratStats$logVar^2) / convert
         stratStats
     }
 
@@ -117,16 +115,16 @@ Biomass.fn <- function(dir = NULL, dat, strat.vars = c("Depth_m","Latitude_dd"),
 
     ests <- as.data.frame(t(as.data.frame(lapply(lapply(yearlyStrataEsts, yrTotal.fn),t)))) #some crazy stuff to put into a dataframe with years as rows
     logVar <- log(ests$cv^2+1)
-    ln <- data.frame(year=substring(row.names(ests),5), 
-                     meanBhat=ests$Bhat/convert,
-                     medianBhat=ests$Bhat*exp(-0.5*logVar)/convert,
-                     SElogBhat=sqrt(logVar))
+    ln <- data.frame(year = substring(row.names(ests),5), 
+                     meanBhat = ests$Bhat/convert,
+                     medianBhat = ests$Bhat*exp(-0.5*logVar)/convert,
+                     SElogBhat = sqrt(logVar))
 
     
     df.list = list()
-    df  <- list(Strata=yearlyStrataEsts, Total=ests, LNtons=ln)
-    if(outputMedian) { bio <- data.frame(Year=df$LNtons$year, Season = season, Fleet = fleet, Value=df$LNtons$medianBhat, seLogB=df$LNtons$SElogBhat) }
-    if(!outputMedian){ bio <- data.frame(Year=df$LNtons$year, Season = season, Fleet = fleet, Value=df$LNtons$meanBhat,   seLogB=df$LNtons$SElogBhat) }
+    df  <- list(Strata = yearlyStrataEsts, Total = ests, LNtons = ln)
+    if(outputMedian) { bio <- data.frame(Year = df$LNtons$year, Season = season, Fleet = fleet, Value = df$LNtons$medianBhat, seLogB = df$LNtons$SElogBhat) }
+    if(!outputMedian){ bio <- data.frame(Year = df$LNtons$year, Season = season, Fleet = fleet, Value = df$LNtons$meanBhat,   seLogB = df$LNtons$SElogBhat) }
 
     if(!is.null(dir)){
         plotdir <- file.path(dir,printfolder)

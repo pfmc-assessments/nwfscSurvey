@@ -4,7 +4,7 @@
 \alias{PlotVarLengthAtAge.fn}
 \title{Plot variability of length at age}
 \usage{
-PlotVarLengthAtAge.fn(dir, dat, survey, ageBin = 1, bySex = T,
+PlotVarLengthAtAge.fn(dir = NULL, dat, survey, ageBin = 1, bySex = T,
   parStart = c(52, 0.09, 1), estVB = T, bins = NULL,
   legX = "bottomleft", legY = NULL, dopng = FALSE, ...)
 }

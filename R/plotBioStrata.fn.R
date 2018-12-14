@@ -9,6 +9,7 @@
 #' @param xlab x-axis text label
 #' @param ylim y-limits
 #' @param add add additional line to plot
+#' @param mfrow.in option to specify the mfrow for plotting
 #' @param col color
 #' @param main plot label
 #' @param dopng save the plot as a png inside plots folder
@@ -18,7 +19,7 @@
 #' @export
 
 PlotBioStrata.fn <-function(dir = NULL, dat, CI=0.95, scalar=1e6, gap=0.03, ylab="Biomass ('000 mt)", xlab="Year", 
-                            main = NULL, ylim=NULL, sameylim = FALSE, add = FALSE, col = 'black', dopng = FALSE, ...) {
+                            main = NULL, ylim=NULL, sameylim = FALSE, add = FALSE, mfrow.in = NULL, col = 'black', dopng = FALSE, ...) {
 
     bio = dat$StrataEsts
     strata.names = names(bio)
@@ -36,25 +37,24 @@ PlotBioStrata.fn <-function(dir = NULL, dat, CI=0.95, scalar=1e6, gap=0.03, ylab
     }
     if(is.null(main)){main = strata.names}
     
-    par(mfrow = c(length(bio) / 2, 2))
+    if(!is.null(mfrow.in)) { 
+      if(length(mfrow.in) == 1) { par(mfrow = c(mfrow.in[1], mfrow.in[1])) }
+      if(length(mfrow.in) != 1) { par(mfrow = c(mfrow.in[1], mfrow.in[2])) } }
+    if(is.null(mfrow.in)) { par(mfrow = c(length(bio) / 2, 2)) }
+
     for (a in 1:length(bio)){
       df <- bio[[a]]
-      #y <- as.numeric(as.character(df$medianBhat))/scalar
-      #x <- as.numeric(as.character(df$name))
-      #se <- as.numeric(as.character(df$SElogBhat))
-      #logB <- log(as.numeric(as.character(df$medianBhat)) + 0.000001)
-      # Not bias adjusted
-      y <- as.numeric(as.character(df$Bhat))/scalar
-      x <- as.numeric(as.character(df$name))
-      se <- as.numeric(as.character(sqrt(df$varBhat)))
+      y    <- as.numeric(as.character(df$Bhat))/scalar
+      x    <- as.numeric(as.character(df$name))
+      se   <- as.numeric(as.character(log(df$cv^2 + 1)))
       logB <- log(as.numeric(as.character(df$Bhat)) + 0.000001)
       ci <- exp(rbind(c(logB + qnorm(1 - (1 - CI)/2) * se), 
                       c(logB - qnorm(1 - (1 - CI)/2) * se)))/scalar
 
       if (sameylim & is.null(ylim)) {
-          tmp <- do.call('rbind', bio)
-          tmpse <- as.numeric(as.character(tmp$SElogBhat))
-          tmplogB <- log(as.numeric(as.character(tmp$medianBhat)) + 0.000001)
+          tmp   <- do.call('rbind', bio)
+          tmpse <- as.numeric(as.character(log(tmp$cv^2 + 1)))
+          tmplogB <- log(as.numeric(as.character(tmp$Bhat)) + 0.000001)
           tmpci   <- exp(rbind(c(tmplogB + qnorm(1 - (1 - CI)/2) * tmpse),  c(tmplogB - qnorm(1 - (1 - CI)/2) * tmpse)))/scalar
           ylim <- c(0, 1.05 * max(tmpci, na.rm = TRUE))
       }
@@ -70,7 +70,7 @@ PlotBioStrata.fn <-function(dir = NULL, dat, CI=0.95, scalar=1e6, gap=0.03, ylab
         points(x, y, col = col)
       }
       else {
-         plot(x, y, ylab = ylab, xlab = xlab, ylim = ylim, main = main[a], col = col)#, ...)
+         plot(x, y, ylab = ylab, xlab = xlab, ylim = ylim, main = main[a], col = col, ...)
       }
       segments(x, y + gap, x, ci[1, ], col = col)
       segments(x, y - gap, x, ci[2, ], col = col)  

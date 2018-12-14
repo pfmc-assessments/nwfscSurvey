@@ -8,13 +8,14 @@ Modified by Chantel Wetzel to work with the data warehouse data formatting,
 add additional options of when to apply the sex ratio, and correct some treatment of unsexed fish
 weighted by sample size and area}
 \usage{
-SurveyLFs.fn(dir, datL, datTows, strat.vars = c("Depth_m", "Latitude_dd"),
-  strat.df = NULL, lgthBins = 1, SSout = TRUE, meanRatioMethod = TRUE,
-  gender = 3, NAs2zero = T, sexRatioUnsexed = NA, maxSizeUnsexed = NA,
-  sexRatioStage = 1, partition = 0, fleet = "Enter Fleet",
-  agelow = "Enter", agehigh = "Enter", ageErr = "Enter",
-  nSamps = "Enter Samps", month = "Enter Month", printfolder = "forSS",
-  remove999 = TRUE, outputStage1 = FALSE, verbose = TRUE)
+SurveyLFs.fn(dir = NULL, datL, datTows, strat.vars = c("Depth_m",
+  "Latitude_dd"), strat.df = NULL, lgthBins = 1, SSout = TRUE,
+  meanRatioMethod = TRUE, gender = 3, NAs2zero = T,
+  sexRatioUnsexed = NA, maxSizeUnsexed = NA, sexRatioStage = 1,
+  partition = 0, fleet = "Enter Fleet", agelow = "Enter",
+  agehigh = "Enter", ageErr = "Enter", nSamps = "Enter Samps",
+  month = "Enter Month", printfolder = "forSS", remove999 = TRUE,
+  outputStage1 = FALSE, verbose = TRUE)
 }
 \arguments{
 \item{dir}{directory this is where the output files will be saved}
