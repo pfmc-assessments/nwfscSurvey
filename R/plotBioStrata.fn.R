@@ -27,7 +27,7 @@ PlotBioStrata.fn <-function(dir = NULL, dat, CI=0.95, scalar=1e6, gap=0.03, ylab
 
     if (dopng) {
       #plotdir <- paste0(dir, "/plots")
-      if(!is.null(dir)){stop("Directory needs to be set.")}
+      if(is.null(dir)){stop("Directory needs to be set.")}
       plotdir <- file.path(dir, paste("plots", sep=""))
       plotdir.isdir <- file.info(plotdir)$isdir
       if(is.na(plotdir.isdir) | !plotdir.isdir){
