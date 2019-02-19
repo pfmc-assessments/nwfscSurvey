@@ -15,7 +15,7 @@
 #' @param printfolder the folder where files will be saved
 #' @param outputMedian T/F output median or the mean biomass estimate
 #' @param convert convertion factor for the biomass by area units (e.g., hectare vs km2) 
-#' @param season season for SS
+#' @param month month for SS
 #' @param fleet fleet number for SS
 #' @param verbose opt to print out message statements
 #'
@@ -23,7 +23,7 @@
 #' @export
 
 Biomass.fn <- function(dir = NULL, dat, strat.vars = c("Depth_m","Latitude_dd"), strat.df, printfolder = "forSS", outputMedian = T, 
-                       convert = 1, season = NA, fleet = NA, verbose = TRUE)  {
+                       convert = 1, month = NA, fleet = NA, verbose = TRUE)  {
     
 
     if(is.null(dat$cpue_kg_km2)) stop("There must be a column called cpue_kg_km2 in the dataframe")
@@ -123,8 +123,8 @@ Biomass.fn <- function(dir = NULL, dat, strat.vars = c("Depth_m","Latitude_dd"),
     
     df.list = list()
     df  <- list(Strata = yearlyStrataEsts, Total = ests, LNtons = ln)
-    if(outputMedian) { bio <- data.frame(Year = df$LNtons$year, Season = season, Fleet = fleet, Value = df$LNtons$medianBhat, seLogB = df$LNtons$SElogBhat) }
-    if(!outputMedian){ bio <- data.frame(Year = df$LNtons$year, Season = season, Fleet = fleet, Value = df$LNtons$meanBhat,   seLogB = df$LNtons$SElogBhat) }
+    if(outputMedian) { bio <- data.frame(Year = df$LNtons$year, Season = month, Fleet = fleet, Value = df$LNtons$medianBhat, seLogB = df$LNtons$SElogBhat) }
+    if(!outputMedian){ bio <- data.frame(Year = df$LNtons$year, Season = month, Fleet = fleet, Value = df$LNtons$meanBhat,   seLogB = df$LNtons$SElogBhat) }
 
     if(!is.null(dir)){
         plotdir <- file.path(dir,printfolder)

@@ -19,7 +19,8 @@
 #' @export
 
 PlotBioStrata.fn <-function(dir = NULL, dat, CI=0.95, scalar=1e6, gap=0.03, ylab="Biomass ('000 mt)", xlab="Year", 
-                            main = NULL, ylim=NULL, sameylim = FALSE, add = FALSE, mfrow.in = NULL, col = 'black', dopng = FALSE, ...) {
+                            main = NULL, ylim=NULL, sameylim = FALSE, add = FALSE, mfrow.in = NULL, col = 'black', 
+                            pch.col = 'black', pch.type = 16, dopng = FALSE, ...) {
 
     bio = dat$StrataEsts
     strata.names = names(bio)
@@ -44,6 +45,7 @@ PlotBioStrata.fn <-function(dir = NULL, dat, CI=0.95, scalar=1e6, gap=0.03, ylab
 
     for (a in 1:length(bio)){
       df <- bio[[a]]
+      se = logB = ci = NULL
       y    <- as.numeric(as.character(df$Bhat))/scalar
       x    <- as.numeric(as.character(df$name))
       se   <- as.numeric(as.character(log(df$cv^2 + 1)))
@@ -65,15 +67,15 @@ PlotBioStrata.fn <-function(dir = NULL, dat, CI=0.95, scalar=1e6, gap=0.03, ylab
       if (is.null(ylim)) {
         ylim <- c(0, 1.05 * max(ci, na.rm = TRUE))
       }
-      gap <- gap * max(y)
+      #gap <- gap * max(y)
       if(add) {
-        points(x, y, col = col)
+        points(x, y, col = pch.col, pch = pch.type)
       }
       else {
-         plot(x, y, ylab = ylab, xlab = xlab, ylim = ylim, main = main[a], col = col, ...)
+         plot(x, y, ylab = ylab, xlab = xlab, ylim = ylim, main = main[a], col = pch.col, pch = pch.type, ...)
       }
-      segments(x, y + gap, x, ci[1, ], col = col)
-      segments(x, y - gap, x, ci[2, ], col = col)  
+      segments(x = x, y = y + gap, x1 = x, y1 = ci[1, ], col = col)
+      segments(x = x, y = y - gap, x1 = x, y1 = ci[2, ], col = col)  
     }
 
     if (dopng) { dev.off()}
