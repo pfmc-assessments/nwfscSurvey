@@ -66,9 +66,12 @@ bio   = PullBio.fn(Name = "Pacific ocean perch",
 Define the stratification:
 
 ```r
-strata = CreateStrataDF.fn(names=c("shallow_s", "mid_s", "deep_s","shallow_n", "mid_n", "deep_n"), 
-                           depths = c(55, 200, 300, 549),
-                           lats = c(32, 42, 49)) 
+
+strata = CreateStrataDF.fn(names=c("shallow_s", "mid_s" "deep_s", "shallow_n", "mid_n", "deep_n"), 
+                           depths.shallow = c( 55,   200, 300,    55, 200, 300),
+                           depths.deep    = c(200,   300, 400,   200, 300, 400),
+                           lats.south     = c( 32,    32,  32,    42,  42,  42),
+                           lats.north     = c( 42,    42,  42,    49,  49,  49))
 
 ```
 
