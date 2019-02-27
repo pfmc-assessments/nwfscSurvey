@@ -6,18 +6,18 @@
 #' @param dir directory
 #' @param datTows input catch data frame
 #' @param datL input biology list
-#' @param verbose
+#' @param start.year first year of data to include 
 #' 
 #' @author Chantel Wetzel 
 #' @export
 
 
-Format.AKSlope.fn <- function (dir = NULL, datTows, datL, verbose = TRUE) 
+Format.AKSlope.fn <- function (dir = NULL, datTows, datL, start.year = 1997) 
 {
 
 	# Filter for only the AKFSC Slope survey
 	datTows = datTows[datTows$SURVEY=="AFSC.Slope",]
-	datTows = datTows[datTows$YEAR >= 1996, ]
+	datTows = datTows[datTows$YEAR >= start.year, ]
 
 	#Deal with the catch data file
 	names(datTows)[names(datTows) == "HAULJOIN"] = "Trawl_id"
@@ -46,7 +46,7 @@ Format.AKSlope.fn <- function (dir = NULL, datTows, datL, verbose = TRUE)
 	
 	#Deal with the biological length data file
 	tmp1 =  datL$Lengths[datL$Lengths$SURVEY=="AFSC.Slope",]
-	tmp1 = tmp1[tmp1$YEAR >= 1996, ]
+	tmp1 = tmp1[tmp1$YEAR >= start.year, ]
 
 	names(tmp1)[names(tmp1) == "HAULJOIN"] = "Trawl_id"
 	names(tmp1)[names(tmp1) == "YEAR"] = "Year"
@@ -74,7 +74,7 @@ Format.AKSlope.fn <- function (dir = NULL, datTows, datL, verbose = TRUE)
 	#Deal with the biological age data file
 	tmp2 =  datL$Ages[datL$Ages$SURVEY=="AFSC.Slope",]
 	if(dim(tmp2)[1] > 0) {
-		tmp2 = tmp2[tmp2$YEAR >= 1996, ]
+		tmp2 = tmp2[tmp2$YEAR >= start.year, ]
 	
 		names(tmp2)[names(tmp2) == "HAULJOIN"] = "Trawl_id"
 		names(tmp2)[names(tmp2) == "YEAR"] = "Year"
