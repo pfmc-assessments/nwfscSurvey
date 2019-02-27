@@ -2,6 +2,7 @@
 
 export(Biomass.fn)
 export(CreateStrataDF.fn)
+export(Format.AKSlope.fn)
 export(GetN.fn)
 export(PlotBio.fn)
 export(PlotBioStrata.fn)

@@ -6,7 +6,7 @@
 \usage{
 Biomass.fn(dir = NULL, dat, strat.vars = c("Depth_m", "Latitude_dd"),
   strat.df, printfolder = "forSS", outputMedian = T, convert = 1,
-  season = NA, fleet = NA, verbose = TRUE)
+  month = NA, fleet = NA, verbose = TRUE)
 }
 \arguments{
 \item{dir}{directory where the output file will be saved}
@@ -21,7 +21,7 @@ Biomass.fn(dir = NULL, dat, strat.vars = c("Depth_m", "Latitude_dd"),
 
 \item{convert}{convertion factor for the biomass by area units (e.g., hectare vs km2)}
 
-\item{season}{season for SS}
+\item{month}{month for SS}
 
 \item{fleet}{fleet number for SS}
 

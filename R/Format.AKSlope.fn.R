@@ -103,6 +103,7 @@ Format.AKSlope.fn <- function (dir = NULL, datTows, datL, verbose = TRUE)
 	out = list()
 	out$datTows = datTows
 	out$length = tmp1
-	out$age = ifelse(dim(tmp2)[1] > 0, tmp2, "No Ages")
+	out$age = NULL
+	if(dim(tmp2)[1] > 0) { out$age = tmp2}
 	return(out)
 }
