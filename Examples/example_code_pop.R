@@ -49,7 +49,8 @@ biomass = Biomass.fn(dir = getwd(), dat = catch,  strat.df = strata, printfolder
 # Creates a csv file within the "printfolder" that will be saved within the directory location (dir).
 
 # Plot the biomass index
-PlotBio.fn(dir = getwd(), dat = biomass, main = "NWFSC shelf-slope bottom trawl survey", dopng = T)
+PlotBio.fn(dir = getwd(), dat = biomass, main = "NWFSC Groundfish Bottom Trawl Survey", dopng = TRUE)
+PlotBioStrata.fn(dir = getwd(), dat = biomass, main = "NWFSC Groundfish Bottom Trawl Survey", mfrow.in = c(3,2), gap = 0.01, sameylim = TRUE, ylim = c(0, 22), dopng = TRUE)
 
 #============================================================================================
 #Length Biological Data 
@@ -74,8 +75,8 @@ LFs <- SurveyLFs.fn(dir = getwd(), datL = len, datTows = catch,
 # NWFSC combo survey data in the past).
 
 
-PlotFreqData.fn(dir = getwd(), dat = LFs, survey = "NWFSCBT", ylim=c(0, max(len.bins) + 4), yaxs="i", ylab="Length (cm)", dopng = TRUE)
-PlotSexRatio.fn(dir = getwd(), dat = len, data.type = "length", survey = "NWFSCBT", dopng = TRUE, main = "NWFSCBT")
+PlotFreqData.fn(dir = getwd(), dat = LFs, main = "NWFSC Groundfish Bottom Trawl Survey", ylim=c(0, max(len.bins) + 4), yaxs="i", ylab="Length (cm)", dopng = TRUE)
+PlotSexRatio.fn(dir = getwd(), dat = len, data.type = "length", dopng = TRUE, main = "NWFSC Groundfish Bottom Trawl Survey")
 
 #============================================================================================
 #Length Biological Data 
@@ -93,9 +94,9 @@ Ages <- SurveyAFs.fn(dir = getwd(), datA = age, datTows = catch,
 
 
 
-PlotFreqData.fn(dir = getwd(), dat = Ages, survey = "NWFSCBT", ylim=c(0, max(age.bins) + 2), yaxs="i", ylab="Age (yr)", dopng=TRUE)
-PlotVarLengthAtAge.fn(dir = getwd(), dat = age, survey ="NWFSCBT", dopng = TRUE) 
-PlotSexRatio.fn(dir = getwd(), dat = age, data.type = "age", survey = "NWFSCBT", dopng = TRUE, main = "NWFSCBT")
+PlotFreqData.fn(dir = getwd(), dat = Ages, main = "NWFSC Groundfish Bottom Trawl Survey", ylim=c(0, max(age.bins) + 2), yaxs="i", ylab="Age (yr)", dopng=TRUE)
+PlotVarLengthAtAge.fn(dir = getwd(), dat = age, main = "NWFSC Groundfish Bottom Trawl Survey", dopng = TRUE) 
+PlotSexRatio.fn(dir = getwd(), dat = age, data.type = "age", dopng = TRUE, main = "NWFSC Groundfish Bottom Trawl Survey")
 
 #============================================================================================
 # Conditional Ages
