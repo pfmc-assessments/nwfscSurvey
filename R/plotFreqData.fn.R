@@ -17,10 +17,20 @@
 #' @author Allan Hicks and Chantel Wetzel
 #' @export
 
-PlotFreqData.fn <- function(dir = NULL, dat, survey = "Survey", inch=0.15, ylab="Bins", xlab="Year", zero2NAs=T, main=NULL, xlim=NULL, dopng = FALSE, ...) {
+PlotFreqData.fn <- function(dir = NULL, dat, inch=0.15, ylab="Bins", xlab="Year", zero2NAs=T, main=NULL, xlim=NULL, dopng = FALSE, ...) {
 
     dataType = sum(names(dat) == "ageErr")
     dataType = ifelse(dataType == 0,  "Length", "Age")
+
+    if (dopng) { 
+      if(is.null(dir)){stop("Directory needs to be set.")}
+      plotdir <- file.path(dir, paste("plots", sep=""))
+      plotdir.isdir <- file.info(plotdir)$isdir
+      if(is.na(plotdir.isdir) | !plotdir.isdir){
+        dir.create(plotdir)}
+      if ( is.null(main)) { png( file.path(dir, paste("plots/", dataType, "_Frequency.png", sep = "")), height=7, width=7, units="in",res=300) }
+      if (!is.null(main)) { png( file.path(dir, paste("plots/", main, "_", dataType,"_Frequency.png", sep = "")), height=7, width=7, units="in",res=300) }
+    }
 
     x <- as.numeric(as.character(dat$year))
     gender <- dat$gender[1]
@@ -52,14 +62,6 @@ PlotFreqData.fn <- function(dir = NULL, dat, survey = "Survey", inch=0.15, ylab=
     if(is.null(xlim)) {xlim <- range(x)}
 
 
-    if (dopng) { png( file.path(dir, paste("plots/", survey, "_", dataType,"_Frequency.png", sep = "")), height=7, width=7, units="in",res=300) 
-      if(is.null(dir)){stop("Directory needs to be set.")}
-      #plotdir <- paste0(dir, "/plots")
-      plotdir <- file.path(dir, paste("plots", sep=""))
-      plotdir.isdir <- file.info(plotdir)$isdir
-      if(is.na(plotdir.isdir) | !plotdir.isdir){
-        dir.create(plotdir)}
-    }
     if (gender == 3) { par(mfrow=c(2,1)) } 
     if (gender == 0) { par(mfrow=c(1,1)) } 
     

@@ -33,8 +33,8 @@ PlotBioStrata.fn <-function(dir = NULL, dat, CI=0.95, scalar=1e6, gap=0.03, ylab
       if(is.na(plotdir.isdir) | !plotdir.isdir){
         dir.create(plotdir)
       }
-      if ( is.null(main)) { png(paste0(dir, "/plots/designed_based_index.png"), height=7, width=7, units="in",res=300) }
-      if (!is.null(main)) { png(paste0(dir, "/plots/", main, "_designed_based_index.png"), height=7, width=7, units="in",res=300) } 
+      if ( is.null(main)) { png(paste0(dir, "/plots/designed_based_by_strata_index.png"), height=7, width=7, units="in",res=300) }
+      if (!is.null(main)) { png(paste0(dir, "/plots/", main, "_designed_based_by_strata_index.png"), height=7, width=7, units="in",res=300) } 
     }
     if(is.null(main)){main = strata.names}
     

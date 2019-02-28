@@ -17,8 +17,8 @@
 #' @author Allan Hicks and John Wallace
 #' @export
 
-PlotBio.fn <-function(dir = NULL, dat, CI=0.95, scalar=1e6, gap=0.03, ylab="Biomass ('000 mt)", xlab="Year", 
-                      main = NULL, ylim=NULL, add = FALSE, col = 'black', dopng = FALSE, ...) {
+PlotBio.fn <-function(dir = NULL, dat, CI = 0.95, scalar = 1e6, gap = 0.03, ylab = "Biomass ('000 mt)", xlab = "Year", 
+                      main = NULL, ylim = NULL, add = FALSE, col = 'black', dopng = FALSE, ...) {
 
     bio = dat$Bio
 

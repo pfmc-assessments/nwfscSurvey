@@ -23,7 +23,8 @@ PlotSexRatioStrata.fn <-function(dir = NULL, dat, type = "length", strat.vars=c(
         if(is.na(plotdir.isdir) | !plotdir.isdir){
           dir.create(plotdir)
         }
-      png(file.path(dir, paste("plots/", survey,"_fraction_female.png", sep ="")), height=7, width=7, units="in",res=300)   
+      if ( is.null(main)) { png(file.path(dir, paste("plots/fraction_female.png", sep ="")), height=7, width=7, units="in",res=300) }
+      if (!is.null(main)) { png(file.path(dir, paste("plots/", main,"_fraction_female.png", sep ="")), height=7, width=7, units="in",res=300) }
     }
 
     row.names(strat.df) <- strat.df[,1]     #put in rownames to make easier to index later
