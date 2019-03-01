@@ -87,7 +87,7 @@ PullBio.fn <- function (Name = NULL, SciName = NULL, YearRange = c(1000, 5000), 
                     ",year>=",  YearRange[1], ",year<=", YearRange[2], 
                     "&variables=", paste0(Vars, collapse = ",")) 
 
-        UrlText  <- paste0(
+    UrlText  <- paste0(
                     "https://www.nwfsc.noaa.gov/data/api/v1/source/trawl.individual_fact/selection.json?filters=project=", paste(strsplit(project, " ")[[1]], collapse = "%20"),",", 
                     "station_invalid=0,",
                     "performance=Satisfactory,", 
@@ -105,20 +105,26 @@ PullBio.fn <- function (Name = NULL, SciName = NULL, YearRange = c(1000, 5000), 
                     "&variables=", paste0(Vars, collapse = ",")) 
     }
 
-    if (verbose){
-    message("Pulling biological data. This can take up to ~ 30 seconds.")}
-    DataPull <- try(jsonlite::fromJSON(UrlText))    
+    DataPull = NULL
+    if (SurveyName != "Triennial"){
+        if (verbose){
+        message("Pulling biological data. This can take up to ~ 30 seconds.")}
+        DataPull <- try(jsonlite::fromJSON(UrlText))  
+    } 
 
-    # Filter out non-standard samples
-    keep = DataPull[, "standard_survey_dim$standard_survey_length_or_width_indicator"]  %in% c("NA", "Standard Survey Length or Width") 
-    DataPull = DataPull[keep,]
-    keep = DataPull[, "standard_survey_dim$standard_survey_age_indicator"]  %in% c("NA", "Standard Survey Age")
-    DataPull = DataPull[keep,] 
-    keep = DataPull[, "standard_survey_dim$standard_survey_weight_indicator"]  %in% c("NA","Standard Survey Weight")
-    DataPull = DataPull[keep,]
 
-    # Remove the extra columns now that they are not needed
-    DataPull = DataPull[,Vars.short]
+    if (SurveyName == "NWFSC.Combo"){
+        # Filter out non-standard samples
+        keep = DataPull[, "standard_survey_dim$standard_survey_length_or_width_indicator"]  %in% c("NA", "Standard Survey Length or Width") 
+        DataPull = DataPull[keep,]
+        keep = DataPull[, "standard_survey_dim$standard_survey_age_indicator"]  %in% c("NA", "Standard Survey Age")
+        DataPull = DataPull[keep,] 
+        keep = DataPull[, "standard_survey_dim$standard_survey_weight_indicator"]  %in% c("NA","Standard Survey Weight")
+        DataPull = DataPull[keep,]
+
+        # Remove the extra columns now that they are not needed
+        DataPull = DataPull[,Vars.short]
+    }
 
 
     if (SurveyName == "Triennial"){
