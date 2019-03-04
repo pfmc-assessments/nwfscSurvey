@@ -98,22 +98,24 @@ PullBio.fn <- function (Name = NULL, SciName = NULL, YearRange = c(1000, 5000), 
     message("Pulling biological data. This can take up to ~ 30 seconds.")}
     DataPull <- try(jsonlite::fromJSON(UrlText))  
 
-
-    # Filter out non-standard samples
-    keep = DataPull[, "standard_survey_dim$standard_survey_length_or_width_indicator"]  %in% c(NA, "Standard Survey Length or Width") 
-    DataPull = DataPull[keep,]
-    keep = DataPull[, "standard_survey_dim$standard_survey_age_indicator"]  %in% c(NA, "Standard Survey Age")
-    DataPull = DataPull[keep,] 
-    keep = DataPull[, "standard_survey_dim$standard_survey_weight_indicator"]  %in% c(NA,"Standard Survey Weight")
-    DataPull = DataPull[keep,]
-    # Remove water hauls
-    fix =  is.na(DataPull[,"operation_dim$legacy_performance_code"]) 
-    if(sum(fix) > 0) { DataPull[fix,"operation_dim$legacy_performance_code"] = -999 }
-    keep = DataPull[,"operation_dim$legacy_performance_code"] != 8
-    DataPull = DataPull[keep,]
-
-    # Remove the extra columns now that they are not needed
-    DataPull = DataPull[,Vars.short]
+    if(is.data.frame(DataPull))
+    {
+        # Filter out non-standard samples
+        keep = DataPull[, "standard_survey_dim$standard_survey_length_or_width_indicator"]  %in% c(NA, "Standard Survey Length or Width") 
+        DataPull = DataPull[keep,]
+        keep = DataPull[, "standard_survey_dim$standard_survey_age_indicator"]  %in% c(NA, "Standard Survey Age")
+        DataPull = DataPull[keep,] 
+        keep = DataPull[, "standard_survey_dim$standard_survey_weight_indicator"]  %in% c(NA,"Standard Survey Weight")
+        DataPull = DataPull[keep,]
+        # Remove water hauls
+        fix =  is.na(DataPull[,"operation_dim$legacy_performance_code"]) 
+        if(sum(fix) > 0) { DataPull[fix,"operation_dim$legacy_performance_code"] = -999 }
+        keep = DataPull[,"operation_dim$legacy_performance_code"] != 8
+        DataPull = DataPull[keep,]
+    
+        # Remove the extra columns now that they are not needed
+        DataPull = DataPull[,Vars.short]
+    } 
 
 
     if (SurveyName == "Triennial"){
