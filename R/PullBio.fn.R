@@ -67,7 +67,8 @@ PullBio.fn <- function (Name = NULL, SciName = NULL, YearRange = c(1000, 5000), 
               "length_cm", "width_cm", "sex", "age_years", "latitude_dd", "longitude_dd",
               "standard_survey_dim$standard_survey_age_indicator",
               "standard_survey_dim$standard_survey_length_or_width_indicator",
-              "standard_survey_dim$standard_survey_weight_indicator")
+              "standard_survey_dim$standard_survey_weight_indicator",
+              "operation_dim$legacy_performance_code")
 
     Vars.short = c("project", "trawl_id", var.name, "year", "vessel", "pass", 
               "tow", "datetime_utc_iso","depth_m", "weight_kg", 
@@ -105,6 +106,11 @@ PullBio.fn <- function (Name = NULL, SciName = NULL, YearRange = c(1000, 5000), 
     DataPull = DataPull[keep,] 
     keep = DataPull[, "standard_survey_dim$standard_survey_weight_indicator"]  %in% c(NA,"Standard Survey Weight")
     DataPull = DataPull[keep,]
+    # Remove water hauls
+    fix =  is.na(DataPull[,"operation_dim$legacy_performance_code"]) 
+    if(sum(fix) > 0) { DataPull[fix,"operation_dim$legacy_performance_code"] = -999 }
+    keep = DataPull[,"operation_dim$legacy_performance_code"] != 8
+    DataPull = DataPull[keep,]
 
     # Remove the extra columns now that they are not needed
     DataPull = DataPull[,Vars.short]
@@ -124,6 +130,12 @@ PullBio.fn <- function (Name = NULL, SciName = NULL, YearRange = c(1000, 5000), 
         if (verbose){
         message("Pulling biological data. This can take up to ~ 30 seconds.")}
         LenPull <- try(jsonlite::fromJSON(UrlText))
+
+        #Remove water hauls 
+        fix =  is.na(LenPull[,"operation_dim$legacy_performance_code"]) 
+        if(sum(fix) > 0) { LenPull[fix,"operation_dim$legacy_performance_code"] = -999}
+        keep = LenPull[,"operation_dim$legacy_performance_code"] != 8
+        LenPull = LenPull[keep,]
 
         colnames(LenPull)[2]  <- "Date" 
         LenPull$Weight <- NA  

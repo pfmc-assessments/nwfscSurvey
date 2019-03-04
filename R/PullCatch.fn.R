@@ -100,7 +100,10 @@ PullCatch.fn <- function (Name = NULL, SciName = NULL, YearRange = c(1000, 5000)
 
     # Pull data for the specific species for the following variables
     Vars <- c(var.name, "year", "subsample_count", "subsample_wt_kg","project", "cpue_kg_per_ha_der", 
-        	  "total_catch_numbers", "total_catch_wt_kg", "vessel", "tow")
+        	  "total_catch_numbers", "total_catch_wt_kg", "vessel", "tow", "operation_dim$legacy_performance_code")
+
+    Vars.short <- c(var.name, "year", "subsample_count", "subsample_wt_kg","project", "cpue_kg_per_ha_der", 
+              "total_catch_numbers", "total_catch_wt_kg", "vessel", "tow")
 
 
     UrlText <- paste0("https://www.nwfsc.noaa.gov/data/api/v1/source/trawl.catch_fact/selection.json?filters=project=", paste(strsplit(project, " ")[[1]], collapse = "%20"),",", 
@@ -126,6 +129,13 @@ PullCatch.fn <- function (Name = NULL, SciName = NULL, YearRange = c(1000, 5000)
         stop(cat("\nNo data returned by the warehouse for the filters given.\n Make sure the year range is correct for the project selected and the input name is correct,\n otherwise there may be no data for this species from this project.\n"))
     }
 
+    # Remove water hauls
+    fix =  is.na(DataPull[,"operation_dim$legacy_performance_code"]) 
+    if(sum(fix) > 0) { DataPull[fix,"operation_dim$legacy_performance_code"] = -999 }
+    keep = DataPull[,"operation_dim$legacy_performance_code"] != 8
+    DataPull = DataPull[keep,]
+    DataPull = DataPull[,Vars.short]
+
 
     Data <- rename_columns(DataPull, newname = c("Year", "Vessel", "Tow", "Project", new.name, "CPUE_kg_per_ha", "Subsample_count", "Subsample_wt_kg", "Total_sp_numbers", "Total_sp_wt_kg"))
 
@@ -133,7 +143,8 @@ PullCatch.fn <- function (Name = NULL, SciName = NULL, YearRange = c(1000, 5000)
 
 
     # Pull all tow data (includes tows where the species was not observed)
-    Vars <- c("project", "year", "vessel", "pass", "tow", "datetime_utc_iso", "depth_m", "longitude_dd", "latitude_dd", "area_swept_ha_der", "trawl_id")
+    Vars <- c("project", "year", "vessel", "pass", "tow", "datetime_utc_iso", "depth_m", "longitude_dd", "latitude_dd", "area_swept_ha_der", "trawl_id", "operation_dim$legacy_performance_code")
+    Vars.short <- c("project", "year", "vessel", "pass", "tow", "datetime_utc_iso", "depth_m", "longitude_dd", "latitude_dd", "area_swept_ha_der", "trawl_id")
 
     UrlText <- paste0("https://www.nwfsc.noaa.gov/data/api/v1/source/trawl.operation_haul_fact/selection.json?filters=project=", paste(strsplit(project, " ")[[1]], collapse = "%20"),",", 
                "station_invalid=0,", 
@@ -143,6 +154,13 @@ PullCatch.fn <- function (Name = NULL, SciName = NULL, YearRange = c(1000, 5000)
                "&variables=", paste0(Vars, collapse = ","))
 
     All.Tows <- jsonlite::fromJSON(UrlText)
+
+    # Remove water hauls
+    fix =  is.na(All.Tows[,"operation_dim$legacy_performance_code"]) 
+    if(sum(fix) > 0) { All.Tows[fix,"operation_dim$legacy_performance_code"] = -999 }
+    keep = All.Tows[,"operation_dim$legacy_performance_code"] != 8
+    All.Tows = All.Tows[keep,]
+    All.Tows = All.Tows[,Vars.short]
 
     All.Tows <- rename_columns(All.Tows, newname = c("Project", "Trawl_id", "Year", "Pass", "Vessel", "Tow", "Date", "Depth_m", "Longitude_dd",  "Latitude_dd", "Area_Swept_ha"))
 
