@@ -51,10 +51,6 @@ PullBio.fn <- function (Name = NULL, SciName = NULL, YearRange = c(1000, 5000), 
     if (!SurveyName %in% surveys[,1]) { 
          stop(cat("The SurveyName does not match one of the available options:", surveys[,1])) }
 
-    if (SurveyName == "Triennial"){ 
-        message("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
-        message("Warning: Foreign hauls are not excluded.")
-        message("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!") }
 
     for(i in 1:dim(surveys)[1]){
         if(SurveyName == surveys[i,1]){ 
@@ -78,14 +74,14 @@ PullBio.fn <- function (Name = NULL, SciName = NULL, YearRange = c(1000, 5000), 
               "length_cm", "width_cm", "sex", "age_years", "latitude_dd", "longitude_dd")
 
 
-    UrlText  <- paste0(
-                    "https://www.nwfsc.noaa.gov/data/api/v1/source/trawl.individual_fact/selection.json?filters=project=", paste(strsplit(project, " ")[[1]], collapse = "%20"),",", 
-                    "station_invalid=0,",
-                    "performance=Satisfactory,", 
-                    "depth_ftm>=30,depth_ftm<=700,", 
-                    "field_identified_taxonomy_dim$", var.name, "=", paste(strsplit(Species, " ")[[1]], collapse = "%20"), 
-                    ",year>=",  YearRange[1], ",year<=", YearRange[2], 
-                    "&variables=", paste0(Vars, collapse = ",")) 
+    #UrlText  <- paste0(
+    #                "https://www.nwfsc.noaa.gov/data/api/v1/source/trawl.individual_fact/selection.json?filters=project=", paste(strsplit(project, " ")[[1]], collapse = "%20"),",", 
+    #                "station_invalid=0,",
+    #                "performance=Satisfactory,", 
+    #                "depth_ftm>=30,depth_ftm<=700,", 
+    #                "field_identified_taxonomy_dim$", var.name, "=", paste(strsplit(Species, " ")[[1]], collapse = "%20"), 
+    #                ",year>=",  YearRange[1], ",year<=", YearRange[2], 
+    #                "&variables=", paste0(Vars, collapse = ",")) 
 
     UrlText  <- paste0(
                     "https://www.nwfsc.noaa.gov/data/api/v1/source/trawl.individual_fact/selection.json?filters=project=", paste(strsplit(project, " ")[[1]], collapse = "%20"),",", 
@@ -106,25 +102,21 @@ PullBio.fn <- function (Name = NULL, SciName = NULL, YearRange = c(1000, 5000), 
     }
 
     DataPull = NULL
-    if (SurveyName != "Triennial"){
-        if (verbose){
-        message("Pulling biological data. This can take up to ~ 30 seconds.")}
-        DataPull <- try(jsonlite::fromJSON(UrlText))  
-    } 
+    if (verbose){
+    message("Pulling biological data. This can take up to ~ 30 seconds.")}
+    DataPull <- try(jsonlite::fromJSON(UrlText))  
 
 
-    if (SurveyName == "NWFSC.Combo"){
-        # Filter out non-standard samples
-        keep = DataPull[, "standard_survey_dim$standard_survey_length_or_width_indicator"]  %in% c("NA", "Standard Survey Length or Width") 
-        DataPull = DataPull[keep,]
-        keep = DataPull[, "standard_survey_dim$standard_survey_age_indicator"]  %in% c("NA", "Standard Survey Age")
-        DataPull = DataPull[keep,] 
-        keep = DataPull[, "standard_survey_dim$standard_survey_weight_indicator"]  %in% c("NA","Standard Survey Weight")
-        DataPull = DataPull[keep,]
+    # Filter out non-standard samples
+    keep = DataPull[, "standard_survey_dim$standard_survey_length_or_width_indicator"]  %in% c(NA, "Standard Survey Length or Width") 
+    DataPull = DataPull[keep,]
+    keep = DataPull[, "standard_survey_dim$standard_survey_age_indicator"]  %in% c(NA, "Standard Survey Age")
+    DataPull = DataPull[keep,] 
+    keep = DataPull[, "standard_survey_dim$standard_survey_weight_indicator"]  %in% c(NA,"Standard Survey Weight")
+    DataPull = DataPull[keep,]
 
-        # Remove the extra columns now that they are not needed
-        DataPull = DataPull[,Vars.short]
-    }
+    # Remove the extra columns now that they are not needed
+    DataPull = DataPull[,Vars.short]
 
 
     if (SurveyName == "Triennial"){

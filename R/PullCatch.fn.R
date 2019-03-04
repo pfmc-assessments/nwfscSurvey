@@ -112,7 +112,7 @@ PullCatch.fn <- function (Name = NULL, SciName = NULL, YearRange = c(1000, 5000)
 
     if (Species == "pull all"){
         UrlText <- paste0("https://www.nwfsc.noaa.gov/data/api/v1/source/trawl.catch_fact/selection.json?filters=project=", paste(strsplit(project, " ")[[1]], collapse = "%20"),",", 
-                   "station_invalid=0,", #"actual_station_design_dim$stn_invalid_for_trawl_date_whid=0,", 
+                   "station_invalid=0,", 
                    "performance=Satisfactory,", "depth_ftm>=30,depth_ftm<=700,", 
                    "date_dim$year>=", YearRange[1], ",date_dim$year<=", YearRange[2], 
                    "&variables=", paste0(Vars, collapse = ","))
