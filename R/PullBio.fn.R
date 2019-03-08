@@ -101,11 +101,11 @@ PullBio.fn <- function (Name = NULL, SciName = NULL, YearRange = c(1000, 5000), 
     if(is.data.frame(DataPull))
     {
         # Filter out non-standard samples
-        keep = DataPull[DataPull$year != 2003, "standard_survey_dim$standard_survey_length_or_width_indicator"]  %in% c(NA, "Standard Survey Length or Width") 
+        keep = DataPull[DataPull$year != 2003, "standard_survey_dim$standard_survey_length_or_width_indicator"]  %in% c("NA", "Standard Survey Length or Width") 
         DataPull = DataPull[keep,]
-        keep = DataPull[, "standard_survey_dim$standard_survey_age_indicator"]  %in% c(NA, "Standard Survey Age")
+        keep = DataPull[, "standard_survey_dim$standard_survey_age_indicator"]  %in% c("NA", "Standard Survey Age")
         DataPull = DataPull[keep,] 
-        keep = DataPull[, "standard_survey_dim$standard_survey_weight_indicator"]  %in% c(NA,"Standard Survey Weight")
+        keep = DataPull[, "standard_survey_dim$standard_survey_weight_indicator"]  %in% c("NA","Standard Survey Weight")
         DataPull = DataPull[keep,]
         # Remove water hauls
         fix =  is.na(DataPull[,"operation_dim$legacy_performance_code"]) 
