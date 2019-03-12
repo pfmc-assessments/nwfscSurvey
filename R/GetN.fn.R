@@ -1,5 +1,7 @@
 #' Calculate effN input sample sizes
-#' based on Stewart & Hamel 2014
+#' based on Stewart, I.J. and O.W Hamel 2014.
+#' Bootstrapping of sample size for legth- or age-composition data used in stock assessment
+#' Canadian Journal of Fishery and Aquatic Science, 71: 581-588.
 #' 
 #' @param dir directory
 #' @param dat excel file name for the NWFSC or data object for the Triennial or AKSFC survey data
