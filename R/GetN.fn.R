@@ -40,12 +40,33 @@ GetN.fn <- function(dir=NULL, dat, type, species = NULL, printfolder = "forSS", 
         nSamp <- table(temp$Year,!duplicated(as.character(temp$Trawl_id)))[,"TRUE"]  
     }
 
+    if(length(nSamp) == 1) { yr = unique(temp$Year)}
+    if(length(nSamp) > 1)  { yr = as.numeric(names(nSamp)) }
+
+
     n = floor(n.unq * nSamp) 
     fish = table(temp$Year, temp$Sex)
-    samples = data.frame( Year = as.numeric(names(nSamp)), Tows = nSamp, 
-                         All_Fish = as.numeric(fish[,"F"]) + as.numeric(fish[,"M"]) + as.numeric(fish[,"U"]), 
-                         Sexed_Fish = as.numeric(fish[,"F"]) + as.numeric(fish[,"M"]), 
-                         Unsexed_Fish = as.numeric(fish[,"U"]), 
+
+    if("F" %in% colnames(fish)) { 
+    female = as.numeric(fish[,"F"]) 
+    } else { 
+    female = rep(0, dim(fish)[1]) }
+
+    if("M" %in% colnames(fish)) { 
+    male   = as.numeric(fish[,"M"]) 
+    } else { 
+    male = rep(0, dim(fish)[1]) }
+
+    if("U" %in% colnames(fish)) { 
+    unsex  = as.numeric(fish[,"U"]) 
+    } else { 
+    unsex = rep(0, dim(fish)[1]) }
+
+    samples = data.frame(Year = yr, 
+                         Tows = nSamp, 
+                         All_Fish = female + male + unsex, 
+                         Sexed_Fish = female + male, 
+                         Unsexed_Fish = unsex, 
                          Sample_Size = n)       
 
     # save output as a csv
