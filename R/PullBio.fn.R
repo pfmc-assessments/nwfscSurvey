@@ -110,13 +110,13 @@ PullBio.fn <- function (Name = NULL, SciName = NULL, YearRange = c(1000, 5000), 
             DataPull = DataPull[keep,]            
         }
 
-        #if(SurveyName == "Triennial"){
-        #    # Remove water hauls
-        #    fix =  is.na(DataPull[,"operation_dim$legacy_performance_code"]) 
-        #    if(sum(fix) > 0) { DataPull[fix,"operation_dim$legacy_performance_code"] = -999 }
-        #    keep = DataPull[,"operation_dim$legacy_performance_code"] != 8
-        #    DataPull = DataPull[keep,]            
-        #}
+        if(SurveyName == "Triennial"){
+            # Remove water hauls
+            fix =  is.na(DataPull[,"operation_dim$legacy_performance_code"]) 
+            if(sum(fix) > 0) { DataPull[fix,"operation_dim$legacy_performance_code"] = -999 }
+            keep = DataPull[,"operation_dim$legacy_performance_code"] != 8
+            DataPull = DataPull[keep,]            
+        }
 
         # Remove the extra columns now that they are not needed
         DataPull = DataPull[,Vars.short]
@@ -134,8 +134,6 @@ PullBio.fn <- function (Name = NULL, SciName = NULL, YearRange = c(1000, 5000), 
                     ",year>=",  YearRange[1], ",year<=", YearRange[2], 
                     "&variables=", paste0(Vars, collapse = ","))
 
-        if (verbose){
-        message("Pulling biological data. This can take up to ~ 30 seconds.")}
         LenPull <- try(jsonlite::fromJSON(UrlText))
 
         #Remove water hauls 
