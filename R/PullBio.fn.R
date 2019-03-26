@@ -89,7 +89,7 @@ PullBio.fn <- function (Name = NULL, SciName = NULL, YearRange = c(1000, 5000), 
                     "https://www.nwfsc.noaa.gov/data/api/v1/source/trawl.individual_fact/selection.json?filters=project=", paste(strsplit(project, " ")[[1]], collapse = "%20"),",", 
                     "station_invalid=0,",
                     "performance=Satisfactory,", "depth_ftm>=30,depth_ftm<=700,", 
-                    ",year>=",  YearRange[1], ",year<=", YearRange[2], 
+                    ",year>=",  YearRange[1], "year<=", YearRange[2], 
                     "&variables=", paste0(Vars, collapse = ",")) 
     }
 
