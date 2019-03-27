@@ -4,16 +4,14 @@
 \alias{PlotVarLengthAtAge.fn}
 \title{Plot variability of length at age}
 \usage{
-PlotVarLengthAtAge.fn(dir = NULL, dat, survey, ageBin = 1, bySex = T,
-  parStart = c(52, 0.09, 1), estVB = T, bins = NULL,
+PlotVarLengthAtAge.fn(dir = NULL, dat, main = NULL, ageBin = 1,
+  bySex = T, parStart = c(52, 0.09, 1), estVB = T, bins = NULL,
   legX = "bottomleft", legY = NULL, dopng = FALSE, ...)
 }
 \arguments{
 \item{dir}{directory to save the file}
 
 \item{dat}{The data loaded from the NWFSC database or the SexedLgthWtAge sheet}
-
-\item{survey}{specify the survey data set for calculations. Options are "NWFSCBT", "Tri.Shelf", "AFSC.Slope"}
 
 \item{ageBin}{Currently fixed at 1, so a moot parameter}
 

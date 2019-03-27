@@ -6,16 +6,14 @@
 You may want to change all zeros to NA's so that those observations are not plotted.
 If you don't then set zero2NAs=F}
 \usage{
-PlotFreqData.fn(dir = NULL, dat, survey = "Survey", inch = 0.15,
-  ylab = "Bins", xlab = "Year", zero2NAs = T, main = NULL,
-  xlim = NULL, dopng = FALSE, ...)
+PlotFreqData.fn(dir = NULL, dat, inch = 0.15, ylab = "Bins",
+  xlab = "Year", zero2NAs = T, main = NULL, xlim = NULL,
+  dopng = FALSE, ...)
 }
 \arguments{
 \item{dir}{directory to save files to}
 
 \item{dat}{object created by SS3LF.fn or SS3AF.fn}
-
-\item{survey}{survey name}
 
 \item{inch}{input to the symbols plot: TRUE, FALSE or a positive number.}
 
@@ -32,6 +30,8 @@ PlotFreqData.fn(dir = NULL, dat, survey = "Survey", inch = 0.15,
 \item{dopng}{save the plot as a png inside plots folder}
 
 \item{...}{Additional arguments for the plots}
+
+\item{survey}{survey name}
 }
 \description{
 This function plots frequency data as bubble plots
