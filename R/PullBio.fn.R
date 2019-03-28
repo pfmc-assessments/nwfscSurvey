@@ -2,7 +2,7 @@
 #' The website is: https://www.nwfsc.noaa.gov/data
 #' This function can be used to pull a single species or all observed species
 #' In order to pull all species leave Name = NULL and SciName = NULL
-#' 
+#'
 #' @param Name  common name of species data to pull from the data warehouse
 #' @param SciName scientific name of species data to pull from the data warehouse
 #' @param YearRange range of years to pull data
@@ -10,20 +10,20 @@
 #' @param SaveFile option to save the file to the directory
 #' @param Dir directory where the file should be saved
 #' @param verbose opt to print out message statements
-#' 
+#'
 #' @author Chantel Wetzel based on code by John Wallace
 #' @export
 #'
 #' @import jsonlite
 #' @import chron
-#' 
+#'
 #' @examples
-#'\dontrun{ 
+#'\dontrun{
 #' # SurveyName is only arg that has to be specified
 #' bio_dat = PullBio.fn(SurveyName = "NWFSC.Combo")
 #'}
 
-PullBio.fn <- function (Name = NULL, SciName = NULL, YearRange = c(1000, 5000), SurveyName = NULL, SaveFile = FALSE, Dir = NULL, verbose = TRUE) 
+PullBio.fn <- function (Name = NULL, SciName = NULL, YearRange = c(1000, 5000), SurveyName = NULL, SaveFile = FALSE, Dir = NULL, verbose = TRUE)
 {
     # increase the timeout period to avoid errors when pulling data
     options(timeout= 4000000)
@@ -45,7 +45,7 @@ PullBio.fn <- function (Name = NULL, SciName = NULL, YearRange = c(1000, 5000), 
         DF_new = DF
         for (i in 1:length(newname)) {
             Match = grep(newname[i], origname, ignore.case = TRUE)
-            if (length(Match) == 1) 
+            if (length(Match) == 1)
                 colnames(DF_new)[Match] = newname[i]
         }
         return(DF_new)
@@ -53,12 +53,12 @@ PullBio.fn <- function (Name = NULL, SciName = NULL, YearRange = c(1000, 5000), 
 
     surveys = createMatrix()
 
-    if (!SurveyName %in% surveys[,1]) { 
+    if (!SurveyName %in% surveys[,1]) {
          stop(cat("The SurveyName does not match one of the available options:", surveys[,1])) }
 
 
     for(i in 1:dim(surveys)[1]){
-        if(SurveyName == surveys[i,1]){ 
+        if(SurveyName == surveys[i,1]){
             project = surveys[i,2]
             projectShort = surveys[i,1]
         }
@@ -67,89 +67,89 @@ PullBio.fn <- function (Name = NULL, SciName = NULL, YearRange = c(1000, 5000), 
     if (length(YearRange) == 1) {
         YearRange <- c(YearRange, YearRange)    }
 
-    Vars <- c("project", "trawl_id", var.name, "year", "vessel", "pass", 
-              "tow", "datetime_utc_iso","depth_m", "weight_kg", 
+    Vars <- c("project", "trawl_id", var.name, "year", "vessel", "pass",
+              "tow", "datetime_utc_iso","depth_m", "weight_kg",
               "length_cm", "width_cm", "sex", "age_years", "latitude_dd", "longitude_dd",
               "standard_survey_dim$standard_survey_age_indicator",
               "standard_survey_dim$standard_survey_length_or_width_indicator",
               "standard_survey_dim$standard_survey_weight_indicator",
               "operation_dim$legacy_performance_code")
 
-    Vars.short = c("project", "trawl_id", var.name, "year", "vessel", "pass", 
-              "tow", "datetime_utc_iso","depth_m", "weight_kg", 
+    Vars.short = c("project", "trawl_id", var.name, "year", "vessel", "pass",
+              "tow", "datetime_utc_iso","depth_m", "weight_kg",
               "length_cm", "width_cm", "sex", "age_years", "latitude_dd", "longitude_dd")
 
 
     UrlText  <- paste0(
-                    "https://www.nwfsc.noaa.gov/data/api/v1/source/trawl.individual_fact/selection.json?filters=project=", paste(strsplit(project, " ")[[1]], collapse = "%20"),",", 
+                    "https://www.nwfsc.noaa.gov/data/api/v1/source/trawl.individual_fact/selection.json?filters=project=", paste(strsplit(project, " ")[[1]], collapse = "%20"),",",
                     "station_invalid=0,",
-                    "performance=Satisfactory,", 
-                    "depth_ftm>=30,depth_ftm<=700,", 
-                    "field_identified_taxonomy_dim$", var.name, "=", paste(strsplit(Species, " ")[[1]], collapse = "%20"), 
-                    ",year>=",  YearRange[1], ",year<=", YearRange[2], 
-                    "&variables=", paste0(Vars, collapse = ",")) 
+                    "performance=Satisfactory,",
+                    "depth_ftm>=30,depth_ftm<=700,",
+                    "field_identified_taxonomy_dim$", var.name, "=", paste(strsplit(Species, " ")[[1]], collapse = "%20"),
+                    ",year>=",  YearRange[1], ",year<=", YearRange[2],
+                    "&variables=", paste0(Vars, collapse = ","))
 
     if (Species == "pull all"){
         UrlText  <- paste0(
-                    "https://www.nwfsc.noaa.gov/data/api/v1/source/trawl.individual_fact/selection.json?filters=project=", paste(strsplit(project, " ")[[1]], collapse = "%20"),",", 
+                    "https://www.nwfsc.noaa.gov/data/api/v1/source/trawl.individual_fact/selection.json?filters=project=", paste(strsplit(project, " ")[[1]], collapse = "%20"),",",
                     "station_invalid=0,",
-                    "performance=Satisfactory,", "depth_ftm>=30,depth_ftm<=700,", 
-                    ",year>=",  YearRange[1], "year<=", YearRange[2], 
-                    "&variables=", paste0(Vars, collapse = ",")) 
+                    "performance=Satisfactory,", "depth_ftm>=30,depth_ftm<=700,",
+                    "year>=",  YearRange[1], ",year<=", YearRange[2],
+                    "&variables=", paste0(Vars, collapse = ","))
     }
 
     DataPull = NULL
     if (verbose){
     message("Pulling biological data. This can take up to ~ 30 seconds.")}
-    DataPull <- try(jsonlite::fromJSON(UrlText))  
+    DataPull <- try(jsonlite::fromJSON(UrlText))
 
     if(is.data.frame(DataPull))
     {
         if(SurveyName == "NWFSC.Combo"){
             # Filter out non-standard samples
-            keep = DataPull[, "standard_survey_dim$standard_survey_length_or_width_indicator"]  %in% c("NA", "Standard Survey Length or Width") 
+            keep = DataPull[, "standard_survey_dim$standard_survey_length_or_width_indicator"]  %in% c("NA", "Standard Survey Length or Width")
             DataPull = DataPull[keep,]
             keep = DataPull[, "standard_survey_dim$standard_survey_age_indicator"]  %in% c("NA", "Standard Survey Age")
-            DataPull = DataPull[keep,] 
+            DataPull = DataPull[keep,]
             keep = DataPull[, "standard_survey_dim$standard_survey_weight_indicator"]  %in% c("NA","Standard Survey Weight")
-            DataPull = DataPull[keep,]            
+            DataPull = DataPull[keep,]
         }
 
         if(SurveyName == "Triennial"){
             # Remove water hauls
-            fix =  is.na(DataPull[,"operation_dim$legacy_performance_code"]) 
+            fix =  is.na(DataPull[,"operation_dim$legacy_performance_code"])
             if(sum(fix) > 0) { DataPull[fix,"operation_dim$legacy_performance_code"] = -999 }
             keep = DataPull[,"operation_dim$legacy_performance_code"] != 8
-            DataPull = DataPull[keep,]            
+            DataPull = DataPull[keep,]
         }
 
         # Remove the extra columns now that they are not needed
         DataPull = DataPull[,Vars.short]
-    } 
+    }
 
 
     if (SurveyName == "Triennial"){
 
         UrlText <- paste0(
-                    "https://www.nwfsc.noaa.gov/data/api/v1/source/trawl.triennial_length_fact/selection.json?filters=project=", 
-                    paste(strsplit(project, " ")[[1]], collapse = "%20"),",",  
+                    "https://www.nwfsc.noaa.gov/data/api/v1/source/trawl.triennial_length_fact/selection.json?filters=project=",
+                    paste(strsplit(project, " ")[[1]], collapse = "%20"),",",
                     "station_invalid=0,",
-                    "performance=Satisfactory,", 
-                    "field_identified_taxonomy_dim$", var.name, "=", paste(strsplit(Species, " ")[[1]], collapse = "%20"), 
-                    ",year>=",  YearRange[1], ",year<=", YearRange[2], 
+                    "performance=Satisfactory,",
+                    "field_identified_taxonomy_dim$", var.name, "=", paste(strsplit(Species, " ")[[1]], collapse = "%20"),
+                    ",year>=",  YearRange[1], ",year<=", YearRange[2],
                     "&variables=", paste0(Vars, collapse = ","))
 
         LenPull <- try(jsonlite::fromJSON(UrlText))
 
-        #Remove water hauls 
-        fix =  is.na(LenPull[,"operation_dim$legacy_performance_code"]) 
+        #Remove water hauls
+        fix =  is.na(LenPull[,"operation_dim$legacy_performance_code"])
         if(sum(fix) > 0) { LenPull[fix,"operation_dim$legacy_performance_code"] = -999}
         keep = LenPull[,"operation_dim$legacy_performance_code"] != 8
         LenPull = LenPull[keep,]
 
-        colnames(LenPull)[2]  <- "Date" 
-        LenPull$Weight <- NA  
-        LenPull$Age <- NA 
+        colnames(LenPull)[2]  <- "Date"
+        LenPull$Weight <- NA
+        LenPull$Age <- NA
         Len <- rename_columns(LenPull, newname = c("Trawl_id", "Year", "Vessel", "Project", "Pass", new.name, "Tow", "Date", "Depth_m", "Weight", "Length_cm", "Width_cm", "Sex", "Age", "Latitude_dd", "Longitude_dd"))
         Len <- Len[, c("Trawl_id", "Year", "Vessel", "Project", "Pass", "Tow", "Date", "Depth_m", new.name, "Weight", "Length_cm", "Width_cm", "Sex", "Age", "Latitude_dd", "Longitude_dd")]
         Len$Date    <- chron::chron(format(as.POSIXlt(Len$Date, format = "%Y-%m-%dT%H:%M:%S"), "%Y-%m-%d"), format = "y-m-d", out.format = "YYYY-m-d")
@@ -161,9 +161,9 @@ PullBio.fn <- function (Name = NULL, SciName = NULL, YearRange = c(1000, 5000), 
     }
 
     if (SurveyName == "AFSC.Slope"){ cat("Warning: The data warehouse may not have the AFSC slope data included yet.") }
-    if(!is.data.frame(DataPull) & SurveyName != "Triennial") {       
-         stop(cat("\nNo data returned by the warehouse for the filters given. 
-            Make sure the year range is correct for the project selected and the input name is correct, 
+    if(!is.data.frame(DataPull) & SurveyName != "Triennial") {
+         stop(cat("\nNo data returned by the warehouse for the filters given.
+            Make sure the year range is correct for the project selected and the input name is correct,
             otherwise there may be no data for this species from this project.\n"))
     }
 
