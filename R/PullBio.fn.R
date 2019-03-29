@@ -136,6 +136,12 @@ PullBio.fn <- function (Name = NULL, SciName = NULL, YearRange = c(1000, 5000), 
 
         LenPull <- try(jsonlite::fromJSON(UrlText))
 
+        # Quit function if there are no length data
+        if(!is.data.frame(LenPull)){
+            stop("No data returned by the warehouse for the filters given. 
+            Make sure the input name is correct, otherwise there may be no data for this species from this project.")
+        }
+
         #Remove water hauls 
         fix =  is.na(LenPull[,"operation_dim$legacy_performance_code"]) 
         if(sum(fix) > 0) { LenPull[fix,"operation_dim$legacy_performance_code"] = -999}
