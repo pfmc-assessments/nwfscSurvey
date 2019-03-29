@@ -4,7 +4,7 @@
 \alias{Format.AKSlope.fn}
 \title{Rename columns in the AKFSC Slope data}
 \usage{
-Format.AKSlope.fn(dir = NULL, datTows, datL, verbose = TRUE)
+Format.AKSlope.fn(dir = NULL, datTows, datL, start.year = 1997)
 }
 \arguments{
 \item{dir}{directory}
@@ -13,7 +13,7 @@ Format.AKSlope.fn(dir = NULL, datTows, datL, verbose = TRUE)
 
 \item{datL}{input biology list}
 
-\item{verbose}{}
+\item{start.year}{first year of data to include}
 }
 \description{
 Rename columns in the AKFSC Slope data

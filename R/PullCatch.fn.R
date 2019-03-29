@@ -16,7 +16,12 @@
 #'
 #' @import jsonlite
 #' @import chron
-
+#'
+#' @examples
+#'\dontrun{ 
+#' # SurveyName is only arg that has to be specified
+#' dat = PullCatch.fn(SurveyName = "NWFSC.Combo")
+#'}
 
 PullCatch.fn <- function (Name = NULL, SciName = NULL, YearRange = c(1000, 5000), SurveyName = NULL, SaveFile = FALSE, Dir = NULL, verbose = TRUE) 
 {

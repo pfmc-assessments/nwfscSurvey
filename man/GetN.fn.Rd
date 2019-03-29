@@ -3,7 +3,9 @@
 \name{GetN.fn}
 \alias{GetN.fn}
 \title{Calculate effN input sample sizes
-based on Stewart & Hamel 2014}
+based on Stewart, I.J. and O.W Hamel 2014.
+Bootstrapping of sample size for legth- or age-composition data used in stock assessment
+Canadian Journal of Fishery and Aquatic Science, 71: 581-588.}
 \usage{
 GetN.fn(dir = NULL, dat, type, species = NULL, printfolder = "forSS",
   verbose = TRUE)
@@ -23,7 +25,9 @@ GetN.fn(dir = NULL, dat, type, species = NULL, printfolder = "forSS",
 }
 \description{
 Calculate effN input sample sizes
-based on Stewart & Hamel 2014
+based on Stewart, I.J. and O.W Hamel 2014.
+Bootstrapping of sample size for legth- or age-composition data used in stock assessment
+Canadian Journal of Fishery and Aquatic Science, 71: 581-588.
 }
 \author{
 Chantel Wetzel

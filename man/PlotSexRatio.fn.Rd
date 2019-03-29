@@ -4,8 +4,8 @@
 \alias{PlotSexRatio.fn}
 \title{Function to plot sex ratio}
 \usage{
-PlotSexRatio.fn(dir, dat, data.type = "length", survey, circleSize = 0.1,
-  dopng = FALSE, ...)
+PlotSexRatio.fn(dir, dat, data.type = "length", main = NULL,
+  circleSize = 0.1, dopng = FALSE, ...)
 }
 \arguments{
 \item{dir}{directory location for saving the png}
@@ -13,8 +13,6 @@ PlotSexRatio.fn(dir, dat, data.type = "length", survey, circleSize = 0.1,
 \item{dat}{data object}
 
 \item{data.type}{"length" or "age"}
-
-\item{survey}{specify the survey data set for calculations. Options are "NWFSCBT", "Tri.Shelf", "AFSC.Slope"}
 
 \item{circleSize}{circle size}
 
