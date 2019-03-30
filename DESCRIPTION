@@ -16,5 +16,6 @@ Imports:
 	kableExtra,
 	reshape2,
 	xtable
+Encoding: UTF-8
 VignetteBuilder: knitr
 RoxygenNote: 6.1.1
