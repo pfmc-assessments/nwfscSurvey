@@ -32,7 +32,7 @@ This function can be used to pull a single species or all observed species
 In order to pull all species leave Name = NULL and SciName = NULL
 }
 \examples{
-\dontrun{ 
+\dontrun{
 # SurveyName is only arg that has to be specified
 bio_dat = PullBio.fn(SurveyName = "NWFSC.Combo")
 }
