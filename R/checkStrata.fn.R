@@ -1,6 +1,6 @@
 #' Calculates the number of observations by strata
 #'
-#'
+#' 
 #' @param dir directory where the output file will be saved
 #' @param dat data-frame of the data that has been by the PullCatch.fn
 #' @param stat.vars A vector of the strata variable names (i.e., c("Depth_m","Latitude_dd"))
@@ -12,12 +12,12 @@
 #' @export
 
 
-CheckStrata<- function(dir = NULL, dat, strat.vars = c("Depth_m","Latitude_dd"), strat.df, printfolder = "forSS",  verbose = TRUE) {
+CheckStrata<- function(dir = NULL, dat, strat.vars = c("Depth_m","Latitude_dd"), strat.df, printfolder = "forSS",  verbose = TRUE)
 
 
     row.names(strat.df) <- strat.df[,1]     #put in rownmaes to make easier to index later
     numStrata <- nrow(strat.df)
-
+ 
     #create strata factors
     stratum <- rep(NA,nrow(dat))        #the stratum factor
     for(strat in 1:numStrata) {
@@ -29,7 +29,7 @@ CheckStrata<- function(dir = NULL, dat, strat.vars = c("Depth_m","Latitude_dd"),
     }
 
     stratum <- factor(stratum,levels=as.character(strat.df[,1]))
-    dat <- data.frame(dat, stratum)
+    dat <- data.frame(dat, stratum)  
     dat.yr <- split(dat,dat$Year)
     dat.stratum <- split(dat, dat$stratum)
 
