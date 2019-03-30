@@ -12,8 +12,8 @@
 #' @export
 
 
-CheckStrata<- function(dir = NULL, dat, strat.vars = c("Depth_m","Latitude_dd"), strat.df, printfolder = "forSS",  verbose = TRUE)
-
+CheckStrata.fn <- function(dir = NULL, dat, strat.vars = c("Depth_m","Latitude_dd"), strat.df, printfolder = "forSS",  verbose = TRUE)
+{
 
     row.names(strat.df) <- strat.df[,1]     #put in rownmaes to make easier to index later
     numStrata <- nrow(strat.df)
@@ -36,25 +36,45 @@ CheckStrata<- function(dir = NULL, dat, strat.vars = c("Depth_m","Latitude_dd"),
     yr.fn <- function(x) {
         x <- split(x,x$stratum)
         namesStrat <- names(x)
-        nobs <- unlist(lapply(x,function(x){nrow(x)}))
+        nobs <- unlist(lapply(x, function(x){nrow(x)}))
+        pos  <- unlist(lapply(x, function(x){ sum(x$total_catch_wt_kg > 0) }))
         if(any(nobs<=1)) {
             if (verbose){
             cat("*****\nWARNING: At least one stratum in year",x[[1]][1,"year"],"has fewer than one observation.\n*****\n")}
         }
 
-        stratStats <- data.frame(name = namesStrat, area = strat.df[namesStrat,2], ntows = nobs)
+        stratStats <- data.frame(name = namesStrat, area = strat.df[namesStrat,2], ntows = nobs, ptows = pos)
         stratStats
     }
 
     yearlyStrataEsts <- lapply(dat.yr, yr.fn)
-    names(yearlyStrataEsts) <- paste("Year",names(yearlyStrataEsts),sep="")
+    #names(yearlyStrataEsts) <- paste("Year",names(yearlyStrataEsts),sep="")
 
-    StrataObs = as.data.frame(yearlyStrataEsts[[1]])
+    NumberTows = as.data.frame(yearlyStrataEsts[[1]][,c("name", "ntows")])
     for(a in 2:length(yearlyStrataEsts)){
-    	StrataObs = cbind(StrataObs, yearlyStrataEsts[[a]]$ntows)
+        NumberTows = cbind(NumberTows, yearlyStrataEsts[[a]]$ntows)
     }
-    colnames(StrataObs) = c("Area_Name", "Area_km2", paste0("Ntows_", names(yearlyStrataEsts)))
-    rownames(StrataObs) = c()
+    colnames(NumberTows) = c("Area_Name", names(yearlyStrataEsts))
+    rownames(NumberTows) = c()
 
-    return(StrataObs)
+    PositiveTows = as.data.frame(yearlyStrataEsts[[1]][,c("name", "ptows")])
+    for(a in 2:length(yearlyStrataEsts)){
+        PositiveTows = cbind(PositiveTows, yearlyStrataEsts[[a]]$ptows)
+    }
+    colnames(PositiveTows) = c("Area_Name", names(yearlyStrataEsts))
+    rownames(PositiveTows) = c()
+
+    out = list()
+    out$NumberTows = NumberTows
+    out$PostitveTows = PositiveTows
+
+    if(!is.null(dir)){
+        plotdir <- file.path(dir,printfolder)
+        plotdir.isdir <- file.info(plotdir)$isdir
+        if(is.na(plotdir.isdir) | !plotdir.isdir){
+          dir.create(plotdir)
+        }
+        write.csv(bio, file = file.path(plotdir, paste("strata_observations.csv", sep="")), row.names = FALSE)
+    }
+    return(out)
 }
