@@ -12,6 +12,7 @@ Suggests:
     rmarkdown
 Imports:
 	chron,
+	dplyr (>= 0.8.0),
 	jsonlite,
 	kableExtra,
 	reshape2,
