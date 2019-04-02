@@ -11,13 +11,14 @@ Suggests:
     knitr,
     rmarkdown
 Imports:
-	chron,
-	dplyr (>= 0.8.0),
+	chron,	
 	jsonlite,
 	kableExtra,
 	reshape2,
 	xtable
-Depends: R (>= 2.10)
+Depends: 
+	dplyr (>= 0.8.0),
+	R (>= 2.10)
 Encoding: UTF-8
 VignetteBuilder: knitr
 RoxygenNote: 6.1.1
