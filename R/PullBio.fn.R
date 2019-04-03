@@ -16,7 +16,6 @@
 #'
 #' @import jsonlite
 #' @import chron
-#' @import dplyr
 #'
 #' @examples
 #'\dontrun{
@@ -39,10 +38,24 @@ PullBio.fn <- function (Name = NULL, SciName = NULL, YearRange = c(1000, 5000), 
     if (is.null(SciName)) { var.name = "common_name"; Species = Name; new.name = "Common_name"; outName = SciName; outName = "All"}
     if (is.null(SciName) & is.null(Name)) { var.name = "scientific_name"; Species = "pull all"; new.name = "Scientific_name"}#stop("Need to specifiy Name or SciName to pull data!")}
 
+
+    rename_columns = function(DF, origname = colnames(DF), newname) {
+        " # 'age_years' has both age and years, first forcing a change to 'age' "
+        colnames(DF)[grep("age_years", colnames(DF))] <- "age"
+        DF_new = DF
+        for (i in 1:length(newname)) {
+            Match = grep(newname[i], origname, ignore.case = TRUE)
+            if (length(Match) == 1)
+                colnames(DF_new)[Match] = newname[i]
+        }
+        return(DF_new)
+    }
+
     surveys = createMatrix()
 
     if (!SurveyName %in% surveys[,1]) {
         stop(cat("The SurveyName does not match one of the available options:", surveys[,1])) }
+
 
     for(i in 1:dim(surveys)[1]){
         if(SurveyName == surveys[i,1]){
@@ -66,6 +79,7 @@ PullBio.fn <- function (Name = NULL, SciName = NULL, YearRange = c(1000, 5000), 
         "tow", "datetime_utc_iso","depth_m", "weight_kg",
         "length_cm", "width_cm", "sex", "age_years", "latitude_dd", "longitude_dd")
 
+
     UrlText  <- paste0(
         "https://www.nwfsc.noaa.gov/data/api/v1/source/trawl.individual_fact/selection.json?filters=project=", paste(strsplit(project, " ")[[1]], collapse = "%20"),",",
         "station_invalid=0,",
@@ -75,7 +89,7 @@ PullBio.fn <- function (Name = NULL, SciName = NULL, YearRange = c(1000, 5000), 
         ",year>=",  YearRange[1], ",year<=", YearRange[2],
         "&variables=", paste0(Vars, collapse = ","))
 
-    if (length(Species) == 1 && Species == "pull all"){
+    if (Species == "pull all"){
         UrlText  <- paste0(
             "https://www.nwfsc.noaa.gov/data/api/v1/source/trawl.individual_fact/selection.json?filters=project=", paste(strsplit(project, " ")[[1]], collapse = "%20"),",",
             "station_invalid=0,",
@@ -95,15 +109,10 @@ PullBio.fn <- function (Name = NULL, SciName = NULL, YearRange = c(1000, 5000), 
             # Filter out non-standard samples
             keep = DataPull[, "standard_survey_dim$standard_survey_length_or_width_indicator"]  %in% c("NA", "Standard Survey Length or Width")
             DataPull = DataPull[keep,]
-            #keep = DataPull[, "standard_survey_dim$standard_survey_age_indicator"]  %in% c("NA", "Standard Survey Age")
-            #DataPull = DataPull[keep,]
-            remove = DataPull[, "standard_survey_dim$standard_survey_age_indicator"] == "Not Standard Survey Weight"
-            if (sum(remove) != 0 ) { DataPull[remove, "age_years"] = NA }
-            #keep = DataPull[, "standard_survey_dim$standard_survey_weight_indicator"]  %in% c("NA","Standard Survey Weight")
-            #DataPull = DataPull[keep,]
-            remove = DataPull[, "standard_survey_dim$standard_survey_weight_indicator"] == "Not Standard Survey Weight"
-            if (sum(remove) != 0 ) { DataPull[remove, "weight_kg"] = NA }
-
+            keep = DataPull[, "standard_survey_dim$standard_survey_age_indicator"]  %in% c("NA", "Standard Survey Age")
+            DataPull = DataPull[keep,]
+            keep = DataPull[, "standard_survey_dim$standard_survey_weight_indicator"]  %in% c("NA","Standard Survey Weight")
+            DataPull = DataPull[keep,]
         }
 
         if(SurveyName == "Triennial"){
@@ -141,13 +150,7 @@ PullBio.fn <- function (Name = NULL, SciName = NULL, YearRange = c(1000, 5000), 
         colnames(LenPull)[2]  <- "Date"
         LenPull$Weight <- NA
         LenPull$Age <- NA
-        Len = dplyr::rename(LenPull,
-                            Trawl_id = trawl_id, Year = year, Vessel = vessel, Project = project,
-                            Pass = pass, Tow = tow, Depth_m = depth_m, Length_cm = length_cm,
-                            Width_cm = width_cm, Sex = sex, Latitude_dd = latitude_dd, Longitude_dd = longitude_dd)
-        names(Len)[which(names(Len)=="scientific_name")] = "Scientific_name"
-        names(Len)[which(names(Len)=="common_name")] = "Common_name"
-
+        Len <- rename_columns(LenPull, newname = c("Trawl_id", "Year", "Vessel", "Project", "Pass", new.name, "Tow", "Date", "Depth_m", "Weight", "Length_cm", "Width_cm", "Sex", "Age", "Latitude_dd", "Longitude_dd"))
         Len <- Len[, c("Trawl_id", "Year", "Vessel", "Project", "Pass", "Tow", "Date", "Depth_m", new.name, "Weight", "Length_cm", "Width_cm", "Sex", "Age", "Latitude_dd", "Longitude_dd")]
         Len$Date    <- chron::chron(format(as.POSIXlt(Len$Date, format = "%Y-%m-%dT%H:%M:%S"), "%Y-%m-%d"), format = "y-m-d", out.format = "YYYY-m-d")
         Len$Trawl_id  <- as.character(Len$Trawl_id)
@@ -164,18 +167,11 @@ PullBio.fn <- function (Name = NULL, SciName = NULL, YearRange = c(1000, 5000), 
             otherwise there may be no data for this species from this project.\n"))
     }
 
+
     Data = NULL
     if (length(DataPull)>0){
-        Data = dplyr::rename(DataPull,
-                             Trawl_id = trawl_id, Year = year, Vessel = vessel, Project = project, Pass = pass,
-                             Tow = tow, Date = datetime_utc_iso, Depth_m = depth_m, Weight = weight_kg,
-                             Length_cm = length_cm, Width_cm = width_cm, Sex = sex, Age = age_years,
-                             Latitude_dd = latitude_dd, Longitude_dd = longitude_dd)
-        names(Data)[which(names(Data)=="scientific_name")] = "Scientific_name"
-        names(Data)[which(names(Data)=="common_name")] = "Common_name"
-
-        Data <- Data[, c("Trawl_id", "Year", "Vessel", "Project", "Pass", "Tow", "Date", "Depth_m", new.name, "Weight",
-                         "Length_cm", "Width_cm", "Sex", "Age", "Latitude_dd", "Longitude_dd")]
+        Data <- rename_columns(DataPull, newname = c("Trawl_id", "Year", "Vessel", "Project", "Pass", new.name, "Tow", "Date", "Depth_m", "Weight", "Length_cm", "Width_cm", "Sex", "Age", "Latitude_dd", "Longitude_dd"))
+        Data <- Data[, c("Trawl_id", "Year", "Vessel", "Project", "Pass", "Tow", "Date", "Depth_m", new.name, "Weight", "Length_cm", "Width_cm", "Sex", "Age", "Latitude_dd", "Longitude_dd")]
         Data$Date <- chron::chron(format(as.POSIXlt(Data$Date, format = "%Y-%m-%dT%H:%M:%S"), "%Y-%m-%d"), format = "y-m-d", out.format = "YYYY-m-d")
         Data$Trawl_id  <- as.character(Data$Trawl_id)
         Data$Project   <- projectShort
@@ -198,6 +194,7 @@ PullBio.fn <- function (Name = NULL, SciName = NULL, YearRange = c(1000, 5000), 
     if(SaveFile){
         time <- Sys.time()
         time <- substring(time, 1, 10)
+        #save(Data, file = paste0(Dir, "/Bio_", outName, "_", SurveyName, "_",  time, ".rda"))
         save(Data, file = file.path(Dir, paste("Bio_", outName, "_", SurveyName, "_",  time, ".rda", sep="")))
         if (verbose){
             message(paste("Biological data file saved to following location:", Dir)) }
