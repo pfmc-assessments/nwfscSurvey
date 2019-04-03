@@ -4,8 +4,8 @@
 \alias{CheckStrata.fn}
 \title{Calculates the number of observations by strata}
 \usage{
-CheckStrata.fn(dir = NULL, dat, strat.vars = c("Depth_m", "Latitude_dd"),
-  strat.df, printfolder = "forSS", verbose = TRUE)
+CheckStrata.fn(dir = NULL, dat, strat.vars = c("Depth_m",
+  "Latitude_dd"), strat.df, printfolder = "forSS", verbose = TRUE)
 }
 \arguments{
 \item{dir}{directory where the output file will be saved}

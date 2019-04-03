@@ -2,7 +2,7 @@
 #' The website is: https://www.nwfsc.noaa.gov/data
 #' This function can be used to pull a single species or all observed species
 #' In order to pull all species leave Name = NULL and SciName = NULL
-#' 
+#'
 #' @param Name  common name of species data to pull from the data warehouse
 #' @param SciName scientific name of species data to pull from the data warehouse
 #' @param YearRange range of years to pull data
@@ -10,21 +10,21 @@
 #' @param SaveFile option to save the file to the directory
 #' @param Dir directory where the file should be saved
 #' @param verbose opt to print out message statements
-#' 
+#'
 #' @author Chantel Wetzel based on code by John Wallace
 #' @export
 #'
 #' @import jsonlite
 #' @import chron
-#' @import dplyr
+#' @importFrom dplyr left_join rename
 #'
 #' @examples
-#'\dontrun{ 
+#'\dontrun{
 #' # SurveyName is only arg that has to be specified
 #' dat = PullCatch.fn(SurveyName = "NWFSC.Combo")
 #'}
 
-PullCatch.fn <- function (Name = NULL, SciName = NULL, YearRange = c(1000, 5000), SurveyName = NULL, SaveFile = FALSE, Dir = NULL, verbose = TRUE) 
+PullCatch.fn <- function (Name = NULL, SciName = NULL, YearRange = c(1000, 5000), SurveyName = NULL, SaveFile = FALSE, Dir = NULL, verbose = TRUE)
 {
 
   if(SaveFile){
@@ -41,13 +41,13 @@ PullCatch.fn <- function (Name = NULL, SciName = NULL, YearRange = c(1000, 5000)
     surveys = createMatrix()
 
     # Check the input survey name against available options
-    if (!SurveyName %in% surveys[,1]) { 
-         stop("The SurveyName argument does not match one of the available options:\n", 
+    if (!SurveyName %in% surveys[,1]) {
+         stop("The SurveyName argument does not match one of the available options:\n",
             paste(surveys[,1], collapse = "\n")) }
 
     # Find the long project name to extract data from the warehouse
     for(i in 1:dim(surveys)[1]){
-        if(SurveyName == surveys[i,1]){ 
+        if(SurveyName == surveys[i,1]){
           project = surveys[i,2]
           projectShort = surveys[i,1]
         }
@@ -57,25 +57,25 @@ PullCatch.fn <- function (Name = NULL, SciName = NULL, YearRange = c(1000, 5000)
         YearRange <- c(YearRange, YearRange)    }
 
     # Pull data for the specific species for the following variables
-    Vars <- c(var.name, "year", "subsample_count", "subsample_wt_kg","project", "cpue_kg_per_ha_der", 
+    Vars <- c(var.name, "year", "subsample_count", "subsample_wt_kg","project", "cpue_kg_per_ha_der",
             "total_catch_numbers", "total_catch_wt_kg", "vessel", "tow", "operation_dim$legacy_performance_code")
 
-    Vars.short <- c(var.name, "year", "subsample_count", "subsample_wt_kg","project", "cpue_kg_per_ha_der", 
+    Vars.short <- c(var.name, "year", "subsample_count", "subsample_wt_kg","project", "cpue_kg_per_ha_der",
               "total_catch_numbers", "total_catch_wt_kg", "vessel", "tow")
 
 
-    UrlText <- paste0("https://www.nwfsc.noaa.gov/data/api/v1/source/trawl.catch_fact/selection.json?filters=project=", paste(strsplit(project, " ")[[1]], collapse = "%20"),",", 
-               "station_invalid=0,", 
-               "performance=Satisfactory,", "depth_ftm>=30,depth_ftm<=700,", 
-               "field_identified_taxonomy_dim$", var.name,"=", paste(strsplit(Species, " ")[[1]], collapse = "%20"), 
-               ",date_dim$year>=", YearRange[1], ",date_dim$year<=", YearRange[2], 
+    UrlText <- paste0("https://www.nwfsc.noaa.gov/data/api/v1/source/trawl.catch_fact/selection.json?filters=project=", paste(strsplit(project, " ")[[1]], collapse = "%20"),",",
+               "station_invalid=0,",
+               "performance=Satisfactory,", "depth_ftm>=30,depth_ftm<=700,",
+               "field_identified_taxonomy_dim$", var.name,"=", paste(strsplit(Species, " ")[[1]], collapse = "%20"),
+               ",date_dim$year>=", YearRange[1], ",date_dim$year<=", YearRange[2],
                "&variables=", paste0(Vars, collapse = ","))
 
     if (Species == "pull all"){
-        UrlText <- paste0("https://www.nwfsc.noaa.gov/data/api/v1/source/trawl.catch_fact/selection.json?filters=project=", paste(strsplit(project, " ")[[1]], collapse = "%20"),",", 
-                   "station_invalid=0,", 
-                   "performance=Satisfactory,", "depth_ftm>=30,depth_ftm<=700,", 
-                   "date_dim$year>=", YearRange[1], ",date_dim$year<=", YearRange[2], 
+        UrlText <- paste0("https://www.nwfsc.noaa.gov/data/api/v1/source/trawl.catch_fact/selection.json?filters=project=", paste(strsplit(project, " ")[[1]], collapse = "%20"),",",
+                   "station_invalid=0,",
+                   "performance=Satisfactory,", "depth_ftm>=30,depth_ftm<=700,",
+                   "date_dim$year>=", YearRange[1], ",date_dim$year<=", YearRange[2],
                    "&variables=", paste0(Vars, collapse = ","))
     }
 
@@ -88,7 +88,7 @@ PullCatch.fn <- function (Name = NULL, SciName = NULL, YearRange = c(1000, 5000)
     }
 
     # Remove water hauls
-    fix =  is.na(DataPull[,"operation_dim$legacy_performance_code"]) 
+    fix =  is.na(DataPull[,"operation_dim$legacy_performance_code"])
     if(sum(fix) > 0) { DataPull[fix,"operation_dim$legacy_performance_code"] = -999 }
     keep = DataPull[,"operation_dim$legacy_performance_code"] != 8
     DataPull = DataPull[keep,]
@@ -110,17 +110,17 @@ PullCatch.fn <- function (Name = NULL, SciName = NULL, YearRange = c(1000, 5000)
     Vars <- c("project", "year", "vessel", "pass", "tow", "datetime_utc_iso", "depth_m", "longitude_dd", "latitude_dd", "area_swept_ha_der", "trawl_id", "operation_dim$legacy_performance_code")
     Vars.short <- c("project", "year", "vessel", "pass", "tow", "datetime_utc_iso", "depth_m", "longitude_dd", "latitude_dd", "area_swept_ha_der", "trawl_id")
 
-    UrlText <- paste0("https://www.nwfsc.noaa.gov/data/api/v1/source/trawl.operation_haul_fact/selection.json?filters=project=", paste(strsplit(project, " ")[[1]], collapse = "%20"),",", 
-               "station_invalid=0,", 
+    UrlText <- paste0("https://www.nwfsc.noaa.gov/data/api/v1/source/trawl.operation_haul_fact/selection.json?filters=project=", paste(strsplit(project, " ")[[1]], collapse = "%20"),",",
+               "station_invalid=0,",
                "performance=Satisfactory,",
-               "depth_ftm>=30,depth_ftm<=700,", 
-               "date_dim$year>=", YearRange[1], ",date_dim$year<=", YearRange[2], 
+               "depth_ftm>=30,depth_ftm<=700,",
+               "date_dim$year>=", YearRange[1], ",date_dim$year<=", YearRange[2],
                "&variables=", paste0(Vars, collapse = ","))
 
     All.Tows <- jsonlite::fromJSON(UrlText)
 
     # Remove water hauls
-    fix =  is.na(All.Tows[,"operation_dim$legacy_performance_code"]) 
+    fix =  is.na(All.Tows[,"operation_dim$legacy_performance_code"])
     if(sum(fix) > 0) { All.Tows[fix,"operation_dim$legacy_performance_code"] = -999 }
     keep = All.Tows[,"operation_dim$legacy_performance_code"] != 8
     All.Tows = All.Tows[keep,]
@@ -133,7 +133,7 @@ PullCatch.fn <- function (Name = NULL, SciName = NULL, YearRange = c(1000, 5000)
 
     #All.Tows <- rename_columns(All.Tows, newname = c("Project", "Trawl_id", "Year", "Pass", "Vessel", "Tow", "Date", "Depth_m", "Longitude_dd",  "Latitude_dd", "Area_Swept_ha"))
 
-    All.Tows <- All.Tows[!duplicated(paste(All.Tows$Year, All.Tows$Pass, All.Tows$Vessel, All.Tows$Tow)), 
+    All.Tows <- All.Tows[!duplicated(paste(All.Tows$Year, All.Tows$Pass, All.Tows$Vessel, All.Tows$Tow)),
           c("Project", "Trawl_id", "Year", "Pass", "Vessel", "Tow", "Date", "Depth_m", "Longitude_dd", "Latitude_dd", "Area_Swept_ha")]
 
     # Link each data set together based on trawl_id
@@ -153,28 +153,28 @@ PullCatch.fn <- function (Name = NULL, SciName = NULL, YearRange = c(1000, 5000)
 
     # Need to check what this is doing
     noArea = which(is.na(Out$Area_Swept_ha))
-    if (length(noArea) > 0) { 
+    if (length(noArea) > 0) {
         if (verbose){
       print(cat("\nThere are", length(noArea), "records with no area swept calculation. These record will be filled with the mean swept area across all tows.\n"))
       print(Out[noArea,c("Trawl_id", "Year", "Area_Swept_ha", "CPUE_kg_per_ha", "total_catch_numbers")]) }
       Out[noArea, "Area_Swept_ha"] <- mean(Out$Area_Swept_ha, trim = 0.05, na.rm = TRUE)
     }
-    
-    # Scientific Name is missing after the matching when Total_sp_wt_kg is zero  
+
+    # Scientific Name is missing after the matching when Total_sp_wt_kg is zero
     if (!is.null(Name)) { Out$Common_name <- Species }
     if (!is.null(SciName)) { Out$Scientific_name <- Species }
 
     Out$Date <- chron::chron(format(as.POSIXlt(Out$Date, format = "%Y-%m-%dT%H:%M:%S"), "%Y-%m-%d"), format = "y-m-d", out.format = "YYYY-m-d")
-    
+
     Out$Project <- projectShort
 
     Out$Trawl_id = as.character(Out$Trawl_id)
 
-    # Convert the CPUE into km2 
+    # Convert the CPUE into km2
     Out$cpue_kg_km2 = Out$CPUE_kg_per_ha / 100
     remove = "CPUE_kg_per_ha"
     Out = Out[,!(names(Out) %in% remove)]
-    
+
     if(SaveFile){
         time = Sys.time()
         time = substring(time, 1, 10)

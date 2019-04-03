@@ -16,7 +16,7 @@
 #'
 #' @import jsonlite
 #' @import chron
-#' @import dplyr
+#' @importFrom dplyr rename
 #'
 #' @examples
 #'\dontrun{
