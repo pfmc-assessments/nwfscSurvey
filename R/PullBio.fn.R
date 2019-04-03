@@ -16,6 +16,7 @@
 #'
 #' @import jsonlite
 #' @import chron
+#' @import dplyr
 #'
 #' @examples
 #'\dontrun{
@@ -37,19 +38,6 @@ PullBio.fn <- function (Name = NULL, SciName = NULL, YearRange = c(1000, 5000), 
     if (is.null(Name)) { var.name = "scientific_name"; Species = SciName; new.name = "Scientific_name"; outName = Name}
     if (is.null(SciName)) { var.name = "common_name"; Species = Name; new.name = "Common_name"; outName = SciName; outName = "All"}
     if (is.null(SciName) & is.null(Name)) { var.name = "scientific_name"; Species = "pull all"; new.name = "Scientific_name"}#stop("Need to specifiy Name or SciName to pull data!")}
-
-
-    rename_columns = function(DF, origname = colnames(DF), newname) {
-        " # 'age_years' has both age and years, first forcing a change to 'age' "
-        colnames(DF)[grep("age_years", colnames(DF))] <- "age"
-        DF_new = DF
-        for (i in 1:length(newname)) {
-            Match = grep(newname[i], origname, ignore.case = TRUE)
-            if (length(Match) == 1)
-                colnames(DF_new)[Match] = newname[i]
-        }
-        return(DF_new)
-    }
 
     surveys = createMatrix()
 
@@ -154,8 +142,14 @@ PullBio.fn <- function (Name = NULL, SciName = NULL, YearRange = c(1000, 5000), 
         colnames(LenPull)[2]  <- "Date"
         LenPull$Weight <- NA
         LenPull$Age <- NA
-        Len <- rename_columns(LenPull, newname = c("Trawl_id", "Year", "Vessel", "Project", "Pass", new.name, "Tow", "Date", "Depth_m", "Weight", "Length_cm", "Width_cm", "Sex", "Age", "Latitude_dd", "Longitude_dd"))
-        Len <- Len[, c("Trawl_id", "Year", "Vessel", "Project", "Pass", "Tow", "Date", "Depth_m", new.name, "Weight", "Length_cm", "Width_cm", "Sex", "Age", "Latitude_dd", "Longitude_dd")]
+        Len = dplyr::rename(LenPull,
+                    Trawl_id = trawl_id, Year = year, Vessel = vessel, Project = project,
+                    Pass = pass, Tow = tow, Depth_m = depth_m, Length_cm = length_cm,
+                    Width_cm = width_cm, Sex = sex, Latitude_dd = latitude_dd, Longitude_dd = longitude_dd)
+        names(Len)[which(names(Len)=="scientific_name")] = "Scientific_name"
+        names(Len)[which(names(Len)=="common_name")] = "Common_name"
+        #Len <- rename_columns(LenPull, newname = c("Trawl_id", "Year", "Vessel", "Project", "Pass", new.name, "Tow", "Date", "Depth_m", "Weight", "Length_cm", "Width_cm", "Sex", "Age", "Latitude_dd", "Longitude_dd"))
+        #Len <- Len[, c("Trawl_id", "Year", "Vessel", "Project", "Pass", "Tow", "Date", "Depth_m", new.name, "Weight", "Length_cm", "Width_cm", "Sex", "Age", "Latitude_dd", "Longitude_dd")]
         Len$Date    <- chron::chron(format(as.POSIXlt(Len$Date, format = "%Y-%m-%dT%H:%M:%S"), "%Y-%m-%d"), format = "y-m-d", out.format = "YYYY-m-d")
         Len$Trawl_id  <- as.character(Len$Trawl_id)
         Len$Project   <- projectShort
@@ -174,7 +168,15 @@ PullBio.fn <- function (Name = NULL, SciName = NULL, YearRange = c(1000, 5000), 
 
     Data = NULL
     if (length(DataPull)>0){
-        Data <- rename_columns(DataPull, newname = c("Trawl_id", "Year", "Vessel", "Project", "Pass", new.name, "Tow", "Date", "Depth_m", "Weight", "Length_cm", "Width_cm", "Sex", "Age", "Latitude_dd", "Longitude_dd"))
+        Data = dplyr::rename(DataPull,
+                         Trawl_id = trawl_id, Year = year, Vessel = vessel, Project = project, Pass = pass,
+                         Tow = tow, Date = datetime_utc_iso, Depth_m = depth_m, Weight = weight_kg,
+                         Length_cm = length_cm, Width_cm = width_cm, Sex = sex, Age = age_years,
+                         Latitude_dd = latitude_dd, Longitude_dd = longitude_dd)
+
+        names(Data)[which(names(Data)=="scientific_name")] = "Scientific_name"
+        names(Data)[which(names(Data)=="common_name")] = "Common_name"
+        #Data <- rename_columns(DataPull, newname = c("Trawl_id", "Year", "Vessel", "Project", "Pass", new.name, "Tow", "Date", "Depth_m", "Weight", "Length_cm", "Width_cm", "Sex", "Age", "Latitude_dd", "Longitude_dd"))
         Data <- Data[, c("Trawl_id", "Year", "Vessel", "Project", "Pass", "Tow", "Date", "Depth_m", new.name, "Weight", "Length_cm", "Width_cm", "Sex", "Age", "Latitude_dd", "Longitude_dd")]
         Data$Date <- chron::chron(format(as.POSIXlt(Data$Date, format = "%Y-%m-%dT%H:%M:%S"), "%Y-%m-%d"), format = "y-m-d", out.format = "YYYY-m-d")
         Data$Trawl_id  <- as.character(Data$Trawl_id)

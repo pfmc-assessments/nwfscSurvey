@@ -16,6 +16,7 @@
 #'
 #' @import jsonlite
 #' @import chron
+#' @import dplyr
 #'
 #' @examples
 #'\dontrun{ 
@@ -35,54 +36,6 @@ PullCatch.fn <- function (Name = NULL, SciName = NULL, YearRange = c(1000, 5000)
     if (is.null(Name)) { var.name = "scientific_name"; Species = SciName; new.name = "Scientific_name"; outName = Name}
     if (is.null(SciName)) { var.name = "common_name"; Species = Name; new.name = "Common_name"; outName = SciName}
     if (is.null(SciName) & is.null(Name)) { var.name = "scientific_name"; Species = "pull all"; new.name = "Scientific_name"}#stop("Need to specifiy Name or SciName to pull data!")}
-
-
-  #   match.f function for combining data sets
-  #   AUTHOR:  John R. Wallace (John.Wallace@noaa.gov)    
-    match.f <- function (file, table, findex = 1, tindex = findex, tcol = NULL, round. = T, digits = 0) {
-
-      paste.col <- function(x) {
-          if (is.null(dim(x)))
-              return(paste(as.character(x)))
-          out <- paste(as.character(x[, 1]))
-          for (i in 2:ncol(x)) {
-              out <- paste(out, as.character(x[, i]))
-          }
-          out
-      }
-      if (is.null(dim(file))) {
-          dim(file) <- c(length(file), 1)
-      }
-      if (round.) {
-          for (i in findex) {
-              if (is.numeric(file[, i]))
-                  file[, i] <- round(file[, i], digits)
-          }
-          for (i in tindex) {
-              if (is.numeric(table[, i]))
-                  table[, i] <- round(table[, i], digits)
-          }
-      }
-      if (is.null(tcol))
-          tcol <- dimnames(table)[[2]][!(dimnames(table)[[2]] %in%
-              tindex)]
-      cbind(file, table[match(paste.col(file[, findex]), paste.col(table[,
-          tindex])), tcol, drop = F])
-  }
-
-  #   rename_columsn function for that renames columns
-  #   AUTHOR:  John R. Wallace (John.Wallace@noaa.gov)  
-    rename_columns = function(DF, origname = colnames(DF), newname) {
-        " # 'age_years' has both age and years, first forcing a change to 'age' "
-        colnames(DF)[grep("age_years", colnames(DF))] <- "age"
-        DF_new = DF
-        for (i in 1:length(newname)) {
-            Match = grep(newname[i], origname, ignore.case = TRUE)
-            if (length(Match) == 1) 
-                colnames(DF_new)[Match] = newname[i]
-        }
-        return(DF_new)
-    }
 
     # Survey options available in the data warehouse
     surveys = createMatrix()
@@ -141,10 +94,16 @@ PullCatch.fn <- function (Name = NULL, SciName = NULL, YearRange = c(1000, 5000)
     DataPull = DataPull[keep,]
     DataPull = DataPull[,Vars.short]
 
+    Data = dplyr::rename(DataPull,
+                     Year = year, Subsample_count = subsample_count,
+                     Subsample_wt_kg = subsample_wt_kg, Project = project,
+                     CPUE_kg_per_ha = cpue_kg_per_ha_der, Subsample_count = subsample_count,
+                     Subsample_wt_kg = subsample_wt_kg, Vessel = vessel, Tow = tow)
 
-    Data <- rename_columns(DataPull, newname = c("Year", "Vessel", "Tow", "Project", new.name, "CPUE_kg_per_ha", "Subsample_count", "Subsample_wt_kg", "Total_sp_numbers", "Total_sp_wt_kg"))
-
-    Data <- Data[, c("Year", "Vessel", "Tow", "Project", new.name, "CPUE_kg_per_ha",  "Subsample_count", "Subsample_wt_kg", "total_catch_numbers", "total_catch_wt_kg")]
+    names(Data)[which(names(Data)=="scientific_name")] = "Scientific_name"
+    names(Data)[which(names(Data)=="common_name")] = "Common_name"
+    #Data <- rename_columns(DataPull, newname = c("Year", "Vessel", "Tow", "Project", new.name, "CPUE_kg_per_ha", "Subsample_count", "Subsample_wt_kg", "Total_sp_numbers", "Total_sp_wt_kg"))
+    #Data <- Data[, c("Year", "Vessel", "Tow", "Project", new.name, "CPUE_kg_per_ha",  "Subsample_count", "Subsample_wt_kg", "total_catch_numbers", "total_catch_wt_kg")]
 
 
     # Pull all tow data (includes tows where the species was not observed)
@@ -167,14 +126,20 @@ PullCatch.fn <- function (Name = NULL, SciName = NULL, YearRange = c(1000, 5000)
     All.Tows = All.Tows[keep,]
     All.Tows = All.Tows[,Vars.short]
 
-    All.Tows <- rename_columns(All.Tows, newname = c("Project", "Trawl_id", "Year", "Pass", "Vessel", "Tow", "Date", "Depth_m", "Longitude_dd",  "Latitude_dd", "Area_Swept_ha"))
+    All.Tows = dplyr::rename(All.Tows, Project = project, Trawl_id = trawl_id, Year = year,
+                         Pass= pass, Vessel = vessel, Tow = tow, Date = datetime_utc_iso,
+                         Depth_m = depth_m, Longitude_dd = longitude_dd, Latitude_dd = latitude_dd,
+                         Area_Swept_ha = area_swept_ha_der)
+
+    #All.Tows <- rename_columns(All.Tows, newname = c("Project", "Trawl_id", "Year", "Pass", "Vessel", "Tow", "Date", "Depth_m", "Longitude_dd",  "Latitude_dd", "Area_Swept_ha"))
 
     All.Tows <- All.Tows[!duplicated(paste(All.Tows$Year, All.Tows$Pass, All.Tows$Vessel, All.Tows$Tow)), 
           c("Project", "Trawl_id", "Year", "Pass", "Vessel", "Tow", "Date", "Depth_m", "Longitude_dd", "Latitude_dd", "Area_Swept_ha")]
 
     # Link each data set together based on trawl_id
-    Out <- match.f(All.Tows, Data, c("Year", "Vessel", "Tow"), c("Year", "Vessel", "Tow"), c(new.name, "CPUE_kg_per_ha", "Subsample_count", "Subsample_wt_kg", "total_catch_numbers", "total_catch_wt_kg"))
-    
+    #Out <- match.f(All.Tows, Data, c("Year", "Vessel", "Tow"), c("Year", "Vessel", "Tow"), c(new.name, "CPUE_kg_per_ha", "Subsample_count", "Subsample_wt_kg", "total_catch_numbers", "total_catch_wt_kg"))
+    Out = dplyr::left_join(All.Tows, Data)
+
     # Fill in zeros where needed
     Out$total_catch_wt_kg[is.na(Out$total_catch_wt_kg)] <- 0
 
