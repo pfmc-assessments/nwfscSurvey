@@ -109,10 +109,14 @@ PullBio.fn <- function (Name = NULL, SciName = NULL, YearRange = c(1000, 5000), 
             # Filter out non-standard samples
             keep = DataPull[, "standard_survey_dim$standard_survey_length_or_width_indicator"]  %in% c("NA", "Standard Survey Length or Width")
             DataPull = DataPull[keep,]
-            keep = DataPull[, "standard_survey_dim$standard_survey_age_indicator"]  %in% c("NA", "Standard Survey Age")
-            DataPull = DataPull[keep,]
-            keep = DataPull[, "standard_survey_dim$standard_survey_weight_indicator"]  %in% c("NA","Standard Survey Weight")
-            DataPull = DataPull[keep,]
+            #keep = DataPull[, "standard_survey_dim$standard_survey_age_indicator"]  %in% c("NA", "Standard Survey Age")
+            #DataPull = DataPull[keep,]
+            remove = DataPull[, "standard_survey_dim$standard_survey_age_indicator"] == "Not Standard Survey Weight"
+            if (sum(remove) != 0 ) { DataPull[remove, "age_years"] = NA }
+            #keep = DataPull[, "standard_survey_dim$standard_survey_weight_indicator"]  %in% c("NA","Standard Survey Weight")
+            #DataPull = DataPull[keep,]
+            remove = DataPull[, "standard_survey_dim$standard_survey_weight_indicator"] == "Not Standard Survey Weight"
+            if (sum(remove) != 0 ) { DataPull[remove, "weight_kg"] = NA }
         }
 
         if(SurveyName == "Triennial"){
