@@ -4,21 +4,21 @@
 \alias{CheckStrata.fn}
 \title{Calculates the number of observations by strata}
 \usage{
-CheckStrata.fn(dir = NULL, dat, strat.vars = c("Depth_m", "Latitude_dd"),
-  strat.df, printfolder = "forSS", verbose = TRUE)
+CheckStrata.fn(dir = NULL, dat, strat.vars = c("Depth_m",
+  "Latitude_dd"), strat.df, printfolder = "forSS", verbose = TRUE)
 }
 \arguments{
 \item{dir}{directory where the output file will be saved}
 
 \item{dat}{data-frame of the data that has been by the PullCatch.fn}
 
+\item{strat.vars}{A vector of the strata variable names (i.e., c("Depth_m","Latitude_dd"))}
+
 \item{strat.df}{a dataframe with the first column the name of the stratum, the second column the area of the stratum, and the remaining columns are the high and low variables defining the strata created by the CreateStrataDF.fn}
 
 \item{printfolder}{the folder where files will be saved}
 
 \item{verbose}{opt to print out message statements}
-
-\item{stat.vars}{A vector of the strata variable names (i.e., c("Depth_m","Latitude_dd"))}
 }
 \description{
 Calculates the number of observations by strata

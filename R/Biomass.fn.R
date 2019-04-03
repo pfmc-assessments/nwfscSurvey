@@ -10,7 +10,7 @@
 #'
 #' @param dir directory where the output file will be saved
 #' @param dat data-frame of the data that has been by the PullCatch.fn
-#' @param stat.vars A vector of the strata variable names (i.e., c("Depth_m","Latitude_dd"))
+#' @param strat.vars A vector of the strata variable names (i.e., c("Depth_m","Latitude_dd"))
 #' @param strat.df a dataframe with the first column the name of the stratum, the second column the area of the stratum, and the remaining columns are the high and low variables defining the strata created by the CreateStrataDF.fn
 #' @param printfolder the folder where files will be saved
 #' @param outputMedian T/F output median or the mean biomass estimate

@@ -14,8 +14,8 @@ I assume all fish are sexed for age data, thus do not apply sex ratios for unsex
 \usage{
 SurveyAgeAtLen.fn(dir = NULL, datAL, datTows, strat.vars = c("Depth_m",
   "Latitude_dd"), strat.df = NULL, lgthBins = 1, ageBins = 1,
-  SSout = TRUE, meanRatioMethod = TRUE, raw = TRUE, NAs2zero = TRUE,
-  month = "Enter Month", fleet = "Enter Fleet",
+  SSout = TRUE, meanRatioMethod = TRUE, raw = TRUE,
+  NAs2zero = TRUE, month = "Enter Month", fleet = "Enter Fleet",
   partition = "Enter Partition", ageErr = "Enter Age Error",
   returnSamps = FALSE, printfolder = "forSS", verbose = TRUE)
 }
