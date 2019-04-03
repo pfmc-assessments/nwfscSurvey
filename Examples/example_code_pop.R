@@ -43,6 +43,8 @@ strata = CreateStrataDF.fn(names=c("shallow_s", "mid_s", "deep_s", "shallow_n", 
 strata
 
 
+CheckStrata.fn(dat = catch, strat.df = strata)
+
 # Calculate the design based index
 biomass = Biomass.fn(dir = getwd(), dat = catch,  strat.df = strata, printfolder = "forSS", outputMedian = T) 
 
