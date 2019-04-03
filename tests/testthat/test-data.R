@@ -13,7 +13,7 @@ test_that("PullCatch", {
     SurveyName = "NWFSC.Combo", SaveFile = FALSE,
     Dir = NULL, verbose = TRUE)
   expect_is(dat, "data.frame")
-  expect_equal(nrow(dat), 3472)
+  expect_equal(nrow(dat), 10365)
 
 })
 
@@ -21,11 +21,11 @@ test_that("PullCatch-multispecies", {
   skip_on_cran()
 
   set.seed(123)
-  dat = PullCatch.fn(SciName = NULL, YearRange = c(2017, 2018),
-    SurveyName = "NWFSC.Combo", SaveFile = FALSE,
-    Dir = NULL, verbose = TRUE)
-  expect_is(dat, "data.frame")
-  expect_equal(nrow(dat), 39109)
+  #dat = PullCatch.fn(SciName = NULL, YearRange = 2017,
+  #  SurveyName = "NWFSC.Combo", SaveFile = FALSE,
+  #  Dir = NULL, verbose = TRUE)
+  #expect_is(dat, "data.frame")
+  #expect_equal(nrow(dat), 39109)
 
 })
 
@@ -46,10 +46,10 @@ test_that("PullBio", {
 
   set.seed(123)
   dat = PullBio.fn(Name = "lingcod",
-    SciName = NULL, YearRange = c(2016, 2018),
+    SciName = NULL, YearRange = c(2016, 2017),
     SurveyName = "NWFSC.Combo", SaveFile = FALSE,
     Dir = NULL, verbose = TRUE)
   expect_is(dat, "data.frame")
-  expect_equal(nrow(dat), 4933)
+  expect_equal(nrow(dat), 3378)
 
 })
