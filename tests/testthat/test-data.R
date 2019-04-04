@@ -14,18 +14,19 @@ test_that("PullCatch", {
     Dir = NULL, verbose = TRUE)
   expect_is(dat, "data.frame")
   expect_equal(nrow(dat), 10365)
-
+  expect_equal(length(which(dat$cpue_kg_km2==0)), 6894)
 })
 
 test_that("PullCatch-multispecies", {
   skip_on_cran()
 
   set.seed(123)
-  #dat = PullCatch.fn(SciName = NULL, YearRange = 2017,
-  #  SurveyName = "NWFSC.Combo", SaveFile = FALSE,
-  #  Dir = NULL, verbose = TRUE)
-  #expect_is(dat, "data.frame")
-  #expect_equal(nrow(dat), 39109)
+  dat = PullCatch.fn(SciName = NULL, YearRange = 2017,
+    SurveyName = "NWFSC.Combo", SaveFile = FALSE,
+    Dir = NULL, verbose = TRUE)
+  expect_is(dat, "data.frame")
+  expect_equal(nrow(dat), 19722)
+  expect_equal(length(which(dat$cpue_kg_km2==0)), 44)
 
 })
 
@@ -50,6 +51,6 @@ test_that("PullBio", {
     SurveyName = "NWFSC.Combo", SaveFile = FALSE,
     Dir = NULL, verbose = TRUE)
   expect_is(dat, "data.frame")
-  expect_equal(nrow(dat), 3378)
+  expect_equal(nrow(dat), 3379)
 
 })
