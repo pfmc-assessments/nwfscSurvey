@@ -85,8 +85,7 @@ SurveyLFs.fn <- function(dir = NULL, datL, datTows, strat.vars=c("Depth_m","Lati
     #set up length bins
     if(length(lgthBins)==1) {
         Lengths <- c(-999,seq(floor(min(datL$Length_cm)),ceiling(max(datL$Length_cm)),lgthBins),Inf)
-    }
-    else{
+    }else{
         Lengths <- c(-999,lgthBins,Inf)
     }
 
@@ -105,10 +104,16 @@ SurveyLFs.fn <- function(dir = NULL, datL, datTows, strat.vars=c("Depth_m","Lati
     datB$TowExpFactorAll <- datB$Number_fish / datB$true_sub_Allfish
 
     #for true unsexed fish
-    TdatL.tows <- as.data.frame(table(datL$Trawl_id, datL$Sex%in%c("U")))
-    TdatL.tows <- TdatL.tows[TdatL.tows$Var2=="TRUE",]
-    datB <- data.frame(datB[match(as.character(TdatL.tows$Var1), as.character(datB$Trawl_id)),], true_sub_Ufish = TdatL.tows$Freq)
-    datB$TowExpFactorU <- datB$Number_fish / (datB$Sexed_fish + datB$true_sub_Ufish)
+    if(sum(datL$Sex == "U") != 0){
+        TdatL.tows <- as.data.frame(table(datL$Trawl_id, datL$Sex%in%c("U")))
+        TdatL.tows <- TdatL.tows[TdatL.tows$Var2=="TRUE",]
+        datB <- data.frame(datB[match(as.character(TdatL.tows$Var1), as.character(datB$Trawl_id)),], true_sub_Ufish = TdatL.tows$Freq)
+        datB$TowExpFactorU <- datB$Number_fish / (datB$Sexed_fish + datB$true_sub_Ufish)
+    }else{
+        datB$true_sub_Ufish = 0
+        datB$TowExpFactorU  = 1
+    }
+
 
     #for females and males only
     TdatL.tows <- as.data.frame(table(datL$Trawl_id, datL$Sex%in%c("F", "M")))
