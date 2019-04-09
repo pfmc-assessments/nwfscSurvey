@@ -134,28 +134,29 @@ PullBio.fn <- function (Name = NULL, SciName = NULL, YearRange = c(1000, 5000), 
         LenPull <- try(jsonlite::fromJSON(UrlText))
 
         #Remove water hauls
-        fix =  is.na(LenPull[,"operation_dim$legacy_performance_code"])
-        if(sum(fix) > 0) { LenPull[fix,"operation_dim$legacy_performance_code"] = -999}
-        keep = LenPull[,"operation_dim$legacy_performance_code"] != 8
-        LenPull = LenPull[keep,]
+        if(is.data.frame(LenPull)){
+            fix =  is.na(LenPull[,"operation_dim$legacy_performance_code"])
+            if(sum(fix) > 0) { LenPull[fix,"operation_dim$legacy_performance_code"] = -999}
+            keep = LenPull[,"operation_dim$legacy_performance_code"] != 8
+            LenPull = LenPull[keep,]
+    
+            colnames(LenPull)[2]  <- "Date"
+            LenPull$Weight <- NA
+            LenPull$Age <- NA
+            Len = dplyr::rename(LenPull,
+                        Trawl_id = trawl_id, Year = year, Vessel = vessel, Project = project,
+                        Pass = pass, Tow = tow, Depth_m = depth_m, Length_cm = length_cm,
+                        Width_cm = width_cm, Sex = sex, Latitude_dd = latitude_dd, Longitude_dd = longitude_dd)
+            names(Len)[which(names(Len)=="scientific_name")] = "Scientific_name"
+            names(Len)[which(names(Len)=="common_name")] = "Common_name"
 
-        colnames(LenPull)[2]  <- "Date"
-        LenPull$Weight <- NA
-        LenPull$Age <- NA
-        Len = dplyr::rename(LenPull,
-                    Trawl_id = trawl_id, Year = year, Vessel = vessel, Project = project,
-                    Pass = pass, Tow = tow, Depth_m = depth_m, Length_cm = length_cm,
-                    Width_cm = width_cm, Sex = sex, Latitude_dd = latitude_dd, Longitude_dd = longitude_dd)
-        names(Len)[which(names(Len)=="scientific_name")] = "Scientific_name"
-        names(Len)[which(names(Len)=="common_name")] = "Common_name"
-        #Len <- rename_columns(LenPull, newname = c("Trawl_id", "Year", "Vessel", "Project", "Pass", new.name, "Tow", "Date", "Depth_m", "Weight", "Length_cm", "Width_cm", "Sex", "Age", "Latitude_dd", "Longitude_dd"))
-        #Len <- Len[, c("Trawl_id", "Year", "Vessel", "Project", "Pass", "Tow", "Date", "Depth_m", new.name, "Weight", "Length_cm", "Width_cm", "Sex", "Age", "Latitude_dd", "Longitude_dd")]
-        Len$Date    <- chron::chron(format(as.POSIXlt(Len$Date, format = "%Y-%m-%dT%H:%M:%S"), "%Y-%m-%d"), format = "y-m-d", out.format = "YYYY-m-d")
-        Len$Trawl_id  <- as.character(Len$Trawl_id)
-        Len$Project   <- projectShort
-        Len$Depth_m   <- as.numeric(as.character(Len$Depth_m))
-        Len$Length_cm <- as.numeric(as.character(Len$Length_cm))
-        Len$Age       <- as.numeric(as.character(Len$Age))
+            Len$Date    <- chron::chron(format(as.POSIXlt(Len$Date, format = "%Y-%m-%dT%H:%M:%S"), "%Y-%m-%d"), format = "y-m-d", out.format = "YYYY-m-d")
+            Len$Trawl_id  <- as.character(Len$Trawl_id)
+            Len$Project   <- projectShort
+            Len$Depth_m   <- as.numeric(as.character(Len$Depth_m))
+            Len$Length_cm <- as.numeric(as.character(Len$Length_cm))
+            Len$Age       <- as.numeric(as.character(Len$Age))
+        }
     }
 
     if (SurveyName == "AFSC.Slope"){ cat("Warning: The data warehouse may not have the AFSC slope data included yet.") }
@@ -190,9 +191,14 @@ PullBio.fn <- function (Name = NULL, SciName = NULL, YearRange = c(1000, 5000), 
     if (SurveyName == "Triennial"){
         if (!is.null(Data)) { Ages <- Data }
         Data <- list()
-        Data$Lengths <- Len
-        if (!is.null(Ages)) { Data$Ages <- Ages }
-        if (is.null(Ages))  { Data$Ages <- "no_ages_available"}
+        if(is.data.frame(LenPull)) {Data$Lengths <- Len 
+        } else {
+            Data$Lengths = "no_lengths_available"
+        }
+        if (!is.null(Ages)) { Data$Ages <- Ages 
+        } else {
+            Data$Ages <- "no_ages_available"
+        }
         if (verbose){
             message("Triennial data returned as a list: Data$Lengths and Data$Ages\n") }
     }
