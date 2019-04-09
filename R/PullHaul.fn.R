@@ -30,6 +30,8 @@ PullHaul.fn <- function (YearRange = c(1000, 5000), SurveyName = NULL, SaveFile 
     if(is.null(Dir)){
       stop("The Dir input needs to be specified in order to save output file.")
     }
+    if (!file.exists(Dir)) stop("The Dir argument leads to a location",
+        ",\ni.e., ", Dir, ", that doesn't exist.")
   }
 
   surveys = createMatrix()
