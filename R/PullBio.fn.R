@@ -33,6 +33,8 @@ PullBio.fn <- function (Name = NULL, SciName = NULL, YearRange = c(1000, 5000), 
         if(is.null(Dir)){
             stop("The Dir input needs to be specified in order to save output file.")
         }
+        if (!file.exists(Dir)) stop("The Dir argument leads to a location",
+            ",\ni.e., ", Dir, ", that doesn't exist.")
     }
 
     if (is.null(Name)) { var.name = "scientific_name"; Species = SciName; new.name = "Scientific_name"; outName = Name}
