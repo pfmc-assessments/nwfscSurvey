@@ -16,13 +16,13 @@
 PlotSexRatioStrata.fn <-function(dir = NULL, dat, type = "length", strat.vars=c("Depth_m","Latitude_dd"), strat.df=NULL, circleSize=0.05, dopng = FALSE,...) {
 
     if (dopng) { 
-      if(is.null(dir)) stop("Directory needs to be set.") 
-        #plotdir <- paste0(dir, "/plots")
-        plotdir <- file.path(dir, paste("plots", sep=""))
-        plotdir.isdir <- file.info(plotdir)$isdir
-        if(is.na(plotdir.isdir) | !plotdir.isdir){
-          dir.create(plotdir)
-        }
+      if(is.null(dir)) { stop("Directory needs to be set.") }
+      if (!file.exists(dir)) { stop("The dir argument leads to a location", ",\ni.e., ", dir, ", that doesn't exist.") }
+      plotdir <- file.path(dir, paste("plots", sep=""))
+      plotdir.isdir <- file.info(plotdir)$isdir
+      if(is.na(plotdir.isdir) | !plotdir.isdir){
+        dir.create(plotdir)
+      }
       if ( is.null(main)) { png(file.path(dir, paste("plots/fraction_female.png", sep ="")), height=7, width=7, units="in",res=300) }
       if (!is.null(main)) { png(file.path(dir, paste("plots/", main,"_fraction_female.png", sep ="")), height=7, width=7, units="in",res=300) }
     }

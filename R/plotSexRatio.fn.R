@@ -14,7 +14,8 @@
 PlotSexRatio.fn <-function(dir, dat, data.type = "length",  main = NULL, circleSize=0.1, dopng = FALSE,...) {
     
 	if (dopng) { 
-        #plotdir <- paste0(dir, "/plots")
+        if(is.null(dir)){stop("Directory needs to be set.")}
+        if (!file.exists(dir)) { stop("The dir argument leads to a location", ",\ni.e., ", dir, ", that doesn't exist.") }
         plotdir <- file.path(dir, paste("plots", sep=""))
         plotdir.isdir <- file.info(plotdir)$isdir
         if(is.na(plotdir.isdir) | !plotdir.isdir){

@@ -23,8 +23,8 @@ PlotBio.fn <-function(dir = NULL, dat, CI = 0.95, scalar = 1e6, gap = 0.03, ylab
     bio = dat$Bio
 
     if (dopng) {
-      #plotdir <- paste0(dir, "/plots")
       if(is.null(dir)){stop("Directory needs to be set.")}
+      if (!file.exists(dir)) { stop("The dir argument leads to a location", ",\ni.e., ", dir, ", that doesn't exist.") }
       plotdir <- file.path(dir, paste("plots", sep=""))
       plotdir.isdir <- file.info(plotdir)$isdir
       if(is.na(plotdir.isdir) | !plotdir.isdir){
