@@ -72,8 +72,14 @@ PullHaul.fn <- function (YearRange = c(1000, 5000), SurveyName = NULL, SaveFile 
     "vessel_end_latitude_dd","vessel_end_longitude_dd",
     "vessel_start_latitude_dd","vessel_start_longitude_dd")
 
+  project_str = NA
+  for(i in 1:length(project)) {
+    project_str[i] = paste(strsplit(project, " ")[[i]], collapse = "%20")
+  }
+
+  # Note: this string grabs data from all projects. Projects filtered below
   UrlText  <- paste0(
-    "https://www.nwfsc.noaa.gov/data/api/v1/source/trawl.operation_haul_fact/selection.json?filters=project=", paste(strsplit(project, " ")[[1]], collapse = "%20"),",",
+    "https://www.nwfsc.noaa.gov/data/api/v1/source/trawl.operation_haul_fact/selection.json?filters=",
     "station_invalid=0,",
     "performance=Satisfactory,",
     "year>=",  YearRange[1], ",year<=", YearRange[2],
@@ -83,6 +89,9 @@ PullHaul.fn <- function (YearRange = c(1000, 5000), SurveyName = NULL, SaveFile 
   if (verbose){
     message("Pulling haul data. This can take up to ~ 30 seconds.")}
   Data <- try(jsonlite::fromJSON(UrlText))
+
+  # filter projects
+  Data = Data[which(Data$project %in% project == TRUE),]
 
   if(SaveFile){
     time <- Sys.time()
