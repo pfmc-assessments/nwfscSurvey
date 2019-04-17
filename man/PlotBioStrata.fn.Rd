@@ -4,10 +4,11 @@
 \alias{PlotBioStrata.fn}
 \title{Plots the biomass with confidence intervals}
 \usage{
-PlotBioStrata.fn(dir = NULL, dat, CI = 0.95, scalar = 1e+06, gap = 0.03,
-  ylab = "Biomass ('000 mt)", xlab = "Year", main = NULL, ylim = NULL,
-  sameylim = FALSE, add = FALSE, mfrow.in = NULL, col = "black",
-  pch.col = "black", pch.type = 16, dopng = FALSE, ...)
+PlotBioStrata.fn(dir = NULL, dat, CI = 0.95, scalar = 1e+06,
+  gap = 0.03, ylab = "Biomass ('000 mt)", xlab = "Year",
+  main = NULL, ylim = NULL, sameylim = FALSE, add = FALSE,
+  mfrow.in = NULL, col = "black", pch.col = "black", pch.type = 16,
+  dopng = FALSE, ...)
 }
 \arguments{
 \item{dir}{directory to save the file}
