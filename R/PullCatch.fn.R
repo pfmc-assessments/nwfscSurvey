@@ -94,7 +94,7 @@ PullCatch.fn <- function (Name = NULL, SciName = NULL, YearRange = c(1000, 5000)
     fix =  is.na(DataPull[,"operation_dim$legacy_performance_code"])
     if(sum(fix) > 0) { DataPull[fix,"operation_dim$legacy_performance_code"] = -999 }
     keep = DataPull[,"statistical_partition_dim$statistical_partition_type"] == "NA"
-    if(sum(keep) > 0) { DataPull = DataPull[keep, ] }
+    DataPull = DataPull[keep, ] 
     keep = DataPull[,"operation_dim$legacy_performance_code"] != 8
     DataPull = DataPull[keep,]
     DataPull = DataPull[,Vars.short]
