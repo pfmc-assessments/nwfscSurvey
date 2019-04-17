@@ -60,7 +60,8 @@ PullCatch.fn <- function (Name = NULL, SciName = NULL, YearRange = c(1000, 5000)
 
     # Pull data for the specific species for the following variables
     Vars <- c(var.name, "year", "subsample_count", "subsample_wt_kg","project", "cpue_kg_per_ha_der",
-            "total_catch_numbers", "total_catch_wt_kg", "vessel", "tow", "operation_dim$legacy_performance_code")
+            "total_catch_numbers", "total_catch_wt_kg", "vessel", "tow", "operation_dim$legacy_performance_code",
+            "statistical_partition_dim$statistical_partition_type")
 
     Vars.short <- c(var.name, "year", "subsample_count", "subsample_wt_kg","project", "cpue_kg_per_ha_der",
               "total_catch_numbers", "total_catch_wt_kg", "vessel", "tow")
@@ -92,6 +93,8 @@ PullCatch.fn <- function (Name = NULL, SciName = NULL, YearRange = c(1000, 5000)
     # Remove water hauls
     fix =  is.na(DataPull[,"operation_dim$legacy_performance_code"])
     if(sum(fix) > 0) { DataPull[fix,"operation_dim$legacy_performance_code"] = -999 }
+    keep = DataPull[,"statistical_partition_dim$statistical_partition_type"] == "NA"
+    if(sum(keep) > 0) { DataPull = DataPull[keep, ] }
     keep = DataPull[,"operation_dim$legacy_performance_code"] != 8
     DataPull = DataPull[keep,]
     DataPull = DataPull[,Vars.short]
@@ -104,9 +107,6 @@ PullCatch.fn <- function (Name = NULL, SciName = NULL, YearRange = c(1000, 5000)
 
     names(Data)[which(names(Data)=="scientific_name")] = "Scientific_name"
     names(Data)[which(names(Data)=="common_name")] = "Common_name"
-    #Data <- rename_columns(DataPull, newname = c("Year", "Vessel", "Tow", "Project", new.name, "CPUE_kg_per_ha", "Subsample_count", "Subsample_wt_kg", "Total_sp_numbers", "Total_sp_wt_kg"))
-    #Data <- Data[, c("Year", "Vessel", "Tow", "Project", new.name, "CPUE_kg_per_ha",  "Subsample_count", "Subsample_wt_kg", "total_catch_numbers", "total_catch_wt_kg")]
-
 
     # Pull all tow data (includes tows where the species was not observed)
     Vars <- c("project", "year", "vessel", "pass", "tow", "datetime_utc_iso", "depth_m", "longitude_dd", "latitude_dd", "area_swept_ha_der", "trawl_id", "operation_dim$legacy_performance_code")
@@ -133,13 +133,10 @@ PullCatch.fn <- function (Name = NULL, SciName = NULL, YearRange = c(1000, 5000)
                          Depth_m = depth_m, Longitude_dd = longitude_dd, Latitude_dd = latitude_dd,
                          Area_Swept_ha = area_swept_ha_der)
 
-    #All.Tows <- rename_columns(All.Tows, newname = c("Project", "Trawl_id", "Year", "Pass", "Vessel", "Tow", "Date", "Depth_m", "Longitude_dd",  "Latitude_dd", "Area_Swept_ha"))
-
     All.Tows <- All.Tows[!duplicated(paste(All.Tows$Year, All.Tows$Pass, All.Tows$Vessel, All.Tows$Tow)),
           c("Project", "Trawl_id", "Year", "Pass", "Vessel", "Tow", "Date", "Depth_m", "Longitude_dd", "Latitude_dd", "Area_Swept_ha")]
 
     # Link each data set together based on trawl_id
-    #Out <- match.f(All.Tows, Data, c("Year", "Vessel", "Tow"), c("Year", "Vessel", "Tow"), c(new.name, "CPUE_kg_per_ha", "Subsample_count", "Subsample_wt_kg", "total_catch_numbers", "total_catch_wt_kg"))
     Out = dplyr::left_join(All.Tows, Data)
 
     # Fill in zeros where needed
