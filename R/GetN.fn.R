@@ -4,7 +4,7 @@
 #' Canadian Journal of Fishery and Aquatic Science, 71: 581-588.
 #' 
 #' @param dir directory
-#' @param dat excel file name for the NWFSC or data object for the Triennial or AKSFC survey data
+#' @param object created by the PullBio.fn function
 #' @param type specify whether doing "length" or "age". Used to read associatied excel sheets
 #' @param species species specific value to determine the number of unique samples per tow (flatfish, shelfrock, sloperock, thorny, others, all)
 #' @param printfolder name of the folder to create and save files. Location will be paste0(dir, printfolder)
