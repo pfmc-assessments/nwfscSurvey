@@ -43,11 +43,11 @@ PlotMap.fn <- function(dir = NULL, dat, main = NULL, dopng = FALSE){
    wa_coast <- subset(west_coast, long <= -116 )
    map.df <- ggplot2::fortify(wa_coast)
    
-   ind <- catch$cpue_kg_km2 > 0
-   pos.cat = catch[ind,]
+   ind <- dat$cpue_kg_km2 > 0
+   pos.cat = dat[ind,]
    ind <- pos.cat$Latitude_dd >= min(map.df$lat)
    pos.cat <- pos.cat[ind,]
-   neg <- catch[catch$cpue_kg_km2 == 0 & catch$Latitude_dd >= min(map.df$lat),]
+   neg <- dat[dat$cpue_kg_km2 == 0 & dat$Latitude_dd >= min(map.df$lat),]
    mid <- as.numeric(quantile(pos.cat$cpue_kg_km2, 0.50))
    max.size <- 12 
    
