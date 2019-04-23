@@ -62,6 +62,15 @@ GetN.fn <- function(dir=NULL, dat, type, species = NULL, printfolder = "forSS", 
     } else { 
     unsex = rep(0, dim(fish)[1]) }
 
+    # Add check to cap input N to not be greater than total fish sampled
+    ind = n > (male + female + unsex)
+    n[ind] = male[ind] + female[ind] + unsex[ind]
+
+    if (sum(ind) > 0) {
+        if (verbose){
+        cat("\nInput sample size exceded the number of fish for",  yr[ind], "and has been capped equal to number of fish.\n") }
+    }
+
     samples = data.frame(Year = yr, 
                          Tows = nSamp, 
                          All_Fish = female + male + unsex, 
