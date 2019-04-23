@@ -4,13 +4,14 @@
 #' @param sexRatioStage the stage of the expansion to apply the sex ratio. Input either 1 or 2. 
 #' @param sexRatioUnsexed sex ratio to apply to any length bins of a certain size or smaller as defined by the maxSizeUnsexed
 #' @param maxSizeUnsexed all sizes below this threshold will assign unsexed fish by sexRatio set equal to 0.50, fish larger than this size will have unsexed fish assigned by the calculated sex ratio in the data.
+#' @param bins Length bins created by the SurveyLFs.fn
 #' @param verbose opt to print out message statements
 #'
 #' @author Allan Hicks and Chantel Wetzel
 #' @export 
 
 
-SexRatio.fn <- function(x, sexRatioStage, sexRatioUnsexed, maxSizeUnsexed, verbose){
+SexRatio.fn <- function(x, sexRatioStage, sexRatioUnsexed, maxSizeUnsexed, bins = NULL, verbose){
 
     if (sexRatioStage == 1){
 
@@ -42,7 +43,6 @@ SexRatio.fn <- function(x, sexRatioStage, sexRatioUnsexed, maxSizeUnsexed, verbo
                 tmpF <- sum(x$expF[inds])
                 tmpM <- sum(x$expM[inds])
                 x$sexRatio[i] <- tmpF/(tmpF+tmpM)
-                #print(x[i,c("Length_cm","allLs","expF","expM","sexRatio")])
                 if (verbose){
                 message(cat("LengthAge:", x[i,c("Length_cm")], "Bin:", x[i,c("allLs")], "Sex Ratio:", x[i,c("sexRatio")])) }
             }
@@ -53,7 +53,7 @@ SexRatio.fn <- function(x, sexRatioStage, sexRatioUnsexed, maxSizeUnsexed, verbo
                     message("\nThese are sex ratios that were filled in using observations from nearby lengths\n")}}
 
             for(i in noRatio) {
-                nearLens <- Lengths[c(which(Lengths==x$allLs[i])-1, which(Lengths==x$allLs[i])+1)]
+                nearLens <- bins[c(which(bins==x$allLs[i])-1, which(bins==x$allLs[i])+1)]
                 inds <- x$allLs %in% nearLens
                 tmpF <- sum(x$expF[inds])
                 tmpM <- sum(x$expM[inds])
@@ -71,7 +71,10 @@ SexRatio.fn <- function(x, sexRatioStage, sexRatioUnsexed, maxSizeUnsexed, verbo
         }
     }
 
-    if (sexRatioStage == 2){       
+    if (sexRatioStage == 2){
+        if (verbose) {
+            message("Sex ratio for unsexed fish being applied to the expanded numbers within a strata and year (stage 2). 
+            If no data within a strata and year for bin then the sex ratio for the bin across all years and strata applied to unsexed fish.\n") }       
         # Take everything out of the list into a dataframe
         out = NULL
         for(a in 1:length(x)){
