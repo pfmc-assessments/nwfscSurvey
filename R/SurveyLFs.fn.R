@@ -170,7 +170,8 @@ SurveyLFs.fn <- function(dir = NULL, datL, datTows, strat.vars=c("Depth_m","Lati
 
     # Apply the sex ratio to the raw data based on each tow
     if(sexRatioStage == 1){
-        datB = SexRatio.fn(x = datB, sexRatioStage = sexRatioStage, sexRatioUnsexed = sexRatioUnsexed, maxSizeUnsexed =  maxSizeUnsexed, verbose = verbose)
+        datB = SexRatio.fn(x = datB, sexRatioStage = sexRatioStage, sexRatioUnsexed = sexRatioUnsexed, 
+                            maxSizeUnsexed =  maxSizeUnsexed, bins = Lengths, verbose = verbose)
     }
 
 
