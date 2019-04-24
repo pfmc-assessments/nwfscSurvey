@@ -16,7 +16,9 @@ Format.AKSlope.fn <- function (dir = NULL, datTows, datL, start.year = 1997)
 {
 
 	# Filter for only the AKFSC Slope survey
-	datTows = datTows[datTows$SURVEY=="AFSC.Slope",]
+	if ("SURVEY" %in% colnames(datTows)){
+		datTows = datTows[datTows$SURVEY=="AFSC.Slope",]
+	} else datTows$SURVEY = "AFSC.Slope"
 	datTows = datTows[datTows$YEAR >= start.year, ]
 
 	#Deal with the catch data file
@@ -45,7 +47,12 @@ Format.AKSlope.fn <- function (dir = NULL, datTows, datL, start.year = 1997)
 							"total_catch_numbers",  "total_catch_wt_kg")]
 	
 	#Deal with the biological length data file
+	if ("SURVEY" %in% colnames(datL$Lengths)){
 	tmp1 =  datL$Lengths[datL$Lengths$SURVEY=="AFSC.Slope",]
+	} else {
+		tmp1 = datL$Lengths
+		tmp1$Lengths$SURVEY = "AFSC.Slope"
+	}
 	tmp1 = tmp1[tmp1$YEAR >= start.year, ]
 
 	names(tmp1)[names(tmp1) == "HAULJOIN"] = "Trawl_id"
@@ -72,6 +79,12 @@ Format.AKSlope.fn <- function (dir = NULL, datTows, datL, start.year = 1997)
 					 "Weight", "Length_cm", "Sex", "Age")]
 
 	#Deal with the biological age data file
+	if ("SURVEY" %in% colnames(datL$Ages)){
+	tmp2 =  datL$Ages[datL$Ages$SURVEY=="AFSC.Slope",]
+	} else {
+		tmp2 = datL$Ages
+		tmp2$Ages$SURVEY = "AFSC.Slope"
+	}
 	tmp2 =  datL$Ages[datL$Ages$SURVEY=="AFSC.Slope",]
 	if(dim(tmp2)[1] > 0) {
 		tmp2 = tmp2[tmp2$YEAR >= start.year, ]
