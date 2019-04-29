@@ -250,8 +250,7 @@ SurveyLFs.fn <- function(dir = NULL, datL, datTows, strat.vars=c("Depth_m","Lati
 
     if(meanRatioMethod) {
         L.year.str <- lapply(datB.yrstr, function(x){lapply(x, lengthMeanRatio.fn, strat = strat.df, numTows)})
-    }
-    else{
+    }else{
         L.year.str <- lapply(datB.yrstr, function(x){lapply(x, lengthTotalRatio.fn, strat = strat.df)})
     }
 
@@ -326,8 +325,10 @@ SurveyLFs.fn <- function(dir = NULL, datL, datTows, strat.vars=c("Depth_m","Lati
         }
     }
 
-    # save output as a csv
-    comp.type = ifelse(lgthBins[1] == 1, "Age", "Length")
+    # Save output as a csv
+    # Check to see if user is doing ages or lengths
+    check = sum(datL$Length_cm, na.rm = TRUE) == sum(datL$Age, na.rm = TRUE)
+    comp.type = ifelse(check, "Age", "Length")
 
     if(is.null(dir) & verbose){ cat("\nDirectory not specified and csv will not be written.\n") }
     if(!is.null(dir)){
