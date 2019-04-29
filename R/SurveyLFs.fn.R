@@ -47,7 +47,8 @@ SurveyLFs.fn <- function(dir = NULL, datL, datTows, strat.vars=c("Depth_m","Lati
     percent = 100* round(missing/sum(datTows[,"total_catch_numbers"]),3)
     if (verbose){
     cat("\nThere are", x, "tows where fish were observed but no lengths/ages taken. 
-        There are", missing, "lengths/ages that comprise", percent, "percent of total sampled fish.\n")}
+        These tows contain", missing, "lengths/ages that comprise", percent,
+        "percent of total catch in numbers.\n")}
 
     totRows  <- nrow(datL)
     datL      <- datL[!is.na(datL$Length_cm),]
@@ -350,7 +351,7 @@ SurveyLFs.fn <- function(dir = NULL, datL, datTows, strat.vars=c("Depth_m","Lati
         usableOut[, paste0("M",min(lgthBins))] <- usableOut[, paste0("M",min(lgthBins))] + usableOut$M.999
         usableOut <- usableOut[,-which(names(usableOut)%in%c("F.999","M.999"))]
         if (comp.type == "Age"){
-            usableOut = cbind(usableOut[,1:5], agelow, agehigh, ageErr, usableOut[,6:dim(usableOut)[2]])
+            usableOut = cbind(usableOut[,1:5], ageErr, agelow, agehigh, usableOut[,6:dim(usableOut)[2]])
         }
         if(is.null(dir) & verbose){ cat("\nDirectory not specified and csv will not be written.\n") }
         if(!is.null(dir)){
@@ -360,7 +361,7 @@ SurveyLFs.fn <- function(dir = NULL, datL, datTows, strat.vars=c("Depth_m","Lati
             usableOut2[, paste0("U",min(lgthBins))]  <- usableOut2[,paste0("U",min(lgthBins))] + usableOut2$U.999
             usableOut2 <- usableOut2[,-which(names(usableOut2)%in%c("U.999","U.999.1"))]
             if (comp.type == "Age"){
-                usableOut2 = cbind(usableOut2[,1:5], agelow, agehigh, ageErr, usableOut2[,6:dim(usableOut2)[2]])
+                usableOut2 = cbind(usableOut2[,1:5], ageErr, agelow, agehigh, usableOut2[,6:dim(usableOut2)[2]])
             }
         if(is.null(dir) & verbose){ cat("\nDirectory not specified and csv will not be written.\n") }
         if(!is.null(dir)){
@@ -373,7 +374,7 @@ SurveyLFs.fn <- function(dir = NULL, datL, datTows, strat.vars=c("Depth_m","Lati
         usableOut[, paste0("U",min(lgthBins))]  <- usableOut[, paste0("U",min(lgthBins))] + usableOut$U.999
         usableOut <- usableOut[,-which(names(usableOut)%in%c("U.999","U.999.1"))]
         if (comp.type == "Age"){
-            usableOut = cbind(usableOut[,1:5], agelow, agehigh, ageErr, usableOut[,6:dim(usableOut)[2]])
+            usableOut = cbind(usableOut[,1:5], ageErr, agelow, agehigh, usableOut[,6:dim(usableOut)[2]])
         }
         if(is.null(dir) & verbose){ cat("\nDirectory not specified and csv will not be written.\n") }
         if(!is.null(dir)){
