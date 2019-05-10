@@ -16,6 +16,7 @@ Imports:
 	jsonlite,
 	kableExtra,
 	reshape2,
+	ggplot2,
 	xtable
 Depends: 
 	dplyr (>= 0.8.0),

@@ -4,8 +4,8 @@
 #'
 #'
 #' @param dir directory to save the file
-#' @param dat      The data loaded from the NWFSC database or the SexedLgthWtAge sheet
-#' @param main
+#' @param dat      The data loaded from the NWFSC database 
+#' @param main     Name that will be used to name the saved png 
 #' @param ageBin   Currently fixed at 1, so a moot parameter
 #' @param bySex    Logical to indicate if plot by sex
 #' @param parStart Vector of starting parameters for Linf, k, and t0 in VonB estimation

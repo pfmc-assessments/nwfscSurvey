@@ -13,8 +13,6 @@ GetN.fn(dir = NULL, dat, type, species = NULL, printfolder = "forSS",
 \arguments{
 \item{dir}{directory}
 
-\item{dat}{excel file name for the NWFSC or data object for the Triennial or AKSFC survey data}
-
 \item{type}{specify whether doing "length" or "age". Used to read associatied excel sheets}
 
 \item{species}{species specific value to determine the number of unique samples per tow (flatfish, shelfrock, sloperock, thorny, others, all)}
@@ -22,6 +20,8 @@ GetN.fn(dir = NULL, dat, type, species = NULL, printfolder = "forSS",
 \item{printfolder}{name of the folder to create and save files. Location will be paste0(dir, printfolder)}
 
 \item{verbose}{opt to print out message statements}
+
+\item{object}{created by the PullBio.fn function}
 }
 \description{
 Calculate effN input sample sizes

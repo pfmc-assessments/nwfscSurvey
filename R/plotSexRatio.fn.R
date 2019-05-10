@@ -3,7 +3,7 @@
 #' @param dir directory location for saving the png
 #' @param dat data object
 #' @param data.type "length" or "age" 
-#' @param main
+#' @param main ame that will be used to name the saved png 
 #' @param circleSize circle size 
 #' @param dopng TRUE/FALSE whether to save a png file
 #' @param ...      Additional arguments for the plots

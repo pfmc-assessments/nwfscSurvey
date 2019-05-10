@@ -11,7 +11,9 @@ PlotVarLengthAtAge.fn(dir = NULL, dat, main = NULL, ageBin = 1,
 \arguments{
 \item{dir}{directory to save the file}
 
-\item{dat}{The data loaded from the NWFSC database or the SexedLgthWtAge sheet}
+\item{dat}{The data loaded from the NWFSC database}
+
+\item{main}{Name that will be used to name the saved png}
 
 \item{ageBin}{Currently fixed at 1, so a moot parameter}
 
