@@ -4,7 +4,6 @@
 #' 
 #' @param dir directory to save files to
 #' @param dat object created by SS3LF.fn or SS3AF.fn
-#' @param survey survey name 
 #' @param inch input to the symbols plot: TRUE, FALSE or a positive number.
 #' @param ylab y-axis text label
 #' @param xlab x-axis text label
