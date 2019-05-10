@@ -34,7 +34,7 @@
 #' @export
 
 
-StrataAreas.fn <- function(strat.df, df = SA3, convertFactor = 100) {
+StrataAreas.fn <- function(strat.df, df = SA3, convertFactor = 0.01) {
     #calculates the area of your strata using John Wallace's SA3 file
     #fpath = system.file("data", "SA3.rda", package="nwfscSurvey")
     #load(fpath)
