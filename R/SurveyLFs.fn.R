@@ -176,9 +176,10 @@ SurveyLFs.fn <- function(dir = NULL, datL, datTows, strat.vars=c("Depth_m","Lati
 
 
     if (outputStage1){
-        stageOne = datB[,c("Trawl_id", "Year", "Length_cm", "Depth_m", "Latitude_dd", "Longitude_dd", "stratum", "areaFished", 
+        stageOne = datB[,c("Trawl_id", "Year", "allLs", "Length_cm", "Depth_m", "Latitude_dd", "Longitude_dd", "stratum", "areaFished", 
                 "Number_fish", "true_sub_Ufish", "true_sub_MFfish",  "expAll", "expF", "expM", "expU")]
         # Rename columns
+        names(stageOne)[names(stageOne) == "allLs"] <- "Bins"
         names(stageOne)[names(stageOne) == "expAll"] <- "Nall"
         names(stageOne)[names(stageOne) == "expF"]   <- "Nf"
         names(stageOne)[names(stageOne) == "expM"]   <- "Nm"
