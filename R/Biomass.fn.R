@@ -1,4 +1,8 @@
-#' Calculates design based estimates from survey data for West Coast surveys
+#' Calculates design based estimates from survey data for West Coast surveys.
+#' The design based index is calculated based on the area of the strata and 
+#' the mean catch by strata.
+#' See: Gunderson, D.R. and Sample, T.M. 1980. Distribution and abundance of rockfish off Washington,
+#' Oregon, and California during 1977. Marine Fisheries Review: March - April.
 #'
 #' The variables defining the strata must begin with the name in strat.vars and end with ".1" or ".2" (i.e., Depth_m.1)
 #' the strata are assumed to be continuous variables, thus have a lower and upper value defining them. The lower value does not necessarily have to be the same as the previous upper value.
