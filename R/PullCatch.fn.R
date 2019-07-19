@@ -93,7 +93,7 @@ PullCatch.fn <- function (Name = NULL, SciName = NULL, YearRange = c(1000, 5000)
     # Remove water hauls
     fix =  is.na(DataPull[,"operation_dim$legacy_performance_code"])
     if(sum(fix) > 0) { DataPull[fix,"operation_dim$legacy_performance_code"] = -999 }
-    # Whether values are NA or "NA" varies based on the presence of "Life Stage" samples 
+    # Whether values are NA or "NA" varies based on the presence of "Life Stage" samples
     if(sum(is.na(DataPull[,"statistical_partition_dim$statistical_partition_type"])) != dim(DataPull)[1]){
       keep = DataPull[,"statistical_partition_dim$statistical_partition_type"] == "NA"
       DataPull = DataPull[keep, ]
@@ -141,7 +141,16 @@ PullCatch.fn <- function (Name = NULL, SciName = NULL, YearRange = c(1000, 5000)
           c("Project", "Trawl_id", "Year", "Pass", "Vessel", "Tow", "Date", "Depth_m", "Longitude_dd", "Latitude_dd", "Area_Swept_ha")]
 
     # Link each data set together based on trawl_id
-    Out = dplyr::left_join(All.Tows, Data)
+    if("Common_name" %in% names(Data)) {
+      grid = expand.grid("Trawl_id" = unique(All.Tows$Trawl_id), "Common_name"=unique(Data$Common_name),
+                         stringsAsFactors = FALSE)
+    } else {
+      grid = expand.grid("Trawl_id" = unique(All.Tows$Trawl_id), "Scientific_name"=unique(Data$Scientific_name),
+                         stringsAsFactors = FALSE)
+    }
+    Out = dplyr::left_join(grid, All.Tows)
+    Out = dplyr::left_join(Out, Data)
+    #Out = dplyr::left_join(All.Tows, Data)
 
     # Fill in zeros where needed
     Out$total_catch_wt_kg[is.na(Out$total_catch_wt_kg)] <- 0
