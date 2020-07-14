@@ -29,7 +29,7 @@ PlotMap.fn <- function(dir = NULL, dat, main = NULL, dopng = FALSE, plot = 1:2){
     if(is.null(dir)){ stop("Directory needs to be set.") }
     if (!file.exists(dir)) { stop("The dir argument leads to a location", ",\ni.e., ", dir, ", that doesn't exist.") }
 
-    plotdir <- file.path(dir, paste("plots", sep=""))
+    plotdir <- file.path(dir, paste("map_plots", sep=""))
     plotdir.isdir <- file.info(plotdir)$isdir
     if(is.na(plotdir.isdir) | !plotdir.isdir){
       dir.create(plotdir)}
