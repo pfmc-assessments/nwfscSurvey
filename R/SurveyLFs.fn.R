@@ -103,6 +103,10 @@ SurveyLFs.fn <- function(dir = NULL, datL, datTows, strat.vars=c("Depth_m","Lati
     datB <- data.frame(datB[match(as.character(TdatL.tows$Var1), as.character(datB$Trawl_id)),], true_sub_Allfish = TdatL.tows$Freq)
     datB$TowExpFactorAll <- datB$Number_fish / datB$true_sub_Allfish
 
+    # if there are NA sexes replace them with U
+    if (sum(is.na(datL$Sex)) > 0) {    
+        datL[is.na(datL$Sex),"Sex"] = "U"  }   
+
     #for true unsexed fish
     if(sum(datL$Sex == "U") != 0){
         TdatL.tows <- as.data.frame(table(datL$Trawl_id, datL$Sex%in%c("U")))
@@ -367,8 +371,10 @@ SurveyLFs.fn <- function(dir = NULL, datL, datTows, strat.vars=c("Depth_m","Lati
     if (comp.type == "Age") {
         out.comps = cbind(out[,1:5], ageErr, agelow, agehigh, out[,6:dim(out)[2]])
     }
-    write.csv(out.comps, file = file.path(plotdir, paste("Survey_Gender", gender, "_Bins_-999_", max(lgthBins),"_", comp.type, "Comps.csv", sep = "")), row.names = FALSE)
-
+    
+    if(!is.null(dir)){
+        write.csv(out.comps, file = file.path(plotdir, paste("Survey_Gender", gender, "_Bins_-999_", max(lgthBins),"_", comp.type, "Comps.csv", sep = "")), row.names = FALSE)
+    }    
     # If doing sexed comps but no sex ratio is applied to unsexed fish, here are those unsexed fish
     if(gender == 3 && is.na(sexRatioUnsexed)){
         if (comp.type == "Length") {
@@ -377,7 +383,9 @@ SurveyLFs.fn <- function(dir = NULL, datL, datTows, strat.vars=c("Depth_m","Lati
         if (comp.type == "Age") {
             out.comps = cbind(out2[,1:5], ageErr, agelow, agehigh, out2[,6:dim(out2)[2]])
         }
-        write.csv(out.comps, file = file.path(plotdir, paste("Survey_Gender_Unsexed_Bins_-999_", max(lgthBins),"_", comp.type, "Comps.csv", sep = "")), row.names = FALSE) 
+        if(!is.null(dir)){
+            write.csv(out.comps, file = file.path(plotdir, paste("Survey_Gender_Unsexed_Bins_-999_", max(lgthBins),"_", comp.type, "Comps.csv", sep = "")), row.names = FALSE) 
+        }
     }
     
 
