@@ -66,7 +66,7 @@ CheckStrata.fn <- function(dir = NULL, dat, strat.vars = c("Depth_m","Latitude_d
 
     out = list()
     out$NumberTows = NumberTows
-    out$PostitveTows = PositiveTows
+    out$PositiveTows = PositiveTows
 
     if(!is.null(dir)){
         plotdir <- file.path(dir,printfolder)
@@ -74,7 +74,7 @@ CheckStrata.fn <- function(dir = NULL, dat, strat.vars = c("Depth_m","Latitude_d
         if(is.na(plotdir.isdir) | !plotdir.isdir){
           dir.create(plotdir)
         }
-        write.csv(bio, file = file.path(plotdir, paste("strata_observations.csv", sep="")), row.names = FALSE)
+        write.csv(out, file = file.path(plotdir, paste("strata_observations.csv", sep="")), row.names = FALSE)
     }
     return(out)
 }
