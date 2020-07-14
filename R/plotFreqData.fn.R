@@ -16,7 +16,8 @@
 #' @author Allan Hicks and Chantel Wetzel
 #' @export
 
-PlotFreqData.fn <- function(dir = NULL, dat, inch=0.15, ylab="Bins", xlab="Year", zero2NAs=T, main=NULL, xlim=NULL, dopng = FALSE, ...) {
+PlotFreqData.fn <- function(dir = NULL, dat, inch=0.15, ylab="Bins", xlab="Year", zero2NAs=T, main=NULL, 
+                            xlim=NULL, ymax = NULL, dopng = FALSE, w = 7, h = 7, ...) {
 
     dataType = sum(names(dat) == "ageErr")
     dataType = ifelse(dataType == 0,  "Length", "Age")
@@ -29,8 +30,8 @@ PlotFreqData.fn <- function(dir = NULL, dat, inch=0.15, ylab="Bins", xlab="Year"
       plotdir.isdir <- file.info(plotdir)$isdir
       if(is.na(plotdir.isdir) | !plotdir.isdir){
         dir.create(plotdir)}
-      if ( is.null(main)) { png( file.path(dir, paste("plots/", dataType, "_Frequency.png", sep = "")), height=7, width=7, units="in",res=300) }
-      if (!is.null(main)) { png( file.path(dir, paste("plots/", main, "_", dataType,"_Frequency.png", sep = "")), height=7, width=7, units="in",res=300) }
+      if ( is.null(main)) { png( file.path(dir, paste("plots/", dataType, "_Frequency.png", sep = "")), height=h, width=w, units="in",res=300) }
+      if (!is.null(main)) { png( file.path(dir, paste("plots/", main, "_", dataType,"_Frequency.png", sep = "")), height=h, width=w, units="in",res=300) }
     }
 
     x <- as.numeric(as.character(dat$year))
