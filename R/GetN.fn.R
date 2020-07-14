@@ -8,12 +8,14 @@
 #' @param type specify whether doing "length" or "age". Used to read associatied excel sheets
 #' @param species species specific value to determine the number of unique samples per tow (flatfish, shelfrock, sloperock, thorny, others, all)
 #' @param printfolder name of the folder to create and save files. Location will be paste0(dir, printfolder)
+#' @param output default = NULL will return only a vector of samples sizes, summary will return a table of observations
+#' by year and sex
 #' @param verbose opt to print out message statements
 #'
 #' @author Chantel Wetzel
 #' @export 
 
-GetN.fn <- function(dir=NULL, dat, type, species = NULL, printfolder = "forSS", verbose = TRUE){
+GetN.fn <- function(dir=NULL, dat, type, species = NULL, printfolder = "forSS", output = NULL, verbose = TRUE){
 
     n.unq = NA
     if (species == "flatfish")  { n.unq = 3.09 }
@@ -87,5 +89,9 @@ GetN.fn <- function(dir=NULL, dat, type, species = NULL, printfolder = "forSS", 
         }
         write.csv(samples, file = file.path(plotdir, paste0(type, "_SampleSize.csv", sep="")), row.names = FALSE)
     }
-    return(n)
+    if (is.null(output)){
+        return(n)
+    }else{
+        return(samples)
+    }
 }
