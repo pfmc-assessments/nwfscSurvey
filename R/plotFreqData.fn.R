@@ -51,7 +51,11 @@ PlotFreqData.fn <- function(dir = NULL, dat, inch=0.15, ylab="Bins", xlab="Year"
       }
     }
     
-    numLens <- ncol(dat)/2
+    numLens <- ncol(dat)/2 
+    if (!is.null(ymax)) { 
+      numLens <- ymax
+    }
+
     y <- as.numeric(substring(names(dat),2))
     y <- y[1:numLens]
 
@@ -64,16 +68,17 @@ PlotFreqData.fn <- function(dir = NULL, dat, inch=0.15, ylab="Bins", xlab="Year"
     if (gender == 0) { par(mfrow=c(1,1)) } 
     
     if(gender==0) {
-        name <- "Unsexed+Males+Females"
-        z <- c(unlist(dat[,1:numLens]),max(dat))
-        symbols(c(rep(x,length(y)),0),c(rep(y,each=length(x)),0),circles=z,main=name,inches=inch,xlab=xlab,ylab=ylab,xlim=xlim,...)
+        if(is.null(main)) { main <- "Unsexed+Males+Females" }
+        z <- c(unlist(dat[,1:numLens]),min(dat)) # Changed from max to min to better visualize subset data
+        symbols(c(rep(x,length(y)),0),c(rep(y,each=length(x)),0),circles=z,
+          main=main,inches=inch,xlab=xlab,ylab=ylab,xlim=xlim,...)
     }
     if(gender==3) {
         name <- "Female"
-        z <- c(unlist(dat[,1:numLens]),max(dat))
+        z <- c(unlist(dat[,1:numLens]), min(dat))
         symbols(c(rep(x,length(y)),0),c(rep(y,each=length(x)),0),circles=z,main=name,inches=inch,xlab=xlab,ylab=ylab,xlim=xlim,...)
         name <- "Male"
-        z <- c(unlist(dat[,(numLens+1):ncol(dat)]),max(dat))
+        z <- c(unlist(dat[,(numLens+1):ncol(dat)]), min(dat))
         symbols(c(rep(x,length(y)),0),c(rep(y,each=length(x)),0),circles=z,main=name,inches=inch,xlab=xlab,ylab=ylab,xlim=xlim,...)
     }
     if (dopng) { dev.off()}
