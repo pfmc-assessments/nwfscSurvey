@@ -6,15 +6,21 @@ Date: 2018-04-13
 Author: NWFSC
 Maintainer: chantel.wetzel <chantel.wetzel@noaa.gov>
 Description: Northwest Fisheries Science Center survey data processing package.
-License: What license is it under?
+License: GPL (>=3)
 Suggests:
     knitr,
-    rmarkdown
+    rmarkdown,
+    testthat
 Imports:
-	chron,
+	chron,	
 	jsonlite,
 	kableExtra,
 	reshape2,
+	ggplot2,
 	xtable
+Depends: 
+	dplyr (>= 0.8.0),
+	R (>= 2.10)
+Encoding: UTF-8
 VignetteBuilder: knitr
-RoxygenNote: 6.0.1
+RoxygenNote: 6.1.1

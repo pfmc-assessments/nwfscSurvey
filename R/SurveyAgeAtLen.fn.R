@@ -25,26 +25,30 @@
 #' @param ageerr age error value for Stock Synthesis
 #' @param returnSamps TRUE/FALSE stops the function after the sample size is calculated
 #' @param printfolder folder where the length comps will be saved
+#' @param verbose opt to print out message statements
 #'
 #' @author Allan Hicks and Chantel Wetzel
 #' @export 
 #' @seealso \code{\link{StrataFactors.fn}}
 #' @import reshape2
 
-SurveyAgeAtLen.fn <- function(dir, datAL, datTows, strat.vars=c("Depth_m","Latitude_dd"), strat.df=NULL, lgthBins=1, ageBins=1,
+SurveyAgeAtLen.fn <- function(dir = NULL, datAL, datTows, strat.vars=c("Depth_m","Latitude_dd"), strat.df=NULL, lgthBins=1, ageBins=1,
                               SSout=TRUE, meanRatioMethod=TRUE, raw=TRUE, NAs2zero=TRUE, month="Enter Month", fleet="Enter Fleet",
-                              partition="Enter Partition", ageErr="Enter Age Error", returnSamps=FALSE, printfolder = "forSS")  {
+                              partition="Enter Partition", ageErr="Enter Age Error", returnSamps=FALSE, printfolder = "forSS", verbose = TRUE)  {
 
-    plotdir <- file.path(dir, printfolder)
-    plotdir.isdir <- file.info(plotdir)$isdir
-    if(is.na(plotdir.isdir) | !plotdir.isdir){
-      dir.create(plotdir)
+    if(!is.null(dir)){
+        plotdir <- file.path(dir, printfolder)
+        plotdir.isdir <- file.info(plotdir)$isdir
+        if(is.na(plotdir.isdir) | !plotdir.isdir){
+          dir.create(plotdir)
+        }
     }
 
     totRows  <- nrow(datAL)
     datAL      <- datAL[!is.na(datAL$Length_cm),]
     datAL      <- datAL[!is.na(datAL$Age),]
-    cat("There are ", nrow(datAL)," records kept out of",totRows,"records after removing missing records.\n")
+    if (verbose){
+    cat("There are ", nrow(datAL)," records kept out of",totRows,"records after removing missing records.\n") }
 
     row.names(strat.df) <- strat.df[,1]     #put in rownames to make easier to index later
     numStrata <- nrow(strat.df)
@@ -144,11 +148,12 @@ SurveyAgeAtLen.fn <- function(dir, datAL, datTows, strat.vars=c("Depth_m","Latit
     # I am modifying the output sample size to be fish rather than based on haul
     #ind = datB$numF>0
     #nSamps.f <- table(datB$year[ind], datB$allLs[ind])
-    nSamps.f = dcast(datB, Year~allLs, value.var = "numF", sum)
+    nSamps.f = reshape2::dcast(datB, Year~allLs, value.var = "numF", sum)
     #ind = datB$numM>0
     #nSamps.m <- table(datB$year[ind], datB$allLs[ind])
-    nSamps.m = dcast(datB, Year~allLs, value.var = "numM", sum)
-    cat("\nEffective sample size is based on number of fish.\n\n")
+    nSamps.m = reshape2::dcast(datB, Year~allLs, value.var = "numM", sum)
+    if (verbose){
+    cat("\nEffective sample size is based on number of fish.\n\n") }
     if(returnSamps) return(list(nSamps.f,nSamps.m))
     
     getn.f = NULL
@@ -232,8 +237,9 @@ SurveyAgeAtLen.fn <- function(dir, datAL, datTows, strat.vars=c("Depth_m","Latit
     }
 
     if(meanRatioMethod) {
+        if (verbose){
         if(raw) cat("\nUsing raw numbers of age-at-length\n\n")
-        if(!raw) cat("\nUsing expanded numbers of age-at-length\n\n")
+        if(!raw) cat("\nUsing expanded numbers of age-at-length\n\n") }
         A.year.L.str <- lapply(datB.yrLstr, function(x){lapply(x, MeanRatio.fn, strat=strat.df, numTows=numTows, raw=raw)})
     }  else{
       stop("Sorry. Only the mean Ratio Method is implemented")
@@ -307,10 +313,14 @@ SurveyAgeAtLen.fn <- function(dir, datAL, datTows, strat.vars=c("Depth_m","Latit
     rownames(outF) <- paste("F",1:nrow(outF),sep="")
     rownames(outM) <- paste("M",1:nrow(outM),sep="")
 
-    write.csv(outF, file = paste0(plotdir, "/Survey_CAAL_Female_Bins_",min(lgthBins),"_", max(lgthBins),"_",min(ageBins),"_", max(ageBins),".csv"), row.names = FALSE)
-    write.csv(outM, file = paste0(plotdir, "/Survey_CAAL_Male_Bins_",min(lgthBins),"_", max(lgthBins),"_",min(ageBins),"_", max(ageBins),".csv"), row.names = FALSE)
+    if(is.null(dir) & verbose){ cat("\nDirectory not specified and csv will not be written.\n") }
+    if(!is.null(dir)){
+        write.csv(outF, file = file.path(plotdir, paste("Survey_CAAL_Female_Bins_",min(lgthBins),"_", max(lgthBins),"_",min(ageBins),"_", max(ageBins),".csv", sep = "")), row.names = FALSE)
+        write.csv(outM, file = file.path(plotdir, paste("Survey_CAAL_Male_Bins_",min(lgthBins),"_", max(lgthBins),"_",min(ageBins),"_", max(ageBins),".csv", sep = "")), row.names = FALSE)
+    }
 
+    if (verbose){
     cat("There are",numFzero,"females age 0 to age",ages[2],"minus group that were added into the first age bin\n")
-    cat("There are",numMzero,"males age 0 to age",ages[2],"minus group that were added into the first age bin\n")
+    cat("There are",numMzero,"males age 0 to age",ages[2],"minus group that were added into the first age bin\n") }
     return(list(female=outF,male=outM))
 }

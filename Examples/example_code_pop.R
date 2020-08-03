@@ -3,7 +3,7 @@
 #===============================================================================
 
 # https://github.com/nwfsc-assess/nwfscSurvey
-devtools::install_github("nwfsc-assess/nwfscSurvey", ref = "development", build_vignettes = TRUE)
+devtools::install_github("nwfsc-assess/nwfscSurvey", build_vignettes = TRUE)
 
 # Load the packaged
 library(nwfscSurvey)
@@ -35,11 +35,15 @@ head(bio)
 # Create Stratafication:
 # The stratafication areas are calculated from the SA3 file which is attached to the package.
 strata = CreateStrataDF.fn(names=c("shallow_s", "mid_s", "deep_s", "shallow_n", "mid_n", "deep_n"), 
-                           depths = c(55, 200, 300, 549),
-                           lats = c(32, 42, 49))
+                           depths.shallow = c(55,  200, 300,  55, 200, 300),
+                           depths.deep    = c(200, 300, 549, 200, 300, 549),
+                           lats.south     = c(32,   32,  32,  42,  42,  42),
+                           lats.north     = c(42,   42,  42,  49,  49,  49))
 
 strata
 
+
+CheckStrata.fn(dat = catch, strat.df = strata)
 
 # Calculate the design based index
 biomass = Biomass.fn(dir = getwd(), dat = catch,  strat.df = strata, printfolder = "forSS", outputMedian = T) 
@@ -47,7 +51,8 @@ biomass = Biomass.fn(dir = getwd(), dat = catch,  strat.df = strata, printfolder
 # Creates a csv file within the "printfolder" that will be saved within the directory location (dir).
 
 # Plot the biomass index
-PlotBio.fn(dir = getwd(), dat = biomass, main = "NWFSC shelf-slope bottom trawl survey", dopng = T)
+PlotBio.fn(dir = getwd(), dat = biomass, main = "NWFSC Groundfish Bottom Trawl Survey", dopng = TRUE)
+PlotBioStrata.fn(dir = getwd(), dat = biomass, main = "NWFSC Groundfish Bottom Trawl Survey", mfrow.in = c(3,2), gap = 0.01, sameylim = TRUE, ylim = c(0, 22), dopng = TRUE)
 
 #============================================================================================
 #Length Biological Data 
@@ -72,8 +77,8 @@ LFs <- SurveyLFs.fn(dir = getwd(), datL = len, datTows = catch,
 # NWFSC combo survey data in the past).
 
 
-PlotFreqData.fn(dir = getwd(), LFs, survey = "NWFSCBT", ylim=c(0, max(len.bins) + 4), yaxs="i", ylab="Length (cm)", dopng = TRUE)
-PlotSexRatio.fn(dir = getwd(), dat = len, data.type = "length", survey = "NWFSCBT", dopng = TRUE, main = "NWFSCBT")
+PlotFreqData.fn(dir = getwd(), dat = LFs, main = "NWFSC Groundfish Bottom Trawl Survey", ylim=c(0, max(len.bins) + 4), yaxs="i", ylab="Length (cm)", dopng = TRUE)
+PlotSexRatio.fn(dir = getwd(), dat = len, data.type = "length", dopng = TRUE, main = "NWFSC Groundfish Bottom Trawl Survey")
 
 #============================================================================================
 #Length Biological Data 
@@ -91,9 +96,9 @@ Ages <- SurveyAFs.fn(dir = getwd(), datA = age, datTows = catch,
 
 
 
-PlotFreqData.fn(dir = getwd(), dat = Ages, survey = "NWFSCBT", ylim=c(0, max(age.bins) + 2), yaxs="i", ylab="Age (yr)", dopng=TRUE)
-PlotVarLengthAtAge.fn(dir = getwd(), dat = age, survey ="NWFSCBT", dopng = TRUE) 
-PlotSexRatio.fn(dir = getwd(), dat = age, data.type = "age", survey = "NWFSCBT", dopng = TRUE, main = "NWFSCBT")
+PlotFreqData.fn(dir = getwd(), dat = Ages, main = "NWFSC Groundfish Bottom Trawl Survey", ylim=c(0, max(age.bins) + 2), yaxs="i", ylab="Age (yr)", dopng=TRUE)
+PlotVarLengthAtAge.fn(dir = getwd(), dat = age, main = "NWFSC Groundfish Bottom Trawl Survey", dopng = TRUE) 
+PlotSexRatio.fn(dir = getwd(), dat = age, data.type = "age", dopng = TRUE, main = "NWFSC Groundfish Bottom Trawl Survey")
 
 #============================================================================================
 # Conditional Ages

@@ -27,16 +27,17 @@
 #' @param printfolder folder where the length comps will be saved
 #' @param remove999 the output object by the function will have the 999 column combined with the first length bin
 #' @param outputStage1 return the first stage expanded data without compiling it for SS
+#' @param verbose opt to print out message statements
 #'
 #' @author Allan Hicks and Chantel Wetzel
 #' @export 
 #' @seealso \code{\link{StrataFactors.fn}}
 #' @seealso \code{\link{SexRatio.fn}}
 
-SurveyLFs.fn <- function(dir, datL, datTows, strat.vars=c("Depth_m","Latitude_dd"), strat.df=NULL, lgthBins=1, SSout=TRUE, meanRatioMethod=TRUE,
+SurveyLFs.fn <- function(dir = NULL, datL, datTows, strat.vars=c("Depth_m","Latitude_dd"), strat.df=NULL, lgthBins=1, SSout=TRUE, meanRatioMethod=TRUE,
                          gender=3, NAs2zero=T, sexRatioUnsexed=NA, maxSizeUnsexed=NA, sexRatioStage = 1, partition=0, fleet="Enter Fleet",
                          agelow = "Enter", agehigh = "Enter", ageErr = "Enter", nSamps="Enter Samps", month="Enter Month", printfolder = "forSS", 
-                         remove999 = TRUE, outputStage1 = FALSE)  {
+                         remove999 = TRUE, outputStage1 = FALSE, verbose = TRUE)  {
 
     # Check for the number of tows were fish were observed but not measured
     postows = datTows[which(datTows$total_catch_numbers > 0),]
@@ -44,12 +45,14 @@ SurveyLFs.fn <- function(dir, datL, datTows, strat.vars=c("Depth_m","Latitude_dd
     x = sum(find)
     missing = sum(postows[find,"total_catch_numbers"])
     percent = 100* round(missing/sum(datTows[,"total_catch_numbers"]),3)
+    if (verbose){
     cat("\nThere are", x, "tows where fish were observed but no lengths/ages taken. 
-        There are", missing, "lengths/ages that comprise", percent, "percent of total sampled fish.\n")
+        These tows contain", missing, "lengths/ages that comprise", percent, "percent of total sampled fish.\n")}
 
     totRows  <- nrow(datL)
     datL      <- datL[!is.na(datL$Length_cm),]
-    cat("There are ", nrow(datL)," records kept out of",totRows,"records after removing missing records.\n")
+    if (verbose){
+    cat("There are ", nrow(datL)," records kept out of",totRows,"records after removing missing records.\n")}
 
 
     row.names(strat.df) <- strat.df[,1]     #put in rownames to make easier to index later
@@ -82,8 +85,7 @@ SurveyLFs.fn <- function(dir, datL, datTows, strat.vars=c("Depth_m","Latitude_dd
     #set up length bins
     if(length(lgthBins)==1) {
         Lengths <- c(-999,seq(floor(min(datL$Length_cm)),ceiling(max(datL$Length_cm)),lgthBins),Inf)
-    }
-    else{
+    }else{
         Lengths <- c(-999,lgthBins,Inf)
     }
 
@@ -101,11 +103,21 @@ SurveyLFs.fn <- function(dir, datL, datTows, strat.vars=c("Depth_m","Latitude_dd
     datB <- data.frame(datB[match(as.character(TdatL.tows$Var1), as.character(datB$Trawl_id)),], true_sub_Allfish = TdatL.tows$Freq)
     datB$TowExpFactorAll <- datB$Number_fish / datB$true_sub_Allfish
 
+    # if there are NA sexes replace them with U
+    if (sum(is.na(datL$Sex)) > 0) {    
+        datL[is.na(datL$Sex),"Sex"] = "U"  }   
+
     #for true unsexed fish
-    TdatL.tows <- as.data.frame(table(datL$Trawl_id, datL$Sex%in%c("U")))
-    TdatL.tows <- TdatL.tows[TdatL.tows$Var2=="TRUE",]
-    datB <- data.frame(datB[match(as.character(TdatL.tows$Var1), as.character(datB$Trawl_id)),], true_sub_Ufish = TdatL.tows$Freq)
-    datB$TowExpFactorU <- datB$Number_fish / (datB$Sexed_fish + datB$true_sub_Ufish)
+    if(sum(datL$Sex == "U") != 0){
+        TdatL.tows <- as.data.frame(table(datL$Trawl_id, datL$Sex%in%c("U")))
+        TdatL.tows <- TdatL.tows[TdatL.tows$Var2=="TRUE",]
+        datB <- data.frame(datB[match(as.character(TdatL.tows$Var1), as.character(datB$Trawl_id)),], true_sub_Ufish = TdatL.tows$Freq)
+        datB$TowExpFactorU <- datB$Number_fish / (datB$Sexed_fish + datB$true_sub_Ufish)
+    }else{
+        datB$true_sub_Ufish = 0
+        datB$TowExpFactorU  = 1
+    }
+
 
     #for females and males only
     TdatL.tows <- as.data.frame(table(datL$Trawl_id, datL$Sex%in%c("F", "M")))
@@ -162,14 +174,16 @@ SurveyLFs.fn <- function(dir, datL, datTows, strat.vars=c("Depth_m","Latitude_dd
 
     # Apply the sex ratio to the raw data based on each tow
     if(sexRatioStage == 1){
-        datB = SexRatio.fn(x = datB, sexRatioStage = sexRatioStage, sexRatioUnsexed = sexRatioUnsexed, maxSizeUnsexed =  maxSizeUnsexed)
+        datB = SexRatio.fn(x = datB, sexRatioStage = sexRatioStage, sexRatioUnsexed = sexRatioUnsexed, 
+                            maxSizeUnsexed =  maxSizeUnsexed, bins = Lengths, verbose = verbose)
     }
 
 
     if (outputStage1){
-        stageOne = datB[,c("Trawl_id", "Year", "Length_cm", "Depth_m", "Latitude_dd", "Longitude_dd", "stratum", "areaFished", 
+        stageOne = datB[,c("Trawl_id", "Year", "allLs", "Length_cm", "Depth_m", "Latitude_dd", "Longitude_dd", "stratum", "areaFished", 
                 "Number_fish", "true_sub_Ufish", "true_sub_MFfish",  "expAll", "expF", "expM", "expU")]
         # Rename columns
+        names(stageOne)[names(stageOne) == "allLs"] <- "Bins"
         names(stageOne)[names(stageOne) == "expAll"] <- "Nall"
         names(stageOne)[names(stageOne) == "expF"]   <- "Nf"
         names(stageOne)[names(stageOne) == "expM"]   <- "Nm"
@@ -177,7 +191,8 @@ SurveyLFs.fn <- function(dir, datL, datTows, strat.vars=c("Depth_m","Latitude_dd
         names(stageOne)[names(stageOne) == "true_sub_Ufish"]   <- "subsample_U"
         names(stageOne)[names(stageOne) == "true_sub_MFfish"]   <- "subsample_MF"
 
-        cat("\nNOTE: Stage 1 expansion returned by the function. Composition file not written for SS.\n")
+        if (verbose){
+        cat("\nNOTE: Stage 1 expansion returned by the function. Composition file not written for SS.\n")}
         return (stageOne)
     }
 
@@ -240,13 +255,13 @@ SurveyLFs.fn <- function(dir, datL, datTows, strat.vars=c("Depth_m","Latitude_dd
 
     if(meanRatioMethod) {
         L.year.str <- lapply(datB.yrstr, function(x){lapply(x, lengthMeanRatio.fn, strat = strat.df, numTows)})
-    }
-    else{
+    }else{
         L.year.str <- lapply(datB.yrstr, function(x){lapply(x, lengthTotalRatio.fn, strat = strat.df)})
     }
 
     if(sexRatioStage == 2){                      
-        L.year.str = SexRatio.fn(x = L.year.str, sexRatioStage = sexRatioStage, sexRatioUnsexed = sexRatioUnsexed, maxSizeUnsexed =  maxSizeUnsexed)
+        L.year.str = SexRatio.fn(x = L.year.str, sexRatioStage = sexRatioStage, sexRatioUnsexed = sexRatioUnsexed, 
+                                 maxSizeUnsexed =  maxSizeUnsexed, verbose = verbose)
     }
 
     year.fn <- function(x,Lengths) {   #calculate the LFs by year
@@ -283,84 +298,166 @@ SurveyLFs.fn <- function(dir, datL, datTows, strat.vars=c("Depth_m","Latitude_dd
     
     #otherwise return SS output for gender type
     if(gender == 0) {
+        sex.name = c("U", "U")
         lgths <- as.character(L.year[[1]]$Length)
-        Ls    <- unlist(lapply(L.year, function(x){c(x$TotalLjAll, x$TotalLjAll)}))
-        if(NAs2zero){Ls[is.na(Ls)] <- 0}
-        Ls  <- matrix(Ls, nrow = length(L.year), byrow=T,
-               dimnames = list(NULL, paste(c(rep("U", length(lgths)), rep("U", length(lgths))), lgths, sep="")))
-        out <- data.frame(year = as.numeric(names(L.year)), month = month, fleet = fleet, gender = rep(0, length(L.year)),
-               partition = partition, Nsamp = nSamps, Ls)    
+        Ls    <- unlist(lapply(L.year, function(x){c(x$TotalLjAll, x$TotalLjAll)}))  
+    }
+
+    if(gender == 1) {
+        #females only
+        sex.name = c("F", "F")
+        lgths <- as.character(L.year[[1]]$Length)
+        Ls    <- unlist(lapply(L.year, function(x){c(x$TotalLjF, x$TotalLjF)}))
+    }
+
+    if(gender == 2) {
+        #males only
+        sex.name = c("M", "M")
+        lgths <- as.character(L.year[[1]]$Length)
+        Ls    <- unlist(lapply(L.year, function(x){c(x$TotalLjM, x$TotalLjM)}))
     }
 
     if(gender == 3) {
         #females then males
+        sex.name = c("F", "M")
         lgths <- as.character(L.year[[1]]$Length)
         Ls    <- unlist(lapply(L.year, function(x){c(x$TotalLjF, x$TotalLjM)}))
+    }
+
+    if(NAs2zero){Ls[is.na(Ls)] <- 0}
+    Ls  <- matrix(Ls, nrow = length(L.year), byrow=T,
+                  dimnames = list(NULL, paste(c(rep(sex.name[1], length(lgths)), rep(sex.name[2], length(lgths))), lgths, sep="")))
+    out <- data.frame(year = as.numeric(names(L.year)), 
+                      month = month, 
+                      fleet = fleet, 
+                      gender = rep(gender, length(L.year)), 
+                      partition = partition, 
+                      Nsamp = nSamps, 
+                      Ls)  
+
+    if(is.na(sexRatioUnsexed)){
+        #unsexed fish
+        lgths <- as.character(L.year[[1]]$Length)
+        Ls    <- unlist(lapply(L.year, function(x){c(x$TotalLjU, x$TotalLjU)}))
         if(NAs2zero){Ls[is.na(Ls)] <- 0}
-        Ls  <- matrix(Ls, nrow = length(L.year), byrow = T,
-               dimnames = list(NULL, paste(c(rep("F",length(lgths)), rep("M",length(lgths))), lgths, sep = "")))
-        out <- data.frame(year = as.numeric(names(L.year)), month = month, fleet = fleet, gender=rep(3, length(L.year)),
-               partition = partition, Nsamp = nSamps, Ls)
+        Ls  <- matrix(Ls, nrow = length(L.year), byrow=T,
+               dimnames = list(NULL, paste(c(rep("U", length(lgths)), rep("U", length(lgths))), lgths, sep="")))
+        out2 <-data.frame(year = as.numeric(names(L.year)), month = month, fleet = fleet, gender = rep(0, length(L.year)),
+               partition = partition, Nsamp = nSamps, Ls)  
 
-        if(is.na(sexRatioUnsexed)){
-            #unsexed fish
-            lgths <- as.character(L.year[[1]]$Length)
-            Ls    <- unlist(lapply(L.year, function(x){c(x$TotalLjU, x$TotalLjU)}))
-            if(NAs2zero){Ls[is.na(Ls)] <- 0}
-            Ls  <- matrix(Ls, nrow = length(L.year), byrow=T,
-                   dimnames = list(NULL, paste(c(rep("U", length(lgths)), rep("U", length(lgths))), lgths, sep="")))
-            out2 <-data.frame(year = as.numeric(names(L.year)), month = month, fleet = fleet, gender = rep(0, length(L.year)),
-                   partition = partition, Nsamp = nSamps, Ls)  
-
-        }
     }
-
-    # save output as a csv
-    comp.type = ifelse(lgthBins[1] == 1, "Age", "Length")
-    plotdir <- file.path(dir, printfolder)
-    plotdir.isdir <- file.info(plotdir)$isdir
-    if(is.na(plotdir.isdir) | !plotdir.isdir){
-      dir.create(plotdir)
-    }
-    write.csv(out, file = paste0(plotdir, "/Survey_Gender", gender, "_Bins_-999_", max(lgthBins),"_", comp.type, "Comps.csv"), row.names = FALSE)
-    if(gender == 3 && is.na(sexRatioUnsexed)){
-        write.csv(out2, file = paste0(plotdir, "/Survey_Gender_Unsexed_Bins_-999_", max(lgthBins),"_", comp.type, "Comps.csv"), row.names = FALSE) }
-
 
     usableOut = out
     if(gender == 3 && is.na(sexRatioUnsexed)) { usableOut2 = out2 }
+    
+    # Save output as a csv
+    # Check to see if user is doing ages or lengths
+    check = sum(datL$Length_cm, na.rm = TRUE) == sum(datL$Age, na.rm = TRUE)
+    comp.type = ifelse(check, "Age", "Length")
 
+    if(is.null(dir) & verbose){ cat("\nDirectory not specified and csv will not be written.\n") }
+    if(!is.null(dir)){
+        plotdir <- file.path(dir, printfolder)
+        plotdir.isdir <- file.info(plotdir)$isdir
+        if(is.na(plotdir.isdir) | !plotdir.isdir){
+          dir.create(plotdir)
+        }
+    }
+
+    # Write the files including the -999 column
+    if (comp.type == "Length") {
+        out.comps = out      
+    }
+    if (comp.type == "Age") {
+        out.comps = cbind(out[,1:5], ageErr, agelow, agehigh, out[,6:dim(out)[2]])
+    }
+    
+    if(!is.null(dir)){
+        write.csv(out.comps, file = file.path(plotdir, paste("Survey_Gender", gender, "_Bins_-999_", max(lgthBins),"_", comp.type, "Comps.csv", sep = "")), row.names = FALSE)
+    }    
+    # If doing sexed comps but no sex ratio is applied to unsexed fish, here are those unsexed fish
+    if(gender == 3 && is.na(sexRatioUnsexed)){
+        if (comp.type == "Length") {
+            out.comps = out2
+        }
+        if (comp.type == "Age") {
+            out.comps = cbind(out2[,1:5], ageErr, agelow, agehigh, out2[,6:dim(out2)[2]])
+        }
+        if(!is.null(dir)){
+            write.csv(out.comps, file = file.path(plotdir, paste("Survey_Gender_Unsexed_Bins_-999_", max(lgthBins),"_", comp.type, "Comps.csv", sep = "")), row.names = FALSE) 
+        }
+    }
+    
+
+    # Write female and then male comp data
     if (gender == 3){
-        usableOut[,paste0("F",min(lgthBins))] <- usableOut[,paste0("F",min(lgthBins))] + usableOut$F.999
-        usableOut[,paste0("M",min(lgthBins))] <- usableOut[,paste0("M",min(lgthBins))] + usableOut$M.999
+        usableOut[, paste0("F",min(lgthBins))] <- usableOut[, paste0("F",min(lgthBins))] + usableOut$F.999
+        usableOut[, paste0("M",min(lgthBins))] <- usableOut[, paste0("M",min(lgthBins))] + usableOut$M.999
         usableOut <- usableOut[,-which(names(usableOut)%in%c("F.999","M.999"))]
         if (comp.type == "Age"){
-            usableOut = cbind(usableOut[,1:5], agelow, agehigh, ageErr, usableOut[,6:dim(usableOut)[2]])
+            usableOut = cbind(usableOut[,1:5], ageErr, agelow, agehigh, usableOut[,6:dim(usableOut)[2]])
         }
-        write.csv(usableOut, file = paste0(plotdir, "/Survey_Gender", gender, "_Bins_",min(lgthBins),"_", max(lgthBins),"_", comp.type, "Comps.csv"), row.names = FALSE)
+        if(is.null(dir) & verbose){ cat("\nDirectory not specified and csv will not be written.\n") }
+        if(!is.null(dir)){
+            write.csv(usableOut, file = file.path(plotdir, paste("Survey_Gender", gender, "_Bins_",min(lgthBins),"_", max(lgthBins),"_", comp.type, "Comps.csv", sep="")), row.names = FALSE)
+        }
         if(is.na(sexRatioUnsexed)){
-            usableOut2[,paste0("U",min(lgthBins))]  <- usableOut2[,paste0("U",min(lgthBins))] + usableOut2$U.999
+            usableOut2[, paste0("U",min(lgthBins))]  <- usableOut2[,paste0("U",min(lgthBins))] + usableOut2$U.999
             usableOut2 <- usableOut2[,-which(names(usableOut2)%in%c("U.999","U.999.1"))]
             if (comp.type == "Age"){
-                usableOut2 = cbind(usableOut2[,1:5], agelow, agehigh, ageErr, usableOut2[,6:dim(usableOut2)[2]])
+                usableOut2 = cbind(usableOut2[,1:5], ageErr, agelow, agehigh, usableOut2[,6:dim(usableOut2)[2]])
             }
-            write.csv(usableOut2, file = paste0(plotdir, "/Survey_Gender_Unsexed_Bins_",min(lgthBins),"_", max(lgthBins),"_", comp.type, "Comps.csv"), row.names = FALSE)
+            if(is.null(dir) & verbose){ cat("\nDirectory not specified and csv will not be written.\n") }
+            if(!is.null(dir)){
+                write.csv(usableOut2, file = file.path(plotdir, paste("Survey_Gender_Unsexed_Bins_",min(lgthBins),"_", max(lgthBins),"_", comp.type, "Comps.csv", sep = "")), row.names = FALSE)
+            }
         }
     }
 
+    # Write male comp data only
+    if (gender == 2){
+        usableOut[, paste0("M",min(lgthBins))]  <- usableOut[, paste0("M",min(lgthBins))] + usableOut$M.999
+        usableOut <- usableOut[,-which(names(usableOut)%in%c("M.999","M.999.1"))]
+        if (comp.type == "Age"){
+            usableOut = cbind(usableOut[,1:5],  ageErr, agelow, agehigh, usableOut[,6:dim(usableOut)[2]])
+        }
+        if(is.null(dir) & verbose){ cat("\nDirectory not specified and csv will not be written.\n") }
+        if(!is.null(dir)){
+            write.csv(usableOut, file = file.path(plotdir, paste("Survey_Gender", gender, "_Bins_",min(lgthBins),"_", max(lgthBins),"_", comp.type, "Comps.csv", sep = "")), row.names = FALSE)
+        }
+    }
+
+    # Write female comp data only
+    if (gender == 1){
+        usableOut[, paste0("F",min(lgthBins))]  <- usableOut[, paste0("F",min(lgthBins))] + usableOut$F.999
+        usableOut <- usableOut[,-which(names(usableOut)%in%c("F.999","F.999.1"))]
+        if (comp.type == "Age"){
+            usableOut = cbind(usableOut[,1:5],  ageErr, agelow, agehigh, usableOut[,6:dim(usableOut)[2]])
+        }
+        if(is.null(dir) & verbose){ cat("\nDirectory not specified and csv will not be written.\n") }
+        if(!is.null(dir)){
+            write.csv(usableOut, file = file.path(plotdir, paste("Survey_Gender", gender, "_Bins_",min(lgthBins),"_", max(lgthBins),"_", comp.type, "Comps.csv", sep = "")), row.names = FALSE)
+        }
+    }
+
+    # Write unsexed comp data
     if (gender == 0){
-        usableOut[,paste0("U",min(lgthBins))]  <- usableOut[,paste0("U",min(lgthBins))] + usableOut$U.999
+        usableOut[, paste0("U",min(lgthBins))]  <- usableOut[, paste0("U",min(lgthBins))] + usableOut$U.999
         usableOut <- usableOut[,-which(names(usableOut)%in%c("U.999","U.999.1"))]
         if (comp.type == "Age"){
-            usableOut = cbind(usableOut[,1:5], agelow, agehigh, ageErr, usableOut[,6:dim(usableOut)[2]])
+            usableOut = cbind(usableOut[,1:5],  ageErr, agelow, agehigh, usableOut[,6:dim(usableOut)[2]])
         }
-        write.csv(usableOut, file = paste0(plotdir, "/Survey_Gender", gender, "_Bins_",min(lgthBins),"_", max(lgthBins),"_", comp.type, "Comps.csv"), row.names = FALSE)
+        if(is.null(dir) & verbose){ cat("\nDirectory not specified and csv will not be written.\n") }
+        if(!is.null(dir)){
+        write.csv(usableOut, file = file.path(plotdir, paste("Survey_Gender", gender, "_Bins_",min(lgthBins),"_", max(lgthBins),"_", comp.type, "Comps.csv", sep = "")), row.names = FALSE)
+        }
     }
 
+    if (verbose){
     cat("\nNOTE: Files have been saved the the printfolder directory.
-        The first has the 999 column showing fish smaller or younger than the initial bin. 
+        The first file has the 999 column showing fish smaller or younger than the initial bin. 
         Check to make sure there is not a large number of fish smaller or younger than the initial bin.
-        The second file has combined the 999 with the first bin and is ready for use in SS.\n")
+        The second file has combined the 999 with the first bin and is ready for use in SS.\n") }
 
     if (!remove999) { return(out)}
     if (remove999)  { return(usableOut)}

@@ -4,10 +4,11 @@
 \alias{PullCatch.fn}
 \title{Pull catch data from the NWFSC data warehouse
 The website is: https://www.nwfsc.noaa.gov/data
-Curently, this function only pulls data for a single specified survey.}
+This function can be used to pull a single species or all observed species
+In order to pull all species leave Name = NULL and SciName = NULL}
 \usage{
 PullCatch.fn(Name = NULL, SciName = NULL, YearRange = c(1000, 5000),
-  SurveyName = NULL, SaveFile = FALSE, Dir = NULL)
+  SurveyName = NULL, SaveFile = FALSE, Dir = NULL, verbose = TRUE)
 }
 \arguments{
 \item{Name}{common name of species data to pull from the data warehouse}
@@ -21,11 +22,20 @@ PullCatch.fn(Name = NULL, SciName = NULL, YearRange = c(1000, 5000),
 \item{SaveFile}{option to save the file to the directory}
 
 \item{Dir}{directory where the file should be saved}
+
+\item{verbose}{opt to print out message statements}
 }
 \description{
 Pull catch data from the NWFSC data warehouse
 The website is: https://www.nwfsc.noaa.gov/data
-Curently, this function only pulls data for a single specified survey.
+This function can be used to pull a single species or all observed species
+In order to pull all species leave Name = NULL and SciName = NULL
+}
+\examples{
+\dontrun{
+# SurveyName is only arg that has to be specified
+dat = PullCatch.fn(SurveyName = "NWFSC.Combo")
+}
 }
 \author{
 Chantel Wetzel based on code by John Wallace

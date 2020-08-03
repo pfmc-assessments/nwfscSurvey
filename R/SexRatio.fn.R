@@ -4,20 +4,23 @@
 #' @param sexRatioStage the stage of the expansion to apply the sex ratio. Input either 1 or 2. 
 #' @param sexRatioUnsexed sex ratio to apply to any length bins of a certain size or smaller as defined by the maxSizeUnsexed
 #' @param maxSizeUnsexed all sizes below this threshold will assign unsexed fish by sexRatio set equal to 0.50, fish larger than this size will have unsexed fish assigned by the calculated sex ratio in the data.
+#' @param bins Length bins created by the SurveyLFs.fn
+#' @param verbose opt to print out message statements
 #'
 #' @author Allan Hicks and Chantel Wetzel
 #' @export 
 
 
-SexRatio.fn <- function(x, sexRatioStage, sexRatioUnsexed, maxSizeUnsexed){
+SexRatio.fn <- function(x, sexRatioStage, sexRatioUnsexed, maxSizeUnsexed, bins = NULL, verbose){
 
     if (sexRatioStage == 1){
 
         #incorporate unsexed fish using sex ratios
         if(length(sexRatioUnsexed)==1 & !is.na(sexRatioUnsexed)) {
-            cat("Sex ratio for unsexed fish being applied to the expanded numbers within a tow (stage 1) when possible. 
+            if (verbose) {
+            message("Sex ratio for unsexed fish being applied to the expanded numbers within a tow (stage 1) when possible. 
             If no data within a tow for bin then the sex ratio for the bin across all years applied to unsexed fish.
-            If no data for that bin across all years then the sex ratio for nearby bins was applied to unsexed fish.\n")
+            If no data for that bin across all years then the sex ratio for nearby bins was applied to unsexed fish.\n") }
 
             x$sexRatio <- x$expF/(x$expF+x$expM)
             # The below line was changed to as.character from as.numeric because it was not finding the correct lengths : CRW
@@ -31,32 +34,36 @@ SexRatio.fn <- function(x, sexRatioStage, sexRatioUnsexed, maxSizeUnsexed){
             noRatio <- which(is.na(x$sexRatio))
             check = round(length(noRatio)/length(x$sexRatio),3)
             if ( check > 0.10) {
-                cat("\n There are", check, "percent of tows with observations that the sex ratio will be filled based on other tows.
+                if (verbose) {
+                message("\n There are", check, "percent of tows with observations that the sex ratio will be filled based on other tows.
                         Consider increasing the maxSizeUnsexed or create the comps as unsexed.\n")}
-            if(length(noRatio)>0) cat("\nThese are sex ratios that were filled in using observations from the same lengths from different strata and years:\n")
+            if(length(noRatio)>0) cat("\nThese are sex ratios that were filled in using observations from the same lengths from different strata and years:\n")}
             for(i in noRatio) {
                 inds <- x$allLs == x$allLs[i]
                 tmpF <- sum(x$expF[inds])
                 tmpM <- sum(x$expM[inds])
                 x$sexRatio[i] <- tmpF/(tmpF+tmpM)
-                #print(x[i,c("Length_cm","allLs","expF","expM","sexRatio")])
-                message(cat("LengthAge:", x[i,c("Length_cm")], "Bin:", x[i,c("allLs")], "Sex Ratio:", x[i,c("sexRatio")])) 
+                if (verbose){
+                message(cat("LengthAge:", x[i,c("Length_cm")], "Bin:", x[i,c("allLs")], "Sex Ratio:", x[i,c("sexRatio")])) }
             }
     
             noRatio <- which(is.na(x$sexRatio))
-            if(length(noRatio)>0) cat("\nThese are sex ratios that were filled in using observations from nearby lengths\n")
+            if(length(noRatio)>0) {
+                if (verbose){ 
+                    message("\nThese are sex ratios that were filled in using observations from nearby lengths\n")}}
+
             for(i in noRatio) {
-                nearLens <- Lengths[c(which(Lengths==x$allLs[i])-1, which(Lengths==x$allLs[i])+1)]
+                nearLens <- bins[c(which(bins==x$allLs[i])-1, which(bins==x$allLs[i])+1)]
                 inds <- x$allLs %in% nearLens
                 tmpF <- sum(x$expF[inds])
                 tmpM <- sum(x$expM[inds])
                 x$sexRatio[i] <- tmpF/(tmpF+tmpM)
-                #print(x[i,c("Length_cm","allLs","expF","expM","sexRatio")])
-                message(cat("Length/Age:", x[i,c("Length_cm")], "Bin:", x[i,c("allLs")], "Sex Ratio:", x[i,c("sexRatio")])) 
+                if (verbose){ 
+                message(cat("Length/Age:", x[i,c("Length_cm")], "Bin:", x[i,c("allLs")], "Sex Ratio:", x[i,c("sexRatio")])) }
             }
             noRatio <- which(is.na(x$sexRatio))
-            if(length(noRatio)>0) cat("Some sex ratios were left unknown and omitted\n\n")
-            if(length(noRatio)==0) cat("Done filling in sex ratios\n\n")
+            if(length(noRatio)>0)  { if (verbose) { message("Some sex ratios were left unknown and omitted\n\n") } }
+            if(length(noRatio)==0) { if (verbose) { message("Done filling in sex ratios\n\n") }}
     
             # These lines change to add the actual unsexed fish to the expansion factors -CRW
             x$expF <- x$expF + x$sexRatio*x$expU
@@ -64,7 +71,10 @@ SexRatio.fn <- function(x, sexRatioStage, sexRatioUnsexed, maxSizeUnsexed){
         }
     }
 
-    if (sexRatioStage == 2){       
+    if (sexRatioStage == 2){
+        if (verbose) {
+            message("Sex ratio for unsexed fish being applied to the expanded numbers within a strata and year (stage 2). 
+            If no data within a strata and year for bin then the sex ratio for the bin across all years and strata applied to unsexed fish.\n") }       
         # Take everything out of the list into a dataframe
         out = NULL
         for(a in 1:length(x)){
@@ -91,22 +101,24 @@ SexRatio.fn <- function(x, sexRatioStage, sexRatioUnsexed, maxSizeUnsexed){
         noRatio <- which(is.na(out$sexRatio))
         check = round(length(noRatio)/length(out$sexRatio),3)
         if ( check > 0.10) {
-            cat("\n There are", check, "percent of tows with observations that the sex ratio will be filled based on other tows.
-                    Consider increasing the maxSizeUnsexed or create the comps as unsexed.\n")}
+            if (verbose) {
+            message("\n There are", check, "percent of tows with observations that the sex ratio will be filled based on other tows.
+                    Consider increasing the maxSizeUnsexed or create the comps as unsexed.\n")} }
 
-        if(length(noRatio)>0) cat("\nThese are sex ratios that were filled in using observations from the same lengths from different strata and years\n")
+        if(length(noRatio)>0) { if (verbose) { ("\nThese are sex ratios that were filled in using observations from the same lengths from different strata and years\n") } }
         for(i in noRatio) {
             inds <- out$LENGTH == out$LENGTH[i]
             tmpF <- sum(out$TotalLjhF[inds])
             tmpM <- sum(out$TotalLjhM[inds])
             out$sexRatio[i] <- tmpF/(tmpF+tmpM)
-            message(cat("Length/Age:", out[i,"LENGTH"], "Sex Ratio:", round(out[i,"sexRatio"],3)))
+            if (verbose) {
+            message(cat("Length/Age:", out[i,"LENGTH"], "Sex Ratio:", round(out[i,"sexRatio"],3))) }
         }
         
         # Calculate the ratio based upon near lengths 
         noRatio <- which(is.na(out$sexRatio))
         if(length(noRatio)>0) {
-          cat("\nThese are sex ratios that were filled in using observations from nearby lengths\n")
+          if (verbose) { message("\nThese are sex ratios that were filled in using observations from nearby lengths\n") }
           for(i in noRatio) {
             unq.len = sort(unique(out$LENGTH))
             find = which(unq.len == out$LENGTH[i])
@@ -115,7 +127,7 @@ SexRatio.fn <- function(x, sexRatioStage, sexRatioUnsexed, maxSizeUnsexed){
             tmpF <- sum(out$TotalLjhF[nearLens])
             tmpM <- sum(out$TotalLjhM[nearLens])
             out$sexRatio[i] <- tmpF/(tmpF+tmpM)
-            message(cat("Length/Age:", out[i,"LENGTH"], "Sex Ratio:", round(out[i,"sexRatio"],3)))
+            if (verbose) { message(cat("Length/Age:", out[i,"LENGTH"], "Sex Ratio:", round(out[i,"sexRatio"],3))) }
           }
         }
         

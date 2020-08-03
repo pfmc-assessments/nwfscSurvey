@@ -11,13 +11,14 @@ NOTE: The age bin called F0 or M0 is retained to show proportion of ages smaller
 You will want to likely add this to your first age bin and delete this before putting in SS, or
 start the ageBins argument at the 2nd age bin and F0 will be all fish smaller (hence the first age bin)}
 \usage{
-SurveyAFs.fn(dir, datA, datTows, strat.vars = c("Depth_m", "Latitude_dd"),
-  strat.df = NULL, ageBins = 1, SSout = TRUE, meanRatioMethod = TRUE,
-  gender = 3, NAs2zero = T, sexRatioUnsexed = NA, maxSizeUnsexed = NA,
-  sexRatioStage = 1, partition = 0, fleet = "Enter Fleet",
-  agelow = "Enter", agehigh = "Enter", ageErr = "Enter",
-  nSamps = "Enter Samps", month = "Enter Month", printfolder = "forSS",
-  remove999 = TRUE, outputStage1 = FALSE)
+SurveyAFs.fn(dir = NULL, datA, datTows, strat.vars = c("Depth_m",
+  "Latitude_dd"), strat.df = NULL, ageBins = 1, SSout = TRUE,
+  meanRatioMethod = TRUE, gender = 3, NAs2zero = T,
+  sexRatioUnsexed = NA, maxSizeUnsexed = NA, sexRatioStage = 1,
+  partition = 0, fleet = "Enter Fleet", agelow = "Enter",
+  agehigh = "Enter", ageErr = "Enter", nSamps = "Enter Samps",
+  month = "Enter Month", printfolder = "forSS", remove999 = TRUE,
+  outputStage1 = FALSE, verbose = TRUE)
 }
 \arguments{
 \item{dir}{directory this is where the output files will be saved}
@@ -63,6 +64,8 @@ SurveyAFs.fn(dir, datA, datTows, strat.vars = c("Depth_m", "Latitude_dd"),
 \item{remove999}{the output object by the function will have the 999 column combined with the first length bin}
 
 \item{outputStage1}{return the first stage expanded data without compiling it for SS}
+
+\item{verbose}{opt to print out message statements}
 
 \item{femaleMale}{numbering for female and male fish in the data file. This is opposite to what is used in SS.}
 

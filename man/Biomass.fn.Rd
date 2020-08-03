@@ -4,14 +4,16 @@
 \alias{Biomass.fn}
 \title{Calculates design based estimates from survey data for West Coast surveys}
 \usage{
-Biomass.fn(dir, dat, strat.vars = c("Depth_m", "Latitude_dd"), strat.df,
-  printfolder = "forSS", outputMedian = T, verbose = TRUE, convert = 1,
-  season = NA, fleet = NA)
+Biomass.fn(dir = NULL, dat, strat.vars = c("Depth_m", "Latitude_dd"),
+  strat.df, printfolder = "forSS", outputMedian = T, convert = 1,
+  month = NA, fleet = NA, verbose = TRUE)
 }
 \arguments{
 \item{dir}{directory where the output file will be saved}
 
 \item{dat}{data-frame of the data that has been by the PullCatch.fn}
+
+\item{strat.vars}{A vector of the strata variable names (i.e., c("Depth_m","Latitude_dd"))}
 
 \item{strat.df}{a dataframe with the first column the name of the stratum, the second column the area of the stratum, and the remaining columns are the high and low variables defining the strata created by the CreateStrataDF.fn}
 
@@ -21,11 +23,11 @@ Biomass.fn(dir, dat, strat.vars = c("Depth_m", "Latitude_dd"), strat.df,
 
 \item{convert}{convertion factor for the biomass by area units (e.g., hectare vs km2)}
 
-\item{season}{season for SS}
+\item{month}{month for SS}
 
 \item{fleet}{fleet number for SS}
 
-\item{stat.vars}{A vector of the strata variable names (i.e., c("Depth_m","Latitude_dd"))}
+\item{verbose}{opt to print out message statements}
 }
 \description{
 The variables defining the strata must begin with the name in strat.vars and end with ".1" or ".2" (i.e., Depth_m.1)

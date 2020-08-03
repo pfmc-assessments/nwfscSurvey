@@ -4,8 +4,8 @@
 #'
 #'
 #' @param dir directory to save the file
-#' @param dat      The data loaded from the NWFSC database or the SexedLgthWtAge sheet
-#' @param survey specify the survey data set for calculations. Options are "NWFSCBT", "Tri.Shelf", "AFSC.Slope"
+#' @param dat      The data loaded from the NWFSC database 
+#' @param main     Name that will be used to name the saved png 
 #' @param ageBin   Currently fixed at 1, so a moot parameter
 #' @param bySex    Logical to indicate if plot by sex
 #' @param parStart Vector of starting parameters for Linf, k, and t0 in VonB estimation
@@ -18,7 +18,7 @@
 #' @author Allan Hicks and Chantel Wetzel
 #' @export
 
-PlotVarLengthAtAge.fn <- function(dir, dat, survey, ageBin=1, bySex=T, parStart=c(52, 0.09, 1), estVB=T, bins=NULL, legX="bottomleft", legY=NULL, dopng = FALSE,...) 
+PlotVarLengthAtAge.fn <- function(dir = NULL, dat, main = NULL, ageBin=1, bySex=T, parStart=c(52, 0.09, 1), estVB=T, bins=NULL, legX="bottomleft", legY=NULL, dopng = FALSE,...) 
 {
     #calculate and plot the sd and cv for length at age
     #if you enter estVB=F, then it uses the parStart as the VB parameters
@@ -51,12 +51,17 @@ PlotVarLengthAtAge.fn <- function(dir, dat, survey, ageBin=1, bySex=T, parStart=
         nn <- 2
     }
     
-    if (dopng) { 
-        plotdir <- paste0(dir, "/plots")
+    if (dopng) {
+        if(is.null(dir)){stop("Directory needs to be set.")} 
+        if (!file.exists(dir)) { stop("The dir argument leads to a location", ",\ni.e., ", dir, ", that doesn't exist.") }
+        plotdir <- file.path(dir, paste("plots", sep=""))
         plotdir.isdir <- file.info(plotdir)$isdir
         if(is.na(plotdir.isdir) | !plotdir.isdir){
             dir.create(plotdir) }
-        png(paste0(dir, "/plots/", survey, "_VarLengthAtAge.png"), height=7, width=7, units="in",res=300) }
+        if ( is.null(main)) { png( file.path(dir, paste("plots/VarLengthAtAge.png", sep = "")), height=7, width=7, units="in",res=300) }
+        if (!is.null(main)) { png(file.path(dir, paste("plots/", main, "_VarLengthAtAge.png", sep = "")), height=7, width=7, units="in",res=300) }
+    }
+
     par(mfcol=c(2,nn), mar =c(3,5,3,5))
 
     out <- vector(mode="list", length=nn)
@@ -96,5 +101,3 @@ PlotVarLengthAtAge.fn <- function(dir, dat, survey, ageBin=1, bySex=T, parStart=
     if (dopng) { dev.off()}
     return(out)
 }
-
-

@@ -4,7 +4,6 @@
 #' 
 #' @param dir directory to save files to
 #' @param dat object created by SS3LF.fn or SS3AF.fn
-#' @param survey survey name 
 #' @param inch input to the symbols plot: TRUE, FALSE or a positive number.
 #' @param ylab y-axis text label
 #' @param xlab x-axis text label
@@ -17,10 +16,23 @@
 #' @author Allan Hicks and Chantel Wetzel
 #' @export
 
-PlotFreqData.fn <- function(dir, dat, survey = "Survey", inch=0.15, ylab="Bins", xlab="Year", zero2NAs=T, main=NULL, xlim=NULL, dopng = FALSE, ...) {
+PlotFreqData.fn <- function(dir = NULL, dat, inch=0.15, ylab="Bins", xlab="Year", zero2NAs=T, main=NULL, 
+                            xlim=NULL, ymax = NULL, dopng = FALSE, w = 7, h = 7, ...) {
 
     dataType = sum(names(dat) == "ageErr")
     dataType = ifelse(dataType == 0,  "Length", "Age")
+
+    if (dopng) { 
+      if(is.null(dir)){ stop("Directory needs to be set.") }
+      if (!file.exists(dir)) { stop("The dir argument leads to a location", ",\ni.e., ", dir, ", that doesn't exist.") }
+
+      plotdir <- file.path(dir, paste("plots", sep=""))
+      plotdir.isdir <- file.info(plotdir)$isdir
+      if(is.na(plotdir.isdir) | !plotdir.isdir){
+        dir.create(plotdir)}
+      if ( is.null(main)) { png( file.path(dir, paste("plots/", dataType, "_Frequency.png", sep = "")), height=h, width=w, units="in",res=300) }
+      if (!is.null(main)) { png( file.path(dir, paste("plots/", main, "_", dataType,"_Frequency.png", sep = "")), height=h, width=w, units="in",res=300) }
+    }
 
     x <- as.numeric(as.character(dat$year))
     gender <- dat$gender[1]
@@ -30,11 +42,7 @@ PlotFreqData.fn <- function(dir, dat, survey = "Survey", inch=0.15, ylab="Bins",
     if(length(grep(".999",names(dat))>0)){
       # remove extra columns (if the user didn't remove them already)
       if(gender==0) {
-        #dat <- dat[,1:(ncol(dat)/2)]
-        #dat <- dat[,-match("U.999.1",names(dat))]
-        #print(names(dat))
         dat <- dat[,-match("U.999",names(dat))]
-        #print(names(dat))
       }
       if(gender==3) {
         # exclude columns for fish below minimum bin
@@ -43,7 +51,11 @@ PlotFreqData.fn <- function(dir, dat, survey = "Survey", inch=0.15, ylab="Bins",
       }
     }
     
-    numLens <- ncol(dat)/2
+    numLens <- ncol(dat)/2 
+    if (!is.null(ymax)) { 
+      numLens <- ymax
+    }
+
     y <- as.numeric(substring(names(dat),2))
     y <- y[1:numLens]
 
@@ -51,27 +63,23 @@ PlotFreqData.fn <- function(dir, dat, survey = "Survey", inch=0.15, ylab="Bins",
 
     if(is.null(xlim)) {xlim <- range(x)}
 
-    if (dopng) { png(paste0(dir,"/plots/", survey, "_", dataType,"_Frequency.png"), height=7, width=7, units="in",res=300) 
-      plotdir <- paste0(dir, "/plots")
-      plotdir.isdir <- file.info(plotdir)$isdir
-      if(is.na(plotdir.isdir) | !plotdir.isdir){
-        dir.create(plotdir)}
-    }
+
     if (gender == 3) { par(mfrow=c(2,1)) } 
     if (gender == 0) { par(mfrow=c(1,1)) } 
     
     if(gender==0) {
-        if(is.null(main)) {main <- "Unsexed+Males+Females"}
-        z <- c(unlist(dat[,1:numLens]),max(dat))
-        symbols(c(rep(x,length(y)),0),c(rep(y,each=length(x)),0),circles=z,main=main,inches=inch,xlab=xlab,ylab=ylab,xlim=xlim,...)
+        if(is.null(main)) { main <- "Unsexed+Males+Females" }
+        z <- c(unlist(dat[,1:numLens]),min(dat)) # Changed from max to min to better visualize subset data
+        symbols(c(rep(x,length(y)),0),c(rep(y,each=length(x)),0),circles=z,
+          main=main,inches=inch,xlab=xlab,ylab=ylab,xlim=xlim,...)
     }
     if(gender==3) {
-        if(is.null(main[1])) {main <- "Female"}
-        z <- c(unlist(dat[,1:numLens]),max(dat))
-        symbols(c(rep(x,length(y)),0),c(rep(y,each=length(x)),0),circles=z,main=main[1],inches=inch,xlab=xlab,ylab=ylab,xlim=xlim,...)
-        if(is.na(main[2])) {main <- "Male"}
-        z <- c(unlist(dat[,(numLens+1):ncol(dat)]),max(dat))
-        symbols(c(rep(x,length(y)),0),c(rep(y,each=length(x)),0),circles=z,main=main,inches=inch,xlab=xlab,ylab=ylab,xlim=xlim,...)
+        name <- "Female"
+        z <- c(unlist(dat[,1:numLens]), min(dat))
+        symbols(c(rep(x,length(y)),0),c(rep(y,each=length(x)),0),circles=z,main=name,inches=inch,xlab=xlab,ylab=ylab,xlim=xlim,...)
+        name <- "Male"
+        z <- c(unlist(dat[,(numLens+1):ncol(dat)]), min(dat))
+        symbols(c(rep(x,length(y)),0),c(rep(y,each=length(x)),0),circles=z,main=name,inches=inch,xlab=xlab,ylab=ylab,xlim=xlim,...)
     }
     if (dopng) { dev.off()}
 }

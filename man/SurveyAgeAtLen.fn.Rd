@@ -12,12 +12,12 @@ lgthBins is either the interval between length bins or the actual length bins
 note that 0 and Inf are tacked on the ends to account for lengths and ages outside the interval. You may want to add these in to first and last bin.
 I assume all fish are sexed for age data, thus do not apply sex ratios for unsexed fish}
 \usage{
-SurveyAgeAtLen.fn(dir, datAL, datTows, strat.vars = c("Depth_m",
+SurveyAgeAtLen.fn(dir = NULL, datAL, datTows, strat.vars = c("Depth_m",
   "Latitude_dd"), strat.df = NULL, lgthBins = 1, ageBins = 1,
-  SSout = TRUE, meanRatioMethod = TRUE, raw = TRUE, NAs2zero = TRUE,
-  month = "Enter Month", fleet = "Enter Fleet",
+  SSout = TRUE, meanRatioMethod = TRUE, raw = TRUE,
+  NAs2zero = TRUE, month = "Enter Month", fleet = "Enter Fleet",
   partition = "Enter Partition", ageErr = "Enter Age Error",
-  returnSamps = FALSE, printfolder = "forSS")
+  returnSamps = FALSE, printfolder = "forSS", verbose = TRUE)
 }
 \arguments{
 \item{dir}{directory this is where the output files will be saved}
@@ -51,6 +51,8 @@ SurveyAgeAtLen.fn(dir, datAL, datTows, strat.vars = c("Depth_m",
 \item{returnSamps}{TRUE/FALSE stops the function after the sample size is calculated}
 
 \item{printfolder}{folder where the length comps will be saved}
+
+\item{verbose}{opt to print out message statements}
 
 \item{ageerr}{age error value for Stock Synthesis}
 }

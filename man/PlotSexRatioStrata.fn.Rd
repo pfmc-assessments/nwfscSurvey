@@ -4,8 +4,9 @@
 \alias{PlotSexRatioStrata.fn}
 \title{Function to plot sex ratio by strata}
 \usage{
-PlotSexRatioStrata.fn(dir, dat, type = "length", strat.vars = c("Depth_m",
-  "Latitude_dd"), survey, circleSize = 0.05, dopng = FALSE, ...)
+PlotSexRatioStrata.fn(dir = NULL, dat, type = "length",
+  strat.vars = c("Depth_m", "Latitude_dd"), strat.df = NULL,
+  circleSize = 0.05, dopng = FALSE, ...)
 }
 \arguments{
 \item{dir}{directory location for saving the png}
@@ -16,7 +17,7 @@ PlotSexRatioStrata.fn(dir, dat, type = "length", strat.vars = c("Depth_m",
 
 \item{strat.vars}{the parameters to stratify the data}
 
-\item{survey}{specify the survey data set for calculations. Options are "NWFSCBT", "Tri.Shelf", "AFSC.Slope"}
+\item{strat.df}{the created strata matrix with the calculated areas by the createStrataDF.fn function}
 
 \item{circleSize}{circle size}
 
