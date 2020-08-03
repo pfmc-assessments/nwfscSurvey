@@ -83,7 +83,7 @@ PullCatch.fn <- function (Name = NULL, SciName = NULL, YearRange = c(1000, 5000)
     }
 
     if (verbose){
-    message("Pulling catch data. This can take up to ~ 30 seconds.")}
+    message("Pulling catch data. This can take up to ~ 30 seconds (or more).")}
     # Pull data from the warehouse
     DataPull <- try(jsonlite::fromJSON(UrlText))
     if(!is.data.frame(DataPull)) {
