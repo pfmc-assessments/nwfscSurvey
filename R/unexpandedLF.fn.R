@@ -61,7 +61,6 @@ unexpandedLFs.fn <- function(dir = NULL, datL, lgthBins=1, SSout=TRUE, sexRatioU
         datL$sexRatio[datL$Length_cm <= maxSizeUnsexed] <- sexRatioUnsexed
     }
     
-
     sex_out = ifelse(sex == 3, "Both", 
               ifelse(sex == 2, "M", 
               ifelse(sex == 1, "F", "U")))
