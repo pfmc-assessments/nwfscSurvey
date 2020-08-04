@@ -67,7 +67,7 @@ n = GetN.fn(dir=getwd(), dat = len, type = "length", species = "shelfrock", prin
 
 # Expand and format length composition data for SS
 LFs <- SurveyLFs.fn(dir = getwd(), datL = len, datTows = catch,  
-                    strat.df = strata, lgthBins = len.bins, gender = 3, 
+                    strat.df = strata, lgthBins = len.bins, sex = 3, 
                     sexRatioStage = 2, sexRatioUnsexed = 0.5, maxSizeUnsexed = 26, 
                     nSamps = n, fleet = 7)
 
@@ -92,7 +92,7 @@ n = GetN.fn(dir = getwd(), dat = age, type = "age", species = "shelfrock", print
 Ages <- SurveyAFs.fn(dir = getwd(), datA = age, datTows = catch,  
                      strat.df = strata, ageBins = age.bins, 
                      sexRatioStage = 2, sexRatioUnsexed = 0.50, maxSizeUnsexed = 5, 
-                     gender = 3, nSamps = n, fleet = 7)
+                     sex = 3, nSamps = n, fleet = 7)
 
 
 
