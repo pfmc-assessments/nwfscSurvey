@@ -6,8 +6,13 @@
 The website is: https://www.nwfsc.noaa.gov/data
 This function can be used to pull haul data and associated covariates}
 \usage{
-PullHaul.fn(YearRange = c(1000, 5000), SurveyName = NULL,
-  SaveFile = FALSE, Dir = NULL, verbose = TRUE)
+PullHaul.fn(
+  YearRange = c(1000, 5000),
+  SurveyName = NULL,
+  SaveFile = FALSE,
+  Dir = NULL,
+  verbose = TRUE
+)
 }
 \arguments{
 \item{YearRange}{range of years to pull data. Defaults to all years, 1977 - present.}
