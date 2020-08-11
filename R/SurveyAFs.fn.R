@@ -16,7 +16,7 @@
 #' @param lageBins length bins
 #' @param SSout if True the output is in a format pastable into SS dat file
 #' @param meanRatioMethod TRUE/FALSE
-#' @param gender gender value for Stock Synthesis
+#' @param sex sex value for Stock Synthesis
 #' @param NAs2zero change NAs to zeros
 #' @param sexRatioUnsexed sex ratio to apply to any length bins of a certain size or smaller as defined by the maxSizeUnsexed
 #' @param maxSizeUnsexed all sizes below this threshold will assign unsexed fish by sexRatio set equal to 0.50, fish larger than this size will have unsexed fish assigned by the calculated sex ratio in the data.
@@ -39,7 +39,7 @@
 
 
 SurveyAFs.fn <- function(dir = NULL, datA, datTows, strat.vars=c("Depth_m","Latitude_dd"), strat.df=NULL, ageBins=1, SSout=TRUE, meanRatioMethod=TRUE,
-                             gender=3, NAs2zero=T, sexRatioUnsexed=NA, maxSizeUnsexed=NA, sexRatioStage = 1, partition=0, fleet="Enter Fleet", agelow = "Enter",
+                             sex=3, NAs2zero=T, sexRatioUnsexed=NA, maxSizeUnsexed=NA, sexRatioStage = 1, partition=0, fleet="Enter Fleet", agelow = "Enter",
                              agehigh = "Enter", ageErr = "Enter", nSamps="Enter Samps", month="Enter Month", printfolder = "forSS",
                              remove999 = TRUE, outputStage1 = FALSE, verbose = TRUE)  {
 
@@ -50,7 +50,7 @@ SurveyAFs.fn <- function(dir = NULL, datA, datTows, strat.vars=c("Depth_m","Lati
 
     out = SurveyLFs.fn(dir = dir, datL = datL, datTows = datTows, strat.vars = strat.vars, strat.df = strat.df, 
                        lgthBins = lgthBins, SSout = SSout, meanRatioMethod = meanRatioMethod,
-                       gender = gender, NAs2zero= NAs2zero,  sexRatioUnsexed = sexRatioUnsexed, maxSizeUnsexed = maxSizeUnsexed, 
+                       sex = sex, NAs2zero= NAs2zero,  sexRatioUnsexed = sexRatioUnsexed, maxSizeUnsexed = maxSizeUnsexed, 
                        sexRatioStage = sexRatioStage, partition = partition,  fleet = fleet, nSamps = nSamps, 
                        agelow = agelow, agehigh = agehigh, ageErr = ageErr, 
                        month = month, printfolder = printfolder, remove999 = remove999,  outputStage1 = outputStage1,

@@ -19,7 +19,7 @@ ls("package:nwfscSurvey")
 setwd("Set directory here")
 catch = PullCatch.fn(Name = "Pacific ocean perch", SurveyName = "NWFSC.Combo", SaveFile = TRUE, Dir = getwd()) 
 
-bio   = PullBio.fn(Name = "Pacific ocean perch", SurveyName = "NWFSC.Combo", SaveFile = TRUE, Dir = getwd())
+bio  = PullBio.fn(Name = "Pacific ocean perch", SurveyName = "NWFSC.Combo", SaveFile = TRUE, Dir = getwd())
 
 
 head(catch)
@@ -42,7 +42,7 @@ strata = CreateStrataDF.fn(names=c("shallow_s", "mid_s", "deep_s", "shallow_n", 
 
 strata
 
-
+# Look at the number of tows by strata and the number of positive tows for the species.
 CheckStrata.fn(dat = catch, strat.df = strata)
 
 # Calculate the design based index
@@ -51,8 +51,8 @@ biomass = Biomass.fn(dir = getwd(), dat = catch,  strat.df = strata, printfolder
 # Creates a csv file within the "printfolder" that will be saved within the directory location (dir).
 
 # Plot the biomass index
-PlotBio.fn(dir = getwd(), dat = biomass, main = "NWFSC Groundfish Bottom Trawl Survey", dopng = TRUE)
-PlotBioStrata.fn(dir = getwd(), dat = biomass, main = "NWFSC Groundfish Bottom Trawl Survey", mfrow.in = c(3,2), gap = 0.01, sameylim = TRUE, ylim = c(0, 22), dopng = TRUE)
+PlotBio.fn(dir = getwd(), dat = biomass, main = "NWFSC WCBBT Survey", dopng = TRUE)
+PlotBioStrata.fn(dir = getwd(), survey.name = "NWFSC_WCGBT_Survey", dat = biomass, mfrow.in = c(3,2), sameylim = TRUE, ylim = c(0, 22), dopng = TRUE)
 
 #============================================================================================
 #Length Biological Data 
@@ -67,9 +67,9 @@ n = GetN.fn(dir=getwd(), dat = len, type = "length", species = "shelfrock", prin
 
 # Expand and format length composition data for SS
 LFs <- SurveyLFs.fn(dir = getwd(), datL = len, datTows = catch,  
-                    strat.df = strata, lgthBins = len.bins, gender = 3, 
+                    strat.df = strata, lgthBins = len.bins, sex = 3, 
                     sexRatioStage = 2, sexRatioUnsexed = 0.5, maxSizeUnsexed = 26, 
-                    nSamps = n)
+                    nSamps = n, fleet = 7)
 
 # The code offers two options for applying the sex ratio based on expansion stage. The sex ratio will be
 # applied based on a tow basis first if sexRatioStage = 1. The other option applies the sex ratio to the
@@ -77,11 +77,20 @@ LFs <- SurveyLFs.fn(dir = getwd(), datL = len, datTows = catch,
 # NWFSC combo survey data in the past).
 
 
-PlotFreqData.fn(dir = getwd(), dat = LFs, main = "NWFSC Groundfish Bottom Trawl Survey", ylim=c(0, max(len.bins) + 4), yaxs="i", ylab="Length (cm)", dopng = TRUE)
-PlotSexRatio.fn(dir = getwd(), dat = len, data.type = "length", dopng = TRUE, main = "NWFSC Groundfish Bottom Trawl Survey")
+PlotFreqData.fn(dir = getwd(), dat = LFs, main = "NWFSC WCGBT Survey", ylim=c(0, max(len.bins) + 4), yaxs="i", ylab="Length (cm)", dopng = TRUE)
+PlotSexRatio.fn(dir = getwd(), dat = len, data.type = "length", dopng = TRUE, main = "NWFSC WCGBT Survey")
 
 #============================================================================================
-#Length Biological Data 
+#Length Biological Data without expansion 
+#============================================================================================
+
+lengths <- UnexpandedLFs.fn(dir = getwd(),
+                           datL = len,
+                           lgthBins = len.bins,
+                           sex = 3 ) 
+
+#============================================================================================
+#Age Biological Data 
 #============================================================================================
 age = bio
 age.bins = 1:40
@@ -92,13 +101,22 @@ n = GetN.fn(dir = getwd(), dat = age, type = "age", species = "shelfrock", print
 Ages <- SurveyAFs.fn(dir = getwd(), datA = age, datTows = catch,  
                      strat.df = strata, ageBins = age.bins, 
                      sexRatioStage = 2, sexRatioUnsexed = 0.50, maxSizeUnsexed = 5, 
-                     gender = 3, nSamps = n)
+                     sex = 3, nSamps = n, fleet = 7)
 
 
 
-PlotFreqData.fn(dir = getwd(), dat = Ages, main = "NWFSC Groundfish Bottom Trawl Survey", ylim=c(0, max(age.bins) + 2), yaxs="i", ylab="Age (yr)", dopng=TRUE)
-PlotVarLengthAtAge.fn(dir = getwd(), dat = age, main = "NWFSC Groundfish Bottom Trawl Survey", dopng = TRUE) 
-PlotSexRatio.fn(dir = getwd(), dat = age, data.type = "age", dopng = TRUE, main = "NWFSC Groundfish Bottom Trawl Survey")
+PlotFreqData.fn(dir = getwd(), dat = Ages, main = "NWFSC WCGBT Survey", ylim=c(0, max(age.bins) + 2), yaxs="i", ylab="Age (yr)", dopng=TRUE)
+PlotVarLengthAtAge.fn(dir = getwd(), dat = age, main = "NWFSC WCGBT Survey", dopng = TRUE) 
+PlotSexRatio.fn(dir = getwd(), dat = age, data.type = "age", dopng = TRUE, main = "NWFSC WCGBT Survey")
+
+#============================================================================================
+#Age Biological Data without Expansion
+#============================================================================================
+
+Ages <- UnexpandedAFs.fn(dir = getwd(),
+                        datA = age,
+                        ageBins = age.bins,
+                        sex = 3 ) 
 
 #============================================================================================
 # Conditional Ages
