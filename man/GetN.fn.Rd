@@ -7,8 +7,15 @@ based on Stewart, I.J. and O.W Hamel 2014.
 Bootstrapping of sample size for legth- or age-composition data used in stock assessment
 Canadian Journal of Fishery and Aquatic Science, 71: 581-588.}
 \usage{
-GetN.fn(dir = NULL, dat, type, species = NULL, printfolder = "forSS",
-  verbose = TRUE)
+GetN.fn(
+  dir = NULL,
+  dat,
+  type,
+  species = NULL,
+  printfolder = "forSS",
+  output = NULL,
+  verbose = TRUE
+)
 }
 \arguments{
 \item{dir}{directory}
@@ -18,6 +25,9 @@ GetN.fn(dir = NULL, dat, type, species = NULL, printfolder = "forSS",
 \item{species}{species specific value to determine the number of unique samples per tow (flatfish, shelfrock, sloperock, thorny, others, all)}
 
 \item{printfolder}{name of the folder to create and save files. Location will be paste0(dir, printfolder)}
+
+\item{output}{default = NULL will return only a vector of samples sizes, summary will return a table of observations
+by year and sex}
 
 \item{verbose}{opt to print out message statements}
 

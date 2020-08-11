@@ -4,8 +4,15 @@
 \alias{PlotSexRatio.fn}
 \title{Function to plot sex ratio}
 \usage{
-PlotSexRatio.fn(dir, dat, data.type = "length", main = NULL,
-  circleSize = 0.1, dopng = FALSE, ...)
+PlotSexRatio.fn(
+  dir,
+  dat,
+  data.type = "length",
+  main = NULL,
+  circleSize = 0.1,
+  dopng = FALSE,
+  ...
+)
 }
 \arguments{
 \item{dir}{directory location for saving the png}

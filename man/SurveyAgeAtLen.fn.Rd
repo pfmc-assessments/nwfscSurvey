@@ -12,12 +12,26 @@ lgthBins is either the interval between length bins or the actual length bins
 note that 0 and Inf are tacked on the ends to account for lengths and ages outside the interval. You may want to add these in to first and last bin.
 I assume all fish are sexed for age data, thus do not apply sex ratios for unsexed fish}
 \usage{
-SurveyAgeAtLen.fn(dir = NULL, datAL, datTows, strat.vars = c("Depth_m",
-  "Latitude_dd"), strat.df = NULL, lgthBins = 1, ageBins = 1,
-  SSout = TRUE, meanRatioMethod = TRUE, raw = TRUE,
-  NAs2zero = TRUE, month = "Enter Month", fleet = "Enter Fleet",
-  partition = "Enter Partition", ageErr = "Enter Age Error",
-  returnSamps = FALSE, printfolder = "forSS", verbose = TRUE)
+SurveyAgeAtLen.fn(
+  dir = NULL,
+  datAL,
+  datTows,
+  strat.vars = c("Depth_m", "Latitude_dd"),
+  strat.df = NULL,
+  lgthBins = 1,
+  ageBins = 1,
+  SSout = TRUE,
+  meanRatioMethod = TRUE,
+  raw = TRUE,
+  NAs2zero = TRUE,
+  month = "Enter Month",
+  fleet = "Enter Fleet",
+  partition = "Enter Partition",
+  ageErr = "Enter Age Error",
+  returnSamps = FALSE,
+  printfolder = "forSS",
+  verbose = TRUE
+)
 }
 \arguments{
 \item{dir}{directory this is where the output files will be saved}

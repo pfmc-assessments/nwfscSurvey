@@ -4,7 +4,7 @@
 \alias{StrataAreas.fn}
 \title{Determine strata area.}
 \usage{
-StrataAreas.fn(strat.df, df = SA3, convertFactor = 100)
+StrataAreas.fn(strat.df, df = SA3, convertFactor = 0.01)
 }
 \arguments{
 \item{strat.df}{A dataframe describing the strata name, area, and
