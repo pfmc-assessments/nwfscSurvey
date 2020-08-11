@@ -81,7 +81,16 @@ PlotFreqData.fn(dir = getwd(), dat = LFs, main = "NWFSC WCGBT Survey", ylim=c(0,
 PlotSexRatio.fn(dir = getwd(), dat = len, data.type = "length", dopng = TRUE, main = "NWFSC WCGBT Survey")
 
 #============================================================================================
-#Length Biological Data 
+#Length Biological Data without expansion 
+#============================================================================================
+
+lengths <- UnexpandedLFs.fn(dir = getwd(),
+                           datL = len,
+                           lgthBins = len.bins,
+                           sex = 3 ) 
+
+#============================================================================================
+#Age Biological Data 
 #============================================================================================
 age = bio
 age.bins = 1:40
@@ -99,6 +108,15 @@ Ages <- SurveyAFs.fn(dir = getwd(), datA = age, datTows = catch,
 PlotFreqData.fn(dir = getwd(), dat = Ages, main = "NWFSC WCGBT Survey", ylim=c(0, max(age.bins) + 2), yaxs="i", ylab="Age (yr)", dopng=TRUE)
 PlotVarLengthAtAge.fn(dir = getwd(), dat = age, main = "NWFSC WCGBT Survey", dopng = TRUE) 
 PlotSexRatio.fn(dir = getwd(), dat = age, data.type = "age", dopng = TRUE, main = "NWFSC WCGBT Survey")
+
+#============================================================================================
+#Age Biological Data without Expansion
+#============================================================================================
+
+Ages <- UnexpandedAFs.fn(dir = getwd(),
+                        datA = age,
+                        ageBins = age.bins,
+                        sex = 3 ) 
 
 #============================================================================================
 # Conditional Ages
