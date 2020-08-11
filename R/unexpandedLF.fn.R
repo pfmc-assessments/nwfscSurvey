@@ -4,16 +4,12 @@
 #' @param dir directory this is where the output files will be saved
 #' @param datL the read in length comps by the PullBio.fn function
 #' @param lgthBins length bins
-#' @param SSout TRUE/FALSE if True the output is in a format pastable into SS dat file
-#' @param sex (0, 1, 2, 3) gender value for Stock Synthesis
-#' @param NAs2zero TRUE/FALSE change NAs to zeros
-#' @param sexRatioUnsexed sex ratio to apply to any length bins of a certain size or smaller as defined by the maxSizeUnsexed
-#' @param maxSizeUnsexed all sizes below this threshold will assign unsexed fish by sexRatio set equal to 0.50, fish larger than this size will have unsexed fish assigned by the calculated sex ratio in the data.
+#' @param ageErr
+#' @param agelow
+#' @param agehigh
+#' @param sex (0 = unsexed, 1 = females, 2 = males, 3 = females then males) sex value for Stock Synthesis
 #' @param partition partition for Stock Synthesis
 #' @param fleet fleet number
-#' @param agelow value for SS -1
-#' @param agehigh value for SS -1
-#' @param ageErr age error vector to apply
 #' @param nSamps effective sample size for Stock Synthesis
 #' @param month month the samples were collected
 #' @param printfolder folder where the length comps will be saved
@@ -23,17 +19,28 @@
 #' @author Chantel Wetzel
 #' @export 
 
-unexpandedLFs.fn <- function(dir = NULL, datL, lgthBins=1, SSout=TRUE, sexRatioUnsexed=NA, maxSizeUnsexed=NA,
-                         sex = 3,  partition=0, fleet="Enter Fleet", agelow = "Enter", agehigh = "Enter", ageErr = "Enter",
-                         nSamps="Enter Samps", month="Enter Month", printfolder = "forSS", verbose = TRUE)  {
+UnexpandedLFs.fn <- function(dir = NULL, datL, lgthBins = 1, sex = 3,  partition = 0, fleet = "Enter Fleet",  
+                             ageErr = "NA", agelow = -1, agehigh = -1, 
+                             nSamps="Enter Samps", month="Enter Month", printfolder = "forSS", verbose = TRUE)  {
+
+    if(is.null(dir) & verbose){ cat("\nDirectory not specified and csv will not be written.\n") }
+    if(!is.null(dir)){
+        plotdir <- file.path(dir, printfolder)
+        plotdir.isdir <- file.info(plotdir)$isdir
+        if(is.na(plotdir.isdir) | !plotdir.isdir){
+          dir.create(plotdir)
+        }
+    }
+
+    # Check to see if user is doing ages or lengths
+    check = sum(datL$Length_cm, na.rm = TRUE) == sum(datL$Age, na.rm = TRUE)
+    comp.type = ifelse(check, "Age", "Length")
 
     totRows  <- nrow(datL)
     datL     <- datL[!is.na(datL$Length_cm),]
     if (verbose){
     cat("There are ", nrow(datL)," records kept out of",totRows,"records after removing missing records.\n")}
 
-    cat("Not currently finished.")
-    break()
    
     #set up length bins
     if(length(lgthBins)==1) {
@@ -47,21 +54,21 @@ unexpandedLFs.fn <- function(dir = NULL, datL, lgthBins=1, SSout=TRUE, sexRatioU
 
     # if there are NA sexes replace them with U
     if (sum(is.na(datL$Sex)) > 0) {    
-        datL[is.na(datL$Sex),"Sex"] = "U"  } 
+        datL[is.na(datL$Sex),"Sex"] = "U"  
+    } 
 
     # Create an assigned sex column
     datL$sex = datL$Sex  
 
     # Assign "U" to sex based on sex ratio
-    datL$sexRatio = NA
-    temp = table(datL$Length_cm, datL$Sex)
-    ratio = temp[,"F"] / (temp[,"F"] + temp[,"M"])
-    ratio[is.na(ratio)] <- 0
-    if(length(sexRatioUnsexed)==1 & !is.na(sexRatioUnsexed)) {
-        datL$sexRatio[datL$Length_cm <= maxSizeUnsexed] <- sexRatioUnsexed
-    }
+    # datL$sexRatio = NA
+    # temp = table(datL$Length_cm, datL$Sex)
+    # ratio = temp[,"F"] / (temp[,"F"] + temp[,"M"])
+    # ratio[is.na(ratio)] <- 0
+    # if(length(sexRatioUnsexed)==1 & !is.na(sexRatioUnsexed)) {
+    #     datL$sexRatio[datL$Length_cm <= maxSizeUnsexed] <- sexRatioUnsexed
+    # }
     
-
     sex_out = ifelse(sex == 3, "Both", 
               ifelse(sex == 2, "M", 
               ifelse(sex == 1, "F", "U")))
@@ -97,8 +104,17 @@ unexpandedLFs.fn <- function(dir = NULL, datL, lgthBins=1, SSout=TRUE, sexRatioU
         } # end Which loop
     } # end year loop
     colnames(Results)[-c(1:6)] = paste(rep(sex_out, each = length(lgthBins)), lgthBins, sep="-")
-    write.csv(Results, file=paste(dir, "Survey_notExpanded_Length_comp_Lbin=", lgthBins[1], "-", max(lgthBins),".csv",sep=""))    
-    colnames(Results) = c("Year", lgthBins)
 
-    return(Results)
+    # Write the files including the -999 column
+    if (comp.type == "Length") {
+        out.comps = Results      
+    }
+    if (comp.type == "Age") {
+        out.comps = cbind(Results[,1:5], ageErr, agelow, agehigh, Results[ , 6:dim(Results)[2]])
+    }
+
+    if(!is.null(dir)){ 
+        write.csv(out.comps, file = file.path(plotdir, "Survey_notExpanded_", comp.type, "_comp_Sex_", sex,"_bin=", lgthBins[1], "-", max(lgthBins),".csv",sep=""))    
+    }
+    return(out.comps)
 }

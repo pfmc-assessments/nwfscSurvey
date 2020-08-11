@@ -1,5 +1,5 @@
 #' Pull biological data from the NWFSC data warehouse
-#' The website is: https://www.nwfsc.noaa.gov/data
+#' The website is: https://www.webapps.nwfsc.noaa.gov/data
 #' This function can be used to pull a single species or all observed species
 #' In order to pull all species leave Name = NULL and SciName = NULL
 #'
@@ -58,7 +58,7 @@ PullBio.fn <- function (Name = NULL, SciName = NULL, YearRange = c(1000, 5000), 
         YearRange <- c(YearRange, YearRange)    }
 
     Vars <- c("project", "trawl_id", var.name, "year", "vessel", "pass",
-        "tow", "datetime_utc_iso","depth_m", "weight_kg",
+        "tow", "datetime_utc_iso","depth_m", "weight_kg",  "ageing_laboratory_dim$laboratory",
         "length_cm", "width_cm", "sex", "age_years", "latitude_dd", "longitude_dd",
         "standard_survey_dim$standard_survey_age_indicator",
         "standard_survey_dim$standard_survey_length_or_width_indicator",
@@ -66,12 +66,12 @@ PullBio.fn <- function (Name = NULL, SciName = NULL, YearRange = c(1000, 5000), 
         "operation_dim$legacy_performance_code")
 
     Vars.short = c("project", "trawl_id", var.name, "year", "vessel", "pass",
-        "tow", "datetime_utc_iso","depth_m", "weight_kg",
+        "tow", "datetime_utc_iso","depth_m", "weight_kg", "ageing_lab",
         "length_cm", "width_cm", "sex", "age_years", "latitude_dd", "longitude_dd")
 
 
     UrlText  <- paste0(
-        "https://www.nwfsc.noaa.gov/data/api/v1/source/trawl.individual_fact/selection.json?filters=project=", paste(strsplit(project, " ")[[1]], collapse = "%20"),",",
+        "https://www.webapps.nwfsc.noaa.gov/data/api/v1/source/trawl.individual_fact/selection.json?filters=project=", paste(strsplit(project, " ")[[1]], collapse = "%20"),",",
         "station_invalid=0,",
         "performance=Satisfactory,",
         "depth_ftm>=30,depth_ftm<=700,",
@@ -90,7 +90,7 @@ PullBio.fn <- function (Name = NULL, SciName = NULL, YearRange = c(1000, 5000), 
 
     DataPull = NULL
     if (verbose){
-        message("Pulling biological data. This can take up to ~ 30 seconds.")}
+        message("Pulling biological data. This can take up to ~ 30 seconds (or more).")}
     DataPull <- try(jsonlite::fromJSON(UrlText))
 
     if(is.data.frame(DataPull))
@@ -117,6 +117,8 @@ PullBio.fn <- function (Name = NULL, SciName = NULL, YearRange = c(1000, 5000), 
             DataPull = DataPull[keep,]
         }
 
+        find = colnames(DataPull) == "ageing_laboratory_dim$laboratory"
+        colnames(DataPull)[find] = "ageing_lab"
         # Remove the extra columns now that they are not needed
         DataPull = DataPull[,Vars.short]
     }
@@ -125,7 +127,7 @@ PullBio.fn <- function (Name = NULL, SciName = NULL, YearRange = c(1000, 5000), 
     if (SurveyName == "Triennial"){
 
         UrlText <- paste0(
-            "https://www.nwfsc.noaa.gov/data/api/v1/source/trawl.triennial_length_fact/selection.json?filters=project=",
+            "https://www.webapps.nwfsc.noaa.gov/data/api/v1/source/trawl.triennial_length_fact/selection.json?filters=project=",
             paste(strsplit(project, " ")[[1]], collapse = "%20"),",",
             "station_invalid=0,",
             "performance=Satisfactory,",
@@ -175,12 +177,11 @@ PullBio.fn <- function (Name = NULL, SciName = NULL, YearRange = c(1000, 5000), 
                          Trawl_id = trawl_id, Year = year, Vessel = vessel, Project = project, Pass = pass,
                          Tow = tow, Date = datetime_utc_iso, Depth_m = depth_m, Weight = weight_kg,
                          Length_cm = length_cm, Width_cm = width_cm, Sex = sex, Age = age_years,
+                         Ageing_Lab = ageing_lab,
                          Latitude_dd = latitude_dd, Longitude_dd = longitude_dd)
 
         names(Data)[which(names(Data)=="scientific_name")] = "Scientific_name"
         names(Data)[which(names(Data)=="common_name")] = "Common_name"
-        #Data <- rename_columns(DataPull, newname = c("Trawl_id", "Year", "Vessel", "Project", "Pass", new.name, "Tow", "Date", "Depth_m", "Weight", "Length_cm", "Width_cm", "Sex", "Age", "Latitude_dd", "Longitude_dd"))
-        Data <- Data[, c("Trawl_id", "Year", "Vessel", "Project", "Pass", "Tow", "Date", "Depth_m", new.name, "Weight", "Length_cm", "Width_cm", "Sex", "Age", "Latitude_dd", "Longitude_dd")]
         Data$Date <- chron::chron(format(as.POSIXlt(Data$Date, format = "%Y-%m-%dT%H:%M:%S"), "%Y-%m-%d"), format = "y-m-d", out.format = "YYYY-m-d")
         Data$Trawl_id  <- as.character(Data$Trawl_id)
         Data$Project   <- projectShort

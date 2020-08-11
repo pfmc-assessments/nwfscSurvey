@@ -31,6 +31,7 @@ PlotSexRatio.fn <-function(dir, dat, data.type = "length",  main = NULL, circleS
     nobs = temp[,"F"] + temp[,"M"]
     par(mfrow = c(1,1))
     plot(x = names(ratioF), y = ratioF, type="l", col="red", xlab=axis.name, main = main, ylab="Fraction female",...)
+    abline(h = 0.50, col = "grey", lty = 2, lwd = 2)
     symbols(x = names(ratioF), y = ratioF, circles=nobs, inches=circleSize, fg="red", bg=rgb(1,0,0,alpha=0.5), add=T)
 
     if (dopng) { dev.off()}
