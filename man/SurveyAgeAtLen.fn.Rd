@@ -5,7 +5,7 @@
 \title{Calculates proportion of age at length and reformats into SS format
 Uses raw numbers at length, assuming that is a random sample conditioned on length and sex.
 To use expanded numbers (up to strata areas), set raw=F
-Only gender codes 1 and 2 and puts males and females on separate lines because the age@L is conditioned on sex (a sample of females of length 25cm, for example)
+Only sex codes 1 and 2 and puts males and females on separate lines because the age@L is conditioned on sex (a sample of females of length 25cm, for example)
 Gender=1: females only. Male values ignored
 Gender=2: males only. Female values ignored.
 lgthBins is either the interval between length bins or the actual length bins
@@ -20,13 +20,14 @@ SurveyAgeAtLen.fn(
   strat.df = NULL,
   lgthBins = 1,
   ageBins = 1,
+  sex = 3,
   SSout = TRUE,
   meanRatioMethod = TRUE,
   raw = TRUE,
   NAs2zero = TRUE,
   month = "Enter Month",
   fleet = "Enter Fleet",
-  partition = "Enter Partition",
+  partition = 0,
   ageErr = "Enter Age Error",
   returnSamps = FALSE,
   printfolder = "forSS",
@@ -47,6 +48,8 @@ SurveyAgeAtLen.fn(
 \item{lgthBins}{length bins}
 
 \item{ageBins}{age bins}
+
+\item{sex}{sex (0, 1, 2, 3) sex value for Stock Synthesis}
 
 \item{SSout}{TRUE/FALSE return comps formatted for SS or in a raw form}
 
@@ -74,7 +77,7 @@ SurveyAgeAtLen.fn(
 Calculates proportion of age at length and reformats into SS format
 Uses raw numbers at length, assuming that is a random sample conditioned on length and sex.
 To use expanded numbers (up to strata areas), set raw=F
-Only gender codes 1 and 2 and puts males and females on separate lines because the age@L is conditioned on sex (a sample of females of length 25cm, for example)
+Only sex codes 1 and 2 and puts males and females on separate lines because the age@L is conditioned on sex (a sample of females of length 25cm, for example)
 Gender=1: females only. Male values ignored
 Gender=2: males only. Female values ignored.
 lgthBins is either the interval between length bins or the actual length bins

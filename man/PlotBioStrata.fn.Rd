@@ -12,7 +12,8 @@ PlotBioStrata.fn(
   gap = 0.03,
   ylab = "Biomass ('000 mt)",
   xlab = "Year",
-  main = NULL,
+  survey.name = NULL,
+  strata.names = NULL,
   ylim = NULL,
   sameylim = FALSE,
   add = FALSE,
@@ -39,7 +40,9 @@ PlotBioStrata.fn(
 
 \item{xlab}{x-axis text label}
 
-\item{main}{plot label}
+\item{survey.name}{if specified will name the output png file using this name}
+
+\item{strata.names}{custom strata names, if not specified will use the defined names from CreateStrataDF.fn}
 
 \item{ylim}{y-limits}
 

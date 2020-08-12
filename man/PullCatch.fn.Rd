@@ -3,7 +3,7 @@
 \name{PullCatch.fn}
 \alias{PullCatch.fn}
 \title{Pull catch data from the NWFSC data warehouse
-The website is: https://www.nwfsc.noaa.gov/data
+The website is: https://www.webapp.nwfsc.noaa.gov/data
 This function can be used to pull a single species or all observed species
 In order to pull all species leave Name = NULL and SciName = NULL}
 \usage{
@@ -34,7 +34,7 @@ PullCatch.fn(
 }
 \description{
 Pull catch data from the NWFSC data warehouse
-The website is: https://www.nwfsc.noaa.gov/data
+The website is: https://www.webapp.nwfsc.noaa.gov/data
 This function can be used to pull a single species or all observed species
 In order to pull all species leave Name = NULL and SciName = NULL
 }

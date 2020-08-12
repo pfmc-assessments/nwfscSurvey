@@ -7,6 +7,9 @@
 #' @param sex (0 = unsexed, 1 = females, 2 = males, 3 = females then males) sex value for Stock Synthesis
 #' @param partition partition for Stock Synthesis
 #' @param fleet fleet number
+#' @param ageErr Number of ageing error matrix for SS
+#' @param agelow age bin for SS (default value of -1)
+#' @param agehigh age bin for SS (default value of -1)
 #' @param nSamps effective sample size for Stock Synthesis
 #' @param month month the samples were collected
 #' @param printfolder folder where the length comps will be saved

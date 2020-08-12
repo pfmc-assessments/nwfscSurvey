@@ -3,7 +3,7 @@
 \name{PullBio.fn}
 \alias{PullBio.fn}
 \title{Pull biological data from the NWFSC data warehouse
-The website is: https://www.nwfsc.noaa.gov/data
+The website is: https://www.webapps.nwfsc.noaa.gov/data
 This function can be used to pull a single species or all observed species
 In order to pull all species leave Name = NULL and SciName = NULL}
 \usage{
@@ -34,7 +34,7 @@ PullBio.fn(
 }
 \description{
 Pull biological data from the NWFSC data warehouse
-The website is: https://www.nwfsc.noaa.gov/data
+The website is: https://www.webapps.nwfsc.noaa.gov/data
 This function can be used to pull a single species or all observed species
 In order to pull all species leave Name = NULL and SciName = NULL
 }

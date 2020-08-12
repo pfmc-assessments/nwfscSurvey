@@ -20,7 +20,7 @@ SurveyAFs.fn(
   ageBins = 1,
   SSout = TRUE,
   meanRatioMethod = TRUE,
-  gender = 3,
+  sex = 3,
   NAs2zero = T,
   sexRatioUnsexed = NA,
   maxSizeUnsexed = NA,
@@ -53,7 +53,7 @@ SurveyAFs.fn(
 
 \item{meanRatioMethod}{TRUE/FALSE}
 
-\item{gender}{gender value for Stock Synthesis}
+\item{sex}{sex value for Stock Synthesis}
 
 \item{NAs2zero}{change NAs to zeros}
 

@@ -17,7 +17,7 @@ SurveyLFs.fn(
   lgthBins = 1,
   SSout = TRUE,
   meanRatioMethod = TRUE,
-  gender = 3,
+  sex = 3,
   NAs2zero = T,
   sexRatioUnsexed = NA,
   maxSizeUnsexed = NA,
@@ -52,7 +52,7 @@ SurveyLFs.fn(
 
 \item{meanRatioMethod}{TRUE/FALSE}
 
-\item{gender}{(0, 1, 2, 3) gender value for Stock Synthesis}
+\item{sex}{(0, 1, 2, 3) sex value for Stock Synthesis}
 
 \item{NAs2zero}{TRUE/FALSE change NAs to zeros}
 

@@ -4,9 +4,9 @@
 #' @param dir directory this is where the output files will be saved
 #' @param datL the read in length comps by the PullBio.fn function
 #' @param lgthBins length bins
-#' @param ageErr
-#' @param agelow
-#' @param agehigh
+#' @param ageErr Number of ageing error matrix for SS
+#' @param agelow age bin for SS (default value of -1)
+#' @param agehigh age bin for SS (default value of -1)
 #' @param sex (0 = unsexed, 1 = females, 2 = males, 3 = females then males) sex value for Stock Synthesis
 #' @param partition partition for Stock Synthesis
 #' @param fleet fleet number
