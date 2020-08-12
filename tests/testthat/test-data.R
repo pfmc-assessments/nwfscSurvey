@@ -26,7 +26,7 @@ test_that("PullCatch-multispecies", {
     Dir = NULL, verbose = TRUE)
   expect_is(dat, "data.frame")
   expect_equal(nrow(dat), 351124)
-  expect_equal(length(which(dat$cpue_kg_km2==0)), 331861)
+  expect_equal(length(which(dat$cpue_kg_km2==0)), 331903)
 
 })
 
