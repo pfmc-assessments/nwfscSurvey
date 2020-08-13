@@ -128,7 +128,7 @@ Lengths <- SurveyLFs.fn(dir = getwd(),
                         datTows = catch,
                         strata.df = strata,
                         lgthBins = len.bins, 
-                        gender = 3, 
+                        sex = 3, 
                         ...)
 ```
 The above call will calculate the length frequencies for use in Stock Synthesis and write the files inside the "forSS" folder. The example call does not assign unsexed fish to the sexed length comps but will produce csv files for both the sexed and unsexed fish. If you would like to assign the unsexed fish to a sex based on the sex ratio the user will need to specificy the sex ratio value (sexRatioUnsexed) to use for fish under a specified size (maxSizeUnsexed) where unsexed fish greater than the specified size will be assign based on the sex ratio from other observations. 
@@ -165,7 +165,7 @@ Ages <- SurveyAFs.fn(dir = getwd(),
                      datTows = catch, 
                      strat.df = strata,
                      ageBins = age.bins, 
-                     gender = 3, 
+                     sex = 3, 
                      nSamps = n,
                      ...)
 ```
