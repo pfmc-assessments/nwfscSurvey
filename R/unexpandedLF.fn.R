@@ -114,7 +114,8 @@ UnexpandedLFs.fn <- function(dir = NULL, datL, lgthBins = 1, sex = 3,  partition
     }
 
     if(!is.null(dir)){ 
-        write.csv(out.comps, file = file.path(plotdir, "Survey_notExpanded_", comp.type, "_comp_Sex_", sex,"_bin=", lgthBins[1], "-", max(lgthBins),".csv",sep=""))    
+        write.csv(out.comps, file = file.path(plotdir, 
+            paste0("Survey_notExpanded_", comp.type, "_comp_Sex_", sex,"_bin=", lgthBins[1], "-", max(lgthBins),".csv")))    
     }
     return(out.comps)
 }
