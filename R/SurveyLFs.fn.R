@@ -328,7 +328,7 @@ SurveyLFs.fn <- function(dir = NULL, datL, datTows, strat.vars=c("Depth_m","Lati
     Ls  <- matrix(Ls, nrow = length(L.year), byrow=T,
                   dimnames = list(NULL, paste(c(rep(sex.name[1], length(lgths)), rep(sex.name[2], length(lgths))), lgths, sep="")))
     
-    if (!"Enter Samps" %in% nSamps & length(Ls) != length(nSamps)){
+    if (!"Enter Samps" %in% nSamps & dim(Ls)[1] != length(nSamps)){
         stop("The length of of annual sample sizes input to the function do not match the years with length/age data.")
     }
     
