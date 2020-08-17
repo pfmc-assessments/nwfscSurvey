@@ -1,5 +1,5 @@
 #' Survey name matching function used when pull from the data warehouse
-#' The website is: https://www.nwfsc.noaa.gov/data
+#' The website is: https://www.webapp.nwfsc.noaa.gov/data
 #' 
 #' 
 #' @author Chantel Wetzel based on code by John Wallace
@@ -20,6 +20,7 @@ createMatrix <-function(){
                      "NWFSC.Hypoxia", 'Hypoxia Study',
                      "NWFSC.Santa.Barb.Basin", 'Santa Barbara Basin Study',
                      "NWFSC.Shelf.Rockfish", 'Shelf Rockfish [2004-2015]',
+                     "NWFSC.Hook.Line", "Hook and Line",
                      "NWFSC.Video", 'Video Study'),
                      ncol = 2, 
                      byrow = TRUE)

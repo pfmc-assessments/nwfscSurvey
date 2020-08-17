@@ -6,8 +6,9 @@
 #' @param Name  common name of species data to pull from the data warehouse
 #' @param SciName scientific name of species data to pull from the data warehouse
 #' @param YearRange range of years to pull data
-#' @param SurveyName survey to pull the data for the options are: Triennial, AFSC.Slope, NWFSC.Combo, NWFSC.Slope, NWFSC.Shelf, NWFSC.Hypoxia, NWFSC.Santa.Barb.Basin, NWFSC.Shelf.Rockfish, NWFSC.Video
-#' @param SaveFile option to save the file to the directory
+#' @param SurveyName survey to pull the data for the options are: 
+#' Triennial, AFSC.Slope, NWFSC.Combo, NWFSC.Slope, NWFSC.Shelf, NWFSC.Hypoxia, 
+#' NWFSC.Santa.Barb.Basin, NWFSC.Shelf.Rockfish (NWFSC.Hook.Line but both are not working), NWFSC.Video#' @param SaveFile option to save the file to the directory
 #' @param Dir directory where the file should be saved
 #' @param verbose opt to print out message statements
 #'
@@ -28,6 +29,9 @@ PullBio.fn <- function (Name = NULL, SciName = NULL, YearRange = c(1000, 5000), 
 {
     # increase the timeout period to avoid errors when pulling data
     options(timeout= 4000000)
+    if (SurveyName %in% c("NWFSC.Shelf.Rockfish", "NWFSC.Hook.Line")){
+    stop ("The bio pull currently does not work for hook & line data. Pull directly from the warehouse https://www.webapp.nwfsc.noaa.gov/data")}
+
 
     if(SaveFile){
         if(is.null(Dir)){
@@ -57,6 +61,7 @@ PullBio.fn <- function (Name = NULL, SciName = NULL, YearRange = c(1000, 5000), 
     if (length(YearRange) == 1) {
         YearRange <- c(YearRange, YearRange)    }
 
+    if( projectShort != "NWFSC.Hook.Line"){
     Vars <- c("project", "trawl_id", var.name, "year", "vessel", "pass",
         "tow", "datetime_utc_iso","depth_m", "weight_kg",  "ageing_laboratory_dim$laboratory",
         "length_cm", "width_cm", "sex", "age_years", "latitude_dd", "longitude_dd",
@@ -68,6 +73,11 @@ PullBio.fn <- function (Name = NULL, SciName = NULL, YearRange = c(1000, 5000), 
     Vars.short = c("project", "trawl_id", var.name, "year", "vessel", "pass",
         "tow", "datetime_utc_iso","depth_m", "weight_kg", "ageing_lab",
         "length_cm", "width_cm", "sex", "age_years", "latitude_dd", "longitude_dd")
+    }else{
+    Vars <- Vars.short <- c(var.name, "age_years","drop_latitude_dim$latitude_in_degrees",)
+
+    }
+
 
 
     UrlText  <- paste0(
@@ -81,7 +91,7 @@ PullBio.fn <- function (Name = NULL, SciName = NULL, YearRange = c(1000, 5000), 
 
     if (Species == "pull all"){
         UrlText  <- paste0(
-            "https://www.nwfsc.noaa.gov/data/api/v1/source/trawl.individual_fact/selection.json?filters=project=", paste(strsplit(project, " ")[[1]], collapse = "%20"),",",
+            "https://www.webapps.nwfsc.noaa.gov/data/api/v1/source/trawl.individual_fact/selection.json?filters=project=", paste(strsplit(project, " ")[[1]], collapse = "%20"),",",
             "station_invalid=0,",
             "performance=Satisfactory,", "depth_ftm>=30,depth_ftm<=700,",
             "year>=",  YearRange[1], ",year<=", YearRange[2],

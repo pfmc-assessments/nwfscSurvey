@@ -3,8 +3,9 @@
 #' This function can be used to pull haul data and associated covariates
 #'
 #' @param YearRange range of years to pull data. Defaults to all years, 1977 - present.
-#' @param SurveyName survey to pull the data for the options are: Triennial, AFSC.Slope, NWFSC.Combo, NWFSC.Slope, NWFSC.Shelf, NWFSC.Hypoxia, NWFSC.Santa.Barb.Basin, NWFSC.Shelf.Rockfish, NWFSC.Video. If NULL, all are used.
-#' @param SaveFile option to save the file to the directory
+#' @param SurveyName survey to pull the data for the options are: 
+#' Triennial, AFSC.Slope, NWFSC.Combo, NWFSC.Slope, NWFSC.Shelf, NWFSC.Hypoxia, 
+#' NWFSC.Santa.Barb.Basin, NWFSC.Shelf.Rockfish (NWFSC.Hook.Line but both are not working), NWFSC.Video#' @param SaveFile option to save the file to the directory
 #' @param Dir directory where the file should be saved
 #' @param verbose opt to print out message statements
 #'
