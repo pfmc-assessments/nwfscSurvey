@@ -63,6 +63,10 @@ PullCatch.fn <- function (Name = NULL, SciName = NULL, YearRange = c(1000, 5000)
     if (length(YearRange) == 1) {
         YearRange <- c(YearRange, YearRange)    }
 
+    # Change start year for the triennial survey so the default is 1980 (eliminating 1977)
+    if (SurveyName == "Triennial" & YearRange[1] == 1000) { 
+        YearRange[1] = 1980 }
+
     # Pull data for the specific species for the following variables
     Vars <- c(var.name, "year", "subsample_count", "subsample_wt_kg","project", "cpue_kg_per_ha_der",
             "total_catch_numbers", "total_catch_wt_kg", "vessel", "tow", "operation_dim$legacy_performance_code",

@@ -61,6 +61,10 @@ PullBio.fn <- function (Name = NULL, SciName = NULL, YearRange = c(1000, 5000), 
     if (length(YearRange) == 1) {
         YearRange <- c(YearRange, YearRange)    }
 
+    # Change start year for the triennial survey so the default is 1980 (eliminating 1977)
+    if (SurveyName == "Triennial" & YearRange[1] == 1000) { 
+        YearRange[1] = 1980 }
+
     if( projectShort != "NWFSC.Hook.Line"){
     Vars <- c("project", "trawl_id", var.name, "year", "vessel", "pass",
         "tow", "datetime_utc_iso","depth_m", "weight_kg",  "ageing_laboratory_dim$laboratory",
