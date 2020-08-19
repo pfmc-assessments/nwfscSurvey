@@ -22,7 +22,7 @@
 #' haul_dat = PullHaul.fn()
 #'}
 
-PullHaul.fn <- function (YearRange = c(1000, 5000), SurveyName = NULL, SaveFile = FALSE, Dir = NULL, verbose = TRUE)
+PullHaul.fn <- function (YearRange = c(1980, 5000), SurveyName = NULL, SaveFile = FALSE, Dir = NULL, verbose = TRUE)
 {
   # increase the timeout period to avoid errors when pulling data
   options(timeout= 4000000)
@@ -60,9 +60,6 @@ PullHaul.fn <- function (YearRange = c(1000, 5000), SurveyName = NULL, SaveFile 
   if (length(YearRange) == 1) {
     YearRange <- c(YearRange, YearRange)    }
 
-  # Change start year for the triennial survey so the default is 1980 (eliminating 1977)
-  if (SurveyName == "Triennial" & YearRange[1] == 1000) { 
-    YearRange[1] = 1980 }
 
   Vars <- c("area_swept_ha_der", "date_dim.year", "date_yyyymmdd",
     "depth_hi_prec_m","door_width_m_der","fluorescence_at_surface_mg_per_m3_der",

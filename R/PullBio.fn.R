@@ -25,7 +25,7 @@
 #' bio_dat = PullBio.fn(SurveyName = "NWFSC.Combo")
 #'}
 
-PullBio.fn <- function (Name = NULL, SciName = NULL, YearRange = c(1000, 5000), SurveyName = NULL, SaveFile = FALSE, Dir = NULL, verbose = TRUE)
+PullBio.fn <- function (Name = NULL, SciName = NULL, YearRange = c(1980, 5000), SurveyName = NULL, SaveFile = FALSE, Dir = NULL, verbose = TRUE)
 {
     # increase the timeout period to avoid errors when pulling data
     options(timeout= 4000000)
@@ -61,9 +61,6 @@ PullBio.fn <- function (Name = NULL, SciName = NULL, YearRange = c(1000, 5000), 
     if (length(YearRange) == 1) {
         YearRange <- c(YearRange, YearRange)    }
 
-    # Change start year for the triennial survey so the default is 1980 (eliminating 1977)
-    if (SurveyName == "Triennial" & YearRange[1] == 1000) { 
-        YearRange[1] = 1980 }
 
     if( projectShort != "NWFSC.Hook.Line"){
     Vars <- c("project", "trawl_id", var.name, "year", "vessel", "pass",

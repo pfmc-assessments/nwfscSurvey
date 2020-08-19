@@ -26,7 +26,7 @@
 #' dat = PullCatch.fn(SurveyName = "NWFSC.Combo")
 #'}
 
-PullCatch.fn <- function (Name = NULL, SciName = NULL, YearRange = c(1000, 5000), SurveyName = NULL, SaveFile = FALSE, Dir = NULL, verbose = TRUE)
+PullCatch.fn <- function (Name = NULL, SciName = NULL, YearRange = c(1980, 5000), SurveyName = NULL, SaveFile = FALSE, Dir = NULL, verbose = TRUE)
 {
 
   if (SurveyName %in% c("NWFSC.Shelf.Rockfish", "NWFSC.Hook.Line")){
@@ -63,9 +63,6 @@ PullCatch.fn <- function (Name = NULL, SciName = NULL, YearRange = c(1000, 5000)
     if (length(YearRange) == 1) {
         YearRange <- c(YearRange, YearRange)    }
 
-    # Change start year for the triennial survey so the default is 1980 (eliminating 1977)
-    if (SurveyName == "Triennial" & YearRange[1] == 1000) { 
-        YearRange[1] = 1980 }
 
     # Pull data for the specific species for the following variables
     Vars <- c(var.name, "year", "subsample_count", "subsample_wt_kg","project", "cpue_kg_per_ha_der",
