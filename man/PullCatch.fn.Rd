@@ -10,7 +10,7 @@ In order to pull all species leave Name = NULL and SciName = NULL}
 PullCatch.fn(
   Name = NULL,
   SciName = NULL,
-  YearRange = c(1000, 5000),
+  YearRange = c(1980, 5000),
   SurveyName = NULL,
   SaveFile = FALSE,
   Dir = NULL,
@@ -24,7 +24,9 @@ PullCatch.fn(
 
 \item{YearRange}{range of years to pull data}
 
-\item{SurveyName}{survey to pull the data for the options are: Triennial, AFSC.Slope, NWFSC.Combo, NWFSC.Slope, NWFSC.Shelf, NWFSC.Hypoxia, NWFSC.Santa.Barb.Basin, NWFSC.Shelf.Rockfish, NWFSC.Video}
+\item{SurveyName}{survey to pull the data for the options are: 
+Triennial, AFSC.Slope, NWFSC.Combo, NWFSC.Slope, NWFSC.Shelf, NWFSC.Hypoxia, 
+NWFSC.Santa.Barb.Basin, NWFSC.Shelf.Rockfish (NWFSC.Hook.Line but both are not working), NWFSC.Video}
 
 \item{SaveFile}{option to save the file to the directory}
 

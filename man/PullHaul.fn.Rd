@@ -7,7 +7,7 @@ The website is: https://www.webapps.nwfsc.noaa.gov/data
 This function can be used to pull haul data and associated covariates}
 \usage{
 PullHaul.fn(
-  YearRange = c(1000, 5000),
+  YearRange = c(1980, 5000),
   SurveyName = NULL,
   SaveFile = FALSE,
   Dir = NULL,
@@ -17,9 +17,9 @@ PullHaul.fn(
 \arguments{
 \item{YearRange}{range of years to pull data. Defaults to all years, 1977 - present.}
 
-\item{SurveyName}{survey to pull the data for the options are: Triennial, AFSC.Slope, NWFSC.Combo, NWFSC.Slope, NWFSC.Shelf, NWFSC.Hypoxia, NWFSC.Santa.Barb.Basin, NWFSC.Shelf.Rockfish, NWFSC.Video. If NULL, all are used.}
-
-\item{SaveFile}{option to save the file to the directory}
+\item{SurveyName}{survey to pull the data for the options are: 
+Triennial, AFSC.Slope, NWFSC.Combo, NWFSC.Slope, NWFSC.Shelf, NWFSC.Hypoxia, 
+NWFSC.Santa.Barb.Basin, NWFSC.Shelf.Rockfish (NWFSC.Hook.Line but both are not working), NWFSC.Video#' @param SaveFile option to save the file to the directory}
 
 \item{Dir}{directory where the file should be saved}
 
