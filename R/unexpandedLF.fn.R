@@ -105,8 +105,6 @@ UnexpandedLFs.fn <- function(dir = NULL, datL, lgthBins = 1, sex = 3,  partition
     } # end year loop
     colnames(Results)[-c(1:6)] = paste(rep(sex_out, each = length(lgthBins)), lgthBins, sep="-")
 
-    Results[ , 6:dim(Results)[2]] = as.numeric(Results[ , 6:dim(Results)[2]])
-    
     # Write the files including the -999 column
     if (comp.type == "Length") {
         out.comps = Results      
