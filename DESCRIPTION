@@ -3,7 +3,14 @@ Type: Package
 Title: Northwest Fisheries Science Center Survey
 Version: 2.0
 Date: 2018-04-13
-Author: NWFSC
+Authors@R: 
+    c(person(given = c("Chantel", "R."),
+             family = "Wetzel",
+             role = c("aut", "cre"),
+             email = "chantel.wetzel@noaa.gov"),
+      person(given = c("Allan", "C."),
+      		 family = "Hicks",
+      		 role = c("aut")))
 Maintainer: chantel.wetzel <chantel.wetzel@noaa.gov>
 Description: Northwest Fisheries Science Center survey data processing package.
 License: GPL (>=3)
