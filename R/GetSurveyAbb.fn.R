@@ -25,5 +25,5 @@ GetSurveyAbb.fn <- function(surveys = "Combo") {
     lapply(surveys, grep, x = data[, 1], ignore.case = TRUE),
     lapply(surveys, grep, x = data[, 2], ignore.case = TRUE)
   )
-  data[unlist(lapply(index, "[", 1)), 3]
+  data[unlist(lapply(index, "[", 1)), 1]
 }
