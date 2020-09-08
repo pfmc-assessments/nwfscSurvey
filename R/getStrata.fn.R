@@ -105,24 +105,24 @@ getStrata.fn <- function(area = "coast") {
     depths.deep    = deep,
     lats.south     = rep(CA[1], 2),
     lats.north     = rep(WA[2], 2))
-  deep <- CreateStrataDF.fn(
+  deep_strat <- CreateStrataDF.fn(
     names = c("shallow_coast", "med_coast", "deep_coast"),
     depths.shallow = c(shal, deep[2]),
     depths.deep    = c(deep, deepest),
     lats.south     = rep(CA[1], 3),
     lats.north     = rep(WA[2], 3))
   north <- CreateStrataDF.fn(
-    names = "shallow_north",
-    depths.shallow =  55,
-    depths.deep    = 300,
-    lats.south     = 40.5,
-    lats.north     = 49.0)
+    names = c("shallow_north", "deep_north"),
+    depths.shallow = shal,
+    depths.deep    = deep,
+    lats.south     = c(40.5, 40.5),
+    lats.north     = c(49.0, 49.0))
   south <- CreateStrataDF.fn(
-    names = "shallow_south",
-    depths.shallow =  55,
-    depths.deep    = 300,
-    lats.south     = 32.0,
-    lats.north     = 40.5)
+    names = c("shallow_south", "deep_south"),
+    depths.shallow = shal,
+    depths.deep    = deep,
+    lats.south     = c(32.0, 32.0),
+    lats.north     = c(40.5, 40.5))
 
   # get and return the needed strata
   areasp <- unlist(strsplit(area, "_"))
