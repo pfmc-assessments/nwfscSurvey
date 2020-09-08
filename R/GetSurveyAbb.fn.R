@@ -17,7 +17,7 @@
 #' returned. Values of NA were not found in the look-up matrix.
 #' @seealso See \code{\link{createMatrix}} for a list of available surveys.
 #' @examples
-#' GetSurveyAbb.fn(c("Triennial", "Combo", "shit"))
+#' GetSurveyAbb.fn(c("Triennial", "Combo"))
 
 GetSurveyAbb.fn <- function(surveys = "Combo") {
   data <- createMatrix()
