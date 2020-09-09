@@ -105,7 +105,7 @@ getStrata.fn <- function(area = "coast") {
     depths.deep    = deep,
     lats.south     = rep(CA[1], 2),
     lats.north     = rep(WA[2], 2))
-  deep_strat <- CreateStrataDF.fn(
+  deep <- CreateStrataDF.fn(
     names = c("shallow_coast", "med_coast", "deep_coast"),
     depths.shallow = c(shal, deep[2]),
     depths.deep    = c(deep, deepest),
