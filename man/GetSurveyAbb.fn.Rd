@@ -24,7 +24,7 @@ Partial matches are allowed, though may return multiple
 values and only the first match is returned.
 }
 \examples{
-GetSurveyAbb.fn(c("Triennial", "Combo", "shit"))
+GetSurveyAbb.fn(c("Triennial", "Combo"))
 }
 \seealso{
 See \code{\link{createMatrix}} for a list of available surveys.

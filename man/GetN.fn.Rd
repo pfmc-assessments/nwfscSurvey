@@ -3,7 +3,7 @@
 \name{GetN.fn}
 \alias{GetN.fn}
 \title{Calculate effN input sample sizes
-based on Stewart, I.J. and O.W Hamel 2014.
+based on Stewart, I.J. and O.S. Hamel 2014.
 Bootstrapping of sample size for legth- or age-composition data used in stock assessment
 Canadian Journal of Fishery and Aquatic Science, 71: 581-588.}
 \usage{
@@ -35,7 +35,7 @@ by year and sex}
 }
 \description{
 Calculate effN input sample sizes
-based on Stewart, I.J. and O.W Hamel 2014.
+based on Stewart, I.J. and O.S. Hamel 2014.
 Bootstrapping of sample size for legth- or age-composition data used in stock assessment
 Canadian Journal of Fishery and Aquatic Science, 71: 581-588.
 }
