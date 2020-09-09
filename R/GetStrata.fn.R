@@ -25,7 +25,7 @@
 #' from this function to strata that can be used within the VAST package.
 #' @author Chantel Wetzel and Kelli Faye Johnson
 
-getStrata.fn <- function(area = "coast") {
+GetStrata.fn <- function(area = "coast") {
 
   # development instructions ... find the numbers for each comment
   # (1) Add your area here in lower-case text
