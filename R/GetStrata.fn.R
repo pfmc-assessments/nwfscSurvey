@@ -41,9 +41,9 @@ GetStrata.fn <- function(area = "coast") {
     return(out)
   }
   # internal values
-  deep <- c(183, 549)
-  shal <- c(55, deep[1])
-  deepest <- 1280
+  deepm <- c(183, 549)
+  shalm <- c(55, deepm[1])
+  deepestm <- 1280
   CA <- c(32.0, 42.0)
   OR <- c(CA[2], 46.0)
   WA <- c(OR[2], 49.0)
@@ -68,20 +68,20 @@ GetStrata.fn <- function(area = "coast") {
   # standard state-based strata
   ca <- CreateStrataDF.fn(
     names = c("shallow_ca", "deep_ca"),
-    depths.shallow = shal,
-    depths.deep    = deep,
+    depths.shallow = shalm,
+    depths.deep    = deepm,
     lats.south     = rep(CA[1], 2),
     lats.north     = rep(CA[2], 2))
   or <- CreateStrataDF.fn(
     names = c("shallow_or",  "deep_or"),
-    depths.shallow = shal,
-    depths.deep    = deep,
+    depths.shallow = shalm,
+    depths.deep    = deepm,
     lats.south     = rep(OR[1], 2),
     lats.north     = rep(OR[2], 2))
   wa <- CreateStrataDF.fn(
     names = c("shallow_wa",  "deep_wa"),
-    depths.shallow = shal,
-    depths.deep    = deep,
+    depths.shallow = shalm,
+    depths.deep    = deepm,
     lats.south     = rep(WA[1], 2),
     lats.north     = rep(WA[2], 2))
   if(area == "coast") {
@@ -92,8 +92,8 @@ GetStrata.fn <- function(area = "coast") {
   sablefish <- CreateStrataDF.fn(
     names = c(outer(c("shallow", "deep"), c("coast", "north", "south"),
       paste, sep = "_")),
-    depths.shallow = rep(shal, 3),
-    depths.deep = rep(c(shal[2], deepest), 3),
+    depths.shallow = rep(shalm, 3),
+    depths.deep = rep(c(shalm[2], deepestm), 3),
     lats.south = rep(c(CA[1], 36, CA[1]), each = 2),
     lats.north = rep(c(WA[2], WA[2], 36), each = 2)
   )
@@ -101,26 +101,26 @@ GetStrata.fn <- function(area = "coast") {
   # other standard strata
   medium <- CreateStrataDF.fn(
     names = c("shallow_coast", "deep_coast"),
-    depths.shallow = shal,
-    depths.deep    = deep,
+    depths.shallow = shalm,
+    depths.deep    = deepm,
     lats.south     = rep(CA[1], 2),
     lats.north     = rep(WA[2], 2))
   deep <- CreateStrataDF.fn(
     names = c("shallow_coast", "med_coast", "deep_coast"),
-    depths.shallow = c(shal, deep[2]),
-    depths.deep    = c(deep, deepest),
+    depths.shallow = c(shalm, deepm[2]),
+    depths.deep    = c(deepm, deepestm),
     lats.south     = rep(CA[1], 3),
     lats.north     = rep(WA[2], 3))
   north <- CreateStrataDF.fn(
     names = c("shallow_north", "deep_north"),
-    depths.shallow = shal,
-    depths.deep    = deep,
+    depths.shallow = shalm,
+    depths.deep    = deepm,
     lats.south     = c(40.5, 40.5),
     lats.north     = c(49.0, 49.0))
   south <- CreateStrataDF.fn(
     names = c("shallow_south", "deep_south"),
-    depths.shallow = shal,
-    depths.deep    = deep,
+    depths.shallow = shalm,
+    depths.deep    = deepm,
     lats.south     = c(32.0, 32.0),
     lats.north     = c(40.5, 40.5))
 
