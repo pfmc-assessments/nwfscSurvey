@@ -13,7 +13,7 @@ createMatrix <-function(){
 	# NWFSC.Combo - Groundfish Slope and Shelf Combination Survey - Conducted starting in 2003 - present
 	# NWFSC.Shelf - Groundfish Shelf Survey - Only conducted in 2001 (not used in West Coast groundfish assessments)
     matrix(data = c("Triennial", 'Groundfish Triennial Shelf Survey', "Triennial Survey",
-                     "AFSC.Slope", "NA", "AFSC Slope Survey",
+                     "AFSC.Slope", "AFSC Groundfish Slope Survey", "AFSC Slope Survey",
                      "NWFSC.Combo", 'Groundfish Slope and Shelf Combination Survey', "NWFSC WCGBTS",
                      "NWFSC.Slope", 'Groundfish Slope Survey', "NWFSC Slope Survey",
                      "NWFSC.Shelf", 'Groundfish Shelf Survey', "NWFSC Shelf Survey",
