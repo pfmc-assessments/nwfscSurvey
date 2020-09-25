@@ -12,7 +12,7 @@
 #' @export
 
 
-Format.AKSlope.fn <- function (dir = NULL, datTows, datL, start.year = 1997) 
+Format.AKSlope.fn <- function (dir = NULL, datTows, datL = NA, start.year = 1997) 
 {
 
 	# Filter for only the AKFSC Slope survey
@@ -40,15 +40,16 @@ Format.AKSlope.fn <- function (dir = NULL, datTows, datL, start.year = 1997)
 	datTows$total_catch_numbers = datTows$Subsample_count
 	datTows$total_catch_wt_kg = datTows$Subsample_wt_kg
 	datTows$Area_Swept_ha = (datTows$DISTANCE_FISHED*datTows$NET_WIDTH) / 10 #area swept for each tow in hectare
-	datTows$cpue_kg_km2 = 0.01 * datTows$Subsample_wt_kg / datTows$Area_Swept_ha
+	datTows$cpue_kg_km2 = 100 * datTows$Subsample_wt_kg / datTows$Area_Swept_ha
 
 	datTows <- datTows[, c("Project", "Trawl_id", "Year", "Pass", "Vessel", "Tow", "Date", "Depth_m", "Longitude_dd", "Latitude_dd", 
 							"Area_Swept_ha", "cpue_kg_km2", "Subsample_count", "Subsample_wt_kg",
 							"total_catch_numbers",  "total_catch_wt_kg")]
 	
 	#Deal with the biological length data file
+
 	if ("SURVEY" %in% colnames(datL$Lengths)){
-	tmp1 =  datL$Lengths[datL$Lengths$SURVEY=="AFSC.Slope",]
+		tmp1 =  datL$Lengths[datL$Lengths$SURVEY=="AFSC.Slope",]
 	} else {
 		tmp1 = datL$Lengths
 		tmp1$Lengths$SURVEY = "AFSC.Slope"
@@ -80,12 +81,14 @@ Format.AKSlope.fn <- function (dir = NULL, datTows, datL, start.year = 1997)
 
 	#Deal with the biological age data file
 	if ("SURVEY" %in% colnames(datL$Ages)){
-	tmp2 =  datL$Ages[datL$Ages$SURVEY=="AFSC.Slope",]
+		tmp2 =  datL$Ages[datL$Ages$SURVEY=="AFSC.Slope",]
 	} else {
 		tmp2 = datL$Ages
 		tmp2$Ages$SURVEY = "AFSC.Slope"
 	}
+
 	tmp2 =  datL$Ages[datL$Ages$SURVEY=="AFSC.Slope",]
+
 	if(dim(tmp2)[1] > 0) {
 		tmp2 = tmp2[tmp2$YEAR >= start.year, ]
 	
@@ -103,7 +106,7 @@ Format.AKSlope.fn <- function (dir = NULL, datTows, datL, start.year = 1997)
 		tmp2$Sex[tmp2$SEX == 1] = "M" #The akfsc slope sexes were specificied 1= males and 2 = females
 		tmp2$Sex[tmp2$SEX == 2] = "F" 
 		tmp2$Sex[tmp2$SEX == 3] = "U" 
-		tmp2$Length_cm = tmp2$Length_cm / 10
+		tmp2$Length_cm = as.numeric(tmp2$Length_cm) / 10
 	
 		tmp2$Project = "AK.Slope"
 		tmp2$Pass = tmp2$Tow = NA
@@ -117,6 +120,8 @@ Format.AKSlope.fn <- function (dir = NULL, datTows, datL, start.year = 1997)
 	out$datTows = datTows
 	out$length = tmp1
 	out$age = NULL
-	if(dim(tmp2)[1] > 0) { out$age = tmp2}
+	if( !is.null(tmp2) ) {
+		if( dim(tmp2)[1] > 0) { out$age = tmp2 }
+	}
 	return(out)
 }
