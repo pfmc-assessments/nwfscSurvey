@@ -4,30 +4,50 @@
 \alias{GetSurveyAbb.fn}
 \title{Get Survey Abbreviation}
 \usage{
-GetSurveyAbb.fn(surveys = "Combo")
+GetSurveyAbb.fn(surveys = "Combo", na.return = "")
 }
 \arguments{
 \item{surveys}{A vector of strings specifying the survey names that you
 want to get abbreviations for.}
+
+\item{na.return}{The desired entry you want to replace all \code{is.na()}
+values with. The default is to return values of \code{""} instead of
+\code{NA}, though you can change it to actually return NA values by using
+\code{na.return = NA} as is, i.e., without quoting NA.}
 }
 \value{
 A vector of strings containing a single abbreviation for each
 input value in \code{surveys}. Only the first match for each survey is
-returned. Values of NA were not found in the look-up matrix.
+returned. The function returns \code{""} for surveys not found in the
+matrix by default, but this return value for unmatched surveys can
+be changed by altering \code{na.return}.
 }
 \description{
-Get abbreviations for a vector of survey names. Standard abbreviations
-do not always match the name used to extract the information from the
-data warehouse, so this function will look up standarized names that
-were agreed upon within the Population Ecology Program.
-Partial matches are allowed, though may return multiple
-values and only the first match is returned.
+Get abbreviations for a vector of survey names. The input vector of
+names, which are typically names used to pull the data from the
+warehouse, do not always match the name agreed upon within the
+Population Ecology Program. So, standard abbreviations are returned for
+a given warehouse name.
+Partial matches are allowed, and are searched
+for using the first two columns of \code{\link{createMatrix}()}, so be
+weary of using terms used for multiple surveys as only the first match
+will be returned for each input value.
 }
 \examples{
+# Return a vector of agreed upon abbreviations for the
+# Triennial Survey and the West Coast Groundfish Bottom Trawl Survey.
 GetSurveyAbb.fn(c("Triennial", "Combo"))
+\dontshow{
+test <- GetSurveyAbb.fn(c("Triennial", "Combo"))
+expect_equal(c("Triennial Survey", "NWFSC WCGBTS"), test)
+test <- GetSurveyAbb.fn(c("Triennial", "bad"))
+expect_equal(c("Triennial Survey", ""), test)
+test <- GetSurveyAbb.fn(c("Triennial", "bad"), na.return = NA)
+expect_equal(c("Triennial Survey", NA), test)
+}
 }
 \seealso{
-See \code{\link{createMatrix}} for a list of available surveys.
+See \code{\link{createMatrix}()} for a list of available surveys.
 }
 \author{
 Kelli Faye Johnson
