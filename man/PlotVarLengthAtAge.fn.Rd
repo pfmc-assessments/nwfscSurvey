@@ -4,9 +4,20 @@
 \alias{PlotVarLengthAtAge.fn}
 \title{Plot variability of length at age}
 \usage{
-PlotVarLengthAtAge.fn(dir = NULL, dat, main = NULL, ageBin = 1,
-  bySex = T, parStart = c(52, 0.09, 1), estVB = T, bins = NULL,
-  legX = "bottomleft", legY = NULL, dopng = FALSE, ...)
+PlotVarLengthAtAge.fn(
+  dir = NULL,
+  dat,
+  main = NULL,
+  ageBin = 1,
+  bySex = T,
+  parStart = c(52, 0.09, 1),
+  estVB = T,
+  bins = NULL,
+  legX = "bottomleft",
+  legY = NULL,
+  dopng = FALSE,
+  ...
+)
 }
 \arguments{
 \item{dir}{directory to save the file}

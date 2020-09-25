@@ -3,12 +3,19 @@
 \name{PullBio.fn}
 \alias{PullBio.fn}
 \title{Pull biological data from the NWFSC data warehouse
-The website is: https://www.nwfsc.noaa.gov/data
+The website is: https://www.webapps.nwfsc.noaa.gov/data
 This function can be used to pull a single species or all observed species
 In order to pull all species leave Name = NULL and SciName = NULL}
 \usage{
-PullBio.fn(Name = NULL, SciName = NULL, YearRange = c(1000, 5000),
-  SurveyName = NULL, SaveFile = FALSE, Dir = NULL, verbose = TRUE)
+PullBio.fn(
+  Name = NULL,
+  SciName = NULL,
+  YearRange = c(1980, 5000),
+  SurveyName = NULL,
+  SaveFile = FALSE,
+  Dir = NULL,
+  verbose = TRUE
+)
 }
 \arguments{
 \item{Name}{common name of species data to pull from the data warehouse}
@@ -17,9 +24,9 @@ PullBio.fn(Name = NULL, SciName = NULL, YearRange = c(1000, 5000),
 
 \item{YearRange}{range of years to pull data}
 
-\item{SurveyName}{survey to pull the data for the options are: Triennial, AFSC.Slope, NWFSC.Combo, NWFSC.Slope, NWFSC.Shelf, NWFSC.Hypoxia, NWFSC.Santa.Barb.Basin, NWFSC.Shelf.Rockfish, NWFSC.Video}
-
-\item{SaveFile}{option to save the file to the directory}
+\item{SurveyName}{survey to pull the data for the options are: 
+Triennial, AFSC.Slope, NWFSC.Combo, NWFSC.Slope, NWFSC.Shelf, NWFSC.Hypoxia, 
+NWFSC.Santa.Barb.Basin, NWFSC.Shelf.Rockfish (NWFSC.Hook.Line but both are not working), NWFSC.Video#' @param SaveFile option to save the file to the directory}
 
 \item{Dir}{directory where the file should be saved}
 
@@ -27,7 +34,7 @@ PullBio.fn(Name = NULL, SciName = NULL, YearRange = c(1000, 5000),
 }
 \description{
 Pull biological data from the NWFSC data warehouse
-The website is: https://www.nwfsc.noaa.gov/data
+The website is: https://www.webapps.nwfsc.noaa.gov/data
 This function can be used to pull a single species or all observed species
 In order to pull all species leave Name = NULL and SciName = NULL
 }

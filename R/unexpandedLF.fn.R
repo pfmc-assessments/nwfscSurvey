@@ -4,9 +4,9 @@
 #' @param dir directory this is where the output files will be saved
 #' @param datL the read in length comps by the PullBio.fn function
 #' @param lgthBins length bins
-#' @param ageErr
-#' @param agelow
-#' @param agehigh
+#' @param ageErr Number of ageing error matrix for SS
+#' @param agelow age bin for SS (default value of -1)
+#' @param agehigh age bin for SS (default value of -1)
 #' @param sex (0 = unsexed, 1 = females, 2 = males, 3 = females then males) sex value for Stock Synthesis
 #' @param partition partition for Stock Synthesis
 #' @param fleet fleet number
@@ -114,7 +114,8 @@ UnexpandedLFs.fn <- function(dir = NULL, datL, lgthBins = 1, sex = 3,  partition
     }
 
     if(!is.null(dir)){ 
-        write.csv(out.comps, file = file.path(plotdir, "Survey_notExpanded_", comp.type, "_comp_Sex_", sex,"_bin=", lgthBins[1], "-", max(lgthBins),".csv",sep=""))    
+        write.csv(out.comps, file = file.path(plotdir, 
+            paste0("Survey_notExpanded_", comp.type, "_comp_Sex_", sex,"_bin=", lgthBins[1], "-", max(lgthBins),".csv")))    
     }
     return(out.comps)
 }

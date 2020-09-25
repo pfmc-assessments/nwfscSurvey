@@ -4,9 +4,16 @@
 \alias{PlotSexRatioStrata.fn}
 \title{Function to plot sex ratio by strata}
 \usage{
-PlotSexRatioStrata.fn(dir = NULL, dat, type = "length",
-  strat.vars = c("Depth_m", "Latitude_dd"), strat.df = NULL,
-  circleSize = 0.05, dopng = FALSE, ...)
+PlotSexRatioStrata.fn(
+  dir = NULL,
+  dat,
+  type = "length",
+  strat.vars = c("Depth_m", "Latitude_dd"),
+  strat.df = NULL,
+  circleSize = 0.05,
+  dopng = FALSE,
+  ...
+)
 }
 \arguments{
 \item{dir}{directory location for saving the png}

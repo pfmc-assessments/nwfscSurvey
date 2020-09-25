@@ -6,7 +6,7 @@
 1. CPUE from survey data across all years, and
 2. CPUE plot of the survey data by year.}
 \usage{
-PlotMap.fn(dir = NULL, dat, main = NULL, dopng = FALSE)
+PlotMap.fn(dir = NULL, dat, main = NULL, dopng = FALSE, plot = 1:2)
 }
 \arguments{
 \item{dir}{directory}
@@ -16,6 +16,8 @@ PlotMap.fn(dir = NULL, dat, main = NULL, dopng = FALSE)
 \item{main}{name that will be used to name the saved png (i.e., "NWFSC" results in a file called "NWFSC_CPUE_Map.png")}
 
 \item{dopng}{save the plot as a png inside plots folder}
+
+\item{plot}{select a subset of plots: 1 = coastwide across all years, 2 = coastwide by year}
 }
 \description{
 #This function will create two plots

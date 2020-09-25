@@ -6,7 +6,9 @@
 #' @param Name  common name of species data to pull from the data warehouse
 #' @param SciName scientific name of species data to pull from the data warehouse
 #' @param YearRange range of years to pull data
-#' @param SurveyName survey to pull the data for the options are: Triennial, AFSC.Slope, NWFSC.Combo, NWFSC.Slope, NWFSC.Shelf, NWFSC.Hypoxia, NWFSC.Santa.Barb.Basin, NWFSC.Shelf.Rockfish, NWFSC.Video
+#' @param SurveyName survey to pull the data for the options are: 
+#' Triennial, AFSC.Slope, NWFSC.Combo, NWFSC.Slope, NWFSC.Shelf, NWFSC.Hypoxia, 
+#' NWFSC.Santa.Barb.Basin, NWFSC.Shelf.Rockfish (NWFSC.Hook.Line but both are not working), NWFSC.Video
 #' @param SaveFile option to save the file to the directory
 #' @param Dir directory where the file should be saved
 #' @param verbose opt to print out message statements
@@ -24,8 +26,11 @@
 #' dat = PullCatch.fn(SurveyName = "NWFSC.Combo")
 #'}
 
-PullCatch.fn <- function (Name = NULL, SciName = NULL, YearRange = c(1000, 5000), SurveyName = NULL, SaveFile = FALSE, Dir = NULL, verbose = TRUE)
+PullCatch.fn <- function (Name = NULL, SciName = NULL, YearRange = c(1980, 5000), SurveyName = NULL, SaveFile = FALSE, Dir = NULL, verbose = TRUE)
 {
+
+  if (SurveyName %in% c("NWFSC.Shelf.Rockfish", "NWFSC.Hook.Line")){
+    stop ("The catch pull currently does not work for hook & line data. Pull directly from the warehouse https://www.webapp.nwfsc.noaa.gov/data")}
 
   if(SaveFile){
         if(is.null(Dir)){
@@ -58,6 +63,7 @@ PullCatch.fn <- function (Name = NULL, SciName = NULL, YearRange = c(1000, 5000)
     if (length(YearRange) == 1) {
         YearRange <- c(YearRange, YearRange)    }
 
+
     # Pull data for the specific species for the following variables
     Vars <- c(var.name, "year", "subsample_count", "subsample_wt_kg","project", "cpue_kg_per_ha_der",
             "total_catch_numbers", "total_catch_wt_kg", "vessel", "tow", "operation_dim$legacy_performance_code",
@@ -75,7 +81,7 @@ PullCatch.fn <- function (Name = NULL, SciName = NULL, YearRange = c(1000, 5000)
                "&variables=", paste0(Vars, collapse = ","))
 
     if (Species == "pull all"){
-        UrlText <- paste0("https://www.nwfsc.noaa.gov/data/api/v1/source/trawl.catch_fact/selection.json?filters=project=", paste(strsplit(project, " ")[[1]], collapse = "%20"),",",
+        UrlText <- paste0("https://www.webapps.nwfsc.noaa.gov/data/api/v1/source/trawl.catch_fact/selection.json?filters=project=", paste(strsplit(project, " ")[[1]], collapse = "%20"),",",
                    "station_invalid=0,",
                    "performance=Satisfactory,", "depth_ftm>=30,depth_ftm<=700,",
                    "date_dim$year>=", YearRange[1], ",date_dim$year<=", YearRange[2],

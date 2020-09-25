@@ -4,8 +4,13 @@
 \alias{CreateStrataDF.fn}
 \title{Function that is able to create strata data frame and will calculate strata areas using the StrataAreas.fn}
 \usage{
-CreateStrataDF.fn(names = NA, depths.shallow, depths.deep, lats.south,
-  lats.north)
+CreateStrataDF.fn(
+  names = NA,
+  depths.shallow,
+  depths.deep,
+  lats.south,
+  lats.north
+)
 }
 \arguments{
 \item{names}{vector of names for strata, if not specified the default with be A, B, ...}

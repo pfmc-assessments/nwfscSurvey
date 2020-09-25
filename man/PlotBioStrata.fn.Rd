@@ -4,11 +4,26 @@
 \alias{PlotBioStrata.fn}
 \title{Plots the biomass with confidence intervals}
 \usage{
-PlotBioStrata.fn(dir = NULL, dat, CI = 0.95, scalar = 1e+06,
-  gap = 0.03, ylab = "Biomass ('000 mt)", xlab = "Year",
-  main = NULL, ylim = NULL, sameylim = FALSE, add = FALSE,
-  mfrow.in = NULL, col = "black", pch.col = "black", pch.type = 16,
-  dopng = FALSE, ...)
+PlotBioStrata.fn(
+  dir = NULL,
+  dat,
+  CI = 0.95,
+  scalar = 1e+06,
+  gap = 0.03,
+  ylab = "Biomass ('000 mt)",
+  xlab = "Year",
+  survey.name = NULL,
+  strata.names = NULL,
+  ylim = NULL,
+  sameylim = FALSE,
+  add = FALSE,
+  mfrow.in = NULL,
+  col = "black",
+  pch.col = "black",
+  pch.type = 16,
+  dopng = FALSE,
+  ...
+)
 }
 \arguments{
 \item{dir}{directory to save the file}
@@ -25,7 +40,9 @@ PlotBioStrata.fn(dir = NULL, dat, CI = 0.95, scalar = 1e+06,
 
 \item{xlab}{x-axis text label}
 
-\item{main}{plot label}
+\item{survey.name}{if specified will name the output png file using this name}
+
+\item{strata.names}{custom strata names, if not specified will use the defined names from CreateStrataDF.fn}
 
 \item{ylim}{y-limits}
 

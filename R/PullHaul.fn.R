@@ -3,8 +3,9 @@
 #' This function can be used to pull haul data and associated covariates
 #'
 #' @param YearRange range of years to pull data. Defaults to all years, 1977 - present.
-#' @param SurveyName survey to pull the data for the options are: Triennial, AFSC.Slope, NWFSC.Combo, NWFSC.Slope, NWFSC.Shelf, NWFSC.Hypoxia, NWFSC.Santa.Barb.Basin, NWFSC.Shelf.Rockfish, NWFSC.Video. If NULL, all are used.
-#' @param SaveFile option to save the file to the directory
+#' @param SurveyName survey to pull the data for the options are: 
+#' Triennial, AFSC.Slope, NWFSC.Combo, NWFSC.Slope, NWFSC.Shelf, NWFSC.Hypoxia, 
+#' NWFSC.Santa.Barb.Basin, NWFSC.Shelf.Rockfish (NWFSC.Hook.Line but both are not working), NWFSC.Video#' @param SaveFile option to save the file to the directory
 #' @param Dir directory where the file should be saved
 #' @param verbose opt to print out message statements
 #'
@@ -21,7 +22,7 @@
 #' haul_dat = PullHaul.fn()
 #'}
 
-PullHaul.fn <- function (YearRange = c(1000, 5000), SurveyName = NULL, SaveFile = FALSE, Dir = NULL, verbose = TRUE)
+PullHaul.fn <- function (YearRange = c(1980, 5000), SurveyName = NULL, SaveFile = FALSE, Dir = NULL, verbose = TRUE)
 {
   # increase the timeout period to avoid errors when pulling data
   options(timeout= 4000000)
@@ -58,6 +59,7 @@ PullHaul.fn <- function (YearRange = c(1000, 5000), SurveyName = NULL, SaveFile 
 
   if (length(YearRange) == 1) {
     YearRange <- c(YearRange, YearRange)    }
+
 
   Vars <- c("area_swept_ha_der", "date_dim.year", "date_yyyymmdd",
     "depth_hi_prec_m","door_width_m_der","fluorescence_at_surface_mg_per_m3_der",

@@ -3,13 +3,13 @@
 \name{createMatrix}
 \alias{createMatrix}
 \title{Survey name matching function used when pull from the data warehouse
-The website is: https://www.nwfsc.noaa.gov/data}
+The website is: https://www.webapp.nwfsc.noaa.gov/data}
 \usage{
 createMatrix()
 }
 \description{
 Survey name matching function used when pull from the data warehouse
-The website is: https://www.nwfsc.noaa.gov/data
+The website is: https://www.webapp.nwfsc.noaa.gov/data
 }
 \author{
 Chantel Wetzel based on code by John Wallace

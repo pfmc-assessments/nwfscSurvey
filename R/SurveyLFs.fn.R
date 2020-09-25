@@ -26,7 +26,7 @@
 #' @param month month the samples were collected
 #' @param printfolder folder where the length comps will be saved
 #' @param remove999 the output object by the function will have the 999 column combined with the first length bin
-#' @param outputStage1 return the first stage expanded data without compiling it for SS
+#' @param outputStage1 TRUE/FALSE return the first stage expanded data without compiling it for SS
 #' @param verbose opt to print out message statements
 #'
 #' @author Allan Hicks and Chantel Wetzel
@@ -327,6 +327,11 @@ SurveyLFs.fn <- function(dir = NULL, datL, datTows, strat.vars=c("Depth_m","Lati
     if(NAs2zero){Ls[is.na(Ls)] <- 0}
     Ls  <- matrix(Ls, nrow = length(L.year), byrow=T,
                   dimnames = list(NULL, paste(c(rep(sex.name[1], length(lgths)), rep(sex.name[2], length(lgths))), lgths, sep="")))
+    
+    if (!"Enter Samps" %in% nSamps & dim(Ls)[1] != length(nSamps)){
+        stop("The length of of annual sample sizes input to the function do not match the years with length/age data.")
+    }
+    
     out <- data.frame(year = as.numeric(names(L.year)), 
                       month = month, 
                       fleet = fleet, 

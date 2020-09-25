@@ -8,14 +8,32 @@ Modified by Chantel Wetzel to work with the data warehouse data formatting,
 add additional options of when to apply the sex ratio, and correct some treatment of unsexed fish
 weighted by sample size and area}
 \usage{
-SurveyLFs.fn(dir = NULL, datL, datTows, strat.vars = c("Depth_m",
-  "Latitude_dd"), strat.df = NULL, lgthBins = 1, SSout = TRUE,
-  meanRatioMethod = TRUE, gender = 3, NAs2zero = T,
-  sexRatioUnsexed = NA, maxSizeUnsexed = NA, sexRatioStage = 1,
-  partition = 0, fleet = "Enter Fleet", agelow = "Enter",
-  agehigh = "Enter", ageErr = "Enter", nSamps = "Enter Samps",
-  month = "Enter Month", printfolder = "forSS", remove999 = TRUE,
-  outputStage1 = FALSE, verbose = TRUE)
+SurveyLFs.fn(
+  dir = NULL,
+  datL,
+  datTows,
+  strat.vars = c("Depth_m", "Latitude_dd"),
+  strat.df = NULL,
+  lgthBins = 1,
+  SSout = TRUE,
+  meanRatioMethod = TRUE,
+  sex = 3,
+  NAs2zero = T,
+  sexRatioUnsexed = NA,
+  maxSizeUnsexed = NA,
+  sexRatioStage = 1,
+  partition = 0,
+  fleet = "Enter Fleet",
+  agelow = "Enter",
+  agehigh = "Enter",
+  ageErr = "Enter",
+  nSamps = "Enter Samps",
+  month = "Enter Month",
+  printfolder = "forSS",
+  remove999 = TRUE,
+  outputStage1 = FALSE,
+  verbose = TRUE
+)
 }
 \arguments{
 \item{dir}{directory this is where the output files will be saved}
@@ -34,7 +52,7 @@ SurveyLFs.fn(dir = NULL, datL, datTows, strat.vars = c("Depth_m",
 
 \item{meanRatioMethod}{TRUE/FALSE}
 
-\item{gender}{(0, 1, 2, 3) gender value for Stock Synthesis}
+\item{sex}{(0, 1, 2, 3) sex value for Stock Synthesis}
 
 \item{NAs2zero}{TRUE/FALSE change NAs to zeros}
 
@@ -62,7 +80,7 @@ SurveyLFs.fn(dir = NULL, datL, datTows, strat.vars = c("Depth_m",
 
 \item{remove999}{the output object by the function will have the 999 column combined with the first length bin}
 
-\item{outputStage1}{return the first stage expanded data without compiling it for SS}
+\item{outputStage1}{TRUE/FALSE return the first stage expanded data without compiling it for SS}
 
 \item{verbose}{opt to print out message statements}
 }

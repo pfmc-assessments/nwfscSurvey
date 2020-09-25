@@ -84,6 +84,9 @@ PlotSexRatio.fn(dir = getwd(), dat = len, data.type = "length", dopng = TRUE, ma
 #Length Biological Data without expansion 
 #============================================================================================
 
+# Development still in process
+# If sex = 3, will only examine sexed fish (sex ratio for unsexed fish not currently done)
+
 lengths <- UnexpandedLFs.fn(dir = getwd(),
                            datL = len,
                            lgthBins = len.bins,

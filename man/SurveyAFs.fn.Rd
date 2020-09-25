@@ -11,14 +11,32 @@ NOTE: The age bin called F0 or M0 is retained to show proportion of ages smaller
 You will want to likely add this to your first age bin and delete this before putting in SS, or
 start the ageBins argument at the 2nd age bin and F0 will be all fish smaller (hence the first age bin)}
 \usage{
-SurveyAFs.fn(dir = NULL, datA, datTows, strat.vars = c("Depth_m",
-  "Latitude_dd"), strat.df = NULL, ageBins = 1, SSout = TRUE,
-  meanRatioMethod = TRUE, gender = 3, NAs2zero = T,
-  sexRatioUnsexed = NA, maxSizeUnsexed = NA, sexRatioStage = 1,
-  partition = 0, fleet = "Enter Fleet", agelow = "Enter",
-  agehigh = "Enter", ageErr = "Enter", nSamps = "Enter Samps",
-  month = "Enter Month", printfolder = "forSS", remove999 = TRUE,
-  outputStage1 = FALSE, verbose = TRUE)
+SurveyAFs.fn(
+  dir = NULL,
+  datA,
+  datTows,
+  strat.vars = c("Depth_m", "Latitude_dd"),
+  strat.df = NULL,
+  ageBins = 1,
+  SSout = TRUE,
+  meanRatioMethod = TRUE,
+  sex = 3,
+  NAs2zero = T,
+  sexRatioUnsexed = NA,
+  maxSizeUnsexed = NA,
+  sexRatioStage = 1,
+  partition = 0,
+  fleet = "Enter Fleet",
+  agelow = "Enter",
+  agehigh = "Enter",
+  ageErr = "Enter",
+  nSamps = "Enter Samps",
+  month = "Enter Month",
+  printfolder = "forSS",
+  remove999 = TRUE,
+  outputStage1 = FALSE,
+  verbose = TRUE
+)
 }
 \arguments{
 \item{dir}{directory this is where the output files will be saved}
@@ -35,7 +53,7 @@ SurveyAFs.fn(dir = NULL, datA, datTows, strat.vars = c("Depth_m",
 
 \item{meanRatioMethod}{TRUE/FALSE}
 
-\item{gender}{gender value for Stock Synthesis}
+\item{sex}{sex value for Stock Synthesis}
 
 \item{NAs2zero}{change NAs to zeros}
 

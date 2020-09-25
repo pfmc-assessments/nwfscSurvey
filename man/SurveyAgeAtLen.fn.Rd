@@ -5,19 +5,34 @@
 \title{Calculates proportion of age at length and reformats into SS format
 Uses raw numbers at length, assuming that is a random sample conditioned on length and sex.
 To use expanded numbers (up to strata areas), set raw=F
-Only gender codes 1 and 2 and puts males and females on separate lines because the age@L is conditioned on sex (a sample of females of length 25cm, for example)
+Only sex codes 1 and 2 and puts males and females on separate lines because the age@L is conditioned on sex (a sample of females of length 25cm, for example)
 Gender=1: females only. Male values ignored
 Gender=2: males only. Female values ignored.
 lgthBins is either the interval between length bins or the actual length bins
 note that 0 and Inf are tacked on the ends to account for lengths and ages outside the interval. You may want to add these in to first and last bin.
 I assume all fish are sexed for age data, thus do not apply sex ratios for unsexed fish}
 \usage{
-SurveyAgeAtLen.fn(dir = NULL, datAL, datTows, strat.vars = c("Depth_m",
-  "Latitude_dd"), strat.df = NULL, lgthBins = 1, ageBins = 1,
-  SSout = TRUE, meanRatioMethod = TRUE, raw = TRUE,
-  NAs2zero = TRUE, month = "Enter Month", fleet = "Enter Fleet",
-  partition = "Enter Partition", ageErr = "Enter Age Error",
-  returnSamps = FALSE, printfolder = "forSS", verbose = TRUE)
+SurveyAgeAtLen.fn(
+  dir = NULL,
+  datAL,
+  datTows,
+  strat.vars = c("Depth_m", "Latitude_dd"),
+  strat.df = NULL,
+  lgthBins = 1,
+  ageBins = 1,
+  sex = 3,
+  SSout = TRUE,
+  meanRatioMethod = TRUE,
+  raw = TRUE,
+  NAs2zero = TRUE,
+  month = "Enter Month",
+  fleet = "Enter Fleet",
+  partition = 0,
+  ageErr = "Enter Age Error",
+  returnSamps = FALSE,
+  printfolder = "forSS",
+  verbose = TRUE
+)
 }
 \arguments{
 \item{dir}{directory this is where the output files will be saved}
@@ -33,6 +48,8 @@ SurveyAgeAtLen.fn(dir = NULL, datAL, datTows, strat.vars = c("Depth_m",
 \item{lgthBins}{length bins}
 
 \item{ageBins}{age bins}
+
+\item{sex}{sex (0, 1, 2, 3) sex value for Stock Synthesis}
 
 \item{SSout}{TRUE/FALSE return comps formatted for SS or in a raw form}
 
@@ -60,7 +77,7 @@ SurveyAgeAtLen.fn(dir = NULL, datAL, datTows, strat.vars = c("Depth_m",
 Calculates proportion of age at length and reformats into SS format
 Uses raw numbers at length, assuming that is a random sample conditioned on length and sex.
 To use expanded numbers (up to strata areas), set raw=F
-Only gender codes 1 and 2 and puts males and females on separate lines because the age@L is conditioned on sex (a sample of females of length 25cm, for example)
+Only sex codes 1 and 2 and puts males and females on separate lines because the age@L is conditioned on sex (a sample of females of length 25cm, for example)
 Gender=1: females only. Male values ignored
 Gender=2: males only. Female values ignored.
 lgthBins is either the interval between length bins or the actual length bins

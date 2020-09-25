@@ -4,7 +4,7 @@
 \alias{StrataAreas.fn}
 \title{Determine strata area.}
 \usage{
-StrataAreas.fn(strat.df, df = SA3, convertFactor = 100)
+StrataAreas.fn(strat.df, df = SA3, convertFactor = 0.01)
 }
 \arguments{
 \item{strat.df}{A dataframe describing the strata name, area, and
@@ -20,13 +20,21 @@ convert hectares to square km.}
 Returns the dataframe input with a column called area.
 }
 \description{
-calculates the area of your strata using John Wallace's SA3 file
-a convertFactor of 0.01 convert hectares to km2
+Calculates the area of your strata using the SA3.rda file (included with
+this package) which contains the area for each of 1756 combinations of
+latitude and depth.
+Latitude breaks must fall on 0.5 degree breaks from 32.5 to 49.0 and
+depth breaks must be from the set (55, 75, 100, 125, 155,
+183, 200, 250, 300, 350, 400, 450, 500, 549, 600, 700, 800, 900, 1000,
+1100, 1200, 1280), where the unevenly spaced values are due to depth
+boundaries associated with the strata used in the survey sampling design.
 }
 \details{
+A convertFactor of 0.01 convert hectares to km2.
+
 strat.df is a dataframe with a column called "name" and two columns for
 each stratum variable (START_LATITUDE and BOTTOM_DEPTH) indicating the low
-and high bounds.  The columns for each stratum variable should be named with
+and high bounds. The columns for each stratum variable should be named with
 the stratum variable name followed by .1 for the low bound and .2 for the
 high bound. For example, this is what a strat.df would look like (as called
 in the example below).

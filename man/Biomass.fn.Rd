@@ -2,11 +2,24 @@
 % Please edit documentation in R/Biomass.fn.R
 \name{Biomass.fn}
 \alias{Biomass.fn}
-\title{Calculates design based estimates from survey data for West Coast surveys}
+\title{Calculates design based estimates from survey data for West Coast surveys.
+The design based index is calculated based on the area of the strata and 
+the mean catch by strata.
+See: Gunderson, D.R. and Sample, T.M. 1980. Distribution and abundance of rockfish off Washington,
+Oregon, and California during 1977. Marine Fisheries Review: March - April.}
 \usage{
-Biomass.fn(dir = NULL, dat, strat.vars = c("Depth_m", "Latitude_dd"),
-  strat.df, printfolder = "forSS", outputMedian = T, convert = 1,
-  month = NA, fleet = NA, verbose = TRUE)
+Biomass.fn(
+  dir = NULL,
+  dat,
+  strat.vars = c("Depth_m", "Latitude_dd"),
+  strat.df,
+  printfolder = "forSS",
+  outputMedian = T,
+  convert = 1,
+  month = NA,
+  fleet = NA,
+  verbose = TRUE
+)
 }
 \arguments{
 \item{dir}{directory where the output file will be saved}

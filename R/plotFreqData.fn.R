@@ -35,16 +35,16 @@ PlotFreqData.fn <- function(dir = NULL, dat, inch=0.15, ylab="Bins", xlab="Year"
     }
 
     x <- as.numeric(as.character(dat$year))
-    gender <- dat$gender[1]
+    sex <- dat$sex[1]
     if(dataType == "Length"){ dat <- dat[,-c(1:6)] }
     if(dataType == "Age")   { dat <- dat[,-c(1:9)] }
 
     if(length(grep(".999",names(dat))>0)){
       # remove extra columns (if the user didn't remove them already)
-      if(gender==0) {
+      if(sex == 0) {
         dat <- dat[,-match("U.999",names(dat))]
       }
-      if(gender==3) {
+      if(sex == 3) {
         # exclude columns for fish below minimum bin
         dat <- dat[,-match("F.999",names(dat))]
         dat <- dat[,-match("M.999",names(dat))]
@@ -64,16 +64,16 @@ PlotFreqData.fn <- function(dir = NULL, dat, inch=0.15, ylab="Bins", xlab="Year"
     if(is.null(xlim)) {xlim <- range(x)}
 
 
-    if (gender == 3) { par(mfrow=c(2,1)) } 
-    if (gender == 0) { par(mfrow=c(1,1)) } 
+    if (sex == 3) { par(mfrow=c(2,1)) } 
+    if (sex == 0) { par(mfrow=c(1,1)) } 
     
-    if(gender==0) {
+    if(sex == 0) {
         if(is.null(main)) { main <- "Unsexed+Males+Females" }
         z <- c(unlist(dat[,1:numLens]),min(dat)) # Changed from max to min to better visualize subset data
         symbols(c(rep(x,length(y)),0),c(rep(y,each=length(x)),0),circles=z,
           main=main,inches=inch,xlab=xlab,ylab=ylab,xlim=xlim,...)
     }
-    if(gender==3) {
+    if(sex == 3) {
         name <- "Female"
         z <- c(unlist(dat[,1:numLens]), min(dat))
         symbols(c(rep(x,length(y)),0),c(rep(y,each=length(x)),0),circles=z,main=name,inches=inch,xlab=xlab,ylab=ylab,xlim=xlim,...)

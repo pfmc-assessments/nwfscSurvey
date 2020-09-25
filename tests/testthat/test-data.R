@@ -25,8 +25,8 @@ test_that("PullCatch-multispecies", {
     SurveyName = "NWFSC.Combo", SaveFile = FALSE,
     Dir = NULL, verbose = TRUE)
   expect_is(dat, "data.frame")
-  expect_equal(nrow(dat), 19263)
-  expect_equal(length(which(dat$cpue_kg_km2==0)), 42)
+  expect_equal(nrow(dat), 351124)
+  expect_equal(length(which(dat$cpue_kg_km2==0)), 331903)
 
 })
 
