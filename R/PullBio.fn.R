@@ -66,9 +66,12 @@ PullBio.fn <- function (Name = NULL, SciName = NULL, YearRange = c(1980, 5000), 
     Vars <- c("project", "trawl_id", var.name, "year", "vessel", "pass",
         "tow", "datetime_utc_iso","depth_m", "weight_kg",  "ageing_laboratory_dim$laboratory",
         "length_cm", "width_cm", "sex", "age_years", "latitude_dd", "longitude_dd",
-        "standard_survey_dim$standard_survey_age_indicator",
-        "standard_survey_dim$standard_survey_length_or_width_indicator",
-        "standard_survey_dim$standard_survey_weight_indicator",
+        #"standard_survey_dim$standard_survey_age_indicator",
+        #"standard_survey_dim$standard_survey_length_or_width_indicator",
+        #"standard_survey_dim$standard_survey_weight_indicator",
+        "standard_survey_age_indicator",
+        "standard_survey_length_or_width_indicator",
+        "standard_survey_weight_indicator",
         "operation_dim$legacy_performance_code")
 
     Vars.short = c("project", "trawl_id", var.name, "year", "vessel", "pass",
@@ -108,15 +111,15 @@ PullBio.fn <- function (Name = NULL, SciName = NULL, YearRange = c(1980, 5000), 
     {
         if(SurveyName == "NWFSC.Combo"){
             # Filter out non-standard samples
-            keep = DataPull[, "standard_survey_dim$standard_survey_length_or_width_indicator"]  %in% c("NA", "Standard Survey Length or Width")
+            keep = DataPull[, "standard_survey_length_or_width_indicator"]  %in% c("NA", "Standard Survey Length or Width")
             DataPull = DataPull[keep,]
             #keep = DataPull[, "standard_survey_dim$standard_survey_age_indicator"]  %in% c("NA", "Standard Survey Age")
             #DataPull = DataPull[keep,]
-            remove = DataPull[, "standard_survey_dim$standard_survey_age_indicator"] == "Not Standard Survey Weight"
+            remove = DataPull[, "standard_survey_age_indicator"] == "Not Standard Survey Weight"
             if (sum(remove) != 0 ) { DataPull[remove, "age_years"] = NA }
             #keep = DataPull[, "standard_survey_dim$standard_survey_weight_indicator"]  %in% c("NA","Standard Survey Weight")
             #DataPull = DataPull[keep,]
-            remove = DataPull[, "standard_survey_dim$standard_survey_weight_indicator"] == "Not Standard Survey Weight"
+            remove = DataPull[, "standard_survey_weight_indicator"] == "Not Standard Survey Weight"
             if (sum(remove) != 0 ) { DataPull[remove, "weight_kg"] = NA }
         }
 
