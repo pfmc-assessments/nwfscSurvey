@@ -55,10 +55,7 @@ GetSpp.fn <- function(species) {
     c("coast", "big_skate"),
     c("coast", "longnose_skate"),
     c("north_south", "pacific_ocean_perch"),
-    c("coast", "widow_rockfish"),
-    c("ca", "squarespot_rockfish"),
-    c("ca", "copper_rockfish"),
-    c("coast", "quillback_rockfish")
+    c("coast", "widow_rockfish")
     ))
   row.names(spplist) <- NULL
 
