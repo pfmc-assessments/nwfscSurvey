@@ -4,7 +4,7 @@
 \alias{Format.AKSlope.fn}
 \title{Rename columns in the AKFSC Slope data}
 \usage{
-Format.AKSlope.fn(dir = NULL, datTows, datL, start.year = 1997)
+Format.AKSlope.fn(dir = NULL, datTows, datL = NA, start.year = 1997)
 }
 \arguments{
 \item{dir}{directory}

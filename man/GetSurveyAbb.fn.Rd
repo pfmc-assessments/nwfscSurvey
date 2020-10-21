@@ -39,11 +39,11 @@ will be returned for each input value.
 GetSurveyAbb.fn(c("Triennial", "Combo"))
 \dontshow{
 test <- GetSurveyAbb.fn(c("Triennial", "Combo"))
-expect_equal(c("Triennial Survey", "NWFSC WCGBTS"), test)
+testthat::expect_equal(c("Triennial Survey", "NWFSC WCGBTS"), test)
 test <- GetSurveyAbb.fn(c("Triennial", "bad"))
-expect_equal(c("Triennial Survey", ""), test)
+testthat::expect_equal(c("Triennial Survey", ""), test)
 test <- GetSurveyAbb.fn(c("Triennial", "bad"), na.return = NA)
-expect_equal(c("Triennial Survey", NA), test)
+testthat::expect_equal(c("Triennial Survey", NA), test)
 }
 }
 \seealso{

@@ -31,7 +31,7 @@ as well as combinations using \code{"_"} in the argument \code{area}.
 \seealso{
 This function uses \code{\link{CreateStrataDF.fn}}
 to generate the strata returned by this function. Also, see
-\code{\link[VASTWestCoast]{convert_strata4vast}()} that converts results
+convert_strata4vast function in the VASTWestCoast package that converts results
 from this function to strata that can be used within the VAST package.
 }
 \author{
