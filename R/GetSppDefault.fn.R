@@ -46,7 +46,10 @@ GetSppDefault.fn <- function() {
     "big_skate",
     "longnose_skate",
     "pacific_ocean_perch",
-    "widow_rockfish"
+    "widow_rockfish",
+    "copper_rockfish",
+    "squarespot_rockfish",
+    "quillback_rockfish"
     )
   sp.list <- sp.list[order(sp.list)]
   return(sp.list)
