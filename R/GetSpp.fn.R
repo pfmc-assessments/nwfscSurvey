@@ -64,7 +64,7 @@ GetSpp.fn <- function(species) {
 
   # Match species name
   index <- lapply(species, function(y) {
-    out <- which(apply(apply(sppnames, 1, grepl, pattern = y), 2, any))
+    out <- which(apply(apply(sppnames, 1, grepl, pattern = y, ignore.case = TRUE), 2, any))
     names(out) <- NULL
     return(out)
   })
