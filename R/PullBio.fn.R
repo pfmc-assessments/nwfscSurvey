@@ -65,14 +65,14 @@ PullBio.fn <- function (Name = NULL, SciName = NULL, YearRange = c(1980, 5000), 
     if( projectShort != "NWFSC.Hook.Line"){
     Vars <- c("project", "trawl_id", var.name, "year", "vessel", "pass",
         "tow", "datetime_utc_iso","depth_m", "weight_kg",  "ageing_laboratory_dim$laboratory",
-        "length_cm", "width_cm", "sex", "age_years", "latitude_dd", "longitude_dd",
+        "length_cm", "width_cm", "sex", "age_years", "otosag_id", "latitude_dd", "longitude_dd",
         "standard_survey_age_indicator",
         "standard_survey_length_or_width_indicator",
         "standard_survey_weight_indicator",
         "operation_dim$legacy_performance_code")
 
     Vars.short = c("project", "trawl_id", var.name, "year", "vessel", "pass",
-        "tow", "datetime_utc_iso","depth_m", "weight_kg", "ageing_lab",
+        "tow", "datetime_utc_iso","depth_m", "weight_kg", "ageing_lab","otosag_id",
         "length_cm", "width_cm", "sex", "age_years", "latitude_dd", "longitude_dd")
     }else{
     Vars <- Vars.short <- c(var.name, "age_years","drop_latitude_dim$latitude_in_degrees",)
@@ -181,7 +181,7 @@ PullBio.fn <- function (Name = NULL, SciName = NULL, YearRange = c(1980, 5000), 
         Data = dplyr::rename(DataPull,
                          Trawl_id = trawl_id, Year = year, Vessel = vessel, Project = project, Pass = pass,
                          Tow = tow, Date = datetime_utc_iso, Depth_m = depth_m, Weight = weight_kg,
-                         Length_cm = length_cm, Width_cm = width_cm, Sex = sex, Age = age_years,
+                         Length_cm = length_cm, Width_cm = width_cm, Sex = sex, Age = age_years, Oto_id = otosag_id,
                          Ageing_Lab = ageing_lab,
                          Latitude_dd = latitude_dd, Longitude_dd = longitude_dd)
 
