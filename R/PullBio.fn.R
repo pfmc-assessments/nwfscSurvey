@@ -66,9 +66,6 @@ PullBio.fn <- function (Name = NULL, SciName = NULL, YearRange = c(1980, 5000), 
     Vars <- c("project", "trawl_id", var.name, "year", "vessel", "pass",
         "tow", "datetime_utc_iso","depth_m", "weight_kg",  "ageing_laboratory_dim$laboratory",
         "length_cm", "width_cm", "sex", "age_years", "latitude_dd", "longitude_dd",
-        #"standard_survey_dim$standard_survey_age_indicator",
-        #"standard_survey_dim$standard_survey_length_or_width_indicator",
-        #"standard_survey_dim$standard_survey_weight_indicator",
         "standard_survey_age_indicator",
         "standard_survey_length_or_width_indicator",
         "standard_survey_weight_indicator",
@@ -81,7 +78,6 @@ PullBio.fn <- function (Name = NULL, SciName = NULL, YearRange = c(1980, 5000), 
     Vars <- Vars.short <- c(var.name, "age_years","drop_latitude_dim$latitude_in_degrees",)
 
     }
-
 
 
     UrlText  <- paste0(
@@ -113,12 +109,8 @@ PullBio.fn <- function (Name = NULL, SciName = NULL, YearRange = c(1980, 5000), 
             # Filter out non-standard samples
             keep = DataPull[, "standard_survey_length_or_width_indicator"]  %in% c("NA", "Standard Survey Length or Width")
             DataPull = DataPull[keep,]
-            #keep = DataPull[, "standard_survey_dim$standard_survey_age_indicator"]  %in% c("NA", "Standard Survey Age")
-            #DataPull = DataPull[keep,]
             remove = DataPull[, "standard_survey_age_indicator"] == "Not Standard Survey Weight"
             if (sum(remove) != 0 ) { DataPull[remove, "age_years"] = NA }
-            #keep = DataPull[, "standard_survey_dim$standard_survey_weight_indicator"]  %in% c("NA","Standard Survey Weight")
-            #DataPull = DataPull[keep,]
             remove = DataPull[, "standard_survey_weight_indicator"] == "Not Standard Survey Weight"
             if (sum(remove) != 0 ) { DataPull[remove, "weight_kg"] = NA }
         }
@@ -138,7 +130,7 @@ PullBio.fn <- function (Name = NULL, SciName = NULL, YearRange = c(1980, 5000), 
     }
 
 
-    if (SurveyName == "Triennial"){
+    if (SurveyName %in% c("Triennial", "AFSC.Slope")){
 
         UrlText <- paste0(
             "https://www.webapps.nwfsc.noaa.gov/data/api/v1/source/trawl.triennial_length_fact/selection.json?filters=project=",
@@ -177,8 +169,7 @@ PullBio.fn <- function (Name = NULL, SciName = NULL, YearRange = c(1980, 5000), 
         }
     }
 
-    if (SurveyName == "AFSC.Slope"){ cat("Warning: The data warehouse may not have the AFSC slope data included yet.") }
-    if(!is.data.frame(DataPull) & SurveyName != "Triennial") {
+    if(!is.data.frame(DataPull) & !SurveyName %in% c("Triennial", "AFSC.Slope")) {
         stop(cat("\nNo data returned by the warehouse for the filters given.
             Make sure the year range is correct for the project selected and the input name is correct,
             otherwise there may be no data for this species from this project.\n"))
@@ -186,7 +177,7 @@ PullBio.fn <- function (Name = NULL, SciName = NULL, YearRange = c(1980, 5000), 
 
 
     Data = NULL
-    if (length(DataPull)>0){
+    if (length(DataPull) > 0){
         Data = dplyr::rename(DataPull,
                          Trawl_id = trawl_id, Year = year, Vessel = vessel, Project = project, Pass = pass,
                          Tow = tow, Date = datetime_utc_iso, Depth_m = depth_m, Weight = weight_kg,
@@ -205,19 +196,24 @@ PullBio.fn <- function (Name = NULL, SciName = NULL, YearRange = c(1980, 5000), 
     }
 
     Ages = NULL
-    if (SurveyName == "Triennial"){
-        if (!is.null(Data)) { Ages <- Data }
+    if (SurveyName %in% c("Triennial", "AFSC.Slope")){
+        if (!is.null(Data) & sum(is.na(Data$Age)) != length(Data$Age) ) { 
+            Ages <- Data 
+        }
+
         Data <- list()
-        if(is.data.frame(LenPull)) {Data$Lengths <- Len 
+        if(is.data.frame(LenPull)) {
+            Data$Lengths <- Len 
         } else {
             Data$Lengths = "no_lengths_available"
         }
-        if (!is.null(Ages)) { Data$Ages <- Ages 
+        if (!is.null(Ages)) { 
+            Data$Ages <- Ages 
         } else {
             Data$Ages <- "no_ages_available"
         }
         if (verbose){
-            message("Triennial data returned as a list: Data$Lengths and Data$Ages\n") }
+            message("Triennial & AFSC Slope data returned as a list: Data$Lengths and Data$Ages\n") }
     }
 
     if(SaveFile){
