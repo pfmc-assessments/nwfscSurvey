@@ -43,10 +43,10 @@ UnexpandedLFs.fn <- function(dir = NULL, datL, lgthBins = 1, sex = 3,  partition
 
    
     #set up length bins
-    if(length(lgthBins)==1) {
-        Lengths <- c(-999,seq(floor(min(datL$Length_cm)),ceiling(max(datL$Length_cm)),lgthBins),Inf)
+    if(length(lgthBins) == 1) {
+        Lengths <- c(-999, seq(floor(min(datL$Length_cm)), ceiling(max(datL$Length_cm)), lgthBins), Inf)
     }else{
-        Lengths <- c(-999,lgthBins,Inf)
+        Lengths <- c(-999, lgthBins, Inf)
     }
 
     # In case there a fish with decimal lengths round them down for processing
@@ -59,15 +59,6 @@ UnexpandedLFs.fn <- function(dir = NULL, datL, lgthBins = 1, sex = 3,  partition
 
     # Create an assigned sex column
     datL$sex = datL$Sex  
-
-    # Assign "U" to sex based on sex ratio
-    # datL$sexRatio = NA
-    # temp = table(datL$Length_cm, datL$Sex)
-    # ratio = temp[,"F"] / (temp[,"F"] + temp[,"M"])
-    # ratio[is.na(ratio)] <- 0
-    # if(length(sexRatioUnsexed)==1 & !is.na(sexRatioUnsexed)) {
-    #     datL$sexRatio[datL$Length_cm <= maxSizeUnsexed] <- sexRatioUnsexed
-    # }
     
     sex_out = ifelse(sex == 3, "Both", 
               ifelse(sex == 2, "M", 
@@ -76,46 +67,105 @@ UnexpandedLFs.fn <- function(dir = NULL, datL, lgthBins = 1, sex = 3,  partition
     
     #Create the comps
     Results = NULL
-    yrs = sort(unique(datL$Year))
-    for(y in 1:length(yrs)) {
+    for(y in sort(unique(datL$Year))) {
         # Identify relevant rows
-        Which = which(datL[,'Year'] == yrs[y] )
+        Which = which(datL[,'Year'] == y & datL[,"Sex"] %in% sex_out)
         # Skip this year unless there are rows
-        if(length(Which)>0) {
-          ##### Deal first with "F" or "M" entries
-          # Format reference stuff
-          if (any(datL[Which,"sex"] %in% sex_out)) { 
-            Row = c('Year' = yrs[y], 'Month' = month, 'Fleet'= fleet, 'Sex'= sex, 'Partition' = partition, 'Nsamp'= nSamps)
+        if(length(Which) > 0) {
+            Row = c(y, length(Which))
             # Loop across F then M
-            for(s in 1:length(sex_out)) {
+            for(s in sex_out) {
                 # Loop across length bins
-                for(l in 1:length(lgthBins))
+                for(l in lgthBins)
                 {
                     # Subset to relevant rows
-                    Which2 = Which[which(datL[Which,'allLs'] == lgthBins[l] & datL[Which,'sex'] == sex_out[s])]
+                    if (l == min(lgthBins)){
+                       Which2 = Which[which(datL[Which,'allLs'] %in% c(l, -999) & datL[Which,'Sex'] == s)] }
+                    if (l != min(lgthBins)){
+                       Which2 = Which[which(datL[Which,'allLs'] == l & datL[Which,'Sex'] == s)] }
+                    if (l == max(lgthBins)){
+                       Which2 = Which[which(datL[Which,'allLs']  %in% c(l, Inf) & datL[Which,'Sex'] == s)] }
                     # Sum to effective sample size by length_bin x Sex x Fleet x Year
                     if(length(Which2) == 0) Row = c(Row, 0)
-                    if(length(Which2) >= 1) Row = c(Row, dim(datL[Which2,])[1])
+                    if(length(Which2) >= 1) Row = c(Row, length(Which2))
                 }
             }
             # Add to results matrix
             Results = rbind(Results, Row)
-          }
         } # end Which loop
     } # end year loop
-    colnames(Results)[-c(1:6)] = paste(rep(sex_out, each = length(lgthBins)), lgthBins, sep="-")
+    tmp = data.frame(Year = Results[,1],
+                     Month = month,
+                     Fleet = fleet, 
+                     Sex = sex, 
+                     Partition = partition,
+                     Nsamp = Results[,2])
+    out = cbind(tmp, Results[,-c(1:2)])
+    colnames(out)[-c(1:6)] = paste(rep(sex_out, each = length(lgthBins)), lgthBins, sep="-")
+
+    # Unsexed comps if doing males & females
+    #Create the comps
+    if(!"U" %in% sex_out & length(datL[datL$Sex == "U","Sex"]) > 0) {
+        Results = NULL
+        for(y in sort(unique(datL$Year))) {
+            # Identify relevant rows
+            Which = which(datL[,'Year'] == y & datL[,'Sex'] == 'U')
+            # Skip this year unless there are rows
+            if(length(Which) > 0) {
+              ##### Deal first with "F" or "M" entries
+              # Format reference stuff
+                Row = c(y, length(Which))
+                # Loop across length bins
+                for(l in lgthBins)
+                {
+                    # Subset to relevant rows
+                    if (l == min(lgthBins)){
+                       Which2 = Which[which(datL[Which,'allLs'] %in% c(l, -999))] }
+                    if (l != min(lgthBins)){
+                       Which2 = Which[which(datL[Which,'allLs'] == l )] }
+                    if (l == max(lgthBins)){
+                       Which2 = Which[which(datL[Which,'allLs']  %in% c(l, Inf)) ] }
+                    # Sum to effective sample size by length_bin x Sex x Fleet x Year
+                    if(length(Which2) == 0) Row = c(Row, 0)
+                    if(length(Which2) >= 1) Row = c(Row, length(Which2))
+                }
+                # Add to results matrix
+                Results = rbind(Results, Row)
+            } # end Which loop
+        } # end year loop
+        tmp = data.frame(Year = Results[,1],
+                         Month = month,
+                         Fleet = fleet, 
+                         Sex = 0, 
+                         Partition = partition,
+                         Nsamp = Results[,2])
+        out_u = cbind(tmp, Results[,-c(1:2)])
+        colnames(out_u)[-c(1:6)] = paste(rep('U', each = length(lgthBins)), lgthBins, sep="-")
+    }
 
     # Write the files including the -999 column
     if (comp.type == "Length") {
-        out.comps = Results      
+        out_comps = out 
+        if (dim(out_u)[1] > 0) { 
+            out_u_comps = out_u }
     }
     if (comp.type == "Age") {
-        out.comps = cbind(Results[,1:5], ageErr, agelow, agehigh, Results[ , 6:dim(Results)[2]])
+        out_comps = cbind(out[, 1:5], ageErr, agelow, agehigh, out[ , 6:dim(out)[2]])
+        if (dim(out_u)[1] > 0) { 
+            out_u_comps = cbind(out_u[, 1:5], ageErr, agelow, agehigh, out_u[ , 6:dim(out_u)[2]])  }
     }
 
     if(!is.null(dir)){ 
-        write.csv(out.comps, file = file.path(plotdir, 
-            paste0("Survey_notExpanded_", comp.type, "_comp_Sex_", sex,"_bin=", lgthBins[1], "-", max(lgthBins),".csv")))    
+        write.csv(out_comps, 
+                  file = file.path(plotdir, paste0("Survey_notExpanded_", comp.type, "_comp_Sex_", sex,"_bin=", lgthBins[1], "-", max(lgthBins),".csv")),
+                  row.names = FALSE)
+        write.csv(out_u_comps, 
+                  file = file.path(plotdir, paste0("Survey_notExpanded_", comp.type, "_comp_Sex_0_bin=", lgthBins[1], "-", max(lgthBins),".csv")),
+                  row.names = FALSE)     
     }
-    return(out.comps)
+    out = list()
+    out$comps = out_comps
+    if(dim(out_u)[1] > 0) { out$comps_u = out_u_comps}
+    
+    return(out)
 }
