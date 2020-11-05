@@ -10,7 +10,6 @@
 #' @param sex (0 = unsexed, 1 = females, 2 = males, 3 = females then males) sex value for Stock Synthesis
 #' @param partition partition for Stock Synthesis
 #' @param fleet fleet number
-#' @param nSamps effective sample size for Stock Synthesis
 #' @param month month the samples were collected
 #' @param printfolder folder where the length comps will be saved
 #' @param remove999 the output object by the function will have the 999 column combined with the first length bin
@@ -20,8 +19,7 @@
 #' @export 
 
 UnexpandedLFs.fn <- function(dir = NULL, datL, lgthBins = 1, sex = 3,  partition = 0, fleet = "Enter Fleet",  
-                             ageErr = "NA", agelow = -1, agehigh = -1, 
-                             nSamps="Enter Samps", month="Enter Month", printfolder = "forSS", verbose = TRUE)  {
+                             ageErr = "NA", agelow = -1, agehigh = -1, month="Enter Month", printfolder = "forSS", verbose = TRUE)  {
 
     if(is.null(dir) & verbose){ cat("\nDirectory not specified and csv will not be written.\n") }
     if(!is.null(dir)){

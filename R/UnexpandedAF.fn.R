@@ -10,7 +10,6 @@
 #' @param ageErr Number of ageing error matrix for SS
 #' @param agelow age bin for SS (default value of -1)
 #' @param agehigh age bin for SS (default value of -1)
-#' @param nSamps effective sample size for Stock Synthesis
 #' @param month month the samples were collected
 #' @param printfolder folder where the length comps will be saved
 #' @param remove999 the output object by the function will have the 999 column combined with the first length bin
@@ -20,8 +19,7 @@
 #' @export 
 
 UnexpandedAFs.fn <- function(dir = NULL, datA, ageBins = 1, sex = 3,  partition = 0, fleet = "Enter Fleet",  
-                             ageErr = "NA", agelow = -1, agehigh = -1, 
-                             nSamps = "Enter Samps", month = "Enter Month", printfolder = "forSS", verbose = TRUE)  {
+                             ageErr = "NA", agelow = -1, agehigh = -1, month = "Enter Month", printfolder = "forSS", verbose = TRUE)  {
 
     # Overwrite inputs to use the same code for lengths as ages
     datL = datA
@@ -34,7 +32,6 @@ UnexpandedAFs.fn <- function(dir = NULL, datA, ageBins = 1, sex = 3,  partition 
                            sex = sex,  
                            partition = partition, 
                            fleet = fleet,  
-                           nSamps = nSamps, 
                            month = month, 
                            ageErr = ageErr, 
                            agelow = agelow, 
