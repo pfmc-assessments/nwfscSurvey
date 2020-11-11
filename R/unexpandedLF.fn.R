@@ -92,11 +92,11 @@ UnexpandedLFs.fn <- function(dir = NULL, datL, lgthBins = 1, sex = 3,  partition
             Results = rbind(Results, Row)
         } # end Which loop
     } # end year loop
-    tmp = data.frame(Year = Results[,1],
-                     Month = month,
-                     Fleet = fleet, 
-                     Sex = sex, 
-                     Partition = partition,
+    tmp = data.frame(year = Results[,1],
+                     month = month,
+                     fleet = fleet, 
+                     sex = sex, 
+                     partition = partition,
                      Nsamp = Results[,2])
     out = cbind(tmp, Results[,-c(1:2)])
     colnames(out)[-c(1:6)] = paste(rep(sex_out, each = length(lgthBins)), lgthBins, sep="-")
@@ -131,11 +131,11 @@ UnexpandedLFs.fn <- function(dir = NULL, datL, lgthBins = 1, sex = 3,  partition
                 Results = rbind(Results, Row)
             } # end Which loop
         } # end year loop
-        tmp = data.frame(Year = Results[,1],
-                         Month = month,
-                         Fleet = fleet, 
-                         Sex = 0, 
-                         Partition = partition,
+        tmp = data.frame(year = Results[,1],
+                         month = month,
+                         fleet = fleet, 
+                         sex = 0, 
+                         partition = partition,
                          Nsamp = Results[,2])
         out_u = cbind(tmp, Results[,-c(1:2)])
         colnames(out_u)[-c(1:6)] = paste(rep('U', each = length(lgthBins)), lgthBins, sep="-")
