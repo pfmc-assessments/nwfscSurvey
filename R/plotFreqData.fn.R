@@ -57,6 +57,7 @@ PlotFreqData.fn <- function(dir = NULL, dat, inch=0.15, ylab="Bins", xlab="Year"
     }
 
     y <- as.numeric(substring(names(dat),2))
+    y <- abs(y)
     y <- y[1:numLens]
 
     if(zero2NAs) {dat[dat==0] <- NA}
@@ -69,16 +70,16 @@ PlotFreqData.fn <- function(dir = NULL, dat, inch=0.15, ylab="Bins", xlab="Year"
     
     if(sex == 0) {
         if(is.null(main)) { main <- "Unsexed+Males+Females" }
-        z <- c(unlist(dat[,1:numLens]),min(dat)) # Changed from max to min to better visualize subset data
+        z <- c(unlist(dat[,1:numLens]), min(dat, na.rm = TRUE)) # Changed from max to min to better visualize subset data
         symbols(c(rep(x,length(y)),0),c(rep(y,each=length(x)),0),circles=z,
           main=main,inches=inch,xlab=xlab,ylab=ylab,xlim=xlim,...)
     }
     if(sex == 3) {
         name <- "Female"
-        z <- c(unlist(dat[,1:numLens]), min(dat))
+        z <- c(unlist(dat[,1:numLens]), min(dat, na.rm = TRUE))
         symbols(c(rep(x,length(y)),0),c(rep(y,each=length(x)),0),circles=z,main=name,inches=inch,xlab=xlab,ylab=ylab,xlim=xlim,...)
         name <- "Male"
-        z <- c(unlist(dat[,(numLens+1):ncol(dat)]), min(dat))
+        z <- c(unlist(dat[,(numLens+1):ncol(dat)]), min(dat, na.rm = TRUE))
         symbols(c(rep(x,length(y)),0),c(rep(y,each=length(x)),0),circles=z,main=name,inches=inch,xlab=xlab,ylab=ylab,xlim=xlim,...)
     }
     if (dopng) { dev.off()}
