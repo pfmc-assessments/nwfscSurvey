@@ -103,6 +103,7 @@ UnexpandedLFs.fn <- function(dir = NULL, datL, lgthBins = 1, sex = 3,  partition
 
     # Unsexed comps if doing males & females
     #Create the comps
+    out_u = NULL
     if(!"U" %in% sex_out & length(datL[datL$Sex == "U","Sex"]) > 0) {
         Results = NULL
         for(y in sort(unique(datL$Year))) {
@@ -144,12 +145,12 @@ UnexpandedLFs.fn <- function(dir = NULL, datL, lgthBins = 1, sex = 3,  partition
     # Write the files including the -999 column
     if (comp.type == "Length") {
         out_comps = out 
-        if (dim(out_u)[1] > 0) { 
+        if (!is.null(out_u)) { 
             out_u_comps = out_u }
     }
     if (comp.type == "Age") {
         out_comps = cbind(out[, 1:5], ageErr, agelow, agehigh, out[ , 6:dim(out)[2]])
-        if (dim(out_u)[1] > 0) { 
+        if (!is.null(out_u)) { 
             out_u_comps = cbind(out_u[, 1:5], ageErr, agelow, agehigh, out_u[ , 6:dim(out_u)[2]])  }
     }
 
@@ -157,13 +158,15 @@ UnexpandedLFs.fn <- function(dir = NULL, datL, lgthBins = 1, sex = 3,  partition
         write.csv(out_comps, 
                   file = file.path(plotdir, paste0("Survey_notExpanded_", comp.type, "_comp_Sex_", sex,"_bin=", lgthBins[1], "-", max(lgthBins),".csv")),
                   row.names = FALSE)
+        if(!is.null(out_u)){
         write.csv(out_u_comps, 
                   file = file.path(plotdir, paste0("Survey_notExpanded_", comp.type, "_comp_Sex_0_bin=", lgthBins[1], "-", max(lgthBins),".csv")),
-                  row.names = FALSE)     
+                  row.names = FALSE)  
+        }   
     }
     out = list()
     out$comps = out_comps
-    if(dim(out_u)[1] > 0) { out$comps_u = out_u_comps}
+    if(!is.null(out_u)) { out$comps_u = out_u_comps}
     
     return(out)
 }
