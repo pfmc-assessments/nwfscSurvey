@@ -51,7 +51,12 @@ PlotFreqData.fn <- function(dir = NULL, dat, inch=0.15, ylab="Bins", xlab="Year"
       }
     }
     
-    numLens <- ncol(dat)/2 
+    if (sex == 3) { div = 2
+    } else {
+      div = 1
+    } 
+    numLens <- ncol(dat) / div 
+
     if (!is.null(ymax)) { 
       numLens <- ymax
     }
