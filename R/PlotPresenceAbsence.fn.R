@@ -61,24 +61,6 @@ PlotPresenceAbsence.fn <- function(catch,
     )
   }
 
-  # code in "if (dopng)" section below copied from plotBio.fn()
-  if (dopng) {
-    if (is.null(dir)) {
-      stop("Directory needs to be set.")
-    }
-    if (!file.exists(dir)) {
-      stop("The dir argument leads to a location", ",\ni.e., ", dir, ", that doesn't exist.")
-    }
-    plotdir <- file.path(dir, paste("plots", sep = ""))
-    plotdir.isdir <- file.info(plotdir)$isdir
-    if (is.na(plotdir.isdir) | !plotdir.isdir) {
-      dir.create(plotdir)
-    }
-    png(paste0(dir, "/plots/Presence-absence_in_WCGBT_Survey.png"),
-      height = 7, width = 7, units = "in", res = 300
-    )
-  }
-
   # filter catch based on input depth and latitute range
   catch2 <- catch[catch$Depth_m < depth_max &
     catch$Depth_m > depth_min &
@@ -98,6 +80,7 @@ PlotPresenceAbsence.fn <- function(catch,
     if (add_range_to_main) {
       main <- paste0(main, " (", lat_min, "\u00B0N \u2013 ", lat_max, "\u00B0N)")
     }
+    filename <- "Presence-absence_by_depth_in_WCGBT_Survey.png"
   }
   # rounded value for latitude
   if (dim == "lat") {
@@ -110,8 +93,27 @@ PlotPresenceAbsence.fn <- function(catch,
     if (add_range_to_main) {
       main <- paste0(main, " (", depth_min, " \u2013 ", depth_max, "m)")
     }
+    filename <- "Presence-absence_by_latitude_in_WCGBT_Survey.png"
   }
 
+  # code in "if (dopng)" section below copied from plotBio.fn()
+  if (dopng) {
+    if (is.null(dir)) {
+      stop("Directory needs to be set.")
+    }
+    if (!file.exists(dir)) {
+      stop("The dir argument leads to a location", ",\ni.e., ", dir, ", that doesn't exist.")
+    }
+    plotdir <- file.path(dir, paste("plots", sep = ""))
+    plotdir.isdir <- file.info(plotdir)$isdir
+    if (is.na(plotdir.isdir) | !plotdir.isdir) {
+      dir.create(plotdir)
+    }
+    png(file.path(dir, "plots", filename),
+      height = 7, width = 7, units = "in", res = 300
+    )
+  }
+  
   # make table
   tab <- table(binned_value, catch2$cpue_kg_km2 > 0)
   # add names for the dimensions which get used in the plot
