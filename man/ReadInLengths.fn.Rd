@@ -11,9 +11,9 @@ removeCAN is a flag if you want tows in Canadian waters removed
 ReadInLengths.fn(dat, verbose = TRUE)
 }
 \arguments{
-\item{verbose}{print out comments}
+\item{dat}{data file name}
 
-\item{data}{data file name}
+\item{verbose}{print out comments}
 }
 \description{
 Necessary column names

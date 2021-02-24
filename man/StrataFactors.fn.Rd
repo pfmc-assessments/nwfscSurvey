@@ -7,11 +7,11 @@
 StrataFactors.fn(dat, strat.vars, strat.df)
 }
 \arguments{
+\item{dat}{object}
+
 \item{strat.vars}{strata}
 
 \item{strat.df}{strata data frame}
-
-\item{data}{object}
 }
 \description{
 Creates a vector of strata factors by name

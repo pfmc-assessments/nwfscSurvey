@@ -7,6 +7,8 @@
 #' @param catch data.frame containing catch per haul created by
 #' PullCatch.fn()
 #' @param dim Dimension of interest, either "depth" or "lat"
+#' @param dir The directory name to print to
+#' @param dopng Boolean, whether or not to do png. Defaults to FALSE,
 #' @param depth_min Minimum depth (in meters)
 #' @param depth_max Maximum depth (in meters). A NULL value will cause the
 #' function to automatically set depth_max to the multiple of depth_bin_width beyond
@@ -17,18 +19,21 @@
 #' @param lat_bin_width Width of each latitude bin (in decimal degrees)
 #' @param add_range_to_main Add the range of latitude or depth by which the data
 #' are filtered
+#' @param main String title, defaults to "Presence/absence in WCGBT Survey"
 #' @param xlab Label for x-axis. A NULL value will cause the function
 #' to choose either "Depth (m)" or "Latitude (°N)"
 #'
 #' @author Ian G. Taylor
+#' @importFrom grDevices gray
 #' @export
 #' @examples
 #' # load WCGBTS catch data
-#' catch.WCGBTS.ling <- nwfscSurvey::PullCatch.fn(Name = "lingcod",
-#'                                                SurveyName = "NWFSC.Combo")
+#' catch.WCGBTS.ling <- nwfscSurvey::PullCatch.fn(
+#'   Name = "lingcod",
+#'   SurveyName = "NWFSC.Combo"
+#' )
 #' PlotPresenceAbsence.fn(catch.WCGBTS.ling, dim = "lat")
 #' PlotPresenceAbsence.fn(catch.WCGBTS.ling, dim = "depth")
-
 PlotPresenceAbsence.fn <- function(catch,
                                    dim = "depth",
                                    dir = NULL,
@@ -113,7 +118,7 @@ PlotPresenceAbsence.fn <- function(catch,
       height = 7, width = 7, units = "in", res = 300
     )
   }
-  
+
   # make table
   tab <- table(binned_value, catch2$cpue_kg_km2 > 0)
   # add names for the dimensions which get used in the plot

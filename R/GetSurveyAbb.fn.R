@@ -9,7 +9,7 @@
 #' for using the first two columns of \code{\link{createMatrix}()}, so be
 #' weary of using terms used for multiple surveys as only the first match
 #' will be returned for each input value.
-#' 
+#'
 #' @param surveys A vector of strings specifying the survey names that you
 #' want to get abbreviations for.
 #' @param na.return The desired entry you want to replace all \code{is.na()}
@@ -37,13 +37,14 @@
 #' test <- GetSurveyAbb.fn(c("Triennial", "bad"), na.return = NA)
 #' testthat::expect_equal(c("Triennial Survey", NA), test)
 #' }
-
+#'
 GetSurveyAbb.fn <- function(surveys = "Combo", na.return = "") {
   data <- createMatrix()
   index <- mapply(c,
     lapply(surveys, grep, x = data[, 1], ignore.case = TRUE),
     lapply(surveys, grep, x = data[, 2], ignore.case = TRUE),
-    SIMPLIFY = FALSE)
+    SIMPLIFY = FALSE
+  )
   out <- data[unlist(lapply(index, "[", 1)), 3]
   out[is.na(out)] <- na.return
   return(out)

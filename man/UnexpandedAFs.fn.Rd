@@ -15,7 +15,6 @@ UnexpandedAFs.fn(
   ageErr = "NA",
   agelow = -1,
   agehigh = -1,
-  nSamps = "Enter Samps",
   month = "Enter Month",
   printfolder = "forSS",
   verbose = TRUE
@@ -25,6 +24,8 @@ UnexpandedAFs.fn(
 \item{dir}{directory this is where the output files will be saved}
 
 \item{datA}{the read in length comps by the PullBio.fn function}
+
+\item{ageBins}{length bins}
 
 \item{sex}{(0 = unsexed, 1 = females, 2 = males, 3 = females then males) sex value for Stock Synthesis}
 
@@ -38,17 +39,11 @@ UnexpandedAFs.fn(
 
 \item{agehigh}{age bin for SS (default value of -1)}
 
-\item{nSamps}{effective sample size for Stock Synthesis}
-
 \item{month}{month the samples were collected}
 
 \item{printfolder}{folder where the length comps will be saved}
 
 \item{verbose}{opt to print out message statements}
-
-\item{lgthBins}{length bins}
-
-\item{remove999}{the output object by the function will have the 999 column combined with the first length bin}
 }
 \description{
 Creates a matrix of length or age composition data WITHOUT expantion

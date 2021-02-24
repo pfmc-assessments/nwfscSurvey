@@ -20,6 +20,8 @@ GetN.fn(
 \arguments{
 \item{dir}{directory}
 
+\item{dat}{data frame to be passed in}
+
 \item{type}{specify whether doing "length" or "age". Used to read associatied excel sheets}
 
 \item{species}{species specific value to determine the number of unique samples per tow (flatfish, shelfrock, sloperock, thorny, others, all)}
@@ -30,8 +32,6 @@ GetN.fn(
 by year and sex}
 
 \item{verbose}{opt to print out message statements}
-
-\item{object}{created by the PullBio.fn function}
 }
 \description{
 Calculate effN input sample sizes

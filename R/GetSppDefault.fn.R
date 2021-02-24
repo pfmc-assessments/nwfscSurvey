@@ -1,5 +1,5 @@
 #' Get Vector of Default Species Names for US West Coast
-#' 
+#'
 #' A standard list of common names for species of interest to the
 #' US West Coast. This list does not reflect ecosystem or financial
 #' importance, and instead it is strictly a list of species for which
@@ -10,32 +10,31 @@
 #' using underscores.
 #' @examples
 #' GetSppDefault.fn()
-#'
 GetSppDefault.fn <- function() {
-  sp.list = c(
+  sp.list <- c(
     "shortbelly_rockfish",
     "pacific_cod",
-    "brown_rockfish", 
+    "brown_rockfish",
     "copper_rockfish",
     "dover_sole",
     "sablefish",
-    "petrale_sole", 
+    "petrale_sole",
     "bank_rockfish",
-    "pacific_sanddab", 
+    "pacific_sanddab",
     "arrowtooth_flounder",
     "aurora_rockfish",
     "blackgill_rockfish",
     "bocaccio",
     "canary_rockfish",
-    "chilipepper", 
+    "chilipepper",
     "darkblotched_rockfish",
     "english_sole",
     "flathead_sole",
-    "greenspotted_rockfish", 
-    "greenstriped_rockfish", 
-    "lingcod", 
-    "longspine_thornyhead", 
-    "pacific_spiny_dogfish", 
+    "greenspotted_rockfish",
+    "greenstriped_rockfish",
+    "lingcod",
+    "longspine_thornyhead",
+    "pacific_spiny_dogfish",
     "redbanded_rockfish",
     "rex_sole",
     "rougheye_rockfish",
@@ -50,7 +49,7 @@ GetSppDefault.fn <- function() {
     "copper_rockfish",
     "squarespot_rockfish",
     "quillback_rockfish"
-    )
+  )
   sp.list <- sp.list[order(sp.list)]
   return(sp.list)
 }

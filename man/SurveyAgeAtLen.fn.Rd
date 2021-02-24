@@ -65,13 +65,13 @@ SurveyAgeAtLen.fn(
 
 \item{partition}{partition for Stock Synthesis}
 
+\item{ageErr}{age error value for Stock Synthesis}
+
 \item{returnSamps}{TRUE/FALSE stops the function after the sample size is calculated}
 
 \item{printfolder}{folder where the length comps will be saved}
 
 \item{verbose}{opt to print out message statements}
-
-\item{ageerr}{age error value for Stock Synthesis}
 }
 \description{
 Calculates proportion of age at length and reformats into SS format

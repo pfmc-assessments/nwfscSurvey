@@ -12,69 +12,72 @@
 #' @export
 
 
-CheckStrata.fn <- function(dir = NULL, dat, strat.vars = c("Depth_m","Latitude_dd"), strat.df, printfolder = "forSS",  verbose = TRUE)
-{
+CheckStrata.fn <- function(dir = NULL, dat, strat.vars = c("Depth_m", "Latitude_dd"), strat.df, printfolder = "forSS", verbose = TRUE) {
+  row.names(strat.df) <- strat.df[, 1] # put in rownmaes to make easier to index later
+  numStrata <- nrow(strat.df)
 
-    row.names(strat.df) <- strat.df[,1]     #put in rownmaes to make easier to index later
-    numStrata <- nrow(strat.df)
+  # create strata factors
+  stratum <- rep(NA, nrow(dat)) # the stratum factor
+  for (strat in 1:numStrata) {
+    ind <- rep(T, nrow(dat))
+    for (i in 1:length(strat.vars)) {
+      ind <- ind & dat[, strat.vars[i]] >= strat.df[strat, paste(strat.vars[i], ".1", sep = "")] & dat[, strat.vars[i]] < strat.df[strat, paste(strat.vars[i], ".2", sep = "")]
+    }
+    stratum[ind] <- as.character(strat.df[strat, 1])
+  }
 
-    #create strata factors
-    stratum <- rep(NA,nrow(dat))        #the stratum factor
-    for(strat in 1:numStrata) {
-        ind <- rep(T,nrow(dat))
-        for(i in 1:length(strat.vars)) {
-            ind <- ind & dat[,strat.vars[i]]>=strat.df[strat,paste(strat.vars[i],".1",sep="")] & dat[,strat.vars[i]]<strat.df[strat,paste(strat.vars[i],".2",sep="")]
-        }
-        stratum[ind] <- as.character(strat.df[strat,1])
+  stratum <- factor(stratum, levels = as.character(strat.df[, 1]))
+  dat <- data.frame(dat, stratum)
+  dat.yr <- split(dat, dat$Year)
+  dat.stratum <- split(dat, dat$stratum)
+
+  yr.fn <- function(x) {
+    x <- split(x, x$stratum)
+    namesStrat <- names(x)
+    nobs <- unlist(lapply(x, function(x) {
+      nrow(x)
+    }))
+    pos <- unlist(lapply(x, function(x) {
+      sum(x$total_catch_wt_kg > 0)
+    }))
+    if (any(nobs <= 1)) {
+      if (verbose) {
+        cat("*****\nWARNING: At least one stratum in year", x[[1]][1, "year"], "has fewer than one observation.\n*****\n")
+      }
     }
 
-    stratum <- factor(stratum,levels=as.character(strat.df[,1]))
-    dat <- data.frame(dat, stratum)
-    dat.yr <- split(dat,dat$Year)
-    dat.stratum <- split(dat, dat$stratum)
+    stratStats <- data.frame(name = namesStrat, area = strat.df[namesStrat, 2], ntows = nobs, ptows = pos)
+    stratStats
+  }
 
-    yr.fn <- function(x) {
-        x <- split(x,x$stratum)
-        namesStrat <- names(x)
-        nobs <- unlist(lapply(x, function(x){nrow(x)}))
-        pos  <- unlist(lapply(x, function(x){ sum(x$total_catch_wt_kg > 0) }))
-        if(any(nobs<=1)) {
-            if (verbose){
-            cat("*****\nWARNING: At least one stratum in year",x[[1]][1,"year"],"has fewer than one observation.\n*****\n")}
-        }
+  yearlyStrataEsts <- lapply(dat.yr, yr.fn)
+  # names(yearlyStrataEsts) <- paste("Year",names(yearlyStrataEsts),sep="")
 
-        stratStats <- data.frame(name = namesStrat, area = strat.df[namesStrat,2], ntows = nobs, ptows = pos)
-        stratStats
+  NumberTows <- as.data.frame(yearlyStrataEsts[[1]][, c("name", "ntows")])
+  for (a in 2:length(yearlyStrataEsts)) {
+    NumberTows <- cbind(NumberTows, yearlyStrataEsts[[a]]$ntows)
+  }
+  colnames(NumberTows) <- c("Area_Name", names(yearlyStrataEsts))
+  rownames(NumberTows) <- c()
+
+  PositiveTows <- as.data.frame(yearlyStrataEsts[[1]][, c("name", "ptows")])
+  for (a in 2:length(yearlyStrataEsts)) {
+    PositiveTows <- cbind(PositiveTows, yearlyStrataEsts[[a]]$ptows)
+  }
+  colnames(PositiveTows) <- c("Area_Name", names(yearlyStrataEsts))
+  rownames(PositiveTows) <- c()
+
+  out <- list()
+  out$NumberTows <- NumberTows
+  out$PositiveTows <- PositiveTows
+
+  if (!is.null(dir)) {
+    plotdir <- file.path(dir, printfolder)
+    plotdir.isdir <- file.info(plotdir)$isdir
+    if (is.na(plotdir.isdir) | !plotdir.isdir) {
+      dir.create(plotdir)
     }
-
-    yearlyStrataEsts <- lapply(dat.yr, yr.fn)
-    #names(yearlyStrataEsts) <- paste("Year",names(yearlyStrataEsts),sep="")
-
-    NumberTows = as.data.frame(yearlyStrataEsts[[1]][,c("name", "ntows")])
-    for(a in 2:length(yearlyStrataEsts)){
-        NumberTows = cbind(NumberTows, yearlyStrataEsts[[a]]$ntows)
-    }
-    colnames(NumberTows) = c("Area_Name", names(yearlyStrataEsts))
-    rownames(NumberTows) = c()
-
-    PositiveTows = as.data.frame(yearlyStrataEsts[[1]][,c("name", "ptows")])
-    for(a in 2:length(yearlyStrataEsts)){
-        PositiveTows = cbind(PositiveTows, yearlyStrataEsts[[a]]$ptows)
-    }
-    colnames(PositiveTows) = c("Area_Name", names(yearlyStrataEsts))
-    rownames(PositiveTows) = c()
-
-    out = list()
-    out$NumberTows = NumberTows
-    out$PositiveTows = PositiveTows
-
-    if(!is.null(dir)){
-        plotdir <- file.path(dir,printfolder)
-        plotdir.isdir <- file.info(plotdir)$isdir
-        if(is.na(plotdir.isdir) | !plotdir.isdir){
-          dir.create(plotdir)
-        }
-        write.csv(out, file = file.path(plotdir, paste("strata_observations.csv", sep="")), row.names = FALSE)
-    }
-    return(out)
+    write.csv(out, file = file.path(plotdir, paste("strata_observations.csv", sep = "")), row.names = FALSE)
+  }
+  return(out)
 }

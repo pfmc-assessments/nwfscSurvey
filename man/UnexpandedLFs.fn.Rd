@@ -15,7 +15,6 @@ UnexpandedLFs.fn(
   ageErr = "NA",
   agelow = -1,
   agehigh = -1,
-  nSamps = "Enter Samps",
   month = "Enter Month",
   printfolder = "forSS",
   verbose = TRUE
@@ -40,15 +39,11 @@ UnexpandedLFs.fn(
 
 \item{agehigh}{age bin for SS (default value of -1)}
 
-\item{nSamps}{effective sample size for Stock Synthesis}
-
 \item{month}{month the samples were collected}
 
 \item{printfolder}{folder where the length comps will be saved}
 
 \item{verbose}{opt to print out message statements}
-
-\item{remove999}{the output object by the function will have the 999 column combined with the first length bin}
 }
 \description{
 Creates a matrix of length or age composition data WITHOUT expantion

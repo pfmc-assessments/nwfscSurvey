@@ -15,20 +15,20 @@ CreateStrataDF.fn(
 \arguments{
 \item{names}{vector of names for strata, if not specified the default with be A, B, ...}
 
+\item{depths.shallow}{vector of the shallow depths splits for each strata}
+
+\item{depths.deep}{vector of the deep depths splits for each strata}
+
 \item{lats.south}{vector of the southern latitude splits for each strata}
 
 \item{lats.north}{vector of the northern latitude splits for each strata}
-
-\item{depth.shallow}{vector of the shallow depths splits for each strata}
-
-\item{depth.deep}{vector of the deep depths splits for each strata}
 }
 \value{
 Returns the dataframe input with a column called area.
 }
 \description{
 Example function call
-strata = CreateStrataDF.fn(names          = c("deep_s", "shallow_s", "deep_mn", "shallow_m", "shallow_n"), 
+strata = CreateStrataDF.fn(names          = c("deep_s", "shallow_s", "deep_mn", "shallow_m", "shallow_n"),
                            depths.shallow = c(183,  55, 183, 55, 55),
                            depths.deep    = c(549, 183, 549, 183, 183),
                            lats.south     = c( 32,  32,  40,  40, 44),

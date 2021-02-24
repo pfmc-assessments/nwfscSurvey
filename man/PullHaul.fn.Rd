@@ -17,9 +17,11 @@ PullHaul.fn(
 \arguments{
 \item{YearRange}{range of years to pull data. Defaults to all years, 1977 - present.}
 
-\item{SurveyName}{survey to pull the data for the options are: 
-Triennial, AFSC.Slope, NWFSC.Combo, NWFSC.Slope, NWFSC.Shelf, NWFSC.Hypoxia, 
-NWFSC.Santa.Barb.Basin, NWFSC.Shelf.Rockfish (NWFSC.Hook.Line but both are not working), NWFSC.Video#' @param SaveFile option to save the file to the directory}
+\item{SurveyName}{survey to pull the data for the options are:
+Triennial, AFSC.Slope, NWFSC.Combo, NWFSC.Slope, NWFSC.Shelf, NWFSC.Hypoxia,
+NWFSC.Santa.Barb.Basin, NWFSC.Shelf.Rockfish (NWFSC.Hook.Line but both are not working), NWFSC.Video#'}
+
+\item{SaveFile}{option to save the file to the directory}
 
 \item{Dir}{directory where the file should be saved}
 
@@ -35,9 +37,10 @@ This function can be used to pull haul data and associated covariates
 }
 \examples{
 \dontrun{
-haul_dat = PullHaul.fn(SurveyName = "NWFSC.Combo", YearRange=c(2003,2007))
-haul_dat = PullHaul.fn()
+haul_dat <- PullHaul.fn(SurveyName = "NWFSC.Combo", YearRange = c(2003, 2007))
+haul_dat <- PullHaul.fn()
 }
+
 }
 \author{
 Eric Ward

@@ -18,5 +18,4 @@ analyses take place.
 }
 \examples{
 GetSppDefault.fn()
-
 }

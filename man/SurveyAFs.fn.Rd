@@ -49,6 +49,8 @@ SurveyAFs.fn(
 
 \item{strat.df}{the created strata matrix with the calculated areas by the createStrataDF.fn function}
 
+\item{ageBins}{length bins}
+
 \item{SSout}{if True the output is in a format pastable into SS dat file}
 
 \item{meanRatioMethod}{TRUE/FALSE}
@@ -84,10 +86,6 @@ SurveyAFs.fn(
 \item{outputStage1}{return the first stage expanded data without compiling it for SS}
 
 \item{verbose}{opt to print out message statements}
-
-\item{femaleMale}{numbering for female and male fish in the data file. This is opposite to what is used in SS.}
-
-\item{lageBins}{length bins}
 }
 \description{
 Expands the ages up to the total stratum area then sums over strata

@@ -6,14 +6,13 @@
 #' NOTE: The age bin called F0 or M0 is retained to show proportion of ages smaller than smallest bin
 #' You will want to likely add this to your first age bin and delete this before putting in SS, or
 #' start the ageBins argument at the 2nd age bin and F0 will be all fish smaller (hence the first age bin)
-#' 
+#'
 #' @param dir directory this is where the output files will be saved
 #' @param datA the biological data frame exctrated from the data warehouse using the PullBio.fn
 #' @param datTows the catch data frame extracted from the data warehouse using the PullCatch.fn
 #' @param strat.vars the variables used define the stratas. Defaul is bottom depth and latitudes.
 #' @param strat.df the created strata matrix with the calculated areas by the createStrataDF.fn function
-#' @param femaleMale numbering for female and male fish in the data file. This is opposite to what is used in SS.
-#' @param lageBins length bins
+#' @param ageBins length bins
 #' @param SSout if True the output is in a format pastable into SS dat file
 #' @param meanRatioMethod TRUE/FALSE
 #' @param sex sex value for Stock Synthesis
@@ -35,25 +34,27 @@
 #'
 #' @author Allan Hicks and Chantel Wetzel
 #' @export
-#' @seealso \code{\link{SurveyLFs.fn}} 
+#' @seealso \code{\link{SurveyLFs.fn}}
 
 
-SurveyAFs.fn <- function(dir = NULL, datA, datTows, strat.vars=c("Depth_m","Latitude_dd"), strat.df=NULL, ageBins=1, SSout=TRUE, meanRatioMethod=TRUE,
-                             sex=3, NAs2zero=T, sexRatioUnsexed=NA, maxSizeUnsexed=NA, sexRatioStage = 1, partition=0, fleet="Enter Fleet", agelow = "Enter",
-                             agehigh = "Enter", ageErr = "Enter", nSamps="Enter Samps", month="Enter Month", printfolder = "forSS",
-                             remove999 = TRUE, outputStage1 = FALSE, verbose = TRUE)  {
+SurveyAFs.fn <- function(dir = NULL, datA, datTows, strat.vars = c("Depth_m", "Latitude_dd"), strat.df = NULL, ageBins = 1, SSout = TRUE, meanRatioMethod = TRUE,
+                         sex = 3, NAs2zero = T, sexRatioUnsexed = NA, maxSizeUnsexed = NA, sexRatioStage = 1, partition = 0, fleet = "Enter Fleet", agelow = "Enter",
+                         agehigh = "Enter", ageErr = "Enter", nSamps = "Enter Samps", month = "Enter Month", printfolder = "forSS",
+                         remove999 = TRUE, outputStage1 = FALSE, verbose = TRUE) {
 
-    # Overwrite inputs to use the same code for lengths as ages
-    datL = datA
-    lgthBins = ageBins  
-    datL$Length_cm = datA$Age
+  # Overwrite inputs to use the same code for lengths as ages
+  datL <- datA
+  lgthBins <- ageBins
+  datL$Length_cm <- datA$Age
 
-    out = SurveyLFs.fn(dir = dir, datL = datL, datTows = datTows, strat.vars = strat.vars, strat.df = strat.df, 
-                       lgthBins = lgthBins, SSout = SSout, meanRatioMethod = meanRatioMethod,
-                       sex = sex, NAs2zero= NAs2zero,  sexRatioUnsexed = sexRatioUnsexed, maxSizeUnsexed = maxSizeUnsexed, 
-                       sexRatioStage = sexRatioStage, partition = partition,  fleet = fleet, nSamps = nSamps, 
-                       agelow = agelow, agehigh = agehigh, ageErr = ageErr, 
-                       month = month, printfolder = printfolder, remove999 = remove999,  outputStage1 = outputStage1,
-                       verbose = verbose)
-    return(out)
+  out <- SurveyLFs.fn(
+    dir = dir, datL = datL, datTows = datTows, strat.vars = strat.vars, strat.df = strat.df,
+    lgthBins = lgthBins, SSout = SSout, meanRatioMethod = meanRatioMethod,
+    sex = sex, NAs2zero = NAs2zero, sexRatioUnsexed = sexRatioUnsexed, maxSizeUnsexed = maxSizeUnsexed,
+    sexRatioStage = sexRatioStage, partition = partition, fleet = fleet, nSamps = nSamps,
+    agelow = agelow, agehigh = agehigh, ageErr = ageErr,
+    month = month, printfolder = printfolder, remove999 = remove999, outputStage1 = outputStage1,
+    verbose = verbose
+  )
+  return(out)
 }

@@ -15,14 +15,6 @@ ReadInAges.fn(dat, subset_years = NULL, verbose = TRUE)
 \item{subset_years}{specify the years to retain, default is NULL which will provide 1977, alternative input would be 1980:2002 to remove only 1977.}
 
 \item{verbose}{write out comments}
-
-\item{dir}{working directory where the results with be saved - not currently used}
-
-\item{species}{species name to extract}
-
-\item{survey}{name of survey data to use. Options are "Tri.Shelf" or "AFSC.Slope"}
-
-\item{removeCAN}{removes Canadian hauls based on the AFSCforeign_hauls.rda file}
 }
 \description{
 Necessary column names

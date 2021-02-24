@@ -26,6 +26,10 @@ PullCatch.fn()}
 
 \item{dim}{Dimension of interest, either "depth" or "lat"}
 
+\item{dir}{The directory name to print to}
+
+\item{dopng}{Boolean, whether or not to do png. Defaults to FALSE,}
+
 \item{depth_min}{Minimum depth (in meters)}
 
 \item{depth_max}{Maximum depth (in meters). A NULL value will cause the
@@ -40,6 +44,8 @@ the 99.9 percentile of the observations.}
 
 \item{lat_bin_width}{Width of each latitude bin (in decimal degrees)}
 
+\item{main}{String title, defaults to "Presence/absence in WCGBT Survey"}
+
 \item{add_range_to_main}{Add the range of latitude or depth by which the data
 are filtered}
 
@@ -53,8 +59,10 @@ depth or latitute bins.
 }
 \examples{
 # load WCGBTS catch data
-catch.WCGBTS.ling <- nwfscSurvey::PullCatch.fn(Name = "lingcod",
-                                               SurveyName = "NWFSC.Combo")
+catch.WCGBTS.ling <- nwfscSurvey::PullCatch.fn(
+  Name = "lingcod",
+  SurveyName = "NWFSC.Combo"
+)
 PlotPresenceAbsence.fn(catch.WCGBTS.ling, dim = "lat")
 PlotPresenceAbsence.fn(catch.WCGBTS.ling, dim = "depth")
 }

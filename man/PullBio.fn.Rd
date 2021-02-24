@@ -24,9 +24,11 @@ PullBio.fn(
 
 \item{YearRange}{range of years to pull data}
 
-\item{SurveyName}{survey to pull the data for the options are: 
-Triennial, AFSC.Slope, NWFSC.Combo, NWFSC.Slope, NWFSC.Shelf, NWFSC.Hypoxia, 
-NWFSC.Santa.Barb.Basin, NWFSC.Shelf.Rockfish (NWFSC.Hook.Line but both are not working), NWFSC.Video#' @param SaveFile option to save the file to the directory}
+\item{SurveyName}{survey to pull the data for the options are:
+Triennial, AFSC.Slope, NWFSC.Combo, NWFSC.Slope, NWFSC.Shelf, NWFSC.Hypoxia,
+NWFSC.Santa.Barb.Basin, NWFSC.Shelf.Rockfish (NWFSC.Hook.Line but both are not working), NWFSC.Video#'}
+
+\item{SaveFile}{option to save the file to the directory}
 
 \item{Dir}{directory where the file should be saved}
 
@@ -41,8 +43,9 @@ In order to pull all species leave Name = NULL and SciName = NULL
 \examples{
 \dontrun{
 # SurveyName is only arg that has to be specified
-bio_dat = PullBio.fn(SurveyName = "NWFSC.Combo")
+bio_dat <- PullBio.fn(SurveyName = "NWFSC.Combo")
 }
+
 }
 \author{
 Chantel Wetzel based on code by John Wallace

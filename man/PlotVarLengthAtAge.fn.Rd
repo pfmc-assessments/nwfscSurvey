@@ -36,7 +36,9 @@ PlotVarLengthAtAge.fn(
 
 \item{bins}{The bins to put ages into. If NULL then simply uses the ages as recorded.}
 
-\item{legX}{legend location}
+\item{legX}{legend location for x axis, defaults to "bottomleft"}
+
+\item{legY}{legend location for y axis, defaults to NULL}
 
 \item{dopng}{TRUE/FALSE whether to save a png file}
 

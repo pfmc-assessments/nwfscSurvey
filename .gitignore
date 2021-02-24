@@ -2,3 +2,7 @@ Meta
 doc
 inst/doc
 .Rproj.user
+.DS_Store
+wcbts_bio_2019-08-01.rds
+wcbts_catch_2019-08-01.rds
+wcbts_haul_2019-08-01.rds

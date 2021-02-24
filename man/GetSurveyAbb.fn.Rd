@@ -45,6 +45,7 @@ testthat::expect_equal(c("Triennial Survey", ""), test)
 test <- GetSurveyAbb.fn(c("Triennial", "bad"), na.return = NA)
 testthat::expect_equal(c("Triennial Survey", NA), test)
 }
+
 }
 \seealso{
 See \code{\link{createMatrix}()} for a list of available surveys.

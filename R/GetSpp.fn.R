@@ -1,5 +1,5 @@
 #' Get Species Information
-#' 
+#'
 #' Get the scientific name, common name, and strata group for
 #' a vector of species.
 #'
@@ -16,7 +16,7 @@
 #' \dontrun{
 #' GetSpp.fn(c("sablefish", "petrale"))
 #' }
-
+#'
 GetSpp.fn <- function(species) {
 
   # background information
@@ -59,7 +59,7 @@ GetSpp.fn <- function(species) {
     c("ca", "copper_rockfish"),
     c("ca", "squarespot_rockfish"),
     c("coast", "quillback_rockfish")
-    ))
+  ))
   row.names(spplist) <- NULL
 
   # Match species name
@@ -73,7 +73,9 @@ GetSpp.fn <- function(species) {
     warning("The following species were not found in the look up table\n",
       "generated from the data warehouse (webapps.nwfsc.noaa.gov)\n",
       "and only information for species in the table will be returned:\n",
-      paste(species[bad], collapse = ", "), call. = FALSE)
+      paste(species[bad], collapse = ", "),
+      call. = FALSE
+    )
     species <- species[-1 * bad]
     index <- index[-1 * bad]
   }
@@ -89,7 +91,9 @@ GetSpp.fn <- function(species) {
     bad <- which(is.na(index))
     warning("The following species were not found in the look up table\n",
       "stored in GetSpp for default strata, please self-assign strata:\n",
-      paste(species[bad], collapse = ", "), call. = FALSE)
+      paste(species[bad], collapse = ", "),
+      call. = FALSE
+    )
   }
   out[, "strata"] <- spplist[index, 1]
 

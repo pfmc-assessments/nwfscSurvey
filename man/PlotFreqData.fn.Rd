@@ -39,7 +39,13 @@ PlotFreqData.fn(
 
 \item{xlim}{x-limit values}
 
+\item{ymax}{Value used to truncate y-axis, defaults to NULL}
+
 \item{dopng}{save the plot as a png inside plots folder}
+
+\item{w}{Numeric figure width, defaults to 7}
+
+\item{h}{Numeric figure height, defaults to 7}
 
 \item{...}{Additional arguments for the plots}
 }

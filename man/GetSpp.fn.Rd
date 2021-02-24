@@ -24,6 +24,7 @@ a vector of species.
 \dontrun{
 GetSpp.fn(c("sablefish", "petrale"))
 }
+
 }
 \author{
 Kelli Faye Johnson

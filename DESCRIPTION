@@ -25,11 +25,14 @@ Imports:
 	jsonlite,
 	kableExtra,
 	reshape2,
-	ggplot2,
-	xtable
+	ggplot2 (>= 3.0.0),
+	xtable,
+	rlang,
+	rnaturalearth
 Depends: 
-	dplyr (>= 0.8.0),
-	R (>= 2.10)
+	dplyr (>= 1.0.0),
+	R (>= 4.0)
 Encoding: UTF-8
 VignetteBuilder: knitr
 RoxygenNote: 7.1.1
+LazyData: true

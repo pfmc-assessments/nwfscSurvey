@@ -46,11 +46,17 @@ PlotBioStrata.fn(
 
 \item{ylim}{y-limits}
 
+\item{sameylim}{Boolean, whether to include same y-limits or not. Defaults to FALSE}
+
 \item{add}{add additional line to plot}
 
 \item{mfrow.in}{option to specify the mfrow for plotting}
 
 \item{col}{color}
+
+\item{pch.col}{Color as string, defaults to "black"}
+
+\item{pch.type}{Numeric pch type, defaults to 16}
 
 \item{dopng}{save the plot as a png inside plots folder}
 
