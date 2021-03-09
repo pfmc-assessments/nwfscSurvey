@@ -18,12 +18,27 @@
 #'
 #' @import jsonlite
 #' @import chron
+#' @importFrom stringr str_replace_all
 #' @importFrom dplyr left_join rename
 #'
 #' @examples
 #' \dontrun{
 #' # SurveyName is only arg that has to be specified
 #' dat <- PullCatch.fn(SurveyName = "NWFSC.Combo")
+#'
+#' # Example with specified common name
+#' catch_dat <- PullCatch.fn(Name = "vermilion rockfish",
+#' SurveyName = "NWFSC.Combo")
+#'
+#' # Example with specified scientific name
+#' catch_dat <- PullCatch.fn(SciName = "Eopsetta jordani",
+#' SurveyName = "NWFSC.Combo")
+#'
+#' # Example with multiple names
+#' catch_dat <- PullCatch.fn(Name = c("vermilion rockfish",
+#' "vermilion and sunset rockfish"), SurveyName = "NWFSC.Combo")
+#' catch_dat <- PullBio.fn(Name = c("vermilion rockfish",
+#' "vermilion and sunset rockfish"), SurveyName = "NWFSC.Combo")
 #' }
 #'
 PullCatch.fn <- function(Name = NULL, SciName = NULL, YearRange = c(1980, 5000), SurveyName = NULL, SaveFile = FALSE, Dir = NULL, verbose = TRUE) {
@@ -97,17 +112,24 @@ PullCatch.fn <- function(Name = NULL, SciName = NULL, YearRange = c(1980, 5000),
     "total_catch_numbers", "total_catch_wt_kg", "vessel", "tow"
   )
 
+  # symbols here are generally: %22 = ", %2C = ",", %20 = " "
+  species_str <- paste0("%22",stringr::str_replace_all(Species[1]," ","%20"),"%22")
+  if(length(Species) > 1) {
+    for(i in 2:length(Species)) {
+      species_str <- paste0(species_str, "%2C", paste0("%22",stringr::str_replace_all(Species[i]," ","%20"),"%22"))
+    }
+  }
 
   UrlText <- paste0(
     "https://www.webapps.nwfsc.noaa.gov/data/api/v1/source/trawl.catch_fact/selection.json?filters=project=", paste(strsplit(project, " ")[[1]], collapse = "%20"), ",",
     "station_invalid=0,",
     "performance=Satisfactory,", "depth_ftm>=30,depth_ftm<=700,",
-    "field_identified_taxonomy_dim$", var.name, "=", paste(strsplit(Species, " ")[[1]], collapse = "%20"),
+    "field_identified_taxonomy_dim$", var.name, "|=[", species_str,"]",
     ",date_dim$year>=", YearRange[1], ",date_dim$year<=", YearRange[2],
     "&variables=", paste0(Vars, collapse = ",")
   )
 
-  if (Species == "pull all") {
+  if (Species[1] == "pull all") {
     UrlText <- paste0(
       "https://www.webapps.nwfsc.noaa.gov/data/api/v1/source/trawl.catch_fact/selection.json?filters=project=", paste(strsplit(project, " ")[[1]], collapse = "%20"), ",",
       "station_invalid=0,",

@@ -44,6 +44,20 @@ In order to pull all species leave Name = NULL and SciName = NULL
 \dontrun{
 # SurveyName is only arg that has to be specified
 bio_dat <- PullBio.fn(SurveyName = "NWFSC.Combo")
+
+# Example with specified common name
+bio_dat <- PullBio.fn(Name = "vermilion rockfish",
+SurveyName = "NWFSC.Combo")
+
+# Example with specified scientific name
+bio_dat <- PullBio.fn(SciName = "Eopsetta jordani",
+SurveyName = "NWFSC.Combo")
+
+# Example with multiple names
+bio_dat <- PullBio.fn(SciName = c("Sebastes aurora","Eopsetta jordani"),
+SurveyName = "NWFSC.Combo")
+bio_dat <- PullBio.fn(Name = c("vermilion rockfish",
+"vermilion and sunset rockfish"), SurveyName = "NWFSC.Combo")
 }
 
 }

@@ -19,11 +19,26 @@
 #' @import jsonlite
 #' @import chron
 #' @importFrom dplyr rename
+#' @importFrom stringr str_replace_all
 #'
 #' @examples
 #' \dontrun{
 #' # SurveyName is only arg that has to be specified
 #' bio_dat <- PullBio.fn(SurveyName = "NWFSC.Combo")
+#'
+#' # Example with specified common name
+#' bio_dat <- PullBio.fn(Name = "vermilion rockfish",
+#' SurveyName = "NWFSC.Combo")
+#'
+#' # Example with specified scientific name
+#' bio_dat <- PullBio.fn(SciName = "Eopsetta jordani",
+#' SurveyName = "NWFSC.Combo")
+#'
+#' # Example with multiple names
+#' bio_dat <- PullBio.fn(SciName = c("Sebastes aurora","Eopsetta jordani"),
+#' SurveyName = "NWFSC.Combo")
+#' bio_dat <- PullBio.fn(Name = c("vermilion rockfish",
+#' "vermilion and sunset rockfish"), SurveyName = "NWFSC.Combo")
 #' }
 #'
 PullBio.fn <- function(Name = NULL, SciName = NULL, YearRange = c(1980, 5000), SurveyName = NULL, SaveFile = FALSE, Dir = NULL, verbose = TRUE) {
@@ -71,7 +86,6 @@ PullBio.fn <- function(Name = NULL, SciName = NULL, YearRange = c(1980, 5000), S
     stop(cat("The SurveyName does not match one of the available options:", surveys[, 1]))
   }
 
-
   for (i in 1:dim(surveys)[1]) {
     if (SurveyName == surveys[i, 1]) {
       project <- surveys[i, 2]
@@ -104,18 +118,24 @@ PullBio.fn <- function(Name = NULL, SciName = NULL, YearRange = c(1980, 5000), S
     Vars <- Vars.short <- c(var.name, "age_years", "drop_latitude_dim$latitude_in_degrees", )
   }
 
-
+  # symbols here are generally: %22 = ", %2C = ",", %20 = " "
+  species_str <- paste0("%22",stringr::str_replace_all(Species[1]," ","%20"),"%22")
+  if(length(Species) > 1) {
+    for(i in 2:length(Species)) {
+      species_str <- paste0(species_str, "%2C", paste0("%22",stringr::str_replace_all(Species[i]," ","%20"),"%22"))
+    }
+  }
   UrlText <- paste0(
     "https://www.webapps.nwfsc.noaa.gov/data/api/v1/source/trawl.individual_fact/selection.json?filters=project=", paste(strsplit(project, " ")[[1]], collapse = "%20"), ",",
     "station_invalid=0,",
     "performance=Satisfactory,",
     "depth_ftm>=30,depth_ftm<=700,",
-    "field_identified_taxonomy_dim$", var.name, "=", paste(strsplit(Species, " ")[[1]], collapse = "%20"),
+    "field_identified_taxonomy_dim$", var.name, "|=[", species_str, "]",
     ",year>=", YearRange[1], ",year<=", YearRange[2],
     "&variables=", paste0(Vars, collapse = ",")
   )
 
-  if (Species == "pull all") {
+  if (Species[1] == "pull all") {
     UrlText <- paste0(
       "https://www.webapps.nwfsc.noaa.gov/data/api/v1/source/trawl.individual_fact/selection.json?filters=project=", paste(strsplit(project, " ")[[1]], collapse = "%20"), ",",
       "station_invalid=0,",

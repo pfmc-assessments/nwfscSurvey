@@ -28,7 +28,8 @@ Imports:
 	ggplot2 (>= 3.0.0),
 	xtable,
 	rlang,
-	rnaturalearth
+	rnaturalearth,
+	stringr
 Depends: 
 	dplyr (>= 1.0.0),
 	R (>= 4.0)
