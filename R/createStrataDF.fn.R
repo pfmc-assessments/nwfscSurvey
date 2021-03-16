@@ -19,8 +19,9 @@
 #' @seealso \code{\link{StrataAreas.fn}}
 
 CreateStrataDF.fn <- function(names = NA, depths.shallow, depths.deep, lats.south, lats.north) {
-  fpath <- system.file("data", "SA3.rda", package = "nwfscSurvey")
-  load(fpath)
+
+  SA3 <- NULL
+  utils::data("SA3", envir = environment(), overwrite = TRUE)
 
   out <- data.frame(
     name = NA,
