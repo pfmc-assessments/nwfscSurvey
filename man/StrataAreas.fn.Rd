@@ -2,26 +2,39 @@
 % Please edit documentation in R/StrataAreas.fn.R
 \name{StrataAreas.fn}
 \alias{StrataAreas.fn}
-\title{Determine strata area.}
+\title{Calculate strata area}
 \usage{
-StrataAreas.fn(strat.df, df = SA3, convertFactor = 0.01)
+StrataAreas.fn(
+  strat.df,
+  df = get(utils::data("SA3", overwrite = TRUE)),
+  convertFactor = 0.01
+)
 }
 \arguments{
-\item{strat.df}{A dataframe describing the strata name, area, and
-boundaries.  Boundaries are determined by latitude and bottom depth. See
-Details.}
+\item{strat.df}{A data frame describing the strata names and boundaries.
+Boundaries are determined by latitude and bottom depth with
+Latitude_dd.1 and Latitude_dd.1 being the
+low and high bound for north to south and
+Depth_m.1 and Depth_m.1 being the 
+low and high bound for east to west.
+A column of \code{area} can also be included if users want this column to
+be located in a certain order within the data frame, but it is not necessary.}
 
-\item{df}{the dataframe to calculate areas for the West Coast}
+\item{df}{The stored data frame or a personally created data frame that
+is used to calculate areas for the West Coast stratifications. The default
+data frame can be accessed using \code{utils::data("SA3")}.}
 
-\item{convertFactor}{Multiplier on the area in SA3. Default = 0.01 to
-convert hectares to square km.}
+\item{convertFactor}{Multiplier on the areas in SA3, which are in hectares.
+Default = 0.01 to convert hectares to square km.}
 }
 \value{
-Returns the dataframe input with a column called area.
+Returns the \code{strat.df} with entries in the area column containing
+the area (square km) for each strata.
 }
 \description{
-Calculates the area of your strata using the SA3.rda file (included with
-this package) which contains the area for each of 1756 combinations of
+Calculate the area of your strata desired strata using the SA3.rda file
+(included with this package and accessible via \code{utils::data("SA3")}).
+Default areas are available for each of 1756 combinations of
 latitude and depth.
 Latitude breaks must fall on 0.5 degree breaks from 32.5 to 49.0 and
 depth breaks must be from the set (55, 75, 100, 125, 155,
@@ -29,28 +42,20 @@ depth breaks must be from the set (55, 75, 100, 125, 155,
 1100, 1200, 1280), where the unevenly spaced values are due to depth
 boundaries associated with the strata used in the survey sampling design.
 }
-\details{
-A convertFactor of 0.01 convert hectares to km2.
-
-strat.df is a dataframe with a column called "name" and two columns for
-each stratum variable (START_LATITUDE and BOTTOM_DEPTH) indicating the low
-and high bounds. The columns for each stratum variable should be named with
-the stratum variable name followed by .1 for the low bound and .2 for the
-high bound. For example, this is what a strat.df would look like (as called
-in the example below).
-\preformatted{
-  name  area    START_LATITUDE.2 START_LATITUDE.1 BOTTOM_DEPTH.1 BOTTOM_DEPTH.2
-  A     5829    49.0             45.0             183            549
-  B     4024    49.0             45.0             549            900
-  C     9259    49.0             40.5             900            1280
-  D     6211    45.0             40.5             183            549
-  E     5264    45.0             40.5             549            900
-  F     6952    40.5             34.5             183            549
-  G     7801    40.5             34.5             549            900
-  H     8059    40.5             34.5             900            1280
+\examples{
+areaexample <- StrataAreas.fn(data.frame(
+  name = LETTERS[1:8],
+  Latitude_dd.2 = c(49, 49, 49, 45, 45, 40.5,40.5, 40.5),
+  Latitude_dd.1 = c(45, 45, 40.5, 40.5, 40.5, 34.5, 34.5, 34.5),
+  Depth_m.1 = c(183, 549, 900, 183, 549, 183, 549, 900),
+  Depth_m.2 = c(549, 900, 1280, 549, 900, 549, 900, 1280)
+))
+# setNames(round(areaexample[["area"]], 0), areaexample[["name"]])
+#    A    B    C    D    E    F    G    H
+# 5829 4024 9259 6211 5264 6952 7801 8059
 }
-
-SA3 is provided in this package.
+\seealso{
+See \code{\link{CreateStrataDF.fn}} for a wrapper to this function.
 }
 \author{
 Allan Hicks and Chantel Wetzel with help from John Wallace.
