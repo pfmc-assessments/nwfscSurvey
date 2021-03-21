@@ -34,7 +34,7 @@
 #' The data frame will have six columns,
 #' (1) name, (2) area, (3) Depth_m.1, (4) Depth_m.2,
 #' (5) Latitude_dd.1, and (6) Latitude_dd.2.
-#' @author Allan Hicks and Chantel Wetzel
+#' @author Chantel Wetzel and Kelli Johnson
 #' @export
 #' @seealso
 #' See \code{\link{StrataAreas.fn}} for how areas are calculated.
@@ -43,7 +43,7 @@
 CreateStrataDF.fn <- function(names = NA, depths.shallow, depths.deep, lats.south, lats.north) {
 
   SA3 <- NULL
-  utils::data("SA3", envir = environment(), overwrite = TRUE)
+  utils::data("SA3_v2021.1", envir = environment(), overwrite = TRUE)
 
   out <- data.frame(
     name = NA,
@@ -71,5 +71,5 @@ CreateStrataDF.fn <- function(names = NA, depths.shallow, depths.deep, lats.sout
   names[nanames] <- LETTERS[seq_along(nanames)]
   out[["name"]] <- names
 
-  out <- StrataAreas.fn(strat.df = out, df = SA3)
+  out <- StrataAreas.fn(strat.df = out, df = SA3_v2021.1)
 }

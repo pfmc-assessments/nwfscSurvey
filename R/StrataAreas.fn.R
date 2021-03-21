@@ -1,7 +1,7 @@
 #' Calculate strata area
 #'
-#' Calculate the area of your strata desired strata using the SA3.rda file
-#' (included with this package and accessible via \code{utils::data("SA3")}).
+#' Calculate the area of your strata desired strata using the SA3_v2021.1.rda file
+#' (included with this package and accessible via \code{utils::data("SA3_v2021.1")}).
 #' Default areas are available for each of 1756 combinations of
 #' latitude and depth.
 #' Latitude breaks must fall on 0.5 degree breaks from 32.5 to 49.0 and
@@ -36,7 +36,7 @@
 #' Default = 0.01 to convert hectares to square km.
 #' @return Returns the \code{strat.df} with entries in the area column containing
 #' the area (square km) for each strata.
-#' @author Allan Hicks and Chantel Wetzel with help from John Wallace.
+#' @author Chantel Wetzel and Kelli Johnson
 #' @seealso
 #' See \code{\link{CreateStrataDF.fn}} for a wrapper to this function.
 #' @export
@@ -44,14 +44,10 @@
 
 StrataAreas.fn <- function(
   strat.df,
-  df = get(utils::data("SA3", overwrite = TRUE)),
+  df = get(utils::data("SA3_v2021.1", overwrite = TRUE)),
   convertFactor = 0.01
 ) {
-  # calculates the area of your strata using John Wallace's SA3 file
-  # utils::data("SA3", envir = environment())
-  # this code is stolen from within John Wallace's 2011 GLMM code
-  ## -8/19/2013: ACH modified it to report error when a supplied latitude or depth is not exactly matched
-  # a convertFactor of 0.01 convert hectares to km2
+
   S <- strat.df
   S$area <- NA
 
