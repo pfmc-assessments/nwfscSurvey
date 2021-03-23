@@ -60,5 +60,5 @@ See \code{\link{StrataAreas.fn}} for how areas are calculated.
 See \code{\link{Biomass.fn}} for how the areas are used to predict biomass.
 }
 \author{
-Allan Hicks and Chantel Wetzel
+Chantel Wetzel and Kelli Johnson
 }

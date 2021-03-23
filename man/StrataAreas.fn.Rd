@@ -6,7 +6,7 @@
 \usage{
 StrataAreas.fn(
   strat.df,
-  df = get(utils::data("SA3", overwrite = TRUE)),
+  df = get(utils::data("SA3_v2021.1", overwrite = TRUE)),
   convertFactor = 0.01
 )
 }
@@ -32,8 +32,8 @@ Returns the \code{strat.df} with entries in the area column containing
 the area (square km) for each strata.
 }
 \description{
-Calculate the area of your strata desired strata using the SA3.rda file
-(included with this package and accessible via \code{utils::data("SA3")}).
+Calculate the area of your strata desired strata using the SA3_v2021.1.rda file
+(included with this package and accessible via \code{utils::data("SA3_v2021.1")}).
 Default areas are available for each of 1756 combinations of
 latitude and depth.
 Latitude breaks must fall on 0.5 degree breaks from 32.5 to 49.0 and
@@ -58,5 +58,5 @@ areaexample <- StrataAreas.fn(data.frame(
 See \code{\link{CreateStrataDF.fn}} for a wrapper to this function.
 }
 \author{
-Allan Hicks and Chantel Wetzel with help from John Wallace.
+Chantel Wetzel and Kelli Johnson
 }
