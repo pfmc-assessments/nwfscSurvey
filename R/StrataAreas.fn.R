@@ -31,8 +31,8 @@
 #' be located in a certain order within the data frame, but it is not necessary.
 #' @param df The stored data frame or a personally created data frame that
 #' is used to calculate areas for the West Coast stratifications. The default
-#' data frame can be accessed using \code{utils::data("SA3")}.
-#' @param convertFactor Multiplier on the areas in SA3, which are in hectares.
+#' data frame can be accessed using \code{utils::data("SA3_v2021.1")}.
+#' @param convertFactor Multiplier on the areas in SA3_v2021.1, which are in hectares.
 #' Default = 0.01 to convert hectares to square km.
 #' @return Returns the \code{strat.df} with entries in the area column containing
 #' the area (square km) for each strata.
@@ -44,7 +44,7 @@
 
 StrataAreas.fn <- function(
   strat.df,
-  df = get(utils::data("SA3_v2021.1", overwrite = TRUE)),
+  df = get(utils::data("SA3_v2021.1", overwrite = TRUE, package = "nwfscSurvey")),
   convertFactor = 0.01
 ) {
 

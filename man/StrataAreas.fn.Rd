@@ -6,7 +6,7 @@
 \usage{
 StrataAreas.fn(
   strat.df,
-  df = get(utils::data("SA3_v2021.1", overwrite = TRUE)),
+  df = get(utils::data("SA3_v2021.1", overwrite = TRUE, package = "nwfscSurvey")),
   convertFactor = 0.01
 )
 }
@@ -22,9 +22,9 @@ be located in a certain order within the data frame, but it is not necessary.}
 
 \item{df}{The stored data frame or a personally created data frame that
 is used to calculate areas for the West Coast stratifications. The default
-data frame can be accessed using \code{utils::data("SA3")}.}
+data frame can be accessed using \code{utils::data("SA3_v2021.1")}.}
 
-\item{convertFactor}{Multiplier on the areas in SA3, which are in hectares.
+\item{convertFactor}{Multiplier on the areas in SA3_v2021.1, which are in hectares.
 Default = 0.01 to convert hectares to square km.}
 }
 \value{
