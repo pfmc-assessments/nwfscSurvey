@@ -42,8 +42,9 @@
 
 CreateStrataDF.fn <- function(names = NA, depths.shallow, depths.deep, lats.south, lats.north) {
 
-  SA3 <- NULL
-  utils::data("SA3_v2021.1", envir = environment(), overwrite = TRUE)
+  SA3_v2021.1 <- NULL
+  utils::data("SA3_v2021.1", envir = environment(),
+    overwrite = TRUE, package = "nwfscSurvey")
 
   out <- data.frame(
     name = NA,
