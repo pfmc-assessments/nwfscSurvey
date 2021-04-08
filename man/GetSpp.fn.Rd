@@ -4,27 +4,46 @@
 \alias{GetSpp.fn}
 \title{Get Species Information}
 \usage{
-GetSpp.fn(species)
+GetSpp.fn(species, unident = FALSE)
 }
 \arguments{
 \item{species}{A vector of species names. The words can be separated
 using spaces or underscores. Full names are not required but they will
 increase the consistency of the results should partial matches return
 multiple matches.}
+
+\item{unident}{A logical entry with the default value of \code{FALSE},
+to match historical output that did not include unidentified groups.}
 }
 \value{
-A data frame with the scientific name, common name, and strata
-group for each species.
+A data frame with the
+scientific name in the latin column and in the scientific_name column
+that has spaces replaced with underscores;
+common name in the common column and in the common_name column
+that has spaces replaced with underscores;
+species values used as input in the input column; and
+strata used to assess its status in the strata column.
 }
 \description{
 Get the scientific name, common name, and strata group for
 a vector of species.
 }
 \examples{
-\dontrun{
 GetSpp.fn(c("sablefish", "petrale"))
-}
+# Expect a warning because vermilion doesn't have an strata assigned to it
+testthat::expect_warning(
+  GetSpp.fn(c("vermilion"))
+)
+# Dusky returns multiple entries
+testthat::expect_warning(
+  GetSpp.fn(c("dusky"))
+)
 
+}
+\seealso{
+See
+\code{\link{PullSpp.fn}} for information on common and scientific names;
+and \code{\link{GetStrata.fn}} for the different stratifications.
 }
 \author{
 Kelli Faye Johnson

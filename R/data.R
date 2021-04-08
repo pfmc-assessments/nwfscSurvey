@@ -51,3 +51,16 @@
 #' @author Curt Whitmire
 #' @format A data frame.
 "SA3_v2021.1"
+
+#' Sql pull of species names
+#'
+#' A static version of the sql call to pull species taxonomic information
+#' from the data warehouse.
+#'
+#' @author Curt Whitmire
+#'
+#' @format A data frame with four columns,
+#' latin, common, common_name, and scientific_name.
+#' @seealso \code{\link{PullSpp.fn}} for more information.
+#'
+"PullSpp"

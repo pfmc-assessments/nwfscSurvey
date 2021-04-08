@@ -19,7 +19,8 @@ License: GPL (>=3)
 Suggests:
     knitr,
     rmarkdown,
-    testthat
+    testthat,
+    usethis
 Imports:
     chron,
     jsonlite,
