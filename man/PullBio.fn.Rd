@@ -56,8 +56,6 @@ SurveyName = "NWFSC.Combo")
 # Example with multiple names
 bio_dat <- PullBio.fn(SciName = c("Sebastes aurora","Eopsetta jordani"),
 SurveyName = "NWFSC.Combo")
-bio_dat <- PullBio.fn(Name = c("vermilion rockfish",
-"vermilion and sunset rockfish"), SurveyName = "NWFSC.Combo")
 }
 
 }

@@ -37,8 +37,8 @@
 #' # Example with multiple names
 #' bio_dat <- PullBio.fn(SciName = c("Sebastes aurora","Eopsetta jordani"),
 #' SurveyName = "NWFSC.Combo")
-#' bio_dat <- PullBio.fn(Name = c("vermilion rockfish",
-#' "vermilion and sunset rockfish"), SurveyName = "NWFSC.Combo")
+# bio_dat <- PullBio.fn(Name = c("Sunset rockfish", "vermilion rockfish",
+# "vermilion and sunset rockfish"), SurveyName = "NWFSC.Combo")
 #' }
 #'
 PullBio.fn <- function(Name = NULL, SciName = NULL, YearRange = c(1980, 5000), SurveyName = NULL, SaveFile = FALSE, Dir = NULL, verbose = TRUE) {
