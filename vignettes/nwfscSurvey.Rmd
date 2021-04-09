@@ -195,5 +195,11 @@ CAAL <- SurveyAgeAtLen.fn(dir = getwd(),
 ```
 Creates unexpanded conditional-age-at-length data for both sexes with input sample sizes based on the observed number of fish in each length bin by year.
 
+#### Maps
+To make a map showing the distribution of density in aggregate and by year:
+```r
+PlotMap.fn(dat = catch)
+```
+
 #### Additional data visualization
 There are a couple of additional plotting function that are included in the package: PlotVarLengthAtAge.fn and PlotSexRatio.fn.  
