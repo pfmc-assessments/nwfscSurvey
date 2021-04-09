@@ -54,10 +54,9 @@ catch_dat <- PullCatch.fn(SciName = "Eopsetta jordani",
 SurveyName = "NWFSC.Combo")
 
 # Example with multiple names
-catch_dat <- PullCatch.fn(Name = c("vermilion rockfish",
-"vermilion and sunset rockfish"), SurveyName = "NWFSC.Combo")
 catch_dat <- PullBio.fn(Name = c("vermilion rockfish",
 "vermilion and sunset rockfish"), SurveyName = "NWFSC.Combo")
+
 }
 
 }

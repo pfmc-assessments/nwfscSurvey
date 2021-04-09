@@ -35,10 +35,12 @@
 #' SurveyName = "NWFSC.Combo")
 #'
 #' # Example with multiple names
-#' catch_dat <- PullCatch.fn(Name = c("vermilion rockfish",
-#' "vermilion and sunset rockfish"), SurveyName = "NWFSC.Combo")
 #' catch_dat <- PullBio.fn(Name = c("vermilion rockfish",
 #' "vermilion and sunset rockfish"), SurveyName = "NWFSC.Combo")
+#'
+# catch_dat <- PullCatch.fn(SciName = c("Sebastes miniatus",
+# "Sebastes sp. (crocotulus)","Sebastes sp. (miniatus / crocotulus)"),
+# SurveyName = "NWFSC.Combo")
 #' }
 #'
 PullCatch.fn <- function(Name = NULL, SciName = NULL, YearRange = c(1980, 5000), SurveyName = NULL, SaveFile = FALSE, Dir = NULL, verbose = TRUE) {
@@ -247,12 +249,12 @@ PullCatch.fn <- function(Name = NULL, SciName = NULL, YearRange = c(1980, 5000),
   }
 
   # Scientific Name is missing after the matching when Total_sp_wt_kg is zero
-  if (!is.null(Name)) {
-    Out$Common_name <- Species
-  }
-  if (!is.null(SciName)) {
-    Out$Scientific_name <- Species
-  }
+  # if (!is.null(Name)) {
+  #   Out$Common_name <- Species
+  # }
+  # if (!is.null(SciName)) {
+  #   Out$Scientific_name <- Species
+  # }
 
   Out$Date <- chron::chron(format(as.POSIXlt(Out$Date, format = "%Y-%m-%dT%H:%M:%S"), "%Y-%m-%d"), format = "y-m-d", out.format = "YYYY-m-d")
 
