@@ -1,21 +1,51 @@
 #' Pull catch data from the NWFSC data warehouse
 #'
-#' Pull catch data from the [NWFSC](https://www.webapp.nwfsc.noaa.gov/data)
+#' Pull catch data from the
+#' [NWFSC data warehouse](https://www.webapp.nwfsc.noaa.gov/data)
 #' for a single species or all observed species, where the latter is specified
-#' by leaving `Name = NULL` and `SciName = NULL`.
+#' by leaving both `Name = NULL` and `SciName = NULL`.
 #'
-#' @param Name  common name of species data to pull from the data warehouse
-#' @param SciName scientific name of species data to pull from the data warehouse
-#' @param YearRange range of years to pull data
-#' @param SurveyName survey to pull the data for the options are:
-#' Triennial, AFSC.Slope, NWFSC.Combo, NWFSC.Slope, NWFSC.Shelf, NWFSC.Hypoxia,
-#' NWFSC.Santa.Barb.Basin, NWFSC.Shelf.Rockfish (NWFSC.Hook.Line but both are not working), NWFSC.Video
-#' @param SaveFile option to save the file to the directory
-#' @param Dir directory where the file should be saved
-#' @param verbose opt to print out message statements
+#' @param Name A character entry with the desired common name of the
+#' species you want to pull data for from the data warehouse.
+#' Use a vector of names if you want information for more than one species or
+#' if the desired species is included in the database using more than one name,
+#' e.g., vermilion rockfish (see the example below).
+#' Use the `SciName` argument if you know the latin name.
+#' @param SciName A character entry with the desired scientific name of the
+#' species you want to pull data for from the data warehouse.
+#' Use a vector of names if you want information for more than one species or
+#' if the desired species is included in the database using more than one name,
+#' e.g., vermilion rockfish (see the example below).
+#' Use the `Name` argument if you know the common name.
+#' @param YearRange An integer vector of length two with the
+#' range of years to pull data for.
+#' @param SurveyName A character entry from one of the following options that
+#' specifies which survey to pull the data for:
+#'   * Triennial,
+#'   * AFSC.Slope,
+#'   * NWFSC.Combo,
+#'   * NWFSC.Slope,
+#'   * NWFSC.Shelf,
+#'   * NWFSC.Hypoxia,
+#'   * NWFSC.Santa.Barb.Basin,
+#'   * NWFSC.Shelf.Rockfish (NWFSC.Hook.Line but both are not working),
+#'   * NWFSC.Video.
+#' Currently, you must pull data one survey at a time, though we are working on
+#' allowing for a vector of survey names and
+#' `NWFSC.Shelf.Rockfish` and `NWFSC.Hook.Line` are not supported.
+#' The default of `NULL` is a placeholder that must be replaced with an entry.
+#' @param SaveFile A logical value specifying whether or not the the data should
+#' be saved to a file in `Dir`. Must change from the default of `FALSE` to save a file.
+#' @param Dir If `SaveFile = TRUE`, then one must specify the directory where you want
+#' the resulting file to be saved. The directory where the file should be saved.
+#' The name of the file within `Dir` will start with Catch_ and end with .rda.
+#' @param verbose A logical value specifying whether or not to pring out
+#' message statements to the screen while using this function.
+#' The default is to print all messages, i.e., `verbose = TRUE`.
 #'
 #' @author Chantel Wetzel based on code by John Wallace
 #' @export
+#' @md
 #'
 #' @import jsonlite
 #' @import chron
@@ -46,7 +76,8 @@
 #'
 PullCatch.fn <- function(Name = NULL, SciName = NULL, YearRange = c(1980, 5000), SurveyName = NULL, SaveFile = FALSE, Dir = NULL, verbose = TRUE) {
   if (SurveyName %in% c("NWFSC.Shelf.Rockfish", "NWFSC.Hook.Line")) {
-    stop("The catch pull currently does not work for hook & line data. Pull directly from the warehouse https://www.webapp.nwfsc.noaa.gov/data")
+    stop("The catch pull currently does not work for hook & line data.",
+      "\nPull directly from the warehouse https://www.webapp.nwfsc.noaa.gov/data")
   }
 
   if (SaveFile) {

@@ -15,26 +15,57 @@ PullCatch.fn(
 )
 }
 \arguments{
-\item{Name}{common name of species data to pull from the data warehouse}
+\item{Name}{A character entry with the desired common name of the
+species you want to pull data for from the data warehouse.
+Use a vector of names if you want information for more than one species or
+if the desired species is included in the database using more than one name,
+e.g., vermilion rockfish (see the example below).
+Use the \code{SciName} argument if you know the latin name.}
 
-\item{SciName}{scientific name of species data to pull from the data warehouse}
+\item{SciName}{A character entry with the desired scientific name of the
+species you want to pull data for from the data warehouse.
+Use a vector of names if you want information for more than one species or
+if the desired species is included in the database using more than one name,
+e.g., vermilion rockfish (see the example below).
+Use the \code{Name} argument if you know the common name.}
 
-\item{YearRange}{range of years to pull data}
+\item{YearRange}{An integer vector of length two with the
+range of years to pull data for.}
 
-\item{SurveyName}{survey to pull the data for the options are:
-Triennial, AFSC.Slope, NWFSC.Combo, NWFSC.Slope, NWFSC.Shelf, NWFSC.Hypoxia,
-NWFSC.Santa.Barb.Basin, NWFSC.Shelf.Rockfish (NWFSC.Hook.Line but both are not working), NWFSC.Video}
+\item{SurveyName}{A character entry from one of the following options that
+specifies which survey to pull the data for:
+\itemize{
+\item Triennial,
+\item AFSC.Slope,
+\item NWFSC.Combo,
+\item NWFSC.Slope,
+\item NWFSC.Shelf,
+\item NWFSC.Hypoxia,
+\item NWFSC.Santa.Barb.Basin,
+\item NWFSC.Shelf.Rockfish (NWFSC.Hook.Line but both are not working),
+\item NWFSC.Video.
+Currently, you must pull data one survey at a time, though we are working on
+allowing for a vector of survey names and
+\code{NWFSC.Shelf.Rockfish} and \code{NWFSC.Hook.Line} are not supported.
+The default of \code{NULL} is a placeholder that must be replaced with an entry.
+}}
 
-\item{SaveFile}{option to save the file to the directory}
+\item{SaveFile}{A logical value specifying whether or not the the data should
+be saved to a file in \code{Dir}. Must change from the default of \code{FALSE} to save a file.}
 
-\item{Dir}{directory where the file should be saved}
+\item{Dir}{If \code{SaveFile = TRUE}, then one must specify the directory where you want
+the resulting file to be saved. The directory where the file should be saved.
+The name of the file within \code{Dir} will start with Catch_ and end with .rda.}
 
-\item{verbose}{opt to print out message statements}
+\item{verbose}{A logical value specifying whether or not to pring out
+message statements to the screen while using this function.
+The default is to print all messages, i.e., \code{verbose = TRUE}.}
 }
 \description{
-Pull catch data from the [NWFSC](https://www.webapp.nwfsc.noaa.gov/data)
+Pull catch data from the
+\href{https://www.webapp.nwfsc.noaa.gov/data}{NWFSC data warehouse}
 for a single species or all observed species, where the latter is specified
-by leaving `Name = NULL` and `SciName = NULL`.
+by leaving both \code{Name = NULL} and \code{SciName = NULL}.
 }
 \examples{
 \dontrun{
