@@ -2,10 +2,7 @@
 % Please edit documentation in R/PullCatch.fn.R
 \name{PullCatch.fn}
 \alias{PullCatch.fn}
-\title{Pull catch data from the NWFSC data warehouse
-The website is: https://www.webapp.nwfsc.noaa.gov/data
-This function can be used to pull a single species or all observed species
-In order to pull all species leave Name = NULL and SciName = NULL}
+\title{Pull catch data from the NWFSC data warehouse}
 \usage{
 PullCatch.fn(
   Name = NULL,
@@ -35,10 +32,9 @@ NWFSC.Santa.Barb.Basin, NWFSC.Shelf.Rockfish (NWFSC.Hook.Line but both are not w
 \item{verbose}{opt to print out message statements}
 }
 \description{
-Pull catch data from the NWFSC data warehouse
-The website is: https://www.webapp.nwfsc.noaa.gov/data
-This function can be used to pull a single species or all observed species
-In order to pull all species leave Name = NULL and SciName = NULL
+Pull catch data from the [NWFSC](https://www.webapp.nwfsc.noaa.gov/data)
+for a single species or all observed species, where the latter is specified
+by leaving `Name = NULL` and `SciName = NULL`.
 }
 \examples{
 \dontrun{
