@@ -7,20 +7,40 @@
 #' using spaces or underscores. Full names are not required but they will
 #' increase the consistency of the results should partial matches return
 #' multiple matches.
+#' @param unident A logical entry with the default value of \code{FALSE},
+#' to match historical output that did not include unidentified groups.
 #'
 #' @export
-#' @return A data frame with the scientific name, common name, and strata
-#' group for each species.
+#' @return A data frame with the
+#' scientific name in the latin column and in the scientific_name column
+#' that has spaces replaced with underscores;
+#' common name in the common column and in the common_name column
+#' that has spaces replaced with underscores;
+#' species values used as input in the input column; and
+#' strata used to assess its status in the strata column.
+#' @seealso See
+#' \code{\link{PullSpp.fn}} for information on common and scientific names;
+#' and \code{\link{GetStrata.fn}} for the different stratifications.
 #' @author Kelli Faye Johnson
 #' @examples
-#' \dontrun{
 #' GetSpp.fn(c("sablefish", "petrale"))
-#' }
+#' # Expect a warning because vermilion doesn't have an strata assigned to it
+#' testthat::expect_warning(
+#'   GetSpp.fn(c("vermilion"))
+#' )
+#' # Dusky returns multiple entries
+#' testthat::expect_warning(
+#'   GetSpp.fn(c("dusky"))
+#' )
 #'
-GetSpp.fn <- function(species) {
+GetSpp.fn <- function(species, unident = FALSE) {
 
   # background information
   sppnames <- PullSpp.fn()
+  if (!unident) {
+    sppnames <- sppnames[!grepl("unident", sppnames[["common"]]), ]
+  }
+
   spplist <- t(data.frame(
     c("north_south", "shortbelly_rockfish"),
     c("wa_or", "pacific_cod"),
@@ -83,19 +103,24 @@ GetSpp.fn <- function(species) {
     stop("No matches were found for your input species.")
   }
   out <- sppnames[unlist(index), ]
-  out[, "input"] <- species
+  out[, "input"] <- rep(species, times = vapply(index, length, FUN.VALUE = 1L))
 
   # Match strata
-  index <- match(out[, "common_name"], spplist[, 2])
+  index <- match(tolower(out[, "common_name"]), tolower(spplist[, 2]))
   if (any(is.na(index))) {
     bad <- which(is.na(index))
     warning("The following species were not found in the look up table\n",
       "stored in GetSpp for default strata, please self-assign strata:\n",
-      paste(species[bad], collapse = ", "),
+      paste(unique(out[bad, "input"]), collapse = ", "),
       call. = FALSE
     )
   }
-  out[, "strata"] <- spplist[index, 1]
+
+  out[, "strata"] <- ifelse(
+    test = is.na(index),
+    yes = "coast",
+    no = spplist[index, 1]
+    )
 
   return(out)
 }

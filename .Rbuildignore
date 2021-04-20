@@ -5,3 +5,4 @@
 ^Examples/
 ^.*\.rds$
 ^\.github$
+^\data-raw$

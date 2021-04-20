@@ -2,7 +2,7 @@
 % Please edit documentation in R/PullSpp.fn.R
 \name{PullSpp.fn}
 \alias{PullSpp.fn}
-\title{Pull Species Names From the Warehouse}
+\title{Pull species names from the warehouse}
 \usage{
 PullSpp.fn()
 }

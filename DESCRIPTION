@@ -2,37 +2,38 @@ Package: nwfscSurvey
 Type: Package
 Title: Northwest Fisheries Science Center Survey
 Version: 2.0
-Authors@R: 
+Authors@R:
     c(person(given = c("Chantel", "R."),
              family = "Wetzel",
              role = c("aut", "cre"),
              email = "chantel.wetzel@noaa.gov"),
-      person(given = c("Kelli", "F."), 
-             family = "Johnson", 
+      person(given = c("Kelli", "F."),
+             family = "Johnson",
              role = "aut"),
       person(given = c("Allan", "C."),
-      		 family = "Hicks",
-      		 role = c("aut")))
+             family = "Hicks",
+             role = c("aut")))
 Maintainer: chantel.wetzel <chantel.wetzel@noaa.gov>
 Description: Northwest Fisheries Science Center survey data processing package.
 License: GPL (>=3)
 Suggests:
     knitr,
     rmarkdown,
-    testthat
+    testthat,
+    usethis
 Imports:
-	chron,	
-	jsonlite,
-	kableExtra,
-	reshape2,
-	ggplot2 (>= 3.0.0),
-	xtable,
-	rlang,
-	rnaturalearth,
-	stringr
-Depends: 
-	dplyr (>= 1.0.0),
-	R (>= 4.0)
+    chron,
+    jsonlite,
+    kableExtra,
+    reshape2,
+    ggplot2 (>= 3.0.0),
+    xtable,
+    rlang,
+    rnaturalearth,
+    stringr
+Depends:
+    dplyr (>= 1.0.0),
+    R (>= 4.0)
 Encoding: UTF-8
 VignetteBuilder: knitr
 RoxygenNote: 7.1.1

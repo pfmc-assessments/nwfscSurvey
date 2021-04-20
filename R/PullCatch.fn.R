@@ -1,7 +1,8 @@
 #' Pull catch data from the NWFSC data warehouse
-#' The website is: https://www.webapp.nwfsc.noaa.gov/data
-#' This function can be used to pull a single species or all observed species
-#' In order to pull all species leave Name = NULL and SciName = NULL
+#'
+#' Pull catch data from the [NWFSC](https://www.webapp.nwfsc.noaa.gov/data)
+#' for a single species or all observed species, where the latter is specified
+#' by leaving `Name = NULL` and `SciName = NULL`.
 #'
 #' @param Name  common name of species data to pull from the data warehouse
 #' @param SciName scientific name of species data to pull from the data warehouse
