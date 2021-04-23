@@ -63,7 +63,7 @@ The default is to print all messages, i.e., \code{verbose = TRUE}.}
 }
 \description{
 Pull catch data from the
-\href{https://www.webapp.nwfsc.noaa.gov/data}{NWFSC data warehouse}
+\href{https://www.webapps.nwfsc.noaa.gov/data}{NWFSC data warehouse}
 for a single species or all observed species, where the latter is specified
 by leaving both \code{Name = NULL} and \code{SciName = NULL}.
 }

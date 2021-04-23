@@ -1,7 +1,7 @@
 #' Pull catch data from the NWFSC data warehouse
 #'
 #' Pull catch data from the
-#' [NWFSC data warehouse](https://www.webapp.nwfsc.noaa.gov/data)
+#' [NWFSC data warehouse](https://www.webapps.nwfsc.noaa.gov/data)
 #' for a single species or all observed species, where the latter is specified
 #' by leaving both `Name = NULL` and `SciName = NULL`.
 #'
