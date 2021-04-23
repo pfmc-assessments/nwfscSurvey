@@ -67,6 +67,21 @@ Pull catch data from the
 for a single species or all observed species, where the latter is specified
 by leaving both \code{Name = NULL} and \code{SciName = NULL}.
 }
+\details{
+The data available in the warehouse are cleaned pior to being downloaded
+with the intent that they provide the best available information for use
+in an index-standardization procedure. The removed samples may be of use
+to others with a less-restrictive goal than producing an index of abundance.
+For example, life-stage samples are excluded because they are not collected
+using the same protocols as standard samples.
+To download all data, we currently recommend going to the
+\href{https://www.webapps.nwfsc.noaa.gov/data}{NWFSC data warehouse}
+and using the csv link to extract data for a single species at a time.
+In the future, we hope to add functionality to this package such that
+downloading all data can be done easily within this function.
+See \href{https://github.com/nwfsc-assess/nwfscSurvey/issues/43}{Issue #43}
+for more information.
+}
 \examples{
 \dontrun{
 # SurveyName is only arg that has to be specified

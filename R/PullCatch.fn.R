@@ -5,6 +5,21 @@
 #' for a single species or all observed species, where the latter is specified
 #' by leaving both `Name = NULL` and `SciName = NULL`.
 #'
+#' @details
+#' The data available in the warehouse are cleaned pior to being downloaded
+#' with the intent that they provide the best available information for use
+#' in an index-standardization procedure. The removed samples may be of use
+#' to others with a less-restrictive goal than producing an index of abundance.
+#' For example, life-stage samples are excluded because they are not collected
+#' using the same protocols as standard samples.
+#' To download all data, we currently recommend going to the
+#' [NWFSC data warehouse](https://www.webapps.nwfsc.noaa.gov/data)
+#' and using the csv link to extract data for a single species at a time.
+#' In the future, we hope to add functionality to this package such that
+#' downloading all data can be done easily within this function.
+#' See [Issue #43](https://github.com/nwfsc-assess/nwfscSurvey/issues/43)
+#' for more information.
+#'
 #' @param Name A character entry with the desired common name of the
 #' species you want to pull data for from the data warehouse.
 #' Use a vector of names if you want information for more than one species or
