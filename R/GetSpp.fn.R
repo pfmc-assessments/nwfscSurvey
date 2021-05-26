@@ -47,7 +47,7 @@ GetSpp.fn <- function(species, unident = FALSE) {
     c("ca", "brown_rockfish"),
     c("ca", "copper_rockfish"),
     c("coast", "dover_sole"),
-    c("north_south", "sablefish"),
+    c("sablefish", "sablefish"),
     c("coast", "petrale_sole"),
     c("ca", "bank_rockfish"),
     c("coast", "pacific_sanddab"),
