@@ -30,7 +30,8 @@ Imports:
     xtable,
     rlang,
     rnaturalearth,
-    stringr
+    stringr,
+    janitor
 Depends:
     dplyr (>= 1.0.0),
     R (>= 4.0)
