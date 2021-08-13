@@ -55,7 +55,7 @@ SurveyAgeAtLen.fn <- function(dir = NULL, bds, catch, datAL = lifecycle::depreca
   if (lifecycle::is_present(datAL)) {
     lifecycle::deprecate_stop(
       when = "3.0",
-      what = paste0("SurveyLFs.fn(datA = )"),
+      what = paste0("SurveyLFs.fn(datAL = )"),
       details = paste0(
         "No longer used. Biological data is now passed via the bds function input."
         )

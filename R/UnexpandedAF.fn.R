@@ -1,43 +1,72 @@
 #' Creates a matrix of length or age composition data WITHOUT expantion
 #' Written by Chantel Wetzel to work with the data warehouse data formatting,
 #'
-#' @param dir directory this is where the output files will be saved
-#' @param datA the read in length comps by the PullBio.fn function
-#' @param ageBins length bins
-#' @param sex (0 = unsexed, 1 = females, 2 = males, 3 = females then males) sex value for Stock Synthesis
-#' @param partition partition for Stock Synthesis
-#' @param fleet fleet number
-#' @param ageErr Number of ageing error matrix for SS
-#' @param agelow age bin for SS (default value of -1)
-#' @param agehigh age bin for SS (default value of -1)
-#' @param month month the samples were collected
-#' @param printfolder folder where the length comps will be saved
-#' @param verbose opt to print out message statements
+#' @template dir 
+#' @param datA *Deprecated* Replaced by bds
+#' @param ageBins User defined age bins to create composition data for.
+#' @templat sex 
+#' @template partition 
+#' @template fleet 
+#' @param agelow *Deprecated* A default value of -1 will be printed in the marginal age composition files
+#' @param agehigh *Deprecated* A default value of -1 will be printed in the marginal age composition files
+#' @param ageErr Default NA. Value of age error vector to use within Stock Synthesis for the data. This input is only 
+#' used when creating age compostion data in the \code{\link{SurveyAFs.fn}}
+#' @template month 
+#' @template printfolder
+#' @template verbose
 #'
 #' @author Chantel Wetzel
 #' @export
 
-UnexpandedAFs.fn <- function(dir = NULL, datA, ageBins = 1, sex = 3, partition = 0, fleet = "Enter Fleet",
-                             ageErr = "NA", agelow = -1, agehigh = -1, month = "Enter Month", printfolder = "forSS", verbose = TRUE) {
+UnexpandedAFs.fn <- function(dir = NULL, bds, datA = lifecycle::deprecated(), ageBins = 1, sex = 3, partition = 0, fleet = "Enter Fleet",
+                             ageErr = "NA", agelow = lifecycle::deprecated(), agehigh = lifecycle::deprecated(), month = "Enter Month", 
+                             printfolder = "forSS", verbose = TRUE) {
+
+  if (lifecycle::is_present(datA)) {
+    lifecycle::deprecate_stop(
+      when = "3.0",
+      what = paste0("SurveyLFs.fn(datA = )"),
+      details = paste0(
+        "No longer used. Biological data is now passed via the bds function input."
+        )
+      )
+  }
+
+  if (lifecycle::is_present(agelow)) {
+    lifecycle::deprecate_stop(
+      when = "3.0",
+      what = paste0("SurveyLFs.fn(agelow = )"),
+      details = paste0(
+        "This column is now always removed."
+        )
+      )
+  }
+
+  if (lifecycle::is_present(agehigh)) {
+    lifecycle::deprecate_stop(
+      when = "3.0",
+      what = paste0("SurveyLFs.fn(agehigh = )"),
+      details = paste0(
+        "This column is now always removed."
+        )
+      )
+  }
 
   # Overwrite inputs to use the same code for lengths as ages
-  datL <- datA
   lgthBins <- ageBins
-  datL$Length_cm <- datA$Age
+  bds$Length_cm <- bds$Age
 
   out <- UnexpandedLFs.fn(
     dir = dir,
-    datL = datL,
+    bds = bds,
     lgthBins = lgthBins,
     sex = sex,
     partition = partition,
     fleet = fleet,
     month = month,
     ageErr = ageErr,
-    agelow = agelow,
-    agehigh = agelow,
-    printfolder = "forSS",
-    verbose = TRUE
+    printfolder = printfolder,
+    verbose = verbose
   )
 
   return(out)

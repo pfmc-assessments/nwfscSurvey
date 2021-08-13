@@ -45,7 +45,7 @@ SurveyLFs.fn <- function(dir = NULL, bds, catch, datL = lifecycle::deprecated(),
                          strat.df, lgthBins = 1, SSout = TRUE, meanRatioMethod = TRUE,
                          sex = 3, NAs2zero = lifecycle::deprecated(), sexRatioUnsexed = NA, maxSizeUnsexed = NA, 
                          sexRatioStage = 1, partition = 0, fleet = "Enter Fleet",
-                         agelow = "Enter", agehigh = "Enter", ageErr = "Enter", nSamps = NA, 
+                         agelow = "Enter", agehigh = lifecycle::deprecated(), ageErr = lifecycle::deprecated(), nSamps = NA, 
                          month = "Enter Month", printfolder = "forSS",
                          remove999 = lifecycle::deprecated(), outputStage1 = FALSE, verbose = TRUE) {
 
@@ -87,6 +87,26 @@ SurveyLFs.fn <- function(dir = NULL, bds, catch, datL = lifecycle::deprecated(),
       what = paste0("SurveyLFs.fn(datTows = )"),
       details = paste0(
         "No longer used. Catch data is now passed via the catch function input."
+        )
+      )
+  }
+
+    if (lifecycle::is_present(agelow)) {
+    lifecycle::deprecate_stop(
+      when = "3.0",
+      what = paste0("SurveyLFs.fn(agelow = )"),
+      details = paste0(
+        "This column is now always removed."
+        )
+      )
+  }
+
+  if (lifecycle::is_present(agehigh)) {
+    lifecycle::deprecate_stop(
+      when = "3.0",
+      what = paste0("SurveyLFs.fn(agehigh = )"),
+      details = paste0(
+        "This column is now always removed."
         )
       )
   }

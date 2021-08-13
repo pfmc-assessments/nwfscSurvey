@@ -78,7 +78,8 @@ GetSpp.fn <- function(species, unident = FALSE) {
     c("coast", "widow_rockfish"),
     c("ca", "copper_rockfish"),
     c("ca", "squarespot_rockfish"),
-    c("coast", "quillback_rockfish")
+    c("coast", "quillback_rockfish"),
+    c("coast", "yelloweye_rockfish")
   ))
   row.names(spplist) <- NULL
 
