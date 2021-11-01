@@ -75,9 +75,9 @@ PullBio.fn <- function(Name = NULL, SciName = NULL, YearRange = c(1980, 5000), S
     outName <- "All"
   }
   if (is.null(SciName) & is.null(Name)) {
-    var.name <- "scientific_name"
+    var.name <- c("scientific_name", "common_name")
     Species <- "pull all"
-    new.name <- "Scientific_name"
+    new.name <- c("Scientific_name", "Common_name")
   } # stop("Need to specifiy Name or SciName to pull data!")}
 
   surveys <- createMatrix()
