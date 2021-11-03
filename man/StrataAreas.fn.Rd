@@ -13,9 +13,9 @@ StrataAreas.fn(
 \arguments{
 \item{strat.df}{A data frame describing the strata names and boundaries.
 Boundaries are determined by latitude and bottom depth with
-Latitude_dd.1 and Latitude_dd.1 being the
+Latitude_dd.1 and Latitude_dd.2 being the
 low and high bound for north to south and
-Depth_m.1 and Depth_m.1 being the 
+Depth_m.1 and Depth_m.2 being the 
 low and high bound for east to west.
 A column of \code{area} can also be included if users want this column to
 be located in a certain order within the data frame, but it is not necessary.}
