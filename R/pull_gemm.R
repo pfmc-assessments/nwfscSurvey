@@ -32,7 +32,7 @@
 #' data <- pull_gemm(species = c("Widow Rockfish", "Canary Rockfish"))
 #'
 #' # Pull species and subset years
-#' widow_recent <- pull_gemm(species = "Widow Rockfish", years = 2015:2019)
+#' widow_recent <- pull_gemm(species = "Widow Rockfish", years = 2014:2019)
 #' }
 #'
 #'
