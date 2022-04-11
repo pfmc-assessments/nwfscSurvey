@@ -107,6 +107,41 @@ GetStrata.fn <- function(area = "coast") {
     lats.north = rep(c(WA[2], WA[2], 36), each = 2)
   )
 
+  # standard species-based strata
+  north_4010 <- CreateStrataDF.fn(
+    names = c(outer(c("shallow", "deep"), c("north"),
+      paste,
+      sep = "_"
+    )),
+    depths.shallow = rep(shalm, 1),
+    depths.deep = rep(c(shalm[2], deepestm), 1),
+    lats.south = rep(40.1667, each = 2),
+    lats.north = rep(WA[2], each = 2)
+  )
+
+  # standard species-based strata
+  south_4010 <- CreateStrataDF.fn(
+    names = c(outer(c("shallow", "deep"), c("south"),
+      paste,
+      sep = "_"
+    )),
+    depths.shallow = rep(shalm, 1),
+    depths.deep = rep(c(shalm[2], deepestm), 1),
+    lats.south = rep(CA[1], each = 2),
+    lats.north = rep(40.1667, each = 2)
+  )
+
+  north_south <- CreateStrataDF.fn(
+    names = c(outer(c("shallow", "deep"), c("coast", "north", "south"),
+      paste,
+      sep = "_"
+    )),
+    depths.shallow = rep(shalm, 3),
+    depths.deep = rep(c(shalm[2], deepestm), 3),
+    lats.south = rep(c(CA[1], 40.1667, CA[1]), each = 2),
+    lats.north = rep(c(WA[2], WA[2], 40.1667), each = 2)
+  )
+
   # other standard strata
   medium <- CreateStrataDF.fn(
     names = c("shallow_coast", "deep_coast"),
