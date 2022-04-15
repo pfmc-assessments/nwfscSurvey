@@ -90,6 +90,7 @@
 #' }
 #'
 PullCatch.fn <- function(Name = NULL, SciName = NULL, YearRange = c(1980, 5000), SurveyName = NULL, SaveFile = FALSE, Dir = NULL, verbose = TRUE) {
+ 
   if (SurveyName %in% c("NWFSC.Shelf.Rockfish", "NWFSC.Hook.Line")) {
     stop("The catch pull currently does not work for hook & line data.",
       "\nPull directly from the warehouse https://www.webapp.nwfsc.noaa.gov/data")
@@ -170,7 +171,8 @@ PullCatch.fn <- function(Name = NULL, SciName = NULL, YearRange = c(1980, 5000),
   }
 
   UrlText <- paste0(
-    "https://www.webapps.nwfsc.noaa.gov/data/api/v1/source/trawl.catch_fact/selection.json?filters=project=", paste(strsplit(project, " ")[[1]], collapse = "%20"), ",",
+    #"https://www.webapps.nwfsc.noaa.gov/data
+    "https://www.devwebapps.nwfsc.noaa.gov/data/api/v1/source/trawl.catch_fact/selection.json?filters=project=", paste(strsplit(project, " ")[[1]], collapse = "%20"), ",",
     "station_invalid=0,",
     "performance=Satisfactory,", "depth_ftm>=30,depth_ftm<=700,",
     "field_identified_taxonomy_dim$", var.name, "|=[", species_str,"]",
@@ -180,7 +182,8 @@ PullCatch.fn <- function(Name = NULL, SciName = NULL, YearRange = c(1980, 5000),
 
   if (Species[1] == "pull all") {
     UrlText <- paste0(
-      "https://www.webapps.nwfsc.noaa.gov/data/api/v1/source/trawl.catch_fact/selection.json?filters=project=", paste(strsplit(project, " ")[[1]], collapse = "%20"), ",",
+      #"https://www.webapps.nwfsc.noaa.gov
+      "https://www.devwebapps.nwfsc.noaa.gov/data/api/v1/source/trawl.catch_fact/selection.json?filters=project=", paste(strsplit(project, " ")[[1]], collapse = "%20"), ",",
       "station_invalid=0,",
       "performance=Satisfactory,", "depth_ftm>=30,depth_ftm<=700,",
       "date_dim$year>=", YearRange[1], ",date_dim$year<=", YearRange[2],
@@ -227,7 +230,8 @@ PullCatch.fn <- function(Name = NULL, SciName = NULL, YearRange = c(1980, 5000),
   Vars.short <- c("project", "year", "vessel", "pass", "tow", "datetime_utc_iso", "depth_m", "longitude_dd", "latitude_dd", "area_swept_ha_der", "trawl_id")
 
   UrlText <- paste0(
-    "https://www.webapps.nwfsc.noaa.gov/data/api/v1/source/trawl.operation_haul_fact/selection.json?filters=project=", paste(strsplit(project, " ")[[1]], collapse = "%20"), ",",
+    #"https://www.webapps.nwfsc.noaa.gov/
+    "https://www.devwebapps.nwfsc.noaa.gov/data/api/v1/source/trawl.operation_haul_fact/selection.json?filters=project=", paste(strsplit(project, " ")[[1]], collapse = "%20"), ",",
     "station_invalid=0,",
     "performance=Satisfactory,",
     "depth_ftm>=30,depth_ftm<=700,",
@@ -290,6 +294,7 @@ PullCatch.fn <- function(Name = NULL, SciName = NULL, YearRange = c(1980, 5000),
   if (length(noArea) > 0) {
     if (verbose) {
       print(cat("\nThere are", length(noArea), "records with no area swept calculation. These record will be filled with the mean swept area across all tows.\n"))
+      print(as.numeric(Out[noArea, c("Trawl_id")]))
       print(Out[noArea, c("Trawl_id", "Year", "Area_Swept_ha", "CPUE_kg_per_ha", "total_catch_numbers")])
     }
     Out[noArea, "Area_Swept_ha"] <- mean(Out$Area_Swept_ha, trim = 0.05, na.rm = TRUE)

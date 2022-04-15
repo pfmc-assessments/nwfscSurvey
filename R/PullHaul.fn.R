@@ -90,7 +90,8 @@ PullHaul.fn <- function(YearRange = c(1980, 5000), SurveyName = NULL, SaveFile =
 
   # Note: this string grabs data from all projects. Projects filtered below
   UrlText <- paste0(
-    "https://www.webapps.nwfsc.noaa.gov/data/api/v1/source/trawl.operation_haul_fact/selection.json?filters=",
+    #"https://www.webapps.nwfsc.noaa.gov/data
+    "https://www.devwebapps.nwfsc.noaa.gov/data/api/v1/source/trawl.operation_haul_fact/selection.json?filters=",
     "station_invalid=0,",
     "performance=Satisfactory,",
     "year>=", YearRange[1], ",year<=", YearRange[2],
