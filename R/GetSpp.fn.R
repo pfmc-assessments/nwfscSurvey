@@ -33,7 +33,7 @@
 #'   GetSpp.fn(c("dusky"))
 #' )
 #'
-GetSpp.fn <- function(species, unident = FALSE) {
+GetSpp.fn <- function(species, unident = FALSE, rm_combine_spp = TRUE) {
 
   # background information
   sppnames <- PullSpp.fn()
@@ -62,7 +62,7 @@ GetSpp.fn <- function(species, unident = FALSE) {
     c("wa_or", "flathead_sole"),
     c("coast", "greenspotted_rockfish"),
     c("coast", "greenstriped_rockfish"),
-    c("coast", "lingcod"),
+    c("north_south", "lingcod"),
     c("coast", "longspine_thornyhead"),
     c("coast", "pacific_spiny_dogfish"),
     c("coast", "redbanded_rockfish"),
@@ -104,6 +104,15 @@ GetSpp.fn <- function(species, unident = FALSE) {
   }
   out <- sppnames[unlist(index), ]
   out[, "input"] <- rep(species, times = vapply(index, length, FUN.VALUE = 1L))
+
+  if(rm_combine_spp){
+    remove = which(out$common_name %in% c("chilipepper_+_bocaccio",
+               "shortraker_and_rougheye_rockfish",
+               "vermilion_and_canary_rockfish"))
+    out = out[-remove, ]
+    remove = which(out$scientific_name == "Beringraja_binoculata")
+    out = out[-remove, ]
+  }
 
   # Match strata
   index <- match(tolower(out[, "common_name"]), tolower(spplist[, 2]))
