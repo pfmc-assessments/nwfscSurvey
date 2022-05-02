@@ -101,7 +101,7 @@ PullBio.fn <- function(Name = NULL, SciName = NULL, YearRange = c(1980, 5000), S
   if (projectShort != "NWFSC.Hook.Line") {
     Vars <- c(
       "project", "trawl_id", var.name, "year", "vessel", "pass",
-      "tow", "datetime_utc_iso", "depth_m", "weight_kg", "ageing_laboratory_dim$laboratory",
+      "tow", "datetime_utc_iso", "depth_m", "weight_kg", "ageing_laboratory_whid", #dim$laboratory",
       "length_cm", "width_cm", "sex", "age_years", "otosag_id", "latitude_dd", "longitude_dd",
       "standard_survey_age_indicator",
       "standard_survey_length_or_width_indicator",
@@ -178,7 +178,7 @@ PullBio.fn <- function(Name = NULL, SciName = NULL, YearRange = c(1980, 5000), S
       DataPull <- DataPull[keep, ]
     }
 
-    find <- colnames(DataPull) == "ageing_laboratory_dim$laboratory"
+    find <- colnames(DataPull) == "ageing_laboratory_whid"#dim$laboratory"
     colnames(DataPull)[find] <- "ageing_lab"
     # Remove the extra columns now that they are not needed
     DataPull <- DataPull[, Vars.short]
