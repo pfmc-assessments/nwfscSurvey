@@ -32,9 +32,11 @@
 
 Biomass.fn <- function(dir = NULL, dat, strat.vars = c("Depth_m", "Latitude_dd"), strat.df, printfolder = "forSS", outputMedian = T,
                        convert = 1, month = NA, fleet = NA, verbose = TRUE) {
+
   if (is.null(dat$cpue_kg_km2)) stop("There must be a column called cpue_kg_km2 in the dataframe")
+
   # Calculate the CPUE in terms of nubmer
-  dat$cpue_km2_count <- 0.01 * (dat$total_catch_numbers / (dat$Area_Swept_ha))
+  dat$cpue_km2_count <- 100 * (dat$total_catch_numbers / (dat$Area_Swept_ha))
 
   row.names(strat.df) <- strat.df[, 1] # put in rownmaes to make easier to index later
   numStrata <- nrow(strat.df)
