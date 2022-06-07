@@ -23,6 +23,7 @@ Suggests:
     usethis
 Imports:
     chron,
+    glue,
     jsonlite,
     kableExtra,
     reshape2,
