@@ -13,7 +13,6 @@ Authors@R:
       person(given = c("Allan", "C."),
              family = "Hicks",
              role = c("aut")))
-Maintainer: chantel.wetzel <chantel.wetzel@noaa.gov>
 Description: Northwest Fisheries Science Center survey data processing package.
 License: GPL (>=3)
 Suggests:
@@ -38,5 +37,5 @@ Depends:
     R (>= 4.0)
 Encoding: UTF-8
 VignetteBuilder: knitr
-RoxygenNote: 7.1.1
+RoxygenNote: 7.2.0
 LazyData: true
