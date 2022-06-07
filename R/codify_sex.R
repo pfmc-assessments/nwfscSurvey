@@ -1,0 +1,73 @@
+#' Code sexes into standardized strings
+#'
+#' Information for sexes can be stored in several forms.
+#' `codify_sex()` works to standardize all possible input values for sex
+#' into one of three character values, i.e., `F`, `M`, or `U`.
+#'
+#' @details # Codifying
+#' Pattern matching is used via [grepl()] to facilitate matching both standard
+#' and potentially erroneous matches. For example, the code can accommodate
+#' any number of white space characters before the text string via `"^\\s*`.
+#' Additionally, only the first letter of the character string is of importance
+#' because the code is strictly looking for versions of
+#' `female`, `male`, and `unsexed`, ignoring case.
+#' All `NA` values are coded as `U` for unsexed.
+#' A manual produced by Washington Department of Fish and Wildlife,
+#' <https://wdfw.wa.gov/sites/default/files/publications/01754/wdfw01754.pdf>,
+#' provides some of the following information regarding how various
+#' sampling programs codify sex.
+#'   * The Alaska Fisheries Science Center Slope Survey stored sexes
+#'     uses integers, i.e., male (1), female (2), and unsexed (3).
+#'   * Washington followed the same format as the Alaska Fisheries
+#'     Science Center Slope Survey.
+#'   * Oregon and California also use 1 for males and 2 for females;
+#'     but 9 is used for unknown sex.
+#'
+#' @details # Message
+#' A message is printed to the screen if any values do not have a map to
+#' `F`, `M`, or `U`. For example, if `happy` was an entry in `x`, a summary
+#' of the  number of times happy was seen in x would be printed to the screen
+#' via `message` and `happy` would be coded to `U` such that the returned value
+#' is still viable but the user is made aware that something is potentially
+#' wrong in `x`. See for yourself in the examples.
+#'
+#' @param x A vector of values used to store sex information.
+#'   Can be any combination of integers, single characters, or `NA` values.
+#' @return A vector of `F`, `M`, or `U` values the same length as `x`.
+#' A message is also printed to the screen if values are present in `x` that
+#' could not be codified, see the Details section titled Message
+#' for more information.
+#' @author Kelli F. Johnson
+#' @export
+#' @family codify
+#' @examples
+#' # All values are successfully coded
+#' codify_sex(c("U", "F", "M", 1, 2, NA))
+#' # Some values are not successfully coded and
+#' # warning messages are printed to the screen
+#' codify_sex(c("U", "F", "M", "both", 1, 2, NA))
+#' codify_sex(c("both", rep(5, 10), "both", 1, 2, NA))
+codify_sex <- function(x) {
+
+  out <- dplyr::case_when(
+    grepl(pattern = "^\\s*[fF].*", x) ~ "F",
+    grepl(pattern = "^\\s*[mM].*", x) ~ "M",
+    grepl(pattern = "^\\s*[uU].*", x) ~ "U",
+    x %in% c(1) ~ "M",
+    x %in% c(2) ~ "F",
+    x %in% c(3, 9) ~ "U",
+    is.na(x) ~ "U",
+    TRUE ~ "errors"
+  )
+
+  unknowns <- table(x[out == "errors"])
+  errormessage <- glue::glue("'{names(unknowns)}' (n = {unknowns})")
+  if (length(unknowns) > 0) {
+    message(
+      "The following unmatched values were found n times in `codify_sex()`:\n",
+      glue::glue_collapse(errormessage, "\n")
+    )
+  }
+
+  return(out)
+}

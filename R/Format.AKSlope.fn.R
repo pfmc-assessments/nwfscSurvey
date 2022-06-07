@@ -68,10 +68,9 @@ Format.AKSlope.fn <- function(dir = NULL, datTows, datL = NA, start.year = 1997)
   names(tmp1)[names(tmp1) == "SP_TOW_WGHT_KG"] <- "Weight" # Need to double check units
   names(tmp1)[names(tmp1) == "LENGTH"] <- "Length_cm"
 
-  tmp1$Sex <- tmp1$Age <- tmp1$Weight <- NA
-  tmp1$Sex[tmp1$SEX == 1] <- "M" # The akfsc slope sexes were specificied 1= males and 2 = females
-  tmp1$Sex[tmp1$SEX == 2] <- "F"
-  tmp1$Sex[tmp1$SEX == 3] <- "U"
+  tmp1$Age <- tmp1$Weight <- NA
+  # The akfsc slope sexes were specified 1 = males and 2 = females
+  tmp1$Sex <- codify_sex(tmp1[["SEX"]])
   tmp1$Length_cm <- tmp1$Length_cm / 10
 
   tmp1$Project <- "AK.Slope"
@@ -107,10 +106,9 @@ Format.AKSlope.fn <- function(dir = NULL, datTows, datL = NA, start.year = 1997)
     names(tmp2)[names(tmp2) == "LENGTH"] <- "Length_cm"
     names(tmp2)[names(tmp2) == "AGE"] <- "Age"
 
-    tmp2$Sex <- tmp2$Weight <- NA
-    tmp2$Sex[tmp2$SEX == 1] <- "M" # The akfsc slope sexes were specificied 1= males and 2 = females
-    tmp2$Sex[tmp2$SEX == 2] <- "F"
-    tmp2$Sex[tmp2$SEX == 3] <- "U"
+    tmp2$Weight <- NA
+    # The akfsc slope sexes were specified 1 = males and 2 = females
+    tmp2$Sex <- codify_sex(tmp2[["SEX"]])
     tmp2$Length_cm <- as.numeric(tmp2$Length_cm) / 10
 
     tmp2$Project <- "AK.Slope"
