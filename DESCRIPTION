@@ -39,3 +39,4 @@ Encoding: UTF-8
 VignetteBuilder: knitr
 RoxygenNote: 7.2.0
 LazyData: true
+Roxygen: list(markdown = TRUE)

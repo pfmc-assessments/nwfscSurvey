@@ -1,21 +1,51 @@
 #' Calculate effN input sample sizes
-#' based on Stewart, I.J. and O.S. Hamel 2014.
-#' Bootstrapping of sample size for legth- or age-composition data used in stock assessment
-#' Canadian Journal of Fishery and Aquatic Science, 71: 581-588.
 #'
-#' @param dir directory
-#' @param dat data frame to be passed in
-#' @param type specify whether doing "length" or "age". Used to read associatied excel sheets
-#' @param species species specific value to determine the number of unique samples per tow (flatfish, shelfrock, sloperock, thorny, others, all)
-#' @param printfolder name of the folder to create and save files. Location will be paste0(dir, printfolder)
-#' @param output default = NULL will return only a vector of samples sizes, summary will return a table of observations
-#' by year and sex
-#' @param verbose opt to print out message statements
+#' @references
+#' Stewart, I.J. and O.S. Hamel. 2014.
+#' Bootstrapping of sample size for length- or age-composition data used in
+#' stock assessment.
+#' Canadian Journal of Fishery and Aquatic Science, 71(4): 581--588.
+#' [10.1139/cjfas-2013-0289](https://doi.org/10.1139/cjfas-2013-0289).
 #'
-#' @author Chantel Wetzel
+#' @param dir A file path to the main directory where
+#'   `printfolder` will be created. If `NULL`, which is the default,
+#'   then no files will be written to the disk.
+#' @param dat A `data.frame` of composition data.
+#' @param type A string specifying whether doing "length" or "age" that is
+#'   used to ensure the sample size is of the correct column and create
+#'   the file name of the saved sheet.
+#' @param species A string specifying the species group of interest, which
+#'   will lead to the use of the correct species-specific value for
+#'   the number of unique samples per tow. See the function call for
+#'   allowed values, where the default is `"all"`.
+#' @param printfolder A string that will be used to create the name of the
+#'   folder where files will be saved, i.e., `file.path(dir, printfolder)`.
+#' @param output A string, where the default is `NULL`, which returns
+#'   only a vector of samples sizes.
+#'   `"summary"`, or any other character string, will return
+#'   a table of observations by year and sex.
+#' @param verbose A logical with the default of `TRUE` specifying if
+#'   messages should be printed to the screen during the evaluation.
+#'
+#' @author Chantel R. Wetzel
 #' @export
 
-GetN.fn <- function(dir = NULL, dat, type, species = NULL, printfolder = "forSS", output = NULL, verbose = TRUE) {
+GetN.fn <- function(dir = NULL,
+                    dat,
+                    type = c("length", "age"),
+                    species = c(
+                      "all",
+                      "flatfish",
+                      "shelfrock",
+                      "sloperock",
+                      "thorny",
+                      "others"
+                    ),
+                    printfolder = "forSS",
+                    output = NULL,
+                    verbose = TRUE) {
+  species <- match.arg(species)
+  type <- match.arg(type)
   n.unq <- NA
   if (species == "flatfish") {
     n.unq <- 3.09
@@ -34,11 +64,6 @@ GetN.fn <- function(dir = NULL, dat, type, species = NULL, printfolder = "forSS"
   }
   if (species == "all") {
     n.unq <- 2.73
-  }
-  if (is.na(n.unq)) {
-    if (verbose) {
-      message("\nThe species input does not match one of the following options; flatfish, shelfrock, sloperock, thorny, others, or all\n")
-    }
   }
 
   if (verbose) {
