@@ -2,62 +2,69 @@
 % Please edit documentation in R/codify_sex.R
 \name{codify_sex}
 \alias{codify_sex}
+\alias{codify_sex_SS3}
 \title{Code sexes into standardized strings}
 \usage{
 codify_sex(x)
+
+codify_sex_SS3(x)
 }
 \arguments{
 \item{x}{A vector of values used to store sex information.
-Can be any combination of integers, single characters, or `NA` values.}
+Can be any combination of integers, single characters, or \code{NA} values.}
 }
 \value{
-A vector of `F`, `M`, or `U` values the same length as `x`.
-A message is also printed to the screen if values are present in `x` that
-could not be codified, see the Details section titled Message
-for more information.
+A vector of \code{F}, \code{M}, or \code{U} values the same length as \code{x}.
 }
 \description{
 Information for sexes can be stored in several forms.
-`codify_sex()` works to standardize all possible input values for sex
-into one of three character values, i.e., `F`, `M`, or `U`.
+\code{codify_sex()} works to standardize all possible input values for sex
+into one of three character values, i.e., \code{F}, \code{M}, or \code{U}.
 }
-\details{
-# Codifying
-Pattern matching is used via [grepl()] to facilitate matching both standard
+\section{Codifying}{
+Pattern matching is used via \code{\link[=grepl]{grepl()}} to facilitate matching both standard
 and potentially erroneous matches. For example, the code can accommodate
-any number of white space characters before the text string via `"^\\s*`.
+any number of white space characters before the text string via \verb{"^\\\\s*}.
 Additionally, only the first letter of the character string is of importance
 because the code is strictly looking for versions of
-`female`, `male`, and `unsexed`, ignoring case.
-All `NA` values are coded as `U` for unsexed.
+\code{female}, \code{male}, and \code{unsexed}, ignoring case.
+All \code{NA} values are coded as \code{U} for unsexed.
 A manual produced by Washington Department of Fish and Wildlife,
-<https://wdfw.wa.gov/sites/default/files/publications/01754/wdfw01754.pdf>,
+\url{https://wdfw.wa.gov/sites/default/files/publications/01754/wdfw01754.pdf},
 provides some of the following information regarding how various
 sampling programs codify sex.
-  * The Alaska Fisheries Science Center Slope Survey stored sexes
-    uses integers, i.e., male (1), female (2), and unsexed (3).
-  * Washington followed the same format as the Alaska Fisheries
-    Science Center Slope Survey.
-  * Oregon and California also use 1 for males and 2 for females;
-    but 9 is used for unknown sex.
-
-# Message
-A message is printed to the screen if any values do not have a map to
-`F`, `M`, or `U`. For example, if `happy` was an entry in `x`, a summary
-of the  number of times happy was seen in x would be printed to the screen
-via `message` and `happy` would be coded to `U` such that the returned value
-is still viable but the user is made aware that something is potentially
-wrong in `x`. See for yourself in the examples.
+\itemize{
+\item The Alaska Fisheries Science Center Slope Survey stored sexes
+uses integers, i.e., male (1), female (2), and unsexed (3).
+\item Washington followed the same format as the Alaska Fisheries
+Science Center Slope Survey.
+\item Oregon and California also use 1 for males and 2 for females;
+but 9 is used for unknown sex.
 }
+}
+
+\section{Message}{
+A message is printed to the screen if any values do not have a map to
+\code{F}, \code{M}, or \code{U}. For example, if \code{happy} was an entry in \code{x}, a summary
+of the  number of times happy was seen in x would be printed to the screen
+via \code{message} and \code{happy} would be coded to \code{U} such that the returned value
+is still viable but the user is made aware that something is potentially
+wrong in \code{x}. See for yourself in the examples.
+}
+
 \examples{
 # All values are successfully coded
-codify_sex(c("U", "F", "M", 1, 2, NA))
-# Some values are not successfully coded and
-# warning messages are printed to the screen
+codify_sex(c("U", "F", "M", 1, 2))
+# Some values are not initially successfully coded and
+# warning messages are printed to the screen prior to
+# changing the uncoded values to "U"
 codify_sex(c("U", "F", "M", "both", 1, 2, NA))
 codify_sex(c("both", rep(5, 10), "both", 1, 2, NA))
+
+# Change codified sex from letters to integers for Stock Synthesis
+codify_sex_SS3(c("M", "U", "K"))
 }
 \author{
 Kelli F. Johnson
 }
-\concept{codify}
+\concept{codify functions}

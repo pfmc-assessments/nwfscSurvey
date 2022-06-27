@@ -45,6 +45,9 @@
 #' # changing the uncoded values to "U"
 #' codify_sex(c("U", "F", "M", "both", 1, 2, NA))
 #' codify_sex(c("both", rep(5, 10), "both", 1, 2, NA))
+#'
+#' # Change codified sex from letters to integers for Stock Synthesis
+#' codify_sex_SS3(c("M", "U", "K"))
 codify_sex <- function(x) {
 
   out <- dplyr::case_when(
@@ -73,5 +76,26 @@ codify_sex <- function(x) {
   return(out)
 }
 
+#' Codes sexes into integers for Stock Synthesis
+#'
+#' @export
+#' @rdname codify_sex
+codify_sex_SS3 <- function(x) {
+  out <- dplyr::case_when(
+    x == "F" ~ 3L,
+    x == "M" ~ 3L,
+    x == "U" ~ 0L,
+    TRUE ~ NA_integer_
+  )
+
+  unknowns <- table(x[is.na(out)], useNA = "ifany")
+  errormessage <- glue::glue("'{names(unknowns)}' (n = {unknowns})")
+  if (length(unknowns) > 0) {
+    message(
+      "The following unmatched values were found n times in",
+      glue::glue(" `{match.call()[1]}()`:"), "\n",
+      glue::glue_collapse(errormessage, "\n")
+    )
+  }
   return(out)
 }
