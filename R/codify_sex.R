@@ -34,17 +34,15 @@
 #' @param x A vector of values used to store sex information.
 #'   Can be any combination of integers, single characters, or `NA` values.
 #' @return A vector of `F`, `M`, or `U` values the same length as `x`.
-#' A message is also printed to the screen if values are present in `x` that
-#' could not be codified, see the Details section titled Message
-#' for more information.
 #' @author Kelli F. Johnson
 #' @export
-#' @family codify
+#' @family codify functions
 #' @examples
 #' # All values are successfully coded
-#' codify_sex(c("U", "F", "M", 1, 2, NA))
-#' # Some values are not successfully coded and
-#' # warning messages are printed to the screen
+#' codify_sex(c("U", "F", "M", 1, 2))
+#' # Some values are not initially successfully coded and
+#' # warning messages are printed to the screen prior to
+#' # changing the uncoded values to "U"
 #' codify_sex(c("U", "F", "M", "both", 1, 2, NA))
 #' codify_sex(c("both", rep(5, 10), "both", 1, 2, NA))
 codify_sex <- function(x) {
@@ -56,11 +54,11 @@ codify_sex <- function(x) {
     x %in% c(1) ~ "M",
     x %in% c(2) ~ "F",
     x %in% c(3, 9) ~ "U",
-    is.na(x) ~ "U",
-    TRUE ~ "errors"
+    is.na(x) ~ NA_character_,
+    TRUE ~ NA_character_
   )
 
-  unknowns <- table(x[out == "errors"])
+  unknowns <- table(x[is.na(out)], useNA = "ifany")
   errormessage <- glue::glue("'{names(unknowns)}' (n = {unknowns})")
   if (length(unknowns) > 0) {
     message(
@@ -68,6 +66,12 @@ codify_sex <- function(x) {
       glue::glue_collapse(errormessage, "\n")
     )
   }
+
+  # Code all NA_character_ to "U" before returning
+  out[is.na(out)] <- "U"
+
+  return(out)
+}
 
   return(out)
 }
