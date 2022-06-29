@@ -2,7 +2,10 @@
 #'
 #' Information for sexes can be stored in several forms.
 #' `codify_sex()` works to standardize all possible input values for sex
-#' into one of three character values, i.e., `F`, `M`, or `U`.
+#' into one of three character values, i.e., `F`, `M`, or `U`. And,
+#' `codify_sex_SS3()` runs `codify_sex()` on the input and then
+#' further standardizes `F` and `M` to 3 and all other values to 0
+#' to match grouping of sexed and unsexed fish for Stock Synthesis.
 #'
 #' @details # Codifying
 #' Pattern matching is used via [grepl()] to facilitate matching both standard
@@ -33,7 +36,9 @@
 #'
 #' @param x A vector of values used to store sex information.
 #'   Can be any combination of integers, single characters, or `NA` values.
-#' @return A vector of `F`, `M`, or `U` values the same length as `x`.
+#' @return A vector of `F`, `M`, or `U` values the same length as `x` or
+#' a vector of `0L` or `3L` for `codify_sex()` and `codify_sex_SS3()`,
+#' respectively.
 #' @author Kelli F. Johnson
 #' @export
 #' @family codify functions
@@ -81,21 +86,14 @@ codify_sex <- function(x) {
 #' @export
 #' @rdname codify_sex
 codify_sex_SS3 <- function(x) {
+  # overwrite the input with FMU values
+  x <- codify_sex(x)
+
   out <- dplyr::case_when(
     x == "F" ~ 3L,
     x == "M" ~ 3L,
-    x == "U" ~ 0L,
-    TRUE ~ NA_integer_
+    TRUE ~ 0L
   )
 
-  unknowns <- table(x[is.na(out)], useNA = "ifany")
-  errormessage <- glue::glue("'{names(unknowns)}' (n = {unknowns})")
-  if (length(unknowns) > 0) {
-    message(
-      "The following unmatched values were found n times in",
-      glue::glue(" `{match.call()[1]}()`:"), "\n",
-      glue::glue_collapse(errormessage, "\n")
-    )
-  }
   return(out)
 }

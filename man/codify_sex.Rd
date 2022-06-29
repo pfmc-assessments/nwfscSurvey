@@ -14,12 +14,17 @@ codify_sex_SS3(x)
 Can be any combination of integers, single characters, or \code{NA} values.}
 }
 \value{
-A vector of \code{F}, \code{M}, or \code{U} values the same length as \code{x}.
+A vector of \code{F}, \code{M}, or \code{U} values the same length as \code{x} or
+a vector of \code{0L} or \code{3L} for \code{codify_sex()} and \code{codify_sex_SS3()},
+respectively.
 }
 \description{
 Information for sexes can be stored in several forms.
 \code{codify_sex()} works to standardize all possible input values for sex
-into one of three character values, i.e., \code{F}, \code{M}, or \code{U}.
+into one of three character values, i.e., \code{F}, \code{M}, or \code{U}. And,
+\code{codify_sex_SS3()} runs \code{codify_sex()} on the input and then
+further standardizes \code{F} and \code{M} to 3 and all other values to 0
+to match grouping of sexed and unsexed fish for Stock Synthesis.
 }
 \section{Codifying}{
 Pattern matching is used via \code{\link[=grepl]{grepl()}} to facilitate matching both standard
