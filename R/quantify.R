@@ -80,7 +80,7 @@
 #'   isNA = is.na(Length_cm),
 #'   Sex_SS3 = codify_sex_SS3(Sex),
 #'   Year = Year,
-#'   var = Trawl_id
+#'   vars = Trawl_id
 #' )
 #'
 quantify <- function(data,
@@ -101,7 +101,7 @@ quantify <- function(data,
 
   # Ensure grouping is transient
   if (is.data.frame(data)) {
-    out <- dplyr_reconstruct(out, data)
+    out <- dplyr::dplyr_reconstruct(out, data)
   }
 
   return(out)
@@ -132,7 +132,7 @@ add_quantify <- function(data,
 
   # Ensure grouping is transient
   if (is.data.frame(data)) {
-    out <- dplyr_reconstruct(out, data)
+    out <- dplyr::dplyr_reconstruct(out, data)
   }
 
   return(out)
