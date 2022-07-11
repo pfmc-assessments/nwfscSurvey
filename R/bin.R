@@ -6,7 +6,7 @@
 #' This is similar to [dplyr::count()] but on a newly-created,
 #' dynamically-named column containing the binning categories.
 #'
-#' `bin_add()` is equivalent to `bin()` but uses [dplyr::mutate()] instead of
+#' `add_bin()` is equivalent to `bin()` but uses [dplyr::mutate()] instead of
 #' [dplyr::summarise()]. So, it adds two columns to the original data frame,
 #' rather than summarizing the returned data frame to the group levels.
 #'
@@ -131,7 +131,7 @@ bin <- function(data,
 
   # Ensure grouping is transient
   if (is.data.frame(data)) {
-    out <- dplyr_reconstruct(out, data)
+    out <- dplyr::dplyr_reconstruct(out, data)
   }
 
   return(out)
