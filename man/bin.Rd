@@ -3,87 +3,123 @@
 \name{bin}
 \alias{bin}
 \alias{add_bin}
-\title{Count observations in each bin by group}
+\title{Bin and count observations in each bin by group}
 \usage{
-bin(data, ..., var, bins, sep = "_")
+bin(data, ..., bin_list, .sep = "_")
 
-add_bin(data, ..., var, bins, sep = "_")
+add_bin(
+  data,
+  ...,
+  bin_list,
+  .sep = "_",
+  .keep = c("all", "used", "unused", "none")
+)
 }
 \arguments{
 \item{data}{A data frame to be processed.}
 
 \item{...}{<\link[dplyr:dplyr_data_masking]{dplyr::dplyr_data_masking}>
 Variables to group by, i.e., passed to \code{\link[dplyr:group_by]{dplyr::group_by()}}.
-Must be valid, unquoted column names present in \code{data}.}
+Must be valid, unquoted column names present in \code{data}.
+These groups will be added to existing groups. If this behavior is not
+desired, then run \code{\link[dplyr:group_by]{dplyr::ungroup()}} before passing the data frame to
+\code{data}.}
 
-\item{var}{<\link[dplyr:dplyr_data_masking]{dplyr::dplyr_data_masking}>
-A variable, without quotes, that is passed to \code{cut(x = data[[var]])},
-which divides the data into intervals based on \code{bins} and codes each row
-according to the interval in which it falls.
-Must be a valid column present in \code{data}.}
-
-\item{bins}{A vector of two or more numerical values passed to
-\code{cut(breaks = bins, right = FALSE, include.lowest = TRUE)}
-to determine the intervals that \code{var} binned by.
+\item{bin_list}{A list of vectors with one vector per variable of
+interest. The list should be named such that the function knows
+which variable each binning vector pertains to.
+For each vector, there must be two or more numerical values which
+will be passed to
+\code{cut(breaks = bins, right = FALSE, include.lowest = TRUE)}.
 The first value will be the left limit of the first bin,
 which will be a closed interval to include values equal to the input.
 The last value will be the right limit of the last bin,
-which will be a closed interval to include values equal to the input.
+which will also be a closed interval to include values equal to the input.
 Many people like to add \code{-999} and \code{Inf} to the beginning and end of
-the input vector to ensure that all positive values will be assigned
-a bin rather than \code{NA}.
+the input vector, respectively, to ensure that
+all positive values will be assigned to a bin rather than \code{NA}.
+A message will be printed to the screen if each vector does not lead to all
+of your data being placed in a bin, e.g., if the maximum value in your data
+exceeds the right limit of the last bin.
 See the details section or \code{?cut} for more information.}
 
-\item{sep}{A string used to paste together other strings using
-\code{\link[=paste]{paste()}}.  We recommend using a distinct, i.e., rarely used,
+\item{.sep}{A string used to paste together additional strings.
+We recommend using a distinct, i.e., rarely used,
 string such that pattern matching without unnecessary false positives
 is easy. For example, when do you ever see \code{..} in a column name?
-The default is \code{"_"}.}
+Though, the default is \code{"_"}, which is widely used for concatenation.}
+
+\item{.keep}{Control which columns from \code{data} are retained in the output.
+Grouping columns and columns created by \code{...} are always kept.
+The default is \code{"all"}, which is the first option listed. Details about
+the following options were copied from the documentation of
+\code{dplyr::mutatedata.frame()}:
+\itemize{
+\item \code{"all"} retains all columns from \code{data}. This is the default.
+\item \code{"used"} retains only the columns used in \code{...} to create new
+columns. This is useful for checking your work, as it displays inputs
+and outputs side-by-side.
+\item \code{"unused"} retains only the columns \emph{not} used in \code{...} to create new
+columns. This is useful if you generate new columns, but no longer need
+the columns used to generate them.
+\item \code{"none"} doesn't retain any extra columns from \code{data}. Only the grouping
+variables and columns created by \code{...} are kept.
+}}
 }
 \value{
 A long data frame with
 \itemize{
 \item a column for each grouping structure passed to \code{...},
-\item a column of strings called \code{"{{var}}_bin"}
+\item a column of strings called \code{"*{.sep}bin"}
 with the lower and upper limits of the bin, and
-\item a column of integers called \verb{\{\{var\}\}_n"}
+\item a column of integers called \verb{*\{.sep\}n"}
 with the number of observations.
-Missing observations for each grouping structure are included in
-the final output with a count of \code{0L} using \code{count(.drop = FALSE)}.
-If \code{add_bin()} was called, then \verb{\{\{var\}\}_bin"} and \verb{\{\{var\}\}_n"}
-are added to \code{data}.
 }
 }
 \description{
-\code{bin()} lets you quickly count the number of observations within defined
-bins per group.
-This is similar to \code{\link[dplyr:count]{dplyr::count()}} but on a newly-created,
-dynamically-named column containing the binning categories.
+\code{bin()} returns counts of one or more variables for group/bin combinations.
+This is similar to \code{\link[dplyr:count]{dplyr::count()}} but adds the additional step of creating
+one new column per variable that defines which bin it belongs to before
+counting them. For each variable of interest two new columns are created.
+Columns will be dynamically named according to the following calls to
+\code{\link[glue:glue]{glue::glue()}}: \code{"{.col}{.sep}bin"} and \code{"{.col}{.sep}n"}.
+These columns are returned as well as
+any groupings already present in \code{data} or added via \code{...}.
 
-\code{bin_add()} is equivalent to \code{bin()} but uses \code{\link[dplyr:mutate]{dplyr::mutate()}} instead of
-\code{\link[dplyr:summarise]{dplyr::summarise()}}. So, it adds two columns to the original data frame,
-rather than summarizing the returned data frame to the group levels.
+\code{add_bin()} is equivalent to \code{bin()} but uses \code{\link[dplyr:mutate]{dplyr::mutate()}} instead of
+\code{\link[dplyr:summarise]{dplyr::summarise()}}. So, it adds two columns per variable of interest
+to the original data frame, rather than
+summarizing the returned data frame to the group level.
 }
 \details{
 The code for \code{bin()} is roughly equivalent to
 
 \if{html}{\out{<div class="sourceCode">}}\preformatted{  data \%>\%
+    mutate("\{.col\}\{.sep\}bin" := cut()) \%>\%
     group_by(...) \%>\%
-    mutate("\{\{var\}\}_bin" := cut()) \%>\%
-    summarise("\{\{var\}\}_n" := n())`
+    summarise("\{.col\}\{.sep\}n" := n())
 }\if{html}{\out{</div>}}
 
-The names of the two new columns are dynamically created by pasting the
-string version of \code{var} with \code{"_bin"} and \code{"_n"}. This should help your
-future self know what variable the bins and counts are summarizing and
-it is also necessary because \code{\link[dplyr:count]{dplyr::count()}} will not work if there
-is already a column in \code{data} called \code{"n"}. Thus, the dynamic naming
-allows you to summarize multiple biological variables by running
-\code{add_bin()} more than once.
+but uses functionality in \code{\link[dplyr:across]{dplyr::across()}} facilitate calling \code{bin()}
+just one time even if you are interested in adding bin information
+for multiple variables. Essentially \code{\link[dplyr:mutate]{dplyr::mutate()}} is called once for
+each vector present in \code{bin_list}.
 
-\code{bin()} uses \code{\link[=cut]{cut()}} to determine the interval for each row.
-\code{cut(right = FALSE, include.lowest = TRUE)} is hard coded, ensuring bins
-are closed on the left and open on the right, e.g., \verb{"[0,20)}.
+\code{bin()} uses the functionality of \pkg{glue} and a hidden function in
+\pkg{dplyr} called \code{dplyr:::across_glue_mask()} to name the new columns.
+The column name that is currently of interest is pasted together with
+the argument \code{.sep} and \code{"bin"} or \code{"n"} to create the new names.
+Pasting the suffixes to the original column name is both
+helpful and necessary because data frames cannot have multiple columns with
+the same name. That is, you can only run \code{\link[dplyr:count]{dplyr::count()}} once on a data
+frame because the result is always named \code{"n"}. So, \code{bin()} saves you the
+trouble of having to rename the column later.
+
+\code{bin()} uses \code{\link[=cut]{cut()}} to determine the interval, or bin, for each row.
+Specifically, \code{cut(right = FALSE, include.lowest = TRUE)}
+is hard coded in \code{bins()}, to ensure that
+bins are closed on the left and open on the right,
+e.g., \verb{"[0,20)}.
 Except for the last bin, which is closed on the right.
 For open intervals, indicated using round brackets or parentheses,
 the endpoint is not included in the interval.
@@ -92,21 +128,31 @@ the endpoint is included in the interval.
 Thus,
 \verb{[0,} describes the left side of an interval greater than or equal to 0 and
 \verb{,20)} describes the right side of an interval less than 20.
-This notation of round and square brackets is used to name the bins such
-that the lower and upper limits of the bins are clear.
+This notation of round and square brackets is used for the strings in each
+new \verb{*bin} column such that the lower and upper limits of the bins are clear.
+
+Missing observations for each grouping structure are included in
+the final output of \code{bin()} with a count of \code{0L} using
+\code{dplyr::group_by(.drop = FALSE)}. Thus, if you add grouping structures to
+your data outside of \code{bin()} this behavior might be lost.
 }
 \examples{
-# A simple example with the iris dataset that groups Sepal.Length
-# by Species and 2 bins
-data(iris, package = "datasets")
-bin(data = iris, Species, var = Sepal.Length, bins = c(0, 5, Inf))
+# An example with the iris dataset that groups Sepal.Length
+# by Species and 2 bins, resulting in 3 x 2 groups or 6 rows
+bin(data = iris, Species, bin_list = list(Sepal.Length = c(0, 5, Inf)))
+# Same example, but use add_bin() to add _bin and _n to iris
+# Use head() to just print the first few columns
+add_bin(
+  data = iris,
+  Species,
+  bin_list = list(Sepal.Length = c(0, 5, Inf))
+) \%>\% head
 
-# Simple example of add_bin() that adds 2 columns to data
+# Use add_bin() to add 2 columns to data 1-column data frame
 # (result has same number of rows as data)
 simple <- add_bin(
   data.frame(x = rep(1:5, 2)),
-  var = x,
-  bins = c(0, 5, Inf)
+  bin_list = list(x = c(0, 5, Inf))
 )
 NROW(simple) == 10
 colnames(simple)
@@ -116,40 +162,32 @@ colnames(simple)
 # Final bin [200,Inf] is a plus group with all measurements 200 cm and above
 summary <- bin(
   data = bio_nwfsc_combo,
-  Year, Sex = codify_sex(Sex),
-  var = Length_cm,
-  bins = c(seq(0, 200, by = 20), Inf)
+  Year, Sex,
+  bin_list = list(Length_cm = c(seq(0, 200, by = 20), Inf))
 )
 # Equal number of rows per bin because missing observations per group are
 # filled in and sum of counts should equal the number of rows of data
 dplyr::count(summary, Length_cm_bin)
-sum(summary[["Length_cm_n"]]) == NROW(bio_nwfsc_combo)
 
 # add_bin() works like dplyr::mutate() instead of dplyr::summarise()
-# (result has same number of rows as input)
+# (result of add_bin() has same number of rows as input)
 original <- add_bin(
-  data = bio_nwfsc_combo \%>\% group_by(Year, Sex = codify_sex(Sex)),
-  var = Length_cm,
-  bins = seq(0, 300, by = 20)
+  data = bio_nwfsc_combo \%>\% group_by(Year, Sex),
+  bin_list = list(Length_cm = seq(0, 300, by = 20))
 )
 # The following have different counts per bin because bins in original
-# are closed on the right and open on the left and when we use bespoke
-# dplyr code here, the bins are open on right.
+# are closed on the left and open on the right and when we use bespoke
+# dplyr code here, the bins are open on left.
 bio_nwfsc_combo \%>\%
  dplyr::mutate(bin = cut(Length_cm, breaks = seq(0, 300, by = 20))) \%>\%
  group_by(Year, Sex = codify_sex(Sex), bin) \%>\%
  pull(bin) \%>\% table(., useNA = "always")
 table(original[["Length_cm_bin"]])
-sum(bio_nwfsc_combo$Length_cm < 20, na.rm = TRUE)
 sum(bio_nwfsc_combo$Length_cm <= 20, na.rm = TRUE)
+sum(bio_nwfsc_combo$Length_cm < 20, na.rm = TRUE)
 
 # clean up
 # rm(summary, original, simple)
-
-}
-\seealso{
-Other dplyr verbs: 
-\code{\link{quantify}()}
 }
 \author{
 Kelli F. Johnson

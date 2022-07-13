@@ -28,6 +28,7 @@ Imports:
     reshape2,
     ggplot2 (>= 3.0.0),
     xtable,
+    purrr,
     rlang,
     rnaturalearth,
     stringr,
