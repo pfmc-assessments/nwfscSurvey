@@ -2,43 +2,55 @@
 % Please edit documentation in R/GetN.fn.R
 \name{GetN.fn}
 \alias{GetN.fn}
-\title{Calculate effN input sample sizes
-based on Stewart, I.J. and O.S. Hamel 2014.
-Bootstrapping of sample size for legth- or age-composition data used in stock assessment
-Canadian Journal of Fishery and Aquatic Science, 71: 581-588.}
+\title{Calculate effN input sample sizes}
 \usage{
 GetN.fn(
   dir = NULL,
   dat,
-  type,
-  species = NULL,
+  type = c("length", "age"),
+  species = c("all", "flatfish", "shelfrock", "sloperock", "thorny", "others"),
   printfolder = "forSS",
   output = NULL,
   verbose = TRUE
 )
 }
 \arguments{
-\item{dir}{directory}
+\item{dir}{A file path to the main directory where
+\code{printfolder} will be created. If \code{NULL}, which is the default,
+then no files will be written to the disk.}
 
-\item{dat}{data frame to be passed in}
+\item{dat}{A \code{data.frame} of composition data.}
 
-\item{type}{specify whether doing "length" or "age". Used to read associatied excel sheets}
+\item{type}{A string specifying whether doing "length" or "age" that is
+used to ensure the sample size is of the correct column and create
+the file name of the saved sheet.}
 
-\item{species}{species specific value to determine the number of unique samples per tow (flatfish, shelfrock, sloperock, thorny, others, all)}
+\item{species}{A string specifying the species group of interest, which
+will lead to the use of the correct species-specific value for
+the number of unique samples per tow. See the function call for
+allowed values, where the default is \code{"all"}.}
 
-\item{printfolder}{name of the folder to create and save files. Location will be paste0(dir, printfolder)}
+\item{printfolder}{A string that will be used to create the name of the
+folder where files will be saved, i.e., \code{file.path(dir, printfolder)}.}
 
-\item{output}{default = NULL will return only a vector of samples sizes, summary will return a table of observations
-by year and sex}
+\item{output}{A string, where the default is \code{NULL}, which returns
+only a vector of samples sizes.
+\code{"summary"}, or any other character string, will return
+a table of observations by year and sex.}
 
-\item{verbose}{opt to print out message statements}
+\item{verbose}{A logical with the default of \code{TRUE} specifying if
+messages should be printed to the screen during the evaluation.}
 }
 \description{
 Calculate effN input sample sizes
-based on Stewart, I.J. and O.S. Hamel 2014.
-Bootstrapping of sample size for legth- or age-composition data used in stock assessment
-Canadian Journal of Fishery and Aquatic Science, 71: 581-588.
+}
+\references{
+Stewart, I.J. and O.S. Hamel. 2014.
+Bootstrapping of sample size for length- or age-composition data used in
+stock assessment.
+Canadian Journal of Fishery and Aquatic Science, 71(4): 581--588.
+\href{https://doi.org/10.1139/cjfas-2013-0289}{10.1139/cjfas-2013-0289}.
 }
 \author{
-Chantel Wetzel
+Chantel R. Wetzel
 }

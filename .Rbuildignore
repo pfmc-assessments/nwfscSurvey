@@ -2,7 +2,7 @@
 ^doc$
 ^.*\.Rproj$
 ^\.Rproj\.user$
-^Examples/
+^Examples$
 ^.*\.rds$
 ^\.github$
 ^data-raw$
