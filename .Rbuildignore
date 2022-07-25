@@ -6,3 +6,4 @@
 ^.*\.rds$
 ^\.github$
 ^data-raw$
+README.Rmd
