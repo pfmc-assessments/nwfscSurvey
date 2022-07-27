@@ -41,7 +41,7 @@ Format.AKSlope.fn <- function(dir = NULL, datTows, datL = NA, start.year = 1997)
   datTows$total_catch_numbers <- datTows$Subsample_count
   datTows$total_catch_wt_kg <- datTows$Subsample_wt_kg
   datTows$Area_Swept_ha <- (datTows$DISTANCE_FISHED * datTows$NET_WIDTH) / 10 # area swept for each tow in hectare
-  datTows$cpue_kg_km2 <- 100 * datTows$Subsample_wt_kg / datTows$Area_Swept_ha
+  datTows$cpue_kg_km2 <- datTows$Subsample_wt_kg / (0.01 * datTows$Area_Swept_ha)
 
   datTows <- datTows[, c(
     "Project", "Trawl_id", "Year", "Pass", "Vessel", "Tow", "Date", "Depth_m", "Longitude_dd", "Latitude_dd",
