@@ -15,13 +15,13 @@ Data necessary for determining the amount of area a strata covers to
 expand estimates of biomass to be absolute.
 The data includes the following columns:
 \itemize{
-  \item SUBAREA_ID
-  \item MIN_DEPTH_M
-  \item MAX_DEPTH_M
-  \item AREA_HECTARES
-  \item SUBAREA_SET_ID
-  \item MIN_LAT_DD
-  \item MAX_LAT_DD
+\item SUBAREA_ID
+\item MIN_DEPTH_M
+\item MAX_DEPTH_M
+\item AREA_HECTARES
+\item SUBAREA_SET_ID
+\item MIN_LAT_DD
+\item MAX_LAT_DD
 }
 }
 \author{

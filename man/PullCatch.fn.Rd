@@ -57,9 +57,8 @@ be saved to a file in \code{Dir}. Must change from the default of \code{FALSE} t
 the resulting file to be saved. The directory where the file should be saved.
 The name of the file within \code{Dir} will start with Catch_ and end with .rda.}
 
-\item{verbose}{A logical value specifying whether or not to pring out
-message statements to the screen while using this function.
-The default is to print all messages, i.e., \code{verbose = TRUE}.}
+\item{verbose}{A logical that specifies if you want to print messages and
+warnings to the console. The default is \code{TRUE}.}
 }
 \description{
 Pull catch data from the

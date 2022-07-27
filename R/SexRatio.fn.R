@@ -5,13 +5,13 @@
 #' @param sexRatioUnsexed sex ratio to apply to any length bins of a certain size or smaller as defined by the maxSizeUnsexed
 #' @param maxSizeUnsexed all sizes below this threshold will assign unsexed fish by sexRatio set equal to 0.50, fish larger than this size will have unsexed fish assigned by the calculated sex ratio in the data.
 #' @param bins Length bins created by the SurveyLFs.fn
-#' @param verbose opt to print out message statements
+#' @template verbose
 #'
 #' @author Allan Hicks and Chantel Wetzel
 #' @export
 
 
-SexRatio.fn <- function(x, sexRatioStage, sexRatioUnsexed, maxSizeUnsexed, bins = NULL, verbose) {
+SexRatio.fn <- function(x, sexRatioStage, sexRatioUnsexed, maxSizeUnsexed, bins = NULL, verbose = TRUE) {
   if (sexRatioStage == 1) {
 
     # incorporate unsexed fish using sex ratios

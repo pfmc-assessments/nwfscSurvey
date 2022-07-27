@@ -21,7 +21,7 @@
 #' @param convert convertion factor for the biomass by area units (e.g., hectare vs km2)
 #' @param month month for SS
 #' @param fleet fleet number for SS
-#' @param verbose opt to print out message statements
+#' @template verbose
 #'
 #' @author Allan Hicks and Chantel Wetzel
 #' @importFrom grDevices dev.off png rgb

@@ -30,7 +30,7 @@
 #' @param printfolder folder where the length comps will be saved
 #' @param remove999 the output object by the function will have the 999 column combined with the first length bin
 #' @param outputStage1 return the first stage expanded data without compiling it for SS
-#' @param verbose opt to print out message statements
+#' @template verbose
 #'
 #' @author Allan Hicks and Chantel Wetzel
 #' @export
