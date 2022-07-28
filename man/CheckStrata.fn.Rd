@@ -24,7 +24,8 @@ CheckStrata.fn(
 
 \item{printfolder}{the folder where files will be saved}
 
-\item{verbose}{opt to print out message statements}
+\item{verbose}{A logical that specifies if you want to print messages and
+warnings to the console. The default is \code{TRUE}.}
 }
 \description{
 Calculates the number of observations by strata

@@ -32,7 +32,8 @@ NWFSC.Santa.Barb.Basin, NWFSC.Shelf.Rockfish (NWFSC.Hook.Line but both are not w
 
 \item{Dir}{directory where the file should be saved}
 
-\item{verbose}{opt to print out message statements}
+\item{verbose}{A logical that specifies if you want to print messages and
+warnings to the console. The default is \code{TRUE}.}
 }
 \description{
 Pull biological data from the NWFSC data warehouse

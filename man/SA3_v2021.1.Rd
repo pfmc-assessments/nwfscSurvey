@@ -17,13 +17,13 @@ was updated in March of 2021 to allow for splitting areas at the
 40.16667, a common management line.
 The data includes the following columns:
 \itemize{
-  \item OBJECT_ID
-  \item MIN_DEPTH_M
-  \item MAX_DEPTH_M
-  \item MIN_LAT_DD
-  \item MAX_LAT_DD
-  \item AREA_HECTARES
-  \item INPFC_AREA
+\item OBJECT_ID
+\item MIN_DEPTH_M
+\item MAX_DEPTH_M
+\item MIN_LAT_DD
+\item MAX_LAT_DD
+\item AREA_HECTARES
+\item INPFC_AREA
 }
 }
 \author{

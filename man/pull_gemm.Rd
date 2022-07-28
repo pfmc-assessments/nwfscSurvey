@@ -4,12 +4,12 @@
 \alias{pull_gemm}
 \title{Pull gemm data from the NWFSC data warehouse
 The website is: https://www.webapps.nwfsc.noaa.gov/data
-This function can be used to pull all gemm data, a single species, or a 
-subset of species c("Canary Rockfish", "Widow Rockfish"). Species names in 
-the gemm are capitalized (e.g. Canary Rockfish). However, there are checks in 
+This function can be used to pull all gemm data, a single species, or a
+subset of species c("Canary Rockfish", "Widow Rockfish"). Species names in
+the gemm are capitalized (e.g. Canary Rockfish). However, there are checks in
 the function to adjust input species names if the input names do not match
-the expected capitalization (e.g. "canary rockfish", "canary_rockfish"). The 
-fuction also allows you to subset the data by year using the years input and to 
+the expected capitalization (e.g. "canary rockfish", "canary_rockfish"). The
+fuction also allows you to subset the data by year using the years input and to
 save the object if the dir function input is given.}
 \usage{
 pull_gemm(dir, species, years)
@@ -25,12 +25,12 @@ names with the first and last parts capitalized: Canary Rockfish}
 \description{
 Pull gemm data from the NWFSC data warehouse
 The website is: https://www.webapps.nwfsc.noaa.gov/data
-This function can be used to pull all gemm data, a single species, or a 
-subset of species c("Canary Rockfish", "Widow Rockfish"). Species names in 
-the gemm are capitalized (e.g. Canary Rockfish). However, there are checks in 
+This function can be used to pull all gemm data, a single species, or a
+subset of species c("Canary Rockfish", "Widow Rockfish"). Species names in
+the gemm are capitalized (e.g. Canary Rockfish). However, there are checks in
 the function to adjust input species names if the input names do not match
-the expected capitalization (e.g. "canary rockfish", "canary_rockfish"). The 
-fuction also allows you to subset the data by year using the years input and to 
+the expected capitalization (e.g. "canary rockfish", "canary_rockfish"). The
+fuction also allows you to subset the data by year using the years input and to
 save the object if the dir function input is given.
 }
 \examples{
@@ -45,7 +45,7 @@ widow_data <- pull_gemm(species = "Widow Rockfish")
 data <- pull_gemm(species = c("Widow Rockfish", "Canary Rockfish"))
 
 # Pull species and subset years
-widow_recent <- pull_gemm(species = "Widow Rockfish", years = 2015:2019)
+widow_recent <- pull_gemm(species = "Widow Rockfish", years = 2014:2019)
 }
 
 

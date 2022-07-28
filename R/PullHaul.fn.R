@@ -8,7 +8,7 @@
 #' NWFSC.Santa.Barb.Basin, NWFSC.Shelf.Rockfish (NWFSC.Hook.Line but both are not working), NWFSC.Video#'
 #' @param SaveFile option to save the file to the directory
 #' @param Dir directory where the file should be saved
-#' @param verbose opt to print out message statements
+#' @template verbose
 #'
 #' @return Returns a data frame of haul characteristics for satisfactory hauls
 #' @author Eric Ward

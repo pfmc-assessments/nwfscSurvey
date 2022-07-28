@@ -82,7 +82,8 @@ SurveyLFs.fn(
 
 \item{outputStage1}{TRUE/FALSE return the first stage expanded data without compiling it for SS}
 
-\item{verbose}{opt to print out message statements}
+\item{verbose}{A logical that specifies if you want to print messages and
+warnings to the console. The default is \code{TRUE}.}
 }
 \description{
 Expands the lengths up to the total stratum area then sums over strata
