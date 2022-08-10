@@ -62,10 +62,11 @@ SurveyLFs.fn <- function(dir = NULL, datL, datTows, strat.vars = c("Depth_m", "L
   ind <- !duplicated(datL$Trawl_id)
   datB <- datL[ind, c("Trawl_id", "Weight", strat.vars, "Longitude_dd", "Year")] # individual tow data
   tows <- unique(datL$Trawl_id)
-  Area_Swept_km2 <- Area_Swept <- Total_fish_number <- Sub_fish_number <- Sexed_fish <- numeric(dim(datB)[1])
+  Area_Swept <- Total_fish_number <- Sub_fish_number <- Sexed_fish <- numeric(dim(datB)[1])
   for (i in 1:length(tows)) {
     find <- which(tows[i] == datTows$Trawl_id)
-    area <- datTows$Area_Swept_ha[find] / 0.01
+    area <- datTows$Area_Swept_ha[find] * 0.01 #km2 
+    #Alternative: * 10000 square meter
     tot.num <- datTows$total_catch_numbers[find]
     sub.num <- datTows$Subsample_count[find]
 
@@ -73,7 +74,6 @@ SurveyLFs.fn <- function(dir = NULL, datL, datTows, strat.vars = c("Depth_m", "L
     Sexed_fish[i] <- sum(datL[find, "Sex"] %in% c("F", "M"))
 
     find <- which(tows[i] == datB$Trawl_id)
-    # Area_Swept_km2[find]  = area
     Area_Swept[find] <- area
     Total_fish_number[find] <- tot.num
     Sub_fish_number[find] <- sub.num

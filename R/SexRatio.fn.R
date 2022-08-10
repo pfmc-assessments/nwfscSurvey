@@ -2,7 +2,7 @@
 #'
 #' @param x the data frame being passed to the function from either the SurveyLFs.fn or th SurveyAFs.fn
 #' @param sexRatioStage the stage of the expansion to apply the sex ratio. Input either 1 or 2.
-#' @param sexRatioUnsexed sex ratio to apply to any length bins of a certain size or smaller as defined by the maxSizeUnsexed
+#' @template sexRatioUnsexed 
 #' @param maxSizeUnsexed all sizes below this threshold will assign unsexed fish by sexRatio set equal to 0.50, fish larger than this size will have unsexed fish assigned by the calculated sex ratio in the data.
 #' @param bins Length bins created by the SurveyLFs.fn
 #' @param verbose opt to print out message statements
@@ -12,8 +12,8 @@
 
 
 SexRatio.fn <- function(x, sexRatioStage, sexRatioUnsexed, maxSizeUnsexed, bins = NULL, verbose) {
-  if (sexRatioStage == 1) {
 
+  if (sexRatioStage == 1) {
     # incorporate unsexed fish using sex ratios
     if (length(sexRatioUnsexed) == 1 & !is.na(sexRatioUnsexed)) {
       if (verbose) {
@@ -82,6 +82,7 @@ SexRatio.fn <- function(x, sexRatioStage, sexRatioUnsexed, maxSizeUnsexed, bins 
       # These lines change to add the actual unsexed fish to the expansion factors -CRW
       x$expF <- x$expF + x$sexRatio * x$expU
       x$expM <- x$expM + (1 - x$sexRatio) * x$expU
+      x$expU <- x$expU - x$sexRatio * x$expU - (1 - x$sexRatio) * x$expU 
     }
   }
 
@@ -101,7 +102,7 @@ SexRatio.fn <- function(x, sexRatioStage, sexRatioUnsexed, maxSizeUnsexed, bins 
           stratum = tmp$stratum,
           area = tmp$area,
           LENGTH = tmp$LENGTH,
-          TotalLjhAll = tmp$TotalLjhF,
+          TotalLjhAll = tmp$TotalLjhAll,
           TotalLjhF = tmp$TotalLjhF,
           TotalLjhM = tmp$TotalLjhM,
           TotalLjhU = tmp$TotalLjhU
@@ -163,6 +164,7 @@ SexRatio.fn <- function(x, sexRatioStage, sexRatioUnsexed, maxSizeUnsexed, bins 
       }
     }
 
+    #out$TotalLjhAll <- out$TotalLjhAll
     out$TotalLjhF <- out$TotalLjhF + out$TotalLjhU * out$sexRatio
     out$TotalLjhM <- out$TotalLjhM + out$TotalLjhU * (1 - out$sexRatio)
     out$TotalLjhU <- round(out$TotalLjhU - out$TotalLjhU * out$sexRatio - out$TotalLjhU * (1 - out$sexRatio), 0)
