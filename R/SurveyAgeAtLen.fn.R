@@ -69,7 +69,7 @@ SurveyAgeAtLen.fn <- function(dir = NULL, datAL, datTows, strat.vars = c("Depth_
   Area_Swept_km2 <- Total_fish_number <- Sub_fish_number <- numeric(dim(datB)[1])
   for (i in 1:length(tows)) {
     find <- which(tows[i] == datTows$Trawl_id)
-    area <- datTows$Area_Swept_ha[find] / 0.01
+    area <- datTows$Area_Swept_ha[find] * 0.01 # km2
     tot.num <- datTows$total_catch_numbers[find]
     sub.num <- datTows$Subsample_count[find]
 

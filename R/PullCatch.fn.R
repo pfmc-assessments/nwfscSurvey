@@ -308,9 +308,9 @@ PullCatch.fn <- function(Name = NULL, SciName = NULL, YearRange = c(1980, 5000),
   Out$Trawl_id <- as.character(Out$Trawl_id)
 
   # Convert the CPUE into km2
-  Out$cpue_kg_km2 <- Out$CPUE_kg_per_ha * 100
-  remove <- "CPUE_kg_per_ha"
-  Out <- Out[, !(names(Out) %in% remove)]
+  Out$cpue_kg_km2 <- Out$CPUE_kg_per_ha / 0.01
+  #remove <- "CPUE_kg_per_ha"
+  #Out <- Out[, !(names(Out) %in% remove)]
 
   if (SaveFile) {
     time <- Sys.time()

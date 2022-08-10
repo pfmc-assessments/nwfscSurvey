@@ -32,8 +32,6 @@
 #' @param df The stored data frame or a personally created data frame that
 #' is used to calculate areas for the West Coast stratifications. The default
 #' data frame can be accessed using \code{utils::data("SA3_v2021.1")}.
-#' @param convertFactor Multiplier on the areas in SA3_v2021.1, which are in hectares.
-#' Default = 0.01 to convert hectares to square km.
 #' @return Returns the \code{strat.df} with entries in the area column containing
 #' the area (square km) for each strata.
 #' @author Chantel Wetzel and Kelli Johnson
@@ -44,9 +42,7 @@
 
 StrataAreas.fn <- function(
   strat.df,
-  df = get(utils::data("SA3_v2021.1", overwrite = TRUE, package = "nwfscSurvey")),
-  convertFactor = 0.01
-) {
+  df = get(utils::data("SA3_v2021.1", overwrite = TRUE, package = "nwfscSurvey"))) {
 
   S <- strat.df
   S$area <- NA
@@ -89,7 +85,7 @@ StrataAreas.fn <- function(
     minDep <- min(c(S$Depth_m.1[i], S$Depth_m.2[i])) <= df$MIN_DEPTH_M
 
     R <- df[maxLat & minLat & maxDep & minDep, ]
-    S$area[i] <- sum(R$AREA_HECTARES) * convertFactor
+    S$area[i] <- sum(R$AREA_HECTARES) * 0.01 #km2, alternative *10000 sq meter
   }
   return(S)
 }
