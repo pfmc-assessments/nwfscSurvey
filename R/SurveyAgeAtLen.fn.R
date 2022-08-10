@@ -26,7 +26,7 @@
 #' @param ageErr age error value for Stock Synthesis
 #' @param returnSamps TRUE/FALSE stops the function after the sample size is calculated
 #' @param printfolder folder where the length comps will be saved
-#' @param verbose opt to print out message statements
+#' @template verbose
 #'
 #' @author Allan Hicks and Chantel Wetzel
 #' @export

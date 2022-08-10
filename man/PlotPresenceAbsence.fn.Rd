@@ -54,7 +54,7 @@ to choose either "Depth (m)" or "Latitude (°N)"}
 }
 \description{
 Uses the data.frame of catch values extracted from the data warehouse
-by [PullCatch.fn()] to make a table of zero and non-zero catch by
+by \code{\link[=PullCatch.fn]{PullCatch.fn()}} to make a table of zero and non-zero catch by
 depth or latitute bins.
 }
 \examples{

@@ -40,7 +40,8 @@ Biomass.fn(
 
 \item{fleet}{fleet number for SS}
 
-\item{verbose}{opt to print out message statements}
+\item{verbose}{A logical that specifies if you want to print messages and
+warnings to the console. The default is \code{TRUE}.}
 }
 \description{
 The variables defining the strata must begin with the name in strat.vars and end with ".1" or ".2" (i.e., Depth_m.1)

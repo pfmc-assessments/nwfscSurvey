@@ -9,7 +9,7 @@
 #'    LENGTH
 #'
 #' @param dat data file name
-#' @param verbose print out comments
+#' @template verbose
 #'
 #' @author Allan Hicks and Chantel Wetzel
 #' @export

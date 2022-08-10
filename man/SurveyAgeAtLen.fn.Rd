@@ -71,7 +71,8 @@ SurveyAgeAtLen.fn(
 
 \item{printfolder}{folder where the length comps will be saved}
 
-\item{verbose}{opt to print out message statements}
+\item{verbose}{A logical that specifies if you want to print messages and
+warnings to the console. The default is \code{TRUE}.}
 }
 \description{
 Calculates proportion of age at length and reformats into SS format

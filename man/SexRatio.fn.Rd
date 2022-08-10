@@ -10,7 +10,7 @@ SexRatio.fn(
   sexRatioUnsexed,
   maxSizeUnsexed,
   bins = NULL,
-  verbose
+  verbose = TRUE
 )
 }
 \arguments{
@@ -24,7 +24,8 @@ SexRatio.fn(
 
 \item{bins}{Length bins created by the SurveyLFs.fn}
 
-\item{verbose}{opt to print out message statements}
+\item{verbose}{A logical that specifies if you want to print messages and
+warnings to the console. The default is \code{TRUE}.}
 }
 \description{
 Sex ratio function that assigns a sex to unsexed fish when creatin length or age comps

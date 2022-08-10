@@ -9,7 +9,7 @@
 #'
 #' @param dat data file name
 #' @param subset_years specify the years to retain, default is NULL which will provide 1977, alternative input would be 1980:2002 to remove only 1977.
-#' @param verbose write out comments
+#' @template verbose
 #'
 #' @author Allan Hicks and Chantel Wetzel
 #' @export

@@ -24,8 +24,7 @@
 #'   only a vector of samples sizes.
 #'   `"summary"`, or any other character string, will return
 #'   a table of observations by year and sex.
-#' @param verbose A logical with the default of `TRUE` specifying if
-#'   messages should be printed to the screen during the evaluation.
+#' @template verbose
 #'
 #' @author Chantel R. Wetzel
 #' @export

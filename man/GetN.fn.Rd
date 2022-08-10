@@ -38,8 +38,8 @@ only a vector of samples sizes.
 \code{"summary"}, or any other character string, will return
 a table of observations by year and sex.}
 
-\item{verbose}{A logical with the default of \code{TRUE} specifying if
-messages should be printed to the screen during the evaluation.}
+\item{verbose}{A logical that specifies if you want to print messages and
+warnings to the console. The default is \code{TRUE}.}
 }
 \description{
 Calculate effN input sample sizes

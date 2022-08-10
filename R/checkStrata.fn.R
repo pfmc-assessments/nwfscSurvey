@@ -6,7 +6,7 @@
 #' @param strat.vars A vector of the strata variable names (i.e., c("Depth_m","Latitude_dd"))
 #' @param strat.df a dataframe with the first column the name of the stratum, the second column the area of the stratum, and the remaining columns are the high and low variables defining the strata created by the CreateStrataDF.fn
 #' @param printfolder the folder where files will be saved
-#' @param verbose opt to print out message statements
+#' @template verbose
 #'
 #' @author Chantel Wetzel
 #' @export

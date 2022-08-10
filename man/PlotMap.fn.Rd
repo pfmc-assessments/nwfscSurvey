@@ -3,8 +3,10 @@
 \name{PlotMap.fn}
 \alias{PlotMap.fn}
 \title{#This function will create two plots
-1. CPUE from survey data across all years, and
-2. CPUE plot of the survey data by year.}
+\enumerate{
+\item CPUE from survey data across all years, and
+\item CPUE plot of the survey data by year.
+}}
 \usage{
 PlotMap.fn(dir = NULL, dat, main = NULL, dopng = FALSE, plot = 1:2)
 }
@@ -21,8 +23,10 @@ PlotMap.fn(dir = NULL, dat, main = NULL, dopng = FALSE, plot = 1:2)
 }
 \description{
 #This function will create two plots
-1. CPUE from survey data across all years, and
-2. CPUE plot of the survey data by year.
+\enumerate{
+\item CPUE from survey data across all years, and
+\item CPUE plot of the survey data by year.
+}
 }
 \author{
 Chantel Wetzel

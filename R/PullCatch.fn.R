@@ -54,9 +54,7 @@
 #' @param Dir If `SaveFile = TRUE`, then one must specify the directory where you want
 #' the resulting file to be saved. The directory where the file should be saved.
 #' The name of the file within `Dir` will start with Catch_ and end with .rda.
-#' @param verbose A logical value specifying whether or not to pring out
-#' message statements to the screen while using this function.
-#' The default is to print all messages, i.e., `verbose = TRUE`.
+#' @template verbose
 #'
 #' @author Chantel Wetzel based on code by John Wallace
 #' @export

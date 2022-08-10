@@ -12,7 +12,7 @@
 #' @param agehigh age bin for SS (default value of -1)
 #' @param month month the samples were collected
 #' @param printfolder folder where the length comps will be saved
-#' @param verbose opt to print out message statements
+#' @template verbose
 #'
 #' @author Chantel Wetzel
 #' @export
