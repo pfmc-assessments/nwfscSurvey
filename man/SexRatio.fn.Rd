@@ -10,7 +10,7 @@ SexRatio.fn(
   sexRatioUnsexed,
   maxSizeUnsexed,
   bins = NULL,
-  verbose = TRUE
+  verbose
 )
 }
 \arguments{
@@ -18,7 +18,8 @@ SexRatio.fn(
 
 \item{sexRatioStage}{the stage of the expansion to apply the sex ratio. Input either 1 or 2.}
 
-\item{sexRatioUnsexed}{sex ratio to apply to any length bins of a certain size or smaller as defined by the maxSizeUnsexed}
+\item{sexRatioUnsexed}{Sex ratio to apply to any length bins of a
+certain size or smaller as defined by the maxSizeUnsexed. The default is \code{NA}.}
 
 \item{maxSizeUnsexed}{all sizes below this threshold will assign unsexed fish by sexRatio set equal to 0.50, fish larger than this size will have unsexed fish assigned by the calculated sex ratio in the data.}
 
