@@ -14,8 +14,7 @@ Biomass.fn(
   strat.vars = c("Depth_m", "Latitude_dd"),
   strat.df,
   printfolder = "forSS",
-  outputMedian = T,
-  convert = 1,
+  outputMedian = TRUE,
   month = NA,
   fleet = NA,
   verbose = TRUE
@@ -33,8 +32,6 @@ Biomass.fn(
 \item{printfolder}{the folder where files will be saved}
 
 \item{outputMedian}{T/F output median or the mean biomass estimate}
-
-\item{convert}{convertion factor for the biomass by area units (e.g., hectare vs km2)}
 
 \item{month}{month for SS}
 
