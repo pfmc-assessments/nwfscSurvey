@@ -12,15 +12,21 @@ the expected capitalization (e.g. "canary rockfish", "canary_rockfish"). The
 fuction also allows you to subset the data by year using the years input and to
 save the object if the dir function input is given.}
 \usage{
-pull_gemm(dir, species, years)
+pull_gemm(common_name, years, dir)
 }
 \arguments{
-\item{dir}{directory to save file, if left blank pull will not be saved}
+\item{common_name}{A character entry with the desired common name of the
+species you want to pull data for from the data warehouse.
+Use a vector of names if you want information for more than one species or
+if the desired species is included in the database using more than one name,
+e.g., vermilion rockfish (see the example below).
+Use the \code{sci_name} argument if you know the latin name.}
 
-\item{species}{common name of species data to pull from the GEMM. The GEMM uses common
-names with the first and last parts capitalized: Canary Rockfish}
+\item{years}{An integer vector of length two with the
+range of years to pull data for.}
 
-\item{years}{range of years to pull data}
+\item{dir}{directory where ouptut will be saved. The directory where the file should be saved.
+If dir = NULL no output will be saved.}
 }
 \description{
 Pull gemm data from the NWFSC data warehouse
@@ -39,13 +45,13 @@ save the object if the dir function input is given.
 all_data <- pull_gemm()
 
 # Pull for a specific specis 
-widow_data <- pull_gemm(species = "Widow Rockfish")
+widow_data <- pull_gemm(common_name = "Widow Rockfish")
 
 # Pull multiple species
-data <- pull_gemm(species = c("Widow Rockfish", "Canary Rockfish"))
+data <- pull_gemm(common_name = c("Widow Rockfish", "Canary Rockfish"))
 
 # Pull species and subset years
-widow_recent <- pull_gemm(species = "Widow Rockfish", years = 2014:2019)
+widow_recent <- pull_gemm(common_name = "Widow Rockfish", years = 2014:2019)
 }
 
 

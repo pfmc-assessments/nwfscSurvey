@@ -8,10 +8,9 @@
 #' fuction also allows you to subset the data by year using the years input and to 
 #' save the object if the dir function input is given.
 #'
-#' @param dir directory to save file, if left blank pull will not be saved
-#' @param species common name of species data to pull from the GEMM. The GEMM uses common
-#' names with the first and last parts capitalized: Canary Rockfish
-#' @param years range of years to pull data
+#' @template common_name
+#' @template years 
+#' @template dir 
 #'
 #' @author Chantel Wetzel 
 #' @export
@@ -26,29 +25,31 @@
 #' all_data <- pull_gemm()
 #'
 #' # Pull for a specific specis 
-#' widow_data <- pull_gemm(species = "Widow Rockfish")
+#' widow_data <- pull_gemm(common_name = "Widow Rockfish")
 #'
 #' # Pull multiple species
-#' data <- pull_gemm(species = c("Widow Rockfish", "Canary Rockfish"))
+#' data <- pull_gemm(common_name = c("Widow Rockfish", "Canary Rockfish"))
 #'
 #' # Pull species and subset years
-#' widow_recent <- pull_gemm(species = "Widow Rockfish", years = 2014:2019)
+#' widow_recent <- pull_gemm(common_name = "Widow Rockfish", years = 2014:2019)
 #' }
 #'
 #'
-pull_gemm <- function(dir, species, years){
+pull_gemm <- function(common_name, years, dir){
 
 	# Pull all gemm data
-	gemm <- read.csv(url("https://www.webapps.nwfsc.noaa.gov/data/api/v1/source/observer.gemm_fact/selection.csv"), encoding = 'UTF-8-BOM') %>%
- 			janitor::clean_names()
+	gemm <- utils::read.csv(
+		    	url("https://www.webapps.nwfsc.noaa.gov/data/api/v1/source/observer.gemm_fact/selection.csv"), 
+		    	encoding = 'UTF-8-BOM') %>%
+ 				janitor::clean_names()
 
  	# Check the species name if provided
- 	if(!missing(species)){
- 		tmp = NULL
- 		for(ii in 1:length(species)){
- 			new_name = sub("_", " ", species[ii])
- 			new_name = stringr::str_to_title(new_name)
- 			find = which(gemm$species == new_name)
+ 	if(!missing(common_name)){
+ 		tmp <- NULL
+ 		for(ii in 1:length(common_name)){
+ 			new_name <- sub("_", " ", common_name[ii])
+ 			new_name <- stringr::str_to_title(new_name)
+ 			find <- which(gemm$species == new_name)
  			if(length(find) == 0) {
  				stop(cat("The species name was not found: ", new_name))
  			}
@@ -58,17 +59,17 @@ pull_gemm <- function(dir, species, years){
  	}
 
  	# Check the years if provided
- 	if(!missing(years)){
- 		if(sum(years %in% gemm$year) == 0){
+ 	if(!missing(years)) {
+ 		if(sum(years %in% gemm$year) == 0) {
  			stop(cat("The input years were not found in the available gemm years: ", min(gemm$year), "-", max(gemm$year)))
  		}
- 		gemm = gemm[gemm$year %in% years, ]
+ 		gemm <- gemm[gemm$year %in% years, ]
  	}
 
- 	if(!missing(dir)){
+ 	if(!missing(dir)) {
  		if(missing(species)){
  			save(gemm, file = paste0(dir, "/gemm_out.Rdat"))
- 		}else{
+ 		} else {
  			save_name = sub(" ", "_", species)
  			save(gemm, file = paste0(dir, "/gemm_", save_name, ".Rdat"))
  		}
