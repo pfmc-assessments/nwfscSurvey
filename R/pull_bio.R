@@ -162,7 +162,6 @@ pull_bio <- function(common_name = NULL,
 
     # Remove water hauls
     if (is.data.frame(len_pull)) {
-
       fill_in <- is.na(len_pull[, "operation_dim$legacy_performance_code"])
       if (sum(fill_in) > 0) {
         len_pull[fill_in, "operation_dim$legacy_performance_code"] <- -999
@@ -171,13 +170,13 @@ pull_bio <- function(common_name = NULL,
       len_pull <- len_pull[good_tows, ]
       
       len_pull$weight_kg <- NA
-      len_pull$date_formatted <- chron::chron(format(as.POSIXlt(len_pull$date, format = "%Y-%m-%dT%H:%M:%S"), "%Y-%m-%d"), format = "y-m-d", out.format = "YYYY-m-d")
+      len_pull$date_formatted <- chron::chron(format(as.POSIXlt(len_pull$datetime_utc_iso, format = "%Y-%m-%dT%H:%M:%S"), "%Y-%m-%d"), format = "y-m-d", out.format = "YYYY-m-d")
       len_pull$trawl_id <- as.character(len_pull$trawl_id)
     }
   }
 
   if (nrow(bio_pull) > 0) {
-    bio_pull$date_formatted <- chron::chron(format(as.POSIXlt(bio_pull$date, format = "%Y-%m-%dT%H:%M:%S"), "%Y-%m-%d"), format = "y-m-d", out.format = "YYYY-m-d")
+    bio_pull$date_formatted <- chron::chron(format(as.POSIXlt(bio_pull$datetime_utc_iso, format = "%Y-%m-%dT%H:%M:%S"), "%Y-%m-%d"), format = "y-m-d", out.format = "YYYY-m-d")
     bio_pull$trawl_id <- as.character(bio_pull$trawl_id)
 
     bio <- bio_pull
@@ -195,7 +194,7 @@ pull_bio <- function(common_name = NULL,
       bio$length_data <- "no_lengths_available"
     }
     if (!is.null(age_data)) {
-      bi$age_data <- age_data
+      bio$age_data <- age_data
     } else {
       bio$age_data <- "no_ages_available"
     }
@@ -209,7 +208,13 @@ pull_bio <- function(common_name = NULL,
       substr(x, 1, 1) <- toupper(substr(x, 1, 1))
       x
     }
-    colnames(bio) <- firstup(colnames(bio))
+    if(survey %in% c("Triennial", "AFSC.Slope")){
+      colnames(bio[[1]]) <- firstup(colnames(bio[[1]]))
+      colnames(bio[[2]]) <- firstup(colnames(bio[[2]]))
+    } else {
+      colnames(bio) <- firstup(colnames(bio))
+    }
+    
   }
 
   if (!is.null(dir)) {

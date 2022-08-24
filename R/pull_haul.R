@@ -20,7 +20,10 @@
 #' haul_data <- pull_haul()
 #' }
 #'
-pull_haul <- function(years= c(1980, 2050), survey = NULL, dir = NULL, verbose = TRUE) {
+pull_haul <- function(years= c(1980, 2050), 
+                      survey = NULL, 
+                      dir = NULL, 
+                      verbose = TRUE) {
 
   # increase the timeout period to avoid errors when pulling data
   options(timeout = 4000000)
@@ -34,7 +37,7 @@ pull_haul <- function(years= c(1980, 2050), survey = NULL, dir = NULL, verbose =
   }
 
   var_str <- c(
-    "area_swept_ha_der", "date_dim.year", "date_yyyymmdd",
+    "area_swept_ha_der", "year", "datetime_utc_iso",
     "depth_hi_prec_m", "door_width_m_der", "fluorescence_at_surface_mg_per_m3_der",
     "gear_end_latitude_dd", "gear_end_longitude_dd", "gear_start_latitude_dd",
     "gear_start_longitude_dd", "invertebrate_weight_kg", "latitude_dd", "leg",
@@ -60,10 +63,10 @@ pull_haul <- function(years= c(1980, 2050), survey = NULL, dir = NULL, verbose =
   haul_data <- try(jsonlite::fromJSON(url_text))
 
   haul_data$date_formatted <- 
-    chron::chron(format(as.POSIXlt(haul_data$date, format = "%Y-%m-%dT%H:%M:%S"), "%Y-%m-%d"), 
+    chron::chron(format(as.POSIXlt(haul_data$datetime_utc_iso, format = "%Y-%m-%dT%H:%M:%S"), "%Y-%m-%d"), 
     format = "y-m-d", out.format = "YYYY-m-d")
   
-  if (is.null(dir)) {
+  if (!is.null(dir)) {
     time <- substring(Sys.time(), 1, 10)
     save(haul_data, file = file.path(dir, paste("haul_", survey, "_", time, ".rda", sep = "")))
     if (verbose) {
