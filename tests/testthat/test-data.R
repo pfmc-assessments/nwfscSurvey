@@ -1,7 +1,7 @@
 context("Data processing")
 
 if (interactive()) options(mc.cores = parallel::detectCores())
-
+# devtools::test()
 set.seed(1)
 
 test_that("PullCatch", {
@@ -99,6 +99,21 @@ test_that("pull_bio", {
   )
   expect_is(dat, "data.frame")
   expect_equal(nrow(dat), 3379)
+})
+
+test_that("pull_bio_triennial", {
+  skip_on_cran()
+
+  set.seed(123)
+  dat <- pull_bio(
+    common_name = "lingcod",
+    years = c(1980, 1992),
+    survey = "Triennial",
+    verbose = TRUE
+  )
+  expect_is(dat, "list")
+  expect_equal(nrow(dat[[1]]), 1596)
+  expect_equal(nrow(dat[[2]]), 382)
 })
 
 test_that("pull_biological_samples", {
