@@ -24,9 +24,11 @@ get_url <- function(data_table, project_long, add_species, years, vars_long) {
 
   if(missing(add_species)) {
     add_species <- ""
-  } else {
+  } 
+  if(add_species != "") {
     add_species <- paste0(add_species, ",")
   }
+
 
   if(data_table %in% c("trawl.individual_fact", "trawl.triennial_length_fact", "trawl.operation_haul_fact")) {
     year_str <-  glue::glue("year>={years[1]},year<={years[2]}")

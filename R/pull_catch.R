@@ -202,12 +202,20 @@ pull_catch <- function(common_name = NULL,
   ]
 
   # Link each data set together based on trawl_id
-  grid <- expand.grid(
-    "trawl_id" = unique(all_tows$trawl_id), 
-    "common_name" = unique(positive_tows$common_name),
-    "scientific_name" = unique(positive_tows$scientific_name),
-    stringsAsFactors = FALSE
-  )
+  if (species == "pull all"){
+    grid <- expand.grid(
+      "trawl_id" = unique(all_tows$trawl_id), 
+      "common_name" = unique(positive_tows$common_name),
+      stringsAsFactors = FALSE
+    )     
+  } else {
+    grid <- expand.grid(
+      "trawl_id" = unique(all_tows$trawl_id), 
+      "common_name" = unique(positive_tows$common_name),
+      "scientific_name" = unique(positive_tows$scientific_name),
+      stringsAsFactors = FALSE
+    )    
+  }
 
   catch_data <- dplyr::left_join(grid, all_tows)
   catch <- dplyr::left_join(catch_data, positive_tows)
@@ -228,7 +236,7 @@ pull_catch <- function(common_name = NULL,
   catch[is.na(catch)] <- 0
 
   catch$date_formatted <- chron::chron(
-    format(as.POSIXlt(catch_data$date, format = "%Y-%m-%dT%H:%M:%S"), "%Y-%m-%d"), 
+    format(as.POSIXlt(catch$datetime_utc_iso, format = "%Y-%m-%dT%H:%M:%S"), "%Y-%m-%d"), 
     format = "y-m-d", out.format = "YYYY-m-d")
 
   catch$trawl_id <- as.character(catch$trawl_id)
