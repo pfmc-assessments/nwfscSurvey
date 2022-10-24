@@ -2,7 +2,7 @@
 
 <!-- badges: start -->
 
-[![R-CMD-check](https://github.com/pfmc-assessment/nwfscSurvey/workflows/R-CMD-check/badge.svg)](https://github.com/[pfmc-assessment/nwfscSurvey/actions)
+[![R-CMD-check](https://github.com/pfmc-assessment/nwfscSurvey/workflows/R-CMD-check/badge.svg)](https://github.com/pfmc-assessment/nwfscSurvey/actions)
 [![DOI](https://zenodo.org/badge/26344817.svg)](https://zenodo.org/badge/latestdoi/26344817)
 <!-- badges: end -->
 
