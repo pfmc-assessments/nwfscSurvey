@@ -2,7 +2,7 @@
 
 <!-- badges: start -->
 
-[![R-CMD-check](https://github.com/pfmc-assessment/nwfscSurvey/workflows/R-CMD-check/badge.svg)](https://github.com/pfmc-assessment/nwfscSurvey/actions)
+[![R-CMD-check](https://github.com/pfmc-assessments/nwfscSurvey/workflows/R-CMD-check/badge.svg)](https://github.com/pfmc-assessments/nwfscSurvey/actions)
 [![DOI](https://zenodo.org/badge/26344817.svg)](https://zenodo.org/badge/latestdoi/26344817)
 <!-- badges: end -->
 
@@ -21,7 +21,7 @@ this group.
 
 ``` r
 install.packages("remotes")
-remotes::install_github("pfmc-assessment/nwfscSurvey")
+remotes::install_github("pfmc-assessments/nwfscSurvey")
 ```
 
 A short vignette for the package is:
