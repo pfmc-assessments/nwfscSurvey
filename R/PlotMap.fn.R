@@ -1,21 +1,40 @@
-#' #This function will create two plots
-#' 1. CPUE from survey data across all years, and
-#' 2. CPUE plot of the survey data by year.
+#' Plot two figures showing catch-per-unit-effort data
 #'
-#' @param dir directory
-#' @param dat object created by the PullCatch.fn function
-#' @param main name that will be used to name the saved png (i.e., "NWFSC" results in a file called "NWFSC_CPUE_Map.png")
-#' @param dopng save the plot as a png inside plots folder
-#' @param plot select a subset of plots: 1 = coastwide across all years, 2 = coastwide by year
+#' Plot catch-per-unit-effort (CPUE) data across all years and by year
+#' and save them to the disk. Figures are created using {ggplot2}.
 #'
-#' @author Chantel Wetzel
+#' @param dir The directory where you would like the figures saved. The
+#'   directory must exist; but, it is only needed if `dopng = TRUE`.
+#' @param dat A data frame created by `PullCatch.fn()`.
+#' @param main A string that will be pre-pended to the default file names for
+#'   each figure. For example, if `main = "NWFSC"`, then one of the saved
+#'   `.png` files will be called `"NWFSC_CPUE_Map.png"`.
+#' @param dopng A logical value specifying if the figures should be saved as
+#'   `.png` files. The default is `FALSE`, which leads to the figures being
+#'   shown in an R window. If `dopng = TRUE`, then figures are saved to the
+#'   disk.
+#' @param plot A vector of integers to specify which plots you would like. The
+#'   default is to print both figures.
+#'   1. coastwide data across all years
+#'   2. coastwide data by year
+#'
+#' @author Chantel R. Wetzel
 #' @export
+#' @seealso
+#' * `PullCatch.fn()`
+#' @return Figures are saved to the disk according to which plots are asked
+#' for in `plot`. Each of the specified files are saved to a directory called
+#' `map_plots` inside of `dir`, the specified directory. No objects are
+#' returned to the user. But, the figures are printed to new windows if they
+#' are not saved to the disk.
 #'
 #' @import ggplot2
-#' @importFrom rnaturalearth ne_states
-#' @importFrom stats quantile
 
-PlotMap.fn <- function(dir = NULL, dat, main = NULL, dopng = FALSE, plot = 1:2) {
+PlotMap.fn <- function(dir = NULL,
+                       dat,
+                       main = NULL,
+                       dopng = FALSE,
+                       plot = 1:2) {
 
   # Create specialized plots
   pngfun <- function(dir, file, w = 7, h = 7, pt = 12) {
@@ -34,7 +53,12 @@ PlotMap.fn <- function(dir = NULL, dat, main = NULL, dopng = FALSE, plot = 1:2) 
       stop("Directory needs to be set.")
     }
     if (!file.exists(dir)) {
-      stop("The dir argument leads to a location", ",\ni.e., ", dir, ", that doesn't exist.")
+      stop(
+        "The dir argument leads to a location",
+        ",\ni.e., ",
+        dir,
+        ", that doesn't exist."
+      )
     }
 
     plotdir <- file.path(dir, paste("map_plots", sep = ""))
@@ -49,7 +73,7 @@ PlotMap.fn <- function(dir = NULL, dat, main = NULL, dopng = FALSE, plot = 1:2) 
   }
 
 
-  map.hires <- ne_states(country = c(
+  map.hires <- rnaturalearth::ne_states(country = c(
     "United States of America",
     "Mexico",
     "Canada"
@@ -58,8 +82,8 @@ PlotMap.fn <- function(dir = NULL, dat, main = NULL, dopng = FALSE, plot = 1:2) 
 
   ind <- dat$cpue_kg_km2 > 0
   pos.cat <- dat[ind, ]
-  neg <- dat[dat$cpue_kg_km2 == 0, ]
-  mid <- as.numeric(quantile(pos.cat$cpue_kg_km2, 0.50))
+  neg <- dat[dat[, "cpue_kg_km2"] == 0, ]
+  mid <- as.numeric(stats::quantile(pos.cat[, "cpue_kg_km2"], 0.50))
   max.size <- 12
 
   plot_format <- theme(
@@ -76,21 +100,56 @@ PlotMap.fn <- function(dir = NULL, dat, main = NULL, dopng = FALSE, plot = 1:2) 
         pngfun(dir = plotdir, file = "CPUE_Map.png", h = 7, w = 5)
       }
       if (!is.null(main)) {
-        pngfun(dir = plotdir, file = paste0(main, "_CPUE_Map.png"), h = 7, w = 5)
+        pngfun(
+          dir = plotdir,
+          file = paste0(main, "_CPUE_Map.png"),
+          h = 7,
+          w = 5
+        )
       }
     }
 
     g <- ggplot(dat) +
-      geom_map(data = map.df, map = map.df, aes(map_id = id), fill = "lemonchiffon", color = "black", size = 0.25) +
+      geom_map(
+        data = map.df,
+        map = map.df,
+        aes(map_id = id),
+        fill = "lemonchiffon",
+        color = "black",
+        size = 0.25
+      ) +
       ylim(32, 50) +
       xlim(-126, -117) +
-      geom_point(data = neg, aes(x = Longitude_dd, y = Latitude_dd, color = cpue_kg_km2, size = cpue_kg_km2), pch = 1, col = "lightgrey", alpha = 0.15) +
-      geom_point(data = pos.cat, aes(x = Longitude_dd, y = Latitude_dd, color = cpue_kg_km2, size = cpue_kg_km2), pch = 16, alpha = 0.7) +
+      geom_point(
+        data = neg,
+        aes(
+          x = Longitude_dd, y = Latitude_dd,
+          color = cpue_kg_km2, size = cpue_kg_km2
+        ),
+        pch = 1,
+        col = "lightgrey",
+        alpha = 0.15
+      ) +
+      geom_point(
+        data = pos.cat,
+        aes(
+          x = Longitude_dd, y = Latitude_dd,
+          color = cpue_kg_km2, size = cpue_kg_km2
+        ),
+        pch = 16,
+        alpha = 0.7
+      ) +
       scale_size_area(max_size = max.size, name = "CPUE kg/km2") +
-      scale_color_gradient2(midpoint = mid, low = color[2], mid = color[3], high = color[4], space = "Lab", name = "CPUE kg/km2") +
+      scale_color_gradient2(
+        midpoint = mid,
+        low = color[2],
+        mid = color[3],
+        high = color[4],
+        space = "Lab",
+        name = "CPUE kg/km2"
+      ) +
       plot_format +
       coord_map(projection = "mercator") +
-      # coord_map(projection = "cylindrical") +
       xlab("Longitude") +
       ylab("Latitude") +
       labs(title = "         U.S. West Coast ") +
@@ -118,27 +177,62 @@ PlotMap.fn <- function(dir = NULL, dat, main = NULL, dopng = FALSE, plot = 1:2) 
         pngfun(dir = plotdir, file = "CPUE_Map_Year.png", h = 7, w = 7)
       }
       if (!is.null(main)) {
-        pngfun(dir = plotdir, file = paste0(main, "_CPUE_Map_Year.png"), h = 7, w = 7)
+        pngfun(
+          dir = plotdir,
+          file = paste0(main, "_CPUE_Map_Year.png"),
+          h = 7,
+          w = 7
+        )
       }
     }
 
     h <- ggplot(dat) +
-      # geom_polygon(aes(x = long, y = lat, group = group), fill = "lemonchiffon", color = "black") +
-      geom_map(data = map.df, map = map.df, aes(map_id = id), fill = "lemonchiffon", color = "black", size = 0.25) +
+      geom_map(
+        data = map.df,
+        map = map.df,
+        aes(map_id = id),
+        fill = "lemonchiffon",
+        color = "black",
+        size = 0.25
+      ) +
       ylim(32, 50) +
       xlim(-126, -117) +
-      geom_point(data = neg, aes(x = Longitude_dd, y = Latitude_dd, color = cpue_kg_km2, size = cpue_kg_km2), pch = 1, col = "lightgrey", alpha = 0.15) +
-      geom_point(data = pos.cat, aes(x = Longitude_dd, y = Latitude_dd, color = cpue_kg_km2, size = cpue_kg_km2), pch = 16, alpha = 0.7) +
+      geom_point(
+        data = neg,
+        aes(
+          x = Longitude_dd, y = Latitude_dd,
+          color = cpue_kg_km2, size = cpue_kg_km2
+        ),
+        pch = 1, 
+        col = "lightgrey",
+        alpha = 0.15
+      ) +
+      geom_point(
+        data = pos.cat,
+        aes(
+          x = Longitude_dd, y = Latitude_dd,
+          color = cpue_kg_km2, size = cpue_kg_km2
+        ),
+        pch = 16,
+        alpha = 0.7
+      ) +
       scale_size_area(max_size = 12, name = "CPUE kg/km2") +
-      scale_color_gradient2(midpoint = mid, low = color[2], mid = color[3], high = color[4], space = "Lab", name = "CPUE kg/km2") +
+      scale_color_gradient2(
+        midpoint = mid,
+        low = color[2],
+        mid = color[3],
+        high = color[4],
+        space = "Lab",
+        name = "CPUE kg/km2"
+      ) +
       plot_format +
       coord_map(projection = "mercator") +
       xlab("Longitude") +
       ylab("Latitude") +
       labs(title = "                   U.S. West Coast") +
       theme(legend.position = "right") +
-      facet_wrap(~Year, ncol = 6)
-    # coord_fixed(1.3)
+      facet_wrap(~Year, ncol = 6
+    )
     print(h)
 
     if (dopng) {

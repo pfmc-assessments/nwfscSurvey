@@ -2,32 +2,48 @@
 % Please edit documentation in R/PlotMap.fn.R
 \name{PlotMap.fn}
 \alias{PlotMap.fn}
-\title{#This function will create two plots
-\enumerate{
-\item CPUE from survey data across all years, and
-\item CPUE plot of the survey data by year.
-}}
+\title{Plot two figures showing catch-per-unit-effort data}
 \usage{
 PlotMap.fn(dir = NULL, dat, main = NULL, dopng = FALSE, plot = 1:2)
 }
 \arguments{
-\item{dir}{directory}
+\item{dir}{The directory where you would like the figures saved. The
+directory must exist; but, it is only needed if \code{dopng = TRUE}.}
 
-\item{dat}{object created by the PullCatch.fn function}
+\item{dat}{A data frame created by \code{PullCatch.fn()}.}
 
-\item{main}{name that will be used to name the saved png (i.e., "NWFSC" results in a file called "NWFSC_CPUE_Map.png")}
+\item{main}{A string that will be pre-pended to the default file names for
+each figure. For example, if \code{main = "NWFSC"}, then one of the saved
+\code{.png} files will be called \code{"NWFSC_CPUE_Map.png"}.}
 
-\item{dopng}{save the plot as a png inside plots folder}
+\item{dopng}{A logical value specifying if the figures should be saved as
+\code{.png} files. The default is \code{FALSE}, which leads to the figures being
+shown in an R window. If \code{dopng = TRUE}, then figures are saved to the
+disk.}
 
-\item{plot}{select a subset of plots: 1 = coastwide across all years, 2 = coastwide by year}
+\item{plot}{A vector of integers to specify which plots you would like. The
+default is to print both figures.
+\enumerate{
+\item coastwide data across all years
+\item coastwide data by year
+}}
+}
+\value{
+Figures are saved to the disk according to which plots are asked
+for in \code{plot}. Each of the specified files are saved to a directory called
+\code{map_plots} inside of \code{dir}, the specified directory. No objects are
+returned to the user. But, the figures are printed to new windows if they
+are not saved to the disk.
 }
 \description{
-#This function will create two plots
-\enumerate{
-\item CPUE from survey data across all years, and
-\item CPUE plot of the survey data by year.
+Plot catch-per-unit-effort (CPUE) data across all years and by year
+and save them to the disk. Figures are created using {ggplot2}.
+}
+\seealso{
+\itemize{
+\item \code{PullCatch.fn()}
 }
 }
 \author{
-Chantel Wetzel
+Chantel R. Wetzel
 }
