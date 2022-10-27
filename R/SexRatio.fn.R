@@ -13,12 +13,12 @@
 #' @param sexRatioStage An integer specifying the stage of the expansion in
 #'   which the sex ratio should be applied. There is no default value and only
 #'   values of `1L`` or `2L` are appropriate.
-#' @param sexRatioUnsexed A numerical value within [0.0, 1.0] that will be
+#' @param sexRatioUnsexed A numerical value within `[0.0, 1.0]` that will be
 #'   used as the sex ratio for measured individuals less than `maxSizeUnsexed`.
 #'   If `NA_real_`, then the sex ratio for stage-1 expansion will not be
 #'   conducted.
 #' @param maxSizeUnsexed A numerical value specifying the right side of the
-#'   following bin [0, maxSizeUnsexed], where all fish measured in this bin
+#'   following bin `[0, maxSizeUnsexed]`, where all fish measured in this bin
 #'   are assigned a sex based on sexRatioUnsexed.
 #'   Fish with a measurement larger than this value will be assigned a sex
 #'   based on the calculated sex ratio in the data.

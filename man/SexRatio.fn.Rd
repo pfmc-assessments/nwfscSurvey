@@ -22,13 +22,13 @@ expands the data such as \code{\link[=SurveyLFs.fn]{SurveyLFs.fn()}} or \code{\l
 which the sex ratio should be applied. There is no default value and only
 values of \verb{1L`` or }2L` are appropriate.}
 
-\item{sexRatioUnsexed}{A numerical value within \link{0.0, 1.0} that will be
+\item{sexRatioUnsexed}{A numerical value within \verb{[0.0, 1.0]} that will be
 used as the sex ratio for measured individuals less than \code{maxSizeUnsexed}.
 If \code{NA_real_}, then the sex ratio for stage-1 expansion will not be
 conducted.}
 
 \item{maxSizeUnsexed}{A numerical value specifying the right side of the
-following bin \link{0, maxSizeUnsexed}, where all fish measured in this bin
+following bin \verb{[0, maxSizeUnsexed]}, where all fish measured in this bin
 are assigned a sex based on sexRatioUnsexed.
 Fish with a measurement larger than this value will be assigned a sex
 based on the calculated sex ratio in the data.}
