@@ -22,6 +22,7 @@
 #' @export
 #' @seealso
 #' * `PullCatch.fn()`
+#' * `plot_westcoast()`
 #' @return Figures are saved to the disk according to which plots are asked
 #' for in `plot`. Each of the specified files are saved to a directory called
 #' `map_plots` inside of `dir`, the specified directory. No objects are
@@ -77,54 +78,29 @@ PlotMap.fn <- function(dir = NULL,
     windows(width = 5, height = 7, record = TRUE)
   }
 
-
-  map.hires <- rnaturalearth::ne_states(country = c(
-    "United States of America",
-    "Mexico",
-    "Canada"
-  ))
-  map.df <- ggplot2::fortify(map.hires)
-
   ind <- dat$cpue_kg_km2 > 0
   pos.cat <- dat[ind, ]
   neg <- dat[dat[, "cpue_kg_km2"] == 0, ]
   mid <- as.numeric(stats::quantile(pos.cat[, "cpue_kg_km2"], 0.50))
   max.size <- 12
 
-  plot_format <- theme(
-    panel.grid = element_blank(),
-    panel.background = element_rect(fill = "white")
-  )
-
   color <- c("#fffa00", "#ffcc00", "#ff7700", "#B60000")
 
   igroup <- 1
   if (igroup %in% plot) {
     if (dopng) {
-      if (is.null(main)) {
-        pngfun(dir = plotdir, file = "CPUE_Map.png", h = 7, w = 5)
-      }
-      if (!is.null(main)) {
-        pngfun(
-          dir = plotdir,
-          file = paste0(main, "_CPUE_Map.png"),
-          h = 7,
-          w = 5
-        )
-      }
+      pngfun(
+        dir = plotdir,
+        file = paste(
+          ifelse(is.null(main), "", paste0(main, "_")),
+          "CPUE_Map.png"
+        ),
+        h = 7,
+        w = 5
+      )
     }
 
     g <- ggplot(dat) +
-      geom_map(
-        data = map.df,
-        map = map.df,
-        aes(map_id = id),
-        fill = "lemonchiffon",
-        color = "black",
-        size = 0.25
-      ) +
-      ylim(32, 50) +
-      xlim(-126, -117) +
       geom_point(
         data = neg,
         aes(
@@ -153,11 +129,12 @@ PlotMap.fn <- function(dir = NULL,
         space = "Lab",
         name = "CPUE kg/km2"
       ) +
-      plot_format +
-      coord_map(projection = "mercator") +
-      xlab("Longitude") +
-      ylab("Latitude") +
-      labs(title = "         U.S. West Coast ") +
+      draw_theme() +
+      draw_projection() +
+      draw_land() +
+      draw_USEEZ(c(-126, -117), c(32, 50)) +
+      label_land() +
+      label_axes() +
       theme(legend.position = "right")
     print(g)
 
@@ -178,30 +155,18 @@ PlotMap.fn <- function(dir = NULL,
     )
 
     if (dopng) {
-      if (is.null(main)) {
-        pngfun(dir = plotdir, file = "CPUE_Map_Year.png", h = 7, w = 7)
-      }
-      if (!is.null(main)) {
-        pngfun(
-          dir = plotdir,
-          file = paste0(main, "_CPUE_Map_Year.png"),
-          h = 7,
-          w = 7
-        )
-      }
+      pngfun(
+        dir = plotdir,
+        file = paste(
+          ifelse(is.null(main), "", paste0(main, "_")),
+          "CPUE_Map_Year.png"
+        ),
+        h = 7,
+        w = 7
+      )
     }
 
     h <- ggplot(dat) +
-      geom_map(
-        data = map.df,
-        map = map.df,
-        aes(map_id = id),
-        fill = "lemonchiffon",
-        color = "black",
-        size = 0.25
-      ) +
-      ylim(32, 50) +
-      xlim(-126, -117) +
       geom_point(
         data = neg,
         aes(
@@ -231,13 +196,13 @@ PlotMap.fn <- function(dir = NULL,
         name = "CPUE kg/km2"
       ) +
       plot_format +
-      coord_map(projection = "mercator") +
-      xlab("Longitude") +
-      ylab("Latitude") +
-      labs(title = "                   U.S. West Coast") +
+      draw_theme() +
+      draw_projection() +
+      draw_land() +
+      draw_USEEZ(c(-126, -117), c(32, 50)) +
+      label_axes() +
       theme(legend.position = "right") +
-      facet_wrap(~Year, ncol = 6
-    )
+      facet_wrap(~Year, ncol = 6)
     print(h)
 
     if (dopng) {

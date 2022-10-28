@@ -39,9 +39,16 @@ are not saved to the disk.
 Plot catch-per-unit-effort (CPUE) data across all years and by year
 and save them to the disk. Figures are created using {ggplot2}.
 }
+\examples{
+\dontrun{
+PlotMap.fn(dat = catch_nwfsc_combo, plot = 1)
+PlotMap.fn(dat = catch_nwfsc_combo, plot = 2)
+}
+}
 \seealso{
 \itemize{
 \item \code{PullCatch.fn()}
+\item \code{plot_westcoast()}
 }
 }
 \author{

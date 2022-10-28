@@ -26,10 +26,10 @@ Imports:
     jsonlite,
     kableExtra,
     reshape2,
+    ggnewscale,
     ggplot2 (>= 3.0.0),
     xtable,
     rlang,
-    rnaturalearth,
     stringr,
     janitor
 Depends:
