@@ -28,6 +28,11 @@
 #' returned to the user. But, the figures are printed to new windows if they
 #' are not saved to the disk.
 #'
+#' @examples
+#' \dontrun{
+#' PlotMap.fn(dat = catch_nwfsc_combo, plot = 1)
+#' PlotMap.fn(dat = catch_nwfsc_combo, plot = 2)
+#' }
 #' @import ggplot2
 
 PlotMap.fn <- function(dir = NULL,
