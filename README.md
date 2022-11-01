@@ -21,7 +21,7 @@ this group.
 
 ``` r
 install.packages("remotes")
-remotes::install_github("pfmc-assessments/nwfscSurvey")
+remotes::install_github("pfmc-assessments/nwfscSurvey", build_vignettes = TRUE)
 ```
 
 A short vignette for the package is:
