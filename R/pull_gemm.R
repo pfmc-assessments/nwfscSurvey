@@ -67,11 +67,11 @@ pull_gemm <- function(common_name, years, dir){
  	}
 
  	if(!missing(dir)) {
- 		if(missing(species)){
+ 		if(missing(common_name)){
  			save(gemm, file = paste0(dir, "/gemm_out.Rdat"))
  		} else {
- 			save_name = sub(" ", "_", species)
- 			save(gemm, file = paste0(dir, "/gemm_", save_name, ".Rdat"))
+ 			save_name = sub(" ", "_", common_name)
+ 			save(gemm, file = paste0(dir, "/gemm_", save_name, ".rdata"))
  		}
  	}
 
