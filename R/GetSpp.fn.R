@@ -88,6 +88,7 @@ GetSpp.fn <- function(species, unident = FALSE) {
     names(out) <- NULL
     return(out)
   })
+
   if (any(lapply(index, length) == 0)) {
     bad <- which(lapply(index, length) == 0)
     warning("The following species were not found in the look up table\n",
@@ -99,6 +100,7 @@ GetSpp.fn <- function(species, unident = FALSE) {
     species <- species[-1 * bad]
     index <- index[-1 * bad]
   }
+
   if (length(species) == 0) {
     stop("No matches were found for your input species.")
   }
@@ -109,11 +111,21 @@ GetSpp.fn <- function(species, unident = FALSE) {
   index <- match(tolower(out[, "common_name"]), tolower(spplist[, 2]))
   if (any(is.na(index))) {
     bad <- which(is.na(index))
+    if(length(index) == 1){
     warning("The following species were not found in the look up table\n",
       "stored in GetSpp for default strata, please self-assign strata:\n",
       paste(unique(out[bad, "input"]), collapse = ", "),
       call. = FALSE
-    )
+    ) }
+
+    if(length(index) != 1){
+    warning("Multiple matches were found for the input species in the look up table\n",
+      "stored in GetSpp. Only one match is returned. The common_name for the removed match is:\n",
+      paste(unique(out[bad, "common_name"]), collapse = ", "),
+      call. = FALSE
+    )}
+    out <- out[!is.na(index),]
+    index <- index[!is.na(index)]
   }
 
   out[, "strata"] <- ifelse(
