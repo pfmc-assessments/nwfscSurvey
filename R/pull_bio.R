@@ -203,6 +203,9 @@ pull_bio <- function(common_name = NULL,
   }
 
   if(convert) {
+    bio$data <- bio$date_formatted
+    bio$age <- bio$age_years
+    bio$weight <- bio$weight_kg
     firstup <- function(x) {
       substr(x, 1, 1) <- toupper(substr(x, 1, 1))
       x
@@ -213,7 +216,6 @@ pull_bio <- function(common_name = NULL,
     } else {
       colnames(bio) <- firstup(colnames(bio))
     }
-    
   }
 
   if (!is.null(dir)) {

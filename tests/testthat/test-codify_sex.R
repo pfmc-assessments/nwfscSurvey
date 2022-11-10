@@ -1,16 +1,16 @@
 
-test_that("AFSC Slope pull biological table of lingcod sexes", {
+test_that("AFSC Slope pull biological table of Pacific ocean perch sexes", {
   skip_on_cran()
 
   dat <- PullBio.fn(
-    Name = "lingcod",
+    Name = "Pacific ocean perch",
     SciName = NULL, YearRange = c(1910, 2020),
     SurveyName = "AFSC.Slope", SaveFile = FALSE,
     Dir = NULL, verbose = TRUE
   )
   originaltable <- table(dat[["Lengths"]][["Sex"]])
   testthat::expect_equal(
-    c(182, 35, 105), # Values calculated on 2022-06-08 by KFJ
+    c(2395, 3126, 600), # Values calculated on 2022-11-10 by CRW
     as.numeric(originaltable)
   )
   # Check that recoding doesn't do anything

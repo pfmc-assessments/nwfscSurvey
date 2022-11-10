@@ -242,13 +242,17 @@ pull_catch <- function(common_name = NULL,
   catch$cpue_kg_km2 <- catch$cpue_kg_per_ha_der * 0.01
 
   if(convert) {
+    catch$Area_Swept_ha <- catch$area_swept_ha_der
+    catch$date <- catch$date_formatted
     firstup <- function(x) {
       substr(x, 1, 1) <- toupper(substr(x, 1, 1))
       x
     }
     colnames(catch) <- firstup(colnames(catch))
-    colnames(catch)[colnames(catch)=="Cpue_kg_km2"] <- "CPUE_kg_km2"
-    colnames(catch)[colnames(catch)=="Cpue_kg_per_ha_der"] <- "CPUE_kg_per_ha_der"
+    colnames(catch)[colnames(catch)=="Cpue_kg_km2"] <- "cpue_kg_km2"
+    colnames(catch)[colnames(catch)=="Cpue_kg_per_ha_der"] <- "cpue_kg_per_ha_der"
+    colnames(catch)[colnames(catch)=="Total_catch_numbers"] <- "total_catch_numbers"
+    colnames(catch)[colnames(catch)=="Total_catch_wt_kg"] <- "total_catch_wt_kg"
   }
 
   if (!is.null(dir)) {
