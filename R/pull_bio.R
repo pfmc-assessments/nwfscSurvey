@@ -14,7 +14,6 @@
 #' @author Chantel Wetzel 
 #' @export
 #'
-#' @import jsonlite
 #' @import chron
 #' @importFrom dplyr rename
 #' @importFrom stringr str_replace_all
@@ -111,7 +110,7 @@ pull_bio <- function(common_name = NULL,
   if (verbose) {
     message("Pulling biological data. This can take up to ~ 30 seconds (or more).")
   }
-  bio_pull <- try(jsonlite::fromJSON(url_text))
+  bio_pull <- try(get_json(url = url_text))
 
   if (!is.data.frame(bio_pull) & !survey %in% c("Triennial", "AFSC.Slope")) {
     stop(cat("\nNo data returned by the warehouse for the filters given.
@@ -158,7 +157,7 @@ pull_bio <- function(common_name = NULL,
                     years = years, 
                     vars_long = vars_long)
 
-    len_pull <- try(jsonlite::fromJSON(url_text))
+    len_pull <- try(get_json(url = url_text))
 
     # Remove water hauls
     if (is.data.frame(len_pull)) {

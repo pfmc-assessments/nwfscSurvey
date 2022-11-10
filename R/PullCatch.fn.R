@@ -60,7 +60,6 @@
 #' @export
 #' @md
 #'
-#' @import jsonlite
 #' @import chron
 #' @importFrom stringr str_replace_all
 #' @importFrom dplyr left_join rename
@@ -190,10 +189,7 @@ PullCatch.fn <- function(Name = NULL, SciName = NULL, YearRange = c(1980, 5000),
     message("Pulling catch data. This can take up to ~ 30 seconds (or more).")
   }
   # Pull data from the warehouse
-  DataPull <- try(jsonlite::fromJSON(UrlText))
-  if (!is.data.frame(DataPull)) {
-    stop(cat("\nNo data returned by the warehouse for the filters given.\n Make sure the year range is correct for the project selected and the input name is correct,\n otherwise there may be no data for this species from this project.\n"))
-  }
+  DataPull <- try(get_json(url = UrlText))
 
   # Remove water hauls
   fix <- is.na(DataPull[, "operation_dim$legacy_performance_code"])
@@ -232,8 +228,7 @@ PullCatch.fn <- function(Name = NULL, SciName = NULL, YearRange = c(1980, 5000),
     "date_dim$year>=", YearRange[1], ",date_dim$year<=", YearRange[2],
     "&variables=", paste0(Vars, collapse = ",")
   )
-
-  All.Tows <- jsonlite::fromJSON(UrlText)
+  All.Tows <- try(get_json(url = UrlText))
 
   # Remove water hauls
   fix <- is.na(All.Tows[, "operation_dim$legacy_performance_code"])

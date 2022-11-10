@@ -32,7 +32,6 @@
 #' @export
 #' @md
 #'
-#' @import jsonlite
 #' @import chron
 #' @importFrom stringr str_replace_all
 #' @importFrom dplyr left_join rename
@@ -146,7 +145,7 @@ pull_catch <- function(common_name = NULL,
   }
 
   # Pull data from positive tows for selected species
-  positive_tows <- try(jsonlite::fromJSON(url_text))
+  positive_tows <- try(get_json(url = url_text))
   if (!is.data.frame(positive_tows)) {
     stop(cat("\nNo data returned by the warehouse for the filters given.
               \n Make sure the year range is correct for the project selected and the input name is correct,
@@ -183,7 +182,7 @@ pull_catch <- function(common_name = NULL,
                       years = years,
                       vars_long = vars_long)
 
-  all_tows <- jsonlite::fromJSON(url_text)
+  all_tows <- try(get_json(url = url_text)) 
 
   # Remove water hauls
   water_hauls <- is.na(all_tows[, "operation_dim$legacy_performance_code"])

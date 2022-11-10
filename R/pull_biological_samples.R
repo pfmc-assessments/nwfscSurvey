@@ -16,7 +16,6 @@
 #' @author Chantel Wetzel
 #' @export
 #'
-#' @import jsonlite
 #' @import glue
 #'
 #'
@@ -128,7 +127,7 @@ pull_biological_samples <- function(common_name = NULL,
   if (verbose) {
     message("Pulling maturity, stomach, fin clip, and tissue sample data.")
   }
-  bio_samples <- try(jsonlite::fromJSON(url_text))
+  bio_samples <- try(get_json(url = url_text))
   
   keep <- which(bio_samples$ovary_id > 0 | bio_samples$stomach_id > 0 |
       bio_samples$tissue_id > 0 | bio_samples$left_pectoral_fin_id > 0)

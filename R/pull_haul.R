@@ -11,7 +11,6 @@
 #' @author Eric Ward, Chantel Wetzel
 #' @export
 #'
-#' @import jsonlite
 #' @import glue
 #'
 #' @examples
@@ -60,7 +59,7 @@ pull_haul <- function(years= c(1980, 2050),
   if (verbose) {
     message("Pulling haul data. This can take up to ~ 30 seconds.")
   }
-  haul_data <- try(jsonlite::fromJSON(url_text))
+  haul_data <- try(get_json(url = url_text))
 
   haul_data$date_formatted <- 
     chron::chron(format(as.POSIXlt(haul_data$datetime_utc_iso, format = "%Y-%m-%dT%H:%M:%S"), "%Y-%m-%d"), 

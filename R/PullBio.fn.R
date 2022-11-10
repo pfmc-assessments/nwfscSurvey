@@ -16,7 +16,6 @@
 #' @author Chantel Wetzel based on code by John Wallace
 #' @export
 #'
-#' @import jsonlite
 #' @import chron
 #' @importFrom dplyr rename
 #' @importFrom stringr str_replace_all
@@ -149,7 +148,7 @@ PullBio.fn <- function(Name = NULL, SciName = NULL, YearRange = c(1980, 5000), S
   if (verbose) {
     message("Pulling biological data. This can take up to ~ 30 seconds (or more).")
   }
-  DataPull <- try(jsonlite::fromJSON(UrlText))
+  DataPull <- try(get_json(url = UrlText))
 
   if (is.data.frame(DataPull)) {
     if (SurveyName == "NWFSC.Combo") {
@@ -194,7 +193,7 @@ PullBio.fn <- function(Name = NULL, SciName = NULL, YearRange = c(1980, 5000), S
       "&variables=", paste0(Vars, collapse = ",")
     )
 
-    LenPull <- try(jsonlite::fromJSON(UrlText))
+    LenPull <- try(get_json(url = UrlText))
 
     # Remove water hauls
     if (is.data.frame(LenPull)) {

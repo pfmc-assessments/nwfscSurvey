@@ -14,7 +14,6 @@
 #' @author Eric Ward
 #' @export
 #'
-#' @import jsonlite
 #' @import chron
 #'
 #' @examples
@@ -101,7 +100,7 @@ PullHaul.fn <- function(YearRange = c(1980, 5000), SurveyName = NULL, SaveFile =
   if (verbose) {
     message("Pulling haul data. This can take up to ~ 30 seconds.")
   }
-  Data <- try(jsonlite::fromJSON(UrlText))
+  Data <- try(get_json(url = UrlText))
 
   # filter projects
   Data <- Data[which(Data$project %in% project == TRUE), ]
