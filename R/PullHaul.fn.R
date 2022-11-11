@@ -108,7 +108,7 @@ PullHaul.fn <- function(YearRange = c(1980, 5000), SurveyName = NULL, SaveFile =
   if (SaveFile) {
     time <- Sys.time()
     time <- substring(time, 1, 10)
-    save(Data, file = file.path(Dir, paste("Haul_", outName, "_", SurveyName, "_", time, ".rda", sep = "")))
+    save(Data, file = file.path(Dir, paste("Haul_", SurveyName, "_", time, ".rda", sep = "")))
     if (verbose) {
       message(paste("Haul data file saved to following location:", Dir))
     }
