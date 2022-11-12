@@ -23,6 +23,7 @@ Suggests:
 Imports:
     chron,
     glue,
+    httr,
     jsonlite,
     kableExtra,
     reshape2,
