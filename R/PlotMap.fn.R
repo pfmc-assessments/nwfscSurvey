@@ -1,21 +1,37 @@
-#' #This function will create two plots
-#' 1. CPUE from survey data across all years, and
-#' 2. CPUE plot of the survey data by year.
+#' Create maps with catch-per-unit-effort
 #'
-#' @param dir directory
-#' @param dat object created by the PullCatch.fn function
-#' @param main name that will be used to name the saved png (i.e., "NWFSC" results in a file called "NWFSC_CPUE_Map.png")
-#' @param dopng save the plot as a png inside plots folder
-#' @param plot select a subset of plots: 1 = coastwide across all years, 2 = coastwide by year
+#' Create the following figures:
+#' 1. CPUE plot of the data across all years and/or
+#' 2. CPUE plot of the data by year.
 #'
-#' @author Chantel Wetzel
+#' @template dir
+#' @param dat An object created by [PullCatch.fn()].
+#' @param main A string that will be prepended to the name of the saved png
+#'   (i.e., "NWFSC" results in a file called "NWFSC_CPUE_Map.png").
+#' @param dopng Deprecated with {nwfscSurvey} 2.1 because providing a non-NULL
+#'   value to `dir` can serve the same purpose as `dopng = TRUE` without the
+#'   potential for errors when `dopng = TRUE` and `dir = NULL`. Thus, users
+#'   no longer have to specify `dopng` to save the plot as a png.
+#' @param plot A vector of integers specifying the selection of a subset of
+#'   plots: 1 = coastwide across all years, 2 = coastwide by year.
+#'
+#' @author Chantel R. Wetzel
 #' @export
 #'
 #' @import ggplot2
-#' @importFrom rnaturalearth ne_states
-#' @importFrom stats quantile
 
-PlotMap.fn <- function(dir = NULL, dat, main = NULL, dopng = FALSE, plot = 1:2) {
+PlotMap.fn <- function(dir = NULL,
+                       dat,
+                       main = NULL,
+                       dopng = lifecycle::deprecated(),
+                       plot = 1:2) {
+
+  if (lifecycle::is_present(dopng)) {
+    lifecycle::deprecate_warn(
+      when = "2.1",
+      what = "nwfscSurvey::PlotMap.fn(dopng =)"
+    )
+  }
 
   # Create specialized plots
   pngfun <- function(dir, file, w = 7, h = 7, pt = 12) {
@@ -28,28 +44,15 @@ PlotMap.fn <- function(dir = NULL, dat, main = NULL, dopng = FALSE, plot = 1:2) 
     )
   }
 
+  plotdir <- file.path(dir, "map_plots")
+  check_dir(dir = plotdir)
+  main_ <- ifelse(is.null(main), "", paste0(main, "_"))
 
-  if (dopng) {
-    if (is.null(dir)) {
-      stop("Directory needs to be set.")
-    }
-    if (!file.exists(dir)) {
-      stop("The dir argument leads to a location", ",\ni.e., ", dir, ", that doesn't exist.")
-    }
-
-    plotdir <- file.path(dir, paste("map_plots", sep = ""))
-    plotdir.isdir <- file.info(plotdir)$isdir
-    if (is.na(plotdir.isdir) | !plotdir.isdir) {
-      dir.create(plotdir)
-    }
-  }
-
-  if (!dopng) {
+  if (!is.null(dir)) {
     windows(width = 5, height = 7, record = TRUE)
   }
 
-
-  map.hires <- ne_states(country = c(
+  map.hires <- rnaturalearth::ne_states(country = c(
     "United States of America",
     "Mexico",
     "Canada"
@@ -59,7 +62,7 @@ PlotMap.fn <- function(dir = NULL, dat, main = NULL, dopng = FALSE, plot = 1:2) 
   ind <- dat$cpue_kg_km2 > 0
   pos.cat <- dat[ind, ]
   neg <- dat[dat$cpue_kg_km2 == 0, ]
-  mid <- as.numeric(quantile(pos.cat$cpue_kg_km2, 0.50))
+  mid <- as.numeric(stats::quantile(pos.cat$cpue_kg_km2, 0.50))
   max.size <- 12
 
   plot_format <- theme(
@@ -71,13 +74,8 @@ PlotMap.fn <- function(dir = NULL, dat, main = NULL, dopng = FALSE, plot = 1:2) 
 
   igroup <- 1
   if (igroup %in% plot) {
-    if (dopng) {
-      if (is.null(main)) {
-        pngfun(dir = plotdir, file = "CPUE_Map.png", h = 7, w = 5)
-      }
-      if (!is.null(main)) {
-        pngfun(dir = plotdir, file = paste0(main, "_CPUE_Map.png"), h = 7, w = 5)
-      }
+    if (!is.null(dir)) {
+      pngfun(dir = plotdir, file = paste0(main_, "_CPUE_Map.png"), w = 5)
     }
 
     g <- ggplot(dat) +
@@ -97,7 +95,7 @@ PlotMap.fn <- function(dir = NULL, dat, main = NULL, dopng = FALSE, plot = 1:2) 
       theme(legend.position = "right")
     print(g)
 
-    if (dopng) {
+    if (!is.null(dir)) {
       dev.off()
     }
   }
@@ -113,13 +111,8 @@ PlotMap.fn <- function(dir = NULL, dat, main = NULL, dopng = FALSE, plot = 1:2) 
       axis.ticks.x = element_blank()
     )
 
-    if (dopng) {
-      if (is.null(main)) {
-        pngfun(dir = plotdir, file = "CPUE_Map_Year.png", h = 7, w = 7)
-      }
-      if (!is.null(main)) {
-        pngfun(dir = plotdir, file = paste0(main, "_CPUE_Map_Year.png"), h = 7, w = 7)
-      }
+    if (!is.null(dir)) {
+      pngfun(dir = plotdir, file = paste0(main_, "_CPUE_Map_Year.png"))
     }
 
     h <- ggplot(dat) +
@@ -141,7 +134,7 @@ PlotMap.fn <- function(dir = NULL, dat, main = NULL, dopng = FALSE, plot = 1:2) 
     # coord_fixed(1.3)
     print(h)
 
-    if (dopng) {
+    if (!is.null(dir)) {
       dev.off()
     }
   }

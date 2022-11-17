@@ -5,29 +5,45 @@
 #' @param data.type "length" or "age"
 #' @param main ame that will be used to name the saved png
 #' @param circleSize circle size
+#' @param dopng Deprecated with {nwfscSurvey} 2.1 because providing a non-NULL
+#'   value to `dir` can serve the same purpose as `dopng = TRUE` without the
+#'   potential for errors when `dopng = TRUE` and `dir = NULL`. Thus, users
+#'   no longer have to specify `dopng` to save the plot as a png.
 #' @param ...      Additional arguments for the plots
 #'
 #' @author Allan Hicks and Chantel Wetzel
 #' @importFrom graphics abline
 #' @export
 
-PlotSexRatio.fn <- function(dir, dat, data.type = "length", main = NULL, circleSize = 0.1,  ...) {
+PlotSexRatio.fn <- function(dir,
+                            dat,
+                            data.type = "length",
+                            main = NULL,
+                            circleSize = 0.1,
+                            dopng = lifecycle::deprecated(),
+                            ...) {
+  if (lifecycle::is_present(dopng)) {
+    lifecycle::deprecate_warn(
+      when = "2.1",
+      what = "nwfscSurvey::PlotMap.fn(dopng =)"
+    )
+  }
 
-  if(!is.null(dir)) {
-    if (!file.exists(dir)) {
-      stop("The dir argument leads to a location", ",\ni.e., ", dir, ", that doesn't exist.")
-    }
-    plotdir <- file.path(dir, paste("plots", sep = ""))
-    plotdir.isdir <- file.info(plotdir)$isdir
-    if (is.na(plotdir.isdir) | !plotdir.isdir) {
-      dir.create(plotdir)
-    }
-    if (is.null(main)) {
-      png(file.path(dir, "plots", paste(data.type, "_fraction_female.png", sep = "")), height = 7, width = 7, units = "in", res = 300)
-    }
-    if (!is.null(main)) {
-      png(file.path(dir, "plots", paste(main, "_", data.type, "_fraction_female.png", sep = "")), height = 7, width = 7, units = "in", res = 300)
-    }
+  plotdir <- file.path(dir, "plots")
+  check_dir(dir = plotdir)
+  main_ <- ifelse(is.null(main), "", paste0(main, "_"))
+  if (!is.null(dir)) {
+    png(
+      filename = file.path(
+        plotdir,
+        paste0(main_, data.type, "_fraction_female.png")
+      ),
+      height = 7,
+      width = 7,
+      units = "in",
+      res = 300
+    )
+    on.exit(dev.off(), add = TRUE)
   }
 
   round_any <- function(x, accuracy, f = round) {
@@ -56,10 +72,6 @@ PlotSexRatio.fn <- function(dir, dat, data.type = "length", main = NULL, circleS
   symbols(x = names(ratioF), y = ratioF, circles = nobs, 
     inches = circleSize, fg = "red", bg = rgb(1, 0, 0, alpha = 0.5), 
     add = TRUE)
-
-  if (!is.null(dir)) {
-    dev.off()
-  }
 
   test <- dplyr::count(dat, bin, Sex) %>%
     mutate(Proportion = n / sum(n))

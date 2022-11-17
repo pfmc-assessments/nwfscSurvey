@@ -1,38 +1,39 @@
-#' Plot showing presence and absence per haul by depth or latitute bin
+#' Plot showing presence and absence per haul by depth, latitude, or sex bin
 #'
-#' Uses the data.frame of data values extracted from the data warehouse
-#' by either [PullCatch.fn()] or [PullBio.fn()] to make a table of 
+#' Uses the `data.frame` of data values extracted from the data warehouse
+#' by either [PullCatch.fn()] or [PullBio.fn()] to make a table of
 #' proportion by depth or latitude bins. If biological data are passed
-#' to the function then there is a single option to plot the sex 
+#' to the function then there is a single option to plot the sex
 #' ratio by depth.
 #'
-#' @param data data.frame containing data per haul created by
-#' PullCatch.fn() or biological data created by PullBio.fn() where the
-#' dim input must be "sex". 
+#' @param data `data.frame` containing data per haul created by
+#' [PullCatch.fn()] or biological data created by [PullBio.fn()] where
+#' `dim` must be `dim = "sex"`.
 #' @param dim Dimension of interest, either "depth", "lat", or "sex".
 #' @param dir The directory name to save figures to where they will be save
-#' via file.path(dir, "plots").
-#' @param plot_type Two options area avialable "proportion" or "total" where
-#' the default, "proportion", plot the proportion by depth/latitude with equal
-#' bar widths and the "total" option plot the numbers by depth/latitude were
-#' the bar widths in a production of sampling by depth/latitude.
-#' @param depth_min Minimum depth (in meters)
+#' via `file.path(dir, "plots")`.
+#' @param plot_type Two options area available, `"proportion"` or `"total"` where
+#' the default, `"proportion"`, plots the proportion by depth/latitude with equal
+#' bar widths and the `"total"` option plots the numbers by depth/latitude with
+#' the bar widths in relation to sampling by depth/latitude.
+#' @param depth_min Minimum depth (in meters).
 #' @param depth_max Maximum depth (in meters). A NULL value will cause the
 #' function to automatically set depth_max to the multiple of depth_bin_width beyond
 #' the 99.9 percentile of the observations.
-#' @param depth_bin_width Width of each depth bin (in meters)
-#' @param lat_min Minimum latitute (in decimal degrees)
-#' @param lat_max Maximum latitute (in decimal degrees)
-#' @param lat_bin_width Width of each latitude bin (in decimal degrees)
+#' @param depth_bin_width Width of each depth bin (in meters).
+#' @param lat_min Minimum latitude (in decimal degrees).
+#' @param lat_max Maximum latitude (in decimal degrees).
+#' @param lat_bin_width Width of each latitude bin (in decimal degrees).
 #' @param add_range_to_main Add the range of latitude or depth by which the data
-#' are filtered
+#' are filtered.
 #' @param xlab Label for x-axis. A NULL value will cause the function
-#' to choose either "Depth (m)" or "Latitude (°N)"
+#' to choose either "Depth (m)" or "Latitude (°N)".
 #'
 #' @author Ian G. Taylor and Chantel Wetzel
 #' @importFrom grDevices gray
 #' @export
 #' @examples
+#' \dontrun{
 #' # load WCGBTS data data
 #' data.WCGBTS.ling <- nwfscSurvey::PullCatch.fn(
 #'   Name = "lingcod",
@@ -45,11 +46,11 @@
 #' plot_proportion(data = data.WCGBTS.ling, dim = "lat")
 #' plot_proportion(data = data.WCGBTS.ling, dim = "depth")
 #' plot_proportion(data = bio.WCGBTS.ling, dim = "sex")
-#' 
+#' }
 plot_proportion <- function(data,
-  dim = c("depth", "lat", "sex")[1],
+  dim = c("depth", "lat", "sex"),
   dir = NULL,
-  plot_type = c('proportion', 'total')[1],
+  plot_type = c("proportion", "total"),
   depth_min = 50,
   depth_max = NULL,
   depth_bin_width = 25,
@@ -60,17 +61,12 @@ plot_proportion <- function(data,
   xlab = NULL) {
 
   # check inputs
-  if (!dim %in% c("depth", "lat", "sex")) {
-    message(
-      "The dim function input needs to be either depth, lat, or sex.")
-    break()
-  }
+  dim <- match.arg(dim)
+  plot_type <- match.arg(plot_type)
 
   if (dim == "sex"){
     if (sum(colnames(data) == "Sex") != 1) {
-      message(
-        "The data function input needs to be a biological data file.")
-      break()
+      stop("The data function input needs to be a biological data file.")
     }
   }
 
@@ -93,7 +89,7 @@ plot_proportion <- function(data,
     )
   }
 
-  # filter data based on input depth and latitute range
+  # filter data based on input depth and latitude range
   data2 <- data[data$Depth_m < depth_max &
     data$Depth_m > depth_min &
     data$Latitude_dd > lat_min &
@@ -149,18 +145,13 @@ plot_proportion <- function(data,
     filename <- paste0("sex_", plot_type, "_by_depth.png")
   }
 
-  if (!is.null(dir)) {     
-    if (!file.exists(dir)) {
-      stop("The dir argument leads to a location", ",\ni.e., ", dir, ", that doesn't exist.")
-    }
+  if (!is.null(dir)) {
     plotdir <- file.path(dir, paste("plots", sep = ""))
-    plotdir.isdir <- file.info(plotdir)$isdir
-    if (is.na(plotdir.isdir) | !plotdir.isdir) {
-      dir.create(plotdir)
-    }
+    check_dir(plotdir)
     png(file.path(dir, "plots", filename),
       height = 7, width = 7, units = "in", res = 300
     )
+    on.exit(dev.off())
   }
   
   # make table
@@ -201,8 +192,4 @@ plot_proportion <- function(data,
   }
   abline(h = 0.5, col = 'white', lty = 1, lwd = 4)
 
-  # close PNG if it was used
-  if (!is.null(dir)) {
-    dev.off()
-  }
 }

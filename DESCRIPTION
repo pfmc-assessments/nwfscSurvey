@@ -1,7 +1,7 @@
 Package: nwfscSurvey
 Type: Package
 Title: Northwest Fisheries Science Center Survey
-Version: 2.0
+Version: 2.1
 Authors@R:
     c(person(given = c("Chantel", "R."),
              family = "Wetzel",
@@ -26,6 +26,7 @@ Imports:
     httr,
     jsonlite,
     kableExtra,
+    lifecycle,
     reshape2,
     ggplot2 (>= 3.0.0),
     xtable,

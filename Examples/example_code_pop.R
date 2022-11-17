@@ -51,8 +51,8 @@ biomass = Biomass.fn(dir = getwd(), dat = catch,  strat.df = strata, printfolder
 # Creates a csv file within the "printfolder" that will be saved within the directory location (dir).
 
 # Plot the biomass index
-PlotBio.fn(dir = getwd(), dat = biomass, main = "NWFSC WCBBT Survey", dopng = TRUE)
-PlotBioStrata.fn(dir = getwd(), survey.name = "NWFSC_WCGBT_Survey", dat = biomass, mfrow.in = c(3,2), sameylim = TRUE, ylim = c(0, 22), dopng = TRUE)
+PlotBio.fn(dir = getwd(), dat = biomass, main = "NWFSC WCBBT Survey")
+PlotBioStrata.fn(dir = getwd(), survey.name = "NWFSC_WCGBT_Survey", dat = biomass, mfrow.in = c(3,2), sameylim = TRUE, ylim = c(0, 22))
 
 # Plot the CPUE
 plot_cpue(dir = getwd(), catch = catch)
@@ -116,7 +116,8 @@ LFs <- SurveyLFs.fn(dir = getwd(), datL = len, datTows = catch,
 # NWFSC combo survey data in the past).
 
 plot_comps(data = LFs, dir = getwd())
-PlotSexRatio.fn(dir = getwd(), dat = len, data.type = "length", dopng = TRUE, main = "NWFSC WCGBT Survey")
+PlotSexRatio.fn(dir = getwd(), dat = len, data.type = "length", main = "NWFSC WCGBT Survey")
+
 
 #============================================================================================
 #Length Biological Data without expansion 
@@ -148,8 +149,8 @@ AFs <- SurveyAFs.fn(dir = getwd(), datA = age, datTows = catch,
                      sex = 3, nSamps = n, fleet = 7)
 
 plot_comps(data = AFs, dir = getwd())
-PlotVarLengthAtAge.fn(dir = getwd(), dat = age, main = "NWFSC WCGBT Survey", dopng = TRUE) 
-PlotSexRatio.fn(dir = getwd(), dat = age, data.type = "age", dopng = TRUE, main = "NWFSC WCGBT Survey")
+PlotVarLengthAtAge.fn(dir = getwd(), dat = age, main = "NWFSC WCGBT Survey") 
+PlotSexRatio.fn(dir = getwd(), dat = age, data.type = "age", main = "NWFSC WCGBT Survey")
 
 #============================================================================================
 #Age Biological Data without Expansion

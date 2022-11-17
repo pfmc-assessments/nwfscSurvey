@@ -13,13 +13,24 @@
 #' @param bins     The bins to put ages into. If NULL then simply uses the ages as recorded.
 #' @param legX legend location for x axis, defaults to "bottomleft"
 #' @param legY legend location for y axis, defaults to NULL
-#' @param dopng TRUE/FALSE whether to save a png file
+#' @param dopng Deprecated with {nwfscSurvey} 2.1 because providing a non-NULL
+#'   value to `dir` can serve the same purpose as `dopng = TRUE` without the
+#'   potential for errors when `dopng = TRUE` and `dir = NULL`. Thus, users
+#'   no longer have to specify `dopng` to save the plot as a png.
 #' @param ...      Additional arguments for the plots
 #'
 #' @author Allan Hicks and Chantel Wetzel
 #' @export
 
-PlotVarLengthAtAge.fn <- function(dir = NULL, dat, main = NULL, ageBin = 1, bySex = T, parStart = c(52, 0.09, 1), estVB = T, bins = NULL, legX = "bottomleft", legY = NULL, dopng = FALSE, ...) {
+PlotVarLengthAtAge.fn <- function(dir = NULL, dat, main = NULL, ageBin = 1, bySex = T, parStart = c(52, 0.09, 1), estVB = T, bins = NULL, legX = "bottomleft", legY = NULL, dopng = lifecycle::deprecated(), ...) {
+
+  if (lifecycle::is_present(dopng)) {
+    lifecycle::deprecate_warn(
+      when = "2.1",
+      what = "nwfscSurvey::PlotMap.fn(dopng =)"
+    )
+  }
+
   # calculate and plot the sd and cv for length at age
   # if you enter estVB=F, then it uses the parStart as the VB parameters
 
@@ -57,24 +68,21 @@ PlotVarLengthAtAge.fn <- function(dir = NULL, dat, main = NULL, ageBin = 1, bySe
     nn <- 2
   }
 
-  if (dopng) {
-    if (is.null(dir)) {
-      stop("Directory needs to be set.")
-    }
-    if (!file.exists(dir)) {
-      stop("The dir argument leads to a location", ",\ni.e., ", dir, ", that doesn't exist.")
-    }
-    plotdir <- file.path(dir, paste("plots", sep = ""))
-    plotdir.isdir <- file.info(plotdir)$isdir
-    if (is.na(plotdir.isdir) | !plotdir.isdir) {
-      dir.create(plotdir)
-    }
-    if (is.null(main)) {
-      png(file.path(dir, paste("plots/VarLengthAtAge.png", sep = "")), height = 7, width = 7, units = "in", res = 300)
-    }
-    if (!is.null(main)) {
-      png(file.path(dir, paste("plots/", main, "_VarLengthAtAge.png", sep = "")), height = 7, width = 7, units = "in", res = 300)
-    }
+  plotdir <- file.path(dir, "plots")
+  check_dir(dir = plotdir)
+  main_ <- ifelse(is.null(main), "", paste0(main, "_"))
+  if (!is.null(dir)) {
+    png(
+      filename = file.path(
+        plotdir,
+        paste0(main_, "VarLengthAtAge.png")
+      ),
+      height = 7,
+      width = 7,
+      units = "in",
+      res = 300
+    )
+    on.exit(dev.off(), add = TRUE)
   }
 
   par(mfcol = c(2, nn), mar = c(3, 5, 3, 5))
@@ -117,8 +125,6 @@ PlotVarLengthAtAge.fn <- function(dir = NULL, dat, main = NULL, ageBin = 1, bySe
     mtext("CV", side = 4, line = 2.6)
     legend(x = legX, y = legY, c("SD", "CV"), pch = c(16, 3), lty = c(1, 2))
   }
-  if (dopng) {
-    dev.off()
-  }
+
   return(out)
 }
