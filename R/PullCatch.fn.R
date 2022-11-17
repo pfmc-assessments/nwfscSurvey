@@ -58,7 +58,6 @@
 #'
 #' @author Chantel Wetzel based on code by John Wallace
 #' @export
-#' @md
 #'
 #' @import chron
 #' @importFrom stringr str_replace_all

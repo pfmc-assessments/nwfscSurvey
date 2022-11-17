@@ -6,9 +6,6 @@
 #'
 #' @author Chantel Wetzel
 #' @export
-#' @md
-#' 
-#' 
 #'
 check_dir <- function(dir, verbose){
 

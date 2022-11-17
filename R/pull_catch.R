@@ -30,7 +30,6 @@
 #'
 #' @author Chantel Wetzel
 #' @export
-#' @md
 #'
 #' @import chron
 #' @importFrom stringr str_replace_all
