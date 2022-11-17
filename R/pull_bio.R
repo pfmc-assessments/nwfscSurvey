@@ -219,6 +219,7 @@ pull_bio <- function(common_name = NULL,
   }
 
   if (!is.null(dir)) {
+    check_dir(dir = dir, verbose = verbose)
     time <- substring(Sys.time(), 1, 10)
     save(bio, 
       file = file.path(dir, paste("bio_", species, "_", survey, "_", time, ".rda", sep = "")))

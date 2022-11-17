@@ -36,13 +36,9 @@
 SurveyAgeAtLen.fn <- function(dir = NULL, datAL, datTows, strat.vars = c("Depth_m", "Latitude_dd"), strat.df = NULL, lgthBins = 1, ageBins = 1,
                               sex = 3, SSout = TRUE, meanRatioMethod = TRUE, raw = TRUE, NAs2zero = TRUE, month = "Enter Month", fleet = "Enter Fleet",
                               partition = 0, ageErr = "Enter Age Error", returnSamps = FALSE, printfolder = "forSS", verbose = TRUE) {
-  if (!is.null(dir)) {
-    plotdir <- file.path(dir, printfolder)
-    plotdir.isdir <- file.info(plotdir)$isdir
-    if (is.na(plotdir.isdir) | !plotdir.isdir) {
-      dir.create(plotdir)
-    }
-  }
+
+  plotdir <- file.path(dir, printfolder)
+  check_dir(plotdir, verbose = verbose)
 
   totRows <- nrow(datAL)
   datAL <- datAL[!is.na(datAL$Length_cm), ]

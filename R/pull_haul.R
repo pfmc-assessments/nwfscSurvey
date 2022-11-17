@@ -66,6 +66,7 @@ pull_haul <- function(years= c(1980, 2050),
     format = "y-m-d", out.format = "YYYY-m-d")
   
   if (!is.null(dir)) {
+    check_dir(dir = dir, verbose = verbose)
     time <- substring(Sys.time(), 1, 10)
     save(haul_data, file = file.path(dir, paste("haul_", survey, "_", time, ".rda", sep = "")))
     if (verbose) {

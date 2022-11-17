@@ -134,6 +134,7 @@ pull_biological_samples <- function(common_name = NULL,
   bio_samples <- bio_samples[keep, ]
 
   if (!is.null(dir)) {
+    check_dir(dir = dir, verbose = verbose)
     time <- substring(Sys.time(), 1, 10)
     save(bio_samples, file = file.path(dir, paste("biological_samples_", survey, "_", time, ".rda", sep = "")))
     if (verbose) {

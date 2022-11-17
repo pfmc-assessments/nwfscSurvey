@@ -255,6 +255,7 @@ pull_catch <- function(common_name = NULL,
   }
 
   if (!is.null(dir)) {
+    check_dir(dir = dir, verbose = verbose)
     time <- substring(Sys.time(), 1, 10)
     save(catch, 
       file = file.path(dir, paste("catch_", species, "_", survey, "_", time, ".rda", sep = "")))

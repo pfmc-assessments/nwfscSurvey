@@ -34,21 +34,18 @@ plot_comps <- function(
     N <- rep(1,nrow(data))
   }
 
-  if (!is.null(dir)){
-      if (!file.exists(dir)) {
-        stop("The dir argument leads to a location", ",\ni.e., ", dir, ", that doesn't exist.")
-      }  
-      plotdir <- file.path(dir, "plots")
-      plotdir.isdir <- file.info(plotdir)$isdir
-      if (is.na(plotdir.isdir) | !plotdir.isdir) {
-        dir.create(plotdir)
-      }
-      if (is.null(add_save_name)) {
-        name <- file.path(dir, paste0("plots/", data_type, "_frequency", "_sex_", sex_type, ".png"))
-      } else {
-        name <- file.path(dir, paste0("plots/", add_save_name, "_", data_type, "_frequency", "_sex_", sex_type, ".png"))
-      }
-  }
+  plotdir <- file.path(dir, "plots")
+  check_dir(dir = plotdir)
+  name <- file.path(
+    dplotdir,
+    paste0(
+      add_save_name,
+      ifelse(test = is.null(add_save_name), yes = "", no = "_"),
+      data_type,
+      "_frequency_sex_", sex_type,
+      ".png"
+    )
+  )
 
   year <- as.numeric(as.character(data$year))
   sex <- data$sex[1]

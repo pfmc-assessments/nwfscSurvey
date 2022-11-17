@@ -23,16 +23,8 @@ plot_cpue <- function(
   # plot 2 = cpue by lat and year
   # plot 3 = cpue by depth and year
 
-  if (!is.null(dir)){
-    if (!file.exists(dir)) {
-      stop("The dir argument leads to a location", ",\ni.e., ", dir, ", that doesn't exist.")
-    }  
-    plotdir <- file.path(dir, "plots")
-    plotdir.isdir <- file.info(plotdir)$isdir
-    if (is.na(plotdir.isdir) | !plotdir.isdir) {
-      dir.create(plotdir)
-    }
-  }
+  plotdir <- file.path(dir, "plots")
+  check_dir(dir = plotdir)
 
   catch$log_cpue <- log(catch$cpue_kg_km2)
   pos <- catch$cpue_kg_km2 != 0

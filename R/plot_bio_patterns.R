@@ -31,16 +31,8 @@ plot_bio_patterns <- function(
       f(x / accuracy) * accuracy
   }
 
-  if (!is.null(dir)){
-    if (!file.exists(dir)) {
-      stop("The dir argument leads to a location", ",\ni.e., ", dir, ", that doesn't exist.")
-    }  
-    plotdir <- file.path(dir, "plots")
-    plotdir.isdir <- file.info(plotdir)$isdir
-    if (is.na(plotdir.isdir) | !plotdir.isdir) {
-      dir.create(plotdir)
-    }
-  }
+  plotdir <- file.path(dir, "plots")
+  check_dir(dir = plotdir)
 
   lab_name = col_name
   if (col_name == "Length_cm"){
