@@ -32,6 +32,7 @@ Imports:
     rlang,
     rnaturalearth,
     stringr,
+    cowplot,
     janitor
 Depends:
     dplyr (>= 1.0.0),
