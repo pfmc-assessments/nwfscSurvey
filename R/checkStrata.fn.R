@@ -1,19 +1,40 @@
-#' Calculates the number of observations by strata
+#' Calculates and returns the total number of tows and 
+#' positive tows conducted in each strata by year. The 
+#' selected stratas are used to expand the length and 
+#' marginal age compositions and to calculate a design
+#' based index using the {Biomass.fn} function. 
 #'
-#'
-#' @param dir directory where the output file will be saved
-#' @param dat data-frame of the data that has been by the PullCatch.fn
-#' @param strat.vars A vector of the strata variable names (i.e., c("Depth_m","Latitude_dd"))
-#' @param strat.df a dataframe with the first column the name of the stratum, the second column the area of the stratum, and the remaining columns are the high and low variables defining the strata created by the CreateStrataDF.fn
-#' @param printfolder the folder where files will be saved
+#' @param dir Directory where the output csv file will be 
+#' saved. 
+#' @param dat Data-frame of the catch data that has been  
+#' created by the {PullCatch.fn} function.
+#' @param strat.vars A vector of the strata variable names.   
+#' The default input are c("Depth_m","Latitude_dd")) which
+#' are the two factors the define a strata area off the coast.
+#' @param strat.df Dataframe with the first column the name 
+#' of the stratum, the second column the area of the stratum, 
+#' and the remaining columns are the high and low variables 
+#' defining the strata created by the {CreateStrataDF.fn} function.
+#' @param printfolder Folder name where files will be saved. The 
+#' default is "forSS" which is also used by other package functions
+#' that creates and saves files that are commonly used or reported
+#' in Stock Synthesis or the assessment document.
 #' @template verbose
 #'
 #' @author Chantel Wetzel
 #' @export
+#'
+#'
+CheckStrata.fn <- function(
+  dir = NULL, 
+  dat, 
+  strat.vars = c("Depth_m", "Latitude_dd"), 
+  strat.df, 
+  printfolder = "forSS", 
+  verbose = TRUE) {
 
-
-CheckStrata.fn <- function(dir = NULL, dat, strat.vars = c("Depth_m", "Latitude_dd"), strat.df, printfolder = "forSS", verbose = TRUE) {
-  row.names(strat.df) <- strat.df[, 1] # put in rownmaes to make easier to index later
+  # Grab the strata  rownmaes to index later
+  row.names(strat.df) <- strat.df[, 1] 
   numStrata <- nrow(strat.df)
 
   # create strata factors
@@ -27,11 +48,12 @@ CheckStrata.fn <- function(dir = NULL, dat, strat.vars = c("Depth_m", "Latitude_
   }
 
   stratum <- factor(stratum, levels = as.character(strat.df[, 1]))
-  dat <- data.frame(dat, stratum)
-  dat.yr <- split(dat, dat$Year)
-  dat.stratum <- split(dat, dat$stratum)
+  catch_strata <- data.frame(dat, stratum)
+  year <- split(catch_strata, catch_strata$Year)
+  # Create list by strata
+  data_stratum <- split(catch_strata, catch_strata$stratum)
 
-  yr.fn <- function(x) {
+  year_fn <- function(x) {
     x <- split(x, x$stratum)
     namesStrat <- names(x)
     nobs <- unlist(lapply(x, function(x) {
@@ -50,26 +72,24 @@ CheckStrata.fn <- function(dir = NULL, dat, strat.vars = c("Depth_m", "Latitude_
     stratStats
   }
 
-  yearlyStrataEsts <- lapply(dat.yr, yr.fn)
-  # names(yearlyStrataEsts) <- paste("Year",names(yearlyStrataEsts),sep="")
+  yearly_strata_ests <- lapply(year, year_fn)
 
-  NumberTows <- as.data.frame(yearlyStrataEsts[[1]][, c("name", "ntows")])
-  for (a in 2:length(yearlyStrataEsts)) {
-    NumberTows <- cbind(NumberTows, yearlyStrataEsts[[a]]$ntows)
+  n_tows <- c(names(yearly_strata_ests)[1], yearly_strata_ests[[1]][, c("ntows")])
+  for (a in 2:length(yearly_strata_ests)) {
+    n_tows <- rbind(n_tows, c(names(yearly_strata_ests)[a], yearly_strata_ests[[a]]$ntows))
   }
-  colnames(NumberTows) <- c("Area_Name", names(yearlyStrataEsts))
-  rownames(NumberTows) <- c()
+  n_tows <- as.data.frame(n_tows)
+  colnames(n_tows) <- c("year", paste0("total_tows_", row.names(strat.df)))
+  rownames(n_tows) <- NULL
 
-  PositiveTows <- as.data.frame(yearlyStrataEsts[[1]][, c("name", "ptows")])
-  for (a in 2:length(yearlyStrataEsts)) {
-    PositiveTows <- cbind(PositiveTows, yearlyStrataEsts[[a]]$ptows)
+  positive_tows <- yearly_strata_ests[[1]][, c("ptows")]
+  for (a in 2:length(yearly_strata_ests)) {
+    positive_tows <- rbind(positive_tows, yearly_strata_ests[[a]]$ptows)
   }
-  colnames(PositiveTows) <- c("Area_Name", names(yearlyStrataEsts))
-  rownames(PositiveTows) <- c()
+  colnames(positive_tows) <- paste0("positive_tows_", row.names(strat.df))
+  rownames(positive_tows) <- NULL
 
-  out <- list()
-  out$NumberTows <- NumberTows
-  out$PositiveTows <- PositiveTows
+  out <- cbind(n_tows, positive_tows)
 
   if (!is.null(dir)) {
     plotdir <- file.path(dir, printfolder)
