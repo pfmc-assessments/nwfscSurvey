@@ -254,16 +254,12 @@ pull_catch <- function(common_name = NULL,
     colnames(catch)[colnames(catch)=="Total_catch_wt_kg"] <- "total_catch_wt_kg"
   }
 
-  if (!is.null(dir)) {
-    check_dir(dir = dir, verbose = verbose)
-    time <- substring(Sys.time(), 1, 10)
-    save(catch, 
-      file = file.path(dir, paste("catch_", species, "_", survey, "_", time, ".rda", sep = "")))
-    if (verbose) {
-      message(
-        glue::glue("Catch data file saved to following location: {dir}"))
-    }
-  }
+  save_rdata(
+    x = catch,
+    dir = dir,
+    name_base = paste0("catch_", species, "_", survey),
+    verbose = verbose
+  )
 
   return(catch)
 }
