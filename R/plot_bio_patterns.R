@@ -4,6 +4,7 @@
 #' @param bio Data biological sample file
 #' @param col_name Option to switch between plotting lengths or ages. 
 #' Options are "Length_cm", "Width_cm", or "Age".
+#' @param plot A vector of integers specifying the figures you want.
 #' @param width Numeric figure width in inches, defaults to 7
 #' @param height Numeric figure height in inches, defaults to 7
 #'

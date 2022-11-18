@@ -2,9 +2,7 @@
 #'
 #' @param dir Directory to save files to
 #' @param catch Data catch file
-#' @param add_save_name Option to add text to a saved figure name. This option can
-#' be useful if creating plots across multiple species and saving them into a single
-#' folder. Default NULL.
+#' @param plot A vector of integers specifying the figures you want.
 #' @param width Numeric figure width in inches, defaults to 7
 #' @param height Numeric figure height in inches, defaults to 7
 #'
