@@ -93,7 +93,7 @@ CheckStrata.fn <- function(
 
   if (!is.null(dir)) {
     plotdir <- file.path(dir, printfolder)
-    check(dir = plotdir, verbose = verbose)
+    check_dir(dir = plotdir, verbose = verbose)
     write.csv(
       x = out,
       file = file.path(plotdir, "strata_observations.csv"),
