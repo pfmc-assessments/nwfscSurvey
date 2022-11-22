@@ -11,13 +11,11 @@ plot_cpue(dir = NULL, catch, plot = 1:3, width = 7, height = 7)
 
 \item{catch}{Data catch file}
 
+\item{plot}{A vector of integers specifying the figures you want.}
+
 \item{width}{Numeric figure width in inches, defaults to 7}
 
 \item{height}{Numeric figure height in inches, defaults to 7}
-
-\item{add_save_name}{Option to add text to a saved figure name. This option can
-be useful if creating plots across multiple species and saving them into a single
-folder. Default NULL.}
 }
 \description{
 This function plots cpue and length by latitude and depth

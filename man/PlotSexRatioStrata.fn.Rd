@@ -11,7 +11,7 @@ PlotSexRatioStrata.fn(
   strat.vars = c("Depth_m", "Latitude_dd"),
   strat.df = NULL,
   circleSize = 0.05,
-  dopng = FALSE,
+  dopng = lifecycle::deprecated(),
   ...
 )
 }
@@ -28,7 +28,10 @@ PlotSexRatioStrata.fn(
 
 \item{circleSize}{circle size}
 
-\item{dopng}{TRUE/FALSE whether to save a png file}
+\item{dopng}{Deprecated with {nwfscSurvey} 2.1 because providing a non-NULL
+value to \code{dir} can serve the same purpose as \code{dopng = TRUE} without the
+potential for errors when \code{dopng = TRUE} and \code{dir = NULL}. Thus, users
+no longer have to specify \code{dopng} to save the plot as a png.}
 
 \item{...}{Additional arguments for the plots}
 }

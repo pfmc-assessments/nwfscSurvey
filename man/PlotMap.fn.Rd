@@ -2,32 +2,40 @@
 % Please edit documentation in R/PlotMap.fn.R
 \name{PlotMap.fn}
 \alias{PlotMap.fn}
-\title{#This function will create two plots
-\enumerate{
-\item CPUE from survey data across all years, and
-\item CPUE plot of the survey data by year.
-}}
+\title{Create maps with catch-per-unit-effort}
 \usage{
-PlotMap.fn(dir = NULL, dat, main = NULL, dopng = FALSE, plot = 1:2)
+PlotMap.fn(
+  dir = NULL,
+  dat,
+  main = NULL,
+  dopng = lifecycle::deprecated(),
+  plot = 1:2
+)
 }
 \arguments{
-\item{dir}{directory}
+\item{dir}{directory where ouptut will be saved. The directory where the file should be saved.
+If dir = NULL no output will be saved.}
 
-\item{dat}{object created by the PullCatch.fn function}
+\item{dat}{An object created by \code{\link[=PullCatch.fn]{PullCatch.fn()}}.}
 
-\item{main}{name that will be used to name the saved png (i.e., "NWFSC" results in a file called "NWFSC_CPUE_Map.png")}
+\item{main}{A string that will be prepended to the name of the saved png
+(i.e., "NWFSC" results in a file called "NWFSC_CPUE_Map.png").}
 
-\item{dopng}{save the plot as a png inside plots folder}
+\item{dopng}{Deprecated with {nwfscSurvey} 2.1 because providing a non-NULL
+value to \code{dir} can serve the same purpose as \code{dopng = TRUE} without the
+potential for errors when \code{dopng = TRUE} and \code{dir = NULL}. Thus, users
+no longer have to specify \code{dopng} to save the plot as a png.}
 
-\item{plot}{select a subset of plots: 1 = coastwide across all years, 2 = coastwide by year}
+\item{plot}{A vector of integers specifying the selection of a subset of
+plots: 1 = coastwide across all years, 2 = coastwide by year.}
 }
 \description{
-#This function will create two plots
+Create the following figures:
 \enumerate{
-\item CPUE from survey data across all years, and
-\item CPUE plot of the survey data by year.
+\item CPUE plot of the data across all years and/or
+\item CPUE plot of the data by year.
 }
 }
 \author{
-Chantel Wetzel
+Chantel R. Wetzel
 }
