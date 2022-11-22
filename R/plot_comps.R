@@ -37,7 +37,7 @@ plot_comps <- function(
   plotdir <- file.path(dir, "plots")
   check_dir(dir = plotdir)
   name <- file.path(
-    dplotdir,
+    plotdir,
     paste0(
       add_save_name,
       ifelse(test = is.null(add_save_name), yes = "", no = "_"),
