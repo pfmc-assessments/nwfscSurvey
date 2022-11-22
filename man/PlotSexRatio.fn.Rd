@@ -10,7 +10,6 @@ PlotSexRatio.fn(
   data.type = "length",
   main = NULL,
   circleSize = 0.1,
-  dopng = FALSE,
   ...
 )
 }
@@ -24,8 +23,6 @@ PlotSexRatio.fn(
 \item{main}{ame that will be used to name the saved png}
 
 \item{circleSize}{circle size}
-
-\item{dopng}{TRUE/FALSE whether to save a png file}
 
 \item{...}{Additional arguments for the plots}
 }
