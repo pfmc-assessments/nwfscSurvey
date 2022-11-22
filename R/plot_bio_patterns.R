@@ -49,6 +49,7 @@ plot_bio_patterns <- function(
   }
 
   alpha_set <- 0.30
+  alpha_by_year <- 0.40
   if (dim(bio)[1] > 10000){
     alpha_set <- 0.05
     alpha_by_year <- 0.20
