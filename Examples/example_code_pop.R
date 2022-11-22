@@ -54,11 +54,50 @@ biomass = Biomass.fn(dir = getwd(), dat = catch,  strat.df = strata, printfolder
 PlotBio.fn(dir = getwd(), dat = biomass, main = "NWFSC WCBBT Survey", dopng = TRUE)
 PlotBioStrata.fn(dir = getwd(), survey.name = "NWFSC_WCGBT_Survey", dat = biomass, mfrow.in = c(3,2), sameylim = TRUE, ylim = c(0, 22), dopng = TRUE)
 
+# Plot the CPUE
+plot_cpue(dir = getwd(), catch = catch)
+
+# Plot the proportion of positive tows by depth
+plot_proportion(data = catch,
+                dim = "depth",
+                dir = getwd(),
+                depth_min = 50,
+                depth_max = 500,
+                depth_bin_width = 50,
+                lat_min = 40,
+                lat_max = 49,
+                lat_bin_width = 1.0)
+
+# Plot the proportion of positive tows by latitude
+plot_proportion(data = catch,
+                dim = "lat",
+                dir = getwd(),
+                depth_min = 50,
+                depth_max = 500,
+                depth_bin_width = 50,
+                lat_min = 40,
+                lat_max = 49,
+                lat_bin_width = 1.0)
+
+# Plot the proportion of males and female observed by depth
+plot_proportion(data = bio,
+                dim = "sex",
+                dir = getwd(),
+                depth_min = 50,
+                depth_max = 500,
+                depth_bin_width = 50,
+                lat_min = 40,
+                lat_max = 49,
+                lat_bin_width = 1.0)
+
 #============================================================================================
 #Length Biological Data 
 #============================================================================================
 len = bio
 len.bins = 11:47
+
+# Plot the observed length  by sex, latitude, and depth
+plot_bio_patterns(dir = getwd(), bio = len, col_name = "Length_cm")
 
 # Calculate the effN
 n = GetN.fn(dir=getwd(), dat = len, type = "length", species = "shelfrock", printfolder = "forSS")
@@ -76,8 +115,7 @@ LFs <- SurveyLFs.fn(dir = getwd(), datL = len, datTows = catch,
 # expanded numbers of fish across a whole strata (sexRatioStage = 2, this was the option applied to the
 # NWFSC combo survey data in the past).
 
-
-PlotFreqData.fn(dir = getwd(), dat = LFs, main = "NWFSC WCGBT Survey", ylim=c(0, max(len.bins) + 4), yaxs="i", ylab="Length (cm)", dopng = TRUE)
+plot_comps(data = LFs, dir = getwd())
 PlotSexRatio.fn(dir = getwd(), dat = len, data.type = "length", dopng = TRUE, main = "NWFSC WCGBT Survey")
 
 #============================================================================================
@@ -98,17 +136,18 @@ lengths <- UnexpandedLFs.fn(dir = getwd(),
 age = bio
 age.bins = 1:40
 
+# Plot the observed age by sex, latitude, and depth
+plot_bio_patterns(dir = getwd(), bio = age, col_name = "Age")
+
 n = GetN.fn(dir = getwd(), dat = age, type = "age", species = "shelfrock", printfolder = "forSS")
 
 # Exand and format the marginal age composition data for SS
-Ages <- SurveyAFs.fn(dir = getwd(), datA = age, datTows = catch,  
+AFs <- SurveyAFs.fn(dir = getwd(), datA = age, datTows = catch,  
                      strat.df = strata, ageBins = age.bins, 
                      sexRatioStage = 2, sexRatioUnsexed = 0.50, maxSizeUnsexed = 5, 
                      sex = 3, nSamps = n, fleet = 7)
 
-
-
-PlotFreqData.fn(dir = getwd(), dat = Ages, main = "NWFSC WCGBT Survey", ylim=c(0, max(age.bins) + 2), yaxs="i", ylab="Age (yr)", dopng=TRUE)
+plot_comps(data = AFs, dir = getwd())
 PlotVarLengthAtAge.fn(dir = getwd(), dat = age, main = "NWFSC WCGBT Survey", dopng = TRUE) 
 PlotSexRatio.fn(dir = getwd(), dat = age, data.type = "age", dopng = TRUE, main = "NWFSC WCGBT Survey")
 
