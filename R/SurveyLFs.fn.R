@@ -439,16 +439,8 @@ SurveyLFs.fn <- function(dir = NULL, datL, datTows, strat.vars = c("Depth_m", "L
   check <- sum(datL$Length_cm, na.rm = TRUE) == sum(datL$Age, na.rm = TRUE)
   comp.type <- ifelse(check, "Age", "Length")
 
-  if (is.null(dir) & verbose) {
-    cat("\nDirectory not specified and csv will not be written.\n")
-  }
-  if (!is.null(dir)) {
-    plotdir <- file.path(dir, printfolder)
-    plotdir.isdir <- file.info(plotdir)$isdir
-    if (is.na(plotdir.isdir) | !plotdir.isdir) {
-      dir.create(plotdir)
-    }
-  }
+  plotdir <- file.path(dir, printfolder)
+  check_dir(dir = plotdir, verbose = verbose)
 
   # Write the files including the -999 column
   if (comp.type == "Length") {

@@ -107,7 +107,7 @@ PlotBio.fn(dir = getwd(),
            main = "NWFSC shelf-slope bottom trawl survey",
            ...)
 ```
-The Biomass.fn returns a list with the second element containing the design-based index of abundance. The design based index is calculated based on the defined stratas. The function writes a csv file inside the dir input location to a "forSS" folder. The PlotBio.fn plots the calculated design based index from the Biomass.fn. If the dopng is set to true a "plot" folder will be created in the directory location and a png of the plot will be saved.
+The Biomass.fn returns a list with the second element containing the design-based index of abundance. The design based index is calculated based on the defined stratas. The function writes a csv file inside the dir input location to a "forSS" folder. The PlotBio.fn plots the calculated design based index from the Biomass.fn. If `dir` does not equal `NULL`, then a "plot" folder will be created in the directory location and a png of the plot will be saved.
 
 
 #### Length composition data
@@ -141,12 +141,11 @@ PlotFreqData.fn(dir = getwd(),
                 dat = Lengths, 
                 ylim = c(0,50), 
                 yaxs = "i",
-                ylab = "Length (cm)", 
-                dopng = TRUE,
+                ylab = "Length (cm)",
                 ...)
 
 ```
-If the dopng is set to true a "plot" folder will be created in the directory location and a png of the plot will be saved. 
+If `dir` does not equal `NULL`, then a "plot" folder will be created in the directory location and a png of the plot will be saved. 
 
 
 #### Marginal age composition data
@@ -176,11 +175,10 @@ To plot the age frequency data:
 PlotFreqData.fn(dir = getwd(), 
                 dat = Ages, 
                 ylim = c(0,100),
-                ylab = "Age", 
-                dopng = TRUE,
+                ylab = "Age",
                 ...)
 ```
-If the dopng is set to true a "plot" folder will be created in the directory location and a png of the plot will be saved.
+If `dir` is not `NULL`, then a "plot" folder will be created in the directory location and a png of the plot will be saved.
 
 #### Conditional-age-at-length data
 To calculate conditional-age-at-length data formatted for SS:

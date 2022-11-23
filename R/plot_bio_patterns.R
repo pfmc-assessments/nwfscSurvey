@@ -4,6 +4,7 @@
 #' @param bio Data biological sample file
 #' @param col_name Option to switch between plotting lengths or ages. 
 #' Options are "Length_cm", "Width_cm", or "Age".
+#' @param plot A vector of integers specifying the figures you want.
 #' @param width Numeric figure width in inches, defaults to 7
 #' @param height Numeric figure height in inches, defaults to 7
 #'
@@ -30,16 +31,8 @@ plot_bio_patterns <- function(
       f(x / accuracy) * accuracy
   }
 
-  if (!is.null(dir)){
-    if (!file.exists(dir)) {
-      stop("The dir argument leads to a location", ",\ni.e., ", dir, ", that doesn't exist.")
-    }  
-    plotdir <- file.path(dir, "plots")
-    plotdir.isdir <- file.info(plotdir)$isdir
-    if (is.na(plotdir.isdir) | !plotdir.isdir) {
-      dir.create(plotdir)
-    }
-  }
+  plotdir <- file.path(dir, "plots")
+  check_dir(dir = plotdir)
 
   lab_name = col_name
   if (col_name == "Length_cm"){
@@ -56,6 +49,7 @@ plot_bio_patterns <- function(
   }
 
   alpha_set <- 0.30
+  alpha_by_year <- 0.40
   if (dim(bio)[1] > 10000){
     alpha_set <- 0.05
     alpha_by_year <- 0.20

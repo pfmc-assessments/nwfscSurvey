@@ -2,9 +2,7 @@
 #'
 #' @param dir Directory to save files to
 #' @param catch Data catch file
-#' @param add_save_name Option to add text to a saved figure name. This option can
-#' be useful if creating plots across multiple species and saving them into a single
-#' folder. Default NULL.
+#' @param plot A vector of integers specifying the figures you want.
 #' @param width Numeric figure width in inches, defaults to 7
 #' @param height Numeric figure height in inches, defaults to 7
 #'
@@ -25,16 +23,8 @@ plot_cpue <- function(
   # plot 2 = cpue by lat and year
   # plot 3 = cpue by depth and year
 
-  if (!is.null(dir)){
-    if (!file.exists(dir)) {
-      stop("The dir argument leads to a location", ",\ni.e., ", dir, ", that doesn't exist.")
-    }  
-    plotdir <- file.path(dir, "plots")
-    plotdir.isdir <- file.info(plotdir)$isdir
-    if (is.na(plotdir.isdir) | !plotdir.isdir) {
-      dir.create(plotdir)
-    }
-  }
+  plotdir <- file.path(dir, "plots")
+  check_dir(dir = plotdir)
 
   catch$log_cpue <- log(catch$cpue_kg_km2)
   pos <- catch$cpue_kg_km2 != 0

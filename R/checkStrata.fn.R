@@ -93,11 +93,12 @@ CheckStrata.fn <- function(
 
   if (!is.null(dir)) {
     plotdir <- file.path(dir, printfolder)
-    plotdir.isdir <- file.info(plotdir)$isdir
-    if (is.na(plotdir.isdir) | !plotdir.isdir) {
-      dir.create(plotdir)
-    }
-    write.csv(out, file = file.path(plotdir, paste("strata_observations.csv", sep = "")), row.names = FALSE)
+    check_dir(dir = plotdir, verbose = verbose)
+    write.csv(
+      x = out,
+      file = file.path(plotdir, "strata_observations.csv"),
+      row.names = FALSE
+    )
   }
   return(out)
 }

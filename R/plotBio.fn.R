@@ -11,34 +11,42 @@
 #' @param add add additional line to plot
 #' @param col color
 #' @param main plot label
-#' @param dopng save the plot as a png inside plots folder
+#' @param dopng Deprecated with {nwfscSurvey} 2.1 because providing a non-NULL
+#'   value to `dir` can serve the same purpose as `dopng = TRUE` without the
+#'   potential for errors when `dopng = TRUE` and `dir = NULL`. Thus, users
+#'   no longer have to specify `dopng` to save the plot as a png.
 #' @param ...      Additional arguments for the plots
 #'
 #' @author Allan Hicks and John Wallace
 #' @export
 
 PlotBio.fn <- function(dir = NULL, dat, CI = 0.95, scalar = 1e6, gap = 0.03, ylab = "Biomass ('000 mt)", xlab = "Year",
-                       main = NULL, ylim = NULL, add = FALSE, col = "black", dopng = FALSE, ...) {
+                       main = NULL, ylim = NULL, add = FALSE, col = "black", dopng = lifecycle::deprecated(), ...) {
+
+  if (lifecycle::is_present(dopng)) {
+    lifecycle::deprecate_warn(
+      when = "2.1",
+      what = "nwfscSurvey::PlotMap.fn(dopng =)"
+    )
+  }
+
   bio <- dat$Bio
 
-  if (dopng) {
-    if (is.null(dir)) {
-      stop("Directory needs to be set.")
-    }
-    if (!file.exists(dir)) {
-      stop("The dir argument leads to a location", ",\ni.e., ", dir, ", that doesn't exist.")
-    }
-    plotdir <- file.path(dir, paste("plots", sep = ""))
-    plotdir.isdir <- file.info(plotdir)$isdir
-    if (is.na(plotdir.isdir) | !plotdir.isdir) {
-      dir.create(plotdir)
-    }
-    if (is.null(main)) {
-      png(paste0(dir, "/plots/designed_based_index.png"), height = 7, width = 7, units = "in", res = 300)
-    }
-    if (!is.null(main)) {
-      png(paste0(dir, "/plots/", main, "_designed_based_index.png"), height = 7, width = 7, units = "in", res = 300)
-    }
+  plotdir <- file.path(dir, "plots")
+  check_dir(plotdir)
+  main_ <- ifelse(is.null(main), "", paste0(main, "_"))
+  if (!is.null(dir)) {
+    png(
+      filename = file.path(
+        plotdir,
+        paste0(main_, "_designed_based_index.png")
+      ),
+      height = 7,
+      width = 7,
+      units = "in",
+      res = 300
+    )
+    on.exit(dev.off(), add = TRUE)
   }
 
   par(mfrow = c(1, 1))
@@ -56,13 +64,9 @@ PlotBio.fn <- function(dir = NULL, dat, CI = 0.95, scalar = 1e6, gap = 0.03, yla
   gap <- gap * max(y)
   if (add) {
     points(x, y, col = col)
-  }
-  else {
+  } else {
     plot(x, y, ylab = ylab, xlab = xlab, ylim = ylim, main = main, col = col, ...)
   }
   segments(x, y + gap, x, ci[1, ], col = col)
   segments(x, y - gap, x, ci[2, ], col = col)
-  if (dopng) {
-    dev.off()
-  }
 }

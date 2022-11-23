@@ -175,10 +175,7 @@ Biomass.fn <- function(dir = NULL, dat, strat.vars = c("Depth_m", "Latitude_dd")
 
   if (!is.null(dir)) {
     plotdir <- file.path(dir, printfolder)
-    plotdir.isdir <- file.info(plotdir)$isdir
-    if (is.na(plotdir.isdir) | !plotdir.isdir) {
-      dir.create(plotdir)
-    }
+    check_dir(dir = plotdir, verbose = verbose)
     write.csv(bio, file = file.path(plotdir, paste("design_based_indices.csv", sep = "")), row.names = FALSE)
   }
 

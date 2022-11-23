@@ -21,7 +21,7 @@ PlotBioStrata.fn(
   col = "black",
   pch.col = "black",
   pch.type = 16,
-  dopng = FALSE,
+  dopng = lifecycle::deprecated(),
   ...
 )
 }
@@ -58,7 +58,10 @@ PlotBioStrata.fn(
 
 \item{pch.type}{Numeric pch type, defaults to 16}
 
-\item{dopng}{save the plot as a png inside plots folder}
+\item{dopng}{Deprecated with {nwfscSurvey} 2.1 because providing a non-NULL
+value to \code{dir} can serve the same purpose as \code{dopng = TRUE} without the
+potential for errors when \code{dopng = TRUE} and \code{dir = NULL}. Thus, users
+no longer have to specify \code{dopng} to save the plot as a png.}
 
 \item{...}{Additional arguments for the plots}
 }

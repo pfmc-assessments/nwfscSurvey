@@ -133,14 +133,12 @@ pull_biological_samples <- function(common_name = NULL,
       bio_samples$tissue_id > 0 | bio_samples$left_pectoral_fin_id > 0)
   bio_samples <- bio_samples[keep, ]
 
-  if (!is.null(dir)) {
-    time <- substring(Sys.time(), 1, 10)
-    save(bio_samples, file = file.path(dir, paste("biological_samples_", survey, "_", time, ".rda", sep = "")))
-    if (verbose) {
-      message(
-        glue::glue("Biological sample data file saved to following location: {dir}"))
-    }
-  }
+  save_rdata(
+    x = bio_samples,
+    dir = dir,
+    name_base = paste0("biological_samples_", survey),
+    verbose = verbose
+  )
 
   return(bio_samples)
 }

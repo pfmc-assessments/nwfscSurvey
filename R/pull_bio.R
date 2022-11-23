@@ -218,15 +218,12 @@ pull_bio <- function(common_name = NULL,
     }
   }
 
-  if (!is.null(dir)) {
-    time <- substring(Sys.time(), 1, 10)
-    save(bio, 
-      file = file.path(dir, paste("bio_", species, "_", survey, "_", time, ".rda", sep = "")))
-    if (verbose) {
-      message(
-        glue::glue("Catch data file saved to following location: {dir}"))
-    }
-  }
+  save_rdata(
+    x = bio,
+    dir = dir,
+    name_base = paste0("bio_", species, "_", survey),
+    verbose = verbose
+  )
 
   return(bio)
 }

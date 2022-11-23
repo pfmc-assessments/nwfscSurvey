@@ -21,6 +21,8 @@ plot_bio_patterns(
 \item{col_name}{Option to switch between plotting lengths or ages.
 Options are "Length_cm", "Width_cm", or "Age".}
 
+\item{plot}{A vector of integers specifying the figures you want.}
+
 \item{width}{Numeric figure width in inches, defaults to 7}
 
 \item{height}{Numeric figure height in inches, defaults to 7}

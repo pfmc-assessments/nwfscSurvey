@@ -131,11 +131,12 @@ GetN.fn <- function(dir = NULL,
   # save output as a csv
   if (!is.null(dir)) {
     plotdir <- file.path(dir, printfolder)
-    plotdir.isdir <- file.info(plotdir)$isdir
-    if (is.na(plotdir.isdir) | !plotdir.isdir) {
-      dir.create(plotdir)
-    }
-    write.csv(samples, file = file.path(plotdir, paste0(type, "_SampleSize.csv", sep = "")), row.names = FALSE)
+    check_dir(dir = plotdir, verbose = verbose)
+    write.csv(
+      x = samples,
+      file = file.path(plotdir, paste0(type, "_SampleSize.csv", sep = "")),
+      row.names = FALSE
+    )
   }
   if (is.null(output)) {
     return(n)
