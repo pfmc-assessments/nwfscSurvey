@@ -2,81 +2,122 @@
 % Please edit documentation in R/plot_proportion.R
 \name{plot_proportion}
 \alias{plot_proportion}
-\title{Plot showing presence and absence per haul by depth, latitude, or sex bin}
+\title{Plot proportions of factor levels (y axis) by bins (x axis)}
 \usage{
 plot_proportion(
   data,
-  dim = c("depth", "lat", "sex"),
-  dir = NULL,
-  plot_type = c("proportion", "total"),
-  depth_min = 50,
-  depth_max = NULL,
-  depth_bin_width = 25,
-  lat_min = 32,
-  lat_max = 49,
-  lat_bin_width = 1,
-  add_range_to_main = TRUE,
-  xlab = NULL
+  column_factor,
+  column_bin,
+  digits = 0,
+  bar_width = c("n", "equal"),
+  ...
 )
 }
 \arguments{
-\item{data}{\code{data.frame} containing data per haul created by
-\code{\link[=PullCatch.fn]{PullCatch.fn()}} or biological data created by \code{\link[=PullBio.fn]{PullBio.fn()}} where
-\code{dim} must be \code{dim = "sex"}.}
+\item{data}{A data frame.}
 
-\item{dim}{Dimension of interest, either "depth", "lat", or "sex".}
+\item{column_factor}{<\code{\link[=dplyr_data_masking]{data-masking}}> Variable in
+\code{data} for the grouping structure. Should be a variable in \code{data} that
+contains a factor but it can also be a variable in \code{data} that stores
+characters. See the examples for ideas.}
 
-\item{dir}{The directory name to save figures to where they will be save
-via \code{file.path(dir, "plots")}.}
+\item{column_bin}{<\code{\link[=dplyr_data_masking]{data-masking}}> Variable in \code{data}
+for the binning structure. If this is not already a factor or character,
+then \code{\link[ggplot2:cut_interval]{ggplot2::cut_width()}} will be used to create bins. The bins are saved
+in \code{bin} in the returned {ggplot2} object.}
 
-\item{plot_type}{Two options area available, \code{"proportion"} or \code{"total"} where
-the default, \code{"proportion"}, plots the proportion by depth/latitude with equal
-bar widths and the \code{"total"} option plots the numbers by depth/latitude with
-the bar widths in relation to sampling by depth/latitude.}
+\item{digits}{A numeric value passed to the digits argument of \code{\link[=round]{round()}}.
+Positive values pertain to rounding the right side of the decimal place and
+negative values pertain to rounding the left side of the decimal place,
+i.e., to the tens or hundreds with -1 and -2. The default is to round to
+the nearest integer using \code{digits = 0}.}
 
-\item{depth_min}{Minimum depth (in meters).}
+\item{bar_width}{A string of \code{"n"} or \code{"equal"}, where the former leads to
+bar widths based on the number of observations contained in that group and
+the latter leads to equally-sized bars for all bars with data. For groups
+without any data, the width of the placeholder on the x axis will be
+smaller than the width of the bars for groups with data regardless of which
+option you choose. The default is to have bars of variable widths, i.e.,
+\code{"n"}.}
 
-\item{depth_max}{Maximum depth (in meters). A NULL value will cause the
-function to automatically set depth_max to the multiple of depth_bin_width beyond
-the 99.9 percentile of the observations.}
-
-\item{depth_bin_width}{Width of each depth bin (in meters).}
-
-\item{lat_min}{Minimum latitude (in decimal degrees).}
-
-\item{lat_max}{Maximum latitude (in decimal degrees).}
-
-\item{lat_bin_width}{Width of each latitude bin (in decimal degrees).}
-
-\item{add_range_to_main}{Add the range of latitude or depth by which the data
-are filtered.}
-
-\item{xlab}{Label for x-axis. A NULL value will cause the function
-to choose either "Depth (m)" or "Latitude (°N)".}
+\item{...}{Additional arguments that users want to pass to
+\code{\link[ggplot2:cut_interval]{ggplot2::cut_width()}}. If \code{data[[column_bin]]} is not a factor, then at
+least \code{width} needs to be passed to create bins. But, any argument accepted
+by \code{\link[ggplot2:cut_interval]{ggplot2::cut_width()}} can be passed, where \code{boundary = 0} is common so
+the calculation of bins will start at zero rather than the minimum value
+present, preventing bins like (35.4, 36.4] when you really want (35, 36].}
+}
+\value{
+A {ggplot2} object created with {ggmosaic} features.
 }
 \description{
-Uses the \code{data.frame} of data values extracted from the data warehouse
-by either \code{\link[=PullCatch.fn]{PullCatch.fn()}} or \code{\link[=PullBio.fn]{PullBio.fn()}} to make a table of
-proportion by depth or latitude bins. If biological data are passed
-to the function then there is a single option to plot the sex
-ratio by depth.
+Bin a numerical column for the categorical x axis. Calculate the proportion
+of the rows that are present for each level of an additional factor column,
+like sex, by x-axis bins.
+}
+\details{
+\href{https://haleyjeppson.github.io/ggmosaic/}{{ggmosaic}} is used to
+create a {ggplot2} object for categorical data that can be modified upon
+return.
 }
 \examples{
-\dontrun{
-# load WCGBTS data data
-data.WCGBTS.ling <- nwfscSurvey::PullCatch.fn(
-  Name = "lingcod",
-  SurveyName = "NWFSC.Combo"
+# Add presence/absence factor to data
+ temp <- catch_nwfsc_combo \%>\%
+   dplyr::mutate(new = factor(
+     cpue_kg_km2 <= 0,
+     levels = c(FALSE, TRUE),
+     labels = c("Present", "Absent")
+   ))
+
+ # Plot depth bins (50 m) by presence/absence with default colors
+ plot_proportion(
+   data = temp,
+   column_factor = new,
+   column_bin = Depth_m,
+   width = 50,
+   boundary = 0
+ )
+# Plot latitude bins (1 decimal degree) by presence/absence with custom
+# colors
+plot_proportion(
+  data = temp,
+  column_factor = new,
+  column_bin = Latitude_dd,
+  width = 1,
+  boundary = 0
+) +
+  ggplot2::scale_fill_manual(values = c(
+    "darkorchid3",
+    grDevices::gray(0.7)
+  ))
+# Plot depth bins (25 m) by sex (F, M, U)
+plot_proportion(
+  data = bio_nwfsc_combo \%>\%
+    dplyr::mutate(Sex = codify_sex(Sex)),
+  column_factor = Sex,
+  column_bin = Depth_m,
+  width = 25,
+  boundary = 0
 )
-bio.WCGBTS.ling <- nwfscSurvey::PullBio.fn(
-  Name = "lingcod",
-  SurveyName = "NWFSC.Combo"
+# Change to equal sized bars
+plot_proportion(
+  data = bio_nwfsc_combo \%>\%
+    dplyr::mutate(Sex = codify_sex(Sex)),
+  column_factor = Sex,
+  column_bin = Depth_m,
+  width = 25,
+  boundary = 0,
+  bar_width = "equal"
 )
-plot_proportion(data = data.WCGBTS.ling, dim = "lat")
-plot_proportion(data = data.WCGBTS.ling, dim = "depth")
-plot_proportion(data = bio.WCGBTS.ling, dim = "sex")
+}
+\seealso{
+\itemize{
+\item \code{\link[ggplot2:cut_interval]{ggplot2::cut_width()}}
+\item \code{\link[ggmosaic:geom_mosaic]{ggmosaic::geom_mosaic()}}
+\item \code{\link[=factor]{factor()}}
 }
 }
 \author{
-Ian G. Taylor and Chantel Wetzel
+Ian G. Taylor, Chantel R. Wetzel, Kelli F. Johnson
 }
+\concept{plot_}

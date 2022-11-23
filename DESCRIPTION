@@ -30,9 +30,12 @@ Imports:
     httr,
     jsonlite,
     lifecycle,
+    purrr,
     reshape2,
     ggnewscale,
     ggplot2 (>= 3.0.0),
+    ggokabeito,
+    ggmosaic (>= 0.3.4),
     rlang,
     stringr,
     cowplot,
@@ -40,6 +43,8 @@ Imports:
 Depends:
     dplyr (>= 1.0.0),
     R (>= 4.0)
+Remotes:
+    github::haleyjeppson/ggmosaic
 Encoding: UTF-8
 VignetteBuilder: knitr
 RoxygenNote: 7.2.3

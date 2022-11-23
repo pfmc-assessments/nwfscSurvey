@@ -1,195 +1,262 @@
-#' Plot showing presence and absence per haul by depth, latitude, or sex bin
+#' Plot proportions of factor levels (y axis) by bins (x axis)
 #'
-#' Uses the `data.frame` of data values extracted from the data warehouse
-#' by either [PullCatch.fn()] or [PullBio.fn()] to make a table of
-#' proportion by depth or latitude bins. If biological data are passed
-#' to the function then there is a single option to plot the sex
-#' ratio by depth.
+#' Bin a numerical column for the categorical x axis. Calculate the proportion
+#' of the rows that are present for each level of an additional factor column,
+#' like sex, by x-axis bins.
 #'
-#' @param data `data.frame` containing data per haul created by
-#' [PullCatch.fn()] or biological data created by [PullBio.fn()] where
-#' `dim` must be `dim = "sex"`.
-#' @param dim Dimension of interest, either "depth", "lat", or "sex".
-#' @param dir The directory name to save figures to where they will be save
-#' via `file.path(dir, "plots")`.
-#' @param plot_type Two options area available, `"proportion"` or `"total"` where
-#' the default, `"proportion"`, plots the proportion by depth/latitude with equal
-#' bar widths and the `"total"` option plots the numbers by depth/latitude with
-#' the bar widths in relation to sampling by depth/latitude.
-#' @param depth_min Minimum depth (in meters).
-#' @param depth_max Maximum depth (in meters). A NULL value will cause the
-#' function to automatically set depth_max to the multiple of depth_bin_width beyond
-#' the 99.9 percentile of the observations.
-#' @param depth_bin_width Width of each depth bin (in meters).
-#' @param lat_min Minimum latitude (in decimal degrees).
-#' @param lat_max Maximum latitude (in decimal degrees).
-#' @param lat_bin_width Width of each latitude bin (in decimal degrees).
-#' @param add_range_to_main Add the range of latitude or depth by which the data
-#' are filtered.
-#' @param xlab Label for x-axis. A NULL value will cause the function
-#' to choose either "Depth (m)" or "Latitude (°N)".
+#' @details [{ggmosaic}](https://haleyjeppson.github.io/ggmosaic/) is used to
+#' create a {ggplot2} object for categorical data that can be modified upon
+#' return.
 #'
-#' @author Ian G. Taylor and Chantel Wetzel
-#' @importFrom grDevices gray
+#' @param data A data frame.
+#' @param column_factor <[`data-masking`][dplyr_data_masking]> Variable in
+#'   `data` for the grouping structure. Should be a variable in `data` that
+#'   contains a factor but it can also be a variable in `data` that stores
+#'   characters. See the examples for ideas.
+#' @param column_bin <[`data-masking`][dplyr_data_masking]> Variable in `data`
+#'   for the binning structure. If this is not already a factor or character,
+#'   then [ggplot2::cut_width()] will be used to create bins. The bins are saved
+#'   in `bin` in the returned {ggplot2} object.
+#' @param digits A numeric value passed to the digits argument of [round()].
+#'   Positive values pertain to rounding the right side of the decimal place and
+#'   negative values pertain to rounding the left side of the decimal place,
+#'   i.e., to the tens or hundreds with -1 and -2. The default is to round to
+#'   the nearest integer using `digits = 0`.
+#' @param bar_width A string of `"n"` or `"equal"`, where the former leads to
+#'   bar widths based on the number of observations contained in that group and
+#'   the latter leads to equally-sized bars for all bars with data. For groups
+#'   without any data, the width of the placeholder on the x axis will be
+#'   smaller than the width of the bars for groups with data regardless of which
+#'   option you choose. The default is to have bars of variable widths, i.e.,
+#'   `"n"`.
+#' @param ... Additional arguments that users want to pass to
+#'   [ggplot2::cut_width()]. If `data[[column_bin]]` is not a factor, then at
+#'   least `width` needs to be passed to create bins. But, any argument accepted
+#'   by [ggplot2::cut_width()] can be passed, where `boundary = 0` is common so
+#'   the calculation of bins will start at zero rather than the minimum value
+#'   present, preventing bins like (35.4, 36.4] when you really want (35, 36].
+#'
+#' @author Ian G. Taylor, Chantel R. Wetzel, Kelli F. Johnson
 #' @export
+#' @return A {ggplot2} object created with {ggmosaic} features.
+#' @seealso
+#' * [ggplot2::cut_width()]
+#' * [ggmosaic::geom_mosaic()]
+#' * [factor()]
+#' @family plot_
+#' @examples
+#' # Add presence/absence factor to data
+#'  temp <- catch_nwfsc_combo %>%
+#'    dplyr::mutate(new = factor(
+#'      cpue_kg_km2 <= 0,
+#'      levels = c(FALSE, TRUE),
+#'      labels = c("Present", "Absent")
+#'    ))
+#'
+#'  # Plot depth bins (50 m) by presence/absence with default colors
+#'  plot_proportion(
+#'    data = temp,
+#'    column_factor = new,
+#'    column_bin = Depth_m,
+#'    width = 50,
+#'    boundary = 0
+#'  )
+#' # Plot latitude bins (1 decimal degree) by presence/absence with custom
+#' # colors
+#' plot_proportion(
+#'   data = temp,
+#'   column_factor = new,
+#'   column_bin = Latitude_dd,
+#'   width = 1,
+#'   boundary = 0
+#' ) +
+#'   ggplot2::scale_fill_manual(values = c(
+#'     "darkorchid3",
+#'     grDevices::gray(0.7)
+#'   ))
+#' # Plot depth bins (25 m) by sex (F, M, U)
+#' plot_proportion(
+#'   data = bio_nwfsc_combo %>%
+#'     dplyr::mutate(Sex = codify_sex(Sex)),
+#'   column_factor = Sex,
+#'   column_bin = Depth_m,
+#'   width = 25,
+#'   boundary = 0
+#' )
+#' # Change to equal sized bars
+#' plot_proportion(
+#'   data = bio_nwfsc_combo %>%
+#'     dplyr::mutate(Sex = codify_sex(Sex)),
+#'   column_factor = Sex,
+#'   column_bin = Depth_m,
+#'   width = 25,
+#'   boundary = 0,
+#'   bar_width = "equal"
+#' )
+plot_proportion <- function(data,
+                            column_factor,
+                            column_bin,
+                            digits = 0,
+                            bar_width = c("n", "equal"),
+                            ...) {
+  # Set up
+  # Create a character string of input column name
+  character_bin <- as.character(ensym(column_bin))
+  # match.arg allows for the default arg to be the first of the vector
+  # in the function definition
+  bar_width <- match.arg(bar_width)
+
+  # Create data_plot in two steps
+  # 1. If user supplies "width" as an argument, then turn the numeric column
+  #    into a factor/character, else assign column to calc_bin. Must use
+  #    .data[[string]] because I cannot use {{}} inside of the if statement.
+  data_plot <- dplyr::mutate(
+    .data = data,
+    calc_bin = if ("width" %in% names(list(...))) {
+      ggplot2::cut_width(round(.data[[character_bin]], digits = digits), ...)
+    } else {
+      .data[[character_bin]]
+    }
+  )
+  # 2. bar_width is used to create equal-sized bars in histogram or bar widths
+  #    based on the number of observations in the group. geom_mosaic will sum
+  #    calc_weight by group to determine the width. Here I reverse-engineer that
+  #    to ensure the summed weight will equal 1 for every group to get
+  #    equal-sized bars if bar_width is "equal".
+  data_plot <- data_plot %>%
+    dplyr::group_by(calc_bin, .add = TRUE) %>%
+    dplyr::mutate(
+      calc_weight = dplyr::case_when(
+        bar_width == "n" ~ 1,
+        bar_width == "equal" ~ 1/n()
+      )
+    ) %>%
+    dplyr::ungroup()
+
+  # Create {ggplot2} figure
+  # Remove scale_y_continuous if you don't want numeric values on the y axis and
+  # you want the colors labeled with names instead along the axis. Could remove
+  # the legend if we removed scale_y_continuous
+  # vjust on x axis ensures text is centered in bin, angle 90 makes it vertical
+  gg <- ggplot2::ggplot(data = data_plot) +
+    ggmosaic::geom_mosaic(
+      ggplot2::aes(
+        x = ggmosaic::product(calc_bin), # calc proportions per bin
+        fill = {{column_factor}},
+        weight = calc_weight # bar width
+      ),
+      offset = 0.01 # provides space between the bars
+    ) +
+    ggplot2::xlab(pretty_label_column(character_bin)) +
+    ggplot2::ylab("Proportion") +
+    ggplot2::scale_y_continuous(expand = c(0, 0)) +
+    ggplot2::theme(
+      axis.text.x = ggplot2::element_text(angle = 90, vjust = 0.5),
+      axis.ticks.x = ggplot2::element_blank(),
+      legend.position = "top",
+      legend.title = ggplot2::element_blank()
+    ) +
+    ggplot2::coord_cartesian(expand = FALSE) +
+    ggokabeito::scale_fill_okabe_ito() + # color-blind friendly
+    ggmosaic::scale_x_productlist()
+
+  return(gg)
+}
+
+#' Save figures of proportions by depth and latitude using warehouse data
+#'
+#' Four figures in total are created and saved to the disk if both catch and
+#' biological data, pulled from the data warehouse, are passed to `data_catch` and
+#' `data_bio`, respectively. This function will only work with data that has the
+#' standard column names of data pulled from the warehouse.
+#'
+#' @param data_catch,data_bio Data frames returned from [pull_catch()] and
+#'   [pull_bio())], respectively. At least one of the arguments must be passed.
+#' @param dir The directory where you would like the `.png` files to be saved.
+#'   The default is a directory called `"plots"` in your current working
+#'   directory.
+#' @inheritParams plot_proportion
+#' @export
+#' @author Chantel R. Wetzel and Kelli F. Johnson
+#' @return Strings of the saved files.
+#' @seealso
+#' * [plot_proportion()]
+#' * [purrr::map()]
+#' @family warehouse
 #' @examples
 #' \dontrun{
-#' # load WCGBTS data data
-#' data.WCGBTS.ling <- nwfscSurvey::PullCatch.fn(
-#'   Name = "lingcod",
-#'   SurveyName = "NWFSC.Combo"
-#' )
-#' bio.WCGBTS.ling <- nwfscSurvey::PullBio.fn(
-#'   Name = "lingcod",
-#'   SurveyName = "NWFSC.Combo"
-#' )
-#' plot_proportion(data = data.WCGBTS.ling, dim = "lat")
-#' plot_proportion(data = data.WCGBTS.ling, dim = "depth")
-#' plot_proportion(data = bio.WCGBTS.ling, dim = "sex")
+#' test <- wh_plot_proportion(catch_nwfsc_combo, bio_nwfsc_combo)
 #' }
-plot_proportion <- function(data,
-  dim = c("depth", "lat", "sex"),
-  dir = NULL,
-  plot_type = c("proportion", "total"),
-  depth_min = 50,
-  depth_max = NULL,
-  depth_bin_width = 25,
-  lat_min = 32,
-  lat_max = 49,
-  lat_bin_width = 1.0,
-  add_range_to_main = TRUE,
-  xlab = NULL) {
+wh_plot_proportion <- function(data_catch,
+                               data_bio,
+                               dir = file.path(getwd(), "plots"),
+                               bar_width = c("n", "equal")) {
+  # Input checks
+  stopifnot(any(c(!missing(data_catch), !missing(data_bio))))
 
-  # check inputs
-  dim <- match.arg(dim)
-  plot_type <- match.arg(plot_type)
+  # Paste relevant prefixes to two suffixes and make them file paths
+  files_all <- file.path(
+    dir,
+    t(outer(
+      X = c(
+        if(!missing(data_catch)) {"presence-absence"},
+        if(!missing(data_bio)) {"sex"}
+      ),
+      Y = paste0("_by_", c("depth", "latitude"), ".png"),
+      FUN = paste0
+    ))
+  )
 
-  if (dim == "sex"){
-    if (sum(colnames(data) == "Sex") != 1) {
-      stop("The data function input needs to be a biological data file.")
+  # Create a list of data frames
+  # mutate the data frames to have the_factor that is passed to plot_proportion
+  # rerun repeats the augmented data frame .n times
+  data <- c(
+    if (!missing(data_catch)) {
+      dplyr::mutate(data_catch, the_factor = factor(
+        cpue_kg_km2 <= 0,
+        levels = c(FALSE, TRUE),
+        labels = c("Present", "Absent")
+      )) %>%
+        purrr::rerun(.n = 2)
+    },
+    if (!missing(data_bio)) {
+      dplyr::mutate(data_bio, the_factor = codify_sex(Sex)) %>%
+        purrr::rerun(.n = 2)
     }
-  }
+  )
 
-  round_any <- function(x, accuracy, f = round) {
-    f(x / accuracy) * accuracy
-  }
+  # Use map to iterate over the list of data frames and other elements of .l;
+  # the nth element of each vector/list passed in .l will be passed in turn
+  # to the function passed to .f; extra arguments that do not change for each
+  # plot are passed after .f
+  gg_all <- purrr::pmap(
+    .l = list(
+      pdata = data,
+      x = rep(ggplot2::quos(Depth_m, Latitude_dd), length(data) / 2),
+      width = rep(c(50, 1), length(data) / 2)
+    ),
+    .f =  function(pdata, x, width, bar_width) {
+      gg <- plot_proportion(
+        data = pdata,
+        column_factor = the_factor,
+        column_bin = !!x,
+        width = width,
+        bar_width = bar_width,
+        boundary = 0
+      )
+    },
+    bar_width = match.arg(bar_width)
+  )
 
-  # set depth_max if not provided
-  if (is.null(depth_max)) {
-    depth_999 <- stats::quantile(
-      prob = 0.999,
-      x = data$Depth_m[data$Latitude_dd > lat_min &
-        data$Latitude_dd < lat_max &
-        data$cpue_kg_km2 > 0]
-    )
-    depth_max <- 2 * depth_bin_width + depth_bin_width * floor(depth_999 / depth_bin_width)
-    message(
-      "99.9% of positive hauls are shallower than ", round(depth_999), ".\n",
-      "'depth_max' set to ", depth_max, ". Input alternative value if you wish."
-    )
-  }
+  # Save each returned ggplot object using the created file names
+  files_out <- purrr::map2_chr(
+    .x = files_all,
+    .y = gg_all,
+    .f = ggplot2::ggsave,
+    height = 7,
+    width = 7
+  )
 
-  # filter data based on input depth and latitude range
-  data2 <- data[data$Depth_m < depth_max &
-    data$Depth_m > depth_min &
-    data$Latitude_dd > lat_min &
-    data$Latitude_dd < lat_max, ]
-
-  # note: \u00B0 is degree symbol and \u2013 is n-dash
-
-  # depth as dimension of interest
-  if (dim == "depth") {
-    # get binned value
-    data2$binned_value <- round_any(data2$Depth_m, depth_bin_width, floor)
-    # update xlab and caption
-    if (is.null(xlab)) {
-      xlab <- "Depth (m)"
-    }
-    main = "Presence/Absence"
-    if (add_range_to_main) {
-      main <- paste0(main, " (", lat_min, "\u00B0N \u2013 ", lat_max, "\u00B0N)")
-    }
-    filename <- paste0("presence-absence_", plot_type, "_by_depth.png")
-    
-  }
-
-  # rounded value for latitude
-  if (dim == "lat") {
-    # get binned value
-    data2$binned_value <- round_any(data2$Latitude_dd, lat_bin_width, floor)
-    # update xlab and caption
-    if (is.null(xlab)) {
-      xlab <- "Latitude (\u00B0N)"
-    }
-    main = "Presence/Absence"
-    if (add_range_to_main) {
-      main <- paste0(main, " (", depth_min, " \u2013 ", depth_max, "m)")
-    }
-    filename <- paste0("presence-absence_", plot_type, "_by_latitude.png")
-
-  }
-
-  # depth as dimension of interest
-  if (dim == "sex") {
-    # get binned value
-    data2$binned_value <- round_any(data2$Depth_m, depth_bin_width, floor)
-    # update xlab and caption
-    if (is.null(xlab)) {
-      xlab <- "Depth (m)"
-    }
-    main = "Sex Ratio by Depth"
-    if (add_range_to_main) {
-      main <- paste0(main, " (", lat_min, "\u00B0N \u2013 ", lat_max, "\u00B0N)")
-    }
-
-    filename <- paste0("sex_", plot_type, "_by_depth.png")
-  }
-
-  if (!is.null(dir)) {
-    plotdir <- file.path(dir, paste("plots", sep = ""))
-    check_dir(plotdir)
-    png(file.path(dir, "plots", filename),
-      height = 7, width = 7, units = "in", res = 300
-    )
-    on.exit(dev.off())
-  }
-  
-  # make table
-  if (dim %in% c("depth", "lat")) {
-    tab <- table(data2$binned_value, data2$cpue_kg_km2 > 0)
-    dimnames(tab)[[2]] <- c("Absent", "Present")
-
-    # Calculate in terms of proportions
-    prop_tab <- table(data2$binned_value, data2$cpue_kg_km2 > 0)
-    prop_tab[,2] = tab[,2] / (tab[,1] + tab[,2])
-    prop_tab[,1] = 1- prop_tab[,2]
-    dimnames(prop_tab)[[2]] <- c("Absent", "Present")
-    color <- c(gray(.7), 'darkorchid3')
-  }
-
-  if (dim == "sex") {
-    tab <- table(data2$binned_value, data2$Sex == "F")
-    dimnames(tab)[[2]] <- c("Male", "Female")
-
-    # Calculate in terms of proportions
-    prop_tab <- table(data2$binned_value, data2$Sex == "F")
-    prop_tab[,1] = prop_tab[,1] / (prop_tab[,1] + prop_tab[,2])
-    prop_tab[,2] = 1- prop_tab[,1]
-    dimnames(prop_tab)[[2]] <- c("Male", "Female")
-    color <- c('blue', 'red')
-  }
-
-  las_dir <- ifelse(length(unique(data2$binned_value)) > 9, 3, 1)
-
-  # make plot
-  if (plot_type == "proportion") {
-    plot(prop_tab, col = color, cex = 1, main = main, 
-      xlab = xlab, las = las_dir)
-  }
-  if (plot_type == "total") {
-    plot(tab, col = color, cex = 1, main = main, 
-      xlab = xlab, las = las_dir)
-  }
-  abline(h = 0.5, col = 'white', lty = 1, lwd = 4)
-
+  # Return the file names in case users want to call them into a .Rmd file
+  return(files_out)
 }

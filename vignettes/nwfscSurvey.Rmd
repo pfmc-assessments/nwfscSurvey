@@ -72,17 +72,10 @@ plot_bio_patterns(
   bio = bio, 
   col_name = "Length_cm")
 
-plot_proportion(
-  data = catch, 
-  dim = "lat")
-
-plot_proportion(
-  data = catch, 
-  dim = "depth")
-
-plot_proportion(
-  data = bio, 
-  dim = "sex")
+wh_plot_proportion(
+  data_catch = catch,
+  data_bio = bio
+)
 ```
 
 #### Index of abundance
