@@ -75,19 +75,18 @@
 <div class="section level2">
 <h2 id="introduction">Introduction<a class="anchor" aria-label="anchor" href="#introduction"></a>
 </h2>
-<p>The <strong>nwfscSurvey</strong> package was written by scientists at the Northwest Fisheries Science Center (NWFSC) to explore and process survey composition data for use in assessments. The package can be used for the NWFSC shelf-slope survey, the NWFSC slope survey, the AFSC slope survey, and the Triennial survey. The package included functions that query the NWFSC data warehouse (<a href="https://www.nwfsc.noaa.gov/data" class="external-link uri">https://www.nwfsc.noaa.gov/data</a>) and process the data for use in West Coast stock assessments</p>
+<p>The <strong>nwfscSurvey</strong> package was written by scientists at the Northwest Fisheries Science Center (NWFSC) to explore and process survey composition data for use in groundfish stockassessments. The package can be used for the NWFSC West Coast Groundfish Bottom Trawl (WCGBT) survey, the NWFSC slope survey, the Alaska Fisheries Science Center (AFSC) slope survey, and the AFSC Triennial survey. The package included functions that query the <a href="https://www.nwfsc.noaa.gov/data" class="external-link">NWFSC data warehouse</a>, visualize, and process the data for use in groundfish stock assessments.</p>
 </div>
 <div class="section level2">
 <h2 id="use">Use<a class="anchor" aria-label="anchor" href="#use"></a>
 </h2>
 <p>The <strong>nwfscSurvey</strong> can be used to create:</p>
 <ul>
-<li><p>Pull data from the NWFSC data warehouse</p></li>
+<li><p>Pull survey catch, haul, and biological data from the NWFSC data warehouse.</p></li>
 <li><p>Calculate the design based indices based upon pre-specified stratification.</p></li>
-<li><p>Create length composition data expanded by the design-based indices for use in Stock Synthesis.</p></li>
-<li><p>Create age-composition data expanded by the design-based indices for use in Stock Synthesis.</p></li>
-<li><p>Create conditional age-at-length composition data for used in Stock Synthesis</p></li>
-<li><p>Create plots to visualize the data; design-based index plots, bubble plots of length and age data, sex ratio.</p></li>
+<li><p>Create length- and age-composition data expanded by the design-based indices formated for use in Stock Synthesis.</p></li>
+<li><p>Create unexpanded conditional age-at-length composition data for used in Stock Synthesis.</p></li>
+<li><p>Create plots to visualize the data: design-based index plots, bubble plots of length and age data, observeed sex ratio, and distributions across depth and latitude.</p></li>
 </ul>
 </div>
 <div class="section level2">
@@ -101,7 +100,7 @@
 <h2 id="examples">Examples<a class="anchor" aria-label="anchor" href="#examples"></a>
 </h2>
 <div class="section level3">
-<h3 id="nwfsc-shelf-slope-bottom-trawl-survey">NWFSC shelf-slope bottom trawl survey<a class="anchor" aria-label="anchor" href="#nwfsc-shelf-slope-bottom-trawl-survey"></a>
+<h3 id="nwfsc-wcgbt-survey">NWFSC WCGBT survey<a class="anchor" aria-label="anchor" href="#nwfsc-wcgbt-survey"></a>
 </h3>
 <div class="section level4">
 <h4 id="pull-data">Pull data<a class="anchor" aria-label="anchor" href="#pull-data"></a>
@@ -109,30 +108,54 @@
 <p>Pull both the catch and biological data:</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">catch</span> <span class="op">=</span> <span class="fu"><a href="../reference/PullCatch.fn.html">PullCatch.fn</a></span><span class="op">(</span>Name <span class="op">=</span> <span class="st">"Pacific ocean perch"</span>, </span>
-<span>                     SurveyName <span class="op">=</span> <span class="st">"NWFSC.Combo"</span>,</span>
-<span>                     <span class="va">...</span><span class="op">)</span></span>
+<span>                     SurveyName <span class="op">=</span> <span class="st">"NWFSC.Combo"</span><span class="op">)</span></span>
+<span></span>
 <span><span class="va">bio</span>   <span class="op">=</span> <span class="fu"><a href="../reference/PullBio.fn.html">PullBio.fn</a></span><span class="op">(</span>Name <span class="op">=</span> <span class="st">"Pacific ocean perch"</span>, </span>
-<span>                   SurveyName <span class="op">=</span> <span class="st">"NWFSC.Combo"</span>,</span>
-<span>                   <span class="va">...</span><span class="op">)</span></span></code></pre></div>
+<span>                   SurveyName <span class="op">=</span> <span class="st">"NWFSC.Combo"</span><span class="op">)</span></span></code></pre></div>
+</div>
+<div class="section level4">
+<h4 id="initial-data-visualization">Initial data visualization<a class="anchor" aria-label="anchor" href="#initial-data-visualization"></a>
+</h4>
+<p>There are a range of functions to create visualizations of the data by examining catch rates by latitude or depth, lengths or ages by latitude and depth, presence/absence in tows, and observed sex ratios.</p>
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/plot_cpue.html">plot_cpue</a></span><span class="op">(</span></span>
+<span>  dir <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/getwd.html" class="external-link">getwd</a></span><span class="op">(</span><span class="op">)</span>, </span>
+<span>  catch <span class="op">=</span> <span class="va">catch</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="../reference/plot_bio_patterns.html">plot_bio_patterns</a></span><span class="op">(</span></span>
+<span>  dir <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/getwd.html" class="external-link">getwd</a></span><span class="op">(</span><span class="op">)</span>, </span>
+<span>  bio <span class="op">=</span> <span class="va">bio</span>, </span>
+<span>  col_name <span class="op">=</span> <span class="st">"Length_cm"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="../reference/plot_proportion.html">plot_proportion</a></span><span class="op">(</span></span>
+<span>  data <span class="op">=</span> <span class="va">catch</span>, </span>
+<span>  dim <span class="op">=</span> <span class="st">"lat"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="../reference/plot_proportion.html">plot_proportion</a></span><span class="op">(</span></span>
+<span>  data <span class="op">=</span> <span class="va">catch</span>, </span>
+<span>  dim <span class="op">=</span> <span class="st">"depth"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="../reference/plot_proportion.html">plot_proportion</a></span><span class="op">(</span></span>
+<span>  data <span class="op">=</span> <span class="va">bio</span>, </span>
+<span>  dim <span class="op">=</span> <span class="st">"sex"</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level4">
 <h4 id="index-of-abundance">Index of abundance<a class="anchor" aria-label="anchor" href="#index-of-abundance"></a>
 </h4>
-<p>Define the stratification:</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>strata <span class="ot">=</span> <span class="fu">CreateStrataDF.fn</span>(<span class="at">names=</span><span class="fu">c</span>(<span class="st">"shallow_s"</span>, <span class="st">"mid_s"</span> <span class="st">"deep_s"</span>, <span class="st">"shallow_n"</span>, <span class="st">"mid_n"</span>, <span class="st">"deep_n"</span>), </span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>                           <span class="at">depths.shallow =</span> <span class="fu">c</span>( <span class="dv">55</span>,   <span class="dv">200</span>, <span class="dv">300</span>,    <span class="dv">55</span>, <span class="dv">200</span>, <span class="dv">300</span>),</span>
-<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>                           <span class="at">depths.deep    =</span> <span class="fu">c</span>(<span class="dv">200</span>,   <span class="dv">300</span>, <span class="dv">400</span>,   <span class="dv">200</span>, <span class="dv">300</span>, <span class="dv">400</span>),</span>
-<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>                           <span class="at">lats.south     =</span> <span class="fu">c</span>( <span class="dv">32</span>,    <span class="dv">32</span>,  <span class="dv">32</span>,    <span class="dv">42</span>,  <span class="dv">42</span>,  <span class="dv">42</span>),</span>
-<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>                           <span class="at">lats.north     =</span> <span class="fu">c</span>( <span class="dv">42</span>,    <span class="dv">42</span>,  <span class="dv">42</span>,    <span class="dv">49</span>,  <span class="dv">49</span>,  <span class="dv">49</span>))</span></code></pre></div>
+<p>Define the stratification by depth and latitude that will be used to calculate a design-based index of abundance:</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>strata <span class="ot">=</span> <span class="fu">CreateStrataDF.fn</span>(</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">names =</span> <span class="fu">c</span>(<span class="st">"shallow_s"</span>, <span class="st">"mid_s"</span> <span class="st">"deep_s"</span>, <span class="st">"shallow_n"</span>, <span class="st">"mid_n"</span>, <span class="st">"deep_n"</span>), </span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">depths.shallow =</span> <span class="fu">c</span>( <span class="dv">55</span>,   <span class="dv">200</span>, <span class="dv">300</span>,    <span class="dv">55</span>, <span class="dv">200</span>, <span class="dv">300</span>),</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">depths.deep    =</span> <span class="fu">c</span>(<span class="dv">200</span>,   <span class="dv">300</span>, <span class="dv">400</span>,   <span class="dv">200</span>, <span class="dv">300</span>, <span class="dv">400</span>),</span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">lats.south     =</span> <span class="fu">c</span>( <span class="dv">32</span>,    <span class="dv">32</span>,  <span class="dv">32</span>,    <span class="dv">42</span>,  <span class="dv">42</span>,  <span class="dv">42</span>),</span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">lats.north     =</span> <span class="fu">c</span>( <span class="dv">42</span>,    <span class="dv">42</span>,  <span class="dv">42</span>,    <span class="dv">49</span>,  <span class="dv">49</span>,  <span class="dv">49</span>))</span></code></pre></div>
 <p>Calculate the design based index of abundance:</p>
-<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">biomass</span> <span class="op">=</span> <span class="fu"><a href="../reference/Biomass.fn.html">Biomass.fn</a></span><span class="op">(</span>dir <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/getwd.html" class="external-link">getwd</a></span><span class="op">(</span><span class="op">)</span>, </span>
 <span>                     dat <span class="op">=</span> <span class="va">catch</span>,  </span>
-<span>                     strat.df <span class="op">=</span> <span class="va">strata</span>, </span>
-<span>                     printfolder <span class="op">=</span> <span class="st">"forSS"</span>, </span>
-<span>                     outputMedian <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
-The function returns a list with the second element containing the design-based estimates by year:
+<span>                     strat.df <span class="op">=</span> <span class="va">strata</span><span class="op">)</span></span></code></pre></div>
+<p>The Biomass.fn returns a list with the second element containing the design-based index of abundance. The design based index is calculated based on the defined stratas. The function writes a csv file inside the dir input location to a “forSS” folder. The function returns a list with the second element containing the design-based estimates by year:</p>
 <table class="table">
 <thead><tr>
 <th style="text-align:left;">
@@ -201,93 +224,97 @@ EnterFleet
 </tr>
 </tbody>
 </table>
-<p>Plot the design based index of abundance:</p>
-<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="../reference/PlotBio.fn.html">PlotBio.fn</a></span><span class="op">(</span>dir <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/getwd.html" class="external-link">getwd</a></span><span class="op">(</span><span class="op">)</span>, </span>
-<span>           dat <span class="op">=</span> <span class="va">biomass</span>,  </span>
-<span>           main <span class="op">=</span> <span class="st">"NWFSC shelf-slope bottom trawl survey"</span>,</span>
-<span>           <span class="va">...</span><span class="op">)</span></span></code></pre></div>
-<p>The Biomass.fn returns a list with the second element containing the design-based index of abundance. The design based index is calculated based on the defined stratas. The function writes a csv file inside the dir input location to a “forSS” folder. The PlotBio.fn plots the calculated design based index from the Biomass.fn. If <code>dir</code> does not equal <code>NULL</code>, then a “plot” folder will be created in the directory location and a png of the plot will be saved.</p>
+<p>Plot the coastwided design-based index of abundance:</p>
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/PlotBio.fn.html">PlotBio.fn</a></span><span class="op">(</span></span>
+<span>  dir <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/getwd.html" class="external-link">getwd</a></span><span class="op">(</span><span class="op">)</span>, </span>
+<span>  dat <span class="op">=</span> <span class="va">biomass</span><span class="op">)</span></span></code></pre></div>
+<p>Plot the coastwided design-based index of abundance for each strata:</p>
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/PlotBioStrata.fn.html">PlotBioStrata.fn</a></span><span class="op">(</span></span>
+<span>  dir <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/getwd.html" class="external-link">getwd</a></span><span class="op">(</span><span class="op">)</span>, </span>
+<span>  dat <span class="op">=</span> <span class="va">biomass</span><span class="op">)</span></span></code></pre></div>
+<p>If <code>dir</code> does not equal <code>NULL</code>, then a “plot” folder will be created in the directory location and a png of the plot will be saved.</p>
 </div>
 <div class="section level4">
 <h4 id="length-composition-data">Length composition data<a class="anchor" aria-label="anchor" href="#length-composition-data"></a>
 </h4>
 <p>A function to calculate the input sample size based on Stewart &amp; Hamel (2014) which determined that the input sample size was related to the species group (flatfish, shelf rockfish, slope rockfish, thornyhead, others, or all groups) and number of tows. The function writes a csv file with the “forSS” folder containing the number of tows and observed fish by year.</p>
-<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">n</span> <span class="op">=</span> <span class="fu">GetN</span><span class="op">(</span>dir <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/getwd.html" class="external-link">getwd</a></span><span class="op">(</span><span class="op">)</span>, </span>
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">n</span> <span class="op">&lt;-</span> <span class="fu">GetN</span><span class="op">(</span>dir <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/getwd.html" class="external-link">getwd</a></span><span class="op">(</span><span class="op">)</span>, </span>
 <span>         dat <span class="op">=</span> <span class="va">bio</span>, </span>
 <span>         type <span class="op">=</span> <span class="st">"length"</span>, </span>
 <span>         species <span class="op">=</span> <span class="st">"shelfrock"</span><span class="op">)</span></span></code></pre></div>
 <p>The SurveyLFs.fn calculates and formats the length composition data for Stock Synthesis:</p>
-<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">Lengths</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/SurveyLFs.fn.html">SurveyLFs.fn</a></span><span class="op">(</span>dir <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/getwd.html" class="external-link">getwd</a></span><span class="op">(</span><span class="op">)</span>, </span>
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">len_bins</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="fl">10</span>, <span class="fl">60</span>, <span class="fl">2</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">Length_Freq</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/SurveyLFs.fn.html">SurveyLFs.fn</a></span><span class="op">(</span>dir <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/getwd.html" class="external-link">getwd</a></span><span class="op">(</span><span class="op">)</span>, </span>
 <span>                        datL <span class="op">=</span>  <span class="va">bio</span>, </span>
 <span>                        datTows <span class="op">=</span> <span class="va">catch</span>,</span>
 <span>                        strata.df <span class="op">=</span> <span class="va">strata</span>,</span>
-<span>                        lgthBins <span class="op">=</span> <span class="va">len.bins</span>, </span>
-<span>                        sex <span class="op">=</span> <span class="fl">3</span>, </span>
-<span>                        <span class="va">...</span><span class="op">)</span></span></code></pre></div>
+<span>                        lgthBins <span class="op">=</span> <span class="va">len_bins</span><span class="op">)</span></span></code></pre></div>
 <p>The above call will calculate the length frequencies for use in Stock Synthesis and write the files inside the “forSS” folder. The example call does not assign unsexed fish to the sexed length comps but will produce csv files for both the sexed and unsexed fish. If you would like to assign the unsexed fish to a sex based on the sex ratio the user will need to specificy the sex ratio value (sexRatioUnsexed) to use for fish under a specified size (maxSizeUnsexed) where unsexed fish greater than the specified size will be assign based on the sex ratio from other observations.</p>
 <p>There are many inputs to the SurveyLFs.fn, please look over the function inputs to explore additional ways to process the data.</p>
 <p>To plot the length frequency data:</p>
-<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/PlotFreqData.fn.html">PlotFreqData.fn</a></span><span class="op">(</span>dir <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/getwd.html" class="external-link">getwd</a></span><span class="op">(</span><span class="op">)</span>, </span>
-<span>                dat <span class="op">=</span> <span class="va">Lengths</span>, </span>
-<span>                ylim <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fl">50</span><span class="op">)</span>, </span>
-<span>                yaxs <span class="op">=</span> <span class="st">"i"</span>,</span>
-<span>                ylab <span class="op">=</span> <span class="st">"Length (cm)"</span>,</span>
-<span>                <span class="va">...</span><span class="op">)</span></span></code></pre></div>
+<span>                dat <span class="op">=</span> <span class="va">Length_Freq</span><span class="op">)</span></span></code></pre></div>
+<p>A new function to visualize length frequency data is also availble:</p>
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/plot_comps.html">plot_comps</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">Length_Freq</span><span class="op">)</span></span></code></pre></div>
 <p>If <code>dir</code> does not equal <code>NULL</code>, then a “plot” folder will be created in the directory location and a png of the plot will be saved.</p>
 </div>
 <div class="section level4">
 <h4 id="marginal-age-composition-data">Marginal age composition data<a class="anchor" aria-label="anchor" href="#marginal-age-composition-data"></a>
 </h4>
 <p>Calculate the marginal age sample size:</p>
-<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">n</span> <span class="op">=</span> <span class="fu">getN</span><span class="op">(</span>dir <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/getwd.html" class="external-link">getwd</a></span><span class="op">(</span><span class="op">)</span>, </span>
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">n</span> <span class="op">&lt;-</span> <span class="fu">getN</span><span class="op">(</span>dir <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/getwd.html" class="external-link">getwd</a></span><span class="op">(</span><span class="op">)</span>, </span>
 <span>         dat <span class="op">=</span> <span class="va">bio</span>,</span>
 <span>         type <span class="op">=</span> <span class="st">"age"</span>, </span>
 <span>         species <span class="op">=</span> <span class="st">"shelfrock"</span><span class="op">)</span></span></code></pre></div>
 <p>The SurveyAFs.fn calculates and formats the age composition data for Stock Synthesis:</p>
-<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">Ages</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/SurveyAFs.fn.html">SurveyAFs.fn</a></span><span class="op">(</span>dir <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/getwd.html" class="external-link">getwd</a></span><span class="op">(</span><span class="op">)</span>, </span>
+<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">age_bins</span> <span class="op">&lt;-</span> <span class="fl">1</span><span class="op">:</span><span class="fl">50</span></span>
+<span></span>
+<span><span class="va">Ages</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/SurveyAFs.fn.html">SurveyAFs.fn</a></span><span class="op">(</span>dir <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/getwd.html" class="external-link">getwd</a></span><span class="op">(</span><span class="op">)</span>, </span>
 <span>                     datA <span class="op">=</span> <span class="va">bio</span>,</span>
 <span>                     datTows <span class="op">=</span> <span class="va">catch</span>, </span>
 <span>                     strat.df <span class="op">=</span> <span class="va">strata</span>,</span>
-<span>                     ageBins <span class="op">=</span> <span class="va">age.bins</span>, </span>
-<span>                     sex <span class="op">=</span> <span class="fl">3</span>, </span>
-<span>                     nSamps <span class="op">=</span> <span class="va">n</span>,</span>
-<span>                     <span class="va">...</span><span class="op">)</span></span></code></pre></div>
+<span>                     ageBins <span class="op">=</span> <span class="va">age_bins</span>,</span>
+<span>                     nSamps <span class="op">=</span> <span class="va">n</span><span class="op">)</span></span></code></pre></div>
 <p>The above call will calculate the marginal age composition data for the age data read in using the readInExcelAgeComps.fn and write the files inside the “forSS” folder.</p>
 <p>To plot the age frequency data:</p>
-<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="../reference/PlotFreqData.fn.html">PlotFreqData.fn</a></span><span class="op">(</span>dir <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/getwd.html" class="external-link">getwd</a></span><span class="op">(</span><span class="op">)</span>, </span>
-<span>                dat <span class="op">=</span> <span class="va">Ages</span>, </span>
-<span>                ylim <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fl">100</span><span class="op">)</span>,</span>
-<span>                ylab <span class="op">=</span> <span class="st">"Age"</span>,</span>
-<span>                <span class="va">...</span><span class="op">)</span></span></code></pre></div>
+<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/PlotFreqData.fn.html">PlotFreqData.fn</a></span><span class="op">(</span></span>
+<span>  dir <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/getwd.html" class="external-link">getwd</a></span><span class="op">(</span><span class="op">)</span>, </span>
+<span>  dat <span class="op">=</span> <span class="va">Ages</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="../reference/plot_comps.html">plot_comps</a></span><span class="op">(</span></span>
+<span>  data <span class="op">=</span> <span class="va">Ages</span><span class="op">)</span></span></code></pre></div>
 <p>If <code>dir</code> is not <code>NULL</code>, then a “plot” folder will be created in the directory location and a png of the plot will be saved.</p>
 </div>
 <div class="section level4">
 <h4 id="conditional-age-at-length-data">Conditional-age-at-length data<a class="anchor" aria-label="anchor" href="#conditional-age-at-length-data"></a>
 </h4>
 <p>To calculate conditional-age-at-length data formatted for SS:</p>
-<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">CAAL</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/SurveyAgeAtLen.fn.html">SurveyAgeAtLen.fn</a></span><span class="op">(</span>dir <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/getwd.html" class="external-link">getwd</a></span><span class="op">(</span><span class="op">)</span>, </span>
+<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">caal</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/SurveyAgeAtLen.fn.html">SurveyAgeAtLen.fn</a></span><span class="op">(</span>dir <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/getwd.html" class="external-link">getwd</a></span><span class="op">(</span><span class="op">)</span>, </span>
 <span>                          datAL <span class="op">=</span> <span class="va">bio</span>, </span>
 <span>                          datTows <span class="op">=</span> <span class="va">catch</span>,</span>
 <span>                          strata.df <span class="op">=</span> <span class="va">strata</span>,</span>
 <span>                          lgthBins <span class="op">=</span> <span class="va">len.bins</span>, </span>
-<span>                          ageBins <span class="op">=</span> <span class="va">age.bins</span>, </span>
-<span>                          <span class="va">...</span><span class="op">)</span></span></code></pre></div>
+<span>                          ageBins <span class="op">=</span> <span class="va">age.bins</span><span class="op">)</span></span></code></pre></div>
 <p>Creates unexpanded conditional-age-at-length data for both sexes with input sample sizes based on the observed number of fish in each length bin by year.</p>
 </div>
 <div class="section level4">
 <h4 id="maps">Maps<a class="anchor" aria-label="anchor" href="#maps"></a>
 </h4>
 <p>To make a map showing the distribution of density in aggregate and by year:</p>
-<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="../reference/PlotMap.fn.html">PlotMap.fn</a></span><span class="op">(</span>dat <span class="op">=</span> <span class="va">catch</span><span class="op">)</span></span></code></pre></div>
+<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/PlotMap.fn.html">PlotMap.fn</a></span><span class="op">(</span></span>
+<span>  dat <span class="op">=</span> <span class="va">catch</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level4">
 <h4 id="additional-data-visualization">Additional data visualization<a class="anchor" aria-label="anchor" href="#additional-data-visualization"></a>
