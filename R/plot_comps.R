@@ -47,6 +47,17 @@ plot_comps <- function(
     )
   )
 
+  name2 <- file.path(
+    plotdir,
+    paste0(
+      add_save_name,
+      ifelse(test = is.null(add_save_name), yes = "", no = "_"),
+      data_type,
+      "_r4ss_frequency_sex_", sex_type,
+      ".png"
+    )
+  )
+
   year <- as.numeric(as.character(data$year))
   sex <- data$sex[1]
   if (data_type == "length") {
@@ -141,12 +152,40 @@ plot_comps <- function(
           panel.background = element_blank(), 
           panel.border = element_rect(colour = "black", fill = NA, size = 1), 
           legend.position = "right") +
-      #scale_fill_gradientn(colours = c("red", "blue")) + 
       guides(size = "legend", color = "none", fill = "none")  
 
-  print(p) 
   if (!is.null(dir)){
       ggsave(filename = name, width = width, height = height, units = 'in')     
   }
+
+  df2 <- df
+  df2$value <- df2$value / 100
+  df2[df2$sex == "MALE", 'value'] <- -1 * df2[df2$sex == "MALE", 'value']
+
+  p2 <- ggplot2::ggplot(df2, aes(x = variable, y = value)) +
+      geom_line(aes(colour = sex), # add alpha = n inside the aes to shade by annual sample size
+        lwd = 1.1) +
+      facet_wrap(facets = "year") +
+      scale_fill_manual(values = c('FEMALE' = 'red', 'MALE' = 'blue', 'UNSEXED' = "darkseagreen")) +
+      scale_color_manual(values = c('FEMALE' = 'darkred', 'MALE' = 'darkblue', 'UNSEXED' = "darkgreen")) +
+      labs(x = ylabel, y = "Proportion") +
+      geom_hline(yintercept = 0) +
+      theme(legend.key = element_blank(), 
+          axis.title.x = element_text (size = 12),
+          axis.title.y = element_text (size = 1),
+          axis.text.x = element_text(ylabel, colour = "black", size = 12, angle = 90, vjust = 0.3, hjust = 1), 
+          axis.text.y = element_text("Proportion", colour = "black", size = 12), 
+          legend.text = element_text(size = 10, colour ="black"), 
+          legend.title = element_text(size = 12), 
+          panel.background = element_blank(), 
+          panel.border = element_rect(colour = "black", fill = NA, size = 1), 
+          legend.position = "right")
+
+  if (!is.null(dir)){
+      ggsave(filename = name2, width = width, height = height, units = 'in')     
+  }
+
+  print(p)
+  print(p2) 
          
 }
