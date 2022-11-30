@@ -25,11 +25,16 @@ plot_varlenage(
 
 \item{main}{Name that will be used to name the saved png}
 
+\item{Par}{Starting parameters for K, Linf, L0, CV0, and CV2 based on the
+Stock Synthesis parameterization of von Bertanlaffy growth.}
+
 \item{bySex}{Logical to indicate if plot by sex}
 
-\item{estVB}{Logical. Estimate vonB growth to plot against predicted length. If F, it uses the paramters in \code{parStart}.}
+\item{estVB}{Logical. Estimate vonB growth to plot against predicted length.
+If F, it uses the paramters in \code{parStart}.}
 
-\item{bins}{The bins to put ages into. If NULL then simply uses the ages as recorded.}
+\item{bins}{The bins to put ages into. If NULL then simply uses the ages as
+recorded.}
 
 \item{legX}{legend location for x axis, defaults to "bottomleft"}
 
@@ -40,10 +45,7 @@ value to \code{dir} can serve the same purpose as \code{dopng = TRUE} without th
 potential for errors when \code{dopng = TRUE} and \code{dir = NULL}. Thus, users
 no longer have to specify \code{dopng} to save the plot as a png.}
 
-\item{...}{Additional arguments for the plots}
-
-\item{ParList}{of starting parameters for K, Linf, L0, CV0, and CV2 based on the
-Stock Synthesis parameterization of von Bertanlaffy growth.}
+\item{...}{Additional arguments for the plots.}
 }
 \description{
 Plots the SD and CV of age at observed and predicted length
