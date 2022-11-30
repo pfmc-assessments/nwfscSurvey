@@ -22,4 +22,4 @@ remotes::install_github("pfmc-assessments/nwfscSurvey")
 
 ## Package information
 
-A [website](http://pfmc-assessments.github.io/nwfscSurvey/index.html) is now available for the package. The "Get started" tab provide general information on how to pull, visualize, and process survey data. Additionally, the "Reference" tab provides a detailed list of all available functions. 
+A [website](http://pfmc-assessments.github.io/nwfscSurvey/index.html) is now available for the package. The ["Get started"](http://pfmc-assessments.github.io/nwfscSurvey/articles/nwfscSurvey.html) tab provide general information on how to pull, visualize, and process survey data. Additionally, the ["Reference"](http://pfmc-assessments.github.io/nwfscSurvey/reference/index.html) tab provides a detailed list of all available functions. 
