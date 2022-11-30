@@ -17,11 +17,9 @@ This code was developed for use by scientists at the NWFSC and is intended to wo
 
 ``` r
 install.packages("remotes")
-remotes::install_github("pfmc-assessments/nwfscSurvey", build_vignettes = TRUE)
+remotes::install_github("pfmc-assessments/nwfscSurvey")
 ```
 
-A short vignette for the package is:
+## Package information
 
-``` r
-vignette("nwfscSurvey", package = "nwfscSurvey")
-```
+A [website](http://pfmc-assessments.github.io/nwfscSurvey/index.html) is now available for the package. The "Get started" tab provide general information on how to pull, visualize, and process survey data. Additionally, the "Reference" tab provides a detailed list of all available functions. 
