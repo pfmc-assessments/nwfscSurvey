@@ -173,11 +173,12 @@ calculate a design-based index of abundance:</p>
 <code class="sourceCode R"><span><span class="va">biomass</span> <span class="op">=</span> <span class="fu"><a href="../reference/Biomass.fn.html">Biomass.fn</a></span><span class="op">(</span>dir <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/getwd.html" class="external-link">getwd</a></span><span class="op">(</span><span class="op">)</span>, </span>
 <span>                     dat <span class="op">=</span> <span class="va">catch</span>,  </span>
 <span>                     strat.df <span class="op">=</span> <span class="va">strata</span><span class="op">)</span></span></code></pre></div>
-<p>[Biomass.fn()] returns a list with the second element containing the
-design-based index of abundance. The design based index is calculated
-based on the defined stratas. The function writes a csv file inside the
-dir input location to a “forSS” folder. The function returns a list with
-the second element containing the design-based estimates by year:</p>
+<p><code><a href="../reference/Biomass.fn.html">Biomass.fn()</a></code> returns a list with the second element
+containing the design-based index of abundance. The design based index
+is calculated based on the defined stratas. The function writes a csv
+file inside the dir input location to a “forSS” folder. The function
+returns a list with the second element containing the design-based
+estimates by year:</p>
 <table class="table">
 <thead><tr>
 <th style="text-align:left;">
@@ -264,19 +265,19 @@ will be saved.</p>
 <div class="section level4">
 <h4 id="length-composition-data">Length composition data<a class="anchor" aria-label="anchor" href="#length-composition-data"></a>
 </h4>
-<p>[GetN()] calculates the input sample size based on Stewart &amp;
-Hamel (2014) which determined that the input sample size was related to
-the species group (flatfish, shelf rockfish, slope rockfish, thornyhead,
-others, or all groups) and number of tows. The function writes a csv
-file with the “forSS” folder containing the number of tows and observed
-fish by year.</p>
+<p><code>GetN()</code> calculates the input sample size based on Stewart
+&amp; Hamel (2014) which determined that the input sample size was
+related to the species group (flatfish, shelf rockfish, slope rockfish,
+thornyhead, others, or all groups) and number of tows. The function
+writes a csv file with the “forSS” folder containing the number of tows
+and observed fish by year.</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">n</span> <span class="op">&lt;-</span> <span class="fu">GetN</span><span class="op">(</span>dir <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/getwd.html" class="external-link">getwd</a></span><span class="op">(</span><span class="op">)</span>, </span>
 <span>         dat <span class="op">=</span> <span class="va">bio</span>, </span>
 <span>         type <span class="op">=</span> <span class="st">"length"</span>, </span>
 <span>         species <span class="op">=</span> <span class="st">"shelfrock"</span><span class="op">)</span></span></code></pre></div>
-<p>[SurveyLFs.fn()] calculates and formats the length-composition data
-for Stock Synthesis:</p>
+<p><code><a href="../reference/SurveyLFs.fn.html">SurveyLFs.fn()</a></code> calculates and formats the
+length-composition data for Stock Synthesis:</p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">len_bins</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="fl">10</span>, <span class="fl">60</span>, <span class="fl">2</span><span class="op">)</span></span>
 <span></span>
@@ -294,8 +295,9 @@ need to specificy the sex ratio value (sexRatioUnsexed) to use for fish
 under a specified size (maxSizeUnsexed) where unsexed fish greater than
 the specified size will be assign based on the sex ratio from other
 observations.</p>
-<p>There are many inputs to [SurveyLFs.fn()], please look over the
-function inputs to explore additional ways to process the data.</p>
+<p>There are many inputs to <code><a href="../reference/SurveyLFs.fn.html">SurveyLFs.fn()</a></code>, please look
+over the function inputs to explore additional ways to process the
+data.</p>
 <p>To plot the length frequency data:</p>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/PlotFreqData.fn.html">PlotFreqData.fn</a></span><span class="op">(</span>dir <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/getwd.html" class="external-link">getwd</a></span><span class="op">(</span><span class="op">)</span>, </span>
@@ -317,8 +319,8 @@ will be saved.</p>
 <span>         dat <span class="op">=</span> <span class="va">bio</span>,</span>
 <span>         type <span class="op">=</span> <span class="st">"age"</span>, </span>
 <span>         species <span class="op">=</span> <span class="st">"shelfrock"</span><span class="op">)</span></span></code></pre></div>
-<p>[SurveyAFs.fn()] calculates and formats the age-composition data for
-Stock Synthesis:</p>
+<p><code><a href="../reference/SurveyAFs.fn.html">SurveyAFs.fn()</a></code> calculates and formats the
+age-composition data for Stock Synthesis:</p>
 <div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">age_bins</span> <span class="op">&lt;-</span> <span class="fl">1</span><span class="op">:</span><span class="fl">50</span></span>
 <span></span>
@@ -329,8 +331,8 @@ Stock Synthesis:</p>
 <span>                     ageBins <span class="op">=</span> <span class="va">age_bins</span>,</span>
 <span>                     nSamps <span class="op">=</span> <span class="va">n</span><span class="op">)</span></span></code></pre></div>
 <p>The above call will calculate the marginal age-composition data for
-the age data read in using [readInExcelAgeComps.fn()] and writes the
-files inside the “forSS” folder.</p>
+the age data read in using <code>readInExcelAgeComps.fn()</code> and
+writes the files inside the “forSS” folder.</p>
 <p>To plot the age frequency data:</p>
 <div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/PlotFreqData.fn.html">PlotFreqData.fn</a></span><span class="op">(</span></span>
@@ -372,7 +374,8 @@ year:</p>
 <h4 id="additional-data-visualization">Additional data visualization<a class="anchor" aria-label="anchor" href="#additional-data-visualization"></a>
 </h4>
 <p>There are a couple of additional plotting functions that are included
-in the package: [PlotVarLengthAtAge.fn()] and [PlotSexRatio.fn()].</p>
+in the package:<code><a href="../reference/PlotVarLengthAtAge.fn.html">PlotVarLengthAtAge.fn()</a></code> and
+<code><a href="../reference/PlotSexRatio.fn.html">PlotSexRatio.fn()</a></code>.</p>
 </div>
 </div>
 </div>
