@@ -106,7 +106,7 @@ biomass = Biomass.fn(dir = getwd(),
                      dat = catch,  
                      strat.df = strata)
 ```
-[Biomass.fn()] returns a list with the second element containing the design-based index of abundance. The design based index is calculated based on the defined stratas. The function writes a csv file inside the dir input location to a "forSS" folder. The function returns a list with the second element containing the design-based estimates by year:
+`Biomass.fn()` returns a list with the second element containing the design-based index of abundance. The design based index is calculated based on the defined stratas. The function writes a csv file inside the dir input location to a "forSS" folder. The function returns a list with the second element containing the design-based estimates by year:
 
 ```{r, results = 'asis', echo = FALSE}
   library(xtable)
@@ -138,7 +138,7 @@ If `dir` does not equal `NULL`, then a "plot" folder will be created in the dire
 
 #### Length composition data
 
-[GetN()] calculates the input sample size based on Stewart & Hamel (2014) which determined that the input sample size was related to the species group (flatfish, shelf rockfish, slope rockfish, thornyhead, others, or all groups) and number of tows. The function writes a csv file with the "forSS" folder containing the number of tows and observed fish by year. 
+`GetN()` calculates the input sample size based on Stewart & Hamel (2014) which determined that the input sample size was related to the species group (flatfish, shelf rockfish, slope rockfish, thornyhead, others, or all groups) and number of tows. The function writes a csv file with the "forSS" folder containing the number of tows and observed fish by year. 
 
 ```r
 n <- GetN(dir = getwd(), 
@@ -147,7 +147,7 @@ n <- GetN(dir = getwd(),
          species = "shelfrock")
 ```
 
-[SurveyLFs.fn()] calculates and formats the length-composition data for Stock Synthesis:
+`SurveyLFs.fn()` calculates and formats the length-composition data for Stock Synthesis:
 ```r
 len_bins <- seq(10, 60, 2)
 
@@ -159,7 +159,7 @@ Length_Freq <- SurveyLFs.fn(dir = getwd(),
 ```
 The above call will calculate the length frequencies for use in Stock Synthesis and write the files inside the "forSS" folder. The example call does not assign unsexed fish to the sexed length comps but will produce csv files for both the sexed and unsexed fish. If you would like to assign the unsexed fish to a sex based on the sex ratio the user will need to specificy the sex ratio value (sexRatioUnsexed) to use for fish under a specified size (maxSizeUnsexed) where unsexed fish greater than the specified size will be assign based on the sex ratio from other observations. 
 
-There are many inputs to [SurveyLFs.fn()], please look over the function inputs to explore additional ways to process the data.
+There are many inputs to `SurveyLFs.fn()`, please look over the function inputs to explore additional ways to process the data.
 
 To plot the length frequency data:
 ```r
@@ -184,7 +184,7 @@ n <- getN(dir = getwd(),
          species = "shelfrock")
 ```
 
-[SurveyAFs.fn()] calculates and formats the age-composition data for Stock Synthesis:
+`SurveyAFs.fn()` calculates and formats the age-composition data for Stock Synthesis:
 ```r
 age_bins <- 1:50
 
@@ -195,7 +195,7 @@ Ages <- SurveyAFs.fn(dir = getwd(),
                      ageBins = age_bins,
                      nSamps = n)
 ```
-The above call will calculate the marginal age-composition data for the age data read in using [readInExcelAgeComps.fn()] and writes the files inside the "forSS" folder. 
+The above call will calculate the marginal age-composition data for the age data read in using `readInExcelAgeComps.fn()` and writes the files inside the "forSS" folder. 
 
 To plot the age frequency data:
 ```r
@@ -231,4 +231,4 @@ PlotMap.fn(
 
 #### Additional data visualization
 
-There are a couple of additional plotting functions that are included in the package: [PlotVarLengthAtAge.fn()] and [PlotSexRatio.fn()].
+There are a couple of additional plotting functions that are included in the package:`PlotVarLengthAtAge.fn()` and `PlotSexRatio.fn()`.
