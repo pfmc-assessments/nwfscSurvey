@@ -7,17 +7,19 @@
 #' @param dat The data loaded from the NWFSC database
 #' @param main Name that will be used to name the saved png
 #' @param bySex Logical to indicate if plot by sex
-#' @param ParList of starting parameters for K, Linf, L0, CV0, and CV2 based on the 
-#' Stock Synthesis parameterization of von Bertanlaffy growth.
-#' @param estVB Logical. Estimate vonB growth to plot against predicted length. If F, it uses the paramters in \code{parStart}.
-#' @param bins The bins to put ages into. If NULL then simply uses the ages as recorded.
+#' @param Par Starting parameters for K, Linf, L0, CV0, and CV2 based on the
+#'   Stock Synthesis parameterization of von Bertanlaffy growth.
+#' @param estVB Logical. Estimate vonB growth to plot against predicted length.
+#'   If F, it uses the paramters in \code{parStart}.
+#' @param bins The bins to put ages into. If NULL then simply uses the ages as
+#'   recorded.
 #' @param legX legend location for x axis, defaults to "bottomleft"
 #' @param legY legend location for y axis, defaults to NULL
 #' @param dopng Deprecated with {nwfscSurvey} 2.1 because providing a non-NULL
 #'   value to `dir` can serve the same purpose as `dopng = TRUE` without the
 #'   potential for errors when `dopng = TRUE` and `dir = NULL`. Thus, users
 #'   no longer have to specify `dopng` to save the plot as a png.
-#' @param ...      Additional arguments for the plots
+#' @param ... Additional arguments for the plots.
 #'
 #' @author Chantel Wetzel
 #' @export
