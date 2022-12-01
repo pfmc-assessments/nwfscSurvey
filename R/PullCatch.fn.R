@@ -17,7 +17,7 @@
 #' and using the csv link to extract data for a single species at a time.
 #' In the future, we hope to add functionality to this package such that
 #' downloading all data can be done easily within this function.
-#' See [Issue #43](https://github.com/nwfsc-assess/nwfscSurvey/issues/43)
+#' See [Issue #43](https://github.com/pfmc-assessments/nwfscSurvey/issues/43)
 #' for more information.
 #'
 #' @param Name A character entry with the desired common name of the

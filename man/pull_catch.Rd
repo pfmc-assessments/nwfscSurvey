@@ -77,7 +77,7 @@ To download all data, we currently recommend going to the
 and using the csv link to extract data for a single species at a time.
 In the future, we hope to add functionality to this package such that
 downloading all data can be done easily within this function.
-See \href{https://github.com/nwfsc-assess/nwfscSurvey/issues/43}{Issue #43}
+See \href{https://github.com/pfmc-assessments/nwfscSurvey/issues/43}{Issue #43}
 for more information.
 }
 \examples{
