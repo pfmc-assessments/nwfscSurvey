@@ -2,21 +2,47 @@
 % Please edit documentation in R/Format.AKSlope.fn.R
 \name{Format.AKSlope.fn}
 \alias{Format.AKSlope.fn}
-\title{Rename columns in the AKFSC Slope data}
+\title{Rename columns in the AFSC slope survey data file
+received prior to the creation of the NWFSC data
+warehouse. This function converts the older data files
+to create the needed column names to work within survey
+package functions. Output from this function will be list
+of containing catch, length, and age data.}
 \usage{
-Format.AKSlope.fn(dir = NULL, datTows, datL = NA, start.year = 1997)
+Format.AKSlope.fn(
+  dir = NULL,
+  datTows,
+  datL = NA,
+  start.year = 1997,
+  verbose = TRUE
+)
 }
 \arguments{
-\item{dir}{directory}
+\item{dir}{directory where ouptut will be saved. The directory where the file should be saved.
+If dir = NULL no output will be saved.}
 
-\item{datTows}{input catch data frame}
+\item{datTows}{A data frame of catch data for the
+AKFSC slope survey with incorrect column names.
+prior to the creation of the data warehouse.}
 
-\item{datL}{input biology list}
+\item{datL}{A list of biological data (lengths and ages)
+for the AKFSC slope survey with incorrect column
+names prior to the creation of the data warehouse.}
 
-\item{start.year}{first year of data to include}
+\item{start.year}{The first year of data to retain within
+the data frame. The first year typically used from this
+survey is 1997.}
+
+\item{verbose}{A logical that specifies if you want to print messages and
+warnings to the console. The default is \code{TRUE}.}
 }
 \description{
-Rename columns in the AKFSC Slope data
+Rename columns in the AFSC slope survey data file
+received prior to the creation of the NWFSC data
+warehouse. This function converts the older data files
+to create the needed column names to work within survey
+package functions. Output from this function will be list
+of containing catch, length, and age data.
 }
 \author{
 Chantel Wetzel
