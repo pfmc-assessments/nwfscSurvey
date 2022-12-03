@@ -1,10 +1,9 @@
 #' Pull biological sample information from the NWFSC data warehouse. The types
-#' of biological sample informaiton returned are maturity, stomach, fin clips, 
+#' of biological sample information returned are maturity, stomach, fin clips, 
 #' and tissue.
-#' samples. If a fish has 
+#' 
 #' The website is: https://www.webapps.nwfsc.noaa.gov/data.
 #'
-
 #' @template common_name
 #' @template sci_name
 #' @template years 
@@ -22,7 +21,7 @@
 pull_biological_samples <- function(common_name = NULL, 
                                    sci_name = NULL,
                                    years= c(1980, 2050), 
-                                   survey = NULL, 
+                                   survey = "NWFSC.Combo", 
                                    dir = NULL, 
                                    verbose = TRUE) {
 
@@ -132,6 +131,17 @@ pull_biological_samples <- function(common_name = NULL,
   keep <- which(bio_samples$ovary_id > 0 | bio_samples$stomach_id > 0 |
       bio_samples$tissue_id > 0 | bio_samples$left_pectoral_fin_id > 0)
   bio_samples <- bio_samples[keep, ]
+
+  rename_columns <- which(
+    colnames(bio_samples) %in% 
+    c("lab_maturity_detail_dim$biologically_mature_certain_indicator",
+    "lab_maturity_detail_dim$biologically_mature_indicator"))
+
+  colnames(bio_samples)[rename_columns] <- 
+    c("biologically_mature_certain_indicator",
+    "biologically_mature_indicator")
+
+  bio_samples[bio_samples == "NA"] = NA
 
   save_rdata(
     x = bio_samples,
