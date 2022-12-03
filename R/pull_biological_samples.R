@@ -1,7 +1,6 @@
-#' Pull biological sample information from the NWFSC data warehouse. The types
-#' of biological sample informaiton returned are maturity, stomach, fin clips, 
-#' and tissue.
-#' samples. If a fish has 
+#' Pull biological sample information from the NWFSC data warehouse for biological
+#' collections that require lab processing. Therefore, the types of biological 
+#' sample information returned are maturity, stomach, fin clips, and tissue samples.
 #' The website is: https://www.webapps.nwfsc.noaa.gov/data.
 #'
 
