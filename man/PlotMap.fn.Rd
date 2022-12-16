@@ -2,7 +2,7 @@
 % Please edit documentation in R/PlotMap.fn.R
 \name{PlotMap.fn}
 \alias{PlotMap.fn}
-\title{Create maps with catch-per-unit-effort}
+\title{Plot two figures showing catch-per-unit-effort data}
 \usage{
 PlotMap.fn(
   dir = NULL,
@@ -26,14 +26,34 @@ value to \code{dir} can serve the same purpose as \code{dopng = TRUE} without th
 potential for errors when \code{dopng = TRUE} and \code{dir = NULL}. Thus, users
 no longer have to specify \code{dopng} to save the plot as a png.}
 
-\item{plot}{A vector of integers specifying the selection of a subset of
-plots: 1 = coastwide across all years, 2 = coastwide by year.}
+\item{plot}{A vector of integers to specify which plots you would like. The
+default is to print both figures.
+\enumerate{
+\item coastwide data across all years
+\item coastwide data by year
+}}
+}
+\value{
+Figures are saved to the disk according to which plots are asked
+for in \code{plot}. Each of the specified files are saved to a directory called
+\code{map_plots} inside of \code{dir}, the specified directory. No objects are
+returned to the user. But, the figures are printed to new windows if they
+are not saved to the disk.
 }
 \description{
-Create the following figures:
-\enumerate{
-\item CPUE plot of the data across all years and/or
-\item CPUE plot of the data by year.
+Plot catch-per-unit-effort (CPUE) data across all years and by year
+and save them to the disk. Figures are created using {ggplot2}.
+}
+\examples{
+\dontrun{
+PlotMap.fn(dat = catch_nwfsc_combo, plot = 1)
+PlotMap.fn(dat = catch_nwfsc_combo, plot = 2)
+}
+}
+\seealso{
+\itemize{
+\item \code{PullCatch.fn()}
+\item \code{plot_westcoast()}
 }
 }
 \author{
