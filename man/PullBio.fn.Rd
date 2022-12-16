@@ -2,7 +2,7 @@
 % Please edit documentation in R/PullBio.fn.R
 \name{PullBio.fn}
 \alias{PullBio.fn}
-\title{Pull biological data from the NWFSC data warehouse
+\title{Pull biological data (age, length, weight) from the NWFSC data warehouse
 The website is: https://www.webapps.nwfsc.noaa.gov/data
 This function can be used to pull a single species or all observed species
 In order to pull all species leave Name = NULL and SciName = NULL}
@@ -36,7 +36,7 @@ NWFSC.Santa.Barb.Basin, NWFSC.Shelf.Rockfish (NWFSC.Hook.Line but both are not w
 warnings to the console. The default is \code{TRUE}.}
 }
 \description{
-Pull biological data from the NWFSC data warehouse
+Pull biological data (age, length, weight) from the NWFSC data warehouse
 The website is: https://www.webapps.nwfsc.noaa.gov/data
 This function can be used to pull a single species or all observed species
 In order to pull all species leave Name = NULL and SciName = NULL
