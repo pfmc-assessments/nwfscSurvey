@@ -4,7 +4,13 @@
 \alias{PlotMap.fn}
 \title{Plot two figures showing catch-per-unit-effort data}
 \usage{
-PlotMap.fn(dir = NULL, dat, main = NULL, dopng = FALSE, plot = 1:2)
+PlotMap.fn(
+  dir = NULL,
+  dat,
+  main = NULL,
+  dopng = lifecycle::deprecated(),
+  plot = 1:2
+)
 }
 \arguments{
 \item{dir}{The directory where you would like the figures saved. The
@@ -16,10 +22,10 @@ directory must exist; but, it is only needed if \code{dopng = TRUE}.}
 each figure. For example, if \code{main = "NWFSC"}, then one of the saved
 \code{.png} files will be called \code{"NWFSC_CPUE_Map.png"}.}
 
-\item{dopng}{A logical value specifying if the figures should be saved as
-\code{.png} files. The default is \code{FALSE}, which leads to the figures being
-shown in an R window. If \code{dopng = TRUE}, then figures are saved to the
-disk.}
+\item{dopng}{Deprecated with {nwfscSurvey} 2.1 because providing a non-NULL
+value to \code{dir} can serve the same purpose as \code{dopng = TRUE} without the
+potential for errors when \code{dopng = TRUE} and \code{dir = NULL}. Thus, users
+no longer have to specify \code{dopng} to save the plot as a png.}
 
 \item{plot}{A vector of integers to specify which plots you would like. The
 default is to print both figures.
