@@ -9,10 +9,10 @@
 #' @param main A string that will be pre-pended to the default file names for
 #'   each figure. For example, if `main = "NWFSC"`, then one of the saved
 #'   `.png` files will be called `"NWFSC_CPUE_Map.png"`.
-#' @param dopng A logical value specifying if the figures should be saved as
-#'   `.png` files. The default is `FALSE`, which leads to the figures being
-#'   shown in an R window. If `dopng = TRUE`, then figures are saved to the
-#'   disk.
+#' @param dopng Deprecated with {nwfscSurvey} 2.1 because providing a non-NULL
+#'   value to `dir` can serve the same purpose as `dopng = TRUE` without the
+#'   potential for errors when `dopng = TRUE` and `dir = NULL`. Thus, users
+#'   no longer have to specify `dopng` to save the plot as a png.
 #' @param plot A vector of integers to specify which plots you would like. The
 #'   default is to print both figures.
 #'   1. coastwide data across all years
@@ -39,66 +39,48 @@
 PlotMap.fn <- function(dir = NULL,
                        dat,
                        main = NULL,
-                       dopng = FALSE,
+                       dopng = lifecycle::deprecated(),
                        plot = 1:2) {
 
-  # Create specialized plots
-  pngfun <- function(dir, file, w = 7, h = 7, pt = 12) {
-    file <- file.path(dir, file)
-    cat("writing PNG to", file, "\n")
-    png(
-      filename = file,
-      width = w, height = h,
-      units = "in", res = 300, pointsize = pt
+  if (lifecycle::is_present(dopng)) {
+    lifecycle::deprecate_warn(
+      when = "2.1",
+      what = "nwfscSurvey::PlotMap.fn(dopng =)"
     )
   }
 
+  plotdir <- file.path(dir, "plots")
+  check_dir(dir = plotdir)
+  name1 <- file.path(
+    plotdir,
+    paste0(
+      main,
+      ifelse(test = is.null(main), yes = "", no = "_"),
+      "cpue_map.png"
+    )
+  )
 
-  if (dopng) {
-    if (is.null(dir)) {
-      stop("Directory needs to be set.")
-    }
-    if (!file.exists(dir)) {
-      stop(
-        "The dir argument leads to a location",
-        ",\ni.e., ",
-        dir,
-        ", that doesn't exist."
-      )
-    }
-
-    plotdir <- file.path(dir, paste("map_plots", sep = ""))
-    plotdir.isdir <- file.info(plotdir)$isdir
-    if (is.na(plotdir.isdir) | !plotdir.isdir) {
-      dir.create(plotdir)
-    }
-  }
-
-  if (!dopng) {
-    windows(width = 5, height = 7, record = TRUE)
-  }
+  name2 <- file.path(
+    plotdir,
+    paste0(
+      main,
+      ifelse(test = is.null(main), yes = "", no = "_"),
+      "cpue_by_year_map.png"
+    )
+  )
 
   ind <- dat$cpue_kg_km2 > 0
   pos.cat <- dat[ind, ]
   neg <- dat[dat[, "cpue_kg_km2"] == 0, ]
   mid <- as.numeric(stats::quantile(pos.cat[, "cpue_kg_km2"], 0.50))
   max.size <- 12
+  lon_range <- c(min(dat$Longitude_dd), max(dat$Longitude_dd))
+  lat_range <- c(min(dat$Latitude_dd), max(dat$Latitude_dd))
 
   color <- c("#fffa00", "#ffcc00", "#ff7700", "#B60000")
 
   igroup <- 1
   if (igroup %in% plot) {
-    if (dopng) {
-      pngfun(
-        dir = plotdir,
-        file = paste(
-          ifelse(is.null(main), "", paste0(main, "_")),
-          "CPUE_Map.png"
-        ),
-        h = 7,
-        w = 5
-      )
-    }
 
     g <- ggplot(dat) +
       geom_point(
@@ -132,14 +114,14 @@ PlotMap.fn <- function(dir = NULL,
       draw_theme() +
       draw_projection() +
       draw_land() +
-      draw_USEEZ(c(-126, -117), c(32, 50)) +
+      draw_USEEZ(lon_range, lat_range) +
       label_land() +
       label_axes() +
       theme(legend.position = "right")
     print(g)
 
-    if (dopng) {
-      dev.off()
+    if (!is.null(dir)) {
+       ggsave(filename = name1, width = 7, height = 10, units = 'in')     
     }
   }
 
@@ -153,18 +135,6 @@ PlotMap.fn <- function(dir = NULL,
       axis.text.x = element_blank(),
       axis.ticks.x = element_blank()
     )
-
-    if (dopng) {
-      pngfun(
-        dir = plotdir,
-        file = paste(
-          ifelse(is.null(main), "", paste0(main, "_")),
-          "CPUE_Map_Year.png"
-        ),
-        h = 7,
-        w = 7
-      )
-    }
 
     h <- ggplot(dat) +
       geom_point(
@@ -199,14 +169,14 @@ PlotMap.fn <- function(dir = NULL,
       draw_theme() +
       draw_projection() +
       draw_land() +
-      draw_USEEZ(c(-126, -117), c(32, 50)) +
+      draw_USEEZ(lon_range, lat_range) +
       label_axes() +
       theme(legend.position = "right") +
       facet_wrap(~Year, ncol = 6)
     print(h)
 
-    if (dopng) {
-      dev.off()
+    if (!is.null(dir)) {
+       ggsave(filename = name2, width = 7, height = 10, units = 'in')     
     }
   }
 }
