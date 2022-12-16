@@ -3,12 +3,11 @@
 #' Plot catch-per-unit-effort (CPUE) data across all years and by year
 #' and save them to the disk. Figures are created using {ggplot2}.
 #'
-#' @param dir The directory where you would like the figures saved. The
-#'   directory must exist; but, it is only needed if `dopng = TRUE`.
-#' @param dat A data frame created by `PullCatch.fn()`.
-#' @param main A string that will be pre-pended to the default file names for
-#'   each figure. For example, if `main = "NWFSC"`, then one of the saved
-#'   `.png` files will be called `"NWFSC_CPUE_Map.png"`.
+#'
+#' @template dir
+#' @param dat An object created by [PullCatch.fn()].
+#' @param main A string that will be prepended to the name of the saved png
+#'   (i.e., "NWFSC" results in a file called "NWFSC_CPUE_Map.png").
 #' @param dopng Deprecated with {nwfscSurvey} 2.1 because providing a non-NULL
 #'   value to `dir` can serve the same purpose as `dopng = TRUE` without the
 #'   potential for errors when `dopng = TRUE` and `dir = NULL`. Thus, users
@@ -41,6 +40,7 @@ PlotMap.fn <- function(dir = NULL,
                        main = NULL,
                        dopng = lifecycle::deprecated(),
                        plot = 1:2) {
+
 
   if (lifecycle::is_present(dopng)) {
     lifecycle::deprecate_warn(

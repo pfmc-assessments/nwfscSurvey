@@ -1,4 +1,4 @@
-#' Pull biological data from the NWFSC data warehouse
+#' Pull biological data (age, length, weight) from the NWFSC data warehouse
 #' The website is: https://www.webapps.nwfsc.noaa.gov/data
 #' This function can be used to pull a single species or all observed species
 #' In order to pull all species leave common_name or sci_name as NULL
@@ -218,15 +218,12 @@ pull_bio <- function(common_name = NULL,
     }
   }
 
-  if (!is.null(dir)) {
-    time <- substring(Sys.time(), 1, 10)
-    save(bio, 
-      file = file.path(dir, paste("bio_", species, "_", survey, "_", time, ".rda", sep = "")))
-    if (verbose) {
-      message(
-        glue::glue("Catch data file saved to following location: {dir}"))
-    }
-  }
+  save_rdata(
+    x = bio,
+    dir = dir,
+    name_base = paste0("bio_", species, "_", survey),
+    verbose = verbose
+  )
 
   return(bio)
 }

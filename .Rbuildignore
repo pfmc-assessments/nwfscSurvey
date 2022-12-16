@@ -7,3 +7,7 @@
 ^\.github$
 ^data-raw$
 README.Rmd
+^\.history$
+^_pkgdown\.yml$
+^docs$
+^pkgdown$

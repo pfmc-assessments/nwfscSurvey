@@ -10,7 +10,7 @@ PlotSexRatio.fn(
   data.type = "length",
   main = NULL,
   circleSize = 0.1,
-  dopng = FALSE,
+  dopng = lifecycle::deprecated(),
   ...
 )
 }
@@ -25,7 +25,10 @@ PlotSexRatio.fn(
 
 \item{circleSize}{circle size}
 
-\item{dopng}{TRUE/FALSE whether to save a png file}
+\item{dopng}{Deprecated with {nwfscSurvey} 2.1 because providing a non-NULL
+value to \code{dir} can serve the same purpose as \code{dopng = TRUE} without the
+potential for errors when \code{dopng = TRUE} and \code{dir = NULL}. Thus, users
+no longer have to specify \code{dopng} to save the plot as a png.}
 
 \item{...}{Additional arguments for the plots}
 }

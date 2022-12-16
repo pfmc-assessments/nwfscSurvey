@@ -1,29 +1,35 @@
 #' Directory check
 #'
-#' 
+#' Check that
+#' 1. The user knows that the data will not be saved if `dir = NULL`.
+#' 1. The directory exists if it can be created.
+#' 1. The function fails if the directory cannot be created.
+#'
 #' @template dir
 #' @template verbose
 #'
-#' @author Chantel Wetzel
+#' @author Chantel R. Wetzel
 #' @export
-#' @md
-#' 
-#' 
 #'
-check_dir <- function(dir, verbose){
+#' @examples
+#' check_dir(getwd(), verbose = FALSE)
+#' # See more output
+#' check_dir(getwd())
+#'
+check_dir <- function(dir, verbose = TRUE){
 
-  if (is.null(dir)) {
+  if (is.null(dir) || length(dir) == 0) {
     if (verbose) {
-      message("Output will not be saved to since dir is not specified.")  
-    }   
-  }
-  if (!is.null(dir)) {
-    if (!file.exists(dir)) {
-      stop(
-        "The dir argument leads to a location",
-        ",\ni.e., ", dir, ", that doesn't exist."
-      )
+      message("Output will not be saved in `dir` because dir = NULL.")
     }
-  }  
+  } else {
+    dir.create(dir, showWarnings = FALSE, recursive = TRUE)
+    if (!file.exists(dir)) {
+      stop(glue::glue(
+          "[ENOENT] Failed to make the following directory:
+          '{dir}'"
+      ))
+    }
+  }
 
 }

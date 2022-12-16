@@ -17,7 +17,7 @@
 #' and using the csv link to extract data for a single species at a time.
 #' In the future, we hope to add functionality to this package such that
 #' downloading all data can be done easily within this function.
-#' See [Issue #43](https://github.com/nwfsc-assess/nwfscSurvey/issues/43)
+#' See [Issue #43](https://github.com/pfmc-assessments/nwfscSurvey/issues/43)
 #' for more information.
 #'
 #' @template common_name
@@ -30,7 +30,6 @@
 #'
 #' @author Chantel Wetzel
 #' @export
-#' @md
 #'
 #' @import chron
 #' @importFrom stringr str_replace_all
@@ -255,15 +254,12 @@ pull_catch <- function(common_name = NULL,
     colnames(catch)[colnames(catch)=="Total_catch_wt_kg"] <- "total_catch_wt_kg"
   }
 
-  if (!is.null(dir)) {
-    time <- substring(Sys.time(), 1, 10)
-    save(catch, 
-      file = file.path(dir, paste("catch_", species, "_", survey, "_", time, ".rda", sep = "")))
-    if (verbose) {
-      message(
-        glue::glue("Catch data file saved to following location: {dir}"))
-    }
-  }
+  save_rdata(
+    x = catch,
+    dir = dir,
+    name_base = paste0("catch_", species, "_", survey),
+    verbose = verbose
+  )
 
   return(catch)
 }

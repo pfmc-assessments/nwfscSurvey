@@ -2,7 +2,11 @@
 % Please edit documentation in R/checkStrata.fn.R
 \name{CheckStrata.fn}
 \alias{CheckStrata.fn}
-\title{Calculates the number of observations by strata}
+\title{Calculates and returns the total number of tows and
+positive tows conducted in each strata by year. The
+selected stratas are used to expand the length and
+marginal age compositions and to calculate a design
+based index using the {Biomass.fn} function.}
 \usage{
 CheckStrata.fn(
   dir = NULL,
@@ -14,21 +18,35 @@ CheckStrata.fn(
 )
 }
 \arguments{
-\item{dir}{directory where the output file will be saved}
+\item{dir}{Directory where the output csv file will be
+saved.}
 
-\item{dat}{data-frame of the data that has been by the PullCatch.fn}
+\item{dat}{Data-frame of the catch data that has been
+created by the {PullCatch.fn} function.}
 
-\item{strat.vars}{A vector of the strata variable names (i.e., c("Depth_m","Latitude_dd"))}
+\item{strat.vars}{A vector of the strata variable names.
+The default input are c("Depth_m","Latitude_dd")) which
+are the two factors the define a strata area off the coast.}
 
-\item{strat.df}{a dataframe with the first column the name of the stratum, the second column the area of the stratum, and the remaining columns are the high and low variables defining the strata created by the CreateStrataDF.fn}
+\item{strat.df}{Dataframe with the first column the name
+of the stratum, the second column the area of the stratum,
+and the remaining columns are the high and low variables
+defining the strata created by the {CreateStrataDF.fn} function.}
 
-\item{printfolder}{the folder where files will be saved}
+\item{printfolder}{Folder name where files will be saved. The
+default is "forSS" which is also used by other package functions
+that creates and saves files that are commonly used or reported
+in Stock Synthesis or the assessment document.}
 
 \item{verbose}{A logical that specifies if you want to print messages and
 warnings to the console. The default is \code{TRUE}.}
 }
 \description{
-Calculates the number of observations by strata
+Calculates and returns the total number of tows and
+positive tows conducted in each strata by year. The
+selected stratas are used to expand the length and
+marginal age compositions and to calculate a design
+based index using the {Biomass.fn} function.
 }
 \author{
 Chantel Wetzel

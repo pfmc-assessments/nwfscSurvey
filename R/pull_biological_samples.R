@@ -1,10 +1,12 @@
-#' Pull biological sample information from the NWFSC data warehouse. The types
-#' of biological sample informaiton returned are maturity, stomach, fin clips, 
-#' and tissue.
-#' samples. If a fish has 
+
+#' Pull biological sample information from the NWFSC data warehouse for biological
+#' collections taken at sea. Generally these are samples that require lab processing. 
+#' Generally, these types of biological sample are maturity, stomach, fin clips, and 
+#' tissue samples. This function returns collection information for these samples 
+#' include the sample numbers which allows the lab analysis to be linked back to 
+#' the sampled fish.
 #' The website is: https://www.webapps.nwfsc.noaa.gov/data.
 #'
-
 #' @template common_name
 #' @template sci_name
 #' @template years 
@@ -22,7 +24,7 @@
 pull_biological_samples <- function(common_name = NULL, 
                                    sci_name = NULL,
                                    years= c(1980, 2050), 
-                                   survey = NULL, 
+                                   survey = "NWFSC.Combo", 
                                    dir = NULL, 
                                    verbose = TRUE) {
 
@@ -133,14 +135,23 @@ pull_biological_samples <- function(common_name = NULL,
       bio_samples$tissue_id > 0 | bio_samples$left_pectoral_fin_id > 0)
   bio_samples <- bio_samples[keep, ]
 
-  if (!is.null(dir)) {
-    time <- substring(Sys.time(), 1, 10)
-    save(bio_samples, file = file.path(dir, paste("biological_samples_", survey, "_", time, ".rda", sep = "")))
-    if (verbose) {
-      message(
-        glue::glue("Biological sample data file saved to following location: {dir}"))
-    }
-  }
+  rename_columns <- which(
+    colnames(bio_samples) %in% 
+    c("lab_maturity_detail_dim$biologically_mature_certain_indicator",
+    "lab_maturity_detail_dim$biologically_mature_indicator"))
+
+  colnames(bio_samples)[rename_columns] <- 
+    c("biologically_mature_certain_indicator",
+    "biologically_mature_indicator")
+
+  bio_samples[bio_samples == "NA"] = NA
+
+  save_rdata(
+    x = bio_samples,
+    dir = dir,
+    name_base = paste0("biological_samples_", survey),
+    verbose = verbose
+  )
 
   return(bio_samples)
 }

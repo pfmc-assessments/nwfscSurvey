@@ -18,23 +18,21 @@ knitr::opts_chunk$set(
 
 ## Introduction
 
-The **nwfscSurvey** package was written by scientists at the Northwest Fisheries Science Center (NWFSC) to explore and process survey composition data for use in assessments.  The package can be used for the NWFSC shelf-slope survey, the NWFSC slope survey, the AFSC slope survey, and the Triennial survey.  The package included functions that query the NWFSC data warehouse (https://www.nwfsc.noaa.gov/data) and process the data for use in West Coast stock assessments
+The **nwfscSurvey** package was written by scientists at the Northwest Fisheries Science Center (NWFSC) to explore and process survey composition data for use in groundfish stockassessments. The package can be used for the NWFSC West Coast Groundfish Bottom Trawl (WCGBT) survey, the NWFSC slope survey, the Alaska Fisheries Science Center (AFSC) slope survey, and the AFSC Triennial survey. The package includes functions that query the [NWFSC data warehouse](https://www.nwfsc.noaa.gov/data), visualize, and process the data for use in groundfish assessments.
 
 ## Use
 
-The **nwfscSurvey** can be used to create:
+**nwfscSurvey** can be used to:
 
-* Pull data from the NWFSC data warehouse
+* Pull survey catch, haul, and biological data from the NWFSC data warehouse.
 
 * Calculate the design based indices based upon pre-specified stratification.
 
-* Create length composition data expanded by the design-based indices for use in Stock Synthesis.
+* Create length- and age-composition data expanded by the design-based indices formated for use in Stock Synthesis.
 
-* Create age-composition data expanded by the design-based indices for use in Stock Synthesis.
+* Create unexpanded conditional age-at-length composition data for use in Stock Synthesis.
 
-* Create conditional age-at-length composition data for used in Stock Synthesis
-
-* Create plots to visualize the data; design-based index plots, bubble plots of length and age data, sex ratio. 
+* Create plots to visualize the data: design-based index plots, bubble plots of length and age data, observeed sex ratio, and distributions across depth and latitude. 
 
 ## Functions
 
@@ -46,7 +44,7 @@ ls("package:nwfscSurvey")
 
 ## Examples
 
-### NWFSC shelf-slope bottom trawl survey
+### NWFSC WCGBT Survey
 
 #### Pull data
 
@@ -54,24 +52,50 @@ Pull both the catch and biological data:
 
 ```r
 catch = PullCatch.fn(Name = "Pacific ocean perch", 
-                     SurveyName = "NWFSC.Combo",
-                     ...)
-bio   = PullBio.fn(Name = "Pacific ocean perch", 
-                   SurveyName = "NWFSC.Combo",
-                   ...)
+                     SurveyName = "NWFSC.Combo")
 
+bio   = PullBio.fn(Name = "Pacific ocean perch", 
+                   SurveyName = "NWFSC.Combo")
+```
+
+#### Initial data visualization
+
+There are a range of functions to create visualizations of the data by examining catch rates by latitude or depth, lengths or ages by latitude and depth, presence/absence in tows, and observed sex ratios.
+
+```r
+plot_cpue(
+  dir = getwd(), 
+  catch = catch)
+
+plot_bio_patterns(
+  dir = getwd(), 
+  bio = bio, 
+  col_name = "Length_cm")
+
+plot_proportion(
+  data = catch, 
+  dim = "lat")
+
+plot_proportion(
+  data = catch, 
+  dim = "depth")
+
+plot_proportion(
+  data = bio, 
+  dim = "sex")
 ```
 
 #### Index of abundance
-Define the stratification:
+Define the stratification by depth and latitude that will be used to calculate a design-based index of abundance:
 
 ```r
 
-strata = CreateStrataDF.fn(names=c("shallow_s", "mid_s" "deep_s", "shallow_n", "mid_n", "deep_n"), 
-                           depths.shallow = c( 55,   200, 300,    55, 200, 300),
-                           depths.deep    = c(200,   300, 400,   200, 300, 400),
-                           lats.south     = c( 32,    32,  32,    42,  42,  42),
-                           lats.north     = c( 42,    42,  42,    49,  49,  49))
+strata = CreateStrataDF.fn(
+  names = c("shallow_s", "mid_s" "deep_s", "shallow_n", "mid_n", "deep_n"), 
+  depths.shallow = c( 55,   200, 300,    55, 200, 300),
+  depths.deep    = c(200,   300, 400,   200, 300, 400),
+  lats.south     = c( 32,    32,  32,    42,  42,  42),
+  lats.north     = c( 42,    42,  42,    49,  49,  49))
 
 ```
 
@@ -80,12 +104,10 @@ Calculate the design based index of abundance:
 ```r
 biomass = Biomass.fn(dir = getwd(), 
                      dat = catch,  
-                     strat.df = strata, 
-                     printfolder = "forSS", 
-                     outputMedian = TRUE)
+                     strat.df = strata)
 ```
+`Biomass.fn()` returns a list with the second element containing the design-based index of abundance. The design based index is calculated based on the defined stratas. The function writes a csv file inside the dir input location to a "forSS" folder. The function returns a list with the second element containing the design-based estimates by year:
 
-The function returns a list with the second element containing the design-based estimates by year:
 ```{r, results = 'asis', echo = FALSE}
   library(xtable)
   library(kableExtra)
@@ -100,106 +122,113 @@ The function returns a list with the second element containing the design-based 
   kable(table, "html")
 ```
 
-Plot the design based index of abundance:
+Plot the coastwide design-based index of abundance:
 ```r
-PlotBio.fn(dir = getwd(), 
-           dat = biomass,  
-           main = "NWFSC shelf-slope bottom trawl survey",
-           ...)
+PlotBio.fn(
+  dir = getwd(), 
+  dat = biomass)
 ```
-The Biomass.fn returns a list with the second element containing the design-based index of abundance. The design based index is calculated based on the defined stratas. The function writes a csv file inside the dir input location to a "forSS" folder. The PlotBio.fn plots the calculated design based index from the Biomass.fn. If the dopng is set to true a "plot" folder will be created in the directory location and a png of the plot will be saved.
-
+Plot the coastwide design-based index of abundance for each strata:
+```r
+PlotBioStrata.fn(
+  dir = getwd(), 
+  dat = biomass)
+```
+If `dir` does not equal `NULL`, then a "plot" folder will be created in the directory location and a png of the plot will be saved.
 
 #### Length composition data
-A function to calculate the input sample size based on Stewart & Hamel (2014) which determined that the input sample size was related to the species group (flatfish, shelf rockfish, slope rockfish, thornyhead, others, or all groups) and number of tows. The function writes a csv file with the "forSS" folder containing the number of tows and observed fish by year. 
+
+`GetN()` calculates the input sample size based on Stewart & Hamel (2014) which determined that the input sample size was related to the species group (flatfish, shelf rockfish, slope rockfish, thornyhead, others, or all groups) and number of tows. The function writes a csv file with the "forSS" folder containing the number of tows and observed fish by year. 
 
 ```r
-n = GetN(dir = getwd(), 
+n <- GetN(dir = getwd(), 
          dat = bio, 
          type = "length", 
          species = "shelfrock")
-
 ```
 
-The SurveyLFs.fn calculates and formats the length composition data for Stock Synthesis:
+`SurveyLFs.fn()` calculates and formats the length-composition data for Stock Synthesis:
 ```r
-Lengths <- SurveyLFs.fn(dir = getwd(), 
+len_bins <- seq(10, 60, 2)
+
+Length_Freq <- SurveyLFs.fn(dir = getwd(), 
                         datL =  bio, 
                         datTows = catch,
                         strata.df = strata,
-                        lgthBins = len.bins, 
-                        sex = 3, 
-                        ...)
+                        lgthBins = len_bins)
 ```
 The above call will calculate the length frequencies for use in Stock Synthesis and write the files inside the "forSS" folder. The example call does not assign unsexed fish to the sexed length comps but will produce csv files for both the sexed and unsexed fish. If you would like to assign the unsexed fish to a sex based on the sex ratio the user will need to specificy the sex ratio value (sexRatioUnsexed) to use for fish under a specified size (maxSizeUnsexed) where unsexed fish greater than the specified size will be assign based on the sex ratio from other observations. 
 
-There are many inputs to the SurveyLFs.fn, please look over the function inputs to explore additional ways to process the data.
+There are many inputs to `SurveyLFs.fn()`, please look over the function inputs to explore additional ways to process the data.
 
 To plot the length frequency data:
 ```r
 PlotFreqData.fn(dir = getwd(), 
-                dat = Lengths, 
-                ylim = c(0,50), 
-                yaxs = "i",
-                ylab = "Length (cm)", 
-                dopng = TRUE,
-                ...)
+                dat = Length_Freq)
 
 ```
-If the dopng is set to true a "plot" folder will be created in the directory location and a png of the plot will be saved. 
+A new function to visualize length frequency data is also availble:
+```r
+plot_comps(data = Length_Freq)
+```
 
+If `dir` does not equal `NULL`, then a "plot" folder will be created in the directory location and a png of the plot will be saved. 
 
 #### Marginal age composition data
+
 Calculate the marginal age sample size:
 ```r
-n = getN(dir = getwd(), 
+n <- getN(dir = getwd(), 
          dat = bio,
          type = "age", 
          species = "shelfrock")
 ```
 
-The SurveyAFs.fn calculates and formats the age composition data for Stock Synthesis:
+`SurveyAFs.fn()` calculates and formats the age-composition data for Stock Synthesis:
 ```r
+age_bins <- 1:50
+
 Ages <- SurveyAFs.fn(dir = getwd(), 
                      datA = bio,
                      datTows = catch, 
                      strat.df = strata,
-                     ageBins = age.bins, 
-                     sex = 3, 
-                     nSamps = n,
-                     ...)
+                     ageBins = age_bins,
+                     nSamps = n)
 ```
-The above call will calculate the marginal age composition data for the age data read in using the readInExcelAgeComps.fn and write the files inside the "forSS" folder. 
+The above call will calculate the marginal age-composition data for the age data read in using `readInExcelAgeComps.fn()` and writes the files inside the "forSS" folder. 
 
 To plot the age frequency data:
 ```r
-PlotFreqData.fn(dir = getwd(), 
-                dat = Ages, 
-                ylim = c(0,100),
-                ylab = "Age", 
-                dopng = TRUE,
-                ...)
+PlotFreqData.fn(
+  dir = getwd(), 
+  dat = Ages)
+
+plot_comps(
+  data = Ages)
 ```
-If the dopng is set to true a "plot" folder will be created in the directory location and a png of the plot will be saved.
+If `dir` is not `NULL`, then a "plot" folder will be created in the directory location and a png of the plot will be saved.
 
 #### Conditional-age-at-length data
-To calculate conditional-age-at-length data formatted for SS:
+
+To calculate conditional-age-at-length data formatted for Stock Synthesis:
 ```r
-CAAL <- SurveyAgeAtLen.fn(dir = getwd(), 
+caal <- SurveyAgeAtLen.fn(dir = getwd(), 
                           datAL = bio, 
                           datTows = catch,
                           strata.df = strata,
                           lgthBins = len.bins, 
-                          ageBins = age.bins, 
-                          ...)
+                          ageBins = age.bins)
 ```
 Creates unexpanded conditional-age-at-length data for both sexes with input sample sizes based on the observed number of fish in each length bin by year.
 
 #### Maps
+
 To make a map showing the distribution of density in aggregate and by year:
 ```r
-PlotMap.fn(dat = catch)
+PlotMap.fn(
+  dat = catch)
 ```
 
 #### Additional data visualization
-There are a couple of additional plotting function that are included in the package: PlotVarLengthAtAge.fn and PlotSexRatio.fn.  
+
+There are a couple of additional plotting functions that are included in the package:`PlotVarLengthAtAge.fn()` and `PlotSexRatio.fn()`.

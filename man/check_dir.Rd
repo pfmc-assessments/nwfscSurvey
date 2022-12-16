@@ -4,7 +4,7 @@
 \alias{check_dir}
 \title{Directory check}
 \usage{
-check_dir(dir, verbose)
+check_dir(dir, verbose = TRUE)
 }
 \arguments{
 \item{dir}{directory where ouptut will be saved. The directory where the file should be saved.
@@ -14,8 +14,19 @@ If dir = NULL no output will be saved.}
 warnings to the console. The default is \code{TRUE}.}
 }
 \description{
-Directory check
+Check that
+\enumerate{
+\item The user knows that the data will not be saved if \code{dir = NULL}.
+\item The directory exists if it can be created.
+\item The function fails if the directory cannot be created.
+}
+}
+\examples{
+check_dir(getwd(), verbose = FALSE)
+# See more output
+check_dir(getwd())
+
 }
 \author{
-Chantel Wetzel
+Chantel R. Wetzel
 }

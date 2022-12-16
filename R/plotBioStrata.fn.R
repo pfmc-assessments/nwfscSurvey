@@ -16,7 +16,10 @@
 #' @param strata.names custom strata names, if not specified will use the defined names from CreateStrataDF.fn
 #' @param pch.col Color as string, defaults to "black"
 #' @param pch.type Numeric pch type, defaults to 16
-#' @param dopng save the plot as a png inside plots folder
+#' @param dopng Deprecated with {nwfscSurvey} 2.1 because providing a non-NULL
+#'   value to `dir` can serve the same purpose as `dopng = TRUE` without the
+#'   potential for errors when `dopng = TRUE` and `dir = NULL`. Thus, users
+#'   no longer have to specify `dopng` to save the plot as a png.
 #' @param ...      Additional arguments for the plots
 #'
 #' @author Allan Hicks and John Wallace
@@ -24,41 +27,41 @@
 
 PlotBioStrata.fn <- function(dir = NULL, dat, CI = 0.95, scalar = 1e6, gap = 0.03, ylab = "Biomass ('000 mt)", xlab = "Year",
                              survey.name = NULL, strata.names = NULL, ylim = NULL, sameylim = FALSE, add = FALSE, mfrow.in = NULL, col = "black",
-                             pch.col = "black", pch.type = 16, dopng = FALSE, ...) {
+                             pch.col = "black", pch.type = 16, dopng = lifecycle::deprecated(), ...) {
+
+  if (lifecycle::is_present(dopng)) {
+    lifecycle::deprecate_warn(
+      when = "2.1",
+      what = "nwfscSurvey::PlotMap.fn(dopng =)"
+    )
+  }
+
   bio_strat <- dat$StrataEsts
 
-  if (dopng) {
-    if (is.null(dir)) {
-      stop("Directory needs to be set.")
-    }
-    if (!file.exists(dir)) {
-      stop("The dir argument leads to a location", ",\ni.e., ", dir, ", that doesn't exist.")
-    }
-    plotdir <- file.path(dir, paste("plots", sep = ""))
-    plotdir.isdir <- file.info(plotdir)$isdir
-    if (is.na(plotdir.isdir) | !plotdir.isdir) {
-      dir.create(plotdir)
-    }
-    if (is.null(survey.name)) {
-      png(paste0(dir, "/plots/designed_based_by_strata_index.png"), height = 7, width = 7, units = "in", res = 300)
-    }
-    if (!is.null(survey.name)) {
-      png(paste0(dir, "/plots/", survey.name, "_designed_based_by_strata_index.png"), height = 7, width = 7, units = "in", res = 300)
-    }
+  plotdir <- file.path(dir, "plots")
+  check_dir(dir = plotdir)
+  main_ <- ifelse(is.null(survey.name), "", paste0(survey.name, "_"))
+  if (!is.null(dir)) {
+    png(
+      filename = file.path(
+        plotdir,
+        paste0(main_, "designed_based_by_strata_index.png")
+      ),
+      height = 7,
+      width = 7,
+      units = "in",
+      res = 300
+    )
+    on.exit(dev.off(), add = TRUE)
   }
+
   if (is.null(strata.names)) {
     strata.names <- names(bio_strat)
   }
 
   if (!is.null(mfrow.in)) {
-    if (length(mfrow.in) == 1) {
-      par(mfrow = c(mfrow.in[1], mfrow.in[1]))
-    }
-    if (length(mfrow.in) != 1) {
-      par(mfrow = c(mfrow.in[1], mfrow.in[2]))
-    }
-  }
-  if (is.null(mfrow.in)) {
+    par(mfrow = c(mfrow.in[1], mfrow.in[length(mfrow.in)]))
+  } else {
     par(mfrow = c(length(bio_strat) / 2, 2))
   }
 
@@ -99,7 +102,4 @@ PlotBioStrata.fn <- function(dir = NULL, dat, CI = 0.95, scalar = 1e6, gap = 0.0
     segments(x0 = x, y0 = y - gap, x1 = x, y1 = ci[2, ], col = col)
   }
 
-  if (dopng) {
-    dev.off()
-  }
 }

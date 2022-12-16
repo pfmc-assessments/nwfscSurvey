@@ -16,7 +16,7 @@ PlotBio.fn(
   ylim = NULL,
   add = FALSE,
   col = "black",
-  dopng = FALSE,
+  dopng = lifecycle::deprecated(),
   ...
 )
 }
@@ -43,7 +43,10 @@ PlotBio.fn(
 
 \item{col}{color}
 
-\item{dopng}{save the plot as a png inside plots folder}
+\item{dopng}{Deprecated with {nwfscSurvey} 2.1 because providing a non-NULL
+value to \code{dir} can serve the same purpose as \code{dopng = TRUE} without the
+potential for errors when \code{dopng = TRUE} and \code{dir = NULL}. Thus, users
+no longer have to specify \code{dopng} to save the plot as a png.}
 
 \item{...}{Additional arguments for the plots}
 }

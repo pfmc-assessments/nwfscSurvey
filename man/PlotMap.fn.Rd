@@ -13,14 +13,13 @@ PlotMap.fn(
 )
 }
 \arguments{
-\item{dir}{The directory where you would like the figures saved. The
-directory must exist; but, it is only needed if \code{dopng = TRUE}.}
+\item{dir}{directory where ouptut will be saved. The directory where the file should be saved.
+If dir = NULL no output will be saved.}
 
-\item{dat}{A data frame created by \code{PullCatch.fn()}.}
+\item{dat}{An object created by \code{\link[=PullCatch.fn]{PullCatch.fn()}}.}
 
-\item{main}{A string that will be pre-pended to the default file names for
-each figure. For example, if \code{main = "NWFSC"}, then one of the saved
-\code{.png} files will be called \code{"NWFSC_CPUE_Map.png"}.}
+\item{main}{A string that will be prepended to the name of the saved png
+(i.e., "NWFSC" results in a file called "NWFSC_CPUE_Map.png").}
 
 \item{dopng}{Deprecated with {nwfscSurvey} 2.1 because providing a non-NULL
 value to \code{dir} can serve the same purpose as \code{dopng = TRUE} without the

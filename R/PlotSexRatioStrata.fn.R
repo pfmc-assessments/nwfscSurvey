@@ -6,32 +6,38 @@
 #' @param strat.vars the parameters to stratify the data
 #' @param strat.df the created strata matrix with the calculated areas by the createStrataDF.fn function
 #' @param circleSize circle size
-#' @param dopng TRUE/FALSE whether to save a png file
+#' @param dopng Deprecated with {nwfscSurvey} 2.1 because providing a non-NULL
+#'   value to `dir` can serve the same purpose as `dopng = TRUE` without the
+#'   potential for errors when `dopng = TRUE` and `dir = NULL`. Thus, users
+#'   no longer have to specify `dopng` to save the plot as a png.
 #' @param ...      Additional arguments for the plots
 #'
 #' @author Allan Hicks and Chantel Wetzel
 #' @export
 #' @seealso \code{\link{StrataFactors.fn}}
 
-PlotSexRatioStrata.fn <- function(dir = NULL, dat, type = "length", strat.vars = c("Depth_m", "Latitude_dd"), strat.df = NULL, circleSize = 0.05, dopng = FALSE, ...) {
-  if (dopng) {
-    if (is.null(dir)) {
-      stop("Directory needs to be set.")
-    }
-    if (!file.exists(dir)) {
-      stop("The dir argument leads to a location", ",\ni.e., ", dir, ", that doesn't exist.")
-    }
-    plotdir <- file.path(dir, paste("plots", sep = ""))
-    plotdir.isdir <- file.info(plotdir)$isdir
-    if (is.na(plotdir.isdir) | !plotdir.isdir) {
-      dir.create(plotdir)
-    }
-    if (is.null(main)) {
-      png(file.path(dir, paste("plots/fraction_female.png", sep = "")), height = 7, width = 7, units = "in", res = 300)
-    }
-    if (!is.null(main)) {
-      png(file.path(dir, paste("plots/", main, "_fraction_female.png", sep = "")), height = 7, width = 7, units = "in", res = 300)
-    }
+PlotSexRatioStrata.fn <- function(dir = NULL, dat, type = "length", strat.vars = c("Depth_m", "Latitude_dd"), strat.df = NULL, circleSize = 0.05, dopng = lifecycle::deprecated(), ...) {
+  if (lifecycle::is_present(dopng)) {
+    lifecycle::deprecate_warn(
+      when = "2.1",
+      what = "nwfscSurvey::PlotMap.fn(dopng =)"
+    )
+  }
+  plotdir <- file.path(dir, "plots")
+  check_dir(dir = plotdir)
+  main_ <- ifelse(is.null(main), "", paste0(main, "_"))
+  if (!is.null(dir)) {
+    png(
+      filename = file.path(
+        plotdir,
+        paste0(main_, "fraction_female.png")
+      ),
+      height = 7,
+      width = 7,
+      units = "in",
+      res = 300
+    )
+    on.exit(dev.off(), add = TRUE)
   }
 
   row.names(strat.df) <- strat.df[, 1] # put in rownames to make easier to index later
@@ -41,13 +47,9 @@ PlotSexRatioStrata.fn <- function(dir = NULL, dat, type = "length", strat.vars =
 
   datB <- data.frame(datB, stratum = StrataFactors.fn(datB, strat.vars, strat.df)) # create a new column for the stratum factor
 
-  # if (dopng) { png(paste0(dir, "/plots/", survey,"_fraction_female.png") ) }
-  # if (dopng) { png(file.path(dir, paste("plots/", survey,"_fraction_female.png", sep ="")), height=7, width=7, units="in",res=300) }
   par(mfrow = c(3, 3))
 
   for (i in 1:length(row.names(strat.df))) {
-    # if (dopng) { png(paste0(dir, "/plots/", survey,"_", row.names(strat.df)[i], "_fraction_female.png"), height=7, width=7, units="in",res=300) }
-    # par(mfrow = c(5,3))
     z <- which(datB$stratum == row.names(strat.df)[i])
     subDF <- datB[z, ]
 
@@ -64,9 +66,5 @@ PlotSexRatioStrata.fn <- function(dir = NULL, dat, type = "length", strat.vars =
     nobs <- temp[, "F"] + temp[, "M"]
     plot(ratioF, type = "l", col = "red", xlab = axis.name, ylab = "Fraction female", main = row.names(strat.df)[i], ylim = c(0, 1)) # ,...)
     symbols(ratioF, circles = nobs, inches = circleSize, fg = "red", bg = rgb(1, 0, 0, alpha = 0.5), add = T)
-    # if (dopng) {dev.off()}
-  }
-  if (dopng) {
-    dev.off()
   }
 }

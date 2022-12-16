@@ -125,10 +125,17 @@ SurveyLFs.fn <- function(dir = NULL, datL, datTows, strat.vars = c("Depth_m", "L
   # for females and males only
   TdatL.tows <- as.data.frame(table(datL$Trawl_id, datL$Sex %in% c("F", "M")))
   TdatL.tows <- TdatL.tows[TdatL.tows$Var2 == "TRUE", ]
-  datB <- data.frame(datB[match(as.character(TdatL.tows$Var1), as.character(datB$Trawl_id)), ], TowExpFactorMF = TdatL.tows$Freq)
-  # Find the numerator looking where the number of fish = sexed fish when all fish are sampled (e.g., sexed and unsexed in a fully sampled tow)
-  # The previous approach expanded sexed fish relative to the full sample size resulting in expansions when there should not have been
-  datB <- data.frame(datB[match(as.character(TdatL.tows$Var1), as.character(datB$Trawl_id)), ], true_sub_MFfish = TdatL.tows$Freq)
+  if(dim(TdatL.tows)[1] > 0) {
+    datB <- data.frame(
+      datB[match(as.character(TdatL.tows$Var1), 
+      as.character(datB$Trawl_id)), ], 
+      TowExpFactorMF = TdatL.tows$Freq)
+    # Find the numerator looking where the number of fish = sexed fish when all fish are sampled (e.g., sexed and unsexed in a fully sampled tow)
+    # The previous approach expanded sexed fish relative to the full sample size resulting in expansions when there should not have been
+    datB <- data.frame(datB[match(as.character(TdatL.tows$Var1), 
+      as.character(datB$Trawl_id)), ], 
+      true_sub_MFfish = TdatL.tows$Freq)
+  }
   if (is.null(datB$true_sub_MFfish)) {
     datB$true_sub_MFfish <- 0
   }
@@ -439,16 +446,8 @@ SurveyLFs.fn <- function(dir = NULL, datL, datTows, strat.vars = c("Depth_m", "L
   check <- sum(datL$Length_cm, na.rm = TRUE) == sum(datL$Age, na.rm = TRUE)
   comp.type <- ifelse(check, "Age", "Length")
 
-  if (is.null(dir) & verbose) {
-    cat("\nDirectory not specified and csv will not be written.\n")
-  }
-  if (!is.null(dir)) {
-    plotdir <- file.path(dir, printfolder)
-    plotdir.isdir <- file.info(plotdir)$isdir
-    if (is.na(plotdir.isdir) | !plotdir.isdir) {
-      dir.create(plotdir)
-    }
-  }
+  plotdir <- file.path(dir, printfolder)
+  check_dir(dir = plotdir, verbose = verbose)
 
   # Write the files including the -999 column
   if (comp.type == "Length") {

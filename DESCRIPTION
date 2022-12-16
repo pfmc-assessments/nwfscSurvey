@@ -1,7 +1,7 @@
 Package: nwfscSurvey
 Type: Package
 Title: Northwest Fisheries Science Center Survey
-Version: 2.0
+Version: 2.1
 Authors@R:
     c(person(given = c("Chantel", "R."),
              family = "Wetzel",
@@ -23,20 +23,23 @@ Suggests:
 Imports:
     chron,
     glue,
+    httr,
     jsonlite,
     kableExtra,
+    lifecycle,
     reshape2,
     ggnewscale,
     ggplot2 (>= 3.0.0),
     xtable,
     rlang,
     stringr,
+    cowplot,
     janitor
 Depends:
     dplyr (>= 1.0.0),
     R (>= 4.0)
 Encoding: UTF-8
 VignetteBuilder: knitr
-RoxygenNote: 7.2.1
+RoxygenNote: 7.2.2
 LazyData: true
 Roxygen: list(markdown = TRUE)

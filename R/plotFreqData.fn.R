@@ -11,7 +11,10 @@
 #' @param main main plot text
 #' @param xlim x-limit values
 #' @param ymax Value used to truncate y-axis, defaults to NULL
-#' @param dopng save the plot as a png inside plots folder
+#' @param dopng Deprecated with {nwfscSurvey} 2.1 because providing a non-NULL
+#'   value to `dir` can serve the same purpose as `dopng = TRUE` without the
+#'   potential for errors when `dopng = TRUE` and `dir = NULL`. Thus, users
+#'   no longer have to specify `dopng` to save the plot as a png.
 #' @param w Numeric figure width, defaults to 7
 #' @param h Numeric figure height, defaults to 7
 #' @param ...      Additional arguments for the plots
@@ -20,29 +23,33 @@
 #' @export
 
 PlotFreqData.fn <- function(dir = NULL, dat, inch = 0.15, ylab = "Bins", xlab = "Year", zero2NAs = T, main = NULL,
-                            xlim = NULL, ymax = NULL, dopng = FALSE, w = 7, h = 7, ...) {
+                            xlim = NULL, ymax = NULL, dopng = lifecycle::deprecated(), w = 7, h = 7, ...) {
+
+  if (lifecycle::is_present(dopng)) {
+    lifecycle::deprecate_warn(
+      when = "2.1",
+      what = "nwfscSurvey::PlotMap.fn(dopng =)"
+    )
+  }
+
   dataType <- sum(names(dat) == "ageErr")
   dataType <- ifelse(dataType == 0, "Length", "Age")
 
-  if (dopng) {
-    if (is.null(dir)) {
-      stop("Directory needs to be set.")
-    }
-    if (!file.exists(dir)) {
-      stop("The dir argument leads to a location", ",\ni.e., ", dir, ", that doesn't exist.")
-    }
-
-    plotdir <- file.path(dir, paste("plots", sep = ""))
-    plotdir.isdir <- file.info(plotdir)$isdir
-    if (is.na(plotdir.isdir) | !plotdir.isdir) {
-      dir.create(plotdir)
-    }
-    if (is.null(main)) {
-      png(file.path(dir, paste("plots/", dataType, "_Frequency.png", sep = "")), height = h, width = w, units = "in", res = 300)
-    }
-    if (!is.null(main)) {
-      png(file.path(dir, paste("plots/", main, "_", dataType, "_Frequency.png", sep = "")), height = h, width = w, units = "in", res = 300)
-    }
+  plotdir <- file.path(dir, "plots")
+  check_dir(dir = plotdir)
+  main_ <- ifelse(is.null(main), "", paste0(main, "_"))
+  if (!is.null(dir)) {
+    png(
+      filename = file.path(
+        plotdir,
+        paste0(main_, dataType, "_Frequency.png")
+      ),
+      height = h,
+      width = w,
+      units = "in",
+      res = 300
+    )
+    on.exit(dev.off(), add = TRUE)
   }
 
   x <- as.numeric(as.character(dat$year))
@@ -114,8 +121,5 @@ PlotFreqData.fn <- function(dir = NULL, dat, inch = 0.15, ylab = "Bins", xlab = 
     name <- "Male"
     z <- c(unlist(dat[, (numLens + 1):ncol(dat)]), min(dat, na.rm = TRUE))
     symbols(c(rep(x, length(y)), 0), c(rep(y, each = length(x)), 0), circles = z, main = name, inches = inch, xlab = xlab, ylab = ylab, xlim = xlim, ...)
-  }
-  if (dopng) {
-    dev.off()
   }
 }

@@ -64,15 +64,13 @@ pull_haul <- function(years= c(1980, 2050),
   haul_data$date_formatted <- 
     chron::chron(format(as.POSIXlt(haul_data$datetime_utc_iso, format = "%Y-%m-%dT%H:%M:%S"), "%Y-%m-%d"), 
     format = "y-m-d", out.format = "YYYY-m-d")
-  
-  if (!is.null(dir)) {
-    time <- substring(Sys.time(), 1, 10)
-    save(haul_data, file = file.path(dir, paste("haul_", survey, "_", time, ".rda", sep = "")))
-    if (verbose) {
-      message(
-        glue::glue("Haul data file saved to following location: {dir}"))
-    }
-  }
+
+  save_rdata(
+    x = haul_data,
+    dir = dir,
+    name_base = paste0("haul_", survey),
+    verbose = verbose
+  )
 
   return(haul_data)
 }

@@ -12,7 +12,6 @@
 #'
 #' @author Chantel Wetzel
 #' @export
-#' @md
 #' 
 #' @import glue
 #' 

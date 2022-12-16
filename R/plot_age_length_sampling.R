@@ -1,29 +1,30 @@
-#' plot age representativeness
+#' Plot the represntativeness of age sampling based on lengths
 #'
-#' @param bio.WCGBTS data frame
+#' @param data data frame
 #' @param xlim x limits for plot, defaults to c(0,120)
 #' @param ylim y limits for plot, defaults to (0, 0.049)
-#' @param file Defaults to NULL (plot made, but not saved to file). Can alternatively be a string filename
+#' @param dir Defaults to NULL (plot made, but not saved to file). Can alternatively be a string filename
 #' by year and sex
 
 #' @importFrom graphics grid hist
 #' @export
 
-age_representativeness_plot <- function(bio.WCGBTS,
+plot_age_length_sampling <- function(data,
                                         xlim = c(0, 120),
                                         ylim = c(0, 0.049),
-                                        file = NULL) {
-  if (!is.null(file)) {
-    png(filename = file, width = 7, height = 7, units = "in", res = 300)
+                                        dir = NULL) {
+  if (!is.null(dir)) {
+    png(filename = file.path(dir, "plots", "age_length_comparison.png"), 
+      width = 10, height = 7, units = "in", res = 300)
   }
   # make multi-panel plot comparing length samples to the subset with ages
   par(
-    mfcol = c(9, 2),
+    mfcol = c(5, 4),
     mar = c(0.2, 0.2, 0.2, 0.2),
     oma = c(4, 4, 1, 1)
   )
   # vector of years with age samples
-  years <- sort(unique(bio.WCGBTS$Year))
+  years <- sort(unique(data$Year))
   colvec <- c(rgb(1, 0, 0, alpha = 0.8), rgb(0, 0, 1, alpha = 0.5))
 
   # empty plot for legend
@@ -34,7 +35,7 @@ age_representativeness_plot <- function(bio.WCGBTS,
     cex = 1.5,
     legend = c(
       "All length samples",
-      "Samples with age estimates"
+      "Lengths of aged fish"
     )
   )
 
@@ -57,9 +58,9 @@ age_representativeness_plot <- function(bio.WCGBTS,
     if (par()$mfg[1] == par()$mfg[3] | y == max(years)) {
       axis(1)
     }
-    lengths.y <- bio.WCGBTS$Length_cm[bio.WCGBTS$Year == y]
-    ages.y <- bio.WCGBTS$Length_cm[bio.WCGBTS$Year == y &
-      !is.na(bio.WCGBTS$Age)]
+    lengths.y <- data$Length_cm[data$Year == y]
+    ages.y <- data$Length_cm[data$Year == y &
+      !is.na(data$Age)]
     hist(lengths.y,
       breaks = seq(0, 120, 5),
       freq = FALSE,

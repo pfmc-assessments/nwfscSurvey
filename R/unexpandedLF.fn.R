@@ -19,16 +19,8 @@
 
 UnexpandedLFs.fn <- function(dir = NULL, datL, lgthBins = 1, sex = 3, partition = 0, fleet = "Enter Fleet",
                              ageErr = "NA", agelow = -1, agehigh = -1, month = "Enter Month", printfolder = "forSS", verbose = TRUE) {
-  if (is.null(dir) & verbose) {
-    cat("\nDirectory not specified and csv will not be written.\n")
-  }
-  if (!is.null(dir)) {
-    plotdir <- file.path(dir, printfolder)
-    plotdir.isdir <- file.info(plotdir)$isdir
-    if (is.na(plotdir.isdir) | !plotdir.isdir) {
-      dir.create(plotdir)
-    }
-  }
+  plotdir <- file.path(dir, printfolder)
+  check_dir(dir = plotdir, verbose = verbose)
 
   # Check to see if user is doing ages or lengths
   check <- sum(datL$Length_cm, na.rm = TRUE) == sum(datL$Age, na.rm = TRUE)

@@ -8,24 +8,18 @@
 
 ## Installation
 
-`nwfscSurvey` provides code for analysis of the NWFSC shelf-slope, NWFSC
-slope, AFSC slope, and Triennial surveys. Code within this package allow
-for pulling of data from the NWFSC data warehouse
-(<https://www.nwfsc.noaa.gov/data>) and calculated the design based
-indices and composition data for use in stock assessment.
+`nwfscSurvey` provides code for analysis of the Northwest Fisheries Science Center (NWFSC) West Coast Groundfish Bottom Trawl, NWFSC
+slope, Alaska Fisheries Science Center (AFSC) slope, and AFSC Triennial surveys. Code within this package allows
+for pulling of data from the [NWFSC data warehouse](https://www.nwfsc.noaa.gov/data), calculating the design-based
+indices of abundance, visualization of data, and processing length- and age-composition data for use in West Coast groundfish stock assessment.
 
-Note: this code was developed for use by scientists at the Northwest
-Fisheries Science Center and is intended to work on the specific data
-products that we have access to using methods specific to the needs of
-this group.
+This code was developed for use by scientists at the NWFSC and is intended to work on the specific data products that we have access to using methods specific to the needs of this group.
 
 ``` r
 install.packages("remotes")
-remotes::install_github("pfmc-assessments/nwfscSurvey", build_vignettes = TRUE)
+remotes::install_github("pfmc-assessments/nwfscSurvey")
 ```
 
-A short vignette for the package is:
+## Package information
 
-``` r
-vignette("nwfscSurvey", package = "nwfscSurvey")
-```
+A [website](http://pfmc-assessments.github.io/nwfscSurvey/index.html) is now available for the package. The ["Get started"](http://pfmc-assessments.github.io/nwfscSurvey/articles/nwfscSurvey.html) tab provide general information on how to pull, visualize, and process survey data. Additionally, the ["Reference"](http://pfmc-assessments.github.io/nwfscSurvey/reference/index.html) tab provides a detailed list of all available functions. 
