@@ -160,7 +160,7 @@ If you don't then set zero2NAs=F</dd>
           
           <code><a href="PullBio.fn.html">PullBio.fn()</a></code> 
         </dt>
-        <dd>Pull biological data from the NWFSC data warehouse
+        <dd>Pull biological data (age, length, weight) from the NWFSC data warehouse
 The website is: https://www.webapps.nwfsc.noaa.gov/data
 This function can be used to pull a single species or all observed species
 In order to pull all species leave Name = NULL and SciName = NULL</dd>
@@ -384,7 +384,7 @@ parametization from Stock Synthesis.</dd>
           
           <code><a href="pull_bio.html">pull_bio()</a></code> 
         </dt>
-        <dd>Pull biological data from the NWFSC data warehouse
+        <dd>Pull biological data (age, length, weight) from the NWFSC data warehouse
 The website is: https://www.webapps.nwfsc.noaa.gov/data
 This function can be used to pull a single species or all observed species
 In order to pull all species leave common_name or sci_name as NULL</dd>
@@ -392,10 +392,12 @@ In order to pull all species leave common_name or sci_name as NULL</dd>
           
           <code><a href="pull_biological_samples.html">pull_biological_samples()</a></code> 
         </dt>
-        <dd>Pull biological sample information from the NWFSC data warehouse. The types
-of biological sample informaiton returned are maturity, stomach, fin clips,
-and tissue.
-samples. If a fish has
+        <dd>Pull biological sample information from the NWFSC data warehouse for biological
+collections taken at sea. Generally these are samples that require lab processing.
+Generally, these types of biological sample are maturity, stomach, fin clips, and
+tissue samples. This function returns collection information for these samples
+include the sample numbers which allows the lab analysis to be linked back to
+the sampled fish.
 The website is: https://www.webapps.nwfsc.noaa.gov/data.</dd>
       </dl><dl><dt>
           
