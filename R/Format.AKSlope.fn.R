@@ -20,7 +20,7 @@
 #' @author Chantel Wetzel
 #' @export
 #' 
-#' @exmples
+#' @examples
 #' \dontrun{
 #'   # load data files for catch and biological data
 #'    load("Tri.Shelf.and.AFSC.Slope.canary.Catch.24.May.11.dmp")
@@ -35,7 +35,7 @@
 #'    catch = filter.dat$datTows
 #'    len = filter.dat$length
 #'    age = filter.dat$age
-#'  }
+#'  )
 #' }
 #'
 Format.AKSlope.fn <- function(dir = NULL, datTows, datL = NA, 
