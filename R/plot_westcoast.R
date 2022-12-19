@@ -11,7 +11,9 @@
 #' * `PlotMap.fn()` uses this function as the base map.
 #'
 #' @examples
+#' if (require("maps")) {
 #' map_object <- plot_westcoast()
+#' }
 #' \dontrun{
 #' print(map_object)
 #' ggplot2::ggsave(

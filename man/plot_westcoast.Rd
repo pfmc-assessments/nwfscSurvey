@@ -14,7 +14,9 @@ Plot the United States west coast such that it can used as a standalone
 figure or as a base to plot data points on.
 }
 \examples{
+if (require("maps")) {
 map_object <- plot_westcoast()
+}
 \dontrun{
 print(map_object)
 ggplot2::ggsave(
