@@ -36,7 +36,7 @@ Use the \code{common_name} argument if you know the common name.}
 range of years to pull data for.}
 
 \item{survey}{A character entry from one of the following options that
-specifies which survey to pull the data for:
+specifies which survey to pull the data for. The input options are:
 \itemize{
 \item Triennial,
 \item AFSC.Slope,
@@ -47,9 +47,21 @@ specifies which survey to pull the data for:
 \item NWFSC.Santa.Barb.Basin,
 \item NWFSC.Shelf.Rockfish (NWFSC.Hook.Line but both are not working),
 \item NWFSC.Video.
-Currently, you must pull data one survey at a time, though we are working on
-allowing for a vector of survey names and
-\code{NWFSC.Shelf.Rockfish} and \code{NWFSC.Hook.Line} are not supported.
+The National Marine Fishery Service Alaska Fisheries Science Center (AFSC)
+Triennial survey was conducted between 1977 - 2004 occurring every 3rd year.
+The initial year, 1977, survey is not traditionally used in calculating
+The AFSC Slope Survey (AFSC.Slope) along the west coast of the U.S. began in 1984 and occurred
+annually from 1988–2001, with the exception of 1994 and 1998, when surveys were not conducted.
+Prior to 1997, only a limited portion of the coast was covered in each year.
+U.S. West Coast groundfish stock assessments only use the four years of consistent
+and complete survey coverage (1997, 1999-2001). The Northwest Fisheries Science
+Center (NWFSC) Slope survey (NWFSC.Slope) was conducted between 1998 - 2001.
+The NWFSC West Coast Groundfish Bottom Trawl survey (NWFSC.Combo) is conducted
+annualy starting in 2003 (excluding 2020) and samples both the U.S. west coast
+shelf and slope between 55 - 1,280 meters.
+Data can only be pulled from one survey at a time, though we are working on
+allowing for a vector of survey names.
+Currently, \code{NWFSC.Shelf.Rockfish} and \code{NWFSC.Hook.Line} are not supported.
 The default of \code{NULL} is a placeholder that must be replaced with an entry.
 }}
 

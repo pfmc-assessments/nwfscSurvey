@@ -8,6 +8,7 @@ plot_comps(
   data,
   dir = NULL,
   add_save_name = NULL,
+  plot = 1:2,
   add_0_ylim = TRUE,
   width = 10,
   height = 7
@@ -21,6 +22,13 @@ plot_comps(
 \item{add_save_name}{Option to add text to a saved figure name. This option can
 be useful if creating plots across multiple species and saving them into a single
 folder. Default NULL.}
+
+\item{plot}{A vector of integers to specify which plots you would like. The
+default is to print both figures.
+\enumerate{
+\item bubble plot of length/age composition data by year and sex
+\item distribution by year of length/age compositions data similar to r4ss figure
+}}
 
 \item{add_0_ylim}{TRUE/FALSE, option to specificy if the y-axis should start at 0
 or the minimum bin in the composition data file. Default TRUE.}

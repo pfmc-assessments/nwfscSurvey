@@ -5,6 +5,10 @@
 #' @param add_save_name Option to add text to a saved figure name. This option can
 #' be useful if creating plots across multiple species and saving them into a single
 #' folder. Default NULL.
+#' @param plot A vector of integers to specify which plots you would like. The
+#'   default is to print both figures.
+#'   1. bubble plot of length/age composition data by year and sex
+#'   2. distribution by year of length/age compositions data similar to r4ss figure
 #' @param add_0_ylim TRUE/FALSE, option to specificy if the y-axis should start at 0 
 #' or the minimum bin in the composition data file. Default TRUE.
 #' @param width Numeric figure width in inches, defaults to 10
@@ -22,6 +26,7 @@ plot_comps <- function(
   data, 
   dir = NULL, 
   add_save_name = NULL,
+  plot = 1:2, 
   add_0_ylim = TRUE,
   width = 10, 
   height = 7) {
@@ -36,25 +41,14 @@ plot_comps <- function(
 
   plotdir <- file.path(dir, "plots")
   check_dir(dir = plotdir)
-  name <- file.path(
+  
+  plot_names <- file.path(
     plotdir,
     paste0(
       add_save_name,
       ifelse(test = is.null(add_save_name), yes = "", no = "_"),
-      data_type,
-      "_frequency_sex_", sex_type,
-      ".png"
-    )
-  )
-
-  name2 <- file.path(
-    plotdir,
-    paste0(
-      add_save_name,
-      ifelse(test = is.null(add_save_name), yes = "", no = "_"),
-      data_type,
-      "_r4ss_frequency_sex_", sex_type,
-      ".png"
+      c(paste0(data_type,"_frequency_sex_", sex_type,".png"),
+      paste0(data_type, "_r4ss_frequency_sex_", sex_type,".png") )     
     )
   )
 
@@ -133,59 +127,64 @@ plot_comps <- function(
     y_axis <- seq(min(df$variable), max(df$variable), by = 5)
   }
 
-  p <- ggplot2::ggplot(df, aes(x = year, y = variable)) +
-      geom_point(aes(size = value, fill = sex, colour = sex), # add alpha = n inside the aes to shade by annual sample size
-        alpha = 0.75, shape = 21) +
-      scale_fill_manual(values = c('FEMALE' = 'red', 'MALE' = 'blue', 'UNSEXED' = "darkseagreen")) +
-      scale_color_manual(values = c('FEMALE' = 'darkred', 'MALE' = 'darkblue', 'UNSEXED' = "darkgreen")) +
-      scale_size_continuous(limits = c(0.1, 50), range = c(1, max_range), breaks = bub_range) + 
-      facet_grid(sex~.) + 
-      scale_y_continuous(breaks = y_axis) +
-      labs(x = "Year", y = ylabel, size = "Relative\nAbundance (%)", fill = "") +
-      theme(legend.key = element_blank(), 
-          axis.title.x = element_text (size = 12),
-          axis.title.y = element_text (size = 1),
-          axis.text.x = element_text("Year", colour = "black", size = 12, angle = 90, vjust = 0.3, hjust = 1), 
-          axis.text.y = element_text(ylabel, colour = "black", size = 12), 
-          legend.text = element_text(size = 10, colour ="black"), 
-          legend.title = element_text(size = 12), 
-          panel.background = element_blank(), 
-          panel.border = element_rect(colour = "black", fill = NA, size = 1), 
-          legend.position = "right") +
-      guides(size = "legend", color = "none", fill = "none")  
+  igroup <- 1
+  if (igroup %in% plot) {
+    p <- ggplot2::ggplot(df, aes(x = year, y = variable)) +
+        geom_point(aes(size = value, fill = sex, colour = sex), # add alpha = n inside the aes to shade by annual sample size
+          alpha = 0.75, shape = 21) +
+        scale_fill_manual(values = c('FEMALE' = 'red', 'MALE' = 'blue', 'UNSEXED' = "darkseagreen")) +
+        scale_color_manual(values = c('FEMALE' = 'darkred', 'MALE' = 'darkblue', 'UNSEXED' = "darkgreen")) +
+        scale_size_continuous(limits = c(0.1, 50), range = c(1, max_range), breaks = bub_range) + 
+        facet_grid(sex~.) + 
+        scale_y_continuous(breaks = y_axis) +
+        labs(x = "Year", y = ylabel, size = "Relative\nAbundance (%)", fill = "") +
+        theme(legend.key = element_blank(), 
+            axis.title.x = element_text (size = 12),
+            axis.title.y = element_text (size = 1),
+            axis.text.x = element_text("Year", colour = "black", size = 12, angle = 90, vjust = 0.3, hjust = 1), 
+            axis.text.y = element_text(ylabel, colour = "black", size = 12), 
+            legend.text = element_text(size = 10, colour ="black"), 
+            legend.title = element_text(size = 12), 
+            panel.background = element_blank(), 
+            panel.border = element_rect(colour = "black", fill = NA, size = 1), 
+            legend.position = "right") +
+        guides(size = "legend", color = "none", fill = "none")  
+    print(p) 
 
-  if (!is.null(dir)){
-      ggsave(filename = name, width = width, height = height, units = 'in')     
+    if (!is.null(dir)){
+        ggsave(filename = plot_names[1], width = width, height = height, units = 'in')     
+    }
   }
 
-  df2 <- df
-  df2$value <- df2$value / 100
-  df2[df2$sex == "MALE", 'value'] <- -1 * df2[df2$sex == "MALE", 'value']
+  igroup <- 2
+  if (igroup %in% plot) {
+    df2 <- df
+    df2$value <- df2$value / 100
+    df2[df2$sex == "MALE", 'value'] <- -1 * df2[df2$sex == "MALE", 'value']
+  
+    p2 <- ggplot2::ggplot(df2, aes(x = variable, y = value)) +
+        geom_line(aes(colour = sex), # add alpha = n inside the aes to shade by annual sample size
+          lwd = 1.1) +
+        facet_wrap(facets = "year") +
+        scale_fill_manual(values = c('FEMALE' = 'red', 'MALE' = 'blue', 'UNSEXED' = "darkseagreen")) +
+        scale_color_manual(values = c('FEMALE' = 'darkred', 'MALE' = 'darkblue', 'UNSEXED' = "darkgreen")) +
+        labs(x = ylabel, y = "Proportion") +
+        geom_hline(yintercept = 0) +
+        theme(legend.key = element_blank(), 
+            axis.title.x = element_text (size = 12),
+            axis.title.y = element_text (size = 1),
+            axis.text.x = element_text(ylabel, colour = "black", size = 12, angle = 90, vjust = 0.3, hjust = 1), 
+            axis.text.y = element_text("Proportion", colour = "black", size = 12), 
+            legend.text = element_text(size = 10, colour ="black"), 
+            legend.title = element_text(size = 12), 
+            panel.background = element_blank(), 
+            panel.border = element_rect(colour = "black", fill = NA, size = 1), 
+            legend.position = "right")
+    print(p2) 
 
-  p2 <- ggplot2::ggplot(df2, aes(x = variable, y = value)) +
-      geom_line(aes(colour = sex), # add alpha = n inside the aes to shade by annual sample size
-        lwd = 1.1) +
-      facet_wrap(facets = "year") +
-      scale_fill_manual(values = c('FEMALE' = 'red', 'MALE' = 'blue', 'UNSEXED' = "darkseagreen")) +
-      scale_color_manual(values = c('FEMALE' = 'darkred', 'MALE' = 'darkblue', 'UNSEXED' = "darkgreen")) +
-      labs(x = ylabel, y = "Proportion") +
-      geom_hline(yintercept = 0) +
-      theme(legend.key = element_blank(), 
-          axis.title.x = element_text (size = 12),
-          axis.title.y = element_text (size = 1),
-          axis.text.x = element_text(ylabel, colour = "black", size = 12, angle = 90, vjust = 0.3, hjust = 1), 
-          axis.text.y = element_text("Proportion", colour = "black", size = 12), 
-          legend.text = element_text(size = 10, colour ="black"), 
-          legend.title = element_text(size = 12), 
-          panel.background = element_blank(), 
-          panel.border = element_rect(colour = "black", fill = NA, size = 1), 
-          legend.position = "right")
-
-  if (!is.null(dir)){
-      ggsave(filename = name2, width = width, height = height, units = 'in')     
+    if (!is.null(dir)){
+        ggsave(filename = plot_names[2], width = width, height = height, units = 'in')     
+    } 
   }
-
-  print(p)
-  print(p2) 
-         
+        
 }
