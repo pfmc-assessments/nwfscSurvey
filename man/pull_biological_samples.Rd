@@ -2,17 +2,19 @@
 % Please edit documentation in R/pull_biological_samples.R
 \name{pull_biological_samples}
 \alias{pull_biological_samples}
-\title{Pull biological sample information from the NWFSC data warehouse. The types
-of biological sample informaiton returned are maturity, stomach, fin clips,
-and tissue.
-samples. If a fish has
+\title{Pull biological sample information from the NWFSC data warehouse for biological
+collections taken at sea. Generally these are samples that require lab processing.
+Generally, these types of biological sample are maturity, stomach, fin clips, and
+tissue samples. This function returns collection information for these samples
+include the sample numbers which allows the lab analysis to be linked back to
+the sampled fish.
 The website is: https://www.webapps.nwfsc.noaa.gov/data.}
 \usage{
 pull_biological_samples(
   common_name = NULL,
   sci_name = NULL,
   years = c(1980, 2050),
-  survey = NULL,
+  survey = "NWFSC.Combo",
   dir = NULL,
   verbose = TRUE
 )
@@ -63,10 +65,12 @@ warnings to the console. The default is \code{TRUE}.}
 Returns a data frame of special biological samples with sample number
 }
 \description{
-Pull biological sample information from the NWFSC data warehouse. The types
-of biological sample informaiton returned are maturity, stomach, fin clips,
-and tissue.
-samples. If a fish has
+Pull biological sample information from the NWFSC data warehouse for biological
+collections taken at sea. Generally these are samples that require lab processing.
+Generally, these types of biological sample are maturity, stomach, fin clips, and
+tissue samples. This function returns collection information for these samples
+include the sample numbers which allows the lab analysis to be linked back to
+the sampled fish.
 The website is: https://www.webapps.nwfsc.noaa.gov/data.
 }
 \author{
