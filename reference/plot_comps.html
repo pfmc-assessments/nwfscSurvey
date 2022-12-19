@@ -52,6 +52,7 @@
 <span>  <span class="va">data</span>,</span>
 <span>  dir <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  add_save_name <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  plot <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">2</span>,</span>
 <span>  add_0_ylim <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  width <span class="op">=</span> <span class="fl">10</span>,</span>
 <span>  height <span class="op">=</span> <span class="fl">7</span></span>
@@ -72,6 +73,13 @@
 <dd><p>Option to add text to a saved figure name. This option can
 be useful if creating plots across multiple species and saving them into a single
 folder. Default NULL.</p></dd>
+
+
+<dt>plot</dt>
+<dd><p>A vector of integers to specify which plots you would like. The
+default is to print both figures.</p><ol><li><p>bubble plot of length/age composition data by year and sex</p></li>
+<li><p>distribution by year of length/age compositions data similar to r4ss figure</p></li>
+</ol></dd>
 
 
 <dt>add_0_ylim</dt>
