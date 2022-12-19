@@ -14,15 +14,15 @@ Plot the United States west coast such that it can used as a standalone
 figure or as a base to plot data points on.
 }
 \examples{
-if (require("maps")) {
-map_object <- plot_westcoast()
-}
 \dontrun{
+if (require("maps") && require("mapproj")) {
+map_object <- plot_westcoast()
 print(map_object)
 ggplot2::ggsave(
   filename = "myfilename.png",
   plot =  map_object
 )
+}
 }
 }
 \seealso{
