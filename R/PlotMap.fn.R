@@ -51,21 +51,13 @@ PlotMap.fn <- function(dir = NULL,
 
   plotdir <- file.path(dir, "plots")
   check_dir(dir = plotdir)
-  name1 <- file.path(
-    plotdir,
-    paste0(
-      main,
-      ifelse(test = is.null(main), yes = "", no = "_"),
-      "cpue_map.png"
-    )
-  )
 
-  name2 <- file.path(
+  plot_names <- file.path(
     plotdir,
     paste0(
       main,
       ifelse(test = is.null(main), yes = "", no = "_"),
-      "cpue_by_year_map.png"
+      c("cpue_map.png", "cpue_by_year_map.png")
     )
   )
 
@@ -121,7 +113,7 @@ PlotMap.fn <- function(dir = NULL,
     print(g)
 
     if (!is.null(dir)) {
-       ggsave(filename = name1, width = 7, height = 10, units = 'in')     
+       ggsave(filename = plot_names[1], width = 7, height = 10, units = 'in')     
     }
   }
 
@@ -176,7 +168,7 @@ PlotMap.fn <- function(dir = NULL,
     print(h)
 
     if (!is.null(dir)) {
-       ggsave(filename = name2, width = 7, height = 10, units = 'in')     
+       ggsave(filename = plot_names[2], width = 7, height = 10, units = 'in')     
     }
   }
 }
