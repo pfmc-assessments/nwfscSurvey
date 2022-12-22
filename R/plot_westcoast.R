@@ -11,15 +11,15 @@
 #' * `PlotMap.fn()` uses this function as the base map.
 #'
 #' @examples
-#' if (require("maps")) {
-#' map_object <- plot_westcoast()
-#' }
 #' \dontrun{
+#' if (require("maps") && require("mapproj")) {
+#' map_object <- plot_westcoast()
 #' print(map_object)
 #' ggplot2::ggsave(
 #'   filename = "myfilename.png",
 #'   plot =  map_object
 #' )
+#' }
 #' }
 plot_westcoast <- function() {
   ggplot2::ggplot() +

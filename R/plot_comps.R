@@ -112,7 +112,7 @@ plot_comps <- function(
   df$sex  <- replace(df$sex, df$sex == "M", "MALE")
   df$sex  <- replace(df$sex, df$sex == "U", "UNSEXED")
   df$sex  <- factor(df$sex, levels = unique(df$sex))
-  df$variable <- type.convert(gsub('[FMU]', '', df$variable), as.is = TRUE)
+  df$variable <- utils::type.convert(gsub('[FMU]', '', df$variable), as.is = TRUE)
   df$n <- 0; a <- 1
   for(y in year){
     df$n[df$year == y] <- N[a]

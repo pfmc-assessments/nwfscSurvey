@@ -17,20 +17,22 @@ Description: Northwest Fisheries Science Center survey data processing package.
 License: GPL (>=3)
 Suggests:
     knitr,
+    kableExtra,
+    xtable,
     rmarkdown,
     testthat,
-    usethis
+    usethis,
+    maps,
+    mapproj
 Imports:
     chron,
     glue,
     httr,
     jsonlite,
-    kableExtra,
     lifecycle,
     reshape2,
     ggnewscale,
     ggplot2 (>= 3.0.0),
-    xtable,
     rlang,
     stringr,
     cowplot,

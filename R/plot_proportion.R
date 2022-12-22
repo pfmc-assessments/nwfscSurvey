@@ -76,7 +76,7 @@ plot_proportion <- function(data,
 
   # set depth_max if not provided
   if (is.null(depth_max)) {
-    depth_999 <- quantile(
+    depth_999 <- stats::quantile(
       prob = 0.999,
       x = data$Depth_m[data$Latitude_dd > lat_min &
         data$Latitude_dd < lat_max &
