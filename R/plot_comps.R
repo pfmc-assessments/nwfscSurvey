@@ -32,9 +32,9 @@ plot_comps <- function(
   height = 7) {
 
   data_type <- ifelse(sum(names(data) == "ageErr") == 0, "length", "age")
-  sex_type <- paste(unique(substr(names(data)[10:ncol(data)], 1, 1)), collapse = "_")
-  if(is.numeric(data[, "Nsamp"])) {
-    N <- data[, "Nsamp"]
+  sex_type <- unique(data$sex) #paste(unique(substr(names(data)[10:ncol(data)], 1, 1)), collapse = "_")
+  if(is.numeric(data[, "InputN"])) {
+    N <- data[, "InputN"]
   } else {
     N <- rep(1,nrow(data))
   }
@@ -53,7 +53,13 @@ plot_comps <- function(
   )
 
   year <- as.numeric(as.character(data$year))
-  sex <- data$sex[1]
+  sex <- unique(data$sex)
+  if (length(sex) > 1 ){
+    stop("This function does not work on processed composition
+      files with multiple Stock Synthesis sex specifications 
+      (sex = 0, sex = 1, sex = 3). Please filter file down to 
+      a single sex and re-run."
+  }
   if (data_type == "length") {
     comps <- data[, -c(1:6)]
   }
@@ -61,22 +67,15 @@ plot_comps <- function(
     comps <- data[, -c(1:9)]
   }
 
-  if (length(grep(".999", names(comps)) > 0)) {
+  if (length(grep(".999", names(comps))) > 0 ) {
     # remove extra columns (if the user didn't remove them already)
-    if (sex %in% 0:2) {
-      sex_lab <- substr(names(comps)[1], 1, 1)
-      comps <- comps[, -match(paste0(sex_lab, "999"), names(comps))]
-    }
-    if (sex == 3) {
-      # exclude columns for fish below minimum bin
-      comps <- comps[, -match("F.999", names(comps))]
-      comps <- comps[, -match("M.999", names(comps))]
-    }
+    comps <- comps[, -match(".999", names(comps))]
   }
 
-  # Check to see if the unsexed or single sexed comps are double printed
+  # Check to see if the unsexed or single sexed comps are 
+  # double printed
   if (sum(grepl(".", colnames(comps), fixed = TRUE)) > 0 ) {
-      comps <- comps[, !grepl(".", colnames(comps), fixed = TRUE)]
+    comps <- comps[, !grepl(".", colnames(comps), fixed = TRUE)]
   }
   
   num <- ncol(comps) / ifelse(sex == 3, 2, 1)
@@ -95,15 +94,18 @@ plot_comps <- function(
       colnames(comps)[num + 1] <- "M0"
     }
   }
-
+  
   # Determine if entries are proportions (e.g., sum to 1 or 100)
   # and convert if needed
-  if (!(sum(comps[1, ]) %in% c(1, 100))){
+  if (sum(as.numeric(comps[1, ])) == 100) {
     comps <- 100 * comps / apply(comps, 1, sum)
+  }
+  if (sum(as.numeric(comps[1, ])) > 0.999 & sum(as.numeric(comps[1, ])) < 1.001) {
+    comps <- 100 * comps 
   }
 
   mod_comps <- cbind(year, comps)
-  df <- melt(mod_comps, id = "year")
+  df <- reshape2::melt(mod_comps, id = "year")
   df$year <- factor(df$year, levels = unique(df$year))
   df$sex  <- substr(df$variable, 1, 1)
   df$sex  <- replace(df$sex, df$sex == "F", "FEMALE")

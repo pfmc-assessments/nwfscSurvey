@@ -413,7 +413,7 @@ SurveyLFs.fn <- function(dir = NULL, datL, datTows, strat.vars = c("Depth_m", "L
     fleet = fleet,
     sex = rep(sex, length(L.year)),
     partition = partition,
-    Nsamp = nSamps,
+    InputN = nSamps,
     Ls
   )
 
@@ -432,7 +432,7 @@ SurveyLFs.fn <- function(dir = NULL, datL, datTows, strat.vars = c("Depth_m", "L
     )
     out2 <- data.frame(
       year = as.numeric(names(L.year)), month = month, fleet = fleet, sex = rep(0, length(L.year)),
-      partition = partition, Nsamp = nSamps, Ls
+      partition = partition, InputN = nSamps, Ls
     )
   }
 
