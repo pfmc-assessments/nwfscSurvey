@@ -15,6 +15,7 @@
 #' @param height Numeric figure height in inches, defaults to 7
 #'
 #' @import ggplot2
+#' @import reshape2
 #' 
 #' @author Chantel Wetzel
 #' @export
