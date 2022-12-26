@@ -59,7 +59,7 @@ plot_comps <- function(
     stop("This function does not work on processed composition
       files with multiple Stock Synthesis sex specifications 
       (sex = 0, sex = 1, sex = 3). Please filter file down to 
-      a single sex and re-run."
+      a single sex and re-run.")
   }
   if (data_type == "length") {
     comps <- data[, -c(1:6)]
