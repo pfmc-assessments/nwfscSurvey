@@ -65,7 +65,7 @@
                         <h4 data-toc-skip class="author">Chantel
 Wetzel</h4>
             
-            <h4 data-toc-skip class="date">2022-12-26</h4>
+            <h4 data-toc-skip class="date">2023-01-11</h4>
       
       
       <div class="d-none name"><code>nwfscSurvey.Rmd</code></div>
@@ -154,13 +154,14 @@ ratios.</p>
 </h4>
 <p>Define the stratification by depth and latitude that will be used to
 calculate a design-based index of abundance:</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>strata <span class="ot">=</span> <span class="fu">CreateStrataDF.fn</span>(</span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">names =</span> <span class="fu">c</span>(<span class="st">"shallow_s"</span>, <span class="st">"mid_s"</span> <span class="st">"deep_s"</span>, <span class="st">"shallow_n"</span>, <span class="st">"mid_n"</span>, <span class="st">"deep_n"</span>), </span>
-<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">depths.shallow =</span> <span class="fu">c</span>( <span class="dv">55</span>,   <span class="dv">200</span>, <span class="dv">300</span>,    <span class="dv">55</span>, <span class="dv">200</span>, <span class="dv">300</span>),</span>
-<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">depths.deep    =</span> <span class="fu">c</span>(<span class="dv">200</span>,   <span class="dv">300</span>, <span class="dv">400</span>,   <span class="dv">200</span>, <span class="dv">300</span>, <span class="dv">400</span>),</span>
-<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">lats.south     =</span> <span class="fu">c</span>( <span class="dv">32</span>,    <span class="dv">32</span>,  <span class="dv">32</span>,    <span class="dv">42</span>,  <span class="dv">42</span>,  <span class="dv">42</span>),</span>
-<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">lats.north     =</span> <span class="fu">c</span>( <span class="dv">42</span>,    <span class="dv">42</span>,  <span class="dv">42</span>,    <span class="dv">49</span>,  <span class="dv">49</span>,  <span class="dv">49</span>))</span></code></pre></div>
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span></span>
+<span><span class="va">strata</span> <span class="op">=</span> <span class="fu"><a href="../reference/CreateStrataDF.fn.html">CreateStrataDF.fn</a></span><span class="op">(</span></span>
+<span>  names <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"shallow_s"</span>, <span class="st">"mid_s"</span>, <span class="st">"deep_s"</span>, <span class="st">"shallow_n"</span>, <span class="st">"mid_n"</span>, <span class="st">"deep_n"</span><span class="op">)</span>, </span>
+<span>  depths.shallow <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span> <span class="fl">55</span>,   <span class="fl">200</span>, <span class="fl">300</span>,    <span class="fl">55</span>, <span class="fl">200</span>, <span class="fl">300</span><span class="op">)</span>,</span>
+<span>  depths.deep    <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">200</span>,   <span class="fl">300</span>, <span class="fl">400</span>,   <span class="fl">200</span>, <span class="fl">300</span>, <span class="fl">400</span><span class="op">)</span>,</span>
+<span>  lats.south     <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span> <span class="fl">32</span>,    <span class="fl">32</span>,  <span class="fl">32</span>,    <span class="fl">42</span>,  <span class="fl">42</span>,  <span class="fl">42</span><span class="op">)</span>,</span>
+<span>  lats.north     <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span> <span class="fl">42</span>,    <span class="fl">42</span>,  <span class="fl">42</span>,    <span class="fl">49</span>,  <span class="fl">49</span>,  <span class="fl">49</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <p>Calculate the design based index of abundance:</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">biomass</span> <span class="op">=</span> <span class="fu"><a href="../reference/Biomass.fn.html">Biomass.fn</a></span><span class="op">(</span>dir <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/getwd.html" class="external-link">getwd</a></span><span class="op">(</span><span class="op">)</span>, </span>
