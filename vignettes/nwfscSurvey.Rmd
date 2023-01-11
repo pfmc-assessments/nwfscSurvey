@@ -84,7 +84,7 @@ Define the stratification by depth and latitude that will be used to calculate a
 ```r
 
 strata = CreateStrataDF.fn(
-  names = c("shallow_s", "mid_s" "deep_s", "shallow_n", "mid_n", "deep_n"), 
+  names = c("shallow_s", "mid_s", "deep_s", "shallow_n", "mid_n", "deep_n"), 
   depths.shallow = c( 55,   200, 300,    55, 200, 300),
   depths.deep    = c(200,   300, 400,   200, 300, 400),
   lats.south     = c( 32,    32,  32,    42,  42,  42),
