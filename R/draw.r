@@ -1,4 +1,4 @@
-
+#' @export
 draw_land <- function() {
   # Get world data so islands are plotted
   info_world <- ggplot2::map_data(
@@ -44,6 +44,7 @@ draw_land <- function() {
   )
 }
 
+#' @export
 draw_projection <- function() {
   # Set the projection outside of the {ggplot2} object to avoid the
   # warning about resetting the coordinates.
@@ -59,6 +60,7 @@ draw_projection <- function() {
 #'
 #' @param size A real number specifying the line width, or size, for the panel
 #'   border around the figure. The default is `0.25`.
+#' @export
 draw_theme <- function(size = 0.25) {
   list(
     theme(
@@ -77,6 +79,7 @@ draw_theme <- function(size = 0.25) {
 #'
 #' @param lon,lat Vectors of two real numbers specifying the longitudinal and
 #'   latitudinal limits for the x and y axes.
+#' @export
 draw_USEEZ <- function(lon = c(-129.15, -116.50),
                        lat = c(31.90, 49.50)) {
   list(
