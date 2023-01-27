@@ -62,6 +62,7 @@ parametization from Stock Synthesis.</p>
 <span>  bySex <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  estVB <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  bins <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  sdFactor <span class="op">=</span> <span class="fl">1</span>,</span>
 <span>  dopng <span class="op">=</span> <span class="fu">lifecycle</span><span class="fu">::</span><span class="fu"><a href="https://lifecycle.r-lib.org/reference/deprecated.html" class="external-link">deprecated</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
@@ -96,6 +97,11 @@ Stock Synthesis parameterization of von Bertanlaffy growth.</p></dd>
 
 <dt>bins</dt>
 <dd><p>The bins to put ages into. If NULL then simply uses the ages as recorded.</p></dd>
+
+
+<dt>sdFactor</dt>
+<dd><p>The number of standard deviations to include in the
+low and high calculations. The default is 1.0.</p></dd>
 
 
 <dt>dopng</dt>
