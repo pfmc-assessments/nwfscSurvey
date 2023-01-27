@@ -11,6 +11,8 @@
 #' Stock Synthesis parameterization of von Bertanlaffy growth.
 #' @param estVB Logical. Estimate vonB growth to plot against predicted length. If F, it uses the paramters in \code{parStart}.
 #' @param bins The bins to put ages into. If NULL then simply uses the ages as recorded.
+#' @param sdFactor The number of standard deviations to include in the
+#' low and high calculations. The default is 1.0.
 #' @param dopng Deprecated with {nwfscSurvey} 2.1 because providing a non-NULL
 #'   value to `dir` can serve the same purpose as `dopng = TRUE` without the
 #'   potential for errors when `dopng = TRUE` and `dir = NULL`. Thus, users
@@ -21,7 +23,7 @@
 
 est_growth <- function(dir = NULL, dat, return_df = TRUE, 
   Par = data.frame(K = 0.13, Linf = 55, L0 = 15, CV0 = 0.10, CV1 = 0.10),
-  bySex = TRUE, estVB = TRUE, bins = NULL, 
+  bySex = TRUE, estVB = TRUE, bins = NULL, sdFactor = 1,
   dopng = lifecycle::deprecated()) {
 
   if (lifecycle::is_present(dopng)) {
@@ -111,7 +113,8 @@ est_growth <- function(dir = NULL, dat, return_df = TRUE,
       par_logspace = FALSE, 
       Ages = la_data_list[[i]]$Age, 
       Lengths = la_data_list[[i]]$Length_cm, 
-      ReturnType = "Pred"
+      ReturnType = "Pred",
+      sdFactor = sdFactor
     )
     rownames(predL) <- as.character(la_data_list[[i]]$Age)
     dat[sex_list[[i]], c("Lhat_low","Lhat_pred", "Lhat_high")] <- predL
