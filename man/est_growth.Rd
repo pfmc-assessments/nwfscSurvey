@@ -13,6 +13,7 @@ est_growth(
   bySex = TRUE,
   estVB = TRUE,
   bins = NULL,
+  sdFactor = 1,
   dopng = lifecycle::deprecated()
 )
 }
@@ -32,6 +33,9 @@ Stock Synthesis parameterization of von Bertanlaffy growth.}
 \item{estVB}{Logical. Estimate vonB growth to plot against predicted length. If F, it uses the paramters in \code{parStart}.}
 
 \item{bins}{The bins to put ages into. If NULL then simply uses the ages as recorded.}
+
+\item{sdFactor}{The number of standard deviations to include in the
+low and high calculations. The default is 1.0.}
 
 \item{dopng}{Deprecated with {nwfscSurvey} 2.1 because providing a non-NULL
 value to \code{dir} can serve the same purpose as \code{dopng = TRUE} without the
