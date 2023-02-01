@@ -46,6 +46,9 @@ no longer have to specify \code{dopng} to save the plot as a png.}
 Estimate length-at-age using the von Bertanlaffy
 parametization from Stock Synthesis.
 }
+\seealso{
+\code{\link[=fit_vbgrowth]{fit_vbgrowth()}}
+}
 \author{
 Chantel Wetzel
 }
