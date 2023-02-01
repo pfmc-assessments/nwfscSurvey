@@ -18,6 +18,8 @@
 #'   potential for errors when `dopng = TRUE` and `dir = NULL`. Thus, users
 #'   no longer have to specify `dopng` to save the plot as a png.
 #'
+#' @seealso [fit_vbgrowth()]
+#'
 #' @author Chantel Wetzel
 #' @export
 
