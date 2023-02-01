@@ -56,7 +56,7 @@ PlotSexRatio.fn <- function(dir,
     axis.name <- "Length (cm)"
   }
   if (data.type == "age") {
-    bin_with <- 1
+    bin_width <- 1
     dat$bin <- round_any(dat$Age, bin_width, floor)
     axis.name <- "Age (yr)"
   }
