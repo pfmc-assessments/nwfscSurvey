@@ -113,7 +113,7 @@ GetStrata.fn <- function(area = "coast") {
       sep = "_"
     )),
     depths.shallow = rep(shalm, 3),
-    depths.deep = rep(c(shalm[2], deepestm), 3),
+    depths.deep = rep(c(shalm[2], deepm[2]), 3),
     lats.south = rep(c(CA[1], 40.166667, CA[1]), each = 2),
     lats.north = rep(c(WA[2], WA[2], 40.166667), each = 2)
   )
