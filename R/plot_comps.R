@@ -144,12 +144,12 @@ plot_comps <- function(
         theme(legend.key = element_blank(), 
             axis.title.x = element_text (size = 12),
             axis.title.y = element_text (size = 1),
-            axis.text.x = element_text("Year", colour = "black", size = 12, angle = 90, vjust = 0.3, hjust = 1), 
-            axis.text.y = element_text(ylabel, colour = "black", size = 12), 
+            axis.text.x = element_text(colour = "black", size = 12, angle = 90, vjust = 0.3, hjust = 1), 
+            axis.text.y = element_text(colour = "black", size = 12), 
             legend.text = element_text(size = 10, colour ="black"), 
             legend.title = element_text(size = 12), 
             panel.background = element_blank(), 
-            panel.border = element_rect(colour = "black", fill = NA, size = 1), 
+            panel.border = element_rect(colour = "black", fill = NA, linewidth = 1), 
             legend.position = "right") +
         guides(size = "legend", color = "none", fill = "none")  
     print(p) 
@@ -176,12 +176,12 @@ plot_comps <- function(
         theme(legend.key = element_blank(), 
             axis.title.x = element_text (size = 12),
             axis.title.y = element_text (size = 1),
-            axis.text.x = element_text(ylabel, colour = "black", size = 12, angle = 90, vjust = 0.3, hjust = 1), 
-            axis.text.y = element_text("Proportion", colour = "black", size = 12), 
+            axis.text.x = element_text(colour = "black", size = 12, angle = 90, vjust = 0.3, hjust = 1), 
+            axis.text.y = element_text(colour = "black", size = 12), 
             legend.text = element_text(size = 10, colour ="black"), 
             legend.title = element_text(size = 12), 
             panel.background = element_blank(), 
-            panel.border = element_rect(colour = "black", fill = NA, size = 1), 
+            panel.border = element_rect(colour = "black", fill = NA, linewidth = 1), 
             legend.position = "right")
     print(p2) 
 
