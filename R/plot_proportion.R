@@ -212,16 +212,16 @@ wh_plot_proportion <- function(data_catch,
   # rerun repeats the augmented data frame .n times
   data <- c(
     if (!missing(data_catch)) {
-      dplyr::mutate(data_catch, the_factor = factor(
-        cpue_kg_km2 <= 0,
-        levels = c(FALSE, TRUE),
-        labels = c("Present", "Absent")
-      )) %>%
-        purrr::rerun(.n = 2)
+      1:2 %>%
+        purrr::map(\(i) dplyr::mutate(data_catch, the_factor = factor(
+          cpue_kg_km2 <= 0,
+          levels = c(FALSE, TRUE),
+          labels = c("Present", "Absent")
+        )))
     },
     if (!missing(data_bio)) {
-      dplyr::mutate(data_bio, the_factor = codify_sex(Sex)) %>%
-        purrr::rerun(.n = 2)
+      1:2 %>%
+        purrr::map(\(i) dplyr::mutate(data_bio, the_factor = codify_sex(Sex)))
     }
   )
 

@@ -215,8 +215,18 @@ pull_catch <- function(common_name = NULL,
     )    
   }
 
-  catch_data <- dplyr::left_join(grid, all_tows)
-  catch <- dplyr::left_join(catch_data, positive_tows)
+  catch_data <- dplyr::left_join(
+    grid,
+    all_tows,
+    by = intersect(colnames(grid), colnames(all_tows)),
+    multiple = "all"
+  )
+  catch <- dplyr::left_join(
+    catch_data,
+    positive_tows,
+    by = intersect(colnames(catch_data), colnames(positive_tows)),
+    multiple = "all"
+  )
 
   # Need to check what this is doing
   no_area <- which(is.na(catch$area_swept_ha_der))
