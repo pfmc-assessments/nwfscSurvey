@@ -262,9 +262,19 @@ PullCatch.fn <- function(Name = NULL, SciName = NULL, YearRange = c(1980, 5000),
       stringsAsFactors = FALSE
     )
   }
-  Out <- dplyr::left_join(grid, All.Tows)
-  Out <- dplyr::left_join(Out, Data)
-  # Out = dplyr::left_join(All.Tows, Data)
+
+  Out <- dplyr::left_join(
+    grid,
+    All.Tows,
+    by = intersect(colnames(grid), colnames(All.Tows)),
+    multiple = "all"
+  )
+  Out <- dplyr::left_join(
+    Out,
+    Data,
+    by = intersect(colnames(Out), colnames(Data)),
+    multiple = "all"
+  )
 
   # Fill in zeros where needed
   Out$total_catch_wt_kg[is.na(Out$total_catch_wt_kg)] <- 0
