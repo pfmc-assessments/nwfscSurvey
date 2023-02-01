@@ -143,7 +143,7 @@ plot_comps <- function(
         labs(x = "Year", y = ylabel, size = "Relative\nAbundance (%)", fill = "") +
         theme(legend.key = element_blank(), 
             axis.title.x = element_text (size = 12),
-            axis.title.y = element_text (size = 1),
+            axis.title.y = element_text (size = 12),
             axis.text.x = element_text(colour = "black", size = 12, angle = 90, vjust = 0.3, hjust = 1), 
             axis.text.y = element_text(colour = "black", size = 12), 
             legend.text = element_text(size = 10, colour ="black"), 
@@ -175,7 +175,7 @@ plot_comps <- function(
         geom_hline(yintercept = 0) +
         theme(legend.key = element_blank(), 
             axis.title.x = element_text (size = 12),
-            axis.title.y = element_text (size = 1),
+            axis.title.y = element_text (size = 12),
             axis.text.x = element_text(colour = "black", size = 12, angle = 90, vjust = 0.3, hjust = 1), 
             axis.text.y = element_text(colour = "black", size = 12), 
             legend.text = element_text(size = 10, colour ="black"), 

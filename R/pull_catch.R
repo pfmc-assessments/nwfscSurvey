@@ -238,7 +238,8 @@ pull_catch <- function(common_name = NULL,
     format = "y-m-d", out.format = "YYYY-m-d")
 
   catch$trawl_id <- as.character(catch$trawl_id)
-  catch$cpue_kg_km2 <- catch$cpue_kg_per_ha_der * 0.01
+  # kg / km2 <- (100 hectare / 1 *km2) * (kg / hectare)
+  catch$cpue_kg_km2 <- catch$cpue_kg_per_ha_der * 100
 
   if(convert) {
     catch$Area_Swept_ha <- catch$area_swept_ha_der
