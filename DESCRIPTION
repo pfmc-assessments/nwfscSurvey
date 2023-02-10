@@ -32,6 +32,8 @@ Imports:
     lifecycle,
     purrr,
     reshape2,
+    tibble,
+    tidyr,
     ggnewscale,
     ggplot2 (>= 3.0.0),
     ggokabeito,
