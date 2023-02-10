@@ -154,6 +154,9 @@
     <loc>/reference/est_growth.html</loc>
   </url>
   <url>
+    <loc>/reference/estimate_weight_length.html</loc>
+  </url>
+  <url>
     <loc>/reference/fit_vbgrowth.html</loc>
   </url>
   <url>
@@ -203,6 +206,9 @@
   </url>
   <url>
     <loc>/reference/save_rdata.html</loc>
+  </url>
+  <url>
+    <loc>/reference/stopifnotcolumn.html</loc>
   </url>
   <url>
     <loc>/reference/wh_plot_proportion.html</loc>
