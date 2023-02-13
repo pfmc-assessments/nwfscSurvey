@@ -23,7 +23,7 @@ The National Marine Fishery Service Alaska Fisheries Science Center (AFSC)
 Triennial survey was conducted between 1977 - 2004 occurring every 3rd year.
 The initial year, 1977, survey is not traditionally used in calculating
 The AFSC Slope Survey (AFSC.Slope) along the west coast of the U.S. began in 1984 and occurred
-annually from 1988â€“2001, with the exception of 1994 and 1998, when surveys were not conducted.
+annually from 1988–2001, with the exception of 1994 and 1998, when surveys were not conducted.
 Prior to 1997, only a limited portion of the coast was covered in each year.
 U.S. West Coast groundfish stock assessments only use the four years of consistent
 and complete survey coverage (1997, 1999-2001). The Northwest Fisheries Science
