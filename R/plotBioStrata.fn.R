@@ -56,13 +56,16 @@ PlotBioStrata.fn <- function(dir = NULL, dat, CI = 0.95, scalar = 1e6, gap = 0.0
   }
 
   if (is.null(strata.names)) {
-    strata.names <- names(bio_strat)
+      strata.names <- names(bio_strat)
+      if(length(strata.names) == 1){
+        strata.names[1] <- ""
+      }
   }
 
   if (!is.null(mfrow.in)) {
     par(mfrow = c(mfrow.in[1], mfrow.in[length(mfrow.in)]))
   } else {
-    par(mfrow = c(length(bio_strat) / 2, 2))
+    par(mfrow = c(max(length(bio_strat)/2, 1), 2))
   }
 
   for (a in 1:length(bio_strat)) {
