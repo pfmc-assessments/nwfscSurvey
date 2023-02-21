@@ -17,19 +17,31 @@
 #' @author Chantel Wetzel
 #' @export
 
-UnexpandedAFs.fn <- function(dir = NULL, datA, ageBins = 1, sex = 3, partition = 0, fleet = "Enter Fleet",
+UnexpandedAFs.fn <- function(dir = NULL, datA, ageBins = 1, sex = lifecycle::deprecated(), partition = 0, fleet = "Enter Fleet",
                              ageErr = "NA", agelow = -1, agehigh = -1, month = "Enter Month", printfolder = "forSS", verbose = TRUE) {
+
+  if (lifecycle::is_present(sex)) {
+    lifecycle::deprecate_warn(
+      when = "2.2.1",
+      what = "nwfscSurvey::UnexpandedAFs.fn(sex =)"
+    )
+  }
+
+  # Automatically find the needed columns
+  sexn <- grep("sex", colnames(datA), ignore.case = TRUE, value = TRUE)
+  agen <- grep("age", colnames(datA), ignore.case = TRUE, value = TRUE)
+  lenn <- grep("length", colnames(datA), ignore.case = TRUE, value = TRUE)
+  yearn <- grep("year", colnames(datA), ignore.case = TRUE, value = TRUE)
 
   # Overwrite inputs to use the same code for lengths as ages
   datL <- datA
   lgthBins <- ageBins
-  datL$Length_cm <- datA$Age
+  datL[, lenn] <- datA[, agen]
 
   out <- UnexpandedLFs.fn(
     dir = dir,
     datL = datL,
     lgthBins = lgthBins,
-    sex = sex,
     partition = partition,
     fleet = fleet,
     month = month,
