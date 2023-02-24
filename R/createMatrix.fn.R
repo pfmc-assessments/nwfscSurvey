@@ -23,7 +23,8 @@ createMatrix <- function() {
       "NWFSC.Santa.Barb.Basin", "Santa Barbara Basin Study", "",
       "NWFSC.Shelf.Rockfish", "Shelf Rockfish [2004-2015]", "",
       "NWFSC.Hook.Line", "Hook and Line", "NWFSC Hook and Line Survey",
-      "NWFSC.Video", "Video Study", ""
+      "NWFSC.Video", "Video Study", "",
+      "Triennial.Canada", "Triennial Shelf Groundfish Survey: Canada", ""
     ),
     ncol = 3,
     byrow = TRUE
