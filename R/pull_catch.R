@@ -200,7 +200,7 @@ pull_catch <- function(common_name = NULL,
   ]
 
   # Link each data set together based on trawl_id
-  if (species == "pull all"){
+  if (species[1] == "pull all"){
     grid <- expand.grid(
       "trawl_id" = unique(all_tows$trawl_id), 
       "common_name" = unique(positive_tows$common_name),
