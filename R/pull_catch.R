@@ -129,7 +129,7 @@ pull_catch <- function(common_name = NULL,
   }
   add_species <- paste0("field_identified_taxonomy_dim$", var_name, "|=[", species_str,"]")
   
-  if (species[1] == "pull all") {
+  if (any(species == "pull all")) {
     add_species <- ""
   }
 
@@ -200,7 +200,7 @@ pull_catch <- function(common_name = NULL,
   ]
 
   # Link each data set together based on trawl_id
-  if (species[1] == "pull all"){
+  if (any(species == "pull all")) {
     grid <- expand.grid(
       "trawl_id" = unique(all_tows$trawl_id), 
       "common_name" = unique(positive_tows$common_name),

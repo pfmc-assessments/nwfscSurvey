@@ -61,7 +61,7 @@ pull_biological_samples <- function(common_name = NULL,
   }
   add_species <- paste0("field_identified_taxonomy_dim$", var_name, "|=[", species_str,"]")
   
-  if (species[1] == "pull all") {
+  if (any(species == "pull all")) {
     add_species <- ""
   }
 

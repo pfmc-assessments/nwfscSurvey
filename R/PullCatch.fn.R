@@ -174,7 +174,7 @@ PullCatch.fn <- function(Name = NULL, SciName = NULL, YearRange = c(1980, 5000),
     "&variables=", paste0(Vars, collapse = ",")
   )
 
-  if (Species[1] == "pull all") {
+  if (any(Species == "pull all")) {
     UrlText <- paste0(
       "https://www.webapps.nwfsc.noaa.gov/data/api/v1/source/trawl.catch_fact/selection.json?filters=project=", paste(strsplit(project, " ")[[1]], collapse = "%20"), ",",
       "station_invalid=0,",
