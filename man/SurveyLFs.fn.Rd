@@ -32,6 +32,7 @@ SurveyLFs.fn(
   printfolder = "forSS",
   remove999 = TRUE,
   outputStage1 = FALSE,
+  sum100 = TRUE,
   verbose = TRUE
 )
 }
@@ -81,6 +82,8 @@ SurveyLFs.fn(
 \item{remove999}{the output object by the function will have the 999 column combined with the first length bin}
 
 \item{outputStage1}{TRUE/FALSE return the first stage expanded data without compiling it for SS}
+
+\item{sum100}{A logical value specifying whether to rescale the compositions to sum to 100}
 
 \item{verbose}{A logical that specifies if you want to print messages and
 warnings to the console. The default is \code{TRUE}.}
