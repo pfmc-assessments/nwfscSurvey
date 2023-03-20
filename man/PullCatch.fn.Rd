@@ -44,11 +44,12 @@ specifies which survey to pull the data for:
 \item NWFSC.Santa.Barb.Basin,
 \item NWFSC.Shelf.Rockfish (NWFSC.Hook.Line but both are not working),
 \item NWFSC.Video.
+}
+
 Currently, you must pull data one survey at a time, though we are working on
 allowing for a vector of survey names and
 \code{NWFSC.Shelf.Rockfish} and \code{NWFSC.Hook.Line} are not supported.
-The default of \code{NULL} is a placeholder that must be replaced with an entry.
-}}
+The default of \code{NULL} is a placeholder that must be replaced with an entry.}
 
 \item{SaveFile}{A logical value specifying whether or not the the data should
 be saved to a file in \code{Dir}. Must change from the default of \code{FALSE} to save a file.}
