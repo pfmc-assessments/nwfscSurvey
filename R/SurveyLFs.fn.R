@@ -27,6 +27,7 @@
 #' @param printfolder folder where the length comps will be saved
 #' @param remove999 the output object by the function will have the 999 column combined with the first length bin
 #' @param outputStage1 TRUE/FALSE return the first stage expanded data without compiling it for SS
+#' @param sum100 A logical value specifying whether to rescale the compositions to sum to 100
 #' @template verbose
 #'
 #' @author Allan Hicks and Chantel Wetzel
@@ -37,7 +38,7 @@
 SurveyLFs.fn <- function(dir = NULL, datL, datTows, strat.vars = c("Depth_m", "Latitude_dd"), strat.df = NULL, lgthBins = 1, SSout = TRUE, meanRatioMethod = TRUE,
                          sex = 3, NAs2zero = T, sexRatioUnsexed = NA, maxSizeUnsexed = NA, sexRatioStage = 1, partition = 0, fleet = "Enter Fleet",
                          agelow = "Enter", agehigh = "Enter", ageErr = "Enter", nSamps = "Enter Samps", month = "Enter Month", printfolder = "forSS",
-                         remove999 = TRUE, outputStage1 = FALSE, verbose = TRUE) {
+                         remove999 = TRUE, outputStage1 = FALSE, sum100 = TRUE, verbose = TRUE) {
 
   # Check for the number of tows were fish were observed but not measured
   postows <- datTows[which(datTows$total_catch_numbers > 0), ]
@@ -345,10 +346,17 @@ SurveyLFs.fn <- function(dir = NULL, datL, datTows, strat.vars = c("Depth_m", "L
       TotalLjM = rep(NA, length(Lengths)), TotalLjU = rep(NA, length(Lengths))
     )
     row.names(out) <- out$Length
-    out[names(TotalLjAll), "TotalLjAll"] <- 100 * TotalLjAll / sum(TotalLjAll, na.rm = T)
-    out[names(TotalLjF), "TotalLjF"] <- 100 * TotalLjF / (sum(TotalLjF, na.rm = T) + sum(TotalLjM, na.rm = T))
-    out[names(TotalLjM), "TotalLjM"] <- 100 * TotalLjM / (sum(TotalLjF, na.rm = T) + sum(TotalLjM, na.rm = T))
-    out[names(TotalLjU), "TotalLjU"] <- 100 * TotalLjU / (sum(TotalLjU, na.rm = T))
+    if (sum100) {
+      out[names(TotalLjAll), "TotalLjAll"] <- 100 * TotalLjAll / sum(TotalLjAll, na.rm = T)
+      out[names(TotalLjF), "TotalLjF"] <- 100 * TotalLjF / (sum(TotalLjF, na.rm = T) + sum(TotalLjM, na.rm = T))
+      out[names(TotalLjM), "TotalLjM"] <- 100 * TotalLjM / (sum(TotalLjF, na.rm = T) + sum(TotalLjM, na.rm = T))
+      out[names(TotalLjU), "TotalLjU"] <- 100 * TotalLjU / (sum(TotalLjU, na.rm = T))
+    } else {
+      out[names(TotalLjAll), "TotalLjAll"] <- TotalLjAll
+      out[names(TotalLjF), "TotalLjF"] <- TotalLjF
+      out[names(TotalLjM), "TotalLjM"] <- TotalLjM
+      out[names(TotalLjU), "TotalLjU"] <- TotalLjU
+    }
     out <- out[-nrow(out), ] # remove last row because Inf and always NA due to inside.all=T
     return(out)
   }
