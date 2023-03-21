@@ -65,7 +65,7 @@
                         <h4 data-toc-skip class="author">Chantel
 Wetzel</h4>
             
-            <h4 data-toc-skip class="date">2023-03-13</h4>
+            <h4 data-toc-skip class="date">2023-03-21</h4>
       
       
       <div class="d-none name"><code>nwfscSurvey.Rmd</code></div>
@@ -278,7 +278,7 @@ length-composition data for Stock Synthesis:</p>
 <span><span class="va">Length_Freq</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/SurveyLFs.fn.html">SurveyLFs.fn</a></span><span class="op">(</span>dir <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/getwd.html" class="external-link">getwd</a></span><span class="op">(</span><span class="op">)</span>, </span>
 <span>                        datL <span class="op">=</span>  <span class="va">bio</span>, </span>
 <span>                        datTows <span class="op">=</span> <span class="va">catch</span>,</span>
-<span>                        strata.df <span class="op">=</span> <span class="va">strata</span>,</span>
+<span>                        strat.df <span class="op">=</span> <span class="va">strata</span>,</span>
 <span>                        lgthBins <span class="op">=</span> <span class="va">len_bins</span><span class="op">)</span></span></code></pre></div>
 <p>The above call will calculate the length frequencies for use in Stock
 Synthesis and write the files inside the “forSS” folder. The example
@@ -348,7 +348,7 @@ Synthesis:</p>
 <code class="sourceCode R"><span><span class="va">caal</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/SurveyAgeAtLen.fn.html">SurveyAgeAtLen.fn</a></span><span class="op">(</span>dir <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/getwd.html" class="external-link">getwd</a></span><span class="op">(</span><span class="op">)</span>, </span>
 <span>                          datAL <span class="op">=</span> <span class="va">bio</span>, </span>
 <span>                          datTows <span class="op">=</span> <span class="va">catch</span>,</span>
-<span>                          strata.df <span class="op">=</span> <span class="va">strata</span>,</span>
+<span>                          strat.df <span class="op">=</span> <span class="va">strata</span>,</span>
 <span>                          lgthBins <span class="op">=</span> <span class="va">len.bins</span>, </span>
 <span>                          ageBins <span class="op">=</span> <span class="va">age.bins</span><span class="op">)</span></span></code></pre></div>
 <p>Creates unexpanded conditional-age-at-length data for both sexes with
