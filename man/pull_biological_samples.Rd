@@ -47,13 +47,20 @@ specifies which survey to pull the data for. The input options are:
 \item NWFSC.Shelf,
 \item NWFSC.Hypoxia,
 \item NWFSC.Santa.Barb.Basin,
-\item NWFSC.Shelf.Rockfish (NWFSC.Hook.Line but both are not working),
-\item NWFSC.Video.
+\item NWFSC.Shelf.Rockfish (not yet working),
+\item NWFSC.Hook.Line (not yet working),
+\item NWFSC.Video,
+\item Triennial.Canada
+}
+
 The National Marine Fishery Service Alaska Fisheries Science Center (AFSC)
 Triennial survey was conducted between 1977 - 2004 occurring every 3rd year.
 The initial year, 1977, survey is not traditionally used in calculating
+indices of abundance. The Triennial survey sampled areas within the Canadian
+EEZ on the West Coast of Vancouver Island in 1980 - 2001 but these data are
+associated with a different survey name "Triennial.Canada".
 The AFSC Slope Survey (AFSC.Slope) along the west coast of the U.S. began in 1984 and occurred
-annually from 1988–2001, with the exception of 1994 and 1998, when surveys were not conducted.
+annually from 1988 - 2001, with the exception of 1994 and 1998, when surveys were not conducted.
 Prior to 1997, only a limited portion of the coast was covered in each year.
 U.S. West Coast groundfish stock assessments only use the four years of consistent
 and complete survey coverage (1997, 1999-2001). The Northwest Fisheries Science
@@ -64,8 +71,7 @@ shelf and slope between 55 - 1,280 meters.
 Data can only be pulled from one survey at a time, though we are working on
 allowing for a vector of survey names.
 Currently, \code{NWFSC.Shelf.Rockfish} and \code{NWFSC.Hook.Line} are not supported.
-The default of \code{NULL} is a placeholder that must be replaced with an entry.
-}}
+The default of \code{NULL} is a placeholder that must be replaced with an entry.}
 
 \item{dir}{directory where ouptut will be saved. The directory where the file should be saved.
 If dir = NULL no output will be saved.}
