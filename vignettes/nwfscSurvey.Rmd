@@ -147,7 +147,7 @@ len_bins <- seq(10, 60, 2)
 Length_Freq <- SurveyLFs.fn(dir = getwd(), 
                         datL =  bio, 
                         datTows = catch,
-                        strata.df = strata,
+                        strat.df = strata,
                         lgthBins = len_bins)
 ```
 The above call will calculate the length frequencies for use in Stock Synthesis and write the files inside the "forSS" folder. The example call does not assign unsexed fish to the sexed length comps but will produce csv files for both the sexed and unsexed fish. If you would like to assign the unsexed fish to a sex based on the sex ratio the user will need to specificy the sex ratio value (sexRatioUnsexed) to use for fish under a specified size (maxSizeUnsexed) where unsexed fish greater than the specified size will be assign based on the sex ratio from other observations. 
@@ -208,7 +208,7 @@ To calculate conditional-age-at-length data formatted for Stock Synthesis:
 caal <- SurveyAgeAtLen.fn(dir = getwd(), 
                           datAL = bio, 
                           datTows = catch,
-                          strata.df = strata,
+                          strat.df = strata,
                           lgthBins = len.bins, 
                           ageBins = age.bins)
 ```

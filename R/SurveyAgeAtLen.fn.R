@@ -100,12 +100,19 @@ SurveyAgeAtLen.fn <- function(dir = NULL, datAL, datTows, strat.vars = c("Depth_
   datB <- data.frame(datB, stratum = StrataFactors.fn(datB, strat.vars, strat.df)) # create a new column for the stratum factor
   numTows <- table(datTows$Year, StrataFactors.fn(datTows, strat.vars, strat.df)) # strata for each individual tow
 
+  # check for unsexed fish
+  sexes_present <- unique(datAL$Sex)
 
   # calculate expansion factor per tow
   # for all sexes
   TdatL.tows <- as.data.frame(table(datAL$Trawl_id))
+  datB <- data.frame(datB[match(as.character(TdatL.tows$Var1), as.character(datB$Trawl_id)), ], TowExpFactorAll = TdatL.tows$Freq)
+  datB$TowExpFactorAll <- datB$Number_fish / datB$TowExpFactorAll
+
+  TdatL.tows <- as.data.frame(table(datAL$Trawl_id, datAL$Sex %in% c("U")))
   datB <- data.frame(datB[match(as.character(TdatL.tows$Var1), as.character(datB$Trawl_id)), ], TowExpFactorU = TdatL.tows$Freq)
   datB$TowExpFactorU <- datB$Number_fish / datB$TowExpFactorU
+  datB$TowExpFactorU[datB$TowExpFactorU == Inf] <- NA
 
   # for females and males only
   TdatL.tows <- as.data.frame(table(datAL$Trawl_id, datAL$Sex %in% c("F", "M")))
@@ -116,23 +123,37 @@ SurveyAgeAtLen.fn <- function(dir = NULL, datAL, datTows, strat.vars = c("Depth_
 
   # find frequency of number of age at lengths
   TdatL.al <- as.data.frame(table(datAL$Trawl_id, datAL$allLs, datAL$allAs)) # first do all age at lengths, unsexed
-  names(TdatL.al) <- c("Trawl_id", "allLs", "allAs", "numU")
-  TdatL.al <- TdatL.al[TdatL.al$numU > 0, ]
+  names(TdatL.al) <- c("Trawl_id", "allLs", "allAs", "numAll")
+  TdatL.al <- TdatL.al[TdatL.al$numAll > 0, ]
   datB <- merge(datB, TdatL.al, by = "Trawl_id", all = T)
 
-  # Females and males
+  # Females, males, and unsexed
   TdatL.al <- as.data.frame(table(datAL$Trawl_id, datAL$allLs, datAL$allAs, datAL$Sex))
   names(TdatL.al) <- c("Trawl_id", "allLs", "allAs", "Sex", "num")
   TdatL.al <- TdatL.al[TdatL.al$num > 0, ]
   TdatL.al <- split(TdatL.al, TdatL.al$Sex)
-  temp <- TdatL.al[["F"]][, c("Trawl_id", "allLs", "allAs", "num")]
-  names(temp) <- c("Trawl_id", "allLs", "allAs", "numF")
-  datB <- merge(datB, temp, by = c("Trawl_id", "allLs", "allAs"), all = T)
-  datB[is.na(datB$numF), "numF"] <- 0
-  temp <- TdatL.al[["M"]][, c("Trawl_id", "allLs", "allAs", "num")]
-  names(temp) <- c("Trawl_id", "allLs", "allAs", "numM")
-  datB <- merge(datB, temp, by = c("Trawl_id", "allLs", "allAs"), all = T)
-  datB[is.na(datB$numM), "numM"] <- 0
+
+  if ("F" %in% sexes_present){
+    temp <- TdatL.al[["F"]][, c("Trawl_id", "allLs", "allAs", "num")]
+    names(temp) <- c("Trawl_id", "allLs", "allAs", "numF")
+    datB <- merge(datB, temp, by = c("Trawl_id", "allLs", "allAs"), all = T)
+    datB[is.na(datB$numF), "numF"] <- 0
+  }
+
+  if ("M" %in% sexes_present){  
+    temp <- TdatL.al[["M"]][, c("Trawl_id", "allLs", "allAs", "num")]
+    names(temp) <- c("Trawl_id", "allLs", "allAs", "numM")
+    datB <- merge(datB, temp, by = c("Trawl_id", "allLs", "allAs"), all = T)
+    datB[is.na(datB$numM), "numM"] <- 0
+  }
+
+  if ("U" %in% sexes_present){
+    temp <- TdatL.al[["U"]][, c("Trawl_id", "allLs", "allAs", "num")]
+    names(temp) <- c("Trawl_id", "allLs", "allAs", "numU")
+    datB <- merge(datB, temp, by = c("Trawl_id", "allLs", "allAs"), all = T)
+    datB[is.na(datB$numU), "numU"] <- 0
+  }
+
 
   # This sample size is based on haul
   # nSamps <- datB[!duplicated(paste(datB$Trawl_id,datB$allLs)),]
@@ -143,9 +164,16 @@ SurveyAgeAtLen.fn <- function(dir = NULL, datAL, datTows, strat.vars = c("Depth_
   # if(returnSamps) return(list(nSamps.f,nSamps.m))
 
   # I am modifying the output sample size to be fish rather than based on haul
-  nSamps.f <- reshape2::dcast(datB, Year ~ allLs, value.var = "numF", sum)
-  nSamps.m <- reshape2::dcast(datB, Year ~ allLs, value.var = "numM", sum)
-  nSamps.u <- reshape2::dcast(datB, Year ~ allLs, value.var = "numU", sum)
+  if ("F" %in% sexes_present){
+    nSamps.f <- reshape2::dcast(datB, Year ~ allLs, value.var = "numF", sum)
+  }
+  if ("M" %in% sexes_present){
+    nSamps.m <- reshape2::dcast(datB, Year ~ allLs, value.var = "numM", sum)
+  }
+  if ("U" %in% sexes_present){
+    nSamps.u <- reshape2::dcast(datB, Year ~ allLs, value.var = "numU", sum)
+  }
+  nSamps.all <- reshape2::dcast(datB, Year ~ allLs, value.var = "numAll", sum)
 
   if (verbose) {
     cat("\nEffective sample size is based on number of fish.\n\n")
@@ -154,37 +182,59 @@ SurveyAgeAtLen.fn <- function(dir = NULL, datAL, datTows, strat.vars = c("Depth_
     return(list(nSamps.f, nSamps.m, nSamps.u))
   }
 
-  getn.u <- NULL
-  for (y in 1:dim(nSamps.u)[1]) {
-    for (l in 2:dim(nSamps.u)[2]) {
-      if (nSamps.u[y, l] > 0) {
-        getn.u <- c(getn.u, nSamps.u[y, l])
+  if ("U" %in% sexes_present){
+    getn.u <- NULL
+    for (y in 1:dim(nSamps.u)[1]) {
+      for (l in 2:dim(nSamps.u)[2]) {
+        if (nSamps.u[y, l] > 0) {
+          getn.u <- c(getn.u, nSamps.u[y, l])
+        }
       }
     }
   }
 
-  getn.f <- NULL
-  for (y in 1:dim(nSamps.f)[1]) {
-    for (l in 2:dim(nSamps.f)[2]) {
-      if (nSamps.f[y, l] > 0) {
-        getn.f <- c(getn.f, nSamps.f[y, l])
+  if ("F" %in% sexes_present){
+    getn.f <- NULL
+    for (y in 1:dim(nSamps.f)[1]) {
+      for (l in 2:dim(nSamps.f)[2]) {
+        if (nSamps.f[y, l] > 0) {
+          getn.f <- c(getn.f, nSamps.f[y, l])
+        }
       }
     }
   }
 
-  getn.m <- NULL
-  for (y in 1:dim(nSamps.m)[1]) {
-    for (l in 2:dim(nSamps.m)[2]) {
-      if (nSamps.m[y, l] > 0) {
-        getn.m <- c(getn.m, nSamps.m[y, l])
+  if ("M" %in% sexes_present){
+    getn.m <- NULL
+    for (y in 1:dim(nSamps.m)[1]) {
+      for (l in 2:dim(nSamps.m)[2]) {
+        if (nSamps.m[y, l] > 0) {
+          getn.m <- c(getn.m, nSamps.m[y, l])
+        }
+      }
+   }
+  }
+
+  getn.all <- NULL
+  for (y in 1:dim(nSamps.all)[1]) {
+    for (l in 2:dim(nSamps.all)[2]) {
+      if (nSamps.all[y, l] > 0) {
+        getn.all <- c(getn.all, nSamps.all[y, l])
       }
     }
   }
 
   # now calculate the expanded lengths per tow
-  datB$expU <- datB$numU * datB$TowExpFactorU
-  datB$expF <- datB$numF * datB$TowExpFactorMF
-  datB$expM <- datB$numM * datB$TowExpFactorMF
+  datB$expAll <- datB$numAll * datB$TowExpFactorAll
+  if ("U" %in% sexes_present){
+      datB$expU <- datB$numU * datB$TowExpFactorU
+  }
+  if ("F" %in% sexes_present){
+      datB$expF <- datB$numF * datB$TowExpFactorMF
+  }
+  if ("U" %in% sexes_present){
+    datB$expM <- datB$numM * datB$TowExpFactorMF
+  }
 
   # sum over strata within year
   datB.yrLstr <- split(datB, as.character(paste(datB$Year, datB$allLs)))
@@ -228,27 +278,48 @@ SurveyAgeAtLen.fn <- function(dir = NULL, datAL, datTows, strat.vars = c("Depth_
     xcols <- c("Year", "stratum", "allLs") # must be two or more columns to keep the selection a dataframe
     ages <- split(x, x$allAs)
     if (raw) {
+      AjhAll <- unlist(lapply(ages, function(x) {
+        sum(x$numAll)
+      }))
+      x <- data.frame(x[rep(1, length(AjhAll)), xcols], area = A.h, AGE = as.numeric(names(AjhAll)), AjhAll = AjhAll, TotalAjhAll = AjhAll)
+      
+      if ("U" %in% sexes_present){
       AjhU <- unlist(lapply(ages, function(x) {
         sum(x$numU)
       }))
-      x <- data.frame(x[rep(1, length(AjhU)), xcols], area = A.h, AGE = as.numeric(names(AjhU)), AjhU = AjhU, TotalAjhU = AjhU)
+      x <- data.frame(x, AjhU = AjhU, TotalAjhU = AjhU)
+      }
+
+      if ("F" %in% sexes_present){
       AjhF <- unlist(lapply(ages, function(x) {
         sum(x$numF)
       }))
       x <- data.frame(x, AjhF = AjhF, TotalAjhF = AjhF)
+      }
+
+      if ("M" %in% sexes_present){
       AjhM <- unlist(lapply(ages, function(x) {
         sum(x$numM)
       }))
       x <- data.frame(x, AjhM = AjhM, TotalAjhM = AjhM)
+      } 
+
     } else {
+      AjhAll <- unlist(lapply(ages, function(x) {
+        sum(x$expAll / x$areaFished)
+      }))
+      x <- data.frame(x[rep(1, length(AjhAll)), xcols], area = A.h, AGE = as.numeric(names(AjhAll)), AjhAll = AjhAll / ntows, TotalAjhAll = A.h * AjhAll / ntows)
+
       AjhU <- unlist(lapply(ages, function(x) {
         sum(x$expU / x$areaFished)
       }))
-      x <- data.frame(x[rep(1, length(AjhU)), xcols], area = A.h, AGE = as.numeric(names(AjhU)), AjhU = AjhU / ntows, TotalAjhU = A.h * AjhU / ntows)
+      x <- data.frame(x, AjhU = AjhU / ntows, TotalAjhU = A.h * AjhU / ntows)
+      
       AjhF <- unlist(lapply(ages, function(x) {
         sum(x$expF / x$areaFished)
       }))
       x <- data.frame(x, AjhF = AjhF / ntows, TotalAjhF = A.h * AjhF / ntows)
+      
       AjhM <- unlist(lapply(ages, function(x) {
         sum(x$expM / x$areaFished)
       }))
@@ -276,23 +347,42 @@ SurveyAgeAtLen.fn <- function(dir = NULL, datAL, datTows, strat.vars = c("Depth_
     }))
     allAs <- Ages[findInterval(theAs, Ages, all.inside = T)] # finds the interval that the age falls in (all.inside puts maximum age group into N-1 group, thus I padded with Inf.)
     Lengths <- rep(x[[1]]$allLs[1], length(Ages))
-    TotalAjhU <- unlist(lapply(x, function(x) {
-      x$TotalAjhU
+    TotalAjhAll <- unlist(lapply(x, function(x) {
+      x$TotalAjhAll
     })) # over strata
-    TotalAjhF <- unlist(lapply(x, function(x) {
-      x$TotalAjhF
-    }))
-    TotalAjhM <- unlist(lapply(x, function(x) {
-      x$TotalAjhM
-    }))
-    TotalAjU <- tapply(TotalAjhU, allAs, sum, na.rm = T) # sum over strata for each age
-    TotalAjF <- tapply(TotalAjhF, allAs, sum, na.rm = T)
-    TotalAjM <- tapply(TotalAjhM, allAs, sum, na.rm = T)
-    out <- data.frame(Age = Ages, Length = Lengths, propU = rep(NA, length(Ages)), propF = rep(NA, length(Ages)), propM = rep(NA, length(Ages)))
+    TotalAjAll <- tapply(TotalAjhAll, allAs, sum, na.rm = T) # sum over strata for each age
+
+    if ("U" %in% sexes_present){
+      TotalAjhU <- unlist(lapply(x, function(x) {
+        x$TotalAjhU
+      })) # over strata
+      TotalAjU <- tapply(TotalAjhU, allAs, sum, na.rm = T) # sum over strata for each age
+    }
+    if ("F" %in% sexes_present){
+      TotalAjhF <- unlist(lapply(x, function(x) {
+        x$TotalAjhF
+      }))
+      TotalAjF <- tapply(TotalAjhF, allAs, sum, na.rm = T)
+    }
+    if ("M" %in% sexes_present){
+      TotalAjhM <- unlist(lapply(x, function(x) {
+        x$TotalAjhM
+      }))
+      TotalAjM <- tapply(TotalAjhM, allAs, sum, na.rm = T)
+    }
+
+    out <- data.frame(Age = Ages, Length = Lengths, propAll = rep(NA, length(Ages)), propU = rep(NA, length(Ages)), propF = rep(NA, length(Ages)), propM = rep(NA, length(Ages)))
     row.names(out) <- out$Age
+    out[names(TotalAjAll), "propAll"] <- 100 * TotalAjAll / sum(TotalAjAll, na.rm = T)
+    if ("U" %in% sexes_present){
     out[names(TotalAjU), "propU"] <- 100 * TotalAjU / sum(TotalAjU, na.rm = T)
+    }
+    if ("F" %in% sexes_present){
     out[names(TotalAjF), "propF"] <- 100 * TotalAjF / sum(TotalAjF, na.rm = T)
+    }
+    if ("M" %in% sexes_present){
     out[names(TotalAjM), "propM"] <- 100 * TotalAjM / sum(TotalAjM, na.rm = T)
+    }
     out <- out[-nrow(out), ] # remove last row because Inf and always NA due to inside.all=T
     return(out)
   }
@@ -310,87 +400,119 @@ SurveyAgeAtLen.fn <- function(dir = NULL, datAL, datTows, strat.vars = c("Depth_
   # output SS format with gender on separate lines
   ages <- AL.year[[1]][, "Age"]
 
-
-  AsU <- unlist(lapply(AL.year, function(x) {
-    x$propU
+  AsAll <- unlist(lapply(AL.year, function(x) {
+    x$propAll
   }))
-  AsU[is.na(AsU)] <- 0
-  AsU <- matrix(AsU, nrow = length(AL.year), byrow = T, dimnames = list(NULL, paste(rep("U", length(ages)), ages, sep = "")))
-  AsU[, 2] <- AsU[, 1] + AsU[, 2] # add in all ages before the minimum age to the first age bin that we have to specify by ourselves
-  numUzero <- sum(AsU[, "U-999"])
-  AsU <- AsU[, -match("U-999", dimnames(AsU)[[2]])] # remove F0 column
+  AsAll[is.na(AsAll)] <- 0
+  AsAll <- matrix(AsAll, nrow = length(AL.year), byrow = T, dimnames = list(NULL, paste(rep("All-", length(ages)), ages, sep = "")))
+  AsAll[, 2] <- AsAll[, 1] + AsAll[, 2] # add in all ages before the minimum age to the first age bin that we have to specify by ourselves
+  numAllzero <- sum(AsAll[, "All--999"])
+  AsAll <- AsAll[, -match("All--999", dimnames(AsAll)[[2]])] # remove F0 column
 
-  AsF <- unlist(lapply(AL.year, function(x) {
-    x$propF
-  }))
-  AsF[is.na(AsF)] <- 0
-  AsF <- matrix(AsF, nrow = length(AL.year), byrow = T, dimnames = list(NULL, paste(rep("F", length(ages)), ages, sep = "")))
-  AsF[, 2] <- AsF[, 1] + AsF[, 2] # add in all ages before the minimum age to the first age bin that we have to specify by ourselves
-  numFzero <- sum(AsF[, "F-999"])
-  AsF <- AsF[, -match("F-999", dimnames(AsF)[[2]])] # remove F0 column
+  if ("U" %in% sexes_present){
+    AsU <- unlist(lapply(AL.year, function(x) {
+      x$propU
+    }))
+    AsU[is.na(AsU)] <- 0
+    AsU <- matrix(AsU, nrow = length(AL.year), byrow = T, dimnames = list(NULL, paste(rep("U", length(ages)), ages, sep = "")))
+    AsU[, 2] <- AsU[, 1] + AsU[, 2] # add in all ages before the minimum age to the first age bin that we have to specify by ourselves
+    numUzero <- sum(AsU[, "U-999"])
+    AsU <- AsU[, -match("U-999", dimnames(AsU)[[2]])] # remove F0 column
+  }
+  if ("F" %in% sexes_present){
+    AsF <- unlist(lapply(AL.year, function(x) {
+      x$propF
+    }))
+    AsF[is.na(AsF)] <- 0
+    AsF <- matrix(AsF, nrow = length(AL.year), byrow = T, dimnames = list(NULL, paste(rep("F", length(ages)), ages, sep = "")))
+    AsF[, 2] <- AsF[, 1] + AsF[, 2] # add in all ages before the minimum age to the first age bin that we have to specify by ourselves
+    numFzero <- sum(AsF[, "F-999"])
+    AsF <- AsF[, -match("F-999", dimnames(AsF)[[2]])] # remove F0 column
+  }
+  if ("M" %in% sexes_present){
+    AsM <- unlist(lapply(AL.year, function(x) {
+      x$propM
+    }))
+    AsM[is.na(AsM)] <- 0
+    AsM <- matrix(AsM, nrow = length(AL.year), byrow = T, dimnames = list(NULL, paste(rep("M", length(ages)), ages, sep = "")))
+    AsM[, 2] <- AsM[, 1] + AsM[, 2] # add in all ages before the minimum age to the first age bin
+    numMzero <- sum(AsM[, "M-999"])
+    AsM <- AsM[, -match("M-999", dimnames(AsM)[[2]])]
+  }
 
-  AsM <- unlist(lapply(AL.year, function(x) {
-    x$propM
-  }))
-  AsM[is.na(AsM)] <- 0
-  AsM <- matrix(AsM, nrow = length(AL.year), byrow = T, dimnames = list(NULL, paste(rep("M", length(ages)), ages, sep = "")))
-  AsM[, 2] <- AsM[, 1] + AsM[, 2] # add in all ages before the minimum age to the first age bin
-  numMzero <- sum(AsM[, "M-999"])
-  AsM <- AsM[, -match("M-999", dimnames(AsM)[[2]])]
-
-
+  outAll <- data.frame(
+    year = as.numeric(substring(names(AL.year), 1, 4)), month = month, Fleet = fleet, sex = 0, partition = partition, ageErr = ageErr,
+    LbinLo = as.numeric(substring(names(AL.year), 6)), LbinHi = as.numeric(substring(names(AL.year), 6)), nSamps = "ENTER", AsAll
+  )
+  if ("U" %in% sexes_present){
   outU <- data.frame(
     year = as.numeric(substring(names(AL.year), 1, 4)), month = month, Fleet = fleet, sex = 0, partition = partition, ageErr = ageErr,
     LbinLo = as.numeric(substring(names(AL.year), 6)), LbinHi = as.numeric(substring(names(AL.year), 6)), nSamps = "ENTER", AsU
   )
+  indZero <- apply(outU[, -c(1:9)], 1, sum) == 0
+  outU <- outU[!indZero, ] # remove any rows that have no female observations (they may be there because of male obs)
+  outU$nSamps <- getn.u
+  rownames(outU) <- paste("U", 1:nrow(outU), sep = "")
+  } else {
+    outU <- "No unsexed fish"
+  }
+  if ("F" %in% sexes_present){
   outF <- data.frame(
     year = as.numeric(substring(names(AL.year), 1, 4)), month = month, Fleet = fleet, sex = 1, partition = partition, ageErr = ageErr,
     LbinLo = as.numeric(substring(names(AL.year), 6)), LbinHi = as.numeric(substring(names(AL.year), 6)), nSamps = "ENTER", AsF, AsF
   )
+  indZero <- apply(outF[, -c(1:9)], 1, sum) == 0
+  outF <- outF[!indZero, ] # remove any rows that have no female observations (they may be there because of male obs)
+  outF$nSamps <- getn.f
+  rownames(outF) <- paste("F", 1:nrow(outF), sep = "")
+
+  } else {
+    outF <- "No Female Fish"
+  }
+  if ("M" %in% sexes_present){
   outM <- data.frame(
     year = as.numeric(substring(names(AL.year), 1, 4)), month = month, Fleet = fleet, sex = 2, partition = partition, ageErr = ageErr,
     LbinLo = as.numeric(substring(names(AL.year), 6)), LbinHi = as.numeric(substring(names(AL.year), 6)), nSamps = "ENTER", AsM, AsM
   )
-
-  indZero <- apply(outU[, -c(1:9)], 1, sum) == 0
-  outU <- outU[!indZero, ] # remove any rows that have no female observations (they may be there because of male obs)
-  indZero <- apply(outF[, -c(1:9)], 1, sum) == 0
-  outF <- outF[!indZero, ] # remove any rows that have no female observations (they may be there because of male obs)
   indZero <- apply(outM[, -c(1:9)], 1, sum) == 0
   outM <- outM[!indZero, ] # remove any rows that have no male observations (they may be there because of female obs)
-
-  # Add in the eff N values
-  outU$nSamps <- getn.u
-  outF$nSamps <- getn.f
   outM$nSamps <- getn.m
-
-  rownames(outU) <- paste("U", 1:nrow(outU), sep = "")
-  rownames(outF) <- paste("F", 1:nrow(outF), sep = "")
   rownames(outM) <- paste("M", 1:nrow(outM), sep = "")
+  } else {
+    outM <- "No Male Fish"
+  }
+
+  indZero <- apply(outAll[, -c(1:9)], 1, sum) == 0
+  outAll <- outAll[!indZero, ] # remove any rows that have no male observations (they may be there because of female obs)
+  # Add in the eff N values
+  outAll$nSamps <- getn.all
+  rownames(outAll) <- paste("All", 1:nrow(outAll), sep = "")
 
   if (is.null(dir) & verbose) {
     cat("\nDirectory not specified and csv will not be written.\n")
   }
   if (!is.null(dir) & sex != 0) {
+    write.csv(outU, file = file.path(plotdir, paste("Survey_CAAL_Unsexed_Bins_", min(lgthBins), "_", max(lgthBins), "_", min(ageBins), "_", max(ageBins), ".csv", sep = "")), row.names = FALSE)
     write.csv(outF, file = file.path(plotdir, paste("Survey_CAAL_Female_Bins_", min(lgthBins), "_", max(lgthBins), "_", min(ageBins), "_", max(ageBins), ".csv", sep = "")), row.names = FALSE)
     write.csv(outM, file = file.path(plotdir, paste("Survey_CAAL_Male_Bins_", min(lgthBins), "_", max(lgthBins), "_", min(ageBins), "_", max(ageBins), ".csv", sep = "")), row.names = FALSE)
   }
   if (!is.null(dir) & sex == 0) {
-    write.csv(outU, file = file.path(plotdir, paste("Survey_CAAL_Unsexed_Bins_", min(lgthBins), "_", max(lgthBins), "_", min(ageBins), "_", max(ageBins), ".csv", sep = "")), row.names = FALSE)
+    write.csv(outAll, file = file.path(plotdir, paste("Survey_CAAL_All_Sexes_Bins_", min(lgthBins), "_", max(lgthBins), "_", min(ageBins), "_", max(ageBins), ".csv", sep = "")), row.names = FALSE)
   }
 
-  if (verbose) {
-    if (sex != 0) {
-      cat("There are", numFzero, "females age 0 to age", ages[2], "minus group that were added into the first age bin\n")
-      cat("There are", numMzero, "males age 0 to age", ages[2], "minus group that were added into the first age bin\n")
-    } else {
-      cat("There are", numUzero, "unsexed age 0 to age", ages[2], "minus group that were added into the first age bin\n")
-    }
-  }
+  #if (verbose) {
+  #  if (sex != 0) {
+  #    cat("There are", numFzero, "females age 0 to age", ages[2], "minus group that were added into the first age bin\n")
+  #    cat("There are", numMzero, "males age 0 to age", ages[2], "minus group that were added into the first age bin\n")
+  #    cat("There are", numUzero, "unsexed age 0 to age", ages[2], "minus group that were added into the first age bin\n")
+  #  } else {
+  #    cat("There are", numAllzero, "unsexed age 0 to age", ages[2], "minus group that were added into the first age bin\n")
+  #  }
+  #}
 
   if (sex != 0) {
-    return(list(female = outF, male = outM))
+    return(list(female = outF, male = outM, unsexed = outU))
   } else {
-    return(list(unsexed = outU))
+    return(list(all_sexes = outAll))
   }
 }
