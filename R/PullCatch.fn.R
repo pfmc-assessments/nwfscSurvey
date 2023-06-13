@@ -108,19 +108,20 @@ PullCatch.fn <- function(Name = NULL, SciName = NULL, YearRange = c(1980, 5000),
     var.name <- "scientific_name"
     Species <- SciName
     new.name <- "Scientific_name"
-    outName <- Name
+    outName <- SciName
   }
   if (is.null(SciName)) {
     var.name <- "common_name"
     Species <- Name
     new.name <- "Common_name"
-    outName <- SciName
+    outName <- Name
   }
   if (is.null(SciName) & is.null(Name)) {
     var.name <- "common_name"
     Species <- "pull all"
     new.name <- "Common_name"
-  } # stop("Need to specifiy Name or SciName to pull data!")}
+    outName <- "All"
+  }
 
   # Survey options available in the data warehouse
   surveys <- createMatrix()
