@@ -582,7 +582,7 @@ SurveyLFs.fn <- function(dir = NULL, datL, datTows, strat.vars = c("Depth_m", "L
     }
   }
 
-  if (verbose) {
+  if (verbose && !is.null(dir)) {
     cat("\nNOTE: Files have been saved the the printfolder directory.
         The first file has the 999 column showing fish smaller or younger than the initial bin. 
         Check to make sure there is not a large number of fish smaller or younger than the initial bin.
