@@ -2,11 +2,7 @@
 % Please edit documentation in R/SurveyLFs.fn.R
 \name{SurveyLFs.fn}
 \alias{SurveyLFs.fn}
-\title{Expands the lengths up to the total stratum area then sums over strata
-Original Version Written by Allan Hicks 16 March 2009
-Modified by Chantel Wetzel to work with the data warehouse data formatting,
-add additional options of when to apply the sex ratio, and correct some treatment of unsexed fish
-weighted by sample size and area}
+\title{Expands the lengths up to the total stratum area then sums over strata}
 \usage{
 SurveyLFs.fn(
   dir = NULL,
@@ -37,69 +33,98 @@ SurveyLFs.fn(
 )
 }
 \arguments{
-\item{dir}{directory this is where the output files will be saved}
+\item{dir}{A file path to an existing directory where you would like to
+create a folder to store the output from this function. The default is
+\code{dir = NULL}, which causes the function to not save any files. You can
+store the output directly in \code{dir} if you specify \code{printfolder = ""}.}
 
-\item{datL}{the read in length comps by the PullBio.fn function}
+\item{datL}{A data frame of length-composition data returned from
+\code{\link[=PullBio.fn]{PullBio.fn()}}.}
 
-\item{datTows}{the read in catch data by the PullCatch.fn function}
+\item{datTows}{A data frame of catch data returned from \code{\link[=PullCatch.fn]{PullCatch.fn()}}.}
 
-\item{strat.vars}{the variables used define the stratas. Defaul is bottom depth and latitudes.}
+\item{strat.vars}{Variables in both \code{datL} and \code{datTows} that are used to
+define the stratas. Default is bottom depth (m) and latitudes (decimal
+degrees), i.e., \code{c("Depth_m", "Latitude_dd")}.}
 
-\item{strat.df}{the created strata matrix with the calculated areas by the createStrataDF.fn function}
+\item{strat.df}{A data frame that defines the strata and provides the
+calculated areas for each strata returned from \code{\link[=createStrataDF.fn]{createStrataDF.fn()}}.}
 
-\item{lgthBins}{length bins}
+\item{lgthBins}{An integer vector of length bins.}
 
-\item{SSout}{TRUE/FALSE if True the output is in a format pastable into SS dat file}
+\item{SSout}{A logical with the default of \code{TRUE}. If \code{TRUE}, the output
+is returned in a format that can be directly pasted into an SS3 data file.}
 
-\item{meanRatioMethod}{TRUE/FALSE}
+\item{meanRatioMethod}{A logical with the default of \code{TRUE}. If \code{TRUE}, then
+the mean ratio is implemented instead of the total ratio. Search the
+source code for the equations if more information is needed.}
 
-\item{sex}{(0, 1, 2, 3) sex value for Stock Synthesis}
+\item{sex}{(0, 1, 2, 3). The integer will be used to define the sex column
+of the returned input for Stock Synthesis and specifies how the
+composition are treated with respect to sex. See the Stock Synthesis
+manual for more information. In short, 0 is for unsexed, 1 is females, 2
+is males, and 3 is males and females where the sex ratio of the samples is
+informative to the model. The default is \code{3}.}
 
-\item{NAs2zero}{TRUE/FALSE change NAs to zeros}
+\item{NAs2zero}{A logical specifying if \code{NA}s should be changed to zeros.
+The default is \code{TRUE}.}
 
-\item{sexRatioUnsexed}{sex ratio to apply to any length bins of a certain size or smaller as defined by the maxSizeUnsexed}
+\item{sexRatioUnsexed}{A numerical value within \verb{[0.0, 1.0]} that will be
+used as the sex ratio for measured individuals less than \code{maxSizeUnsexed}.
+If \code{NA_real_}, then the sex ratio for stage-1 expansion will not be
+conducted.}
 
-\item{maxSizeUnsexed}{all sizes below this threshold will assign unsexed fish by sexRatio set equal to 0.50, fish larger than this size will have unsexed fish assigned by the calculated sex ratio in the data.}
+\item{maxSizeUnsexed}{A numerical value specifying the right side of the
+following bin \verb{[0, maxSizeUnsexed]}, where all fish measured in this bin
+are assigned a sex based on sexRatioUnsexed.
+Fish with a measurement larger than this value will be assigned a sex
+based on the calculated sex ratio in the data.}
 
-\item{sexRatioStage}{(1, 2) the stage of the expansion to apply the sex ratio. Input either 1 or 2.}
+\item{sexRatioStage}{(1, 2). The stage of the expansion to apply the sex
+ratio. The default is \code{1}.}
 
-\item{partition}{partition for Stock Synthesis}
+\item{partition, fleet, agelow, agehigh, ageErr, month}{Each argument requires a
+single integer value that will be used to set the associated column of the
+returned input for Stock Synthesis. See the Stock Synthesis manual for
+more information.}
 
-\item{fleet}{fleet number}
+\item{nSamps}{A named vector of input or effective sample sizes that will be
+used to set the effective sample size of the returned input for Stock
+Synthesis. A value must be supplied for every year of data in \code{datL}.}
 
-\item{agelow}{value for SS -1}
+\item{printfolder}{A string that will be appended to \code{dir}, creating a folder
+where the length-composition output will be saved. If specified as \code{""},
+the output will just be saved directly in \code{dir}. The default is \code{"forSS"}.}
 
-\item{agehigh}{value for SS -1}
+\item{remove999}{A logical with the default of \code{TRUE}, which leads to the
+output having the 999 column combined with the first length bin.}
 
-\item{ageErr}{age error vector to apply}
+\item{outputStage1}{A logical specifying if you would like the function to
+stop after the end of the first stage of the expansion process and return
+output that is not ready for Stock Synthesis. This can be helpful when
+wanting output that can be used as input for VAST.}
 
-\item{nSamps}{effective sample size for Stock Synthesis}
-
-\item{month}{month the samples were collected}
-
-\item{printfolder}{folder where the length comps will be saved}
-
-\item{remove999}{the output object by the function will have the 999 column combined with the first length bin}
-
-\item{outputStage1}{TRUE/FALSE return the first stage expanded data without compiling it for SS}
-
-\item{sum100}{A logical value specifying whether to rescale the compositions to sum to 100}
+\item{sum100}{A logical value specifying whether to rescale the compositions
+to sum to 100. The default is \code{TRUE}.}
 
 \item{verbose}{A logical that specifies if you want to print messages and
 warnings to the console. The default is \code{TRUE}.}
 }
 \description{
 Expands the lengths up to the total stratum area then sums over strata
-Original Version Written by Allan Hicks 16 March 2009
-Modified by Chantel Wetzel to work with the data warehouse data formatting,
-add additional options of when to apply the sex ratio, and correct some treatment of unsexed fish
-weighted by sample size and area
+}
+\details{
+The original version was written by Allan Hicks 16 March 2009. This function
+has since been modified by Chantel Wetzel to work with the data warehouse
+data formatting, add additional options of when to apply the sex ratio, and
+correct some treatment of unsexed fish weighted by sample size and area.
 }
 \seealso{
-\code{\link{StrataFactors.fn}}
-
-\code{\link{SexRatio.fn}}
+\itemize{
+\item \code{\link[=StrataFactors.fn]{StrataFactors.fn()}}
+\item \code{\link[=SexRatio.fn]{SexRatio.fn()}}
+}
 }
 \author{
-Allan Hicks and Chantel Wetzel
+Allan Hicks (16 March 2009) and Chantel Wetzel (maintainer)
 }
