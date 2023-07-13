@@ -1,39 +1,65 @@
 #' Expands the lengths up to the total stratum area then sums over strata
-#' Original Version Written by Allan Hicks 16 March 2009
-#' Modified by Chantel Wetzel to work with the data warehouse data formatting,
-#' add additional options of when to apply the sex ratio, and correct some treatment of unsexed fish
-#' weighted by sample size and area
 #'
-#' @param dir directory this is where the output files will be saved
-#' @param datL the read in length comps by the PullBio.fn function
-#' @param datTows the read in catch data by the PullCatch.fn function
-#' @param strat.vars the variables used define the stratas. Defaul is bottom depth and latitudes.
-#' @param strat.df the created strata matrix with the calculated areas by the createStrataDF.fn function
-#' @param lgthBins length bins
-#' @param SSout TRUE/FALSE if True the output is in a format pastable into SS dat file
-#' @param meanRatioMethod TRUE/FALSE
-#' @param sex (0, 1, 2, 3) sex value for Stock Synthesis
-#' @param NAs2zero TRUE/FALSE change NAs to zeros
-#' @param sexRatioUnsexed sex ratio to apply to any length bins of a certain size or smaller as defined by the maxSizeUnsexed
-#' @param maxSizeUnsexed all sizes below this threshold will assign unsexed fish by sexRatio set equal to 0.50, fish larger than this size will have unsexed fish assigned by the calculated sex ratio in the data.
-#' @param sexRatioStage (1, 2) the stage of the expansion to apply the sex ratio. Input either 1 or 2.
-#' @param partition partition for Stock Synthesis
-#' @param fleet fleet number
-#' @param agelow value for SS -1
-#' @param agehigh value for SS -1
-#' @param ageErr age error vector to apply
-#' @param nSamps effective sample size for Stock Synthesis
-#' @param month month the samples were collected
-#' @param printfolder folder where the length comps will be saved
-#' @param remove999 the output object by the function will have the 999 column combined with the first length bin
-#' @param outputStage1 TRUE/FALSE return the first stage expanded data without compiling it for SS
-#' @param sum100 A logical value specifying whether to rescale the compositions to sum to 100
+#' @details
+#' The original version was written by Allan Hicks 16 March 2009. This function
+#' has since been modified by Chantel Wetzel to work with the data warehouse
+#' data formatting, add additional options of when to apply the sex ratio, and
+#' correct some treatment of unsexed fish weighted by sample size and area.
+#'
+#' @param dir A file path to an existing directory where you would like to
+#'   create a folder to store the output from this function. The default is
+#'   `dir = NULL`, which causes the function to not save any files. You can
+#'   store the output directly in `dir` if you specify `printfolder = ""`.
+#' @param datL A data frame of length-composition data returned from
+#'   [PullBio.fn()].
+#' @param datTows A data frame of catch data returned from [PullCatch.fn()].
+#' @param strat.vars Variables in both `datL` and `datTows` that are used to
+#'   define the stratas. Default is bottom depth (m) and latitudes (decimal
+#'   degrees), i.e., `c("Depth_m", "Latitude_dd")`.
+#' @param strat.df A data frame that defines the strata and provides the
+#'   calculated areas for each strata returned from [createStrataDF.fn()].
+#' @param lgthBins An integer vector of length bins.
+#' @param SSout A logical with the default of `TRUE`. If `TRUE`, the output
+#'   is returned in a format that can be directly pasted into an SS3 data file.
+#' @param meanRatioMethod A logical with the default of `TRUE`. If `TRUE`, then
+#'   the mean ratio is implemented instead of the total ratio. Search the
+#'   source code for the equations if more information is needed.
+#' @param sex (0, 1, 2, 3). The integer will be used to define the sex column
+#'   of the returned input for Stock Synthesis and specifies how the
+#'   composition are treated with respect to sex. See the Stock Synthesis
+#'   manual for more information. In short, 0 is for unsexed, 1 is females, 2
+#'   is males, and 3 is males and females where the sex ratio of the samples is
+#'   informative to the model. The default is `3`.
+#' @param NAs2zero A logical specifying if `NA`s should be changed to zeros.
+#'   The default is `TRUE`.
+#' @inheritParams SexRatio.fn
+#' @param sexRatioStage (1, 2). The stage of the expansion to apply the sex
+#'   ratio. The default is `1`.
+#' @param partition,fleet,agelow,agehigh,ageErr,month Each argument requires a
+#'   single integer value that will be used to set the associated column of the
+#'   returned input for Stock Synthesis. See the Stock Synthesis manual for
+#'   more information.
+#' @param nSamps A named vector of input or effective sample sizes that will be
+#'   used to set the effective sample size of the returned input for Stock
+#'   Synthesis. A value must be supplied for every year of data in `datL`.
+#' @param printfolder A string that will be appended to `dir`, creating a folder
+#'   where the length-composition output will be saved. If specified as `""`,
+#'   the output will just be saved directly in `dir`. The default is `"forSS"`.
+#' @param remove999 A logical with the default of `TRUE`, which leads to the
+#'   output having the 999 column combined with the first length bin.
+#' @param outputStage1 A logical specifying if you would like the function to
+#'   stop after the end of the first stage of the expansion process and return
+#'   output that is not ready for Stock Synthesis. This can be helpful when
+#'   wanting output that can be used as input for VAST.
+#' @param sum100 A logical value specifying whether to rescale the compositions
+#'   to sum to 100. The default is `TRUE`.
 #' @template verbose
 #'
-#' @author Allan Hicks and Chantel Wetzel
+#' @author Allan Hicks (16 March 2009) and Chantel Wetzel (maintainer)
 #' @export
-#' @seealso \code{\link{StrataFactors.fn}}
-#' @seealso \code{\link{SexRatio.fn}}
+#' @seealso
+#' * [StrataFactors.fn()]
+#' * [SexRatio.fn()]
 
 SurveyLFs.fn <- function(dir = NULL, datL, datTows, strat.vars = c("Depth_m", "Latitude_dd"), strat.df = NULL, lgthBins = 1, SSout = TRUE, meanRatioMethod = TRUE,
                          sex = 3, NAs2zero = T, sexRatioUnsexed = NA, maxSizeUnsexed = NA, sexRatioStage = 1, partition = 0, fleet = "Enter Fleet",
