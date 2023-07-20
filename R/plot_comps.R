@@ -144,10 +144,12 @@ plot_comps <- function(
             panel.border = element_rect(colour = "black", fill = NA, linewidth = 1), 
             legend.position = "right") +
         guides(size = "legend", color = "none", fill = "none")  
-    print(p) 
-
-    if (!is.null(dir)){
-        ggsave(filename = plot_names[1], width = width, height = height, units = 'in')     
+    if (!is.null(dir)) {
+      ggsave(filename = plot_names[1], plot = p,
+        width = width, height = height, units = "in"
+      )
+    } else {
+      print(p)
     }
   }
 
@@ -175,11 +177,13 @@ plot_comps <- function(
             panel.background = element_blank(), 
             panel.border = element_rect(colour = "black", fill = NA, linewidth = 1), 
             legend.position = "right")
-    print(p2) 
-
-    if (!is.null(dir)){
-        ggsave(filename = plot_names[2], width = width, height = height, units = 'in')     
-    } 
+    if (!is.null(dir)) {
+      ggsave(filename = plot_names[2], plot = p2,
+        width = width, height = height, units = "in"
+      )
+    } else {
+      print(p2)
+    }
   }
         
 }
