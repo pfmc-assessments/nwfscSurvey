@@ -1,25 +1,33 @@
-#' This function plots frequency data as bubble plots
+#' Plot frequency data as bubble plots
 #'
-#' @param dir Directory to save files to
-#' @param data Data file object created by SS3LF.fn or SS3AF.fn
-#' @param add_save_name Option to add text to a saved figure name. This option can
-#' be useful if creating plots across multiple species and saving them into a single
-#' folder. Default NULL.
+#' @param dir Directory to save files to. The default is `NULL`, which leads to
+#'   the figures being printed to the screen rather than saved. If a path is
+#'   provided, then the figures will only be saved, i.e., not printed.
+#' @param data Data file object created by [SurveyLF.fn()] or [SurveyAF.fn()].
+#' @param add_save_name Option to add text to a saved figure name. This option
+#'   can be useful if creating plots across multiple species and saving them
+#'   into a single folder. The default is `NULL`. Note that the data type,
+#'   i.e., age or length, and sex type are already included in the saved name
+#'   so no need to add those here.
 #' @param plot A vector of integers to specify which plots you would like. The
-#'   default is to print both figures.
-#'   1. bubble plot of length/age composition data by year and sex
-#'   2. distribution by year of length/age compositions data similar to r4ss figure
-#' @param add_0_ylim TRUE/FALSE, option to specificy if the y-axis should start at 0 
-#' or the minimum bin in the composition data file. Default TRUE.
-#' @param width Numeric figure width in inches, defaults to 10
-#' @param height Numeric figure height in inches, defaults to 7
+#'   default is to print or save both figures, i.e., `plot = 1:2`. Integers
+#'   correspond to the following figures:
+#'   1. bubble plot of length-/age-composition data by year and sex and
+#'   2. distribution by year of length-/age-compositions data similar to the
+#'      r4ss figure.
+#' @param add_0_ylim A logical, i.e., `TRUE`/`FALSE`, argument that specifies
+#'   if the y axis should start at 0. If `FALSE`, the y axis will start at the
+#'   minimum bin size used in data. The default is TRUE. This currently only
+#'   pertains to plot 1, not plot 2.
+#' @param width,height Numeric values for the figure width and height in
+#'   inches. The defaults are 10 by 7 inches.
 #'
 #' @import ggplot2
 #' @import reshape2
-#' 
+#'
 #' @author Chantel Wetzel
 #' @export
-#' 
+#'
 #' @examples
 #' \dontrun{ plot_comps(data = LFs)}
 #' 
