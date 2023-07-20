@@ -79,23 +79,6 @@ plot_comps <- function(
     comps <- comps[, !grepl(".", colnames(comps), fixed = TRUE)]
   }
   
-  num <- ncol(comps) / ifelse(sex == 3, 2, 1)
-
-  # add a 0 first column to the comps for plotting
-  if (add_0_ylim) {
-    if (sex %in% 0:2){
-      sex_lab <- substr(names(comps)[1], 1, 1)
-      comps <- cbind(0, comps[, 1:num])
-      colnames(comps)[1] <- paste0(sex_lab, "0")
-    } 
-    if (sex == 3) {
-      comps <- cbind(0, comps[, 1:num], 0, comps[, (num + 1):ncol(comps)])
-      num <- num + 1
-      colnames(comps)[1] <- "F0"
-      colnames(comps)[num + 1] <- "M0"
-    }
-  }
-  
   # Determine if entries are proportions (e.g., sum to 1 or 100)
   # and convert if needed
   if (sum(as.numeric(comps[1, ])) == 100) {
@@ -132,14 +115,23 @@ plot_comps <- function(
 
   igroup <- 1
   if (igroup %in% plot) {
-    p <- ggplot2::ggplot(df, aes(x = year, y = variable)) +
+    p <- ggplot2::ggplot(
+      data = df |> dplyr::filter(value > 0),
+      aes(x = year, y = variable)
+    ) +
         geom_point(aes(size = value, fill = sex, colour = sex), # add alpha = n inside the aes to shade by annual sample size
           alpha = 0.75, shape = 21) +
         scale_fill_manual(values = c('FEMALE' = 'red', 'MALE' = 'blue', 'UNSEXED' = "darkseagreen")) +
         scale_color_manual(values = c('FEMALE' = 'darkred', 'MALE' = 'darkblue', 'UNSEXED' = "darkgreen")) +
-        scale_size_continuous(limits = c(0.1, 50), range = c(1, max_range), breaks = bub_range) + 
+        scale_size_continuous(
+          range = c(1, 15),
+          breaks = bub_range
+        ) +
         facet_grid(sex~.) + 
-        scale_y_continuous(breaks = y_axis) +
+        scale_y_continuous(
+          breaks = y_axis,
+          limits = if (add_0_ylim) {c(0, NA)} else {NULL}
+        ) +
         labs(x = "Year", y = ylabel, size = "Relative\nAbundance (%)", fill = "") +
         theme(legend.key = element_blank(), 
             axis.title.x = element_text (size = 12),
