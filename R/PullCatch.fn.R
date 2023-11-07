@@ -56,6 +56,10 @@
 #' the resulting file to be saved. The directory where the file should be saved.
 #' The name of the file within `Dir` will start with Catch_ and end with .rda.
 #' @template verbose
+#' @param sample_types A character vector of sample types, i.e.,
+#' `"statistical_partition_dim"`, that you would like to keep. The default is
+#' to only keep `NA` values, both real and character NA. But, for some
+#' instances you may want to keep Life Stage and Size samples.
 #'
 #' @author Chantel Wetzel based on code by John Wallace
 #' @export
@@ -86,7 +90,7 @@
 # SurveyName = "NWFSC.Combo")
 #' }
 #'
-PullCatch.fn <- function(Name = NULL, SciName = NULL, YearRange = c(1980, 5000), SurveyName = NULL, SaveFile = FALSE, Dir = NULL, verbose = TRUE) {
+PullCatch.fn <- function(Name = NULL, SciName = NULL, YearRange = c(1980, 5000), SurveyName = NULL, SaveFile = FALSE, Dir = NULL, verbose = TRUE, sample_types = c(NA, "NA", "Life Stage", "Size")[1:2]) {
   if (SurveyName %in% c("NWFSC.Shelf.Rockfish", "NWFSC.Hook.Line")) {
     stop("The catch pull currently does not work for hook & line data.",
       "\nPull directly from the warehouse https://www.webapp.nwfsc.noaa.gov/data")
@@ -196,11 +200,10 @@ PullCatch.fn <- function(Name = NULL, SciName = NULL, YearRange = c(1980, 5000),
   if (sum(fix) > 0) {
     DataPull[fix, "operation_dim$legacy_performance_code"] <- -999
   }
-  # Whether values are NA or "NA" varies based on the presence of "Life Stage" samples
-  if (sum(is.na(DataPull[, "statistical_partition_dim$statistical_partition_type"])) != dim(DataPull)[1]) {
-    keep <- DataPull[, "statistical_partition_dim$statistical_partition_type"] == "NA"
-    DataPull <- DataPull[keep, ]
-  }
+
+  DataPull <- DataPull[
+    DataPull[, "statistical_partition_dim$statistical_partition_type"] %in% sample_types,
+  ]
 
   keep <- DataPull[, "operation_dim$legacy_performance_code"] != 8
   DataPull <- DataPull[keep, ]

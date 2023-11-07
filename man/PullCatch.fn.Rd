@@ -11,7 +11,8 @@ PullCatch.fn(
   SurveyName = NULL,
   SaveFile = FALSE,
   Dir = NULL,
-  verbose = TRUE
+  verbose = TRUE,
+  sample_types = c(NA, "NA", "Life Stage", "Size")[1:2]
 )
 }
 \arguments{
@@ -60,6 +61,11 @@ The name of the file within \code{Dir} will start with Catch_ and end with .rda.
 
 \item{verbose}{A logical that specifies if you want to print messages and
 warnings to the console. The default is \code{TRUE}.}
+
+\item{sample_types}{A character vector of sample types, i.e.,
+\code{"statistical_partition_dim"}, that you would like to keep. The default is
+to only keep \code{NA} values, both real and character NA. But, for some
+instances you may want to keep Life Stage and Size samples.}
 }
 \description{
 Pull catch data from the
