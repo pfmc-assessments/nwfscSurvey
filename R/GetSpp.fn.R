@@ -36,49 +36,47 @@
 GetSpp.fn <- function(species, unident = FALSE) {
 
   # background information
-  sppnames <- PullSpp.fn()
+  sppnames <- nwfscSurvey::PullSpp.fn()
   if (!unident) {
     sppnames <- sppnames[!grepl("unident", sppnames[["common"]]), ]
   }
 
   spplist <- t(data.frame(
-    c("north_south", "shortbelly_rockfish"),
-    c("wa_or", "pacific_cod"),
-    c("ca", "brown_rockfish"),
-    c("ca", "copper_rockfish"),
-    c("coast", "dover_sole"),
-    c("sablefish", "sablefish"),
-    c("coast", "petrale_sole"),
-    c("ca", "bank_rockfish"),
-    c("coast", "pacific_sanddab"),
     c("coast", "arrowtooth_flounder"),
     c("coast", "aurora_rockfish"),
+    c("coast", "big_skate"),
     c("ca", "blackgill_rockfish"),
     c("north_south", "bocaccio"),
     c("coast", "canary_rockfish"),
     c("north_south", "chilipepper"),
+    c("coast", "curlfin_sole"),
     c("coast", "darkblotched_rockfish"),
+    c("coast", "dover_sole"),
     c("coast", "english_sole"),
     c("wa_or", "flathead_sole"),
     c("coast", "greenspotted_rockfish"),
     c("coast", "greenstriped_rockfish"),
     c("coast", "lingcod"),
+    c("coast", "longnose_skate"),
     c("coast", "longspine_thornyhead"),
+    c("wa_or", "pacific_cod"),
+    c("north_south", "pacific_ocean_perch"),
+    c("coast", "pacific_sanddab"),
     c("coast", "pacific_spiny_dogfish"),
+    c("coast", "petrale_sole"),
     c("coast", "redbanded_rockfish"),
     c("coast", "rex_sole"),
+    c("coast", "rosethorn_rockfish"),
     c("coast", "rougheye_rockfish"),
+    c("sablefish", "sablefish"),
     c("coast", "sharpchin_rockfish"),
+    c("north_south", "shortbelly_rockfish"),
     c("coast", "shortspine_thornyhead"),
     c("north_south", "splitnose_rockfish"),
-    c("north_south", "yellowtail_rockfish"),
-    c("coast", "big_skate"),
-    c("coast", "longnose_skate"),
-    c("north_south", "pacific_ocean_perch"),
+    c("coast", "stripetail_rockfish"),
     c("coast", "widow_rockfish"),
-    c("ca", "copper_rockfish"),
-    c("ca", "squarespot_rockfish"),
-    c("coast", "quillback_rockfish")
+    c("coast", "yelloweye_rockfish"),
+    c("north_south", "yellowtail_rockfish")   
   ))
   row.names(spplist) <- NULL
 
