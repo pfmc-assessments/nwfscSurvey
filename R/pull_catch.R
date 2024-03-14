@@ -24,9 +24,9 @@
 #' @template sci_name
 #' @template years
 #' @template survey
-#' @template dir 
+#' @template dir
 #' @template convert
-#' @template verbose 
+#' @template verbose
 #'
 #' @author Chantel Wetzel
 #' @export
@@ -54,23 +54,23 @@
 #'                  "vermilion and sunset rockfish"), survey = "NWFSC.Combo")
 #'
 #' catch_data <- pull_catch(sci_name = c("Sebastes miniatus",
-#'                  "Sebastes sp. (crocotulus)", 
+#'                  "Sebastes sp. (crocotulus)",
 #'                  "Sebastes sp. (miniatus / crocotulus)"),
 #'                  survey = "NWFSC.Combo")
 #' }
 #'
-pull_catch <- function(common_name = NULL, 
-                       sci_name = NULL, 
-                       years = c(1980, 2050), 
-                       survey = NULL, 
-                       dir = NULL, 
+pull_catch <- function(common_name = NULL,
+                       sci_name = NULL,
+                       years = c(1980, 2050),
+                       survey = NULL,
+                       dir = NULL,
                        convert = TRUE,
                        verbose = TRUE) {
 
   if (survey %in% c("NWFSC.Shelf.Rockfish", "NWFSC.Hook.Line")) {
     stop("The catch pull currently does not work for NWFSC Hook & Line Survey data.",
       "\nA subset of the data is available on the data warehouse https://www.webapp.nwfsc.noaa.gov/data",
-      "\nContact John Harms (john.harms@noaa.gov) for the full data set.") 
+      "\nContact John Harms (john.harms@noaa.gov) for the full data set.")
   }
 
   check_dir(dir = dir, verbose = verbose)
@@ -86,7 +86,7 @@ pull_catch <- function(common_name = NULL,
   if (is.null(sci_name) & is.null(common_name)) {
     var_name <- "common_name"
     species <- "pull all"
-  } 
+  }
 
   # Survey options available in the data warehouse
   project_long <- check_survey(survey = survey)
@@ -97,17 +97,17 @@ pull_catch <- function(common_name = NULL,
 
   # Pull data for the specific species for the following variables
   # Can only pull the nested fields (legacy performance and statistical partition) if
-  # the main table fields are specified. Could pull separate and then join which 
+  # the main table fields are specified. Could pull separate and then join which
   # would allow us to eliminate vars_long form the main pull
 
   perf_codes <- c(
-    "operation_dim$legacy_performance_code", 
+    "operation_dim$legacy_performance_code",
     "statistical_partition_dim$statistical_partition_type"
   )
 
   vars_long <- c(
-    "common_name", "scientific_name", "project", "year", "vessel", "tow",      
-    "total_catch_numbers", "total_catch_wt_kg",  
+    "common_name", "scientific_name", "project", "year", "vessel", "tow",
+    "total_catch_numbers", "total_catch_wt_kg",
     "subsample_count", "subsample_wt_kg",  "cpue_kg_per_ha_der",
     perf_codes
   )
@@ -128,7 +128,7 @@ pull_catch <- function(common_name = NULL,
     }
   }
   add_species <- paste0("field_identified_taxonomy_dim$", var_name, "|=[", species_str,"]")
-  
+
   if (any(species == "pull all")) {
     add_species <- ""
   }
@@ -170,8 +170,8 @@ pull_catch <- function(common_name = NULL,
   positive_tows <- positive_tows[, vars_short]
 
   # Pull all tow data including tows where the species was not observed
-  vars_long <- c("project", "year", "vessel", "pass", "tow", "datetime_utc_iso", 
-                 "depth_m", "longitude_dd", "latitude_dd", "area_swept_ha_der", 
+  vars_long <- c("project", "year", "vessel", "pass", "tow", "datetime_utc_iso",
+                 "depth_m", "longitude_dd", "latitude_dd", "area_swept_ha_der",
                  "trawl_id", "operation_dim$legacy_performance_code")
 
   vars_short <- vars_long[vars_long != "operation_dim$legacy_performance_code"]
@@ -181,7 +181,7 @@ pull_catch <- function(common_name = NULL,
                       years = years,
                       vars_long = vars_long)
 
-  all_tows <- try(get_json(url = url_text)) 
+  all_tows <- try(get_json(url = url_text))
 
   # Remove water hauls
   water_hauls <- is.na(all_tows[, "operation_dim$legacy_performance_code"])
@@ -194,7 +194,7 @@ pull_catch <- function(common_name = NULL,
 
   all_tows <- all_tows[
     !duplicated(paste(all_tows$year, all_tows$pass, all_tows$vessel, all_tows$tow)),
-    c("project", "trawl_id", "year", "pass", "vessel", "tow", "datetime_utc_iso", "depth_m", 
+    c("project", "trawl_id", "year", "pass", "vessel", "tow", "datetime_utc_iso", "depth_m",
       "longitude_dd", "latitude_dd", "area_swept_ha_der"
     )
   ]
@@ -202,17 +202,17 @@ pull_catch <- function(common_name = NULL,
   # Link each data set together based on trawl_id
   if (any(species == "pull all")) {
     grid <- expand.grid(
-      "trawl_id" = unique(all_tows$trawl_id), 
+      "trawl_id" = unique(all_tows$trawl_id),
       "common_name" = unique(positive_tows$common_name),
       stringsAsFactors = FALSE
-    )     
+    )
   } else {
     grid <- expand.grid(
-      "trawl_id" = unique(all_tows$trawl_id), 
+      "trawl_id" = unique(all_tows$trawl_id),
       "common_name" = unique(positive_tows$common_name),
       "scientific_name" = unique(positive_tows$scientific_name),
       stringsAsFactors = FALSE
-    )    
+    )
   }
 
   catch_data <- dplyr::left_join(
@@ -240,20 +240,20 @@ pull_catch <- function(common_name = NULL,
     catch[no_area, "area_swept_ha_der"] <- mean(catch$area_swept_ha_der, trim = 0.05, na.rm = TRUE)
   }
 
-  # Fill in zeros where needed 
+  # Fill in zeros where needed
   catch[is.na(catch)] <- 0
 
-  catch$date_formatted <- chron::chron(
-    format(as.POSIXlt(catch$datetime_utc_iso, format = "%Y-%m-%dT%H:%M:%S"), "%Y-%m-%d"), 
+  catch$date <- chron::chron(
+    format(as.POSIXlt(catch$datetime_utc_iso, format = "%Y-%m-%dT%H:%M:%S"), "%Y-%m-%d"),
     format = "y-m-d", out.format = "YYYY-m-d")
 
   catch$trawl_id <- as.character(catch$trawl_id)
   # kg / km2 <- (100 hectare / 1 *km2) * (kg / hectare)
   catch$cpue_kg_km2 <- catch$cpue_kg_per_ha_der * 100
+  colnames(catch)[which(colnames(catch) == "area_swept_ha_der")] <- "area_swept_ha"
 
   if(convert) {
-    catch$Area_Swept_ha <- catch$area_swept_ha_der
-    catch$date <- catch$date_formatted
+
     firstup <- function(x) {
       substr(x, 1, 1) <- toupper(substr(x, 1, 1))
       x
