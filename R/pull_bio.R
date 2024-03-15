@@ -184,18 +184,20 @@ pull_bio <- function(common_name = NULL,
   if (survey %in% c("Triennial", "AFSC.Slope")) {
     if (!is.null(bio_pull) & sum(is.na(bio_pull$age_years)) != length(bio_pull$age_years)) {
       age_data <- bio_pull
+    } else {
+      age_data <- NULL
     }
 
     bio <- list()
     if (is.data.frame(len_pull)) {
-      bio$length_data <- len_pull
+      bio$Lengths <- len_pull
     } else {
-      bio$length_data <- "no_lengths_available"
+      bio$Lengths <- "no_lengths_available"
     }
     if (!is.null(age_data)) {
-      bio$age_data <- age_data
+      bio$Ages <- age_data
     } else {
-      bio$age_data <- "no_ages_available"
+      bio$Ages <- "no_ages_available"
     }
     if (verbose) {
       message("Triennial & AFSC Slope data returned as a list: bio_data$length_data and bio_data$age_data\n")
@@ -203,7 +205,6 @@ pull_bio <- function(common_name = NULL,
   }
 
   if(convert) {
-
     bio$age <- bio$age_years
     bio$weight <- bio$weight_kg
     firstup <- function(x) {
@@ -211,8 +212,14 @@ pull_bio <- function(common_name = NULL,
       x
     }
     if(survey %in% c("Triennial", "AFSC.Slope")){
+      bio[[1]][, "weight"] <- bio[[1]][, "weight_kg"]
       colnames(bio[[1]]) <- firstup(colnames(bio[[1]]))
-      colnames(bio[[2]]) <- firstup(colnames(bio[[2]]))
+
+      if(!is.null(nrow(bio[[2]]))){
+        bio[[2]][, "age"] <- bio[[2]][, "age_years"]
+        bio[[2]][, "weight"] <- bio[[2]][, "weight_kg"]
+        colnames(bio[[2]]) <- firstup(colnames(bio[[2]]))
+      }
     } else {
       colnames(bio) <- firstup(colnames(bio))
     }
