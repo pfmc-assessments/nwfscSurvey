@@ -15,8 +15,8 @@ test_that("PullCatch", {
     Dir = NULL, verbose = TRUE
   )
   expect_is(dat, "data.frame")
-  expect_equal(nrow(dat), 10367)
-  expect_equal(length(which(dat$cpue_kg_km2 == 0)), 6896)
+  expect_equal(nrow(dat), 10351)
+  expect_equal(length(which(dat$cpue_kg_km2 == 0)), 6887)
 })
 
 test_that("pull_catch", {
@@ -30,7 +30,7 @@ test_that("pull_catch", {
     verbose = TRUE
   )
   expect_is(dat, "data.frame")
-  expect_equal(nrow(dat), 10367)
+  expect_equal(nrow(dat), 10351)
 })
 
 test_that("PullCatch-multispecies", {
@@ -43,8 +43,8 @@ test_that("PullCatch-multispecies", {
     Dir = NULL, verbose = TRUE
   )
   expect_is(dat, "data.frame")
-  expect_equal(nrow(dat), 351124)
-  expect_equal(length(which(dat$cpue_kg_km2 == 0)), 331903)
+  expect_equal(nrow(dat), 350126)
+  expect_equal(length(which(dat$cpue_kg_km2 == 0)), 330971)
 })
 
 test_that("pull_catch-multispecies", {
@@ -53,11 +53,11 @@ test_that("pull_catch-multispecies", {
   set.seed(123)
   dat <- pull_catch(
     years = 2017,
-    survey = "NWFSC.Combo", 
+    survey = "NWFSC.Combo",
     verbose = TRUE
   )
   expect_is(dat, "data.frame")
-  expect_equal(nrow(dat), 351124)
+  expect_equal(nrow(dat), 350126)
 })
 
 test_that("PullHaul", {
@@ -70,7 +70,7 @@ test_that("PullHaul", {
     Dir = NULL, verbose = TRUE
   )
   expect_is(dat, "data.frame")
-  expect_equal(nrow(dat), 10377)
+  expect_equal(nrow(dat), 10361)
 })
 
 test_that("PullBio", {
@@ -84,7 +84,7 @@ test_that("PullBio", {
     Dir = NULL, verbose = TRUE
   )
   expect_is(dat, "data.frame")
-  expect_equal(nrow(dat), 3379)
+  expect_equal(nrow(dat), 3363)
 })
 
 test_that("pull_bio", {
@@ -98,7 +98,7 @@ test_that("pull_bio", {
     verbose = TRUE
   )
   expect_is(dat, "data.frame")
-  expect_equal(nrow(dat), 3379)
+  expect_equal(nrow(dat), 3363)
 })
 
 test_that("pull_bio_triennial", {
