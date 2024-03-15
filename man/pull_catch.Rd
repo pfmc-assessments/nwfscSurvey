@@ -110,7 +110,7 @@ catch_data <- pull_catch(common_name = c("vermilion rockfish",
                  "vermilion and sunset rockfish"), survey = "NWFSC.Combo")
 
 catch_data <- pull_catch(sci_name = c("Sebastes miniatus",
-                 "Sebastes sp. (crocotulus)", 
+                 "Sebastes sp. (crocotulus)",
                  "Sebastes sp. (miniatus / crocotulus)"),
                  survey = "NWFSC.Combo")
 }

@@ -9,7 +9,7 @@ This function can be used to pull haul data and associated covariates}
 PullHaul.fn(
   YearRange = c(1980, 5000),
   SurveyName = NULL,
-  SaveFile = FALSE,
+  SaveFile = lifecycle::deprecated(),
   Dir = NULL,
   verbose = TRUE
 )
@@ -21,7 +21,8 @@ PullHaul.fn(
 Triennial, AFSC.Slope, NWFSC.Combo, NWFSC.Slope, NWFSC.Shelf, NWFSC.Hypoxia,
 NWFSC.Santa.Barb.Basin, NWFSC.Shelf.Rockfish (NWFSC.Hook.Line but both are not working), NWFSC.Video#'}
 
-\item{SaveFile}{option to save the file to the directory}
+\item{SaveFile}{Deprecated with {nwfscSurvey} 2.3. Output will be save automatically
+if the Dir input is specified.}
 
 \item{Dir}{directory where the file should be saved}
 
