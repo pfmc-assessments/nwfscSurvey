@@ -1,25 +1,33 @@
-#' This function plots frequency data as bubble plots
+#' Plot frequency data as bubble plots
 #'
-#' @param dir Directory to save files to
-#' @param data Data file object created by SS3LF.fn or SS3AF.fn
-#' @param add_save_name Option to add text to a saved figure name. This option can
-#' be useful if creating plots across multiple species and saving them into a single
-#' folder. Default NULL.
+#' @param dir Directory to save files to. The default is `NULL`, which leads to
+#'   the figures being printed to the screen rather than saved. If a path is
+#'   provided, then the figures will only be saved, i.e., not printed.
+#' @param data Data file object created by [SurveyLF.fn()] or [SurveyAF.fn()].
+#' @param add_save_name Option to add text to a saved figure name. This option
+#'   can be useful if creating plots across multiple species and saving them
+#'   into a single folder. The default is `NULL`. Note that the data type,
+#'   i.e., age or length, and sex type are already included in the saved name
+#'   so no need to add those here.
 #' @param plot A vector of integers to specify which plots you would like. The
-#'   default is to print both figures.
-#'   1. bubble plot of length/age composition data by year and sex
-#'   2. distribution by year of length/age compositions data similar to r4ss figure
-#' @param add_0_ylim TRUE/FALSE, option to specificy if the y-axis should start at 0 
-#' or the minimum bin in the composition data file. Default TRUE.
-#' @param width Numeric figure width in inches, defaults to 10
-#' @param height Numeric figure height in inches, defaults to 7
+#'   default is to print or save both figures, i.e., `plot = 1:2`. Integers
+#'   correspond to the following figures:
+#'   1. bubble plot of length-/age-composition data by year and sex and
+#'   2. distribution by year of length-/age-compositions data similar to the
+#'      r4ss figure.
+#' @param add_0_ylim A logical, i.e., `TRUE`/`FALSE`, argument that specifies
+#'   if the y axis should start at 0. If `FALSE`, the y axis will start at the
+#'   minimum bin size used in data. The default is TRUE. This currently only
+#'   pertains to plot 1, not plot 2.
+#' @param width,height Numeric values for the figure width and height in
+#'   inches. The defaults are 10 by 7 inches.
 #'
 #' @import ggplot2
 #' @import reshape2
-#' 
+#'
 #' @author Chantel Wetzel
 #' @export
-#' 
+#'
 #' @examples
 #' \dontrun{ plot_comps(data = LFs)}
 #' 
@@ -79,23 +87,6 @@ plot_comps <- function(
     comps <- comps[, !grepl(".", colnames(comps), fixed = TRUE)]
   }
   
-  num <- ncol(comps) / ifelse(sex == 3, 2, 1)
-
-  # add a 0 first column to the comps for plotting
-  if (add_0_ylim) {
-    if (sex %in% 0:2){
-      sex_lab <- substr(names(comps)[1], 1, 1)
-      comps <- cbind(0, comps[, 1:num])
-      colnames(comps)[1] <- paste0(sex_lab, "0")
-    } 
-    if (sex == 3) {
-      comps <- cbind(0, comps[, 1:num], 0, comps[, (num + 1):ncol(comps)])
-      num <- num + 1
-      colnames(comps)[1] <- "F0"
-      colnames(comps)[num + 1] <- "M0"
-    }
-  }
-  
   # Determine if entries are proportions (e.g., sum to 1 or 100)
   # and convert if needed
   if (sum(as.numeric(comps[1, ])) == 100) {
@@ -132,14 +123,23 @@ plot_comps <- function(
 
   igroup <- 1
   if (igroup %in% plot) {
-    p <- ggplot2::ggplot(df, aes(x = year, y = variable)) +
+    p <- ggplot2::ggplot(
+      data = df |> dplyr::filter(value > 0),
+      aes(x = year, y = variable)
+    ) +
         geom_point(aes(size = value, fill = sex, colour = sex), # add alpha = n inside the aes to shade by annual sample size
           alpha = 0.75, shape = 21) +
         scale_fill_manual(values = c('FEMALE' = 'red', 'MALE' = 'blue', 'UNSEXED' = "darkseagreen")) +
         scale_color_manual(values = c('FEMALE' = 'darkred', 'MALE' = 'darkblue', 'UNSEXED' = "darkgreen")) +
-        scale_size_continuous(limits = c(0.1, 50), range = c(1, max_range), breaks = bub_range) + 
+        scale_size_continuous(
+          range = c(1, 15),
+          breaks = bub_range
+        ) +
         facet_grid(sex~.) + 
-        scale_y_continuous(breaks = y_axis) +
+        scale_y_continuous(
+          breaks = y_axis,
+          limits = if (add_0_ylim) {c(0, NA)} else {NULL}
+        ) +
         labs(x = "Year", y = ylabel, size = "Relative\nAbundance (%)", fill = "") +
         theme(legend.key = element_blank(), 
             axis.title.x = element_text (size = 12),
@@ -152,10 +152,12 @@ plot_comps <- function(
             panel.border = element_rect(colour = "black", fill = NA, linewidth = 1), 
             legend.position = "right") +
         guides(size = "legend", color = "none", fill = "none")  
-    print(p) 
-
-    if (!is.null(dir)){
-        ggsave(filename = plot_names[1], width = width, height = height, units = 'in')     
+    if (!is.null(dir)) {
+      ggsave(filename = plot_names[1], plot = p,
+        width = width, height = height, units = "in"
+      )
+    } else {
+      print(p)
     }
   }
 
@@ -183,11 +185,13 @@ plot_comps <- function(
             panel.background = element_blank(), 
             panel.border = element_rect(colour = "black", fill = NA, linewidth = 1), 
             legend.position = "right")
-    print(p2) 
-
-    if (!is.null(dir)){
-        ggsave(filename = plot_names[2], width = width, height = height, units = 'in')     
-    } 
+    if (!is.null(dir)) {
+      ggsave(filename = plot_names[2], plot = p2,
+        width = width, height = height, units = "in"
+      )
+    } else {
+      print(p2)
+    }
   }
         
 }

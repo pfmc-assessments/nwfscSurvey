@@ -11,43 +11,41 @@
 #' @examples
 #' GetSppDefault.fn()
 GetSppDefault.fn <- function() {
-  sp.list <- c(
-    "shortbelly_rockfish",
-    "pacific_cod",
-    "brown_rockfish",
-    "copper_rockfish",
-    "dover_sole",
-    "sablefish",
-    "petrale_sole",
-    "bank_rockfish",
-    "pacific_sanddab",
+  sp.list <- c(   
     "arrowtooth_flounder",
     "aurora_rockfish",
+    "big_skate",
     "blackgill_rockfish",
     "bocaccio",
     "canary_rockfish",
     "chilipepper",
+    "curlfin_sole",
     "darkblotched_rockfish",
+    "dover_sole",
     "english_sole",
     "flathead_sole",
     "greenspotted_rockfish",
     "greenstriped_rockfish",
     "lingcod",
+    "longnose_skate",
     "longspine_thornyhead",
+    "pacific_cod",
+    "pacific_ocean_perch",
+    "pacific_sanddab",
     "pacific_spiny_dogfish",
+    "petrale_sole",
     "redbanded_rockfish",
     "rex_sole",
+    "rosethorn_rockfish",
     "rougheye_rockfish",
+    "sablefish",
     "sharpchin_rockfish",
     "shortspine_thornyhead",
     "splitnose_rockfish",
-    "yellowtail_rockfish",
-    "big_skate",
-    "longnose_skate",
-    "pacific_ocean_perch",
+    "stripetail_rockfish",
     "widow_rockfish",
-    "squarespot_rockfish",
-    "quillback_rockfish"
+    "yelloweye_rockfish",
+    "yellowtail_rockfish"
   )
   sp.list <- sp.list[order(sp.list)]
 

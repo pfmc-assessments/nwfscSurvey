@@ -9,7 +9,9 @@
 #' 183, 200, 250, 300, 350, 400, 450, 500, 549, 600, 700, 800, 900, 1000,
 #' 1100, 1200, 1280), where the unevenly spaced values are due to depth
 #' boundaries associated with the strata used in the survey sampling design.
-#'
+#' A latitude break at 40.166667 has also been added to allow strata split
+#' at that common management boundary near Cape Mendocino.
+#' 
 #' @examples
 #' areaexample <- StrataAreas.fn(data.frame(
 #'   name = LETTERS[1:8],

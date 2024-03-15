@@ -43,8 +43,11 @@
 #'   * NWFSC.Shelf,
 #'   * NWFSC.Hypoxia,
 #'   * NWFSC.Santa.Barb.Basin,
-#'   * NWFSC.Shelf.Rockfish (NWFSC.Hook.Line but both are not working),
-#'   * NWFSC.Video.
+#'   * NWFSC.Shelf.Rockfish (not yet working),
+#'   * NWFSC.Hook.Line (not yet working),
+#'   * NWFSC.Video,
+#'   * Triennial.Canada
+#' 
 #' Currently, you must pull data one survey at a time, though we are working on
 #' allowing for a vector of survey names and
 #' `NWFSC.Shelf.Rockfish` and `NWFSC.Hook.Line` are not supported.

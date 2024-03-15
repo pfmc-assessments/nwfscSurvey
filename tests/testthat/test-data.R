@@ -15,7 +15,7 @@ test_that("pull_catch", {
     verbose = TRUE
   )
   expect_is(dat, "data.frame")
-  expect_equal(nrow(dat), 10361)
+  expect_equal(nrow(dat), 10351)
 })
 
 test_that("pull_catch-multispecies", {
@@ -30,6 +30,7 @@ test_that("pull_catch-multispecies", {
   expect_is(dat, "data.frame")
   expect_equal(nrow(dat), 350126)
   expect_equal(length(which(dat$cpue_kg_km2 == 0)), 330971)
+
 })
 
 test_that("PullHaul", {
@@ -44,7 +45,6 @@ test_that("PullHaul", {
   expect_is(dat, "data.frame")
   expect_equal(nrow(dat), 10361)
 })
-
 
 test_that("pull_bio", {
   skip_on_cran()

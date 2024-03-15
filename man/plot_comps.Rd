@@ -2,7 +2,7 @@
 % Please edit documentation in R/plot_comps.R
 \name{plot_comps}
 \alias{plot_comps}
-\title{This function plots frequency data as bubble plots}
+\title{Plot frequency data as bubble plots}
 \usage{
 plot_comps(
   data,
@@ -15,30 +15,37 @@ plot_comps(
 )
 }
 \arguments{
-\item{data}{Data file object created by SS3LF.fn or SS3AF.fn}
+\item{data}{Data file object created by \code{\link[=SurveyLF.fn]{SurveyLF.fn()}} or \code{\link[=SurveyAF.fn]{SurveyAF.fn()}}.}
 
-\item{dir}{Directory to save files to}
+\item{dir}{Directory to save files to. The default is \code{NULL}, which leads to
+the figures being printed to the screen rather than saved. If a path is
+provided, then the figures will only be saved, i.e., not printed.}
 
-\item{add_save_name}{Option to add text to a saved figure name. This option can
-be useful if creating plots across multiple species and saving them into a single
-folder. Default NULL.}
+\item{add_save_name}{Option to add text to a saved figure name. This option
+can be useful if creating plots across multiple species and saving them
+into a single folder. The default is \code{NULL}. Note that the data type,
+i.e., age or length, and sex type are already included in the saved name
+so no need to add those here.}
 
 \item{plot}{A vector of integers to specify which plots you would like. The
-default is to print both figures.
+default is to print or save both figures, i.e., \code{plot = 1:2}. Integers
+correspond to the following figures:
 \enumerate{
-\item bubble plot of length/age composition data by year and sex
-\item distribution by year of length/age compositions data similar to r4ss figure
+\item bubble plot of length-/age-composition data by year and sex and
+\item distribution by year of length-/age-compositions data similar to the
+r4ss figure.
 }}
 
-\item{add_0_ylim}{TRUE/FALSE, option to specificy if the y-axis should start at 0
-or the minimum bin in the composition data file. Default TRUE.}
+\item{add_0_ylim}{A logical, i.e., \code{TRUE}/\code{FALSE}, argument that specifies
+if the y axis should start at 0. If \code{FALSE}, the y axis will start at the
+minimum bin size used in data. The default is TRUE. This currently only
+pertains to plot 1, not plot 2.}
 
-\item{width}{Numeric figure width in inches, defaults to 10}
-
-\item{height}{Numeric figure height in inches, defaults to 7}
+\item{width, height}{Numeric values for the figure width and height in
+inches. The defaults are 10 by 7 inches.}
 }
 \description{
-This function plots frequency data as bubble plots
+Plot frequency data as bubble plots
 }
 \examples{
 \dontrun{ plot_comps(data = LFs)}
