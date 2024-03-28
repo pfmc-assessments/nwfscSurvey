@@ -31,6 +31,30 @@ test_that("pull_catch-multispecies", {
   expect_equal(nrow(dat), 350126)
   expect_equal(length(which(dat$cpue_kg_km2 == 0)), 330971)
 
+  dat_lingcod <- pull_catch(
+    common_name = "lingcod",
+    years = c(2017),
+    survey = "NWFSC.Combo",
+    verbose = TRUE
+  )
+  dat_lingcod_sablefish <- pull_catch(
+    common_name = c("lingcod", "sablefish"),
+    years = c(2017),
+    survey = "NWFSC.Combo",
+    verbose = TRUE
+  )
+  expect_equal(
+    NROW(dplyr::filter(dat, Common_name == "lingcod")),
+    NROW(dat_lingcod),
+    label = "entries of all species filtered for lingcod",
+    expected.label = "entries of lingcod"
+  )
+  expect_equal(
+    NROW(dplyr::filter(dat_lingcod_sablefish, Common_name == "lingcod")),
+    NROW(dat_lingcod),
+    label = "entries of 2 species filtered for lingcod",
+    expected.label = "entries of lingcod"
+  )
 })
 
 test_that("PullHaul", {
