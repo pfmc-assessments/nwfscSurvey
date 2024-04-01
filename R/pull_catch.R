@@ -200,20 +200,11 @@ pull_catch <- function(common_name = NULL,
   ]
 
   # Link each data set together based on trawl_id
-  if (any(species == "pull all")) {
-    grid <- expand.grid(
-      "trawl_id" = unique(all_tows$trawl_id),
-      "common_name" = unique(positive_tows$common_name),
-      stringsAsFactors = FALSE
-    )
-  } else {
-    grid <- expand.grid(
-      "trawl_id" = unique(all_tows$trawl_id),
-      "common_name" = unique(positive_tows$common_name),
-      "scientific_name" = unique(positive_tows$scientific_name),
-      stringsAsFactors = FALSE
-    )
-  }
+  grid <- expand.grid(
+    "trawl_id" = unique(all_tows$trawl_id),
+    "common_name" = unique(positive_tows$common_name),
+    stringsAsFactors = FALSE
+  )
 
   catch_data <- dplyr::left_join(
     grid,
@@ -227,6 +218,15 @@ pull_catch <- function(common_name = NULL,
     by = intersect(colnames(catch_data), colnames(positive_tows)),
     multiple = "all"
   )
+
+  # Fill in the scientific name for tows with 0 catch by species
+  # could not find a way to do this via tidyr::complete
+  if (sum(is.na(catch[, "scientific_name"])) > 0) {
+    for(cn in unique(catch[, "common_name"])){
+      add_name <- unique(catch[which(catch$common_name == cn & !is.na(catch$scientific_name)), "scientific_name"])
+      catch[which(catch$common_name == cn), "scientific_name"] <- add_name
+    }
+  }
 
   # Need to check what this is doing
   no_area <- which(is.na(catch$area_swept_ha_der))
