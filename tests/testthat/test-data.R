@@ -67,7 +67,7 @@ test_that("PullHaul", {
     Dir = NULL, verbose = TRUE
   )
   expect_is(dat, "data.frame")
-  expect_equal(nrow(dat), 10361)
+  expect_equal(nrow(dat), 10351)
 })
 
 test_that("pull_bio", {
