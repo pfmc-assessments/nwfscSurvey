@@ -78,8 +78,7 @@ pull_catch <- function(common_name = NULL,
   if (is.null(common_name)) {
     var_name <- "scientific_name"
     species <- sci_name
-  }
-  if (is.null(sci_name)) {
+  } else {
     var_name <- "common_name"
     species <- common_name
   }
