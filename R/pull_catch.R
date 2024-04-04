@@ -115,17 +115,7 @@ pull_catch <- function(common_name = NULL,
   vars_short <- vars_long[!vars_long %in% perf_codes]
 
   # symbols here are generally: %22 = ", %2C = ",", %20 = " "
-  species_str <- paste0(
-    "%22",stringr::str_replace_all(species[1]," ","%20"),"%22"
-  )
-
-  if(length(species) > 1) {
-    for(i in 2:length(species)) {
-      species_str <- paste0(
-        species_str, "%2C", paste0(
-        "%22",stringr::str_replace_all(species[i]," ","%20"),"%22"))
-    }
-  }
+  species_str <- convert_to_hex_string(species)
   add_species <- paste0("field_identified_taxonomy_dim$", var_name, "|=[", species_str,"]")
 
   if (any(species == "pull all")) {
