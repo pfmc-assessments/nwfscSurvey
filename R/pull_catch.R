@@ -158,6 +158,11 @@ pull_catch <- function(common_name = NULL,
   positive_tows <- positive_tows[good_tows, ]
   positive_tows <- positive_tows[, vars_short]
 
+  if(sum(is.na(positive_tows[, "common_name"])) > 0) {
+    replace <- which(is.na(positive_tows[, "common_name"]))
+    positive_tows[replace, "common_name"] <- positive_tows[replace, "scientific_name"]
+  }
+
   # Pull all tow data including tows where the species was not observed
   vars_long <- c("project", "year", "vessel", "pass", "tow", "datetime_utc_iso",
                  "depth_m", "longitude_dd", "latitude_dd", "area_swept_ha_der",
@@ -183,39 +188,52 @@ pull_catch <- function(common_name = NULL,
 
   all_tows <- all_tows[
     !duplicated(paste(all_tows$year, all_tows$pass, all_tows$vessel, all_tows$tow)),
-    c("project", "trawl_id", "year", "pass", "vessel", "tow", "datetime_utc_iso", "depth_m",
-      "longitude_dd", "latitude_dd", "area_swept_ha_der"
-    )
+    #c("project", "trawl_id", "year", "pass", "vessel", "tow", "datetime_utc_iso", "depth_m",
+    #  "longitude_dd", "latitude_dd", "area_swept_ha_der"
+    #)
   ]
 
-  # Link each data set together based on trawl_id
-  grid <- expand.grid(
-    "trawl_id" = unique(all_tows$trawl_id),
-    "common_name" = unique(positive_tows$common_name),
-    stringsAsFactors = FALSE
+  positive_tows_grouped <- dplyr::group_by(
+    .data = positive_tows,
+    common_name, scientific_name
   )
+  # Split positive_tows into 1 data frame for each combination of common_name
+  # and scientific_name and store in a named list for purrr::map()
+  positive_tows_split <- dplyr::group_split(positive_tows_grouped)
+  group_names <- dplyr::group_keys(positive_tows_grouped)
+  names(positive_tows_split) <- tidyr::unite(group_names, col = "groups") |>
+    dplyr::pull(groups)
 
-  catch_data <- dplyr::left_join(
-    grid,
-    all_tows,
-    by = intersect(colnames(grid), colnames(all_tows)),
-    multiple = "all"
-  )
-  catch <- dplyr::left_join(
-    catch_data,
-    positive_tows,
-    by = intersect(colnames(catch_data), colnames(positive_tows)),
-    multiple = "all"
-  )
+  # For each data frame in the large list, find the tows that are not present
+  # in positive_tows and join them into a single data frame
+  # Give them the appropriate common and scientific names using .id then split
+  # the concatenated column out into the two original columns
+  names_intersect <- intersect(colnames(all_tows), colnames(positive_tows))
+  zero_tows <- purrr::map_df(
+    .x = positive_tows_split,
+    .f = \(y) dplyr::anti_join(x = all_tows, y = y, by = names_intersect),
+    .id = "groups"
+  ) |>
+    tidyr::separate_wider_delim(
+      cols = "groups",
+      delim = "_",
+      names = colnames(group_names)
+    )
 
-  # Fill in the scientific name for tows with 0 catch by species
-  # could not find a way to do this via tidyr::complete
-  if (sum(is.na(catch[, "scientific_name"])) > 0) {
-    for(cn in unique(catch[, "common_name"])){
-      add_name <- unique(catch[which(catch$common_name == cn & !is.na(catch$scientific_name)), "scientific_name"])
-      catch[which(catch$common_name == cn), "scientific_name"] <- add_name
-    }
-  }
+  # Join the positive tows with the tow information
+  positive_tows_with_tow_info <- dplyr::left_join(
+    x = positive_tows,
+    y = all_tows,
+    by = intersect(colnames(all_tows), colnames(positive_tows))
+  )
+  # Join the augmented positive tow information with the zero tows
+  # arrange by common_name and tow_id
+  catch <- dplyr::full_join(
+    x = positive_tows_with_tow_info,
+    y = zero_tows,
+    by = c(colnames(group_names), colnames(all_tows))
+  ) |>
+    dplyr::arrange(common_name, trawl_id)
 
   # Need to check what this is doing
   no_area <- which(is.na(catch$area_swept_ha_der))
