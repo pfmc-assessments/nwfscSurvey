@@ -28,8 +28,8 @@ test_that("pull_catch-multispecies", {
     verbose = TRUE
   )
   expect_is(dat, "data.frame")
-  expect_equal(nrow(dat), 350126)
-  expect_equal(length(which(dat$cpue_kg_km2 == 0)), 330971)
+  expect_equal(nrow(dat), 392705)
+  expect_equal(length(which(dat$cpue_kg_km2 == 0)), 373550)
 
   dat_lingcod <- pull_catch(
     common_name = "lingcod",
