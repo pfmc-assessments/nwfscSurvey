@@ -55,6 +55,16 @@ test_that("pull_catch-multispecies", {
     label = "entries of 2 species filtered for lingcod",
     expected.label = "entries of lingcod"
   )
+  dat_lingcod_anoplopoma <- pull_catch(
+    common_name = "lingcod",
+    sci_name = "Anoplopoma fimbria",
+    survey = "NWFSC.Combo",
+    years = 2017
+  )
+  expect_equal(
+    NROW(dat_lingcod_sablefish),
+    NROW(dat_lingcod_anoplopoma)
+  )
 })
 
 test_that("PullHaul", {
