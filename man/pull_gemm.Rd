@@ -23,7 +23,8 @@ e.g., vermilion rockfish (see the example below).
 Use the \code{sci_name} argument if you know the latin name.}
 
 \item{years}{An integer vector of length two with the
-range of years to pull data for.}
+range of years to pull data for (e.g., c(2003, 2024)).
+Vector can not contain -Inf or Inf.}
 
 \item{dir}{directory where ouptut will be saved. The directory where the file should be saved.
 If dir = NULL no output will be saved.}
