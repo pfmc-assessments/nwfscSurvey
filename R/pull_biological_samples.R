@@ -31,6 +31,11 @@ pull_biological_samples <- function(common_name = NULL,
   # increase the timeout period to avoid errors when pulling data
   options(timeout = 4000000)
 
+  if(length(c(common_name, sci_name)) != max(c(length(common_name), length(sci_name)))){
+    stop("Can not pull data using both the common_name or sci_name together.
+         \n Please retry using only one." )
+  }
+
   check_dir(dir = dir, verbose = verbose)
 
   project_long <- check_survey(survey = survey)

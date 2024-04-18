@@ -19,8 +19,8 @@
 #' haul_data <- pull_haul()
 #' }
 #'
-pull_haul <- function(years= c(1980, 2050),
-                      survey = NULL,
+pull_haul <- function(years= c(1970, 2050),
+                      survey,
                       dir = NULL,
                       verbose = TRUE) {
 

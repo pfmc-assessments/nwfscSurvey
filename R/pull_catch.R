@@ -61,8 +61,8 @@
 #'
 pull_catch <- function(common_name = NULL,
                        sci_name = NULL,
-                       years = c(1980, 2050),
-                       survey = NULL,
+                       years = c(1970, 2050),
+                       survey,
                        dir = NULL,
                        convert = TRUE,
                        verbose = TRUE) {
@@ -71,6 +71,11 @@ pull_catch <- function(common_name = NULL,
     stop("The catch pull currently does not work for NWFSC Hook & Line Survey data.",
       "\nA subset of the data is available on the data warehouse https://www.webapp.nwfsc.noaa.gov/data",
       "\nContact John Harms (john.harms@noaa.gov) for the full data set.")
+  }
+
+  if(length(c(common_name, sci_name)) != max(c(length(common_name), length(sci_name)))){
+    stop("Can not pull data using both the common_name or sci_name together.
+         \n Please retry using only one." )
   }
 
   check_dir(dir = dir, verbose = verbose)
