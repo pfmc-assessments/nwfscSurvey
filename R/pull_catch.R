@@ -134,10 +134,8 @@ pull_catch <- function(common_name = NULL,
 
   # Pull data from positive tows for selected species
   positive_tows <- try(get_json(url = url_text))
-  if (!is.data.frame(positive_tows)) {
-    stop(cat("\nNo data returned by the warehouse for the filters given.
-              \n Make sure the year range is correct for the project selected and the input name is correct,
-              \n otherwise there may be no data for this species from this project.\n"))
+  if(!is.data.frame(positive_tows)){
+    stop()
   }
 
   # Remove water hauls
