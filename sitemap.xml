@@ -142,6 +142,9 @@
     <loc>/reference/codify_sex.html</loc>
   </url>
   <url>
+    <loc>/reference/convert_to_hex_string.html</loc>
+  </url>
+  <url>
     <loc>/reference/createMatrix.html</loc>
   </url>
   <url>
@@ -203,6 +206,9 @@
   </url>
   <url>
     <loc>/reference/pull_haul.html</loc>
+  </url>
+  <url>
+    <loc>/reference/pull_spp.html</loc>
   </url>
   <url>
     <loc>/reference/save_rdata.html</loc>

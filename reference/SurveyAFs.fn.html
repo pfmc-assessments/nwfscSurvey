@@ -6,21 +6,7 @@ add additional options of when to apply the sex ratio, and correct some treatmen
 weighted by sample size and area
 NOTE: The age bin called F0 or M0 is retained to show proportion of ages smaller than smallest bin
 You will want to likely add this to your first age bin and delete this before putting in SS, or
-start the ageBins argument at the 2nd age bin and F0 will be all fish smaller (hence the first age bin)"><title>Expands the ages up to the total stratum area then sums over strata
-Original Version Written by Allan Hicks 16 March 2009
-Modified by Chantel Wetzel to work with the data warehouse data formatting,
-add additional options of when to apply the sex ratio, and correct some treatment of unsexed fish
-weighted by sample size and area
-NOTE: The age bin called F0 or M0 is retained to show proportion of ages smaller than smallest bin
-You will want to likely add this to your first age bin and delete this before putting in SS, or
-start the ageBins argument at the 2nd age bin and F0 will be all fish smaller (hence the first age bin) — SurveyAFs.fn • nwfscSurvey</title><script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"><link href="../deps/bootstrap-5.3.1/bootstrap.min.css" rel="stylesheet"><script src="../deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous"><!-- bootstrap-toc --><script src="https://cdn.jsdelivr.net/gh/afeld/bootstrap-toc@v1.0.1/dist/bootstrap-toc.min.js" integrity="sha256-4veVQbu7//Lk5TSmc7YV48MxtMy98e26cf5MrgZYnwo=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- search --><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.38.0/autocomplete.jquery.min.js" integrity="sha512-GU9ayf+66Xx2TmpxqJpliWbT5PiGYxpaG8rfnBEk1LL8l1KGkRShhngwdXK1UgqhAzWpZHSiYPc09/NwDQIGyg==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="Expands the ages up to the total stratum area then sums over strata
-Original Version Written by Allan Hicks 16 March 2009
-Modified by Chantel Wetzel to work with the data warehouse data formatting,
-add additional options of when to apply the sex ratio, and correct some treatment of unsexed fish
-weighted by sample size and area
-NOTE: The age bin called F0 or M0 is retained to show proportion of ages smaller than smallest bin
-You will want to likely add this to your first age bin and delete this before putting in SS, or
-start the ageBins argument at the 2nd age bin and F0 will be all fish smaller (hence the first age bin) — SurveyAFs.fn"><meta property="og:description" content="Expands the ages up to the total stratum area then sums over strata
+start the ageBins argument at the 2nd age bin and F0 will be all fish smaller (hence the first age bin)"><title>Expands the ages up to the total stratum area then sums over strata Original Version Written by Allan Hicks 16 March 2009 Modified by Chantel Wetzel to work with the data warehouse data formatting, add additional options of when to apply the sex ratio, and correct some treatment of unsexed fish weighted by sample size and area NOTE: The age bin called F0 or M0 is retained to show proportion of ages smaller than smallest bin You will want to likely add this to your first age bin and delete this before putting in SS, or start the ageBins argument at the 2nd age bin and F0 will be all fish smaller (hence the first age bin) — SurveyAFs.fn • nwfscSurvey</title><script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"><link href="../deps/bootstrap-5.3.1/bootstrap.min.css" rel="stylesheet"><script src="../deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous"><!-- bootstrap-toc --><script src="https://cdn.jsdelivr.net/gh/afeld/bootstrap-toc@v1.0.1/dist/bootstrap-toc.min.js" integrity="sha256-4veVQbu7//Lk5TSmc7YV48MxtMy98e26cf5MrgZYnwo=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.11/clipboard.min.js" integrity="sha512-7O5pXpc0oCRrxk8RUfDYFgn0nO1t+jLuIOQdOMRp4APB7uZ4vSjspzp5y6YDtDs4VzUSTbWzBFZ/LKJhnyFOKw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script><!-- search --><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.38.0/autocomplete.jquery.min.js" integrity="sha512-GU9ayf+66Xx2TmpxqJpliWbT5PiGYxpaG8rfnBEk1LL8l1KGkRShhngwdXK1UgqhAzWpZHSiYPc09/NwDQIGyg==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="Expands the ages up to the total stratum area then sums over strata Original Version Written by Allan Hicks 16 March 2009 Modified by Chantel Wetzel to work with the data warehouse data formatting, add additional options of when to apply the sex ratio, and correct some treatment of unsexed fish weighted by sample size and area NOTE: The age bin called F0 or M0 is retained to show proportion of ages smaller than smallest bin You will want to likely add this to your first age bin and delete this before putting in SS, or start the ageBins argument at the 2nd age bin and F0 will be all fish smaller (hence the first age bin) — SurveyAFs.fn"><meta property="og:description" content="Expands the ages up to the total stratum area then sums over strata
 Original Version Written by Allan Hicks 16 March 2009
 Modified by Chantel Wetzel to work with the data warehouse data formatting,
 add additional options of when to apply the sex ratio, and correct some treatment of unsexed fish
@@ -34,7 +20,7 @@ start the ageBins argument at the 2nd age bin and F0 will be all fish smaller (h
     <a href="#main" class="visually-hidden-focusable">Skip to contents</a>
     
 
-    <nav class="navbar fixed-top navbar-light navbar-expand-lg bg-light"><div class="container">
+    <nav class="navbar fixed-top navbar-light navbar-expand-lg bg-light" data-bs-theme="light"><div class="container">
     
     <a class="navbar-brand me-2" href="../index.html">nwfscSurvey</a>
 
@@ -65,14 +51,7 @@ start the ageBins argument at the 2nd age bin and F0 will be all fish smaller (h
 </nav><div class="container template-reference-topic">
 <div class="row">
   <main id="main" class="col-md-9"><div class="page-header">
-      <img src="" class="logo" alt=""><h1>Expands the ages up to the total stratum area then sums over strata
-Original Version Written by Allan Hicks 16 March 2009
-Modified by Chantel Wetzel to work with the data warehouse data formatting,
-add additional options of when to apply the sex ratio, and correct some treatment of unsexed fish
-weighted by sample size and area
-NOTE: The age bin called F0 or M0 is retained to show proportion of ages smaller than smallest bin
-You will want to likely add this to your first age bin and delete this before putting in SS, or
-start the ageBins argument at the 2nd age bin and F0 will be all fish smaller (hence the first age bin)</h1>
+      <img src="" class="logo" alt=""><h1>Expands the ages up to the total stratum area then sums over strata Original Version Written by Allan Hicks 16 March 2009 Modified by Chantel Wetzel to work with the data warehouse data formatting, add additional options of when to apply the sex ratio, and correct some treatment of unsexed fish weighted by sample size and area NOTE: The age bin called F0 or M0 is retained to show proportion of ages smaller than smallest bin You will want to likely add this to your first age bin and delete this before putting in SS, or start the ageBins argument at the 2nd age bin and F0 will be all fish smaller (hence the first age bin)</h1>
       
       <div class="d-none name"><code>SurveyAFs.fn.Rd</code></div>
     </div>
@@ -231,11 +210,11 @@ warnings to the console. The default is <code>TRUE</code>.</p></dd>
 
 
     <footer><div class="pkgdown-footer-left">
-  <p></p><p>Developed by Chantel R. Wetzel, Kelli F. Johnson, Allan C. Hicks.</p>
+  <p>Developed by Chantel R. Wetzel, Kelli F. Johnson, Allan C. Hicks.</p>
 </div>
 
 <div class="pkgdown-footer-right">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.9.</p>
 </div>
 
     </footer></div>
