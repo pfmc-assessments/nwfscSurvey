@@ -12,7 +12,7 @@ PullBio.fn(
   SciName = NULL,
   YearRange = c(1980, 5000),
   SurveyName = NULL,
-  SaveFile = FALSE,
+  SaveFile = lifecycle::deprecated(),
   Dir = NULL,
   verbose = TRUE
 )
@@ -28,9 +28,12 @@ PullBio.fn(
 Triennial, AFSC.Slope, NWFSC.Combo, NWFSC.Slope, NWFSC.Shelf, NWFSC.Hypoxia,
 NWFSC.Santa.Barb.Basin, NWFSC.Shelf.Rockfish (NWFSC.Hook.Line but both are not working), NWFSC.Video#'}
 
-\item{SaveFile}{option to save the file to the directory}
+\item{SaveFile}{Deprecated with {nwfscSurvey} 2.3. Output will be save automatically
+if the Dir input is specified.}
 
-\item{Dir}{directory where the file should be saved}
+\item{Dir}{The directory where you want the output file to be saved.
+The name of the file within \code{Dir} will start with Catch_ and end with .rdata.
+Default NULL which will not save an output file.}
 
 \item{verbose}{A logical that specifies if you want to print messages and
 warnings to the console. The default is \code{TRUE}.}
@@ -44,19 +47,19 @@ In order to pull all species leave Name = NULL and SciName = NULL
 \examples{
 \dontrun{
 # SurveyName is only arg that has to be specified
-bio_dat <- PullBio.fn(SurveyName = "NWFSC.Combo")
+ bio_dat <- PullBio.fn(SurveyName = "NWFSC.Combo")
 
 # Example with specified common name
-bio_dat <- PullBio.fn(Name = "vermilion rockfish",
-SurveyName = "NWFSC.Combo")
+ bio_dat <- PullBio.fn(Name = "vermilion rockfish",
+   SurveyName = "NWFSC.Combo")
 
 # Example with specified scientific name
-bio_dat <- PullBio.fn(SciName = "Eopsetta jordani",
-SurveyName = "NWFSC.Combo")
+ bio_dat <- PullBio.fn(SciName = "Eopsetta jordani",
+   SurveyName = "NWFSC.Combo")
 
 # Example with multiple names
-bio_dat <- PullBio.fn(SciName = c("Sebastes aurora","Eopsetta jordani"),
-SurveyName = "NWFSC.Combo")
+ bio_dat <- PullBio.fn(SciName = c("Sebastes aurora","Eopsetta jordani"),
+   SurveyName = "NWFSC.Combo")
 }
 
 }

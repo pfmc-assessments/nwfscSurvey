@@ -16,7 +16,8 @@ trawl.catch_fact, trawl.operation_haul_fact}
 functions.}
 
 \item{years}{An integer vector of length two with the
-range of years to pull data for.}
+range of years to pull data for (e.g., c(2003, 2024)).
+Vector can not contain -Inf or Inf.}
 
 \item{vars_long}{string of fields to pull from the data warehouse}
 }

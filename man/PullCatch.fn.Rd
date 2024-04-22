@@ -9,7 +9,7 @@ PullCatch.fn(
   SciName = NULL,
   YearRange = c(1980, 5000),
   SurveyName = NULL,
-  SaveFile = FALSE,
+  SaveFile = lifecycle::deprecated(),
   Dir = NULL,
   verbose = TRUE
 )
@@ -53,12 +53,12 @@ allowing for a vector of survey names and
 \code{NWFSC.Shelf.Rockfish} and \code{NWFSC.Hook.Line} are not supported.
 The default of \code{NULL} is a placeholder that must be replaced with an entry.}
 
-\item{SaveFile}{A logical value specifying whether or not the the data should
-be saved to a file in \code{Dir}. Must change from the default of \code{FALSE} to save a file.}
+\item{SaveFile}{Deprecated with {nwfscSurvey} 2.3. Output will be save automatically
+if the Dir input is specified.}
 
-\item{Dir}{If \code{SaveFile = TRUE}, then one must specify the directory where you want
-the resulting file to be saved. The directory where the file should be saved.
-The name of the file within \code{Dir} will start with Catch_ and end with .rda.}
+\item{Dir}{The directory where you want the output file to be saved.
+The name of the file within \code{Dir} will start with Catch_ and end with .rdata.
+Default NULL which will not save an output file.}
 
 \item{verbose}{A logical that specifies if you want to print messages and
 warnings to the console. The default is \code{TRUE}.}
@@ -105,5 +105,5 @@ catch_dat <- PullBio.fn(Name = c("vermilion rockfish",
 
 }
 \author{
-Chantel Wetzel based on code by John Wallace
+Chantel Wetzel (maintainer) based on code by John Wallace
 }

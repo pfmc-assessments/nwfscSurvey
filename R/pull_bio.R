@@ -7,11 +7,11 @@
 #' @template sci_name
 #' @template years
 #' @template survey
-#' @template dir 
+#' @template dir
 #' @template convert
-#' @template verbose 
+#' @template verbose
 #'
-#' @author Chantel Wetzel 
+#' @author Chantel Wetzel
 #' @export
 #'
 #' @import chron
@@ -38,11 +38,11 @@
 # "vermilion and sunset rockfish"), SurveyName = "NWFSC.Combo")
 #' }
 #'
-pull_bio <- function(common_name = NULL, 
-                     sci_name = NULL, 
-                     years = c(1980, 2050), 
-                     survey = NULL, 
-                     dir = NULL, 
+pull_bio <- function(common_name = NULL,
+                     sci_name = NULL,
+                     years = c(1970, 2050),
+                     survey,
+                     dir = NULL,
                      convert = TRUE,
                      verbose = TRUE) {
 
@@ -50,16 +50,21 @@ pull_bio <- function(common_name = NULL,
   if (survey %in% c("NWFSC.Shelf.Rockfish", "NWFSC.Hook.Line")) {
     stop("The catch pull currently does not work for NWFSC Hook & Line Survey data.",
       "\nA subset of the data is available on the data warehouse https://www.webapp.nwfsc.noaa.gov/data",
-      "\nContact John Harms (john.harms@noaa.gov) for the full data set.") 
+      "\nContact John Harms (john.harms@noaa.gov) for the full data set.")
   }
 
-  check_dir(dir = dir, verbose = verbose)  
+  if(length(c(common_name, sci_name)) != max(c(length(common_name), length(sci_name)))){
+    stop("Can not pull data using both the common_name or sci_name together.
+         \n Please retry using only one." )
+  }
+
+
+  check_dir(dir = dir, verbose = verbose)
 
   if (is.null(common_name)) {
     var_name <- "scientific_name"
     species <- sci_name
-  }
-  if (is.null(sci_name)) {
+  } else {
     var_name <- "common_name"
     species <- common_name
   }
@@ -89,23 +94,18 @@ pull_bio <- function(common_name = NULL,
   )
 
   # symbols here are generally: %22 = ", %2C = ",", %20 = " "
-  species_str <- paste0("%22",stringr::str_replace_all(species[1]," ","%20"),"%22")
-  if(length(species) > 1) {
-    for(i in 2:length(species)) {
-      species_str <- paste0(species_str, "%2C", paste0("%22",stringr::str_replace_all(species[i]," ","%20"),"%22"))
-    }
-  }
+  species_str <- convert_to_hex_string(species)
   add_species <- paste0("field_identified_taxonomy_dim$", var_name, "|=[", species_str,"]")
-  
-  if (species[1] == "pull all") {
+
+  if (any(species == "pull all")) {
     add_species <- ""
   }
 
-  url_text <- get_url(data_table = "trawl.individual_fact", 
-                      project_long = project_long, 
-                      add_species = add_species, 
-                      years = years, 
-                      vars_long = vars_long) 
+  url_text <- get_url(data_table = "trawl.individual_fact",
+                      project_long = project_long,
+                      add_species = add_species,
+                      years = years,
+                      vars_long = vars_long)
 
   if (verbose) {
     message("Pulling biological data. This can take up to ~ 30 seconds (or more).")
@@ -122,18 +122,18 @@ pull_bio <- function(common_name = NULL,
   # Some early entries are NA for standard sample indicators. These should be retained.
   standard_lengths <- bio_pull[, "standard_survey_length_or_width_indicator"] %in% c(NA, "NA", "Standard Survey Length or Width")
   bio_pull <- bio_pull[standard_lengths, ]
-  
+
   # Remove non-standard ages
   nonstandard_age <- which(bio_pull[, "standard_survey_age_indicator"] == "Not Standard Survey Age")
   if (length(nonstandard_age) > 0) {
-    bio_pull[nonstandard_age, "age_years"] <- NA    
+    bio_pull[nonstandard_age, "age_years"] <- NA
   }
 
   # Remove non-standard weights
   nonstandard_wgt <- which(bio_pull[, "standard_survey_weight_indicator"] == "Not Standard Survey Weight")
   if (length(nonstandard_wgt) > 0) {
-    bio_pull[nonstandard_wgt, "weight_kg"] <- NA 
-  }    
+    bio_pull[nonstandard_wgt, "weight_kg"] <- NA
+  }
 
   # Remove water hauls
   water_hauls <- is.na(bio_pull[, "operation_dim$legacy_performance_code"])
@@ -151,10 +151,10 @@ pull_bio <- function(common_name = NULL,
 
   if (survey %in% c("Triennial", "AFSC.Slope")) {
 
-    url_text <- get_url(data_table = "trawl.triennial_length_fact", 
-                    project_long = project_long, 
-                    add_species = add_species, 
-                    years = years, 
+    url_text <- get_url(data_table = "trawl.triennial_length_fact",
+                    project_long = project_long,
+                    add_species = add_species,
+                    years = years,
                     vars_long = vars_long)
 
     len_pull <- try(get_json(url = url_text))
@@ -167,15 +167,15 @@ pull_bio <- function(common_name = NULL,
       }
       good_tows <- len_pull[, "operation_dim$legacy_performance_code"] != 8
       len_pull <- len_pull[good_tows, ]
-      
+
       len_pull$weight_kg <- NA
-      len_pull$date_formatted <- chron::chron(format(as.POSIXlt(len_pull$datetime_utc_iso, format = "%Y-%m-%dT%H:%M:%S"), "%Y-%m-%d"), format = "y-m-d", out.format = "YYYY-m-d")
+      len_pull$date <- chron::chron(format(as.POSIXlt(len_pull$datetime_utc_iso, format = "%Y-%m-%dT%H:%M:%S"), "%Y-%m-%d"), format = "y-m-d", out.format = "YYYY-m-d")
       len_pull$trawl_id <- as.character(len_pull$trawl_id)
     }
   }
 
   if (nrow(bio_pull) > 0) {
-    bio_pull$date_formatted <- chron::chron(format(as.POSIXlt(bio_pull$datetime_utc_iso, format = "%Y-%m-%dT%H:%M:%S"), "%Y-%m-%d"), format = "y-m-d", out.format = "YYYY-m-d")
+    bio_pull$date <- chron::chron(format(as.POSIXlt(bio_pull$datetime_utc_iso, format = "%Y-%m-%dT%H:%M:%S"), "%Y-%m-%d"), format = "y-m-d", out.format = "YYYY-m-d")
     bio_pull$trawl_id <- as.character(bio_pull$trawl_id)
 
     bio <- bio_pull
@@ -184,18 +184,20 @@ pull_bio <- function(common_name = NULL,
   if (survey %in% c("Triennial", "AFSC.Slope")) {
     if (!is.null(bio_pull) & sum(is.na(bio_pull$age_years)) != length(bio_pull$age_years)) {
       age_data <- bio_pull
+    } else {
+      age_data <- NULL
     }
 
     bio <- list()
     if (is.data.frame(len_pull)) {
-      bio$length_data <- len_pull
+      bio$Lengths <- len_pull
     } else {
-      bio$length_data <- "no_lengths_available"
+      bio$Lengths <- "no_lengths_available"
     }
     if (!is.null(age_data)) {
-      bio$age_data <- age_data
+      bio$Ages <- age_data
     } else {
-      bio$age_data <- "no_ages_available"
+      bio$Ages <- "no_ages_available"
     }
     if (verbose) {
       message("Triennial & AFSC Slope data returned as a list: bio_data$length_data and bio_data$age_data\n")
@@ -203,7 +205,6 @@ pull_bio <- function(common_name = NULL,
   }
 
   if(convert) {
-    bio$data <- bio$date_formatted
     bio$age <- bio$age_years
     bio$weight <- bio$weight_kg
     firstup <- function(x) {
@@ -211,8 +212,14 @@ pull_bio <- function(common_name = NULL,
       x
     }
     if(survey %in% c("Triennial", "AFSC.Slope")){
+      bio[[1]][, "weight"] <- bio[[1]][, "weight_kg"]
       colnames(bio[[1]]) <- firstup(colnames(bio[[1]]))
-      colnames(bio[[2]]) <- firstup(colnames(bio[[2]]))
+
+      if(!is.null(nrow(bio[[2]]))){
+        bio[[2]][, "age"] <- bio[[2]][, "age_years"]
+        bio[[2]][, "weight"] <- bio[[2]][, "weight_kg"]
+        colnames(bio[[2]]) <- firstup(colnames(bio[[2]]))
+      }
     } else {
       colnames(bio) <- firstup(colnames(bio))
     }

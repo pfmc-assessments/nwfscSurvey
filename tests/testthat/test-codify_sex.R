@@ -2,11 +2,10 @@
 test_that("AFSC Slope pull biological table of Pacific ocean perch sexes", {
   skip_on_cran()
 
-  dat <- PullBio.fn(
-    Name = "Pacific ocean perch",
-    SciName = NULL, YearRange = c(1910, 2020),
-    SurveyName = "AFSC.Slope", SaveFile = FALSE,
-    Dir = NULL, verbose = TRUE
+  dat <- pull_bio(
+    common_name = "Pacific ocean perch",
+    years = c(1910, 2020),
+    survey = "AFSC.Slope"
   )
   originaltable <- table(dat[["Lengths"]][["Sex"]])
   testthat::expect_equal(

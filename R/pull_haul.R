@@ -2,10 +2,10 @@
 #' The website is: https://www.webapps.nwfsc.noaa.gov/data.
 #' This function can be used to pull haul data and associated covariates.
 #'
-#' @template years 
-#' @template survey 
-#' @template dir 
-#' @template verbose 
+#' @template years
+#' @template survey
+#' @template dir
+#' @template verbose
 #'
 #' @return Returns a data frame of haul characteristics for satisfactory hauls
 #' @author Eric Ward, Chantel Wetzel
@@ -19,15 +19,15 @@
 #' haul_data <- pull_haul()
 #' }
 #'
-pull_haul <- function(years= c(1980, 2050), 
-                      survey = NULL, 
-                      dir = NULL, 
+pull_haul <- function(years= c(1970, 2050),
+                      survey,
+                      dir = NULL,
                       verbose = TRUE) {
 
   # increase the timeout period to avoid errors when pulling data
   options(timeout = 4000000)
 
-  check_dir(dir = dir, verbose = verbose)  
+  check_dir(dir = dir, verbose = verbose)
 
   project_long <- check_survey(survey = survey)
 
@@ -50,10 +50,10 @@ pull_haul <- function(years= c(1980, 2050),
     "vessel_start_latitude_dd", "vessel_start_longitude_dd"
   )
 
-  url_text <- get_url(data_table = "trawl.operation_haul_fact", 
-                      years = years, 
+  url_text <- get_url(data_table = "trawl.operation_haul_fact",
+                      years = years,
                       project_long = project_long,
-                      vars_long = var_str) 
+                      vars_long = var_str)
 
 
   if (verbose) {
@@ -61,9 +61,11 @@ pull_haul <- function(years= c(1980, 2050),
   }
   haul_data <- try(get_json(url = url_text))
 
-  haul_data$date_formatted <- 
-    chron::chron(format(as.POSIXlt(haul_data$datetime_utc_iso, format = "%Y-%m-%dT%H:%M:%S"), "%Y-%m-%d"), 
+  haul_data$date_formatted <-
+    chron::chron(format(as.POSIXlt(haul_data$datetime_utc_iso, format = "%Y-%m-%dT%H:%M:%S"), "%Y-%m-%d"),
     format = "y-m-d", out.format = "YYYY-m-d")
+
+  haul_data$trawl_id <- as.character(haul_data$trawl_id)
 
   save_rdata(
     x = haul_data,

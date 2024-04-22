@@ -10,8 +10,8 @@ In order to pull all species leave common_name or sci_name as NULL}
 pull_bio(
   common_name = NULL,
   sci_name = NULL,
-  years = c(1980, 2050),
-  survey = NULL,
+  years = c(1970, 2050),
+  survey,
   dir = NULL,
   convert = TRUE,
   verbose = TRUE
@@ -33,7 +33,8 @@ e.g., vermilion rockfish (see the example below).
 Use the \code{common_name} argument if you know the common name.}
 
 \item{years}{An integer vector of length two with the
-range of years to pull data for.}
+range of years to pull data for (e.g., c(2003, 2024)).
+Vector can not contain -Inf or Inf.}
 
 \item{survey}{A character entry from one of the following options that
 specifies which survey to pull the data for. The input options are:
@@ -68,8 +69,7 @@ annualy starting in 2003 (excluding 2020) and samples both the U.S. west coast
 shelf and slope between 55 - 1,280 meters.
 Data can only be pulled from one survey at a time, though we are working on
 allowing for a vector of survey names.
-Currently, \code{NWFSC.Shelf.Rockfish} and \code{NWFSC.Hook.Line} are not supported.
-The default of \code{NULL} is a placeholder that must be replaced with an entry.}
+Currently, \code{NWFSC.Shelf.Rockfish} and \code{NWFSC.Hook.Line} are not supported.}
 
 \item{dir}{directory where ouptut will be saved. The directory where the file should be saved.
 If dir = NULL no output will be saved.}

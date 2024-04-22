@@ -7,8 +7,8 @@
 pull_catch(
   common_name = NULL,
   sci_name = NULL,
-  years = c(1980, 2050),
-  survey = NULL,
+  years = c(1970, 2050),
+  survey,
   dir = NULL,
   convert = TRUE,
   verbose = TRUE
@@ -30,7 +30,8 @@ e.g., vermilion rockfish (see the example below).
 Use the \code{common_name} argument if you know the common name.}
 
 \item{years}{An integer vector of length two with the
-range of years to pull data for.}
+range of years to pull data for (e.g., c(2003, 2024)).
+Vector can not contain -Inf or Inf.}
 
 \item{survey}{A character entry from one of the following options that
 specifies which survey to pull the data for. The input options are:
@@ -65,8 +66,7 @@ annualy starting in 2003 (excluding 2020) and samples both the U.S. west coast
 shelf and slope between 55 - 1,280 meters.
 Data can only be pulled from one survey at a time, though we are working on
 allowing for a vector of survey names.
-Currently, \code{NWFSC.Shelf.Rockfish} and \code{NWFSC.Hook.Line} are not supported.
-The default of \code{NULL} is a placeholder that must be replaced with an entry.}
+Currently, \code{NWFSC.Shelf.Rockfish} and \code{NWFSC.Hook.Line} are not supported.}
 
 \item{dir}{directory where ouptut will be saved. The directory where the file should be saved.
 If dir = NULL no output will be saved.}
@@ -84,7 +84,7 @@ for a single species or all observed species, where the latter is specified
 by leaving both \code{common_name = NULL} and \code{sci_name = NULL}.
 }
 \details{
-The data available in the warehouse are cleaned pior to being downloaded
+The data available in the warehouse are cleaned prior to being downloaded
 with the intent that they provide the best available information for use
 in an index-standardization procedure. The removed samples may be of use
 to others with a less-restrictive goal than producing an index of abundance.
@@ -116,7 +116,7 @@ catch_data <- pull_catch(common_name = c("vermilion rockfish",
                  "vermilion and sunset rockfish"), survey = "NWFSC.Combo")
 
 catch_data <- pull_catch(sci_name = c("Sebastes miniatus",
-                 "Sebastes sp. (crocotulus)", 
+                 "Sebastes sp. (crocotulus)",
                  "Sebastes sp. (miniatus / crocotulus)"),
                  survey = "NWFSC.Combo")
 }
