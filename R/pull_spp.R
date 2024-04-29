@@ -16,7 +16,7 @@ pull_spp <- function() {
   # Get the data from saved .rda file
   species <- NULL
   newenv <- new.env(hash = TRUE, parent = parent.frame())
-  utils::data(PullSpp, package = "nwfscSurvey", envir = newenv)
-  species <- get("PullSpp", envir = newenv)
+  utils::data(pull_spp, package = "nwfscSurvey", envir = newenv)
+  species <- get("pull_spp", envir = newenv)
   return(species)
 }
