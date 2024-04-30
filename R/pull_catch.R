@@ -10,15 +10,12 @@
 #' with the intent that they provide the best available information for use
 #' in an index-standardization procedure. The removed samples may be of use
 #' to others with a less-restrictive goal than producing an index of abundance.
-#' For example, life-stage samples are excluded because they are not collected
-#' using the same protocols as standard samples.
+#' For example, depths sampled outside the standard protocol are excluded.
 #' To download all data, we currently recommend going to the
 #' [NWFSC data warehouse](https://www.webapps.nwfsc.noaa.gov/data)
 #' and using the csv link to extract data for a single species at a time.
 #' In the future, we hope to add functionality to this package such that
 #' downloading all data can be done easily within this function.
-#' See [Issue #43](https://github.com/pfmc-assessments/nwfscSurvey/issues/43)
-#' for more information.
 #'
 #' @template common_name
 #' @template sci_name
@@ -27,6 +24,7 @@
 #' @template dir
 #' @template convert
 #' @template verbose
+#' @template sample_types
 #'
 #' @author Chantel Wetzel
 #' @export
@@ -65,7 +63,8 @@ pull_catch <- function(common_name = NULL,
                        survey,
                        dir = NULL,
                        convert = TRUE,
-                       verbose = TRUE) {
+                       verbose = TRUE,
+                       sample_types = c("NA", NA, "Life Stage", "Size")[1:2]) {
 
   if (survey %in% c("NWFSC.Shelf.Rockfish", "NWFSC.Hook.Line")) {
     stop("The catch pull currently does not work for NWFSC Hook & Line Survey data.",
@@ -105,14 +104,15 @@ pull_catch <- function(common_name = NULL,
   # would allow us to eliminate vars_long form the main pull
 
   perf_codes <- c(
-    "operation_dim$legacy_performance_code",
-    "statistical_partition_dim$statistical_partition_type"
+    "operation_dim$legacy_performance_code"
   )
 
   vars_long <- c(
     "common_name", "scientific_name", "project", "year", "vessel", "tow",
     "total_catch_numbers", "total_catch_wt_kg",
     "subsample_count", "subsample_wt_kg",  "cpue_kg_per_ha_der",
+    "statistical_partition_dim$statistical_partition_type",
+    "partition",
     perf_codes
   )
 
@@ -149,13 +149,9 @@ pull_catch <- function(common_name = NULL,
     positive_tows[water_hauls, "operation_dim$legacy_performance_code"] <- -999
   }
 
-  # Retain on standard survey samples
-  # whether values are NA or "NA" varies based on the presence of "Life Stage" samples
-  standard_samples <- sum(is.na(positive_tows[, "statistical_partition_dim$statistical_partition_type"])) != nrow(positive_tows)
-  if (standard_samples) {
-    keep <- positive_tows[, "statistical_partition_dim$statistical_partition_type"] == "NA"
-    positive_tows <- positive_tows[keep, ]
-  }
+  positive_tows <- positive_tows[
+    positive_tows[, "statistical_partition_dim$statistical_partition_type"] %in% sample_types,
+  ]
 
   good_tows <- positive_tows[, "operation_dim$legacy_performance_code"] != 8
   positive_tows <- positive_tows[good_tows, ]
@@ -191,9 +187,6 @@ pull_catch <- function(common_name = NULL,
 
   all_tows <- all_tows[
     !duplicated(paste(all_tows$year, all_tows$pass, all_tows$vessel, all_tows$tow)),
-    #c("project", "trawl_id", "year", "pass", "vessel", "tow", "datetime_utc_iso", "depth_m",
-    #  "longitude_dd", "latitude_dd", "area_swept_ha_der"
-    #)
   ]
 
   positive_tows_grouped <- dplyr::group_by(
@@ -238,6 +231,8 @@ pull_catch <- function(common_name = NULL,
   ) |>
     dplyr::arrange(common_name, trawl_id)
 
+  colnames(catch)[colnames(catch) == "statistical_partition_dim$statistical_partition_type"] <- "partition_sample_types"
+
   # Need to check what this is doing
   no_area <- which(is.na(catch$area_swept_ha_der))
   if (length(no_area) > 0) {
@@ -252,6 +247,8 @@ pull_catch <- function(common_name = NULL,
 
   # Fill in zeros where needed
   catch[is.na(catch)] <- 0
+  catch[catch[,"partition_sample_types"] == 0, "partition_sample_types"] <- NA
+  catch[catch[,"partition"] == 0, "partition"] <- NA
 
   catch$date <- chron::chron(
     format(as.POSIXlt(catch$datetime_utc_iso, format = "%Y-%m-%dT%H:%M:%S"), "%Y-%m-%d"),
@@ -262,6 +259,14 @@ pull_catch <- function(common_name = NULL,
   catch$cpue_kg_km2 <- catch$cpue_kg_per_ha_der * 100
   colnames(catch)[which(colnames(catch) == "area_swept_ha_der")] <- "area_swept_ha"
 
+  if(sum(c("Life Stage", "Size") %in% sample_types) == 2) {
+    n_id <- table(catch$trawl_id)
+    if(sum(n_id == 2) > 0){
+      print("Warning: Pulling all sample types (Life Stage and Size) has resulted in multiple records for unique tows (Trawl_id).")
+      print("The `combine_tows` function can be used to combine these multiple records for unique tows if needed.")
+    }
+  }
+
   if(convert) {
 
     firstup <- function(x) {
@@ -269,10 +274,10 @@ pull_catch <- function(common_name = NULL,
       x
     }
     colnames(catch) <- firstup(colnames(catch))
-    colnames(catch)[colnames(catch)=="Cpue_kg_km2"] <- "cpue_kg_km2"
-    colnames(catch)[colnames(catch)=="Cpue_kg_per_ha_der"] <- "cpue_kg_per_ha_der"
-    colnames(catch)[colnames(catch)=="Total_catch_numbers"] <- "total_catch_numbers"
-    colnames(catch)[colnames(catch)=="Total_catch_wt_kg"] <- "total_catch_wt_kg"
+    colnames(catch)[colnames(catch) == "Cpue_kg_km2"] <- "cpue_kg_km2"
+    colnames(catch)[colnames(catch) == "Cpue_kg_per_ha_der"] <- "cpue_kg_per_ha_der"
+    colnames(catch)[colnames(catch) == "Total_catch_numbers"] <- "total_catch_numbers"
+    colnames(catch)[colnames(catch) == "Total_catch_wt_kg"] <- "total_catch_wt_kg"
   }
 
   save_rdata(
