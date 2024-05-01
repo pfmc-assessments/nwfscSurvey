@@ -7,8 +7,6 @@
 #' multiple records. In these instances this function allows for
 #' the sample data to be combined for unique trawl_id.
 #'
-#' @details
-#'
 #'
 #' @template dir
 #' @param data A data frame of catches obtained by using the pull_catch
@@ -20,8 +18,6 @@
 #'
 #' @importFrom dplyr group_by distinct
 #'
-#' @examples
-#' \dontrun{
 #'
 #'
 combine_tows <- function(dir = NULL, data, verbose = TRUE){
