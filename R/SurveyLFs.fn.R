@@ -73,7 +73,7 @@ SurveyLFs.fn <- function(dir = NULL, datL, datTows, strat.vars = c("Depth_m", "L
   missing <- sum(postows[find, "total_catch_numbers"])
   percent <- 100 * round(missing / sum(datTows[, "total_catch_numbers"]), 3)
   if (verbose) {
-    cat("\nThere are", x, "tows where fish were observed but no lengths/ages taken. 
+    cat("\nThere are", x, "tows where fish were observed but no lengths/ages taken.
         These tows contain", missing, "lengths/ages that comprise", percent, "percent of total sampled fish.\n")
   }
 
@@ -92,7 +92,7 @@ SurveyLFs.fn <- function(dir = NULL, datL, datTows, strat.vars = c("Depth_m", "L
   Area_Swept <- Total_fish_number <- Sub_fish_number <- Sexed_fish <- numeric(dim(datB)[1])
   for (i in 1:length(tows)) {
     find <- which(tows[i] == datTows$Trawl_id)
-    area <- datTows$Area_Swept_ha[find] * 0.01 #km2 
+    area <- datTows$Area_swept_ha[find] * 0.01 #km2
     #Alternative: * 10000 square meter
     tot.num <- datTows$total_catch_numbers[find]
     sub.num <- datTows$Subsample_count[find]
@@ -154,13 +154,13 @@ SurveyLFs.fn <- function(dir = NULL, datL, datTows, strat.vars = c("Depth_m", "L
   TdatL.tows <- TdatL.tows[TdatL.tows$Var2 == "TRUE", ]
   if(dim(TdatL.tows)[1] > 0) {
     datB <- data.frame(
-      datB[match(as.character(TdatL.tows$Var1), 
-      as.character(datB$Trawl_id)), ], 
+      datB[match(as.character(TdatL.tows$Var1),
+      as.character(datB$Trawl_id)), ],
       TowExpFactorMF = TdatL.tows$Freq)
     # Find the numerator looking where the number of fish = sexed fish when all fish are sampled (e.g., sexed and unsexed in a fully sampled tow)
     # The previous approach expanded sexed fish relative to the full sample size resulting in expansions when there should not have been
-    datB <- data.frame(datB[match(as.character(TdatL.tows$Var1), 
-      as.character(datB$Trawl_id)), ], 
+    datB <- data.frame(datB[match(as.character(TdatL.tows$Var1),
+      as.character(datB$Trawl_id)), ],
       true_sub_MFfish = TdatL.tows$Freq)
   }
   if (is.null(datB$true_sub_MFfish)) {
@@ -584,7 +584,7 @@ SurveyLFs.fn <- function(dir = NULL, datL, datTows, strat.vars = c("Depth_m", "L
 
   if (verbose && !is.null(dir)) {
     cat("\nNOTE: Files have been saved the the printfolder directory.
-        The first file has the 999 column showing fish smaller or younger than the initial bin. 
+        The first file has the 999 column showing fish smaller or younger than the initial bin.
         Check to make sure there is not a large number of fish smaller or younger than the initial bin.
         The second file has combined the 999 with the first bin and is ready for use in SS.\n")
   }
