@@ -55,7 +55,12 @@ test_that("pull_catch-multispecies", {
     label = "entries of 2 species filtered for lingcod",
     expected.label = "entries of lingcod"
   )
+})
 
+test_that("pull-sample-types", {
+  skip_on_cran()
+
+  set.seed(123)
   data_hake <- pull_catch(
     common_name = "Pacific hake",
     years = c(2014, 2018),
@@ -67,13 +72,13 @@ test_that("pull_catch-multispecies", {
   expect_is(data_hake, "data.frame")
   expect_equal(nrow(data_hake), 3556)
   expect_equal(length(which(data_hake$cpue_kg_km2 == 0)), 1622)
-  expect_equal(length(unique(data_hake$Trawl_id)) == 3442)
+  expect_equal(length(unique(data_hake$Trawl_id)), 3442)
 
   combine_hake <- combine_tows(
     data = data_hake
   )
-  expect_equal(length(unique(data_hake$Trawl_id)) == nrow(combine_hake))
-  expect_equal(sum(data_hake$total_catch_numbers) == sum(combine_hake$total_catch_numbers))
+  expect_equal(length(unique(data_hake$Trawl_id)), nrow(combine_hake))
+  expect_equal(sum(data_hake$total_catch_numbers), sum(combine_hake$total_catch_numbers))
 })
 
 test_that("PullHaul", {
