@@ -65,7 +65,7 @@ SurveyAgeAtLen.fn <- function(dir = NULL, datAL, datTows, strat.vars = c("Depth_
   Area_Swept_km2 <- Total_fish_number <- Sub_fish_number <- numeric(dim(datB)[1])
   for (i in 1:length(tows)) {
     find <- which(tows[i] == datTows$Trawl_id)
-    area <- datTows$Area_Swept_ha[find] * 0.01 # km2
+    area <- datTows$Area_swept_ha[find] * 0.01 # km2
     tot.num <- datTows$total_catch_numbers[find]
     sub.num <- datTows$Subsample_count[find]
 
@@ -140,7 +140,7 @@ SurveyAgeAtLen.fn <- function(dir = NULL, datAL, datTows, strat.vars = c("Depth_
     datB[is.na(datB$numF), "numF"] <- 0
   }
 
-  if ("M" %in% sexes_present){  
+  if ("M" %in% sexes_present){
     temp <- TdatL.al[["M"]][, c("Trawl_id", "allLs", "allAs", "num")]
     names(temp) <- c("Trawl_id", "allLs", "allAs", "numM")
     datB <- merge(datB, temp, by = c("Trawl_id", "allLs", "allAs"), all = T)
@@ -282,7 +282,7 @@ SurveyAgeAtLen.fn <- function(dir = NULL, datAL, datTows, strat.vars = c("Depth_
         sum(x$numAll)
       }))
       x <- data.frame(x[rep(1, length(AjhAll)), xcols], area = A.h, AGE = as.numeric(names(AjhAll)), AjhAll = AjhAll, TotalAjhAll = AjhAll)
-      
+
       if ("U" %in% sexes_present){
       AjhU <- unlist(lapply(ages, function(x) {
         sum(x$numU)
@@ -302,7 +302,7 @@ SurveyAgeAtLen.fn <- function(dir = NULL, datAL, datTows, strat.vars = c("Depth_
         sum(x$numM)
       }))
       x <- data.frame(x, AjhM = AjhM, TotalAjhM = AjhM)
-      } 
+      }
 
     } else {
       AjhAll <- unlist(lapply(ages, function(x) {
@@ -314,12 +314,12 @@ SurveyAgeAtLen.fn <- function(dir = NULL, datAL, datTows, strat.vars = c("Depth_
         sum(x$expU / x$areaFished)
       }))
       x <- data.frame(x, AjhU = AjhU / ntows, TotalAjhU = A.h * AjhU / ntows)
-      
+
       AjhF <- unlist(lapply(ages, function(x) {
         sum(x$expF / x$areaFished)
       }))
       x <- data.frame(x, AjhF = AjhF / ntows, TotalAjhF = A.h * AjhF / ntows)
-      
+
       AjhM <- unlist(lapply(ages, function(x) {
         sum(x$expM / x$areaFished)
       }))

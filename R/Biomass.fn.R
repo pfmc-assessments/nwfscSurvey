@@ -35,7 +35,7 @@ Biomass.fn <- function(dir = NULL, dat, strat.vars = c("Depth_m", "Latitude_dd")
   if (is.null(dat$cpue_kg_km2)) stop("There must be a column called cpue_kg_km2 in the dataframe")
 
   # Calculate the CPUE in terms of nubmer
-  dat$cpue_km2_count <- (dat$total_catch_numbers / (0.01 * dat$Area_Swept_ha))
+  dat$cpue_km2_count <- (dat$total_catch_numbers / (0.01 * dat$Area_swept_ha))
 
   row.names(strat.df) <- strat.df[, 1] # put in rownmaes to make easier to index later
   numStrata <- nrow(strat.df)
@@ -81,10 +81,10 @@ Biomass.fn <- function(dir = NULL, dat, strat.vars = c("Depth_m", "Latitude_dd")
     }))
 
     stratStats <- data.frame(
-      name = namesStrat, 
-      area = strat.df[namesStrat, 2], 
+      name = namesStrat,
+      area = strat.df[namesStrat, 2],
       ntows = nobs,
-      meanCatchRate = meanCatchRateInStrata, 
+      meanCatchRate = meanCatchRateInStrata,
       varCatchRate = varCatchRateInStrata
     )
 
@@ -125,10 +125,10 @@ Biomass.fn <- function(dir = NULL, dat, strat.vars = c("Depth_m", "Latitude_dd")
     }))
 
     stratStats <- data.frame(
-      name = namesYear, 
-      area = strat.df[ind, 2], 
+      name = namesYear,
+      area = strat.df[ind, 2],
       ntows = nobs,
-      meanCatchRate = meanCatchRateInStrata, 
+      meanCatchRate = meanCatchRateInStrata,
       varCatchRate = varCatchRateInStrata
     )
 
@@ -149,8 +149,8 @@ Biomass.fn <- function(dir = NULL, dat, strat.vars = c("Depth_m", "Latitude_dd")
 
   yrTotal.fn <- function(x) {
     data.frame(
-      Bhat = sum(x$Bhat), 
-      seBhat = sqrt(sum(x$varBhat)), 
+      Bhat = sum(x$Bhat),
+      seBhat = sqrt(sum(x$varBhat)),
       cv = sqrt(sum(x$varBhat)) / sum(x$Bhat))
   }
 

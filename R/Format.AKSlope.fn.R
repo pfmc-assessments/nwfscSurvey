@@ -1,44 +1,44 @@
 #' Rename columns in the AFSC slope survey data file
-#' received prior to the creation of the NWFSC data 
-#' warehouse. This function converts the older data files 
-#' to create the needed column names to work within survey 
+#' received prior to the creation of the NWFSC data
+#' warehouse. This function converts the older data files
+#' to create the needed column names to work within survey
 #' package functions. Output from this function will be list
 #' of containing catch, length, and age data.
 #'
-#' @template dir 
-#' @param datTows A data frame of catch data for the 
+#' @template dir
+#' @param datTows A data frame of catch data for the
 #' AKFSC slope survey with incorrect column names.
 #' prior to the creation of the data warehouse.
-#' @param datL A list of biological data (lengths and ages) 
-#' for the AKFSC slope survey with incorrect column 
+#' @param datL A list of biological data (lengths and ages)
+#' for the AKFSC slope survey with incorrect column
 #' names prior to the creation of the data warehouse.
-#' @param start.year The first year of data to retain within 
+#' @param start.year The first year of data to retain within
 #' the data frame. The first year typically used from this
-#' survey is 1997.  
+#' survey is 1997.
 #' @template verbose
 #'
 #' @author Chantel Wetzel
 #' @export
-#' 
+#'
 #' @examples
 #' \dontrun{
 #'   # load data files for catch and biological data
 #'    load("Tri.Shelf.and.AFSC.Slope.canary.Catch.24.May.11.dmp")
-#'    catch = Tri.Shelf.and.AFSC.Slope.canary.Catch.24.May.11 
+#'    catch = Tri.Shelf.and.AFSC.Slope.canary.Catch.24.May.11
 #'    load("AFSC.Slope.Shelf.sable.bio.5.24.11.dmp")
 #'    bio = AK.Surveys.Bio.sablefish.24.May.11
 #'    # call function and reformat the data
 #'    filter.dat = Format.AKSlope.fn(
-#'      datTows = catch, 
-#'      datL = bio, 
-#'      start.year = 1997) 
+#'      datTows = catch,
+#'      datL = bio,
+#'      start.year = 1997)
 #'    catch = filter.dat$datTows
 #'    len = filter.dat$length
 #'    age = filter.dat$age
 #'  )
 #' }
 #'
-Format.AKSlope.fn <- function(dir = NULL, datTows, datL = NA, 
+Format.AKSlope.fn <- function(dir = NULL, datTows, datL = NA,
   start.year = 1997, verbose = TRUE) {
 
   check_dir(dir = dir, verbose)
@@ -66,12 +66,12 @@ Format.AKSlope.fn <- function(dir = NULL, datTows, datL = NA,
   datTows$Longitude_dd <- (datTows$START_LONGITUDE + datTows$END_LONGITUDE) / 2
   datTows$total_catch_numbers <- datTows$Subsample_count
   datTows$total_catch_wt_kg <- datTows$Subsample_wt_kg
-  datTows$Area_Swept_ha <- (datTows$DISTANCE_FISHED * datTows$NET_WIDTH) / 10 # area swept for each tow in hectare
-  datTows$cpue_kg_km2 <- datTows$Subsample_wt_kg / (0.01 * datTows$Area_Swept_ha)
+  datTows$Area_swept_ha <- (datTows$DISTANCE_FISHED * datTows$NET_WIDTH) / 10 # area swept for each tow in hectare
+  datTows$cpue_kg_km2 <- datTows$Subsample_wt_kg / (0.01 * datTows$Area_swept_ha)
 
   datTows <- datTows[, c(
     "Project", "Trawl_id", "Year", "Pass", "Vessel", "Tow", "Date", "Depth_m", "Longitude_dd", "Latitude_dd",
-    "Area_Swept_ha", "cpue_kg_km2", "Subsample_count", "Subsample_wt_kg",
+    "Area_swept_ha", "cpue_kg_km2", "Subsample_count", "Subsample_wt_kg",
     "total_catch_numbers", "total_catch_wt_kg"
   )]
 
