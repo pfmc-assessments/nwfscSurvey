@@ -61,7 +61,7 @@ test_that("pull_catch-multispecies", {
     years = c(2014, 2018),
     survey = "NWFSC.Combo",
     verbose = TRUE,
-    covert = TRUE,
+    convert = TRUE,
     sample_types = c("NA", NA, "Life Stage", "Size")[1:4]
   )
   expect_is(data_hake, "data.frame")
