@@ -11,7 +11,8 @@ pull_catch(
   survey,
   dir = NULL,
   convert = TRUE,
-  verbose = TRUE
+  verbose = TRUE,
+  sample_types = c("NA", NA, "Life Stage", "Size")[1:2]
 )
 }
 \arguments{
@@ -76,6 +77,17 @@ which aligns with the expected names in data processing functions.}
 
 \item{verbose}{A logical that specifies if you want to print messages and
 warnings to the console. The default is \code{TRUE}.}
+
+\item{sample_types}{A character vector of sample types, i.e.,
+\code{"statistical_partition_dim"}, that you would like to keep. The default is
+to only keep \code{NA} values, both real and character NA. But, for some
+instances you may want to keep Life Stage and Size samples. The majority
+of samples with \code{"statistical_partition_dim"} of Size and Life Stage are
+Pacific hake and should not be considered different than regular survey
+samples. The other types of samples that may be designated Life Stage are
+egg cases that can be caught and identified for select elasmobranch
+species. These type of samples would not be included in the data to estimate
+indices of abundance and are omitted by default.}
 }
 \description{
 Pull catch data from the
@@ -88,15 +100,12 @@ The data available in the warehouse are cleaned prior to being downloaded
 with the intent that they provide the best available information for use
 in an index-standardization procedure. The removed samples may be of use
 to others with a less-restrictive goal than producing an index of abundance.
-For example, life-stage samples are excluded because they are not collected
-using the same protocols as standard samples.
+For example, depths sampled outside the standard protocol are excluded.
 To download all data, we currently recommend going to the
 \href{https://www.webapps.nwfsc.noaa.gov/data}{NWFSC data warehouse}
 and using the csv link to extract data for a single species at a time.
 In the future, we hope to add functionality to this package such that
 downloading all data can be done easily within this function.
-See \href{https://github.com/pfmc-assessments/nwfscSurvey/issues/43}{Issue #43}
-for more information.
 }
 \examples{
 \dontrun{
