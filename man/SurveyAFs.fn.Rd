@@ -32,7 +32,7 @@ SurveyAFs.fn(
   ageErr = "Enter",
   nSamps = "Enter Samps",
   month = "Enter Month",
-  printfolder = "forSS",
+  printfolder = "forSS3",
   remove999 = TRUE,
   outputStage1 = FALSE,
   verbose = TRUE
@@ -79,7 +79,8 @@ SurveyAFs.fn(
 
 \item{month}{month when the samples were collected}
 
-\item{printfolder}{folder where the length comps will be saved}
+\item{printfolder}{Folder inside the directory, if provide, where
+csv files will be saved i.e., \code{file.path(dir, printfolder)}. Default "forSS3".}
 
 \item{remove999}{the output object by the function will have the 999 column combined with the first length bin}
 

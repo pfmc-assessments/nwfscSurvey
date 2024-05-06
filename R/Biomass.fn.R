@@ -16,7 +16,7 @@
 #' @param dat data-frame of the data that has been by the PullCatch.fn
 #' @param strat.vars A vector of the strata variable names (i.e., c("Depth_m","Latitude_dd"))
 #' @param strat.df a dataframe with the first column the name of the stratum, the second column the area of the stratum, and the remaining columns are the high and low variables defining the strata created by the CreateStrataDF.fn
-#' @param printfolder the folder where files will be saved
+#' @template printfolder
 #' @param outputMedian T/F output median or the mean biomass estimate
 #' @param month month for SS
 #' @param fleet fleet number for SS
@@ -29,7 +29,7 @@
 #' @importFrom utils write.csv
 #' @export
 
-Biomass.fn <- function(dir = NULL, dat, strat.vars = c("Depth_m", "Latitude_dd"), strat.df, printfolder = "forSS", outputMedian = TRUE,
+Biomass.fn <- function(dir = NULL, dat, strat.vars = c("Depth_m", "Latitude_dd"), strat.df, printfolder = "forSS3", outputMedian = TRUE,
                        month = NA, fleet = NA, verbose = TRUE) {
 
   if (is.null(dat$cpue_kg_km2)) stop("There must be a column called cpue_kg_km2 in the dataframe")

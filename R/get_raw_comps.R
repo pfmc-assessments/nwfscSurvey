@@ -37,8 +37,7 @@
 #' format for Stock Synthesis. Default value of -1 which translates to the highest
 #  age bin.
 #' @template dir
-#' @param printfolder Folder inside the directory, if provide, where the composition
-#' csv files will be saved. Default "forSS3".
+#' @template printfolder
 #' @template verbose
 #'
 #' @author Chantel Wetzel

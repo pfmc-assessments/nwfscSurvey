@@ -11,14 +11,14 @@
 #' @param agelow age bin for SS (default value of -1)
 #' @param agehigh age bin for SS (default value of -1)
 #' @param month month the samples were collected
-#' @param printfolder folder where the length comps will be saved
+#' @template printfolder
 #' @template verbose
 #'
 #' @author Chantel Wetzel
 #' @export
 
 UnexpandedAFs.fn <- function(dir = NULL, datA, ageBins = 1, sex = 3, partition = 0, fleet = "Enter Fleet",
-                             ageErr = "NA", agelow = -1, agehigh = -1, month = "Enter Month", printfolder = "forSS", verbose = TRUE) {
+                             ageErr = "NA", agelow = -1, agehigh = -1, month = "Enter Month", printfolder = "forSS3", verbose = TRUE) {
 
   # Overwrite inputs to use the same code for lengths as ages
   datL <- datA

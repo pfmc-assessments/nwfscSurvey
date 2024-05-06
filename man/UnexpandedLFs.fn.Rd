@@ -16,7 +16,7 @@ UnexpandedLFs.fn(
   agelow = -1,
   agehigh = -1,
   month = "Enter Month",
-  printfolder = "forSS",
+  printfolder = "forSS3",
   verbose = TRUE
 )
 }
@@ -41,7 +41,8 @@ UnexpandedLFs.fn(
 
 \item{month}{month the samples were collected}
 
-\item{printfolder}{folder where the length comps will be saved}
+\item{printfolder}{Folder inside the directory, if provide, where
+csv files will be saved i.e., \code{file.path(dir, printfolder)}. Default "forSS3".}
 
 \item{verbose}{A logical that specifies if you want to print messages and
 warnings to the console. The default is \code{TRUE}.}

@@ -25,7 +25,7 @@ SurveyLFs.fn(
   ageErr = "Enter",
   nSamps = "Enter Samps",
   month = "Enter Month",
-  printfolder = "forSS",
+  printfolder = "forSS3",
   remove999 = TRUE,
   outputStage1 = FALSE,
   sum100 = TRUE,
@@ -92,9 +92,8 @@ more information.}
 used to set the effective sample size of the returned input for Stock
 Synthesis. A value must be supplied for every year of data in \code{datL}.}
 
-\item{printfolder}{A string that will be appended to \code{dir}, creating a folder
-where the length-composition output will be saved. If specified as \code{""},
-the output will just be saved directly in \code{dir}. The default is \code{"forSS"}.}
+\item{printfolder}{Folder inside the directory, if provide, where
+csv files will be saved i.e., \code{file.path(dir, printfolder)}. Default "forSS3".}
 
 \item{remove999}{A logical with the default of \code{TRUE}, which leads to the
 output having the 999 column combined with the first length bin.}

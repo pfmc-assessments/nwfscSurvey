@@ -27,7 +27,7 @@
 #' @param ageErr age error vector to apply
 #' @param nSamps effective sample size for Stock Synthesis
 #' @param month month when the samples were collected
-#' @param printfolder folder where the length comps will be saved
+#' @template printfolder
 #' @param remove999 the output object by the function will have the 999 column combined with the first length bin
 #' @param outputStage1 return the first stage expanded data without compiling it for SS
 #' @template verbose
@@ -39,7 +39,7 @@
 
 SurveyAFs.fn <- function(dir = NULL, datA, datTows, strat.vars = c("Depth_m", "Latitude_dd"), strat.df = NULL, ageBins = 1, SSout = TRUE, meanRatioMethod = TRUE,
                          sex = 3, NAs2zero = T, sexRatioUnsexed = NA, maxSizeUnsexed = NA, sexRatioStage = 1, partition = 0, fleet = "Enter Fleet", agelow = "Enter",
-                         agehigh = "Enter", ageErr = "Enter", nSamps = "Enter Samps", month = "Enter Month", printfolder = "forSS",
+                         agehigh = "Enter", ageErr = "Enter", nSamps = "Enter Samps", month = "Enter Month", printfolder = "forSS3",
                          remove999 = TRUE, outputStage1 = FALSE, verbose = TRUE) {
 
   # Overwrite inputs to use the same code for lengths as ages

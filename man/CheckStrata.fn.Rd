@@ -13,7 +13,7 @@ CheckStrata.fn(
   dat,
   strat.vars = c("Depth_m", "Latitude_dd"),
   strat.df,
-  printfolder = "forSS",
+  printfolder = "forSS3",
   verbose = TRUE
 )
 }
@@ -33,10 +33,8 @@ of the stratum, the second column the area of the stratum,
 and the remaining columns are the high and low variables
 defining the strata created by the {CreateStrataDF.fn} function.}
 
-\item{printfolder}{Folder name where files will be saved. The
-default is "forSS" which is also used by other package functions
-that creates and saves files that are commonly used or reported
-in Stock Synthesis or the assessment document.}
+\item{printfolder}{Folder inside the directory, if provide, where
+csv files will be saved i.e., \code{file.path(dir, printfolder)}. Default "forSS3".}
 
 \item{verbose}{A logical that specifies if you want to print messages and
 warnings to the console. The default is \code{TRUE}.}

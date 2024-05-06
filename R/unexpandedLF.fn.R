@@ -11,14 +11,14 @@
 #' @param partition partition for Stock Synthesis
 #' @param fleet fleet number
 #' @param month month the samples were collected
-#' @param printfolder folder where the length comps will be saved
+#' @template printfolder
 #' @template verbose
 #'
 #' @author Chantel Wetzel
 #' @export
 
 UnexpandedLFs.fn <- function(dir = NULL, datL, lgthBins = 1, sex = 3, partition = 0, fleet = "Enter Fleet",
-                             ageErr = "NA", agelow = -1, agehigh = -1, month = "Enter Month", printfolder = "forSS", verbose = TRUE) {
+                             ageErr = "NA", agelow = -1, agehigh = -1, month = "Enter Month", printfolder = "forSS3", verbose = TRUE) {
   plotdir <- file.path(dir, printfolder)
   check_dir(dir = plotdir, verbose = verbose)
 

@@ -9,7 +9,7 @@ GetN.fn(
   dat,
   type = c("length", "age"),
   species = c("all", "flatfish", "shelfrock", "sloperock", "thorny", "others"),
-  printfolder = "forSS",
+  printfolder = "forSS3",
   output = NULL,
   verbose = TRUE
 )
@@ -30,8 +30,8 @@ will lead to the use of the correct species-specific value for
 the number of unique samples per tow. See the function call for
 allowed values, where the default is \code{"all"}.}
 
-\item{printfolder}{A string that will be used to create the name of the
-folder where files will be saved, i.e., \code{file.path(dir, printfolder)}.}
+\item{printfolder}{Folder inside the directory, if provide, where
+csv files will be saved i.e., \code{file.path(dir, printfolder)}. Default "forSS3".}
 
 \item{output}{A string, where the default is \code{NULL}, which returns
 only a vector of samples sizes.

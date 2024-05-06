@@ -42,9 +42,7 @@
 #' @param nSamps A named vector of input or effective sample sizes that will be
 #'   used to set the effective sample size of the returned input for Stock
 #'   Synthesis. A value must be supplied for every year of data in `datL`.
-#' @param printfolder A string that will be appended to `dir`, creating a folder
-#'   where the length-composition output will be saved. If specified as `""`,
-#'   the output will just be saved directly in `dir`. The default is `"forSS"`.
+#' @template printfolder
 #' @param remove999 A logical with the default of `TRUE`, which leads to the
 #'   output having the 999 column combined with the first length bin.
 #' @param outputStage1 A logical specifying if you would like the function to
@@ -63,7 +61,7 @@
 
 SurveyLFs.fn <- function(dir = NULL, datL, datTows, strat.vars = c("Depth_m", "Latitude_dd"), strat.df = NULL, lgthBins = 1, SSout = TRUE, meanRatioMethod = TRUE,
                          sex = 3, NAs2zero = T, sexRatioUnsexed = NA, maxSizeUnsexed = NA, sexRatioStage = 1, partition = 0, fleet = "Enter Fleet",
-                         agelow = "Enter", agehigh = "Enter", ageErr = "Enter", nSamps = "Enter Samps", month = "Enter Month", printfolder = "forSS",
+                         agelow = "Enter", agehigh = "Enter", ageErr = "Enter", nSamps = "Enter Samps", month = "Enter Month", printfolder = "forSS3",
                          remove999 = TRUE, outputStage1 = FALSE, sum100 = TRUE, verbose = TRUE) {
 
   # Check for the number of tows were fish were observed but not measured

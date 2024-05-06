@@ -12,7 +12,7 @@ two-sex model or all length/ages for single-sex model.}
 \usage{
 get_raw_comps(
   data,
-  comps_bins,
+  comp_bins,
   comp_column_name = "Length_cm",
   two_sex_comps = TRUE,
   fleet = "Enter Fleet",
@@ -31,6 +31,9 @@ get_raw_comps(
 frame can be survey data pulled using pull_bio from the data warehouse or any data frame
 that includes column names of sex, year, and the comp_column_name.  The sex column is
 expected to have sexes denoted by F, M, and U.}
+
+\item{comp_bins}{A vector on length bins or age bins to create compositions across. The
+composition data is formatted for Stock Synthesis.}
 
 \item{comp_column_name}{The column name to create composition data for. This column can be
 is used to determine whether to format the composition data for length or age
@@ -66,14 +69,11 @@ format for Stock Synthesis. Default value of -1 which translates to the highest}
 \item{dir}{directory where ouptut will be saved. The directory where the file should be saved.
 If dir = NULL no output will be saved.}
 
-\item{printfolder}{Folder inside the directory, if provide, where the composition
-csv files will be saved. Default "forSS3".}
+\item{printfolder}{Folder inside the directory, if provide, where
+csv files will be saved i.e., \code{file.path(dir, printfolder)}. Default "forSS3".}
 
 \item{verbose}{A logical that specifies if you want to print messages and
 warnings to the console. The default is \code{TRUE}.}
-
-\item{comp_bins}{A vector on length bins or age bins to create compositions across. The
-composition data is formatted for Stock Synthesis.}
 }
 \description{
 Creates a matrix of unexpanded (or raw) marginal length or age composition

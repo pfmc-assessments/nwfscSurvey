@@ -25,7 +25,7 @@
 #' @param partition partition for Stock Synthesis
 #' @param ageErr age error value for Stock Synthesis
 #' @param returnSamps TRUE/FALSE stops the function after the sample size is calculated
-#' @param printfolder folder where the length comps will be saved
+#' @template printfolder
 #' @template verbose
 #'
 #' @author Allan Hicks and Chantel Wetzel
@@ -35,7 +35,7 @@
 
 SurveyAgeAtLen.fn <- function(dir = NULL, datAL, datTows, strat.vars = c("Depth_m", "Latitude_dd"), strat.df = NULL, lgthBins = 1, ageBins = 1,
                               sex = 3, SSout = TRUE, meanRatioMethod = TRUE, raw = TRUE, NAs2zero = TRUE, month = "Enter Month", fleet = "Enter Fleet",
-                              partition = 0, ageErr = "Enter Age Error", returnSamps = FALSE, printfolder = "forSS", verbose = TRUE) {
+                              partition = 0, ageErr = "Enter Age Error", returnSamps = FALSE, printfolder = "forSS3", verbose = TRUE) {
 
   plotdir <- file.path(dir, printfolder)
   check_dir(plotdir, verbose = verbose)

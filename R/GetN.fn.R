@@ -18,8 +18,7 @@
 #'   will lead to the use of the correct species-specific value for
 #'   the number of unique samples per tow. See the function call for
 #'   allowed values, where the default is `"all"`.
-#' @param printfolder A string that will be used to create the name of the
-#'   folder where files will be saved, i.e., `file.path(dir, printfolder)`.
+#' @template printfolder
 #' @param output A string, where the default is `NULL`, which returns
 #'   only a vector of samples sizes.
 #'   `"summary"`, or any other character string, will return
@@ -40,7 +39,7 @@ GetN.fn <- function(dir = NULL,
                       "thorny",
                       "others"
                     ),
-                    printfolder = "forSS",
+                    printfolder = "forSS3",
                     output = NULL,
                     verbose = TRUE) {
   species <- match.arg(species)

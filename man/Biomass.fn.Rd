@@ -13,7 +13,7 @@ Biomass.fn(
   dat,
   strat.vars = c("Depth_m", "Latitude_dd"),
   strat.df,
-  printfolder = "forSS",
+  printfolder = "forSS3",
   outputMedian = TRUE,
   month = NA,
   fleet = NA,
@@ -29,7 +29,8 @@ Biomass.fn(
 
 \item{strat.df}{a dataframe with the first column the name of the stratum, the second column the area of the stratum, and the remaining columns are the high and low variables defining the strata created by the CreateStrataDF.fn}
 
-\item{printfolder}{the folder where files will be saved}
+\item{printfolder}{Folder inside the directory, if provide, where
+csv files will be saved i.e., \code{file.path(dir, printfolder)}. Default "forSS3".}
 
 \item{outputMedian}{T/F output median or the mean biomass estimate}
 
