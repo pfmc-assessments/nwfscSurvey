@@ -48,14 +48,14 @@ of containing catch, length, and age data.
 \dontrun{
   # load data files for catch and biological data
    load("Tri.Shelf.and.AFSC.Slope.canary.Catch.24.May.11.dmp")
-   catch = Tri.Shelf.and.AFSC.Slope.canary.Catch.24.May.11 
+   catch = Tri.Shelf.and.AFSC.Slope.canary.Catch.24.May.11
    load("AFSC.Slope.Shelf.sable.bio.5.24.11.dmp")
    bio = AK.Surveys.Bio.sablefish.24.May.11
    # call function and reformat the data
    filter.dat = Format.AKSlope.fn(
-     datTows = catch, 
-     datL = bio, 
-     start.year = 1997) 
+     datTows = catch,
+     datL = bio,
+     start.year = 1997)
    catch = filter.dat$datTows
    len = filter.dat$length
    age = filter.dat$age
