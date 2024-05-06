@@ -1,0 +1,249 @@
+#' Creates a matrix of unexpanded (or raw) marginal length or age composition
+#' data formatted for Stock Synthesis. The code will return composition data
+#' for all sexes present in the data frame and no sex assignment is done for
+#' unsexed fish. The function will create composition data for either
+#' lengths or ages based on the comp_column_name. The function will return a
+#' list of composition data based upon the sexes present in the data for a
+#' two-sex model or all length/ages for single-sex model.
+#'
+#' @param data A data frame that includes columns of year, sex, and length/ages. The data
+#' frame can be survey data pulled using pull_bio from the data warehouse or any data frame
+#' that includes column names of sex, year, and the comp_column_name.  The sex column is
+#' expected to have sexes denoted by F, M, and U.
+#' @param comp_bins A vector on length bins or age bins to create compositions across. The
+#' composition data is formatted for Stock Synthesis.
+#' @param comp_column_name The column name to create composition data for. This column can be
+#' is used to determine whether to format the composition data for length or age
+#' compositions by looking for either age (e.g., age_years, Age, best_age) or length
+#' (e.g., Length, length, Length_cm) in the comp_column_name. Default Length_cm.
+#' @param two_sex_comps Default TRUE. If TRUE composition data will be formatted for a
+#' Stock Synthesis two-sex model and if FALSE composition data will be formatted for a
+#' single-sex model.
+#' @param fleet A fleet number to assign the composition data to based on the expected
+#' format for Stock Synthesis. Default "Enter Fleet".
+#' @param month Month the samples were collected based on the expected format for
+#' Stock Synthesis to determine the length/age estimate to compare to. Default
+#' "Enter Month".
+#' @param partition Partition to assign the composition data based on the expected
+#' format for Stock Synthesis. Partition of 0 indicates that the composition data
+#' include all composition data, 1 for discarded composition data, and 2 for retained
+#' fish only. Default of 0.
+#' @param age_error Number of ageing error vector to apply to the age data based on
+#' Stock Synthesis. Default "Enter Age Error Vector".
+#' @param age_low Lower age bin for all age composition data based on the expected
+#' format for Stock Synthesis. Default value of -1 which translates to the lowest age
+#' bin.
+#' @param age_high Upper age bin for all age composition data based on the expected
+#' format for Stock Synthesis. Default value of -1 which translates to the highest
+#  age bin.
+#' @template dir
+#' @param printfolder Folder inside the directory, if provide, where the composition
+#' csv files will be saved. Default "forSS3".
+#' @template verbose
+#'
+#' @author Chantel Wetzel
+#' @export
+#'
+get_raw_comps <- function(
+  data,
+  comp_bins,
+  comp_column_name = "Length_cm",
+  two_sex_comps = TRUE,
+  fleet = "Enter Fleet",
+  month = "Enter Month",
+  partition = 0,
+  age_error = "Enter Age Error Vector",
+  age_low = -1,
+  age_high = -1,
+  dir = NULL,
+  printfolder = "forSS3",
+  verbose = TRUE)
+{
+
+  plotdir <- file.path(dir, printfolder)
+  check_dir(dir = plotdir, verbose = verbose)
+
+  colnames(data) <- tolower(colnames(data))
+  comp_column_name <- tolower(comp_column_name)
+
+  vars <- c("year", "sex")
+  if(sum(vars %in% colnames(data)) != 2){
+    stop("Data frame does not contain a column name year and/or sex.
+         \n The columns names can be either upper or lower case.")
+  }
+
+  if(!comp_column_name %in% colnames(data)){
+    stop("Data frame does not contain a column name of comp_column_name.
+         \n The columns names can be either upper or lower case. ")
+  }
+
+  if (!two_sex_comps){
+    data[, "sex"] <- "U"
+  }
+
+  # Check to see if user is doing ages or lengths
+  if(length(grep("age", comp_column_name)) > 0) {
+    comp_type <- "age"
+  } else {
+    comp_type <- "length"
+  }
+
+  keep <- !is.na(data[, comp_column_name])
+  data <- data[keep, ]
+  bins <- c(comp_bins, Inf)
+  data$bin <- bins[findInterval(data[, comp_column_name], bins, all.inside = T)]
+
+  # if there are NA sexes replace them with U
+  if (sum(is.na(data[, "sex"])) > 0) {
+    data[is.na(data[, "sex"]), "sex"] <- "U"
+  }
+
+  # Create the comps
+  Results <- out <- NULL
+  for (y in sort(unique(data[, "year"]))) {
+    # Identify relevant rows
+    Which <- which(data[, "year"] == y & data[, "sex"] %in% c("F", "M"))
+    # Skip this year unless there are rows
+    if (length(Which) > 0) {
+      Row <- c(y, length(Which))
+      # Loop across F then M
+      for (s in c("F", "M")) {
+        # Loop across length bins
+        for (l in comp_bins)
+        {
+          # Subset to relevant rows
+          if (l == min(bins)) {
+            Which2 <- Which[which(data[Which, "bin"] %in% l & data[Which, "sex"] == s)]
+          }
+          if (l != min(bins)) {
+            Which2 <- Which[which(data[Which, "bin"] == l & data[Which, "sex"] == s)]
+          }
+          if (l == max(bins)) {
+            Which2 <- Which[which(data[Which, "bin"] %in% c(l, Inf) & data[Which, "sex"] == s)]
+          }
+          # Sum to effective sample size by length_bin x Sex x Fleet x Year
+          if (length(Which2) == 0) Row <- c(Row, 0)
+          if (length(Which2) >= 1) Row <- c(Row, length(Which2))
+        }
+      }
+      # Add to results matrix
+      Results <- rbind(Results, Row)
+    } # end Which loop
+  } # end year loop
+
+  if(!is.null(Results)){
+    Results <- as.data.frame(Results)
+    tmp <- data.frame(
+      year = Results[, 1],
+      month = month,
+      fleet = fleet,
+      sex = 3,
+      partition = partition,
+      nsamp = Results[, 2]
+    )
+    out <- cbind(tmp, Results[, -c(1:2)])
+    colnames(out)[-c(1:6)] <- c(
+      paste(rep("F", each = length(comp_bins)), comp_bins, sep = ""),
+      paste(rep("M", each = length(comp_bins)), comp_bins, sep = ""))
+  }
+
+  # Create unsexed comps if present in the data
+  out_u <- NULL
+  if (length(data[data[, "sex"] == "U", "sex"]) > 0) {
+    Results <- NULL
+    for (y in sort(unique(data[, "year"]))) {
+      # Identify relevant rows
+      Which <- which(data[, "year"] == y & data[, "sex"] == "U")
+      # Skip this year unless there are rows
+      if (length(Which) > 0) {
+        # Format reference stuff
+        Row <- c(y, length(Which))
+        # Loop across length bins
+        for (l in comp_bins)
+        {
+          # Subset to relevant rows
+          if (l == min(bins)) {
+            Which2 <- Which[which(data[Which, "bin"] %in% l)]
+          }
+          if (l != min(bins)) {
+            Which2 <- Which[which(data[Which, "bin"] == l)]
+          }
+          if (l == max(bins)) {
+            Which2 <- Which[which(data[Which, "bin"] %in% c(l, Inf))]
+          }
+          # Sum to effective sample size by length_bin x Sex x Fleet x Year
+          if (length(Which2) == 0) Row <- c(Row, 0)
+          if (length(Which2) >= 1) Row <- c(Row, length(Which2))
+        }
+        # Add to results matrix
+        Results <- rbind(Results, Row)
+      } # end Which loop
+    } # end year loop
+    Results <- as.data.frame(Results)
+    tmp <- data.frame(
+      year = Results[, 1],
+      month = month,
+      fleet = fleet,
+      sex = 0,
+      partition = partition,
+      nsamp = Results[, 2]
+    )
+
+    if (two_sex_comps){
+      out_u <- cbind(tmp, Results[, -c(1:2)], Results[, -c(1:2)])
+    } else {
+      out_u <- cbind(tmp, Results[, -c(1:2)])
+    }
+    colnames(out_u)[-c(1:6)] <- paste(rep("U", each = length(comp_bins)), comp_bins, sep = "")
+  }
+
+  if (comp_type == "length") {
+    if (!is.null(out)) {
+      out_comps <- out
+    } else {
+      out_comps <- NULL
+    }
+    if (!is.null(out_u)) {
+      out_u_comps <- out_u
+    }
+  }
+
+  if (comp_type == "age") {
+    if (!is.null(out)) {
+      out_comps <- cbind(out[, 1:5], age_error, age_low, age_high, out[, 6:dim(out)[2]])
+    } else {
+      out_comps <- NULL
+    }
+    if (!is.null(out_u)) {
+      out_u_comps <- cbind(out_u[, 1:5], age_error, age_low, age_high, out_u[, 6:dim(out_u)[2]])
+    }
+  }
+
+  if (!is.null(dir)) {
+    if (!is.null(out_comps)) {
+      write.csv(out_comps,
+                file = file.path(plotdir, paste0(comp_type, "_raw_comps_sex_3_", comp_type, "_bins_", comp_bins[1], "-", max(comp_bins), ".csv")),
+                row.names = FALSE
+      )
+    }
+    if (!is.null(out_u)) {
+      write.csv(out_u_comps,
+                file = file.path(plotdir, paste0(comp_type, "_raw_comps_sex_0_", comp_type, "_bins_", comp_bins[1], "-", max(comp_bins), ".csv")),
+                row.names = FALSE
+      )
+    }
+  }
+
+  comps <- list()
+  if (!is.null(out_comps)) {
+    rownames(out_comps) <- NULL
+    comps$sexed <- out_comps
+  }
+  if (!is.null(out_u)) {
+    rownames(out_u_comps) <- NULL
+    comps$unsexed <- out_u_comps
+  }
+
+  return(comps)
+
+}
