@@ -51,11 +51,13 @@ ls("package:nwfscSurvey")
 Pull both the catch and biological data:
 
 ```r
-catch = PullCatch.fn(Name = "Pacific ocean perch", 
-                     SurveyName = "NWFSC.Combo")
+catch = pull_catch(
+  common_name = "Pacific ocean perch", 
+  survye = "NWFSC.Combo")
 
-bio   = PullBio.fn(Name = "Pacific ocean perch", 
-                   SurveyName = "NWFSC.Combo")
+bio = pull_bio(
+  common_Name = "Pacific ocean perch", 
+  survey = "NWFSC.Combo")
 ```
 
 #### Initial data visualization
@@ -160,12 +162,27 @@ PlotFreqData.fn(dir = getwd(),
                 dat = Length_Freq)
 
 ```
-A new function to visualize length frequency data is also availble:
+A new function to visualize length frequency data is also available:
 ```r
 plot_comps(data = Length_Freq)
 ```
 
 If `dir` does not equal `NULL`, then a "plot" folder will be created in the directory location and a png of the plot will be saved. 
+
+There is also a function to create raw or unexpanded composition data that works
+for either length or age data.
+
+```r
+length_comps <- get_raw_comps(
+    data = dat,
+    comp_bins = seq(10, 40, 2),
+    comp_column_name = "Length_cm",
+    two_sex_comps = TRUE,
+    dir = getwd())
+```
+This function returns a list of sexed and unsexed length composition data formatted
+for Stock Synthesis. The sample size (nsamp) is set equal to the number of samples
+in the data frame.
 
 #### Marginal age composition data
 
@@ -200,6 +217,19 @@ plot_comps(
   data = Ages)
 ```
 If `dir` is not `NULL`, then a "plot" folder will be created in the directory location and a png of the plot will be saved.
+
+There is also a function to create raw or unexpanded composition data that works
+for either length or age data.
+
+```r
+age_comps <- get_raw_comps(
+    data = dat,
+    comp_bins = 1:40,
+    comp_column_name = "Age",
+    two_sex_comps = TRUE,
+    dir = getwd())
+```
+This function returns a list of sexed and unsexed marginal age composition data formatted for Stock Synthesis. The sample size (nsamp) is set equal to the number of samples in the data frame.
 
 #### Conditional-age-at-length data
 
