@@ -58,7 +58,6 @@
 #'   The name of the file within `Dir` will start with Catch_ and end with .rdata.
 #'   Default NULL which will not save an output file.
 #' @template verbose
-#' @template sample_types
 #'
 #' @author Chantel Wetzel (maintainer) based on code by John Wallace
 #' @export
@@ -96,8 +95,7 @@ PullCatch.fn <- function(
     SurveyName = NULL,
     SaveFile = lifecycle::deprecated(),
     Dir = NULL,
-    verbose = TRUE,
-    sample_types = c("NA", NA, "Life Stage", "Size")[1:2]) {
+    verbose = TRUE) {
 
   lifecycle::deprecate_soft(
     when = "2.3",
@@ -119,8 +117,7 @@ PullCatch.fn <- function(
     survey = SurveyName,
     dir = Dir,
     convert = TRUE,
-    verbose = verbose,
-    sample_types = sample_types)
+    verbose = verbose)
 
   return(Out)
 }
