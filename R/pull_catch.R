@@ -262,8 +262,8 @@ pull_catch <- function(common_name = NULL,
   if(sum(c("Life Stage", "Size") %in% sample_types) == 2) {
     n_id <- table(catch$trawl_id)
     if(sum(n_id == 2) > 0){
-      print("Warning: Pulling all sample types (Life Stage and Size) has resulted in multiple records for unique tows (Trawl_id).")
-      print("The `combine_tows` function can be used to combine these multiple records for unique tows if needed.")
+      warning("Warning: Pulling all sample types (Life Stage and Size) has resulted in multiple records for unique tows (Trawl_id).
+      \n The `combine_tows` function can be used to combine these multiple records for unique tows if needed.")
     }
   }
 
