@@ -86,8 +86,8 @@ of samples with \code{"statistical_partition_dim"} of Size and Life Stage are
 Pacific hake and should not be considered different than regular survey
 samples. The other types of samples that may be designated Life Stage are
 egg cases that can be caught and identified for select elasmobranch
-species. These type of samples would not be included in the data to estimate
-indices of abundance and are omitted by default.}
+species. These type of samples should not be included in the data used
+to estimate indices of abundance and are omitted by default.}
 }
 \description{
 Pull catch data from the
