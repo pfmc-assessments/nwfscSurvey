@@ -60,12 +60,12 @@
           
           <code><a href="Biomass.fn.html">Biomass.fn()</a></code> 
         </dt>
-        <dd>Calculates design based estimates from survey data for West Coast surveys. The design based index is calculated based on the area of the strata and the mean catch by strata. See: Gunderson, D.R. and Sample, T.M. 1980. Distribution and abundance of rockfish off Washington, Oregon, and California during 1977. Marine Fisheries Review: March - April.</dd>
+        <dd>Calculates design based estimates from survey data for West Coast surveys.</dd>
       </dl><dl><dt>
           
           <code><a href="CheckStrata.fn.html">CheckStrata.fn()</a></code> 
         </dt>
-        <dd>Calculates and returns the total number of tows and positive tows conducted in each strata by year. The selected stratas are used to expand the length and marginal age compositions and to calculate a design based index using the Biomass.fn function.</dd>
+        <dd>Calculate the number of observations by year and strata</dd>
       </dl><dl><dt>
           
           <code><a href="CreateStrataDF.fn.html">CreateStrataDF.fn()</a></code> 
@@ -75,12 +75,12 @@
           
           <code><a href="Format.AKSlope.fn.html">Format.AKSlope.fn()</a></code> 
         </dt>
-        <dd>Rename columns in the AFSC slope survey data file received prior to the creation of the NWFSC data warehouse. This function converts the older data files to create the needed column names to work within survey package functions. Output from this function will be list of containing catch, length, and age data.</dd>
+        <dd>Rename AFSC slope survey columns from data pulled before 2017</dd>
       </dl><dl><dt>
           
           <code><a href="GetN.fn.html">GetN.fn()</a></code> 
         </dt>
-        <dd>Calculate effN input sample sizes</dd>
+        <dd>Calculate input sample sizes</dd>
       </dl><dl><dt>
           
           <code><a href="GetSpp.fn.html">GetSpp.fn()</a></code> 
@@ -110,12 +110,12 @@
           
           <code><a href="PlotBioStrata.fn.html">PlotBioStrata.fn()</a></code> 
         </dt>
-        <dd>Plots the biomass with confidence intervals</dd>
+        <dd>Plots the design-based biomass estimates by strata with confidence intervals</dd>
       </dl><dl><dt>
           
           <code><a href="PlotFreqData.fn.html">PlotFreqData.fn()</a></code> 
         </dt>
-        <dd>This function plots frequency data as bubble plots You may want to change all zeros to NA's so that those observations are not plotted. If you don't then set zero2NAs=F</dd>
+        <dd>Plot length or age compositions by year in bubble plots</dd>
       </dl><dl><dt>
           
           <code><a href="PlotMap.fn.html">PlotMap.fn()</a></code> 
@@ -170,7 +170,7 @@
           
           <code><a href="ReadInAges.fn.html">ReadInAges.fn()</a></code> 
         </dt>
-        <dd>Reads in the West Coast Trienial survey data and filters the data into what is necessary It reads in data and makes sure only the species necessary are kept may want to keep NA (blank in Excel) to select the zero tows removeCAN is a flag if you want tows in Canadian waters removed</dd>
+        <dd>Cleans triennial survey data by year and area</dd>
       </dl><dl><dt>
           
           <code><a href="ReadInLengths.fn.html">ReadInLengths.fn()</a></code> 
@@ -205,27 +205,27 @@
           
           <code><a href="SurveyAFs.fn.html">SurveyAFs.fn()</a></code> 
         </dt>
-        <dd>Expands the ages up to the total stratum area then sums over strata Original Version Written by Allan Hicks 16 March 2009 Modified by Chantel Wetzel to work with the data warehouse data formatting, add additional options of when to apply the sex ratio, and correct some treatment of unsexed fish weighted by sample size and area NOTE: The age bin called F0 or M0 is retained to show proportion of ages smaller than smallest bin You will want to likely add this to your first age bin and delete this before putting in SS, or start the ageBins argument at the 2nd age bin and F0 will be all fish smaller (hence the first age bin)</dd>
+        <dd>Create marginal age composition data</dd>
       </dl><dl><dt>
           
           <code><a href="SurveyAgeAtLen.fn.html">SurveyAgeAtLen.fn()</a></code> 
         </dt>
-        <dd>Calculates proportion of age at length and reformats into SS format Uses raw numbers at length, assuming that is a random sample conditioned on length and sex. To use expanded numbers (up to strata areas), set raw=F Only sex codes 1 and 2 and puts males and females on separate lines because the age@L is conditioned on sex (a sample of females of length 25cm, for example) Gender=1: females only. Male values ignored Gender=2: males only. Female values ignored. lgthBins is either the interval between length bins or the actual length bins note that 0 and Inf are tacked on the ends to account for lengths and ages outside the interval. You may want to add these in to first and last bin. I assume all fish are sexed for age data, thus do not apply sex ratios for unsexed fish</dd>
+        <dd>Calculates conditional age-at-length composition data</dd>
       </dl><dl><dt>
           
           <code><a href="SurveyLFs.fn.html">SurveyLFs.fn()</a></code> 
         </dt>
-        <dd>Expands the lengths up to the total stratum area then sums over strata</dd>
+        <dd>Expands the lengths up to the total stratum area then sums over strata for each year</dd>
       </dl><dl><dt>
           
           <code><a href="UnexpandedAFs.fn.html">UnexpandedAFs.fn()</a></code> 
         </dt>
-        <dd>Creates a matrix of length or age composition data WITHOUT expantion Written by Chantel Wetzel to work with the data warehouse data formatting,</dd>
+        <dd>Creates a matrix of unexpanded age compositions</dd>
       </dl><dl><dt>
           
           <code><a href="UnexpandedLFs.fn.html">UnexpandedLFs.fn()</a></code> 
         </dt>
-        <dd>Creates a matrix of length or age composition data WITHOUT expantion Written by Chantel Wetzel to work with the data warehouse data formatting,</dd>
+        <dd>Creates a matrix of unexpanded length composition data</dd>
       </dl><dl><dt>
           
           <code><a href="availablecells.html">availablecells</a></code> 
@@ -285,7 +285,7 @@
           
           <code><a href="est_growth.html">est_growth()</a></code> 
         </dt>
-        <dd>Estimate length-at-age using the von Bertanlaffy parametization from Stock Synthesis.</dd>
+        <dd>Estimate length-at-age using the von Bertanlaffy parametization</dd>
       </dl><dl><dt>
           
           <code><a href="estimate_weight_length.html">estimate_weight_length()</a></code> 
@@ -345,7 +345,7 @@
           
           <code><a href="pull_bio.html">pull_bio()</a></code> 
         </dt>
-        <dd>Pull biological data (age, length, weight) from the NWFSC data warehouse The website is: https://www.webapps.nwfsc.noaa.gov/data This function can be used to pull a single species or all observed species In order to pull all species leave common_name or sci_name as NULL</dd>
+        <dd>Pull biological data (age, length, weight) from the NWFSC data warehouse</dd>
       </dl><dl><dt>
           
           <code><a href="pull_biological_samples.html">pull_biological_samples()</a></code> 
@@ -360,12 +360,12 @@
           
           <code><a href="pull_gemm.html">pull_gemm()</a></code> 
         </dt>
-        <dd>Pull gemm data from the NWFSC data warehouse The website is: https://www.webapps.nwfsc.noaa.gov/data This function can be used to pull all gemm data, a single species, or a subset of species c("Canary Rockfish", "Widow Rockfish"). Species names in the gemm are capitalized (e.g. Canary Rockfish). However, there are checks in the function to adjust input species names if the input names do not match the expected capitalization (e.g. "canary rockfish", "canary_rockfish"). The fuction also allows you to subset the data by year using the years input and to save the object if the dir function input is given.</dd>
+        <dd>Pull gemm data from the NWFSC data warehouse</dd>
       </dl><dl><dt>
           
           <code><a href="pull_haul.html">pull_haul()</a></code> 
         </dt>
-        <dd>Pull haul data from the NWFSC data warehouse. The website is: https://www.webapps.nwfsc.noaa.gov/data. This function can be used to pull haul data and associated covariates.</dd>
+        <dd>Pull haul data from the NWFSC data warehouse.</dd>
       </dl><dl><dt>
           
           <code><a href="pull_spp.html">pull_spp()</a></code> 

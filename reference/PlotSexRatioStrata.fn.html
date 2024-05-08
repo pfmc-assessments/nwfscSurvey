@@ -63,23 +63,28 @@
     <div class="section level2">
     <h2 id="arguments">Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h2>
     <dl><dt>dir</dt>
-<dd><p>directory location for saving the png</p></dd>
+<dd><p>Directory where output will be saved. The directory where the file should be saved.
+If dir = NULL no output will be saved.</p></dd>
 
 
 <dt>dat</dt>
-<dd><p>data object</p></dd>
+<dd><p>A data frame of length-composition data returned from
+<code><a href="pull_bio.html">pull_bio()</a></code>.</p></dd>
 
 
 <dt>type</dt>
-<dd><p>length/age which data type to use</p></dd>
+<dd><p>Specify where to calculate the sex ration by length or age.</p></dd>
 
 
 <dt>strat.vars</dt>
-<dd><p>the parameters to stratify the data</p></dd>
+<dd><p>Variables in both data frame that are used to
+define the stratas. Default is bottom depth (m) and latitudes (decimal
+degrees), i.e., <code>c("Depth_m", "Latitude_dd")</code>.</p></dd>
 
 
 <dt>strat.df</dt>
-<dd><p>the created strata matrix with the calculated areas by the createStrataDF.fn function</p></dd>
+<dd><p>A data frame that defines the strata and provides the
+calculated areas for each strata returned from <code>createStrataDF.fn()</code>.</p></dd>
 
 
 <dt>circleSize</dt>
