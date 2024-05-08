@@ -26,7 +26,7 @@ Use the \code{sci_name} argument if you know the latin name.}
 range of years to pull data for (e.g., c(2003, 2024)).
 Vector can not contain -Inf or Inf.}
 
-\item{dir}{directory where ouptut will be saved. The directory where the file should be saved.
+\item{dir}{Directory where output will be saved. The directory where the file should be saved.
 If dir = NULL no output will be saved.}
 }
 \description{

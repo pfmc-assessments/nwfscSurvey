@@ -27,7 +27,7 @@ be true for the latter.}
 
 \item{dim}{Dimension of interest, either "depth", "lat", or "sex".}
 
-\item{dir}{directory where ouptut will be saved. The directory where the file should be saved.
+\item{dir}{Directory where output will be saved. The directory where the file should be saved.
 If dir = NULL no output will be saved.}
 
 \item{dopng}{Deprecated with {nwfscSurvey} 2.1 because providing a non-NULL

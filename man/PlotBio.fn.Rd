@@ -21,9 +21,10 @@ PlotBio.fn(
 )
 }
 \arguments{
-\item{dir}{directory to save the file}
+\item{dir}{Directory where output will be saved. The directory where the file should be saved.
+If dir = NULL no output will be saved.}
 
-\item{dat}{object created by the GetTotalBiomass.fn}
+\item{dat}{object created by the \code{\link[=Biomasss.fn]{Biomasss.fn()}}}
 
 \item{CI}{confidence interval}
 

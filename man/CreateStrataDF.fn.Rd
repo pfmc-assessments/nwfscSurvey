@@ -57,7 +57,7 @@ strata <- CreateStrataDF.fn(
 }
 \seealso{
 See \code{\link{StrataAreas.fn}} for how areas are calculated.
-See \code{\link{Biomass.fn}} for how the areas are used to predict biomass.
+See \code{\link{Biomass.fn}} for how the areas are used to create design-based biomass estimates.
 }
 \author{
 Chantel Wetzel and Kelli Johnson

@@ -18,7 +18,7 @@ Format.AKSlope.fn(
 )
 }
 \arguments{
-\item{dir}{directory where ouptut will be saved. The directory where the file should be saved.
+\item{dir}{Directory where output will be saved. The directory where the file should be saved.
 If dir = NULL no output will be saved.}
 
 \item{datTows}{A data frame of catch data for the

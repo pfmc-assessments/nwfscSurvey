@@ -2,11 +2,7 @@
 % Please edit documentation in R/Biomass.fn.R
 \name{Biomass.fn}
 \alias{Biomass.fn}
-\title{Calculates design based estimates from survey data for West Coast surveys.
-The design based index is calculated based on the area of the strata and
-the mean catch by strata.
-See: Gunderson, D.R. and Sample, T.M. 1980. Distribution and abundance of rockfish off Washington,
-Oregon, and California during 1977. Marine Fisheries Review: March - April.}
+\title{Calculates design based estimates from survey data for West Coast surveys.}
 \usage{
 Biomass.fn(
   dir = NULL,
@@ -15,25 +11,34 @@ Biomass.fn(
   strat.df,
   printfolder = "forSS",
   outputMedian = TRUE,
-  month = NA,
-  fleet = NA,
+  month = "Enter month",
+  fleet = "Enter fleet",
   verbose = TRUE
 )
 }
 \arguments{
-\item{dir}{directory where the output file will be saved}
+\item{dir}{Directory where output will be saved. The directory where the file should be saved.
+If dir = NULL no output will be saved.}
 
-\item{dat}{data-frame of the data that has been by the PullCatch.fn}
+\item{dat}{Data frame of catch data that has been created by the \code{\link[=pull_catch]{pull_catch()}}.}
 
-\item{strat.vars}{A vector of the strata variable names (i.e., c("Depth_m","Latitude_dd"))}
+\item{strat.vars}{Variables in both data frame that are used to
+define the stratas. Default is bottom depth (m) and latitudes (decimal
+degrees), i.e., \code{c("Depth_m", "Latitude_dd")}.}
 
-\item{strat.df}{a dataframe with the first column the name of the stratum, the second column the area of the stratum, and the remaining columns are the high and low variables defining the strata created by the CreateStrataDF.fn}
+\item{strat.df}{A data frame that defines the strata and provides the
+calculated areas for each strata returned from \code{\link[=createStrataDF.fn]{createStrataDF.fn()}}.}
 
-\item{printfolder}{the folder where files will be saved}
+\item{printfolder}{A string that will be appended to \code{dir}, creating a folder
+where the output will be saved. If specified as \code{""},
+the output will just be saved directly in \code{dir}. The default is \code{"forSS3"}.}
 
-\item{outputMedian}{T/F output median or the mean biomass estimate}
+\item{outputMedian}{Specify whether to output median or the mean biomass estimate. Default \code{TRUE}.}
 
-\item{month}{month for SS}
+\item{month}{A single integer value between 1-12. A user input fleet
+number to assign to the month column based on the expected
+format for Stock Synthesis. See the Stock Synthesis manual for
+more information. Default "Enter Month".}
 
 \item{fleet}{fleet number for SS}
 
@@ -41,14 +46,13 @@ Biomass.fn(
 warnings to the console. The default is \code{TRUE}.}
 }
 \description{
-The variables defining the strata must begin with the name in strat.vars and end with ".1" or ".2" (i.e., Depth_m.1)
-the strata are assumed to be continuous variables, thus have a lower and upper value defining them. The lower value does not necessarily have to be the same as the previous upper value.
-the stat.df dataframe is difficult to build up with more than one variable becuase it turns into a design where you have to define all areas, thus repeat the variables for one (like a design)
-}
-\details{
-I calculate the variance given stratified sampling theory
-I work in normal space, then calculate the statistics if B is lognormal
-This is the Mean Ratio Estimate
+The design based index is calculated based on the area of the strata and
+the mean catch by strata. This function returns a list of design-based
+estimates by strata and estimates combined across stratas by year. This
+function is designed to work with data frames pulled from the NWFSC
+data warehouse using \code{\link[=pull_catch]{pull_catch()}}.
+See: Gunderson, D.R. and Sample, T.M. 1980. Distribution and abundance of rockfish off Washington,
+Oregon, and California during 1977. Marine Fisheries Review: March - April.
 }
 \author{
 Allan Hicks and Chantel Wetzel

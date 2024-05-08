@@ -27,7 +27,7 @@
 #' @template partition
 #' @template agelow
 #' @template agehigh
-#' @template ageEr
+#' @template ageErr
 #' @template fleet
 #' @template month
 #' @param nSamps Vector of integer sample sizes. A vector of sample sizes for

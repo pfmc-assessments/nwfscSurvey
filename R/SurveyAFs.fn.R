@@ -27,7 +27,7 @@
 #' @template partition
 #' @template agelow
 #' @template agehigh
-#' @template ageEr
+#' @template ageErr
 #' @param nSamps Vector of integer sample sizes. A vector of sample sizes for
 #' all years in `datA` is required if a vector is provided. The input vector will be included in the
 #' output marginal age composition data.  One option for calculating input sample size is the [GetN.fn()].
@@ -64,7 +64,7 @@ SurveyAFs.fn <- function(
   agehigh = "Enter",
   ageErr = "Enter",
   nSamps = "Enter Samps",
-  month = "Enter Month", p
+  month = "Enter Month",
   printfolder = "forSS",
   remove999 = TRUE,
   outputStage1 = FALSE,
