@@ -64,7 +64,8 @@ by leaving both <code>common_name = NULL</code> and <code>sci_name = NULL</code>
 <span>  <span class="va">survey</span>,</span>
 <span>  dir <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  convert <span class="op">=</span> <span class="cn">TRUE</span>,</span>
-<span>  verbose <span class="op">=</span> <span class="cn">TRUE</span></span>
+<span>  verbose <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  sample_types <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"NA"</span>, <span class="cn">NA</span>, <span class="st">"Life Stage"</span>, <span class="st">"Size"</span><span class="op">)</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">2</span><span class="op">]</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
 
@@ -141,6 +142,19 @@ which aligns with the expected names in data processing functions.</p></dd>
 <dd><p>A logical that specifies if you want to print messages and
 warnings to the console. The default is <code>TRUE</code>.</p></dd>
 
+
+<dt>sample_types</dt>
+<dd><p>A character vector of sample types, i.e.,
+<code>"statistical_partition_dim"</code>, that you would like to keep. The default is
+to only keep <code>NA</code> values, both real and character NA. But, for some
+instances you may want to keep Life Stage and Size samples. The majority
+of samples with <code>"statistical_partition_dim"</code> of Size and Life Stage are
+Pacific hake and should not be considered different than regular survey
+samples. The other types of samples that may be designated Life Stage are
+egg cases that can be caught and identified for select elasmobranch
+species. These type of samples should not be included in the data used
+to estimate indices of abundance and are omitted by default.</p></dd>
+
 </dl></div>
     <div class="section level2">
     <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
@@ -148,15 +162,12 @@ warnings to the console. The default is <code>TRUE</code>.</p></dd>
 with the intent that they provide the best available information for use
 in an index-standardization procedure. The removed samples may be of use
 to others with a less-restrictive goal than producing an index of abundance.
-For example, life-stage samples are excluded because they are not collected
-using the same protocols as standard samples.
+For example, depths sampled outside the standard protocol are excluded.
 To download all data, we currently recommend going to the
 <a href="https://www.webapps.nwfsc.noaa.gov/data" class="external-link">NWFSC data warehouse</a>
 and using the csv link to extract data for a single species at a time.
 In the future, we hope to add functionality to this package such that
-downloading all data can be done easily within this function.
-See <a href="https://github.com/pfmc-assessments/nwfscSurvey/issues/43" class="external-link">Issue #43</a>
-for more information.</p>
+downloading all data can be done easily within this function.</p>
     </div>
     <div class="section level2">
     <h2 id="author">Author<a class="anchor" aria-label="anchor" href="#author"></a></h2>
