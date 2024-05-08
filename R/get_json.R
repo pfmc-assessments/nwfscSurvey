@@ -1,5 +1,6 @@
 #' Get json content from a URL
 #'
+#' @details
 #' Get information stored on the web in .json format using a URL. The content
 #' is first pulled from the web as text with UTF-8 encoding. Then the text
 #' is passed to [jsonlite::fromJSON()]. This workflow ensures that the URL

@@ -20,9 +20,11 @@ PlotVarLengthAtAge.fn(
 )
 }
 \arguments{
-\item{dir}{directory to save the file}
+\item{dir}{Directory where output will be saved. The directory where the file should be saved.
+If dir = NULL no output will be saved.}
 
-\item{dat}{The data loaded from the NWFSC database}
+\item{dat}{A data frame of length-composition data returned from
+\code{\link[=pull_bio]{pull_bio()}}.}
 
 \item{main}{Name that will be used to name the saved png}
 

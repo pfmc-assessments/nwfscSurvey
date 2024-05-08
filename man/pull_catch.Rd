@@ -69,7 +69,7 @@ Data can only be pulled from one survey at a time, though we are working on
 allowing for a vector of survey names.
 Currently, \code{NWFSC.Shelf.Rockfish} and \code{NWFSC.Hook.Line} are not supported.}
 
-\item{dir}{directory where ouptut will be saved. The directory where the file should be saved.
+\item{dir}{Directory where output will be saved. The directory where the file should be saved.
 If dir = NULL no output will be saved.}
 
 \item{convert}{TRUE/FALSE to convert column names to first letter uppercase
@@ -86,8 +86,8 @@ of samples with \code{"statistical_partition_dim"} of Size and Life Stage are
 Pacific hake and should not be considered different than regular survey
 samples. The other types of samples that may be designated Life Stage are
 egg cases that can be caught and identified for select elasmobranch
-species. These type of samples would not be included in the data to estimate
-indices of abundance and are omitted by default.}
+species. These type of samples should not be included in the data used
+to estimate indices of abundance and are omitted by default.}
 }
 \description{
 Pull catch data from the

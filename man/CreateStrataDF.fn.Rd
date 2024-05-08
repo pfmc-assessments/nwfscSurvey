@@ -33,6 +33,9 @@ The data frame will have six columns,
 (5) Latitude_dd.1, and (6) Latitude_dd.2.
 }
 \description{
+Create strata data frame using \code{\link{StrataAreas.fn}}
+}
+\details{
 Create a data frame of strata formatted for use by models that need
 estimates of the area for each strata to expand estimates of abundance.
 Strata limits are provided by the user in terms of
@@ -57,7 +60,7 @@ strata <- CreateStrataDF.fn(
 }
 \seealso{
 See \code{\link{StrataAreas.fn}} for how areas are calculated.
-See \code{\link{Biomass.fn}} for how the areas are used to predict biomass.
+See \code{\link{Biomass.fn}} for how the areas are used to create design-based biomass estimates.
 }
 \author{
 Chantel Wetzel and Kelli Johnson

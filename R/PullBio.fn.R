@@ -44,13 +44,13 @@
 #' }
 #'
 PullBio.fn <- function(
-    Name = NULL,
-    SciName = NULL,
-    YearRange = c(1980, 5000),
-    SurveyName = NULL,
-    SaveFile = lifecycle::deprecated(),
-    Dir = NULL,
-    verbose = TRUE) {
+  Name = NULL,
+  SciName = NULL,
+  YearRange = c(1980, 5000),
+  SurveyName = NULL,
+  SaveFile = lifecycle::deprecated(),
+  Dir = NULL,
+  verbose = TRUE) {
 
   lifecycle::deprecate_soft(
     when = "2.3",

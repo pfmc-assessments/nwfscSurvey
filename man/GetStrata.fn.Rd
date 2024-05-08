@@ -24,6 +24,9 @@ A data frame with six columns,
 \item Latitude_dd.2 (decimal degrees; northern border).}
 }
 \description{
+Get Default Strata
+}
+\details{
 Get a data frame of strata for design-based estimates and survey
 composition data. Several strata are available for different default areas,
 as well as combinations using \code{"_"} in the argument \code{area}.

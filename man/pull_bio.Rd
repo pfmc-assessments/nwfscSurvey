@@ -2,10 +2,7 @@
 % Please edit documentation in R/pull_bio.R
 \name{pull_bio}
 \alias{pull_bio}
-\title{Pull biological data (age, length, weight) from the NWFSC data warehouse
-The website is: https://www.webapps.nwfsc.noaa.gov/data
-This function can be used to pull a single species or all observed species
-In order to pull all species leave common_name or sci_name as NULL}
+\title{Pull biological data (age, length, weight) from the NWFSC data warehouse}
 \usage{
 pull_bio(
   common_name = NULL,
@@ -71,7 +68,7 @@ Data can only be pulled from one survey at a time, though we are working on
 allowing for a vector of survey names.
 Currently, \code{NWFSC.Shelf.Rockfish} and \code{NWFSC.Hook.Line} are not supported.}
 
-\item{dir}{directory where ouptut will be saved. The directory where the file should be saved.
+\item{dir}{Directory where output will be saved. The directory where the file should be saved.
 If dir = NULL no output will be saved.}
 
 \item{convert}{TRUE/FALSE to convert column names to first letter uppercase
@@ -81,7 +78,6 @@ which aligns with the expected names in data processing functions.}
 warnings to the console. The default is \code{TRUE}.}
 }
 \description{
-Pull biological data (age, length, weight) from the NWFSC data warehouse
 The website is: https://www.webapps.nwfsc.noaa.gov/data
 This function can be used to pull a single species or all observed species
 In order to pull all species leave common_name or sci_name as NULL

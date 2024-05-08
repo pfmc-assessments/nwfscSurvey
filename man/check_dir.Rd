@@ -7,13 +7,16 @@
 check_dir(dir, verbose = TRUE)
 }
 \arguments{
-\item{dir}{directory where ouptut will be saved. The directory where the file should be saved.
+\item{dir}{Directory where output will be saved. The directory where the file should be saved.
 If dir = NULL no output will be saved.}
 
 \item{verbose}{A logical that specifies if you want to print messages and
 warnings to the console. The default is \code{TRUE}.}
 }
 \description{
+Directory check
+}
+\details{
 Check that
 \enumerate{
 \item The user knows that the data will not be saved if \code{dir = NULL}.

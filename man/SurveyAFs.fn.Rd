@@ -2,14 +2,7 @@
 % Please edit documentation in R/SurveyAFs.fn.R
 \name{SurveyAFs.fn}
 \alias{SurveyAFs.fn}
-\title{Expands the ages up to the total stratum area then sums over strata
-Original Version Written by Allan Hicks 16 March 2009
-Modified by Chantel Wetzel to work with the data warehouse data formatting,
-add additional options of when to apply the sex ratio, and correct some treatment of unsexed fish
-weighted by sample size and area
-NOTE: The age bin called F0 or M0 is retained to show proportion of ages smaller than smallest bin
-You will want to likely add this to your first age bin and delete this before putting in SS, or
-start the ageBins argument at the 2nd age bin and F0 will be all fish smaller (hence the first age bin)}
+\title{Create marginal age composition data}
 \usage{
 SurveyAFs.fn(
   dir = NULL,
@@ -39,50 +32,78 @@ SurveyAFs.fn(
 )
 }
 \arguments{
-\item{dir}{directory this is where the output files will be saved}
+\item{dir}{Directory where output will be saved. The directory where the file should be saved.
+If dir = NULL no output will be saved.}
 
-\item{datA}{the biological data frame exctrated from the data warehouse using the PullBio.fn}
+\item{datA}{the biological data frame exctrated from the data warehouse using the \code{\link[=pull_bio]{pull_bio()}}}
 
-\item{datTows}{the catch data frame extracted from the data warehouse using the PullCatch.fn}
+\item{datTows}{the catch data frame extracted from the data warehouse using the \code{\link[=pull_catch]{pull_catch()}}}
 
-\item{strat.vars}{the variables used define the stratas. Defaul is bottom depth and latitudes.}
+\item{strat.vars}{Variables in both data frame that are used to
+define the stratas. Default is bottom depth (m) and latitudes (decimal
+degrees), i.e., \code{c("Depth_m", "Latitude_dd")}.}
 
-\item{strat.df}{the created strata matrix with the calculated areas by the createStrataDF.fn function}
+\item{strat.df}{A data frame that defines the strata and provides the
+calculated areas for each strata returned from \code{\link[=createStrataDF.fn]{createStrataDF.fn()}}.}
 
-\item{ageBins}{length bins}
+\item{ageBins}{Vector of age bins to create age compositions across. Values above or below the
+minimum or maximum values, respectively, are grouped into the first age or plus group age.}
 
-\item{SSout}{if True the output is in a format pastable into SS dat file}
+\item{SSout}{A logical with the default of \code{TRUE}. If \code{TRUE}, the output
+is returned in a format that can be directly pasted into an SS3 data file.}
 
-\item{meanRatioMethod}{TRUE/FALSE}
+\item{meanRatioMethod}{A logical with the default of \code{TRUE}. If \code{TRUE}, then
+the mean ratio is implemented instead of the total ratio. Search the
+source code for the equations if more information is needed.}
 
-\item{sex}{sex value for Stock Synthesis}
+\item{sex}{Options of (0, 1, 2, 3). The integer will be used to define the sex column
+of the returned input for Stock Synthesis and specifies how the
+composition are treated with respect to sex. See the Stock Synthesis
+manual for more information. In short, 0 is for unsexed, 1 is females, 2
+is males, and 3 is females and males. The default is \code{3}.}
 
-\item{NAs2zero}{change NAs to zeros}
+\item{NAs2zero}{A logical specifying if \code{NA}s should be changed to zeros.
+The default is \code{TRUE}.}
 
-\item{sexRatioUnsexed}{sex ratio to apply to any length bins of a certain size or smaller as defined by the maxSizeUnsexed}
+\item{sexRatioUnsexed}{sex ratio to apply to any length bins of a certain size or smaller as defined
+by the maxSizeUnsexed}
 
 \item{maxSizeUnsexed}{all sizes below this threshold will assign unsexed fish by sexRatio set equal to 0.50, fish larger than this size will have unsexed fish assigned by the calculated sex ratio in the data.}
 
 \item{sexRatioStage}{1/2 apply the sex ratio based on the tows (1) or the expanded numbers (2)}
 
-\item{partition}{partition for Stock Synthesis}
+\item{partition}{Partition to assign the composition data based on the expected
+format for Stock Synthesis. Partition of 0 indicates that the composition data
+include all composition data, 1 for discarded composition data, and 2 for retained
+fish only. Default of 0.}
 
-\item{fleet}{fleet number}
+\item{agelow}{Lower age bin for all age composition data based on the expected
+format for Stock Synthesis. Default value of -1 which translates to the lowest age
+bin.}
 
-\item{agelow}{value for SS -1}
+\item{agehigh}{Upper age bin for all age composition data based on the expected
+format for Stock Synthesis. Default value of -1 which translates to the highest}
 
-\item{agehigh}{value for SS -1}
+\item{ageErr}{Single interget value  of ageing error
+vector to apply to the age data based on
+Stock Synthesis. Default "Enter".}
 
-\item{ageErr}{age error vector to apply}
+\item{nSamps}{Vector of integer sample sizes. A vector of sample sizes for
+all years in \code{datA} is required if a vector is provided. The input vector will be included in the
+output marginal age composition data.  One option for calculating input sample size is the \code{\link[=GetN.fn]{GetN.fn()}}.
+The default is "Enter Samps".}
 
-\item{nSamps}{effective sample size for Stock Synthesis}
+\item{month}{A single integer value between 1-12. A user input fleet
+number to assign to the month column based on the expected
+format for Stock Synthesis. See the Stock Synthesis manual for
+more information. Default "Enter Month".}
 
-\item{month}{month when the samples were collected}
+\item{printfolder}{A string that will be appended to \code{dir}, creating a folder
+where the output will be saved. If specified as \code{""},
+the output will just be saved directly in \code{dir}. The default is \code{"forSS3"}.}
 
-\item{printfolder}{Folder inside the directory, if provide, where
-csv files will be saved i.e., \code{file.path(dir, printfolder)}. Default "forSS3".}
-
-\item{remove999}{the output object by the function will have the 999 column combined with the first length bin}
+\item{remove999}{The output object by the function will have the 999 column combined with the first age bin.
+Default TRUE.}
 
 \item{outputStage1}{return the first stage expanded data without compiling it for SS}
 
@@ -90,14 +111,13 @@ csv files will be saved i.e., \code{file.path(dir, printfolder)}. Default "forSS
 warnings to the console. The default is \code{TRUE}.}
 }
 \description{
-Expands the ages up to the total stratum area then sums over strata
-Original Version Written by Allan Hicks 16 March 2009
-Modified by Chantel Wetzel to work with the data warehouse data formatting,
-add additional options of when to apply the sex ratio, and correct some treatment of unsexed fish
-weighted by sample size and area
-NOTE: The age bin called F0 or M0 is retained to show proportion of ages smaller than smallest bin
-You will want to likely add this to your first age bin and delete this before putting in SS, or
-start the ageBins argument at the 2nd age bin and F0 will be all fish smaller (hence the first age bin)
+Create marginal age composition data
+}
+\details{
+Create expanded marginal age composition data based on the pre-specified strata.
+This function is designed to be used with catch pulled using \code{\link[=pull_catch]{pull_catch()}} and
+biological data pulled using \code{\link[=pull_bio]{pull_bio()}}. The default output is formatted based
+on the formatting required by Stock Synthesis.
 }
 \seealso{
 \code{\link{SurveyLFs.fn}}

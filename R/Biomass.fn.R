@@ -1,26 +1,27 @@
 #' Calculates design based estimates from survey data for West Coast surveys.
+#'
+#' @details
 #' The design based index is calculated based on the area of the strata and
-#' the mean catch by strata.
+#' the mean catch by strata. This function returns a list of design-based
+#' estimates by strata and estimates combined across stratas by year. This
+#' function is designed to work with data frames pulled from the NWFSC
+#' data warehouse using [pull_catch()].
 #' See: Gunderson, D.R. and Sample, T.M. 1980. Distribution and abundance of rockfish off Washington,
 #' Oregon, and California during 1977. Marine Fisheries Review: March - April.
 #'
-#' The variables defining the strata must begin with the name in strat.vars and end with ".1" or ".2" (i.e., Depth_m.1)
-#' the strata are assumed to be continuous variables, thus have a lower and upper value defining them. The lower value does not necessarily have to be the same as the previous upper value.
-#' the stat.df dataframe is difficult to build up with more than one variable becuase it turns into a design where you have to define all areas, thus repeat the variables for one (like a design)
-#'
-#' I calculate the variance given stratified sampling theory
-#' I work in normal space, then calculate the statistics if B is lognormal
-#' This is the Mean Ratio Estimate
-#'
-#' @param dir directory where the output file will be saved
-#' @param dat data-frame of the data that has been by the PullCatch.fn
-#' @param strat.vars A vector of the strata variable names (i.e., c("Depth_m","Latitude_dd"))
-#' @param strat.df a dataframe with the first column the name of the stratum, the second column the area of the stratum, and the remaining columns are the high and low variables defining the strata created by the CreateStrataDF.fn
+#' @template dir
+#' @param dat Data frame of catch data that has been created by the [pull_catch()].
+#' @template strat.vars
+#' @template strat.df
 #' @template printfolder
-#' @param outputMedian T/F output median or the mean biomass estimate
-#' @param month month for SS
-#' @param fleet fleet number for SS
+#' @param outputMedian Logical input to specify whether to output median or the
+#' mean biomass estimate. Default `TRUE`.
+#' @template month
+#' @template fleet
 #' @template verbose
+#'
+#' @returns List of biomass estimates by year, biomass estimates by year and
+#' strata, and numbers of fish by year.
 #'
 #' @author Allan Hicks and Chantel Wetzel
 #' @importFrom grDevices dev.off png rgb
@@ -28,9 +29,38 @@
 #' @importFrom stats optim qnorm sd var
 #' @importFrom utils write.csv
 #' @export
-
-Biomass.fn <- function(dir = NULL, dat, strat.vars = c("Depth_m", "Latitude_dd"), strat.df, printfolder = "forSS3", outputMedian = TRUE,
-                       month = NA, fleet = NA, verbose = TRUE) {
+#'
+#' @examples
+#' \dontrun{
+#' catch <- pull_catch(
+#'   common_name = "petrale sole",
+#'   survey = "NWFSC.Combo"
+#' )
+#'
+#' strata <- CreateStrataDF.fn(
+#'   names = c("shallow_wa", "shallow_or", "shallow_ca", "deep_wa", "deep_or", "deep_ca"),
+#'   depths.shallow = c( 55,   55,   55,  183,  183, 183),
+#'   depths.deep    = c(183,  183,  183,  549,  549, 549),
+#'   lats.south     = c(46.0, 42.0, 32.0, 46.0, 42.0, 32.0),
+#'   lats.north     = c(49.0, 46.0, 42.0, 49.0, 46.0, 42.0))
+#'
+#' biommass <- Biomass.fn(
+#'   dat = catch,
+#'   strat.df = strata
+#' )
+#'
+#' }
+#'
+Biomass.fn <- function(
+  dir = NULL,
+  dat,
+  strat.vars = c("Depth_m", "Latitude_dd"),
+  strat.df,
+  printfolder = "forSS",
+  outputMedian = TRUE,
+  month = "Enter month",
+  fleet = "Enter fleet",
+  verbose = TRUE) {
 
   if (is.null(dat$cpue_kg_km2)) stop("There must be a column called cpue_kg_km2 in the dataframe")
 

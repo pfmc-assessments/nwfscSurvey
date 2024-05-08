@@ -21,13 +21,13 @@ PlotPresenceAbsence.fn(
 )
 }
 \arguments{
-\item{data}{data.frame containing data per haul created by \code{\link[=PullCatch.fn]{PullCatch.fn()}}
-or biological data created by \code{\link[=PullBio.fn]{PullBio.fn()}} where the \code{dim = "sex"} must
+\item{data}{Data frame containing data per haul created by \code{\link[=pull_catch]{pull_catch()}}
+or biological data created by \code{\link[=pull_bio]{pull_bio()}} where the \code{dim = "sex"} must
 be true for the latter.}
 
 \item{dim}{Dimension of interest, either "depth", "lat", or "sex".}
 
-\item{dir}{directory where ouptut will be saved. The directory where the file should be saved.
+\item{dir}{Directory where output will be saved. The directory where the file should be saved.
 If dir = NULL no output will be saved.}
 
 \item{dopng}{Deprecated with {nwfscSurvey} 2.1 because providing a non-NULL

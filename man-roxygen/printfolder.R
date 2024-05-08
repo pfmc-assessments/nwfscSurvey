@@ -1,2 +1,3 @@
-#' @param printfolder Folder inside the directory, if provide, where
-#' csv files will be saved i.e., `file.path(dir, printfolder)`. Default "forSS3".
+#' @param printfolder A string that will be appended to `dir`, creating a folder
+#'   where the output will be saved. If specified as `""`,
+#'   the output will just be saved directly in `dir`. The default is `"forSS3"`.

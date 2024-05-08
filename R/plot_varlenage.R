@@ -1,10 +1,12 @@
 #' Plot variability of length at age
 #'
-#' Plots the SD and CV of age at observed and predicted length
+#' @details
+#' Plots the standard deviation and coefficient of variation of age at observed
+#' and predicted length
 #'
 #'
-#' @param dir Directory to save output.
-#' @param dat The data loaded from the NWFSC database
+#' @template dir
+#' @param dat The data loaded from [pull_bio()]
 #' @param main Name that will be used to name the saved png
 #' @param bySex Logical to indicate if plot by sex
 #' @param Par Starting parameters for K, Linf, L0, CV0, and CV2 based on the
@@ -24,10 +26,18 @@
 #' @author Chantel Wetzel
 #' @export
 
-plot_varlenage <- function(dir = NULL, dat, main = NULL, 
+plot_varlenage <- function(
+  dir = NULL,
+  dat,
+  main = NULL,
   Par = data.frame(K = 0.13, Linf = 55, L0 = 15, CV0 = 0.10, CV1 = 0.10),
-  bySex = TRUE, estVB = TRUE, bins = NULL, legX = "bottomleft", legY = NULL, 
-  dopng = lifecycle::deprecated(), ...) {
+  bySex = TRUE,
+  estVB = TRUE,
+  bins = NULL,
+  legX = "bottomleft",
+  legY = NULL,
+  dopng = lifecycle::deprecated(),
+  ...) {
 
   if (lifecycle::is_present(dopng)) {
     lifecycle::deprecate_warn(
@@ -61,7 +71,7 @@ plot_varlenage <- function(dir = NULL, dat, main = NULL,
 
   par(mfcol = c(2, nn), mar = c(4, 4, 4, 4), oma = c(2, 2, 2, 2))
 
-  ests <- est_growth(dir = dir, dat = dat, Par = Par, return_df = FALSE, 
+  ests <- est_growth(dir = dir, dat = dat, Par = Par, return_df = FALSE,
     bySex = bySex, estVB = estVB, bins = bins)
   if (length(ests) > 2) {
     sex_names <- c("female", "male")
@@ -81,9 +91,9 @@ plot_varlenage <- function(dir = NULL, dat, main = NULL,
     xsd <- ests[[num[i]]][, 2]
     xcv <- ests[[num[i]]][, 3]
     if (is.null(bins)) {
-      ages <- as.numeric(rownames(ests[[num[i]]])) 
+      ages <- as.numeric(rownames(ests[[num[i]]]))
     } else {
-      ages <- bin[as.numeric(rownames(ests[[num[i]]]))] 
+      ages <- bin[as.numeric(rownames(ests[[num[i]]]))]
     }
 
     plot(ages, xsd, col = colors[1], cex = 1.1, xlab = "Age", ylab = "SD of L@A", type = "b", pch = 16, lty = 1, main = names(la_data_list)[i], ...)
@@ -92,10 +102,10 @@ plot_varlenage <- function(dir = NULL, dat, main = NULL,
     axis(4)
     mtext("CV", side = 4, line = 2.6)
     legend(bty = 'n', x = legX, y = legY, c("SD", "CV"), col = colors, pch = c(16, 3), lty = c(1, 2))
-    plot(calc_vb(age = ages, k = xpar[1], Linf = xpar[2], L0 = xpar[3]), xsd, xlab = "Predicted Length at Age", ylab = "SD of L@A", 
+    plot(calc_vb(age = ages, k = xpar[1], Linf = xpar[2], L0 = xpar[3]), xsd, xlab = "Predicted Length at Age", ylab = "SD of L@A",
       col = colors[1], cex = 1.1, type = "b", pch = 16, lty = 1, main = sex_names[i], ...)
     par(new = T)
-    plot(calc_vb(age = ages, k = xpar[1], Linf = xpar[2], L0 = xpar[3]), xcv, xlab = "", 
+    plot(calc_vb(age = ages, k = xpar[1], Linf = xpar[2], L0 = xpar[3]), xcv, xlab = "",
       col = colors[2], cex = 1.1, ylab = "", yaxt = "n", type = "b", pch = 3, lty = 2, ...)
     axis(4)
     mtext("CV", side = 4, line = 2.6)
@@ -105,7 +115,7 @@ plot_varlenage <- function(dir = NULL, dat, main = NULL,
 
   if (!is.null(dir)){
     dev.off()
-    save(ests, file = file.path(dir, "growth_variance_vonB_estimates.Rdata")) 
+    save(ests, file = file.path(dir, "growth_variance_vonB_estimates.Rdata"))
   }
-  
+
 }

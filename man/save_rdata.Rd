@@ -9,7 +9,7 @@ save_rdata(x, dir = NULL, name_base, verbose = TRUE)
 \arguments{
 \item{x}{An object.}
 
-\item{dir}{directory where ouptut will be saved. The directory where the file should be saved.
+\item{dir}{Directory where output will be saved. The directory where the file should be saved.
 If dir = NULL no output will be saved.}
 
 \item{name_base}{A string that will be appended to with the system time and

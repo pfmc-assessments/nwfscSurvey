@@ -1,9 +1,10 @@
 #' Directory check
 #'
+#' @details
 #' Check that
 #' 1. The user knows that the data will not be saved if `dir = NULL`.
-#' 1. The directory exists if it can be created.
-#' 1. The function fails if the directory cannot be created.
+#' 2. The directory exists if it can be created.
+#' 3. The function fails if the directory cannot be created.
 #'
 #' @template dir
 #' @template verbose

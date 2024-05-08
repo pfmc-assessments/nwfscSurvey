@@ -1,50 +1,42 @@
-#' Expands the lengths up to the total stratum area then sums over strata
+#' Expands the lengths up to the total stratum area then sums over strata for each year
 #'
-#' @details
-#' The original version was written by Allan Hicks 16 March 2009. This function
-#' has since been modified by Chantel Wetzel to work with the data warehouse
-#' data formatting, add additional options of when to apply the sex ratio, and
-#' correct some treatment of unsexed fish weighted by sample size and area.
+#' Create expanded length composition data based on the pre-specified strata.
+#' This function is designed to be used with catch pulled using [pull_catch()] and
+#' biological data pulled using [pull_bio()]. The default output is formatted based
+#' on the formatting required by Stock Synthesis.
 #'
-#' @param dir A file path to an existing directory where you would like to
-#'   create a folder to store the output from this function. The default is
-#'   `dir = NULL`, which causes the function to not save any files. You can
-#'   store the output directly in `dir` if you specify `printfolder = ""`.
+#' @template dir
 #' @param datL A data frame of length-composition data returned from
-#'   [PullBio.fn()].
-#' @param datTows A data frame of catch data returned from [PullCatch.fn()].
-#' @param strat.vars Variables in both `datL` and `datTows` that are used to
-#'   define the stratas. Default is bottom depth (m) and latitudes (decimal
-#'   degrees), i.e., `c("Depth_m", "Latitude_dd")`.
-#' @param strat.df A data frame that defines the strata and provides the
-#'   calculated areas for each strata returned from [createStrataDF.fn()].
-#' @param lgthBins An integer vector of length bins.
+#'   [pull_bio()].
+#' @param datTows A data frame of catch data returned from [pull_catch()].
+#' @template strat.vars
+#' @template strat.df
+#' @param lgthBins Vector of length bins to create length compositions across. Values above or below the
+#'   minimum or maximum values, respectively, are grouped into the first size or plus group size.
 #' @param SSout A logical with the default of `TRUE`. If `TRUE`, the output
 #'   is returned in a format that can be directly pasted into an SS3 data file.
 #' @param meanRatioMethod A logical with the default of `TRUE`. If `TRUE`, then
 #'   the mean ratio is implemented instead of the total ratio. Search the
 #'   source code for the equations if more information is needed.
-#' @param sex (0, 1, 2, 3). The integer will be used to define the sex column
-#'   of the returned input for Stock Synthesis and specifies how the
-#'   composition are treated with respect to sex. See the Stock Synthesis
-#'   manual for more information. In short, 0 is for unsexed, 1 is females, 2
-#'   is males, and 3 is males and females where the sex ratio of the samples is
-#'   informative to the model. The default is `3`.
+#' @template sex
 #' @param NAs2zero A logical specifying if `NA`s should be changed to zeros.
 #'   The default is `TRUE`.
 #' @inheritParams SexRatio.fn
 #' @param sexRatioStage (1, 2). The stage of the expansion to apply the sex
 #'   ratio. The default is `1`.
-#' @param partition,fleet,agelow,agehigh,ageErr,month Each argument requires a
-#'   single integer value that will be used to set the associated column of the
-#'   returned input for Stock Synthesis. See the Stock Synthesis manual for
-#'   more information.
-#' @param nSamps A named vector of input or effective sample sizes that will be
-#'   used to set the effective sample size of the returned input for Stock
-#'   Synthesis. A value must be supplied for every year of data in `datL`.
+#' @template partition
+#' @template agelow
+#' @template agehigh
+#' @template ageErr
+#' @template fleet
+#' @template month
+#' @param nSamps Vector of integer sample sizes. A vector of sample sizes for
+#' all years in `datL` is required if a vector is provided. The input vector will be included in the
+#' output marginal age composition data.  One option for calculating input sample size is the [GetN.fn()].
+#' The default is "Enter Samps".
 #' @template printfolder
-#' @param remove999 A logical with the default of `TRUE`, which leads to the
-#'   output having the 999 column combined with the first length bin.
+#' @param remove999 The output object by the function will have the 999 column combined with the first length bin.
+#'   Default TRUE.
 #' @param outputStage1 A logical specifying if you would like the function to
 #'   stop after the end of the first stage of the expansion process and return
 #'   output that is not ready for Stock Synthesis. This can be helpful when
@@ -59,10 +51,31 @@
 #' * [StrataFactors.fn()]
 #' * [SexRatio.fn()]
 
-SurveyLFs.fn <- function(dir = NULL, datL, datTows, strat.vars = c("Depth_m", "Latitude_dd"), strat.df = NULL, lgthBins = 1, SSout = TRUE, meanRatioMethod = TRUE,
-                         sex = 3, NAs2zero = T, sexRatioUnsexed = NA, maxSizeUnsexed = NA, sexRatioStage = 1, partition = 0, fleet = "Enter Fleet",
-                         agelow = "Enter", agehigh = "Enter", ageErr = "Enter", nSamps = "Enter Samps", month = "Enter Month", printfolder = "forSS3",
-                         remove999 = TRUE, outputStage1 = FALSE, sum100 = TRUE, verbose = TRUE) {
+SurveyLFs.fn <- function(
+  dir = NULL, datL,
+  datTows,
+  strat.vars = c("Depth_m", "Latitude_dd"),
+  strat.df = NULL,
+  lgthBins = 1,
+  SSout = TRUE,
+  meanRatioMethod = TRUE,
+  sex = 3,
+  NAs2zero = T,
+  sexRatioUnsexed = NA,
+  maxSizeUnsexed = NA,
+  sexRatioStage = 1,
+  partition = 0,
+  fleet = "Enter Fleet",
+  agelow = "Enter",
+  agehigh = "Enter",
+  ageErr = "Enter",
+  nSamps = "Enter Samps",
+  month = "Enter Month",
+  printfolder = "forSS",
+  remove999 = TRUE,
+  outputStage1 = FALSE,
+  sum100 = TRUE,
+  verbose = TRUE) {
 
   # Check for the number of tows were fish were observed but not measured
   postows <- datTows[which(datTows$total_catch_numbers > 0), ]

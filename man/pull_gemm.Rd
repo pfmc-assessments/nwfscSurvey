@@ -2,17 +2,9 @@
 % Please edit documentation in R/pull_gemm.R
 \name{pull_gemm}
 \alias{pull_gemm}
-\title{Pull gemm data from the NWFSC data warehouse
-The website is: https://www.webapps.nwfsc.noaa.gov/data
-This function can be used to pull all gemm data, a single species, or a
-subset of species c("Canary Rockfish", "Widow Rockfish"). Species names in
-the gemm are capitalized (e.g. Canary Rockfish). However, there are checks in
-the function to adjust input species names if the input names do not match
-the expected capitalization (e.g. "canary rockfish", "canary_rockfish"). The
-fuction also allows you to subset the data by year using the years input and to
-save the object if the dir function input is given.}
+\title{Pull gemm data from the NWFSC data warehouse}
 \usage{
-pull_gemm(common_name, years, dir)
+pull_gemm(common_name, years, dir = NULL, verbose = TRUE)
 }
 \arguments{
 \item{common_name}{A character entry with the desired common name of the
@@ -26,11 +18,13 @@ Use the \code{sci_name} argument if you know the latin name.}
 range of years to pull data for (e.g., c(2003, 2024)).
 Vector can not contain -Inf or Inf.}
 
-\item{dir}{directory where ouptut will be saved. The directory where the file should be saved.
+\item{dir}{Directory where output will be saved. The directory where the file should be saved.
 If dir = NULL no output will be saved.}
+
+\item{verbose}{A logical that specifies if you want to print messages and
+warnings to the console. The default is \code{TRUE}.}
 }
 \description{
-Pull gemm data from the NWFSC data warehouse
 The website is: https://www.webapps.nwfsc.noaa.gov/data
 This function can be used to pull all gemm data, a single species, or a
 subset of species c("Canary Rockfish", "Widow Rockfish"). Species names in
@@ -45,8 +39,8 @@ save the object if the dir function input is given.
 # Pull all GEMM data
 all_data <- pull_gemm()
 
-# Pull for a specific specis 
-widow_data <- pull_gemm(common_name = "Widow Rockfish")
+# Pull for a specific specis
+widow_data <- pull_gemm(common_name = "widow rockfish")
 
 # Pull multiple species
 data <- pull_gemm(common_name = c("Widow Rockfish", "Canary Rockfish"))

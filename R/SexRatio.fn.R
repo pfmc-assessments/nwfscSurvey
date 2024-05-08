@@ -1,5 +1,6 @@
 #' Assign sex to unsexed fish based on fish with similar traits
 #'
+#' @details
 #' Assign sex to fish that were sampled but not sexed based on the proportion
 #' of like fish that were female out of sexed fish. After assigning unsexed
 #' fish to males and females, new sample sizes of each sex are calculated and
@@ -74,17 +75,19 @@
 #'     of sexed fish for near (i.e., plus or minus one) measurement bins away
 #'     across all years and strata.
 #'
-SexRatio.fn <- function(x,
-                        sexRatioStage,
-                        sexRatioUnsexed,
-                        maxSizeUnsexed,
-                        bins = NULL,
-                        verbose = TRUE) {
+SexRatio.fn <- function(
+  x,
+  sexRatioStage,
+  sexRatioUnsexed,
+  maxSizeUnsexed,
+  bins = NULL,
+  verbose = TRUE) {
+
   if (sexRatioStage == 1) {
     # incorporate unsexed fish using sex ratios
     if (length(sexRatioUnsexed) == 1 & !is.na(sexRatioUnsexed)) {
       if (verbose) {
-        message("Sex ratio for unsexed fish being applied to the expanded numbers within a tow (stage 1) when possible. 
+        message("Sex ratio for unsexed fish being applied to the expanded numbers within a tow (stage 1) when possible.
             If no data within a tow for bin then the sex ratio for the bin across all years applied to unsexed fish.
             If no data for that bin across all years then the sex ratio for nearby bins was applied to unsexed fish.\n")
       }
@@ -149,13 +152,13 @@ SexRatio.fn <- function(x,
       # These lines change to add the actual unsexed fish to the expansion factors -CRW
       x$expF <- x$expF + x$sexRatio * x$expU
       x$expM <- x$expM + (1 - x$sexRatio) * x$expU
-      x$expU <- x$expU - x$sexRatio * x$expU - (1 - x$sexRatio) * x$expU 
+      x$expU <- x$expU - x$sexRatio * x$expU - (1 - x$sexRatio) * x$expU
     }
   }
 
   if (sexRatioStage == 2) {
     if (verbose) {
-      message("Sex ratio for unsexed fish being applied to the expanded numbers within a strata and year (stage 2). 
+      message("Sex ratio for unsexed fish being applied to the expanded numbers within a strata and year (stage 2).
             If no data within a strata and year for bin then the sex ratio for the bin across all years and strata applied to unsexed fish.\n")
     }
     # Take everything out of the list into a dataframe

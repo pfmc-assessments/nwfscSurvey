@@ -1,22 +1,22 @@
+#' Calculate the number of observations by year and strata
+#'
+#' @details
 #' Calculates and returns the total number of tows and
 #' positive tows conducted in each strata by year. The
 #' selected stratas are used to expand the length and
 #' marginal age compositions and to calculate a design
-#' based index using the {Biomass.fn} function.
+#' based index using the [Biomass.fn()].
 #'
-#' @param dir Directory where the output csv file will be
-#' saved.
+#' @template dir
 #' @param dat Data-frame of the catch data that has been
-#' created by the {PullCatch.fn} function.
-#' @param strat.vars A vector of the strata variable names.
-#' The default input are c("Depth_m","Latitude_dd")) which
-#' are the two factors the define a strata area off the coast.
-#' @param strat.df Dataframe with the first column the name
-#' of the stratum, the second column the area of the stratum,
-#' and the remaining columns are the high and low variables
-#' defining the strata created by the {CreateStrataDF.fn} function.
+#' created by [pull_catch()].
+#' @template strat.vars
+#' @template strat.df
 #' @template printfolder
 #' @template verbose
+#'
+#' @return A matrix with the number of tows within each strata by year and the
+#' number of positive tows by strata and year.
 #'
 #' @author Chantel Wetzel
 #' @export
@@ -27,7 +27,7 @@ CheckStrata.fn <- function(
   dat,
   strat.vars = c("Depth_m", "Latitude_dd"),
   strat.df,
-  printfolder = "forSS3",
+  printfolder = "forSS",
   verbose = TRUE) {
 
   # Grab the strata  rownmaes to index later

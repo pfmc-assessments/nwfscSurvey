@@ -2,9 +2,7 @@
 % Please edit documentation in R/plotFreqData.fn.R
 \name{PlotFreqData.fn}
 \alias{PlotFreqData.fn}
-\title{This function plots frequency data as bubble plots
-You may want to change all zeros to NA's so that those observations are not plotted.
-If you don't then set zero2NAs=F}
+\title{Plot length or age compositions by year in bubble plots}
 \usage{
 PlotFreqData.fn(
   dir = NULL,
@@ -12,7 +10,7 @@ PlotFreqData.fn(
   inch = 0.15,
   ylab = "Bins",
   xlab = "Year",
-  zero2NAs = T,
+  zero2NAs = TRUE,
   main = NULL,
   xlim = NULL,
   ymax = NULL,
@@ -23,9 +21,10 @@ PlotFreqData.fn(
 )
 }
 \arguments{
-\item{dir}{directory to save files to}
+\item{dir}{Directory where output will be saved. The directory where the file should be saved.
+If dir = NULL no output will be saved.}
 
-\item{dat}{object created by SS3LF.fn or SS3AF.fn}
+\item{dat}{Object created by \code{\link[=SurveyLFs.fn]{SurveyLFs.fn()}} or \code{\link[=SurveyAFs.fn]{SurveyAFs.fn()}}}
 
 \item{inch}{input to the symbols plot: TRUE, FALSE or a positive number.}
 
@@ -33,7 +32,8 @@ PlotFreqData.fn(
 
 \item{xlab}{x-axis text label}
 
-\item{zero2NAs}{T/F change 0 values to NA}
+\item{zero2NAs}{A logical specifying if \code{NA}s should be changed to zeros.
+The default is \code{TRUE}.}
 
 \item{main}{main plot text}
 
@@ -53,10 +53,8 @@ no longer have to specify \code{dopng} to save the plot as a png.}
 \item{...}{Additional arguments for the plots}
 }
 \description{
-This function plots frequency data as bubble plots
-You may want to change all zeros to NA's so that those observations are not plotted.
-If you don't then set zero2NAs=F
+Plot length or age compositions by year in bubble plots
 }
 \author{
-Allan Hicks and Chantel Wetzel
+Chantel Wetzel and Allan Hicks
 }

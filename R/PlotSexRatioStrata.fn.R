@@ -1,10 +1,11 @@
 #' Function to plot sex ratio by strata
 #'
-#' @param dir directory location for saving the png
-#' @param dat data object
-#' @param type length/age which data type to use
-#' @param strat.vars the parameters to stratify the data
-#' @param strat.df the created strata matrix with the calculated areas by the createStrataDF.fn function
+#' @template dir
+#' @param dat A data frame of length-composition data returned from
+#'   [pull_bio()].
+#' @param type Specify where to calculate the sex ration by length or age.
+#' @template strat.vars
+#' @template strat.df
 #' @param circleSize circle size
 #' @param dopng Deprecated with {nwfscSurvey} 2.1 because providing a non-NULL
 #'   value to `dir` can serve the same purpose as `dopng = TRUE` without the
@@ -16,7 +17,16 @@
 #' @export
 #' @seealso \code{\link{StrataFactors.fn}}
 
-PlotSexRatioStrata.fn <- function(dir = NULL, dat, type = "length", strat.vars = c("Depth_m", "Latitude_dd"), strat.df = NULL, circleSize = 0.05, dopng = lifecycle::deprecated(), ...) {
+PlotSexRatioStrata.fn <- function(
+  dir = NULL,
+  dat,
+  type = "length",
+  strat.vars = c("Depth_m", "Latitude_dd"),
+  strat.df = NULL,
+  circleSize = 0.05,
+  dopng = lifecycle::deprecated(),
+  ...) {
+
   if (lifecycle::is_present(dopng)) {
     lifecycle::deprecate_warn(
       when = "2.1",

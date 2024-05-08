@@ -1,24 +1,37 @@
-#' Creates a matrix of length or age composition data WITHOUT expantion
-#' Written by Chantel Wetzel to work with the data warehouse data formatting,
+#' Creates a matrix of unexpanded length composition data
 #'
-#' @param dir directory this is where the output files will be saved
-#' @param datL the read in length comps by the PullBio.fn function
-#' @param lgthBins length bins
-#' @param ageErr Number of ageing error matrix for SS
-#' @param agelow age bin for SS (default value of -1)
-#' @param agehigh age bin for SS (default value of -1)
-#' @param sex (0 = unsexed, 1 = females, 2 = males, 3 = females then males) sex value for Stock Synthesis
-#' @param partition partition for Stock Synthesis
-#' @param fleet fleet number
-#' @param month month the samples were collected
+#'
+#' @template dir
+#' @param datL A data frame of length-composition data returned from
+#'   [pull_bio()].
+#' @param lgthBins  Vector of length bins to create length compositions across. Values above or below the
+#'   minimum or maximum values, respectively, are grouped into the first size or plus group size.
+#' @template ageErr
+#' @template agelow
+#' @template agehigh
+#' @template sex
+#' @template partition
+#' @template fleet
+#' @template month
 #' @template printfolder
 #' @template verbose
 #'
 #' @author Chantel Wetzel
 #' @export
 
-UnexpandedLFs.fn <- function(dir = NULL, datL, lgthBins = 1, sex = 3, partition = 0, fleet = "Enter Fleet",
-                             ageErr = "NA", agelow = -1, agehigh = -1, month = "Enter Month", printfolder = "forSS3", verbose = TRUE) {
+UnexpandedLFs.fn <- function(
+  dir = NULL, datL,
+  lgthBins = 1,
+  sex = 3,
+  partition = 0,
+  fleet = "Enter Fleet",
+  ageErr = "NA",
+  agelow = -1,
+  agehigh = -1,
+  month = "Enter Month",
+  printfolder = "forSS",
+  verbose = TRUE) {
+
   plotdir <- file.path(dir, printfolder)
   check_dir(dir = plotdir, verbose = verbose)
 

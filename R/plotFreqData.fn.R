@@ -1,13 +1,12 @@
-#' This function plots frequency data as bubble plots
-#' You may want to change all zeros to NA's so that those observations are not plotted.
-#' If you don't then set zero2NAs=F
+#' Plot length or age compositions by year in bubble plots
 #'
-#' @param dir directory to save files to
-#' @param dat object created by SS3LF.fn or SS3AF.fn
+#' @template dir
+#' @param dat Object created by [SurveyLFs.fn()] or [SurveyAFs.fn()]
 #' @param inch input to the symbols plot: TRUE, FALSE or a positive number.
 #' @param ylab y-axis text label
 #' @param xlab x-axis text label
-#' @param zero2NAs T/F change 0 values to NA
+#' @param zero2NAs A logical specifying if `NA`s should be changed to zeros.
+#'   The default is `TRUE`.
 #' @param main main plot text
 #' @param xlim x-limit values
 #' @param ymax Value used to truncate y-axis, defaults to NULL
@@ -19,11 +18,23 @@
 #' @param h Numeric figure height, defaults to 7
 #' @param ...      Additional arguments for the plots
 #'
-#' @author Allan Hicks and Chantel Wetzel
+#' @author Chantel Wetzel and Allan Hicks
 #' @export
 
-PlotFreqData.fn <- function(dir = NULL, dat, inch = 0.15, ylab = "Bins", xlab = "Year", zero2NAs = T, main = NULL,
-                            xlim = NULL, ymax = NULL, dopng = lifecycle::deprecated(), w = 7, h = 7, ...) {
+PlotFreqData.fn <- function(
+  dir = NULL,
+  dat,
+  inch = 0.15,
+  ylab = "Bins",
+  xlab = "Year",
+  zero2NAs = TRUE,
+  main = NULL,
+  xlim = NULL,
+  ymax = NULL,
+  dopng = lifecycle::deprecated(),
+  w = 7,
+  h = 7,
+  ...) {
 
   if (lifecycle::is_present(dopng)) {
     lifecycle::deprecate_warn(
