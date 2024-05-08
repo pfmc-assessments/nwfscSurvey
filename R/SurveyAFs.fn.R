@@ -1,5 +1,6 @@
 #' Create marginal age composition data
 #'
+#' @details
 #' Create expanded marginal age composition data based on the pre-specified strata.
 #' This function is designed to be used with catch pulled using [pull_catch()] and
 #' biological data pulled using [pull_bio()]. The default output is formatted based

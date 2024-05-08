@@ -1,5 +1,6 @@
 #' Get Species Information
 #'
+#' @details
 #' Get the scientific name, common name, and strata group for
 #' a vector of species.
 #'
@@ -76,7 +77,7 @@ GetSpp.fn <- function(species, unident = FALSE) {
     c("coast", "stripetail_rockfish"),
     c("coast", "widow_rockfish"),
     c("coast", "yelloweye_rockfish"),
-    c("north_south", "yellowtail_rockfish")   
+    c("north_south", "yellowtail_rockfish")
   ))
   row.names(spplist) <- NULL
 

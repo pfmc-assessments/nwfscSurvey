@@ -1,19 +1,19 @@
 #' Calculate weight-length relationship parameters
 #'
+#' @details
 #' Estimate parameters of the weight-length relationship for each
 #' sex and all sexes combined, where the latter includes unsexed fish.
 #'
 #' @param data A data frame containing empirical weights and lengths
-#' from sampled fish.
-#' Sexes should be available in the column `sex` or `SEX`.
+#' from sampled fish. Sexes should be available in the column `sex` or `SEX`.
 #' @param col_length A numeric or character value specifying the column
 #' to use in `data` for length information. These lengths are assumed to
 #' be in centimeters. The default value is `lengthcm`, which is added
-#' to a data set automatically when running [cleanPacFIN].
+#' to a data set automatically when running [cleanPacFIN()].
 #' @param col_weight A numeric or character value specifying the column
 #' to use in `data` for weight information. These weights are assumed to
 #' be in kilograms The default value is `weightkg`, which is added
-#' to a data set automatically when running [cleanPacFIN].
+#' to a data set automatically when running [cleanPacFIN()].
 #' Using kilograms is the default because Stock Synthesis assumes the
 #' weight-length parameters are calculated using centimeters and kilograms.
 #' The reported values are easily scaled to give you results in grams if
@@ -67,20 +67,20 @@ estimate_weight_length <- function(
     male = . %>% dplyr::filter(sex == "M"),
     all = . %>% dplyr::filter(sex %in% c(NA, "F", "M", "U", "H"))
     ) %>%
-    purrr::map_dfr(~ tidyr::nest(.x(data), data = everything()), 
+    purrr::map_dfr(~ tidyr::nest(.x(data), data = everything()),
       .id = "group") %>%
     dplyr::mutate(
-      fits = purrr::map(data, ~ stats::lm(log(weight) ~ log(length_cm), 
+      fits = purrr::map(data, ~ stats::lm(log(weight) ~ log(length_cm),
         data = .x)))
 
-  wghtlen_ests <- mresults %>% 
+  wghtlen_ests <- mresults %>%
     dplyr::reframe(
       group = group,
       median_intercept = purrr::map_dbl(fits, ~ exp(.x$coefficients[1])),
       SD = purrr::map_dbl(fits, ~ sd(.x$residuals)),
       A = purrr::map_dbl(fits, ~ exp(.x$coefficients[1])*exp(0.5*sd(.x$residuals)^2)),
       B = purrr::map_dbl(fits, ~ .x$coefficients[2])
-      ) %>% 
+      ) %>%
     data.frame
 
   if (verbose) {

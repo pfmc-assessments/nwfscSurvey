@@ -1,3 +1,6 @@
+#' Rename AFSC slope survey columns from data pulled before 2017
+#'
+#' @details
 #' Rename columns in the AFSC slope survey data file
 #' received prior to the creation of the NWFSC data
 #' warehouse. This function converts the older data files

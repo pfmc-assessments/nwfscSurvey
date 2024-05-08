@@ -3,8 +3,8 @@
 #' This function was deprecated in {nwfsc} version 2.1. Please use
 #' [plot_proportion()] instead.
 #'
-#' @param data data.frame containing data per haul created by [PullCatch.fn()]
-#'   or biological data created by [PullBio.fn()] where the `dim = "sex"` must
+#' @param data Data frame containing data per haul created by [pull_catch()]
+#'   or biological data created by [pull_bio()] where the `dim = "sex"` must
 #'   be true for the latter.
 #' @param dim Dimension of interest, either "depth", "lat", or "sex".
 #' @template dir

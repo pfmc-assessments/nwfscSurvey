@@ -1,5 +1,6 @@
 #' Get Vector of Default Species Names for US West Coast
 #'
+#' @details
 #' A standard list of common names for species of interest to the
 #' US West Coast. This list does not reflect ecosystem or financial
 #' importance, and instead it is strictly a list of species for which
@@ -11,7 +12,7 @@
 #' @examples
 #' GetSppDefault.fn()
 GetSppDefault.fn <- function() {
-  sp.list <- c(   
+  sp.list <- c(
     "arrowtooth_flounder",
     "aurora_rockfish",
     "big_skate",

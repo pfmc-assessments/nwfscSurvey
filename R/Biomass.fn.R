@@ -1,5 +1,6 @@
 #' Calculates design based estimates from survey data for West Coast surveys.
 #'
+#' @details
 #' The design based index is calculated based on the area of the strata and
 #' the mean catch by strata. This function returns a list of design-based
 #' estimates by strata and estimates combined across stratas by year. This
@@ -8,16 +9,19 @@
 #' See: Gunderson, D.R. and Sample, T.M. 1980. Distribution and abundance of rockfish off Washington,
 #' Oregon, and California during 1977. Marine Fisheries Review: March - April.
 #'
-#'
 #' @template dir
 #' @param dat Data frame of catch data that has been created by the [pull_catch()].
 #' @template strat.vars
 #' @template strat.df
 #' @template printfolder
-#' @param outputMedian Specify whether to output median or the mean biomass estimate. Default `TRUE`.
+#' @param outputMedian Logical input to specify whether to output median or the
+#' mean biomass estimate. Default `TRUE`.
 #' @template month
-#' @param fleet fleet number for SS
+#' @template fleet f
 #' @template verbose
+#'
+#' @returns List of biomass estimates by year, biomass estimates by year and
+#' strata, and numbers of fish by year.
 #'
 #' @author Allan Hicks and Chantel Wetzel
 #' @importFrom grDevices dev.off png rgb
@@ -25,7 +29,28 @@
 #' @importFrom stats optim qnorm sd var
 #' @importFrom utils write.csv
 #' @export
-
+#'
+#' @example
+#' \dontrun{
+#' catch <- pull_catch(
+#'   common_name = "petrale sole",
+#'   survey = "NWFSC.Combo
+#' )
+#'
+#' strata <- CreateStrataDF.fn(
+#'   names=c("shallow_wa", "shallow_or", "shallow_ca", "deep_wa", "deep_or", "deep_ca"),
+#'   depths.shallow = c( 55,   55,   55,  183,  183, 183),
+#'   depths.deep    = c(183,  183,  183,  549,  549, 549),
+#'   lats.south     = c(46.0, 42.0, 32.0, 46.0, 42.0, 32.0),
+#'   lats.north     = c(49.0, 46.0, 42.0, 49.0, 46.0, 42.0))
+#'
+#' biommass <- Biomass.fn(
+#'   dat = catch,
+#'   strat.df = strata
+#' )
+#'
+#' }
+#'
 Biomass.fn <- function(
   dir = NULL,
   dat,

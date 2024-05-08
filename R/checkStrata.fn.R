@@ -1,5 +1,6 @@
 #' Calculate the number of observations by year and strata
 #'
+#' @details
 #' Calculates and returns the total number of tows and
 #' positive tows conducted in each strata by year. The
 #' selected stratas are used to expand the length and
@@ -13,6 +14,9 @@
 #' @template strat.df
 #' @template printfolder
 #' @template verbose
+#'
+#' @return A matrix with the number of tows within each strata by year and the
+#' number of positive tows by strata and year.
 #'
 #' @author Chantel Wetzel
 #' @export

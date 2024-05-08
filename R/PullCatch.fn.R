@@ -47,7 +47,7 @@
 #'   * NWFSC.Hook.Line (not yet working),
 #'   * NWFSC.Video,
 #'   * Triennial.Canada
-#' 
+#'
 #' Currently, you must pull data one survey at a time, though we are working on
 #' allowing for a vector of survey names and
 #' `NWFSC.Shelf.Rockfish` and `NWFSC.Hook.Line` are not supported.
@@ -89,13 +89,13 @@
 #' }
 #'
 PullCatch.fn <- function(
-    Name = NULL,
-    SciName = NULL,
-    YearRange = c(1980, 5000),
-    SurveyName = NULL,
-    SaveFile = lifecycle::deprecated(),
-    Dir = NULL,
-    verbose = TRUE) {
+  Name = NULL,
+  SciName = NULL,
+  YearRange = c(1980, 5000),
+  SurveyName = NULL,
+  SaveFile = lifecycle::deprecated(),
+  Dir = NULL,
+  verbose = TRUE) {
 
   lifecycle::deprecate_soft(
     when = "2.3",

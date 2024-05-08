@@ -3,7 +3,7 @@
 #' @template dir
 #' @param dat A data frame of length-composition data returned from
 #'   [pull_bio()].
-#' @param type length/age which data type to use
+#' @param type Specify where to calculate the sex ration by length or age.
 #' @template strat.vars
 #' @template strat.df
 #' @param circleSize circle size
@@ -24,7 +24,8 @@ PlotSexRatioStrata.fn <- function(
   strat.vars = c("Depth_m", "Latitude_dd"),
   strat.df = NULL,
   circleSize = 0.05,
-  dopng = lifecycle::deprecated(), ...) {
+  dopng = lifecycle::deprecated(),
+  ...) {
 
   if (lifecycle::is_present(dopng)) {
     lifecycle::deprecate_warn(

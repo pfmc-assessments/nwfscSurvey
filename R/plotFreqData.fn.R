@@ -18,7 +18,7 @@
 #' @param h Numeric figure height, defaults to 7
 #' @param ...      Additional arguments for the plots
 #'
-#' @author Allan Hicks and Chantel Wetzel
+#' @author Chantel Wetzel and Allan Hicks
 #' @export
 
 PlotFreqData.fn <- function(

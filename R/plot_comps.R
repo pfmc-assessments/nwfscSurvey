@@ -1,8 +1,6 @@
 #' Plot frequency data as bubble plots
 #'
-#' @param dir Directory to save files to. The default is `NULL`, which leads to
-#'   the figures being printed to the screen rather than saved. If a path is
-#'   provided, then the figures will only be saved, i.e., not printed.
+#' @template dir
 #' @param data Data file object created by [SurveyLF.fn()] or [SurveyAF.fn()].
 #' @param add_save_name Option to add text to a saved figure name. This option
 #'   can be useful if creating plots across multiple species and saving them
@@ -30,14 +28,14 @@
 #'
 #' @examples
 #' \dontrun{ plot_comps(data = LFs)}
-#' 
+#'
 plot_comps <- function(
-  data, 
-  dir = NULL, 
+  data,
+  dir = NULL,
   add_save_name = NULL,
-  plot = 1:2, 
+  plot = 1:2,
   add_0_ylim = TRUE,
-  width = 10, 
+  width = 10,
   height = 7) {
 
   data_type <- ifelse(sum(names(data) == "ageErr") == 0, "length", "age")
@@ -50,14 +48,14 @@ plot_comps <- function(
 
   plotdir <- file.path(dir, "plots")
   check_dir(dir = plotdir)
-  
+
   plot_names <- file.path(
     plotdir,
     paste0(
       add_save_name,
       ifelse(test = is.null(add_save_name), yes = "", no = "_"),
       c(paste0(data_type,"_frequency_sex_", sex_type,".png"),
-      paste0(data_type, "_r4ss_frequency_sex_", sex_type,".png") )     
+      paste0(data_type, "_r4ss_frequency_sex_", sex_type,".png") )
     )
   )
 
@@ -65,8 +63,8 @@ plot_comps <- function(
   sex <- unique(data$sex)
   if (length(sex) > 1 ){
     stop("This function does not work on processed composition
-      files with multiple Stock Synthesis sex specifications 
-      (sex = 0, sex = 1, sex = 3). Please filter file down to 
+      files with multiple Stock Synthesis sex specifications
+      (sex = 0, sex = 1, sex = 3). Please filter file down to
       a single sex and re-run.")
   }
   if (data_type == "length") {
@@ -81,19 +79,19 @@ plot_comps <- function(
     comps <- comps[, -match(".999", names(comps))]
   }
 
-  # Check to see if the unsexed or single sexed comps are 
+  # Check to see if the unsexed or single sexed comps are
   # double printed
   if (sum(grepl(".", colnames(comps), fixed = TRUE)) > 0 ) {
     comps <- comps[, !grepl(".", colnames(comps), fixed = TRUE)]
   }
-  
+
   # Determine if entries are proportions (e.g., sum to 1 or 100)
   # and convert if needed
   if (sum(as.numeric(comps[1, ])) == 100) {
     comps <- 100 * comps / apply(comps, 1, sum)
   }
   if (sum(as.numeric(comps[1, ])) > 0.999 & sum(as.numeric(comps[1, ])) < 1.001) {
-    comps <- 100 * comps 
+    comps <- 100 * comps
   }
 
   mod_comps <- cbind(year, comps)
@@ -135,23 +133,23 @@ plot_comps <- function(
           range = c(1, 15),
           breaks = bub_range
         ) +
-        facet_grid(sex~.) + 
+        facet_grid(sex~.) +
         scale_y_continuous(
           breaks = y_axis,
           limits = if (add_0_ylim) {c(0, NA)} else {NULL}
         ) +
         labs(x = "Year", y = ylabel, size = "Relative\nAbundance (%)", fill = "") +
-        theme(legend.key = element_blank(), 
+        theme(legend.key = element_blank(),
             axis.title.x = element_text (size = 12),
             axis.title.y = element_text (size = 12),
-            axis.text.x = element_text(colour = "black", size = 12, angle = 90, vjust = 0.3, hjust = 1), 
-            axis.text.y = element_text(colour = "black", size = 12), 
-            legend.text = element_text(size = 10, colour ="black"), 
-            legend.title = element_text(size = 12), 
-            panel.background = element_blank(), 
-            panel.border = element_rect(colour = "black", fill = NA, linewidth = 1), 
+            axis.text.x = element_text(colour = "black", size = 12, angle = 90, vjust = 0.3, hjust = 1),
+            axis.text.y = element_text(colour = "black", size = 12),
+            legend.text = element_text(size = 10, colour ="black"),
+            legend.title = element_text(size = 12),
+            panel.background = element_blank(),
+            panel.border = element_rect(colour = "black", fill = NA, linewidth = 1),
             legend.position = "right") +
-        guides(size = "legend", color = "none", fill = "none")  
+        guides(size = "legend", color = "none", fill = "none")
     if (!is.null(dir)) {
       ggsave(filename = plot_names[1], plot = p,
         width = width, height = height, units = "in"
@@ -166,7 +164,7 @@ plot_comps <- function(
     df2 <- df
     df2$value <- df2$value / 100
     df2[df2$sex == "MALE", 'value'] <- -1 * df2[df2$sex == "MALE", 'value']
-  
+
     p2 <- ggplot2::ggplot(df2, aes(x = variable, y = value)) +
         geom_line(aes(colour = sex), # add alpha = n inside the aes to shade by annual sample size
           lwd = 1.1) +
@@ -175,15 +173,15 @@ plot_comps <- function(
         scale_color_manual(values = c('FEMALE' = 'darkred', 'MALE' = 'darkblue', 'UNSEXED' = "darkgreen")) +
         labs(x = ylabel, y = "Proportion") +
         geom_hline(yintercept = 0) +
-        theme(legend.key = element_blank(), 
+        theme(legend.key = element_blank(),
             axis.title.x = element_text (size = 12),
             axis.title.y = element_text (size = 12),
-            axis.text.x = element_text(colour = "black", size = 12, angle = 90, vjust = 0.3, hjust = 1), 
-            axis.text.y = element_text(colour = "black", size = 12), 
-            legend.text = element_text(size = 10, colour ="black"), 
-            legend.title = element_text(size = 12), 
-            panel.background = element_blank(), 
-            panel.border = element_rect(colour = "black", fill = NA, linewidth = 1), 
+            axis.text.x = element_text(colour = "black", size = 12, angle = 90, vjust = 0.3, hjust = 1),
+            axis.text.y = element_text(colour = "black", size = 12),
+            legend.text = element_text(size = 10, colour ="black"),
+            legend.title = element_text(size = 12),
+            panel.background = element_blank(),
+            panel.border = element_rect(colour = "black", fill = NA, linewidth = 1),
             legend.position = "right")
     if (!is.null(dir)) {
       ggsave(filename = plot_names[2], plot = p2,
@@ -193,5 +191,5 @@ plot_comps <- function(
       print(p2)
     }
   }
-        
+
 }

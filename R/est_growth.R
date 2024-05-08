@@ -1,13 +1,13 @@
 #' Estimate length-at-age using the von Bertanlaffy
-#' parametization from Stock Synthesis. 
+#' parametization
 #'
 #'
-#' @param dir Directory to save output.
-#' @param dat The data loaded from the NWFSC database
-#' @param return_df TRUE/FALSE If set to TRUE the dat data frame is 
+#' @template dir
+#' @param dat Data frame of biological data from [pull_bio()]
+#' @param return_df TRUE/FALSE If set to TRUE the dat data frame is
 #' returned with added columns for the estimated Lhat_low, Lhat_pred, and Lhat_high.
 #' @param bySex Logical to indicate if plot by sex
-#' @param Par  Dataframe of starting parameters for K, Linf, L0, CV0, and CV2 based on the 
+#' @param Par  Data frame of starting parameters for K, Linf, L0, CV0, and CV2 based on the
 #' Stock Synthesis parameterization of von Bertanlaffy growth.
 #' @param estVB Logical. Estimate vonB growth to plot against predicted length. If F, it uses the paramters in \code{parStart}.
 #' @param bins The bins to put ages into. If NULL then simply uses the ages as recorded.
@@ -23,7 +23,7 @@
 #' @author Chantel Wetzel
 #' @export
 
-est_growth <- function(dir = NULL, dat, return_df = TRUE, 
+est_growth <- function(dir = NULL, dat, return_df = TRUE,
   Par = data.frame(K = 0.13, Linf = 55, L0 = 15, CV0 = 0.10, CV1 = 0.10),
   bySex = TRUE, estVB = TRUE, bins = NULL, sdFactor = 1,
   dopng = lifecycle::deprecated()) {
@@ -48,27 +48,27 @@ est_growth <- function(dir = NULL, dat, return_df = TRUE,
 
   if (bySex){
     use_data <- which(
-      !is.na(dat$Length_cm) & 
-      !is.na(dat$Age) 
+      !is.na(dat$Length_cm) &
+      !is.na(dat$Age)
     )
     la_data <- dat[use_data, ]
 
     sex_list <- list(which(
-        !is.na(dat$Length_cm) & 
+        !is.na(dat$Length_cm) &
         !is.na(dat$Age) &
-        dat$Sex %in% c("F") 
+        dat$Sex %in% c("F")
       ), which(
-        !is.na(dat$Length_cm) & 
+        !is.na(dat$Length_cm) &
         !is.na(dat$Age) &
-        dat$Sex %in% c("M") 
+        dat$Sex %in% c("M")
       ), which(
-        !is.na(dat$Length_cm) & 
+        !is.na(dat$Length_cm) &
         !is.na(dat$Age) &
-        dat$Sex %in% c("U") 
+        dat$Sex %in% c("U")
       ))
 
     la_data_list <- list(
-      female = la_data[la_data$Sex == "F", ], 
+      female = la_data[la_data$Sex == "F", ],
       male = la_data[la_data$Sex == "M", ],
       unsexed = la_data[la_data$Sex == "U", ])
     sex_vec = c("F", "M", "U")
@@ -76,8 +76,8 @@ est_growth <- function(dir = NULL, dat, return_df = TRUE,
 
   } else {
     use_data <- which(
-      !is.na(dat$Length_cm) & 
-      !is.na(dat$Age) 
+      !is.na(dat$Length_cm) &
+      !is.na(dat$Age)
     )
     la_data <- dat[use_data, ]
     sex_list <- list(use_data)
@@ -92,14 +92,14 @@ est_growth <- function(dir = NULL, dat, return_df = TRUE,
   xpar <- vector(mode = "list", length = nn)
   names(out) <- paste0(names(la_data_list), "_sd_cv")
   names(xpar) <- paste0(names(la_data_list), "_growth")
-  
+
   # Loop by sex
   for (i in 1:length(la_data_list)) {
     if (estVB) {
       ests_log <- stats::optim(fn = fit_vbgrowth,
                   par = log(Par),
                   hessian = FALSE,
-                  par_logspace = TRUE, 
+                  par_logspace = TRUE,
                   Ages = la_data_list[[i]]$Age,
                   Lengths = la_data_list[[i]]$Length_cm)$par
       xpar[[i]] <- exp(ests_log)
@@ -111,10 +111,10 @@ est_growth <- function(dir = NULL, dat, return_df = TRUE,
     # Predicts from 1 to the maximum observed age by sex
     #predL <- VB.fn(1:max(la_data_list[[i]]$Age), xpar[1], xpar[2], xpar[3])
     predL <- fit_vbgrowth(
-      Par = xpar[[i]], 
-      par_logspace = FALSE, 
-      Ages = la_data_list[[i]]$Age, 
-      Lengths = la_data_list[[i]]$Length_cm, 
+      Par = xpar[[i]],
+      par_logspace = FALSE,
+      Ages = la_data_list[[i]]$Age,
+      Lengths = la_data_list[[i]]$Length_cm,
       ReturnType = "Pred",
       sdFactor = sdFactor
     )
@@ -133,7 +133,7 @@ est_growth <- function(dir = NULL, dat, return_df = TRUE,
   } # end sex loop
 
   if (!is.null(dir)){
-    save(xpar, file = file.path(dir, "growth_vonB_estimates.Rdata"))   
+    save(xpar, file = file.path(dir, "growth_vonB_estimates.Rdata"))
   }
 
   ests <- c(xpar, out)
@@ -141,7 +141,7 @@ est_growth <- function(dir = NULL, dat, return_df = TRUE,
   if(return_df){
     return(dat)
   } else {
-    return(ests)  
+    return(ests)
   }
-  
+
 }

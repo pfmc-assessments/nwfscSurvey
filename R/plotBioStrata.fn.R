@@ -2,7 +2,8 @@
 #'
 #' @template dir
 #' @param dat Data frame created by the [Biomass.fn()]
-#' @param CI confidence interval
+#' @param CI A numerical value that specifies the confidence interval to return.
+#' Values should be between 0.01 to 0.99.
 #' @param scalar simply the divisor for the biomass
 #' @param gap  a value that introduces a slight gap between the point estimate and the start of the line for the CI. A gap too large will invert the CI, making it look huge. You should know when this happens
 #' @param ylab y-axis text label
@@ -22,7 +23,7 @@
 #'   no longer have to specify `dopng` to save the plot as a png.
 #' @param ...      Additional arguments for the plots
 #'
-#' @author Allan Hicks and John Wallace
+#' @author Chantel Wetzel, Allan Hicks, and John Wallace
 #' @export
 
 PlotBioStrata.fn <- function(

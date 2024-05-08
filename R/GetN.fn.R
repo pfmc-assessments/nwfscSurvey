@@ -8,7 +8,7 @@
 #' [10.1139/cjfas-2013-0289](https://doi.org/10.1139/cjfas-2013-0289).
 #'
 #' @template dir
-#' @param dat A `data.frame` of composition data created using [pull_bio()].
+#' @param dat A data frame of composition data created using [pull_bio()].
 #' @param type A string specifying whether doing "length" or "age" that is
 #'   used to ensure the sample size is of the correct column and create
 #'   the file name of the saved sheet.
@@ -25,7 +25,23 @@
 #'
 #' @author Chantel R. Wetzel
 #' @export
-
+#'
+#' @examples
+#' \dontrun{
+#' bio <- pull_bio(
+#'   common_name = "petrale sole",
+#'   survey = "NWFSC.Combo"
+#' )
+#'
+#' n <- GetN.fn(
+#'   dat = bio,
+#'   type = "length",
+#'   species = "flatfish"
+#' )
+#'
+#' }
+#'
+#'
 GetN.fn <- function(
   dir = NULL,
   dat,

@@ -1,5 +1,6 @@
 #' Estimate von Bertanlaffy growth parameters from lengths and ages
 #'
+#' @details
 #' Estimate von Bertanlaffy growth parameters from length and age data or
 #' predicted lengths given ages and input parameters.
 #'
@@ -12,8 +13,8 @@
 #' the lengths are just needed for estimation purpopses. If not \code{NULL},
 #' ensure that there is one length measurement for every age measurement.
 #' Values of \code{NA} are accepted.
-#' @param par_logspace TRUE/FALSE Indicates if the values in the \code{"Par"} are in 
-#' logspace and need to be converted back to normal spaces. 
+#' @param par_logspace TRUE/FALSE Indicates if the values in the \code{"Par"} are in
+#' logspace and need to be converted back to normal spaces.
 #' @param ReturnType A single character value with \code{"NLL"} being the default,
 #' which leads to the negative log-likelihood value being returned.
 #' If \code{"Pred"}, then three values are returned
@@ -68,7 +69,7 @@ fit_vbgrowth <- function(Par, Ages, Lengths, par_logspace = TRUE, ReturnType = c
   # negative when using optim.
   if(par_logspace == TRUE){
     Par <- lapply(Par, exp)
-  } 
+  }
 
   #### Parameters
   # Parameterized in terms of L0 instead of t0, where this parameterization was taken from

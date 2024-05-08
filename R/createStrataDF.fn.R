@@ -1,5 +1,6 @@
 #' Create strata data frame using \code{\link{StrataAreas.fn}}
 #'
+#' @details
 #' Create a data frame of strata formatted for use by models that need
 #' estimates of the area for each strata to expand estimates of abundance.
 #' Strata limits are provided by the user in terms of

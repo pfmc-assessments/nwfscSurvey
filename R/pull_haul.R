@@ -1,4 +1,5 @@
 #' Pull haul data from the NWFSC data warehouse.
+#'
 #' The website is: https://www.webapps.nwfsc.noaa.gov/data.
 #' This function can be used to pull haul data and associated covariates.
 #'
@@ -19,10 +20,11 @@
 #' haul_data <- pull_haul()
 #' }
 #'
-pull_haul <- function(years= c(1970, 2050),
-                      survey,
-                      dir = NULL,
-                      verbose = TRUE) {
+pull_haul <- function(
+  years= c(1970, 2050),
+  survey,
+  dir = NULL,
+  verbose = TRUE) {
 
   # increase the timeout period to avoid errors when pulling data
   options(timeout = 4000000)
