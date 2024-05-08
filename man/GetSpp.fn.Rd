@@ -25,6 +25,9 @@ species values used as input in the input column; and
 strata used to assess its status in the strata column.
 }
 \description{
+Get Species Information
+}
+\details{
 Get the scientific name, common name, and strata group for
 a vector of species.
 }

@@ -16,15 +16,20 @@ PlotSexRatioStrata.fn(
 )
 }
 \arguments{
-\item{dir}{directory location for saving the png}
+\item{dir}{Directory where output will be saved. The directory where the file should be saved.
+If dir = NULL no output will be saved.}
 
-\item{dat}{data object}
+\item{dat}{A data frame of length-composition data returned from
+\code{\link[=pull_bio]{pull_bio()}}.}
 
-\item{type}{length/age which data type to use}
+\item{type}{Specify where to calculate the sex ration by length or age.}
 
-\item{strat.vars}{the parameters to stratify the data}
+\item{strat.vars}{Variables in both data frame that are used to
+define the stratas. Default is bottom depth (m) and latitudes (decimal
+degrees), i.e., \code{c("Depth_m", "Latitude_dd")}.}
 
-\item{strat.df}{the created strata matrix with the calculated areas by the createStrataDF.fn function}
+\item{strat.df}{A data frame that defines the strata and provides the
+calculated areas for each strata returned from \code{\link[=createStrataDF.fn]{createStrataDF.fn()}}.}
 
 \item{circleSize}{circle size}
 

@@ -1,40 +1,37 @@
-#' Calculates and returns the total number of tows and 
-#' positive tows conducted in each strata by year. The 
-#' selected stratas are used to expand the length and 
-#' marginal age compositions and to calculate a design
-#' based index using the {Biomass.fn} function. 
+#' Calculate the number of observations by year and strata
 #'
-#' @param dir Directory where the output csv file will be 
-#' saved. 
-#' @param dat Data-frame of the catch data that has been  
-#' created by the {PullCatch.fn} function.
-#' @param strat.vars A vector of the strata variable names.   
-#' The default input are c("Depth_m","Latitude_dd")) which
-#' are the two factors the define a strata area off the coast.
-#' @param strat.df Dataframe with the first column the name 
-#' of the stratum, the second column the area of the stratum, 
-#' and the remaining columns are the high and low variables 
-#' defining the strata created by the {CreateStrataDF.fn} function.
-#' @param printfolder Folder name where files will be saved. The 
-#' default is "forSS" which is also used by other package functions
-#' that creates and saves files that are commonly used or reported
-#' in Stock Synthesis or the assessment document.
+#' @details
+#' Calculates and returns the total number of tows and
+#' positive tows conducted in each strata by year. The
+#' selected stratas are used to expand the length and
+#' marginal age compositions and to calculate a design
+#' based index using the [Biomass.fn()].
+#'
+#' @template dir
+#' @param dat Data-frame of the catch data that has been
+#' created by [pull_catch()].
+#' @template strat.vars
+#' @template strat.df
+#' @template printfolder
 #' @template verbose
+#'
+#' @return A matrix with the number of tows within each strata by year and the
+#' number of positive tows by strata and year.
 #'
 #' @author Chantel Wetzel
 #' @export
 #'
 #'
 CheckStrata.fn <- function(
-  dir = NULL, 
-  dat, 
-  strat.vars = c("Depth_m", "Latitude_dd"), 
-  strat.df, 
-  printfolder = "forSS", 
+  dir = NULL,
+  dat,
+  strat.vars = c("Depth_m", "Latitude_dd"),
+  strat.df,
+  printfolder = "forSS",
   verbose = TRUE) {
 
   # Grab the strata  rownmaes to index later
-  row.names(strat.df) <- strat.df[, 1] 
+  row.names(strat.df) <- strat.df[, 1]
   numStrata <- nrow(strat.df)
 
   # create strata factors

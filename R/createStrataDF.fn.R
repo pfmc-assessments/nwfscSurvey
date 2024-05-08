@@ -1,5 +1,6 @@
 #' Create strata data frame using \code{\link{StrataAreas.fn}}
 #'
+#' @details
 #' Create a data frame of strata formatted for use by models that need
 #' estimates of the area for each strata to expand estimates of abundance.
 #' Strata limits are provided by the user in terms of
@@ -34,13 +35,19 @@
 #' The data frame will have six columns,
 #' (1) name, (2) area, (3) Depth_m.1, (4) Depth_m.2,
 #' (5) Latitude_dd.1, and (6) Latitude_dd.2.
+#'
 #' @author Chantel Wetzel and Kelli Johnson
 #' @export
 #' @seealso
 #' See \code{\link{StrataAreas.fn}} for how areas are calculated.
-#' See \code{\link{Biomass.fn}} for how the areas are used to predict biomass.
-
-CreateStrataDF.fn <- function(names = NA, depths.shallow, depths.deep, lats.south, lats.north) {
+#' See \code{\link{Biomass.fn}} for how the areas are used to create design-based biomass estimates.
+#'
+CreateStrataDF.fn <- function(
+  names = NA,
+  depths.shallow,
+  depths.deep,
+  lats.south,
+  lats.north) {
 
   SA3_v2021.1 <- NULL
   utils::data("SA3_v2021.1", envir = environment(),

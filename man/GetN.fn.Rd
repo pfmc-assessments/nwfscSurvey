@@ -2,7 +2,7 @@
 % Please edit documentation in R/GetN.fn.R
 \name{GetN.fn}
 \alias{GetN.fn}
-\title{Calculate effN input sample sizes}
+\title{Calculate input sample sizes}
 \usage{
 GetN.fn(
   dir = NULL,
@@ -15,11 +15,10 @@ GetN.fn(
 )
 }
 \arguments{
-\item{dir}{A file path to the main directory where
-\code{printfolder} will be created. If \code{NULL}, which is the default,
-then no files will be written to the disk.}
+\item{dir}{Directory where output will be saved. The directory where the file should be saved.
+If dir = NULL no output will be saved.}
 
-\item{dat}{A \code{data.frame} of composition data.}
+\item{dat}{A data frame of composition data created using \code{\link[=pull_bio]{pull_bio()}}.}
 
 \item{type}{A string specifying whether doing "length" or "age" that is
 used to ensure the sample size is of the correct column and create
@@ -30,8 +29,9 @@ will lead to the use of the correct species-specific value for
 the number of unique samples per tow. See the function call for
 allowed values, where the default is \code{"all"}.}
 
-\item{printfolder}{A string that will be used to create the name of the
-folder where files will be saved, i.e., \code{file.path(dir, printfolder)}.}
+\item{printfolder}{A string that will be appended to \code{dir}, creating a folder
+where the output will be saved. If specified as \code{""},
+the output will just be saved directly in \code{dir}. The default is \code{"forSS3"}.}
 
 \item{output}{A string, where the default is \code{NULL}, which returns
 only a vector of samples sizes.
@@ -42,7 +42,24 @@ a table of observations by year and sex.}
 warnings to the console. The default is \code{TRUE}.}
 }
 \description{
-Calculate effN input sample sizes
+Calculate input sample sizes
+}
+\examples{
+\dontrun{
+bio <- pull_bio(
+  common_name = "petrale sole",
+  survey = "NWFSC.Combo"
+)
+
+n <- GetN.fn(
+  dat = bio,
+  type = "length",
+  species = "flatfish"
+)
+
+}
+
+
 }
 \references{
 Stewart, I.J. and O.S. Hamel. 2014.

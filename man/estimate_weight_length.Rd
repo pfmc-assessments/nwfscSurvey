@@ -13,18 +13,17 @@ estimate_weight_length(
 }
 \arguments{
 \item{data}{A data frame containing empirical weights and lengths
-from sampled fish.
-Sexes should be available in the column \code{sex} or \code{SEX}.}
+from sampled fish. Sexes should be available in the column \code{sex} or \code{SEX}.}
 
 \item{col_length}{A numeric or character value specifying the column
 to use in \code{data} for length information. These lengths are assumed to
 be in centimeters. The default value is \code{lengthcm}, which is added
-to a data set automatically when running \link{cleanPacFIN}.}
+to a data set automatically when running \code{\link[=cleanPacFIN]{cleanPacFIN()}}.}
 
 \item{col_weight}{A numeric or character value specifying the column
 to use in \code{data} for weight information. These weights are assumed to
 be in kilograms The default value is \code{weightkg}, which is added
-to a data set automatically when running \link{cleanPacFIN}.
+to a data set automatically when running \code{\link[=cleanPacFIN]{cleanPacFIN()}}.
 Using kilograms is the default because Stock Synthesis assumes the
 weight-length parameters are calculated using centimeters and kilograms.
 The reported values are easily scaled to give you results in grams if
@@ -44,6 +43,9 @@ This will happen when there are no females in your data set,
 for example.
 }
 \description{
+Calculate weight-length relationship parameters
+}
+\details{
 Estimate parameters of the weight-length relationship for each
 sex and all sexes combined, where the latter includes unsexed fish.
 }

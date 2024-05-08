@@ -2,11 +2,7 @@
 % Please edit documentation in R/checkStrata.fn.R
 \name{CheckStrata.fn}
 \alias{CheckStrata.fn}
-\title{Calculates and returns the total number of tows and
-positive tows conducted in each strata by year. The
-selected stratas are used to expand the length and
-marginal age compositions and to calculate a design
-based index using the {Biomass.fn} function.}
+\title{Calculate the number of observations by year and strata}
 \usage{
 CheckStrata.fn(
   dir = NULL,
@@ -18,35 +14,39 @@ CheckStrata.fn(
 )
 }
 \arguments{
-\item{dir}{Directory where the output csv file will be
-saved.}
+\item{dir}{Directory where output will be saved. The directory where the file should be saved.
+If dir = NULL no output will be saved.}
 
 \item{dat}{Data-frame of the catch data that has been
-created by the {PullCatch.fn} function.}
+created by \code{\link[=pull_catch]{pull_catch()}}.}
 
-\item{strat.vars}{A vector of the strata variable names.
-The default input are c("Depth_m","Latitude_dd")) which
-are the two factors the define a strata area off the coast.}
+\item{strat.vars}{Variables in both data frame that are used to
+define the stratas. Default is bottom depth (m) and latitudes (decimal
+degrees), i.e., \code{c("Depth_m", "Latitude_dd")}.}
 
-\item{strat.df}{Dataframe with the first column the name
-of the stratum, the second column the area of the stratum,
-and the remaining columns are the high and low variables
-defining the strata created by the {CreateStrataDF.fn} function.}
+\item{strat.df}{A data frame that defines the strata and provides the
+calculated areas for each strata returned from \code{\link[=createStrataDF.fn]{createStrataDF.fn()}}.}
 
-\item{printfolder}{Folder name where files will be saved. The
-default is "forSS" which is also used by other package functions
-that creates and saves files that are commonly used or reported
-in Stock Synthesis or the assessment document.}
+\item{printfolder}{A string that will be appended to \code{dir}, creating a folder
+where the output will be saved. If specified as \code{""},
+the output will just be saved directly in \code{dir}. The default is \code{"forSS3"}.}
 
 \item{verbose}{A logical that specifies if you want to print messages and
 warnings to the console. The default is \code{TRUE}.}
 }
+\value{
+A matrix with the number of tows within each strata by year and the
+number of positive tows by strata and year.
+}
 \description{
+Calculate the number of observations by year and strata
+}
+\details{
 Calculates and returns the total number of tows and
 positive tows conducted in each strata by year. The
 selected stratas are used to expand the length and
 marginal age compositions and to calculate a design
-based index using the {Biomass.fn} function.
+based index using the \code{\link[=Biomass.fn]{Biomass.fn()}}.
 }
 \author{
 Chantel Wetzel

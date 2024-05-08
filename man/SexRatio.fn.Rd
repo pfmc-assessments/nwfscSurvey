@@ -45,14 +45,16 @@ of the levels are documented.}
 warnings to the console. The default is \code{TRUE}.}
 }
 \description{
+Assign sex to unsexed fish based on fish with similar traits
+}
+\details{
 Assign sex to fish that were sampled but not sexed based on the proportion
 of like fish that were female out of sexed fish. After assigning unsexed
 fish to males and females, new sample sizes of each sex are calculated and
 the expansion factors are augmented.
 The definition of what classifies as "like fish" depends on the
 stage of the expansion, see the Details section.
-}
-\details{
+
 The sex ratio is calculated as the number of females divided
 by the sum of the number of females and males. So, the value being
 reported is actually the proportion of females.

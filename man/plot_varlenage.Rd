@@ -19,9 +19,10 @@ plot_varlenage(
 )
 }
 \arguments{
-\item{dir}{Directory to save output.}
+\item{dir}{Directory where output will be saved. The directory where the file should be saved.
+If dir = NULL no output will be saved.}
 
-\item{dat}{The data loaded from the NWFSC database}
+\item{dat}{The data loaded from \code{\link[=pull_bio]{pull_bio()}}}
 
 \item{main}{Name that will be used to name the saved png}
 
@@ -48,7 +49,11 @@ no longer have to specify \code{dopng} to save the plot as a png.}
 \item{...}{Additional arguments for the plots.}
 }
 \description{
-Plots the SD and CV of age at observed and predicted length
+Plot variability of length at age
+}
+\details{
+Plots the standard deviation and coefficient of variation of age at observed
+and predicted length
 }
 \author{
 Chantel Wetzel

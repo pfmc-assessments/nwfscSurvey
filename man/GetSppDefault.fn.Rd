@@ -11,6 +11,9 @@ A vector of strings specifying common names with words separated
 using underscores.
 }
 \description{
+Get Vector of Default Species Names for US West Coast
+}
+\details{
 A standard list of common names for species of interest to the
 US West Coast. This list does not reflect ecosystem or financial
 importance, and instead it is strictly a list of species for which

@@ -2,9 +2,7 @@
 % Please edit documentation in R/pull_haul.R
 \name{pull_haul}
 \alias{pull_haul}
-\title{Pull haul data from the NWFSC data warehouse.
-The website is: https://www.webapps.nwfsc.noaa.gov/data.
-This function can be used to pull haul data and associated covariates.}
+\title{Pull haul data from the NWFSC data warehouse.}
 \usage{
 pull_haul(years = c(1970, 2050), survey, dir = NULL, verbose = TRUE)
 }
@@ -48,7 +46,7 @@ Data can only be pulled from one survey at a time, though we are working on
 allowing for a vector of survey names.
 Currently, \code{NWFSC.Shelf.Rockfish} and \code{NWFSC.Hook.Line} are not supported.}
 
-\item{dir}{directory where ouptut will be saved. The directory where the file should be saved.
+\item{dir}{Directory where output will be saved. The directory where the file should be saved.
 If dir = NULL no output will be saved.}
 
 \item{verbose}{A logical that specifies if you want to print messages and
@@ -58,7 +56,6 @@ warnings to the console. The default is \code{TRUE}.}
 Returns a data frame of haul characteristics for satisfactory hauls
 }
 \description{
-Pull haul data from the NWFSC data warehouse.
 The website is: https://www.webapps.nwfsc.noaa.gov/data.
 This function can be used to pull haul data and associated covariates.
 }

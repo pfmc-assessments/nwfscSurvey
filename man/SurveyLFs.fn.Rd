@@ -2,7 +2,7 @@
 % Please edit documentation in R/SurveyLFs.fn.R
 \name{SurveyLFs.fn}
 \alias{SurveyLFs.fn}
-\title{Expands the lengths up to the total stratum area then sums over strata}
+\title{Expands the lengths up to the total stratum area then sums over strata for each year}
 \usage{
 SurveyLFs.fn(
   dir = NULL,
@@ -33,24 +33,23 @@ SurveyLFs.fn(
 )
 }
 \arguments{
-\item{dir}{A file path to an existing directory where you would like to
-create a folder to store the output from this function. The default is
-\code{dir = NULL}, which causes the function to not save any files. You can
-store the output directly in \code{dir} if you specify \code{printfolder = ""}.}
+\item{dir}{Directory where output will be saved. The directory where the file should be saved.
+If dir = NULL no output will be saved.}
 
 \item{datL}{A data frame of length-composition data returned from
-\code{\link[=PullBio.fn]{PullBio.fn()}}.}
+\code{\link[=pull_bio]{pull_bio()}}.}
 
-\item{datTows}{A data frame of catch data returned from \code{\link[=PullCatch.fn]{PullCatch.fn()}}.}
+\item{datTows}{A data frame of catch data returned from \code{\link[=pull_catch]{pull_catch()}}.}
 
-\item{strat.vars}{Variables in both \code{datL} and \code{datTows} that are used to
+\item{strat.vars}{Variables in both data frame that are used to
 define the stratas. Default is bottom depth (m) and latitudes (decimal
 degrees), i.e., \code{c("Depth_m", "Latitude_dd")}.}
 
 \item{strat.df}{A data frame that defines the strata and provides the
 calculated areas for each strata returned from \code{\link[=createStrataDF.fn]{createStrataDF.fn()}}.}
 
-\item{lgthBins}{An integer vector of length bins.}
+\item{lgthBins}{Vector of length bins to create length compositions across. Values above or below the
+minimum or maximum values, respectively, are grouped into the first size or plus group size.}
 
 \item{SSout}{A logical with the default of \code{TRUE}. If \code{TRUE}, the output
 is returned in a format that can be directly pasted into an SS3 data file.}
@@ -59,12 +58,11 @@ is returned in a format that can be directly pasted into an SS3 data file.}
 the mean ratio is implemented instead of the total ratio. Search the
 source code for the equations if more information is needed.}
 
-\item{sex}{(0, 1, 2, 3). The integer will be used to define the sex column
+\item{sex}{Options of (0, 1, 2, 3). The integer will be used to define the sex column
 of the returned input for Stock Synthesis and specifies how the
 composition are treated with respect to sex. See the Stock Synthesis
 manual for more information. In short, 0 is for unsexed, 1 is females, 2
-is males, and 3 is males and females where the sex ratio of the samples is
-informative to the model. The default is \code{3}.}
+is males, and 3 is females and males. The default is \code{3}.}
 
 \item{NAs2zero}{A logical specifying if \code{NA}s should be changed to zeros.
 The default is \code{TRUE}.}
@@ -83,21 +81,42 @@ based on the calculated sex ratio in the data.}
 \item{sexRatioStage}{(1, 2). The stage of the expansion to apply the sex
 ratio. The default is \code{1}.}
 
-\item{partition, fleet, agelow, agehigh, ageErr, month}{Each argument requires a
-single integer value that will be used to set the associated column of the
-returned input for Stock Synthesis. See the Stock Synthesis manual for
-more information.}
+\item{partition}{Partition to assign the composition data based on the expected
+format for Stock Synthesis. Partition of 0 indicates that the composition data
+include all composition data, 1 for discarded composition data, and 2 for retained
+fish only. Default of 0.}
 
-\item{nSamps}{A named vector of input or effective sample sizes that will be
-used to set the effective sample size of the returned input for Stock
-Synthesis. A value must be supplied for every year of data in \code{datL}.}
+\item{fleet}{A single integer value. A user input fleet
+number to assign to the fleet column based on the expected
+format for Stock Synthesis. Default "Enter Fleet".}
+
+\item{agelow}{Lower age bin for all age composition data based on the expected
+format for Stock Synthesis. Default value of -1 which translates to the lowest age
+bin.}
+
+\item{agehigh}{Upper age bin for all age composition data based on the expected
+format for Stock Synthesis. Default value of -1 which translates to the highest}
+
+\item{ageErr}{Single interget value  of ageing error
+vector to apply to the age data based on
+Stock Synthesis. Default "Enter".}
+
+\item{nSamps}{Vector of integer sample sizes. A vector of sample sizes for
+all years in \code{datL} is required if a vector is provided. The input vector will be included in the
+output marginal age composition data.  One option for calculating input sample size is the \code{\link[=GetN.fn]{GetN.fn()}}.
+The default is "Enter Samps".}
+
+\item{month}{A single integer value between 1-12. A user input fleet
+number to assign to the month column based on the expected
+format for Stock Synthesis. See the Stock Synthesis manual for
+more information. Default "Enter Month".}
 
 \item{printfolder}{A string that will be appended to \code{dir}, creating a folder
-where the length-composition output will be saved. If specified as \code{""},
-the output will just be saved directly in \code{dir}. The default is \code{"forSS"}.}
+where the output will be saved. If specified as \code{""},
+the output will just be saved directly in \code{dir}. The default is \code{"forSS3"}.}
 
-\item{remove999}{A logical with the default of \code{TRUE}, which leads to the
-output having the 999 column combined with the first length bin.}
+\item{remove999}{The output object by the function will have the 999 column combined with the first length bin.
+Default TRUE.}
 
 \item{outputStage1}{A logical specifying if you would like the function to
 stop after the end of the first stage of the expansion process and return
@@ -111,13 +130,10 @@ to sum to 100. The default is \code{TRUE}.}
 warnings to the console. The default is \code{TRUE}.}
 }
 \description{
-Expands the lengths up to the total stratum area then sums over strata
-}
-\details{
-The original version was written by Allan Hicks 16 March 2009. This function
-has since been modified by Chantel Wetzel to work with the data warehouse
-data formatting, add additional options of when to apply the sex ratio, and
-correct some treatment of unsexed fish weighted by sample size and area.
+Create expanded length composition data based on the pre-specified strata.
+This function is designed to be used with catch pulled using \code{\link[=pull_catch]{pull_catch()}} and
+biological data pulled using \code{\link[=pull_bio]{pull_bio()}}. The default output is formatted based
+on the formatting required by Stock Synthesis.
 }
 \seealso{
 \itemize{

@@ -1,4 +1,5 @@
 #' Pull biological data (age, length, weight) from the NWFSC data warehouse
+#'
 #' The website is: https://www.webapps.nwfsc.noaa.gov/data
 #' This function can be used to pull a single species or all observed species
 #' In order to pull all species leave common_name or sci_name as NULL
@@ -38,13 +39,14 @@
 # "vermilion and sunset rockfish"), SurveyName = "NWFSC.Combo")
 #' }
 #'
-pull_bio <- function(common_name = NULL,
-                     sci_name = NULL,
-                     years = c(1970, 2050),
-                     survey,
-                     dir = NULL,
-                     convert = TRUE,
-                     verbose = TRUE) {
+pull_bio <- function(
+  common_name = NULL,
+  sci_name = NULL,
+  years = c(1970, 2050),
+  survey,
+  dir = NULL,
+  convert = TRUE,
+  verbose = TRUE) {
 
   options(timeout = 4000000)
   if (survey %in% c("NWFSC.Shelf.Rockfish", "NWFSC.Hook.Line")) {

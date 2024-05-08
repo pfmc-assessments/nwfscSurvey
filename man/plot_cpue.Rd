@@ -7,9 +7,10 @@
 plot_cpue(dir = NULL, catch, plot = 1:3, width = 7, height = 7)
 }
 \arguments{
-\item{dir}{Directory to save files to}
+\item{dir}{Directory where output will be saved. The directory where the file should be saved.
+If dir = NULL no output will be saved.}
 
-\item{catch}{Data catch file}
+\item{catch}{Data catch file pulled using \code{\link[=pull_catch]{pull_catch()}}}
 
 \item{plot}{A vector of integers specifying the figures you want.}
 

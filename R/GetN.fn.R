@@ -1,4 +1,4 @@
-#' Calculate effN input sample sizes
+#' Calculate input sample sizes
 #'
 #' @references
 #' Stewart, I.J. and O.S. Hamel. 2014.
@@ -7,10 +7,8 @@
 #' Canadian Journal of Fishery and Aquatic Science, 71(4): 581--588.
 #' [10.1139/cjfas-2013-0289](https://doi.org/10.1139/cjfas-2013-0289).
 #'
-#' @param dir A file path to the main directory where
-#'   `printfolder` will be created. If `NULL`, which is the default,
-#'   then no files will be written to the disk.
-#' @param dat A `data.frame` of composition data.
+#' @template dir
+#' @param dat A data frame of composition data created using [pull_bio()].
 #' @param type A string specifying whether doing "length" or "age" that is
 #'   used to ensure the sample size is of the correct column and create
 #'   the file name of the saved sheet.
@@ -18,8 +16,7 @@
 #'   will lead to the use of the correct species-specific value for
 #'   the number of unique samples per tow. See the function call for
 #'   allowed values, where the default is `"all"`.
-#' @param printfolder A string that will be used to create the name of the
-#'   folder where files will be saved, i.e., `file.path(dir, printfolder)`.
+#' @template printfolder
 #' @param output A string, where the default is `NULL`, which returns
 #'   only a vector of samples sizes.
 #'   `"summary"`, or any other character string, will return
@@ -28,21 +25,39 @@
 #'
 #' @author Chantel R. Wetzel
 #' @export
+#'
+#' @examples
+#' \dontrun{
+#' bio <- pull_bio(
+#'   common_name = "petrale sole",
+#'   survey = "NWFSC.Combo"
+#' )
+#'
+#' n <- GetN.fn(
+#'   dat = bio,
+#'   type = "length",
+#'   species = "flatfish"
+#' )
+#'
+#' }
+#'
+#'
+GetN.fn <- function(
+  dir = NULL,
+  dat,
+  type = c("length", "age"),
+  species = c(
+    "all",
+    "flatfish",
+    "shelfrock",
+    "sloperock",
+    "thorny",
+    "others"
+  ),
+  printfolder = "forSS",
+  output = NULL,
+  verbose = TRUE) {
 
-GetN.fn <- function(dir = NULL,
-                    dat,
-                    type = c("length", "age"),
-                    species = c(
-                      "all",
-                      "flatfish",
-                      "shelfrock",
-                      "sloperock",
-                      "thorny",
-                      "others"
-                    ),
-                    printfolder = "forSS",
-                    output = NULL,
-                    verbose = TRUE) {
   species <- match.arg(species)
   type <- match.arg(type)
   n.unq <- NA

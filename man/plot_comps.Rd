@@ -17,9 +17,8 @@ plot_comps(
 \arguments{
 \item{data}{Data file object created by \code{\link[=SurveyLF.fn]{SurveyLF.fn()}} or \code{\link[=SurveyAF.fn]{SurveyAF.fn()}}.}
 
-\item{dir}{Directory to save files to. The default is \code{NULL}, which leads to
-the figures being printed to the screen rather than saved. If a path is
-provided, then the figures will only be saved, i.e., not printed.}
+\item{dir}{Directory where output will be saved. The directory where the file should be saved.
+If dir = NULL no output will be saved.}
 
 \item{add_save_name}{Option to add text to a saved figure name. This option
 can be useful if creating plots across multiple species and saving them

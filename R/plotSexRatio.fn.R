@@ -1,9 +1,10 @@
 #' Function to plot sex ratio
 #'
-#' @param dir directory location for saving the png
-#' @param dat data object
-#' @param data.type "length" or "age"
-#' @param main ame that will be used to name the saved png
+#' @template dir
+#' @param dat Data object with biological data from [pull_bio()] with a column
+#' named `Sex` present.
+#' @param data.type Specify where to calculate the sex ration by length or age.
+#' @param main Name that will be used to name the saved png
 #' @param circleSize circle size
 #' @param dopng Deprecated with {nwfscSurvey} 2.1 because providing a non-NULL
 #'   value to `dir` can serve the same purpose as `dopng = TRUE` without the
@@ -15,13 +16,15 @@
 #' @importFrom graphics abline
 #' @export
 
-PlotSexRatio.fn <- function(dir,
-                            dat,
-                            data.type = "length",
-                            main = NULL,
-                            circleSize = 0.1,
-                            dopng = lifecycle::deprecated(),
-                            ...) {
+PlotSexRatio.fn <- function(
+  dir,
+  dat,
+  data.type = "length",
+  main = NULL,
+  circleSize = 0.1,
+  dopng = lifecycle::deprecated(),
+  ...) {
+
   if (lifecycle::is_present(dopng)) {
     lifecycle::deprecate_warn(
       when = "2.1",
@@ -50,7 +53,7 @@ PlotSexRatio.fn <- function(dir,
     f(x / accuracy) * accuracy
   }
 
-  if (data.type == "length") {    
+  if (data.type == "length") {
     bin_width <- 2
     dat$bin <- round_any(dat$Length_cm, bin_width, floor)
     axis.name <- "Length (cm)"
@@ -69,14 +72,14 @@ PlotSexRatio.fn <- function(dir,
   plot(x = names(ratioF), y = ratioF, type = "l", col = "red", lty = 2,
     xlab = axis.name, ylim = c(0, 1), main = main, ylab = "Fraction female", ...)
   abline(h = 0.50, col = "grey", lty = 2, lwd = 2)
-  symbols(x = names(ratioF), y = ratioF, circles = nobs, 
-    inches = circleSize, fg = "red", bg = rgb(1, 0, 0, alpha = 0.5), 
+  symbols(x = names(ratioF), y = ratioF, circles = nobs,
+    inches = circleSize, fg = "red", bg = rgb(1, 0, 0, alpha = 0.5),
     add = TRUE)
 
   test <- dplyr::count(dat, bin, Sex) %>%
     mutate(Proportion = n / sum(n))
 
-  p <- ggplot(test, aes(x = bin, y = Proportion, fill = Sex)) + 
+  p <- ggplot(test, aes(x = bin, y = Proportion, fill = Sex)) +
     geom_bar(position = "fill", stat = "identity") +
     geom_hline(yintercept = 0.50, col = 'white', lwd = 2) +
     scale_fill_manual(values = c('F' = 'red', 'M' = 'blue', 'U' = "forestgreen")) +
@@ -85,12 +88,12 @@ PlotSexRatio.fn <- function(dir,
       panel.background = element_blank(),
       axis.title.x = element_text (size = 15),
       axis.title.y = element_text (size = 15),
-      axis.text.x = element_text(size = 15), 
+      axis.text.x = element_text(size = 15),
       axis.text.y = element_text(size = 15))
   print(p)
 
   if (!is.null(dir)){
-      ggsave(filename = file.path(dir, "plots", paste0("proportion_by_", data.type, "_sex.png")), 
-        width = 7, height = 7, units = 'in')     
+      ggsave(filename = file.path(dir, "plots", paste0("proportion_by_", data.type, "_sex.png")),
+        width = 7, height = 7, units = 'in')
   }
 }

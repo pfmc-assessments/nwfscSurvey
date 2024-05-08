@@ -2,15 +2,7 @@
 % Please edit documentation in R/SurveyAgeAtLen.fn.R
 \name{SurveyAgeAtLen.fn}
 \alias{SurveyAgeAtLen.fn}
-\title{Calculates proportion of age at length and reformats into SS format
-Uses raw numbers at length, assuming that is a random sample conditioned on length and sex.
-To use expanded numbers (up to strata areas), set raw=F
-Only sex codes 1 and 2 and puts males and females on separate lines because the age@L is conditioned on sex (a sample of females of length 25cm, for example)
-Gender=1: females only. Male values ignored
-Gender=2: males only. Female values ignored.
-lgthBins is either the interval between length bins or the actual length bins
-note that 0 and Inf are tacked on the ends to account for lengths and ages outside the interval. You may want to add these in to first and last bin.
-I assume all fish are sexed for age data, thus do not apply sex ratios for unsexed fish}
+\title{Calculates conditional age-at-length composition data}
 \usage{
 SurveyAgeAtLen.fn(
   dir = NULL,
@@ -35,55 +27,76 @@ SurveyAgeAtLen.fn(
 )
 }
 \arguments{
-\item{dir}{directory this is where the output files will be saved}
+\item{dir}{Directory where output will be saved. The directory where the file should be saved.
+If dir = NULL no output will be saved.}
 
-\item{datAL}{the biological data frame exctrated from the data warehouse using the PullBio.fn}
+\item{datAL}{the biological data frame exctrated from the data warehouse using \code{\link[=pull_bio]{pull_bio()}}}
 
-\item{datTows}{the catch data frame extracted from the data warehouse using the PullCatch.fn}
+\item{datTows}{the catch data frame extracted from the data warehouse using \code{\link[=pull_catch]{pull_catch()}}}
 
-\item{strat.vars}{the variables used define the stratas. Defaul is bottom depth and latitudes.}
+\item{strat.vars}{Variables in both data frame that are used to
+define the stratas. Default is bottom depth (m) and latitudes (decimal
+degrees), i.e., \code{c("Depth_m", "Latitude_dd")}.}
 
-\item{strat.df}{the created strata matrix with the calculated areas by the createStrataDF.fn function}
+\item{strat.df}{A data frame that defines the strata and provides the
+calculated areas for each strata returned from \code{\link[=createStrataDF.fn]{createStrataDF.fn()}}.}
 
-\item{lgthBins}{length bins}
+\item{lgthBins}{Vector of length bins to create length compositions across. Values above or below the
+minimum or maximum values, respectively, are grouped into the first size or plus group size.}
 
-\item{ageBins}{age bins}
+\item{ageBins}{Vector of age bins to create age compositions across. Values above or below the
+minimum or maximum values, respectively, are grouped into the first age or plus group age.}
 
-\item{sex}{sex (0, 1, 2, 3) sex value for Stock Synthesis}
+\item{sex}{Options of (0, 1, 2, 3). The integer will be used to define the sex column
+of the returned input for Stock Synthesis and specifies how the
+composition are treated with respect to sex. See the Stock Synthesis
+manual for more information. In short, 0 is for unsexed, 1 is females, 2
+is males, and 3 is females and males. The default is \code{3}.}
 
-\item{SSout}{TRUE/FALSE return comps formatted for SS or in a raw form}
+\item{SSout}{A logical with the default of \code{TRUE}. If \code{TRUE}, the output
+is returned in a format that can be directly pasted into an SS3 data file.}
 
-\item{meanRatioMethod}{TRUE/FALSE}
+\item{meanRatioMethod}{A logical with the default of \code{TRUE}. If \code{TRUE}, then
+the mean ratio is implemented instead of the total ratio. Search the
+source code for the equations if more information is needed.}
 
-\item{raw}{TRUE/FALSE, input to define whether or not to expand numbers in the csv file (column header "NumF" and "NumM")}
+\item{raw}{Logical input to define whether or not to expand numbers in the csv file with a default
+unexpanded sample numbers.}
 
-\item{NAs2zero}{change NAs to zeros}
+\item{NAs2zero}{A logical specifying if \code{NA}s should be changed to zeros.
+The default is \code{TRUE}.}
 
-\item{month}{month}
+\item{month}{A single integer value between 1-12. A user input fleet
+number to assign to the month column based on the expected
+format for Stock Synthesis. See the Stock Synthesis manual for
+more information. Default "Enter Month".}
 
-\item{fleet}{fleet number}
+\item{fleet}{A single integer value. A user input fleet
+number to assign to the fleet column based on the expected
+format for Stock Synthesis. Default "Enter Fleet".}
 
-\item{partition}{partition for Stock Synthesis}
+\item{partition}{Partition to assign the composition data based on the expected
+format for Stock Synthesis. Partition of 0 indicates that the composition data
+include all composition data, 1 for discarded composition data, and 2 for retained
+fish only. Default of 0.}
 
-\item{ageErr}{age error value for Stock Synthesis}
+\item{ageErr}{Single interget value  of ageing error
+vector to apply to the age data based on
+Stock Synthesis. Default "Enter".}
 
-\item{returnSamps}{TRUE/FALSE stops the function after the sample size is calculated}
+\item{returnSamps}{A logical with the default of \code{FALSE}. A value of \code{TRUE}
+stops the function after the sample size is calculated.}
 
-\item{printfolder}{folder where the length comps will be saved}
+\item{printfolder}{A string that will be appended to \code{dir}, creating a folder
+where the output will be saved. If specified as \code{""},
+the output will just be saved directly in \code{dir}. The default is \code{"forSS3"}.}
 
 \item{verbose}{A logical that specifies if you want to print messages and
 warnings to the console. The default is \code{TRUE}.}
 }
 \description{
-Calculates proportion of age at length and reformats into SS format
-Uses raw numbers at length, assuming that is a random sample conditioned on length and sex.
-To use expanded numbers (up to strata areas), set raw=F
-Only sex codes 1 and 2 and puts males and females on separate lines because the age@L is conditioned on sex (a sample of females of length 25cm, for example)
-Gender=1: females only. Male values ignored
-Gender=2: males only. Female values ignored.
-lgthBins is either the interval between length bins or the actual length bins
-note that 0 and Inf are tacked on the ends to account for lengths and ages outside the interval. You may want to add these in to first and last bin.
-I assume all fish are sexed for age data, thus do not apply sex ratios for unsexed fish
+Calculates conditional age-at-length composition data using raw numbers at length,
+assuming that is a random sample conditioned on length and sex.
 }
 \seealso{
 \code{\link{StrataFactors.fn}}

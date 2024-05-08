@@ -5,7 +5,7 @@
 #'
 #'
 #' @template dir
-#' @param dat An object created by [PullCatch.fn()].
+#' @param dat An object created by [pull_catch()].
 #' @param main A string that will be prepended to the name of the saved png
 #'   (i.e., "NWFSC" results in a file called "NWFSC_CPUE_Map.png").
 #' @param dopng Deprecated with {nwfscSurvey} 2.1 because providing a non-NULL
@@ -35,11 +35,12 @@
 #' }
 #' @import ggplot2
 
-PlotMap.fn <- function(dir = NULL,
-                       dat,
-                       main = NULL,
-                       dopng = lifecycle::deprecated(),
-                       plot = 1:2) {
+PlotMap.fn <- function(
+  dir = NULL,
+  dat,
+  main = NULL,
+  dopng = lifecycle::deprecated(),
+  plot = 1:2) {
 
 
   if (lifecycle::is_present(dopng)) {
@@ -113,7 +114,7 @@ PlotMap.fn <- function(dir = NULL,
     print(g)
 
     if (!is.null(dir)) {
-       ggsave(filename = plot_names[1], width = 7, height = 10, units = 'in')     
+       ggsave(filename = plot_names[1], width = 7, height = 10, units = 'in')
     }
   }
 
@@ -135,7 +136,7 @@ PlotMap.fn <- function(dir = NULL,
           x = Longitude_dd, y = Latitude_dd,
           color = cpue_kg_km2, size = cpue_kg_km2
         ),
-        pch = 1, 
+        pch = 1,
         col = "lightgrey",
         alpha = 0.15
       ) +
@@ -168,7 +169,7 @@ PlotMap.fn <- function(dir = NULL,
     print(h)
 
     if (!is.null(dir)) {
-       ggsave(filename = plot_names[2], width = 7, height = 10, units = 'in')     
+       ggsave(filename = plot_names[2], width = 7, height = 10, units = 'in')
     }
   }
 }

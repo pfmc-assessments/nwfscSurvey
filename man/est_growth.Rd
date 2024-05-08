@@ -3,7 +3,7 @@
 \name{est_growth}
 \alias{est_growth}
 \title{Estimate length-at-age using the von Bertanlaffy
-parametization from Stock Synthesis.}
+parametization}
 \usage{
 est_growth(
   dir = NULL,
@@ -18,14 +18,15 @@ est_growth(
 )
 }
 \arguments{
-\item{dir}{Directory to save output.}
+\item{dir}{Directory where output will be saved. The directory where the file should be saved.
+If dir = NULL no output will be saved.}
 
-\item{dat}{The data loaded from the NWFSC database}
+\item{dat}{Data frame of biological data from \code{\link[=pull_bio]{pull_bio()}}}
 
 \item{return_df}{TRUE/FALSE If set to TRUE the dat data frame is
 returned with added columns for the estimated Lhat_low, Lhat_pred, and Lhat_high.}
 
-\item{Par}{Dataframe of starting parameters for K, Linf, L0, CV0, and CV2 based on the
+\item{Par}{Data frame of starting parameters for K, Linf, L0, CV0, and CV2 based on the
 Stock Synthesis parameterization of von Bertanlaffy growth.}
 
 \item{bySex}{Logical to indicate if plot by sex}
@@ -44,7 +45,7 @@ no longer have to specify \code{dopng} to save the plot as a png.}
 }
 \description{
 Estimate length-at-age using the von Bertanlaffy
-parametization from Stock Synthesis.
+parametization
 }
 \seealso{
 \code{\link[=fit_vbgrowth]{fit_vbgrowth()}}

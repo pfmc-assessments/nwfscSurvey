@@ -47,6 +47,9 @@ from the predicted value depends on the \code{sdFactor}, allowing confidence
 intervals based on normal theory or other theories to be created.
 }
 \description{
+Estimate von Bertanlaffy growth parameters from lengths and ages
+}
+\details{
 Estimate von Bertanlaffy growth parameters from length and age data or
 predicted lengths given ages and input parameters.
 }

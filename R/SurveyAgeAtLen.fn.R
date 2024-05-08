@@ -1,31 +1,36 @@
-#' Calculates proportion of age at length and reformats into SS format
-#' Uses raw numbers at length, assuming that is a random sample conditioned on length and sex.
-#' To use expanded numbers (up to strata areas), set raw=F
-#' Only sex codes 1 and 2 and puts males and females on separate lines because the age@L is conditioned on sex (a sample of females of length 25cm, for example)
-#' Gender=1: females only. Male values ignored
-#' Gender=2: males only. Female values ignored.
-#' lgthBins is either the interval between length bins or the actual length bins
-#' note that 0 and Inf are tacked on the ends to account for lengths and ages outside the interval. You may want to add these in to first and last bin.
-#' I assume all fish are sexed for age data, thus do not apply sex ratios for unsexed fish
+#' Calculates conditional age-at-length composition data
 #'
-#' @param dir directory this is where the output files will be saved
-#' @param datAL the biological data frame exctrated from the data warehouse using the PullBio.fn
-#' @param datTows the catch data frame extracted from the data warehouse using the PullCatch.fn
-#' @param strat.vars the variables used define the stratas. Defaul is bottom depth and latitudes.
-#' @param strat.df the created strata matrix with the calculated areas by the createStrataDF.fn function
-#' @param lgthBins length bins
-#' @param ageBins age bins
-#' @param sex sex (0, 1, 2, 3) sex value for Stock Synthesis
-#' @param SSout TRUE/FALSE return comps formatted for SS or in a raw form
-#' @param meanRatioMethod TRUE/FALSE
-#' @param raw TRUE/FALSE, input to define whether or not to expand numbers in the csv file (column header "NumF" and "NumM")
-#' @param NAs2zero change NAs to zeros
-#' @param month month
-#' @param fleet fleet number
-#' @param partition partition for Stock Synthesis
-#' @param ageErr age error value for Stock Synthesis
-#' @param returnSamps TRUE/FALSE stops the function after the sample size is calculated
-#' @param printfolder folder where the length comps will be saved
+#' Calculates conditional age-at-length composition data using raw numbers at length,
+#' assuming that is a random sample conditioned on length and sex.
+#'
+#'
+#' @template dir
+#' @param datAL the biological data frame exctrated from the data warehouse using [pull_bio()]
+#' @param datTows the catch data frame extracted from the data warehouse using [pull_catch()]
+#' @template strat.vars
+#' @template strat.df
+#' @param lgthBins Vector of length bins to create length compositions across. Values above or below the
+#'   minimum or maximum values, respectively, are grouped into the first size or plus group size.
+#' @param ageBins Vector of age bins to create age compositions across. Values above or below the
+#'   minimum or maximum values, respectively, are grouped into the first age or plus group age.
+#' @template sex
+#' @param SSout A logical with the default of `TRUE`. If `TRUE`, the output
+#'   is returned in a format that can be directly pasted into an SS3 data file.
+#' @param meanRatioMethod A logical with the default of `TRUE`. If `TRUE`, then
+#'   the mean ratio is implemented instead of the total ratio. Search the
+#'   source code for the equations if more information is needed.
+#' @param raw Logical input to define whether or not to expand numbers in the csv file with a default
+#    of `TRUE`. If `FALSE` a data frame will be returned with column header "NumF" and "NumM" with
+#'   unexpanded sample numbers.
+#' @param NAs2zero A logical specifying if `NA`s should be changed to zeros.
+#'   The default is `TRUE`.
+#' @template month
+#' @template fleet
+#' @template partition
+#' @template ageErr
+#' @param returnSamps A logical with the default of `FALSE`. A value of `TRUE`
+#'   stops the function after the sample size is calculated.
+#' @template printfolder
 #' @template verbose
 #'
 #' @author Allan Hicks and Chantel Wetzel
@@ -33,9 +38,26 @@
 #' @seealso \code{\link{StrataFactors.fn}}
 #' @import reshape2
 
-SurveyAgeAtLen.fn <- function(dir = NULL, datAL, datTows, strat.vars = c("Depth_m", "Latitude_dd"), strat.df = NULL, lgthBins = 1, ageBins = 1,
-                              sex = 3, SSout = TRUE, meanRatioMethod = TRUE, raw = TRUE, NAs2zero = TRUE, month = "Enter Month", fleet = "Enter Fleet",
-                              partition = 0, ageErr = "Enter Age Error", returnSamps = FALSE, printfolder = "forSS", verbose = TRUE) {
+SurveyAgeAtLen.fn <- function(
+  dir = NULL,
+  datAL,
+  datTows,
+  strat.vars = c("Depth_m", "Latitude_dd"),
+  strat.df = NULL,
+  lgthBins = 1,
+  ageBins = 1,
+  sex = 3,
+  SSout = TRUE,
+  meanRatioMethod = TRUE,
+  raw = TRUE,
+  NAs2zero = TRUE,
+  month = "Enter Month",
+  fleet = "Enter Fleet",
+  partition = 0,
+  ageErr = "Enter Age Error",
+  returnSamps = FALSE,
+  printfolder = "forSS",
+  verbose = TRUE) {
 
   plotdir <- file.path(dir, printfolder)
   check_dir(plotdir, verbose = verbose)

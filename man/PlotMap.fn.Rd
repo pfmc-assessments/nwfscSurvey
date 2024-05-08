@@ -13,10 +13,10 @@ PlotMap.fn(
 )
 }
 \arguments{
-\item{dir}{directory where ouptut will be saved. The directory where the file should be saved.
+\item{dir}{Directory where output will be saved. The directory where the file should be saved.
 If dir = NULL no output will be saved.}
 
-\item{dat}{An object created by \code{\link[=PullCatch.fn]{PullCatch.fn()}}.}
+\item{dat}{An object created by \code{\link[=pull_catch]{pull_catch()}}.}
 
 \item{main}{A string that will be prepended to the name of the saved png
 (i.e., "NWFSC" results in a file called "NWFSC_CPUE_Map.png").}

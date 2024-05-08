@@ -2,7 +2,7 @@
 % Please edit documentation in R/plotBioStrata.fn.R
 \name{PlotBioStrata.fn}
 \alias{PlotBioStrata.fn}
-\title{Plots the biomass with confidence intervals}
+\title{Plots the design-based biomass estimates by strata with confidence intervals}
 \usage{
 PlotBioStrata.fn(
   dir = NULL,
@@ -26,11 +26,13 @@ PlotBioStrata.fn(
 )
 }
 \arguments{
-\item{dir}{directory to save the file}
+\item{dir}{Directory where output will be saved. The directory where the file should be saved.
+If dir = NULL no output will be saved.}
 
-\item{dat}{object created by the GetTotalBiomass.fn}
+\item{dat}{Data frame created by the \code{\link[=Biomass.fn]{Biomass.fn()}}}
 
-\item{CI}{confidence interval}
+\item{CI}{A numerical value that specifies the confidence interval to return.
+Values should be between 0.01 to 0.99.}
 
 \item{scalar}{simply the divisor for the biomass}
 
@@ -42,7 +44,7 @@ PlotBioStrata.fn(
 
 \item{survey.name}{if specified will name the output png file using this name}
 
-\item{strata.names}{custom strata names, if not specified will use the defined names from CreateStrataDF.fn}
+\item{strata.names}{custom strata names, if not specified will use the defined names from \code{\link[=CreateStrataDF.fn]{CreateStrataDF.fn()}}}
 
 \item{ylim}{y-limits}
 
@@ -66,8 +68,8 @@ no longer have to specify \code{dopng} to save the plot as a png.}
 \item{...}{Additional arguments for the plots}
 }
 \description{
-Plots the biomass with confidence intervals
+Plots the design-based biomass estimates by strata with confidence intervals
 }
 \author{
-Allan Hicks and John Wallace
+Chantel Wetzel, Allan Hicks, and John Wallace
 }
