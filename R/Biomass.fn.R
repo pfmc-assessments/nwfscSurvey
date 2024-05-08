@@ -17,7 +17,7 @@
 #' @param outputMedian Logical input to specify whether to output median or the
 #' mean biomass estimate. Default `TRUE`.
 #' @template month
-#' @template fleet f
+#' @template fleet
 #' @template verbose
 #'
 #' @returns List of biomass estimates by year, biomass estimates by year and
@@ -30,15 +30,15 @@
 #' @importFrom utils write.csv
 #' @export
 #'
-#' @example
+#' @examples
 #' \dontrun{
 #' catch <- pull_catch(
 #'   common_name = "petrale sole",
-#'   survey = "NWFSC.Combo
+#'   survey = "NWFSC.Combo"
 #' )
 #'
 #' strata <- CreateStrataDF.fn(
-#'   names=c("shallow_wa", "shallow_or", "shallow_ca", "deep_wa", "deep_or", "deep_ca"),
+#'   names = c("shallow_wa", "shallow_or", "shallow_ca", "deep_wa", "deep_or", "deep_ca"),
 #'   depths.shallow = c( 55,   55,   55,  183,  183, 183),
 #'   depths.deep    = c(183,  183,  183,  549,  549, 549),
 #'   lats.south     = c(46.0, 42.0, 32.0, 46.0, 42.0, 32.0),

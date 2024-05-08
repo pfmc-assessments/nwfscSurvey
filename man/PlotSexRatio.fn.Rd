@@ -15,13 +15,15 @@ PlotSexRatio.fn(
 )
 }
 \arguments{
-\item{dir}{directory location for saving the png}
+\item{dir}{Directory where output will be saved. The directory where the file should be saved.
+If dir = NULL no output will be saved.}
 
-\item{dat}{data object}
+\item{dat}{Data object with biological data from \code{\link[=pull_bio]{pull_bio()}} with a column
+named \code{Sex} present.}
 
-\item{data.type}{"length" or "age"}
+\item{data.type}{Specify where to calculate the sex ration by length or age.}
 
-\item{main}{ame that will be used to name the saved png}
+\item{main}{Name that will be used to name the saved png}
 
 \item{circleSize}{circle size}
 

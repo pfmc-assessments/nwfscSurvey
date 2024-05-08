@@ -23,6 +23,9 @@ matrix by default, but this return value for unmatched surveys can
 be changed by altering \code{na.return}.
 }
 \description{
+Get Survey Abbreviation
+}
+\details{
 Get abbreviations for a vector of survey names. The input vector of
 names, which are typically names used to pull the data from the
 warehouse, do not always match the name agreed upon within the

@@ -2,12 +2,7 @@
 % Please edit documentation in R/Format.AKSlope.fn.R
 \name{Format.AKSlope.fn}
 \alias{Format.AKSlope.fn}
-\title{Rename columns in the AFSC slope survey data file
-received prior to the creation of the NWFSC data
-warehouse. This function converts the older data files
-to create the needed column names to work within survey
-package functions. Output from this function will be list
-of containing catch, length, and age data.}
+\title{Rename AFSC slope survey columns from data pulled before 2017}
 \usage{
 Format.AKSlope.fn(
   dir = NULL,
@@ -37,6 +32,9 @@ survey is 1997.}
 warnings to the console. The default is \code{TRUE}.}
 }
 \description{
+Rename AFSC slope survey columns from data pulled before 2017
+}
+\details{
 Rename columns in the AFSC slope survey data file
 received prior to the creation of the NWFSC data
 warehouse. This function converts the older data files

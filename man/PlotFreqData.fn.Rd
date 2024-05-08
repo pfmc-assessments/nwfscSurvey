@@ -56,5 +56,5 @@ no longer have to specify \code{dopng} to save the plot as a png.}
 Plot length or age compositions by year in bubble plots
 }
 \author{
-Allan Hicks and Chantel Wetzel
+Chantel Wetzel and Allan Hicks
 }

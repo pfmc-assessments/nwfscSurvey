@@ -34,7 +34,14 @@ the output will just be saved directly in \code{dir}. The default is \code{"forS
 \item{verbose}{A logical that specifies if you want to print messages and
 warnings to the console. The default is \code{TRUE}.}
 }
+\value{
+A matrix with the number of tows within each strata by year and the
+number of positive tows by strata and year.
+}
 \description{
+Calculate the number of observations by year and strata
+}
+\details{
 Calculates and returns the total number of tows and
 positive tows conducted in each strata by year. The
 selected stratas are used to expand the length and

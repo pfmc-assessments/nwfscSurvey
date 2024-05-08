@@ -31,7 +31,8 @@ If dir = NULL no output will be saved.}
 
 \item{dat}{Data frame created by the \code{\link[=Biomass.fn]{Biomass.fn()}}}
 
-\item{CI}{confidence interval}
+\item{CI}{A numerical value that specifies the confidence interval to return.
+Values should be between 0.01 to 0.99.}
 
 \item{scalar}{simply the divisor for the biomass}
 
@@ -70,5 +71,5 @@ no longer have to specify \code{dopng} to save the plot as a png.}
 Plots the design-based biomass estimates by strata with confidence intervals
 }
 \author{
-Allan Hicks and John Wallace
+Chantel Wetzel, Allan Hicks, and John Wallace
 }

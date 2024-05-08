@@ -14,6 +14,9 @@ If dir = NULL no output will be saved.}
 warnings to the console. The default is \code{TRUE}.}
 }
 \description{
+Directory check
+}
+\details{
 Check that
 \enumerate{
 \item The user knows that the data will not be saved if \code{dir = NULL}.

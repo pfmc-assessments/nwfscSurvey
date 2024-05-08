@@ -2,9 +2,7 @@
 % Please edit documentation in R/pull_haul.R
 \name{pull_haul}
 \alias{pull_haul}
-\title{Pull haul data from the NWFSC data warehouse.
-The website is: https://www.webapps.nwfsc.noaa.gov/data.
-This function can be used to pull haul data and associated covariates.}
+\title{Pull haul data from the NWFSC data warehouse.}
 \usage{
 pull_haul(years = c(1970, 2050), survey, dir = NULL, verbose = TRUE)
 }
@@ -58,7 +56,6 @@ warnings to the console. The default is \code{TRUE}.}
 Returns a data frame of haul characteristics for satisfactory hauls
 }
 \description{
-Pull haul data from the NWFSC data warehouse.
 The website is: https://www.webapps.nwfsc.noaa.gov/data.
 This function can be used to pull haul data and associated covariates.
 }

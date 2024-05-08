@@ -18,7 +18,7 @@ GetN.fn(
 \item{dir}{Directory where output will be saved. The directory where the file should be saved.
 If dir = NULL no output will be saved.}
 
-\item{dat}{A \code{data.frame} of composition data created using \code{\link[=pull_bio]{pull_bio()}}.}
+\item{dat}{A data frame of composition data created using \code{\link[=pull_bio]{pull_bio()}}.}
 
 \item{type}{A string specifying whether doing "length" or "age" that is
 used to ensure the sample size is of the correct column and create
@@ -43,6 +43,23 @@ warnings to the console. The default is \code{TRUE}.}
 }
 \description{
 Calculate input sample sizes
+}
+\examples{
+\dontrun{
+bio <- pull_bio(
+  common_name = "petrale sole",
+  survey = "NWFSC.Combo"
+)
+
+n <- GetN.fn(
+  dat = bio,
+  type = "length",
+  species = "flatfish"
+)
+
+}
+
+
 }
 \references{
 Stewart, I.J. and O.S. Hamel. 2014.

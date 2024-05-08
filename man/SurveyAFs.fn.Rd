@@ -111,6 +111,9 @@ Default TRUE.}
 warnings to the console. The default is \code{TRUE}.}
 }
 \description{
+Create marginal age composition data
+}
+\details{
 Create expanded marginal age composition data based on the pre-specified strata.
 This function is designed to be used with catch pulled using \code{\link[=pull_catch]{pull_catch()}} and
 biological data pulled using \code{\link[=pull_bio]{pull_bio()}}. The default output is formatted based

@@ -22,7 +22,7 @@ If dir = NULL no output will be saved.}
 \item{dat}{A data frame of length-composition data returned from
 \code{\link[=pull_bio]{pull_bio()}}.}
 
-\item{type}{length/age which data type to use}
+\item{type}{Specify where to calculate the sex ration by length or age.}
 
 \item{strat.vars}{Variables in both data frame that are used to
 define the stratas. Default is bottom depth (m) and latitudes (decimal
