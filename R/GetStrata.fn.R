@@ -24,9 +24,11 @@
 #' to generate the strata returned by this function. Also, see
 #' convert_strata4vast function in the VASTWestCoast package that converts results
 #' from this function to strata that can be used within the VAST package.
+#'
 #' @author Chantel Wetzel and Kelli Faye Johnson
-
-GetStrata.fn <- function(area = "coast") {
+#'
+GetStrata.fn <- function(
+  area = "coast") {
 
   # development instructions ... find the numbers for each comment
   # (1) Add your area here in lower-case text

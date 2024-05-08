@@ -1,7 +1,7 @@
 #' Plots the biomass with confidence intervals
 #'
-#' @param dir directory to save the file
-#' @param dat object created by the GetTotalBiomass.fn
+#' @template dir
+#' @param dat object created by the [Biomasss.fn()]
 #' @param CI confidence interval
 #' @param scalar simply the divisor for the biomass
 #' @param gap  a value that introduces a slight gap between the point estimate and the start of the line for the CI. A gap too large will invert the CI, making it look huge. You should know when this happens
@@ -20,8 +20,20 @@
 #' @author Allan Hicks and John Wallace
 #' @export
 
-PlotBio.fn <- function(dir = NULL, dat, CI = 0.95, scalar = 1e6, gap = 0.03, ylab = "Biomass ('000 mt)", xlab = "Year",
-                       main = NULL, ylim = NULL, add = FALSE, col = "black", dopng = lifecycle::deprecated(), ...) {
+PlotBio.fn <- function(
+  dir = NULL,
+  dat,
+  CI = 0.95,
+  scalar = 1e6,
+  gap = 0.03,
+  ylab = "Biomass ('000 mt)",
+  xlab = "Year",
+  main = NULL,
+  ylim = NULL,
+  add = FALSE,
+  col = "black",
+  dopng = lifecycle::deprecated(),
+  ...) {
 
   if (lifecycle::is_present(dopng)) {
     lifecycle::deprecate_warn(

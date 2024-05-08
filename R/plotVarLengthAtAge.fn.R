@@ -3,14 +3,15 @@
 #' Plots the SD and CV of age at observed and predicted length
 #'
 #'
-#' @param dir directory to save the file
-#' @param dat      The data loaded from the NWFSC database
-#' @param main     Name that will be used to name the saved png
-#' @param ageBin   Currently fixed at 1, so a moot parameter
-#' @param bySex    Logical to indicate if plot by sex
+#' @template dir
+#' @param dat A data frame of length-composition data returned from
+#'   [pull_bio()].
+#' @param main Name that will be used to name the saved png
+#' @param ageBin Currently fixed at 1, so a moot parameter
+#' @param bySex Logical to indicate if plot by sex
 #' @param parStart Vector of starting parameters for Linf, k, and t0 in VonB estimation
-#' @param estVB    Logical. Estimate vonB growth to plot against predicted length. If F, it uses the paramters in \code{parStart}.
-#' @param bins     The bins to put ages into. If NULL then simply uses the ages as recorded.
+#' @param estVB  Logical. Estimate vonB growth to plot against predicted length. If F, it uses the paramters in \code{parStart}.
+#' @param bins  The bins to put ages into. If NULL then simply uses the ages as recorded.
 #' @param legX legend location for x axis, defaults to "bottomleft"
 #' @param legY legend location for y axis, defaults to NULL
 #' @param dopng Deprecated with {nwfscSurvey} 2.1 because providing a non-NULL
@@ -22,7 +23,19 @@
 #' @author Allan Hicks and Chantel Wetzel
 #' @export
 
-PlotVarLengthAtAge.fn <- function(dir = NULL, dat, main = NULL, ageBin = 1, bySex = T, parStart = c(52, 0.09, 1), estVB = T, bins = NULL, legX = "bottomleft", legY = NULL, dopng = lifecycle::deprecated(), ...) {
+PlotVarLengthAtAge.fn <- function(
+  dir = NULL,
+  dat,
+  main = NULL,
+  ageBin = 1,
+  bySex = T,
+  parStart = c(52, 0.09, 1),
+  estVB = T,
+  bins = NULL,
+  legX = "bottomleft",
+  legY = NULL,
+  dopng = lifecycle::deprecated(),
+  ...) {
 
   if (lifecycle::is_present(dopng)) {
     lifecycle::deprecate_warn(

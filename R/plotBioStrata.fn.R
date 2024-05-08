@@ -1,7 +1,7 @@
-#' Plots the biomass with confidence intervals
+#' Plots the design-based biomass estimates by strata with confidence intervals
 #'
-#' @param dir directory to save the file
-#' @param dat object created by the GetTotalBiomass.fn
+#' @template dir
+#' @param dat Data frame created by the [Biomass.fn()]
 #' @param CI confidence interval
 #' @param scalar simply the divisor for the biomass
 #' @param gap  a value that introduces a slight gap between the point estimate and the start of the line for the CI. A gap too large will invert the CI, making it look huge. You should know when this happens
@@ -13,7 +13,7 @@
 #' @param mfrow.in option to specify the mfrow for plotting
 #' @param col color
 #' @param survey.name if specified will name the output png file using this name
-#' @param strata.names custom strata names, if not specified will use the defined names from CreateStrataDF.fn
+#' @param strata.names custom strata names, if not specified will use the defined names from [CreateStrataDF.fn()]
 #' @param pch.col Color as string, defaults to "black"
 #' @param pch.type Numeric pch type, defaults to 16
 #' @param dopng Deprecated with {nwfscSurvey} 2.1 because providing a non-NULL
@@ -25,9 +25,24 @@
 #' @author Allan Hicks and John Wallace
 #' @export
 
-PlotBioStrata.fn <- function(dir = NULL, dat, CI = 0.95, scalar = 1e6, gap = 0.03, ylab = "Biomass ('000 mt)", xlab = "Year",
-                             survey.name = NULL, strata.names = NULL, ylim = NULL, sameylim = FALSE, add = FALSE, mfrow.in = NULL, col = "black",
-                             pch.col = "black", pch.type = 16, dopng = lifecycle::deprecated(), ...) {
+PlotBioStrata.fn <- function(
+  dir = NULL, dat,
+  CI = 0.95,
+  scalar = 1e6,
+  gap = 0.03,
+  ylab = "Biomass ('000 mt)",
+  xlab = "Year",
+  survey.name = NULL,
+  strata.names = NULL,
+  ylim = NULL,
+  sameylim = FALSE,
+  add = FALSE,
+  mfrow.in = NULL,
+  col = "black",
+  pch.col = "black",
+  pch.type = 16,
+  dopng = lifecycle::deprecated(),
+  ...) {
 
   if (lifecycle::is_present(dopng)) {
     lifecycle::deprecate_warn(

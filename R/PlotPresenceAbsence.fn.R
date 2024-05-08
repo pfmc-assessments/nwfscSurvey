@@ -50,19 +50,21 @@
 #' # Plot with package data
 #' PlotPresenceAbsence.fn(catch_nwfsc_combo)
 #' }
-PlotPresenceAbsence.fn <- function(data,
-                                   dim = c("depth", "lat", "sex"),
-                                   dir = NULL,
-                                   dopng = lifecycle::deprecated(),
-                                   plot_type = c("proportion", "total"),
-                                   depth_min = 50,
-                                   depth_max = NULL,
-                                   depth_bin_width = 25,
-                                   lat_min = 32,
-                                   lat_max = 49,
-                                   lat_bin_width = 1.0,
-                                   add_range_to_main = TRUE,
-                                   xlab = NULL) {
+PlotPresenceAbsence.fn <- function(
+  data,
+  dim = c("depth", "lat", "sex"),
+  dir = NULL,
+  dopng = lifecycle::deprecated(),
+  plot_type = c("proportion", "total"),
+  depth_min = 50,
+  depth_max = NULL,
+  depth_bin_width = 25,
+  lat_min = 32,
+  lat_max = 49,
+  lat_bin_width = 1.0,
+  add_range_to_main = TRUE,
+  xlab = NULL) {
+
   lifecycle::deprecate_soft(
     when = "2.1",
     what = "PlotPresenceAbsence.fn()",
