@@ -10,7 +10,7 @@ combine_tows(data, dir = NULL, verbose = TRUE)
 \item{data}{A data frame of catches obtained by using the \code{pull_catch}
 function.}
 
-\item{dir}{directory where ouptut will be saved. The directory where the file should be saved.
+\item{dir}{Directory where output will be saved. The directory where the file should be saved.
 If dir = NULL no output will be saved.}
 
 \item{verbose}{A logical that specifies if you want to print messages and
