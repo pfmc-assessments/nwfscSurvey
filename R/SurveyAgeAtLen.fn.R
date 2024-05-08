@@ -56,7 +56,7 @@ SurveyAgeAtLen.fn <- function(
   partition = 0,
   ageErr = "Enter Age Error",
   returnSamps = FALSE,
-  printfolder = "forSS",
+  printfolder = "forSS3",
   verbose = TRUE) {
 
   plotdir <- file.path(dir, printfolder)

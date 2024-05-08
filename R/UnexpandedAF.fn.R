@@ -29,7 +29,7 @@ UnexpandedAFs.fn <- function(
   agelow = -1,
   agehigh = -1,
   month = "Enter Month",
-  printfolder = "forSS",
+  printfolder = "forSS3",
   verbose = TRUE) {
 
   # Overwrite inputs to use the same code for lengths as ages

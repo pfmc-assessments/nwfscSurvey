@@ -2,13 +2,7 @@
 % Please edit documentation in R/get_raw_comps.R
 \name{get_raw_comps}
 \alias{get_raw_comps}
-\title{Creates a matrix of unexpanded (or raw) marginal length or age composition
-data formatted for Stock Synthesis. The code will return composition data
-for all sexes present in the data frame and no sex assignment is done for
-unsexed fish. The function will create composition data for either
-lengths or ages based on the comp_column_name. The function will return a
-list of composition data based upon the sexes present in the data for a
-two-sex model or all length/ages for single-sex model.}
+\title{Calculate unexpanded/raw length or marginal age compositions}
 \usage{
 get_raw_comps(
   data,
@@ -66,16 +60,24 @@ bin.}
 \item{age_high}{Upper age bin for all age composition data based on the expected
 format for Stock Synthesis. Default value of -1 which translates to the highest}
 
-\item{dir}{directory where ouptut will be saved. The directory where the file should be saved.
+\item{dir}{Directory where output will be saved. The directory where the file should be saved.
 If dir = NULL no output will be saved.}
 
-\item{printfolder}{Folder inside the directory, if provide, where
-csv files will be saved i.e., \code{file.path(dir, printfolder)}. Default "forSS3".}
+\item{printfolder}{A string that will be appended to \code{dir}, creating a folder
+where the output will be saved. If specified as \code{""},
+the output will just be saved directly in \code{dir}. The default is \code{"forSS3"}.}
 
 \item{verbose}{A logical that specifies if you want to print messages and
 warnings to the console. The default is \code{TRUE}.}
 }
+\value{
+A list of length or marginal age compositions for sexed and
+unsexed fish formatted for Stock Synthesis.
+}
 \description{
+Calculate unexpanded/raw length or marginal age compositions
+}
+\details{
 Creates a matrix of unexpanded (or raw) marginal length or age composition
 data formatted for Stock Synthesis. The code will return composition data
 for all sexes present in the data frame and no sex assignment is done for
@@ -83,6 +85,27 @@ unsexed fish. The function will create composition data for either
 lengths or ages based on the comp_column_name. The function will return a
 list of composition data based upon the sexes present in the data for a
 two-sex model or all length/ages for single-sex model.
+}
+\examples{
+\dontrun{
+bio <- pull_bio{
+  common_name = "lingcod",
+  survey = "NWFSC.Combo"
+}
+
+length_comps <- get_raw_comps(
+  data = bio,
+  comp_bins = seq(20, 70, 4)
+)
+
+age_comps <- get_raw_comps(
+  data = bio,
+  comp_bins = 1:20,
+  comp_column_name = "Age"
+)
+
+}
+
 }
 \author{
 Chantel Wetzel

@@ -53,7 +53,7 @@
 #' \dontrun{
 #' bio <- pull_bio{
 #'   common_name = "lingcod",
-#'   survey = "NWFSC.Combo
+#'   survey = "NWFSC.Combo"
 #' }
 #'
 #' length_comps <- get_raw_comps(

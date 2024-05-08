@@ -71,7 +71,7 @@ SurveyLFs.fn <- function(
   ageErr = "Enter",
   nSamps = "Enter Samps",
   month = "Enter Month",
-  printfolder = "forSS",
+  printfolder = "forSS3",
   remove999 = TRUE,
   outputStage1 = FALSE,
   sum100 = TRUE,
