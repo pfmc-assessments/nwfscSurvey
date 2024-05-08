@@ -1,3 +1,6 @@
+#' Calculate unexpanded/raw length or marginal age compositions
+#'
+#' @details
 #' Creates a matrix of unexpanded (or raw) marginal length or age composition
 #' data formatted for Stock Synthesis. The code will return composition data
 #' for all sexes present in the data frame and no sex assignment is done for
@@ -40,8 +43,31 @@
 #' @template printfolder
 #' @template verbose
 #'
+#' @returns A list of length or marginal age compositions for sexed and
+#' unsexed fish formatted for Stock Synthesis.
+#'
 #' @author Chantel Wetzel
 #' @export
+#'
+#' @examples
+#' \dontrun{
+#' bio <- pull_bio{
+#'   common_name = "lingcod",
+#'   survey = "NWFSC.Combo
+#' }
+#'
+#' length_comps <- get_raw_comps(
+#'   data = bio,
+#'   comp_bins = seq(20, 70, 4)
+#' )
+#'
+#' age_comps <- get_raw_comps(
+#'   data = bio,
+#'   comp_bins = 1:20,
+#'   comp_column_name = "Age"
+#' )
+#'
+#' }
 #'
 get_raw_comps <- function(
   data,
