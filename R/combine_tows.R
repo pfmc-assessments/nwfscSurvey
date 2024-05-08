@@ -34,7 +34,7 @@ combine_tows <- function(data, dir = NULL, verbose = TRUE){
 
   find <- grep("trawl_id", colnames(data), ignore.case = TRUE)
   n_id <- table(data[, find])
-  if (sum(n_id == 2) == 0) {
+  if (all(n_id == 1)) {
     stop("All trawl_ids are unique and there is no need to combine data.")
   }
 

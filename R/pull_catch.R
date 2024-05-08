@@ -72,7 +72,7 @@ pull_catch <- function(common_name = NULL,
       "\nContact John Harms (john.harms@noaa.gov) for the full data set.")
   }
 
-  if(length(c(common_name, sci_name)) != max(c(length(common_name), length(sci_name)))){
+  if (length(c(common_name, sci_name)) != max(c(length(common_name), length(sci_name)))) {
     stop("Can not pull data using both the common_name or sci_name together.
          \n Please retry using only one." )
   }
@@ -139,7 +139,7 @@ pull_catch <- function(common_name = NULL,
 
   # Pull data from positive tows for selected species
   positive_tows <- try(get_json(url = url_text))
-  if(!is.data.frame(positive_tows)){
+  if (!is.data.frame(positive_tows)) {
     stop()
   }
 
@@ -157,7 +157,7 @@ pull_catch <- function(common_name = NULL,
   positive_tows <- positive_tows[good_tows, ]
   positive_tows <- positive_tows[, vars_short]
 
-  if(sum(is.na(positive_tows[, "common_name"])) > 0) {
+  if (sum(is.na(positive_tows[, "common_name"])) > 0) {
     replace <- which(is.na(positive_tows[, "common_name"]))
     positive_tows[replace, "common_name"] <- positive_tows[replace, "scientific_name"]
   }
@@ -259,15 +259,15 @@ pull_catch <- function(common_name = NULL,
   catch$cpue_kg_km2 <- catch$cpue_kg_per_ha_der * 100
   colnames(catch)[which(colnames(catch) == "area_swept_ha_der")] <- "area_swept_ha"
 
-  if(sum(c("Life Stage", "Size") %in% sample_types) == 2) {
+  if (sum(c("Life Stage", "Size") %in% sample_types) == 2) {
     n_id <- table(catch$trawl_id)
-    if(sum(n_id == 2) > 0){
+    if (any(n_id > 0)) {
       warning("Warning: Pulling all sample types (Life Stage and Size) has resulted in multiple records for unique tows (Trawl_id).
       \n The `combine_tows` function can be used to combine these multiple records for unique tows if needed.")
     }
   }
 
-  if(convert) {
+  if (convert) {
 
     firstup <- function(x) {
       substr(x, 1, 1) <- toupper(substr(x, 1, 1))
