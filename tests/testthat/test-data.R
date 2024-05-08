@@ -7,7 +7,6 @@ set.seed(1)
 test_that("pull_catch", {
   skip_on_cran()
 
-  set.seed(123)
   dat <- pull_catch(
     common_name = "lingcod",
     years = c(2003, 2018),
@@ -21,7 +20,6 @@ test_that("pull_catch", {
 test_that("pull_catch-multispecies", {
   skip_on_cran()
 
-  set.seed(123)
   dat <- pull_catch(
     years = 2017,
     survey = "NWFSC.Combo",
@@ -57,10 +55,63 @@ test_that("pull_catch-multispecies", {
   )
 })
 
+test_that("pull-sample-types", {
+  skip_on_cran()
+
+  data_hake <- pull_catch(
+    common_name = "Pacific hake",
+    years = c(2014, 2018),
+    survey = "NWFSC.Combo",
+    verbose = TRUE,
+    convert = TRUE,
+    sample_types = c("NA", NA, "Life Stage", "Size")
+  )
+  expect_is(data_hake, "data.frame")
+  expect_equal(nrow(data_hake), 3556)
+  expect_equal(length(which(data_hake$cpue_kg_km2 == 0)), 1622)
+  expect_equal(length(unique(data_hake$Trawl_id)), 3442)
+
+  combine_hake <- combine_tows(
+    data = data_hake
+  )
+  expect_equal(length(unique(data_hake$Trawl_id)), nrow(combine_hake))
+  expect_equal(sum(data_hake$total_catch_numbers), sum(combine_hake$total_catch_numbers))
+
+  data_hake_3_types <- pull_catch(
+    common_name = "Pacific hake",
+    years = c(2014, 2018),
+    survey = "NWFSC.Combo",
+    verbose = TRUE,
+    convert = TRUE,
+    sample_types = c("NA", NA, "Life Stage", "Size")[1:3]
+  )
+  expect_equal(
+    sum(table(data_hake[which(data_hake$Partition_sample_types != "Size"), "Partition_sample_types"])),
+    sum(table(data_hake_3_types[, "Partition_sample_types"])))
+
+  data_eggs <- pull_catch(
+    common_name = "big skate",
+    years = c(2014, 2019),
+    survey = "NWFSC.Combo",
+    verbose = TRUE,
+    convert = TRUE,
+    sample_types = c("NA", NA, "Life Stage", "Size")
+  )
+
+  combine_eggs <- combine_tows(
+    data = data_eggs
+  )
+  expect_equal(
+    nrow(data_eggs) - sum(data_eggs$Partition %in% c("Eggs", "Egg Cases")),
+    nrow(combine_eggs))
+  expect_equal(sum(data_eggs$total_catch_numbers[which(!data_eggs$Partition %in% c("Eggs", "Egg Cases"))]),
+               sum(combine_eggs$total_catch_numbers))
+
+})
+
 test_that("PullHaul", {
   skip_on_cran()
 
-  set.seed(123)
   dat <- PullHaul.fn(
     YearRange = c(2003, 2018),
     SurveyName = "NWFSC.Combo",
@@ -73,7 +124,6 @@ test_that("PullHaul", {
 test_that("pull_bio", {
   skip_on_cran()
 
-  set.seed(123)
   dat <- pull_bio(
     common_name = "lingcod",
     years = c(2016, 2017),
@@ -87,7 +137,6 @@ test_that("pull_bio", {
 test_that("pull_bio_triennial", {
   skip_on_cran()
 
-  set.seed(123)
   dat <- pull_bio(
     common_name = "lingcod",
     years = c(1980, 1992),
@@ -102,7 +151,6 @@ test_that("pull_bio_triennial", {
 test_that("pull_biological_samples", {
   skip_on_cran()
 
-  set.seed(123)
   dat <- pull_biological_samples(
     common_name = "lingcod",
     years = c(2003, 2017),
