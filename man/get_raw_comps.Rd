@@ -88,10 +88,10 @@ two-sex model or all length/ages for single-sex model.
 }
 \examples{
 \dontrun{
-bio <- pull_bio{
+bio <- pull_bio(
   common_name = "lingcod",
   survey = "NWFSC.Combo"
-}
+)
 
 length_comps <- get_raw_comps(
   data = bio,
