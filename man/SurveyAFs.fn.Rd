@@ -105,7 +105,7 @@ the output will just be saved directly in \code{dir}. The default is \code{"forS
 \item{remove999}{The output object by the function will have the 999 column combined with the first age bin.
 Default TRUE.}
 
-\item{outputStage1}{return the first stage expanded data without compiling it for SS}
+\item{outputStage1}{return the first stage expanded data without compiling it for SS3}
 
 \item{verbose}{A logical that specifies if you want to print messages and
 warnings to the console. The default is \code{TRUE}.}

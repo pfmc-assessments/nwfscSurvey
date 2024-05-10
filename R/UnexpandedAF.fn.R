@@ -48,7 +48,7 @@ UnexpandedAFs.fn <- function(
     ageErr = ageErr,
     agelow = agelow,
     agehigh = agelow,
-    printfolder = "forSS",
+    printfolder = "forSS3",
     verbose = TRUE
   )
 

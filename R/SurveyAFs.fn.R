@@ -37,7 +37,7 @@
 #' @template printfolder
 #' @param remove999 The output object by the function will have the 999 column combined with the first age bin.
 #'   Default TRUE.
-#' @param outputStage1 return the first stage expanded data without compiling it for SS
+#' @param outputStage1 return the first stage expanded data without compiling it for SS3
 #' @template verbose
 #'
 #' @author Allan Hicks and Chantel Wetzel

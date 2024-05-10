@@ -597,7 +597,7 @@ SurveyLFs.fn <- function(
     cat("\nNOTE: Files have been saved the the printfolder directory.
         The first file has the 999 column showing fish smaller or younger than the initial bin.
         Check to make sure there is not a large number of fish smaller or younger than the initial bin.
-        The second file has combined the 999 with the first bin and is ready for use in SS.\n")
+        The second file has combined the 999 with the first bin and is ready for use in SS3.\n")
   }
 
   if (!remove999) {
