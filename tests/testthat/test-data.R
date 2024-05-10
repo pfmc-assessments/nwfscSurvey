@@ -109,13 +109,13 @@ test_that("pull-sample-types", {
 
 })
 
-test_that("PullHaul", {
+test_that("pull_haul", {
   skip_on_cran()
 
-  dat <- PullHaul.fn(
-    YearRange = c(2003, 2018),
-    SurveyName = "NWFSC.Combo",
-    Dir = NULL, verbose = TRUE
+  dat <- pull_haul(
+    years = c(2003, 2018),
+    survey = "NWFSC.Combo",
+    dir = NULL, verbose = TRUE
   )
   expect_is(dat, "data.frame")
   expect_equal(nrow(dat), 10351)
