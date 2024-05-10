@@ -9,21 +9,21 @@
 #' See: Gunderson, D.R. and Sample, T.M. 1980. Distribution and abundance of rockfish off Washington,
 #' Oregon, and California during 1977. Marine Fisheries Review: March - April.
 #'
-#' @param catch Data frame of catch data that has been created by the [pull_catch()].
-#' @template dir
-#' @template strat_vars
+#' @param data Data frame of catch data that has been created by the [pull_catch()].
 #' @template strata
+#' @param CI A numerical value that specifies the confidence interval to return.
+#' Values should be between 0.01 to 0.99.
+#' @template dir
 #' @template printfolder
 #' @template month
 #' @template fleet
 #' @template verbose
 #'
 #' @returns List of biomass estimates by year and biomass estimates by year and
-#' strata.
+#' strata. The biomass estimates are in metric tons.
 #'
 #' @author Allan Hicks and Chantel Wetzel
-#' @importFrom grDevices dev.off png rgb
-#' @importFrom graphics axis legend mtext par plot points segments symbols
+#' @importFrom glue glue
 #' @importFrom stats optim qnorm sd var
 #' @importFrom utils write.csv
 #' @export
@@ -43,16 +43,16 @@
 #'   lats.north     = c(49.0, 46.0, 42.0, 49.0, 46.0, 42.0))
 #'
 #' biommass <- get_design_based(
-#'   catch = catch,
+#'   data = catch,
 #'   strata = strata
 #' )
 #'
 #' }
 #'
 get_design_based <- function(
-  catch,
+  data,
   strata,
-  strata_vars = c("Depth_m", "Latitude_dd"),
+  CI = 0.95,
   dir = NULL,
   month = NA,
   fleet = NA,
@@ -63,61 +63,55 @@ get_design_based <- function(
   plotdir <- file.path(dir, printfolder)
   check_dir(dir = plotdir, verbose = verbose)
 
-  original_colnames <- colnames(catch)
-  colnames(catch) <- tolower(colnames(catch))
-  strata_vars <- tolower(strata_vars)
+  colnames(data) <- tolower(colnames(data))
+  strata_vars <- c("depth_m", "latitude_dd")
   colnames(strata) <- tolower(colnames(strata))
 
-  if (sum(strata_vars %in% colnames(catch)) != length(strata_vars)) {
-    stop("The stata_vars are not found in the catch data frame.")
+  if (sum(strata_vars %in% colnames(data)) != length(strata_vars)) {
+    stop(glue::glue(
+      "The {strata_vars[1]} and/or {strata_vars[2]} were not found in the data.
+      They can be either uppper or lower case."))
   }
 
   if (nrow(strata) == 1) {
     warning("It is recommended to have more than one strata, consider revising strata.")
   }
 
-  if (is.null(catch[, "cpue_kg_km2"])) {
-    stop("There must be a column called cpue_kg_km2 in the catch data frame")
+  if (is.null(data[, "cpue_kg_km2"])) {
+    stop("There must be a column called cpue_kg_km2 in the data")
   }
-
-  # Calculate the CPUE in terms of numbers
-  catch[, "cpue_km2_count"] <- catch[, "total_catch_numbers"] / (0.01 * catch[, "area_swept_ha"])
-
-  # Add rownames to make it easier to index later
-  row.names(strata) <- strata[, 1]
-  n_strata <- nrow(strata)
+  data[, "cpue_mt_km2"] <- data[, "cpue_kg_km2"] / 1000
 
   # create strata factors
-  stratum <- rep(NA, nrow(catch)) # the stratum factor
-  for (n in 1:n_strata) {
-    ind <- rep(TRUE, nrow(catch))
+  colnames(strata)[1] <- "stratum"
+  stratum <- rep(NA, nrow(data)) # the stratum factor
+  for (n in 1:nrow(strata)) {
+    ind <- rep(TRUE, nrow(data))
     for (s in 1:length(strata_vars)) {
       ind <- ind &
-        catch[, strata_vars[s]] >= strata[n, paste(strata_vars[s], ".1", sep = "")] &
-        catch[, strata_vars[s]] <  strata[n, paste(strata_vars[s], ".2", sep = "")]
+        data[, strata_vars[s]] >= strata[n, paste(strata_vars[s], ".1", sep = "")] &
+        data[, strata_vars[s]] <  strata[n, paste(strata_vars[s], ".2", sep = "")]
     }
     stratum[ind] <- as.character(strata[n, 1])
   }
-  #stratum <- factor(stratum, levels = as.character(strata[, 1]))
-  catch <- data.frame(catch, stratum)
+  data <- data.frame(data, stratum)
 
   # add area for each stratum to data frame
-  colnames(strata)[1] <- "stratum"
-  catch_filtered <- catch |>
-    dplyr::filter(!is.na(stratum))
-  catch_mod <- dplyr::left_join(catch_filtered, strata[, 1:2])
+  data_joined <- dplyr::left_join(data, strata[, c("stratum", "area")])
 
-  biomass_year_stratum <- catch_mod |>
+  biomass_year_stratum <- data_joined |>
+    dplyr::filter(!is.na(stratum)) |>
     dplyr::group_by(year, stratum) |>
     dplyr::summarize(
       ntows = n(),
       area = unique(area),
-      mean_cpue = mean(cpue_kg_km2),
-      var_cpue = var(cpue_kg_km2),
-      mean_cpue_area = area * mean_cpue,
-      var_cpue_area = var_cpue * (area * area) / ntows,
-      cv = sqrt(var_cpue_area) / (mean_cpue_area + 0.000000001),
-      log_var = sqrt(log(cv^2 + 1))
+      mean_cpue = mean(cpue_mt_km2),
+      var_cpue = var(cpue_mt_km2),
+      est = area * mean_cpue,
+      var = var_cpue * (area * area) / ntows,
+      cv = sqrt(var_cpue) / (mean_cpue + 1e-09),
+      log_var = sqrt(log(cv^2 + 1)),
+      se = log(cv^2 + 1)
     ) |>
     ungroup()
 
@@ -131,26 +125,33 @@ get_design_based <- function(
   biomass_by_year <- biomass_year_stratum |>
     dplyr::group_by(year) |>
     dplyr::summarise(
-      mean_bhat = sum(mean_cpue_area),
-      se = sqrt(sum(var_cpue_area)),
-      cv = sqrt(sum(var_cpue_area)) / sum(mean_cpue_area),
+      mean_est = sum(est),
+      se = sqrt(sum(var)),
+      cv = sqrt(sum(var)) / sum(est),
       log_var = log(cv^2 + 1),
-      month = month,
-      fleet = fleet,
-      median_bhat = mean_bhat * exp(-0.5 * log_var),
-      se_log = sqrt(log_var)
+      est = mean_est * exp(-0.5 * log_var),
+      se_log = sqrt(log_var),
+      lwr = exp((log(est) - qnorm(1 - (1 - CI) / 2) * se_log)),
+      upr = exp((log(est) + qnorm(1 - (1 - CI) / 2) * se_log))
     ) |>
     ungroup()
 
-  biomass <- biomass_by_year[, c("year", "month", "fleet", "median_bhat", "se_log")]
+  biomass <- biomass_by_year[, c("year", "est", "se_log", "lwr", "upr")]
 
   biomass_estimates <- list(
     biomass_by_strata = as.data.frame(biomass_year_stratum),
     biomass = as.data.frame(biomass))
 
   if (!is.null(dir)) {
+    biomass_out <- data.frame(
+      year = biomass[, "year"],
+      month = month,
+      fleet = fleet,
+      est = est,
+      se_log = se_log
+    )
     write.csv(
-      biomass,
+      biomass_out,
       file = file.path(plotdir, paste("design_based_indices.csv", sep = "")),
       row.names = FALSE)
   }
