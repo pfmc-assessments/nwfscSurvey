@@ -62,6 +62,12 @@ Biomass.fn <- function(
   fleet = "Enter fleet",
   verbose = TRUE) {
 
+  lifecycle::deprecate_soft(
+    when = "2.XX",
+    what = "nwfscSurvey::Biomass.fn()",
+    details = "Please switch to get_design_based()."
+  )
+
   if (is.null(dat$cpue_kg_km2)) stop("There must be a column called cpue_kg_km2 in the dataframe")
 
   # Calculate the CPUE in terms of nubmer

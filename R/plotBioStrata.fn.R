@@ -45,6 +45,12 @@ PlotBioStrata.fn <- function(
   dopng = lifecycle::deprecated(),
   ...) {
 
+  lifecycle::deprecate_soft(
+    when = "2.XX",
+    what = "nwfscSurvey::PlotBioStrata.fn()",
+    details = "Please switch to pull_index()."
+  )
+
   if (lifecycle::is_present(dopng)) {
     lifecycle::deprecate_warn(
       when = "2.1",
