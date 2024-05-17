@@ -38,12 +38,13 @@ plot_comps <- function(
   width = 10,
   height = 7) {
 
-  data_type <- ifelse(sum(names(data) == "ageErr") == 0, "length", "age")
-  sex_type <- unique(data$sex) #paste(unique(substr(names(data)[10:ncol(data)], 1, 1)), collapse = "_")
-  if(is.numeric(data[, "InputN"])) {
-    N <- data[, "InputN"]
+  data_type <- ifelse(sum(names(data) %in% c("ageErr", "age_error")) == 0, "length", "age")
+  sex_type <- unique(data$sex)
+  input_nsamp <- which(colnames(data) %in% c("nsamp", "InputN"))
+  if (is.numeric(data[, input_nsamp])) {
+    N <- data[, input_nsamp]
   } else {
-    N <- rep(1,nrow(data))
+    N <- rep(1, nrow(data))
   }
 
   plotdir <- file.path(dir, "plots")
@@ -61,7 +62,7 @@ plot_comps <- function(
 
   year <- as.numeric(as.character(data$year))
   sex <- unique(data$sex)
-  if (length(sex) > 1 ){
+  if (length(sex) > 1 ) {
     stop("This function does not work on processed composition
       files with multiple Stock Synthesis sex specifications
       (sex = 0, sex = 1, sex = 3). Please filter file down to
@@ -87,11 +88,11 @@ plot_comps <- function(
 
   # Determine if entries are proportions (e.g., sum to 1 or 100)
   # and convert if needed
-  if (sum(as.numeric(comps[1, ])) == 100) {
-    comps <- 100 * comps / apply(comps, 1, sum)
-  }
   if (sum(as.numeric(comps[1, ])) > 0.999 & sum(as.numeric(comps[1, ])) < 1.001) {
     comps <- 100 * comps
+  }
+  if (sum(as.numeric(comps[1, ])) != 100) {
+    comps <- 100 * comps / apply(comps, 1, sum)
   }
 
   mod_comps <- cbind(year, comps)
@@ -113,10 +114,16 @@ plot_comps <- function(
   bub_step <- ifelse(max(df$value) < 50, 5, 10)
   bub_range <- c(1, seq(bub_step, floor(max(df$value)), bub_step))
   max_range <- 15
-  if(max(df$variable) - min(df$variable) > 40 ){
-    y_axis <- seq(min(df$variable), max(df$variable), by = 10)
+  if (max(df$variable) - min(df$variable) >= 40) {
+    y_axis <- seq(
+      plyr::round_any(min(df$variable), 10, floor),
+      plyr::round_any(max(df$variable), 10, ceiling),
+      by = 10)
   } else {
-    y_axis <- seq(min(df$variable), max(df$variable), by = 5)
+    y_axis <- seq(
+      plyr::round_any(min(df$variable), 5, floor),
+      plyr::round_any(max(df$variable), 5, ceiling),
+      by = 5)
   }
 
   igroup <- 1
@@ -136,7 +143,7 @@ plot_comps <- function(
         facet_grid(sex~.) +
         scale_y_continuous(
           breaks = y_axis,
-          limits = if (add_0_ylim) {c(0, NA)} else {NULL}
+          limits = if (add_0_ylim) {c(0, max(y_axis))} else {c(NA, max(y_axis))}
         ) +
         labs(x = "Year", y = ylabel, size = "Relative\nAbundance (%)", fill = "") +
         theme(legend.key = element_blank(),
