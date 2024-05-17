@@ -9,7 +9,7 @@ GetN.fn(
   dat,
   type = c("length", "age"),
   species = c("all", "flatfish", "shelfrock", "sloperock", "thorny", "others"),
-  printfolder = "forSS",
+  printfolder = "forSS3",
   output = NULL,
   verbose = TRUE
 )

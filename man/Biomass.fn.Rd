@@ -9,7 +9,7 @@ Biomass.fn(
   dat,
   strat.vars = c("Depth_m", "Latitude_dd"),
   strat.df,
-  printfolder = "forSS",
+  printfolder = "forSS3",
   outputMedian = TRUE,
   month = "Enter month",
   fleet = "Enter fleet",
