@@ -215,7 +215,7 @@ get_raw_comps <- function(
     )
 
     if (two_sex_comps){
-      out_u <- cbind(tmp, Results[, -c(1:2)], Results[, -c(1:2)])
+      out_u <- cbind(tmp, Results[, -c(1:2)], 0 * Results[, -c(1:2)])
     } else {
       out_u <- cbind(tmp, Results[, -c(1:2)])
     }
