@@ -117,7 +117,7 @@ get_design_based <- function(
 
   if (any(biomass_year_stratum[, "ntows"] <= 1)) {
     bad_strata <- biomass_year_stratum[which(biomass_year_stratum[, "ntows"] <= 1), c("year", "stratum")]
-    warning(bad_strata)
+    print(bad_strata)
     stop("The above year-strata combinations have one or less observations.
          \n The stratas will need to be revised.")
   }
