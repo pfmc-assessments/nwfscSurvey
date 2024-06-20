@@ -8,7 +8,7 @@ PlotBioStrata.fn(
   dir = NULL,
   dat,
   CI = 0.95,
-  scalar = 1000000,
+  scalar = 1e+06,
   gap = 0.03,
   ylab = "Biomass ('000 mt)",
   xlab = "Year",

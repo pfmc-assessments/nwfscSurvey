@@ -7,7 +7,7 @@
 #' marginal age compositions and to calculate a design
 #' based index using the [get_design_based()].
 #'
-#' @param data
+#' @param data Data frame of catch data that has been created by the [pull_catch()].
 #' @template strata
 #' @template dir
 #' @template printfolder
