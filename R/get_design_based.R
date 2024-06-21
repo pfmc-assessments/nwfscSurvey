@@ -115,13 +115,6 @@ get_design_based <- function(
     ) |>
     dplyr::ungroup()
 
-  if (any(biomass_year_stratum[, "ntows"] <= 1)) {
-    bad_strata <- biomass_year_stratum[which(biomass_year_stratum[, "ntows"] <= 1), c("year", "stratum")]
-    print(bad_strata)
-    stop("The above year-strata combinations have one or less observations.
-         \n The stratas will need to be revised.")
-  }
-
   biomass_by_year <- biomass_year_stratum |>
     dplyr::group_by(year) |>
     dplyr::summarise(
