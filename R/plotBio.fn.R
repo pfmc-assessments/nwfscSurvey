@@ -37,7 +37,7 @@ PlotBio.fn <- function(
   ...) {
 
   lifecycle::deprecate_soft(
-    when = "2.XX",
+    when = "2.4",
     what = "nwfscSurvey::PlotBio.fn()",
     details = "Please switch to get_desin_based() and plot_index()."
   )
