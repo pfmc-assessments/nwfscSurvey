@@ -54,7 +54,7 @@ GetN.fn <- function(
     "thorny",
     "others"
   ),
-  printfolder = "forSS",
+  printfolder = "forSS3",
   output = NULL,
   verbose = TRUE) {
 

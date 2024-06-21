@@ -27,7 +27,7 @@ CheckStrata.fn <- function(
   dat,
   strat.vars = c("Depth_m", "Latitude_dd"),
   strat.df,
-  printfolder = "forSS",
+  printfolder = "forSS3",
   verbose = TRUE) {
 
   # Grab the strata  rownmaes to index later

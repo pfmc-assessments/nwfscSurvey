@@ -51,11 +51,13 @@ ls("package:nwfscSurvey")
 Pull both the catch and biological data:
 
 ```r
-catch = PullCatch.fn(Name = "Pacific ocean perch", 
-                     SurveyName = "NWFSC.Combo")
+catch = pull_catch(
+  common_name = "Pacific ocean perch", 
+  survey = "NWFSC.Combo")
 
-bio   = PullBio.fn(Name = "Pacific ocean perch", 
-                   SurveyName = "NWFSC.Combo")
+bio = pull_bio(
+  common_name = "Pacific ocean perch", 
+  survey = "NWFSC.Combo")
 ```
 
 #### Initial data visualization
@@ -99,7 +101,7 @@ biomass = Biomass.fn(dir = getwd(),
                      dat = catch,  
                      strat.df = strata)
 ```
-`Biomass.fn()` returns a list with the second element containing the design-based index of abundance. The design based index is calculated based on the defined stratas. The function writes a csv file inside the dir input location to a "forSS" folder. The function returns a list with the second element containing the design-based estimates by year:
+`Biomass.fn()` returns a list with the second element containing the design-based index of abundance. The design based index is calculated based on the defined stratas. The function writes a csv file inside the dir input location to a "forSS3" folder. The function returns a list with the second element containing the design-based estimates by year:
 
 ```{r, results = 'asis', echo = FALSE}
   library(xtable)
@@ -131,10 +133,10 @@ If `dir` does not equal `NULL`, then a "plot" folder will be created in the dire
 
 #### Length composition data
 
-`GetN()` calculates the input sample size based on Stewart & Hamel (2014) which determined that the input sample size was related to the species group (flatfish, shelf rockfish, slope rockfish, thornyhead, others, or all groups) and number of tows. The function writes a csv file with the "forSS" folder containing the number of tows and observed fish by year. 
+`GetN.fn()` calculates the input sample size based on Stewart & Hamel (2014) which determined that the input sample size was related to the species group (flatfish, shelf rockfish, slope rockfish, thornyhead, others, or all groups) and number of tows. The function writes a csv file with the "forSS3" folder containing the number of tows and observed fish by year. 
 
 ```r
-n <- GetN(dir = getwd(), 
+n <- GetN.fn(dir = getwd(), 
          dat = bio, 
          type = "length", 
          species = "shelfrock")
@@ -150,7 +152,7 @@ Length_Freq <- SurveyLFs.fn(dir = getwd(),
                         strat.df = strata,
                         lgthBins = len_bins)
 ```
-The above call will calculate the length frequencies for use in Stock Synthesis and write the files inside the "forSS" folder. The example call does not assign unsexed fish to the sexed length comps but will produce csv files for both the sexed and unsexed fish. If you would like to assign the unsexed fish to a sex based on the sex ratio the user will need to specificy the sex ratio value (sexRatioUnsexed) to use for fish under a specified size (maxSizeUnsexed) where unsexed fish greater than the specified size will be assign based on the sex ratio from other observations. 
+The above call will calculate the length frequencies for use in Stock Synthesis and write the files inside the "forSS3" folder. The example call does not assign unsexed fish to the sexed length comps but will produce csv files for both the sexed and unsexed fish. If you would like to assign the unsexed fish to a sex based on the sex ratio the user will need to specificy the sex ratio value (sexRatioUnsexed) to use for fish under a specified size (maxSizeUnsexed) where unsexed fish greater than the specified size will be assign based on the sex ratio from other observations. 
 
 There are many inputs to `SurveyLFs.fn()`, please look over the function inputs to explore additional ways to process the data.
 
@@ -160,18 +162,33 @@ PlotFreqData.fn(dir = getwd(),
                 dat = Length_Freq)
 
 ```
-A new function to visualize length frequency data is also availble:
+A new function to visualize length frequency data is also available:
 ```r
 plot_comps(data = Length_Freq)
 ```
 
 If `dir` does not equal `NULL`, then a "plot" folder will be created in the directory location and a png of the plot will be saved. 
 
+There is also a function to create raw or unexpanded composition data that works
+for either length or age data.
+
+```r
+length_comps <- get_raw_comps(
+    data = bio,
+    comp_bins = seq(10, 40, 2),
+    comp_column_name = "Length_cm",
+    two_sex_comps = TRUE,
+    dir = getwd())
+```
+This function returns a list of sexed and unsexed length composition data formatted
+for Stock Synthesis. The sample size (nsamp) is set equal to the number of samples
+in the data frame.
+
 #### Marginal age composition data
 
 Calculate the marginal age sample size:
 ```r
-n <- getN(dir = getwd(), 
+n <- GetN.fn(dir = getwd(), 
          dat = bio,
          type = "age", 
          species = "shelfrock")
@@ -188,7 +205,7 @@ Ages <- SurveyAFs.fn(dir = getwd(),
                      ageBins = age_bins,
                      nSamps = n)
 ```
-The above call will calculate the marginal age-composition data for the age data read in using `readInExcelAgeComps.fn()` and writes the files inside the "forSS" folder. 
+The above call will calculate the marginal age-composition data for the age data read in using `readInExcelAgeComps.fn()` and writes the files inside the "forSS3" folder. 
 
 To plot the age frequency data:
 ```r
@@ -201,6 +218,19 @@ plot_comps(
 ```
 If `dir` is not `NULL`, then a "plot" folder will be created in the directory location and a png of the plot will be saved.
 
+There is also a function to create raw or unexpanded composition data that works
+for either length or age data.
+
+```r
+age_comps <- get_raw_comps(
+    data = bio,
+    comp_bins = 1:40,
+    comp_column_name = "Age",
+    two_sex_comps = TRUE,
+    dir = getwd())
+```
+This function returns a list of sexed and unsexed marginal age composition data formatted for Stock Synthesis. The sample size (nsamp) is set equal to the number of samples in the data frame.
+
 #### Conditional-age-at-length data
 
 To calculate conditional-age-at-length data formatted for Stock Synthesis:
@@ -209,8 +239,8 @@ caal <- SurveyAgeAtLen.fn(dir = getwd(),
                           datAL = bio, 
                           datTows = catch,
                           strat.df = strata,
-                          lgthBins = len.bins, 
-                          ageBins = age.bins)
+                          lgthBins = len_bins, 
+                          ageBins = age_bins)
 ```
 Creates unexpanded conditional-age-at-length data for both sexes with input sample sizes based on the observed number of fish in each length bin by year.
 
