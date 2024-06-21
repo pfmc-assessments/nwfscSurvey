@@ -45,11 +45,21 @@ PlotBioStrata.fn <- function(
   dopng = lifecycle::deprecated(),
   ...) {
 
+  lifecycle::deprecate_soft(
+    when = "2.4",
+    what = "nwfscSurvey::PlotBioStrata.fn()",
+    details = "Please switch to get_design_based() and plot_index()."
+  )
+
   if (lifecycle::is_present(dopng)) {
     lifecycle::deprecate_warn(
       when = "2.1",
-      what = "nwfscSurvey::PlotMap.fn(dopng =)"
+      what = "nwfscSurvey::PlotBioStrata.fn(dopng =)"
     )
+  }
+
+  if (length(names(dat)) != 3) {
+    stop("This function only works with output from Biomass.fn()")
   }
 
   bio_strat <- dat$StrataEsts

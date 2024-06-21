@@ -30,6 +30,12 @@ CheckStrata.fn <- function(
   printfolder = "forSS3",
   verbose = TRUE) {
 
+  lifecycle::deprecate_soft(
+    when = "2.4",
+    what = "nwfscSurvey::CheckStrata.fn()",
+    details = "Please switch to check_strata()."
+  )
+
   # Grab the strata  rownmaes to index later
   row.names(strat.df) <- strat.df[, 1]
   numStrata <- nrow(strat.df)
