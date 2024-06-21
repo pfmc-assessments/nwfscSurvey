@@ -28,7 +28,7 @@ test_that("get_design_based_index", {
 
   expect_equal(length(biomass), 2)
   expect_equal(nrow(biomass$biomass), 16)
-  expect_equal(round(biomass$biomass$est[1], 0), 3889)
+  expect_equal(round(biomass$biomass$est[1], 0), 38889)
   expect_equal(nrow(biomass$biomass_by_strata), 48)
   expect_equal(biomass$biomass_by_strata$ntows[1], 142)
   expect_equal(round(biomass$biomass_by_strata$area[1], 0), 25793)
