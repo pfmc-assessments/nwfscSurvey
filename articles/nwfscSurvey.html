@@ -65,7 +65,7 @@
                         <h4 data-toc-skip class="author">Chantel
 Wetzel</h4>
             
-            <h4 data-toc-skip class="date">2024-05-17</h4>
+            <h4 data-toc-skip class="date">2024-06-21</h4>
       
       
       <div class="d-none name"><code>nwfscSurvey.Rmd</code></div>
@@ -166,31 +166,33 @@ calculate a design-based index of abundance:</p>
 <span>  lats.north     <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span> <span class="fl">42</span>,    <span class="fl">42</span>,  <span class="fl">42</span>,    <span class="fl">49</span>,  <span class="fl">49</span>,  <span class="fl">49</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <p>Calculate the design based index of abundance:</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">biomass</span> <span class="op">=</span> <span class="fu"><a href="../reference/Biomass.fn.html">Biomass.fn</a></span><span class="op">(</span>dir <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/getwd.html" class="external-link">getwd</a></span><span class="op">(</span><span class="op">)</span>, </span>
-<span>                     dat <span class="op">=</span> <span class="va">catch</span>,  </span>
-<span>                     strat.df <span class="op">=</span> <span class="va">strata</span><span class="op">)</span></span></code></pre></div>
-<p><code><a href="../reference/Biomass.fn.html">Biomass.fn()</a></code> returns a list with the second element
-containing the design-based index of abundance. The design based index
-is calculated based on the defined stratas. The function writes a csv
-file inside the dir input location to a “forSS3” folder. The function
-returns a list with the second element containing the design-based
-estimates by year:</p>
+<code class="sourceCode R"><span><span class="va">biomass</span> <span class="op">=</span> <span class="fu"><a href="../reference/get_design_based.html">get_design_based</a></span><span class="op">(</span></span>
+<span>  data <span class="op">=</span> <span class="va">catch</span>,  </span>
+<span>  strata <span class="op">=</span> <span class="va">strata</span><span class="op">)</span></span></code></pre></div>
+<p><code><a href="../reference/get_design_based.html">get_design_based()</a></code> returns a list with the second
+element containing the design based index of abundance. The design based
+index is calculated based on the defined stratas. The function writes a
+csv file inside the dir input location to a “forSS3” folder. The
+function returns a list with the second element containing the design
+based estimates by year:</p>
+<pre><code><span><span class="co">#&gt; Warning in rbind(c(2003, 38888.94, 0.379, 18519.72, 81661.56), c("...", :</span></span>
+<span><span class="co">#&gt; number of columns of result is not a multiple of vector length (arg 2)</span></span></code></pre>
 <table class="table">
 <thead><tr>
 <th style="text-align:left;">
-Year
+year
 </th>
 <th style="text-align:left;">
-Season
+est
 </th>
 <th style="text-align:left;">
-Fleet
+se_log
 </th>
 <th style="text-align:left;">
-Value
+lwr
 </th>
 <th style="text-align:left;">
-seLogB
+upr
 </th>
 </tr></thead>
 <tbody>
@@ -199,16 +201,16 @@ seLogB
 2003
 </td>
 <td style="text-align:left;">
-1
+38888.94
 </td>
 <td style="text-align:left;">
-EnterFleet
+0.379
 </td>
 <td style="text-align:left;">
-21055083
+18519.72
 </td>
 <td style="text-align:left;">
-0.357
+81661.56
 </td>
 </tr>
 <tr>
@@ -220,6 +222,7 @@ EnterFleet
 <td style="text-align:left;">
 </td>
 <td style="text-align:left;">
+…
 </td>
 <td style="text-align:left;">
 </td>
@@ -229,34 +232,32 @@ EnterFleet
 2015
 </td>
 <td style="text-align:left;">
-1
+22317.6
 </td>
 <td style="text-align:left;">
-EnterFleet
+0.135
 </td>
 <td style="text-align:left;">
-9766200
+17135.936
 </td>
 <td style="text-align:left;">
-0.563
+29066.13
 </td>
 </tr>
 </tbody>
 </table>
-<p>Plot the coastwide design-based index of abundance:</p>
-<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="../reference/PlotBio.fn.html">PlotBio.fn</a></span><span class="op">(</span></span>
-<span>  dir <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/getwd.html" class="external-link">getwd</a></span><span class="op">(</span><span class="op">)</span>, </span>
-<span>  dat <span class="op">=</span> <span class="va">biomass</span><span class="op">)</span></span></code></pre></div>
-<p>Plot the coastwide design-based index of abundance for each
-strata:</p>
+<p>Plot the coastwide design based index of abundance with uncertainty
+intervals:</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="../reference/PlotBioStrata.fn.html">PlotBioStrata.fn</a></span><span class="op">(</span></span>
-<span>  dir <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/getwd.html" class="external-link">getwd</a></span><span class="op">(</span><span class="op">)</span>, </span>
-<span>  dat <span class="op">=</span> <span class="va">biomass</span><span class="op">)</span></span></code></pre></div>
-<p>If <code>dir</code> does not equal <code>NULL</code>, then a “plot”
-folder will be created in the directory location and a png of the plot
-will be saved.</p>
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/plot_index.html">plot_index</a></span><span class="op">(</span></span>
+<span>  data <span class="op">=</span> <span class="va">biomass</span>,</span>
+<span>  plot <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span></code></pre></div>
+<p>Plot the design based index of abundance for each strata without
+uncertainty intervals:</p>
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/plot_index.html">plot_index</a></span><span class="op">(</span></span>
+<span>  data <span class="op">=</span> <span class="va">biomass</span>,</span>
+<span>  plot <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level4">
 <h4 id="length-composition-data">Length composition data<a class="anchor" aria-label="anchor" href="#length-composition-data"></a>
@@ -267,14 +268,14 @@ was related to the species group (flatfish, shelf rockfish, slope
 rockfish, thornyhead, others, or all groups) and number of tows. The
 function writes a csv file with the “forSS3” folder containing the
 number of tows and observed fish by year.</p>
-<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">n</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/GetN.fn.html">GetN.fn</a></span><span class="op">(</span>dir <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/getwd.html" class="external-link">getwd</a></span><span class="op">(</span><span class="op">)</span>, </span>
 <span>         dat <span class="op">=</span> <span class="va">bio</span>, </span>
 <span>         type <span class="op">=</span> <span class="st">"length"</span>, </span>
 <span>         species <span class="op">=</span> <span class="st">"shelfrock"</span><span class="op">)</span></span></code></pre></div>
 <p><code><a href="../reference/SurveyLFs.fn.html">SurveyLFs.fn()</a></code> calculates and formats the
 length-composition data for Stock Synthesis:</p>
-<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">len_bins</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="fl">10</span>, <span class="fl">60</span>, <span class="fl">2</span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">Length_Freq</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/SurveyLFs.fn.html">SurveyLFs.fn</a></span><span class="op">(</span>dir <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/getwd.html" class="external-link">getwd</a></span><span class="op">(</span><span class="op">)</span>, </span>
@@ -295,19 +296,19 @@ observations.</p>
 over the function inputs to explore additional ways to process the
 data.</p>
 <p>To plot the length frequency data:</p>
-<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/PlotFreqData.fn.html">PlotFreqData.fn</a></span><span class="op">(</span>dir <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/getwd.html" class="external-link">getwd</a></span><span class="op">(</span><span class="op">)</span>, </span>
 <span>                dat <span class="op">=</span> <span class="va">Length_Freq</span><span class="op">)</span></span></code></pre></div>
 <p>A new function to visualize length frequency data is also
 available:</p>
-<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/plot_comps.html">plot_comps</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">Length_Freq</span><span class="op">)</span></span></code></pre></div>
 <p>If <code>dir</code> does not equal <code>NULL</code>, then a “plot”
 folder will be created in the directory location and a png of the plot
 will be saved.</p>
 <p>There is also a function to create raw or unexpanded composition data
 that works for either length or age data.</p>
-<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">length_comps</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/get_raw_comps.html">get_raw_comps</a></span><span class="op">(</span></span>
 <span>    data <span class="op">=</span> <span class="va">bio</span>,</span>
 <span>    comp_bins <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="fl">10</span>, <span class="fl">40</span>, <span class="fl">2</span><span class="op">)</span>,</span>
@@ -322,14 +323,14 @@ to the number of samples in the data frame.</p>
 <h4 id="marginal-age-composition-data">Marginal age composition data<a class="anchor" aria-label="anchor" href="#marginal-age-composition-data"></a>
 </h4>
 <p>Calculate the marginal age sample size:</p>
-<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">n</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/GetN.fn.html">GetN.fn</a></span><span class="op">(</span>dir <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/getwd.html" class="external-link">getwd</a></span><span class="op">(</span><span class="op">)</span>, </span>
 <span>         dat <span class="op">=</span> <span class="va">bio</span>,</span>
 <span>         type <span class="op">=</span> <span class="st">"age"</span>, </span>
 <span>         species <span class="op">=</span> <span class="st">"shelfrock"</span><span class="op">)</span></span></code></pre></div>
 <p><code><a href="../reference/SurveyAFs.fn.html">SurveyAFs.fn()</a></code> calculates and formats the
 age-composition data for Stock Synthesis:</p>
-<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">age_bins</span> <span class="op">&lt;-</span> <span class="fl">1</span><span class="op">:</span><span class="fl">50</span></span>
 <span></span>
 <span><span class="va">Ages</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/SurveyAFs.fn.html">SurveyAFs.fn</a></span><span class="op">(</span>dir <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/getwd.html" class="external-link">getwd</a></span><span class="op">(</span><span class="op">)</span>, </span>
@@ -342,7 +343,7 @@ age-composition data for Stock Synthesis:</p>
 the age data read in using <code>readInExcelAgeComps.fn()</code> and
 writes the files inside the “forSS3” folder.</p>
 <p>To plot the age frequency data:</p>
-<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/PlotFreqData.fn.html">PlotFreqData.fn</a></span><span class="op">(</span></span>
 <span>  dir <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/getwd.html" class="external-link">getwd</a></span><span class="op">(</span><span class="op">)</span>, </span>
 <span>  dat <span class="op">=</span> <span class="va">Ages</span><span class="op">)</span></span>
@@ -354,7 +355,7 @@ will be created in the directory location and a png of the plot will be
 saved.</p>
 <p>There is also a function to create raw or unexpanded composition data
 that works for either length or age data.</p>
-<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">age_comps</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/get_raw_comps.html">get_raw_comps</a></span><span class="op">(</span></span>
 <span>    data <span class="op">=</span> <span class="va">bio</span>,</span>
 <span>    comp_bins <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">40</span>,</span>
@@ -370,7 +371,7 @@ is set equal to the number of samples in the data frame.</p>
 </h4>
 <p>To calculate conditional-age-at-length data formatted for Stock
 Synthesis:</p>
-<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">caal</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/SurveyAgeAtLen.fn.html">SurveyAgeAtLen.fn</a></span><span class="op">(</span>dir <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/getwd.html" class="external-link">getwd</a></span><span class="op">(</span><span class="op">)</span>, </span>
 <span>                          datAL <span class="op">=</span> <span class="va">bio</span>, </span>
 <span>                          datTows <span class="op">=</span> <span class="va">catch</span>,</span>
@@ -386,7 +387,7 @@ bin by year.</p>
 </h4>
 <p>To make a map showing the distribution of density in aggregate and by
 year:</p>
-<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/PlotMap.fn.html">PlotMap.fn</a></span><span class="op">(</span></span>
 <span>  dat <span class="op">=</span> <span class="va">catch</span><span class="op">)</span></span></code></pre></div>
 </div>
