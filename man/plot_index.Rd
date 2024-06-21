@@ -2,7 +2,7 @@
 % Please edit documentation in R/plot_index.R
 \name{plot_index}
 \alias{plot_index}
-\title{Plots the biomass with confidence intervals}
+\title{Plots the design based biomass estimates with confidence intervals}
 \usage{
 plot_index(
   data,
@@ -15,7 +15,7 @@ plot_index(
 )
 }
 \arguments{
-\item{data}{List of design-based biomass estimates created by the \code{\link[=get_design_based]{get_design_based()}}}
+\item{data}{List of design based biomass estimates created by the \code{\link[=get_design_based]{get_design_based()}}}
 
 \item{dir}{Directory where output will be saved. The directory where the file should be saved.
 If dir = NULL no output will be saved.}
@@ -30,8 +30,8 @@ so no need to add those here.}
 default is to print or save both figures, i.e., \code{plot = 1:2}. Integers
 correspond to the following figures:
 \enumerate{
-\item Design-based index by year.
-\item Design-based index by year and strata.
+\item Design based index by year.
+\item Design based index by year and strata.
 }}
 
 \item{width, height}{Numeric values for the figure width and height in
@@ -42,7 +42,12 @@ can reduce file size which can be helpful when creating large documents
 with many figures. The default is 300.}
 }
 \description{
-Plots the biomass with confidence intervals
+Plots the design based biomass estimates with confidence intervals
+}
+\details{
+Plots both the design based biomass estimates by year with confidence intervals
+and the design based biomass estiamtes by year and strata with no confidence
+intervals.
 }
 \author{
 Chantel Wetzel
