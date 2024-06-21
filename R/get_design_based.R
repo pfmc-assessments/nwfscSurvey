@@ -12,7 +12,7 @@
 #' @param data Data frame of catch data that has been created by the [pull_catch()].
 #' @template strata
 #' @param CI A numerical value that specifies the confidence interval to return.
-#' Values should be between 0.01 to 0.99.
+#'   Values should be between 0.01 to 0.99.
 #' @template dir
 #' @template printfolder
 #' @template month
@@ -103,7 +103,7 @@ get_design_based <- function(
     dplyr::filter(!is.na(stratum)) |>
     dplyr::group_by(year, stratum) |>
     dplyr::summarize(
-      ntows = n(),
+      ntows = dplyr::n(),
       area = unique(area),
       mean_cpue = mean(cpue_mt_km2),
       var_cpue = var(cpue_mt_km2),
@@ -113,7 +113,7 @@ get_design_based <- function(
       log_var = sqrt(log(cv^2 + 1)),
       se = log(cv^2 + 1)
     ) |>
-    ungroup()
+    dplyr::ungroup()
 
   if (any(biomass_year_stratum[, "ntows"] <= 1)) {
     bad_strata <- biomass_year_stratum[which(biomass_year_stratum[, "ntows"] <= 1), c("year", "stratum")]
@@ -134,7 +134,7 @@ get_design_based <- function(
       lwr = exp((log(est) - qnorm(1 - (1 - CI) / 2) * se_log)),
       upr = exp((log(est) + qnorm(1 - (1 - CI) / 2) * se_log))
     ) |>
-    ungroup()
+    dplyr::ungroup()
 
   biomass <- biomass_by_year[, c("year", "est", "se_log", "lwr", "upr")]
 

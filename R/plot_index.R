@@ -1,6 +1,11 @@
-#' Plots the biomass with confidence intervals
+#' Plots the design based biomass estimates with confidence intervals
 #'
-#' @param data List of design-based biomass estimates created by the [get_design_based()]
+#' @details
+#' Plots both the design based biomass estimates by year with confidence intervals
+#' and the design based biomass estiamtes by year and strata with no confidence
+#' intervals.
+#'
+#' @param data List of design based biomass estimates created by the [get_design_based()]
 #' @template dir
 #' @param add_save_name Option to add text to a saved figure name. This option
 #'   can be useful if creating plots across multiple species and saving them
@@ -10,8 +15,8 @@
 #' @param plot A vector of integers to specify which plots you would like. The
 #'   default is to print or save both figures, i.e., `plot = 1:2`. Integers
 #'   correspond to the following figures:
-#'   1. Design-based index by year.
-#'   2. Design-based index by year and strata.
+#'   1. Design based index by year.
+#'   2. Design based index by year and strata.
 #' @param width,height Numeric values for the figure width and height in
 #'   inches. The defaults are 7 by 7 inches.
 #' @param res The resolution to apply when saving figures.  Lower resolution values
@@ -77,11 +82,11 @@ plot_index <- function(
       ggplot2::theme_bw() +
       ggplot2::scale_colour_viridis_d() +
       ggplot2::xlab("Year") +
-      ggplot2::ylab("Design-Based Index (mt)") +
+      ggplot2::ylab("Design Based Index (mt)") +
       ggplot2::expand_limits(y = 0)
 
     if (!is.null(dir)) {
-      ggsave(
+      ggplot2::ggsave(
         filename = plot_names[1], plot = gg,
         height = height, width = width, units = "in", res = res
       )
@@ -104,13 +109,13 @@ plot_index <- function(
     ggplot2::theme_bw() +
     ggplot2::scale_colour_viridis_d() +
     ggplot2::xlab("Year") +
-    ggplot2::ylab("Design-Based Index by Strata (mt)") +
+    ggplot2::ylab("Design Based Index by Strata (mt)") +
     ggplot2::expand_limits(y = 0) +
     ggplot2::facet_wrap(
       facets = "stratum", scales = "free", ncol = 2)
 
     if (!is.null(dir)) {
-      ggsave(
+      ggplot2::ggsave(
         filename = plot_names[1], plot = g2,
         height = height, width = width, units = "in", res = res
       )
