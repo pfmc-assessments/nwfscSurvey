@@ -108,10 +108,7 @@ get_design_based <- function(
       mean_cpue = mean(cpue_mt_km2),
       var_cpue = var(cpue_mt_km2),
       est = area * mean_cpue,
-      var = var_cpue * (area * area) / ntows,
-      cv = sqrt(var_cpue) / (mean_cpue + 1e-09),
-      log_var = sqrt(log(cv^2 + 1)),
-      se = log(cv^2 + 1)
+      var = var_cpue * (area * area) / ntows
     ) |>
     dplyr::ungroup()
 
