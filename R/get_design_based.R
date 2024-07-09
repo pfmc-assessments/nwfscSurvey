@@ -1,8 +1,9 @@
 #' Calculates design based estimates from survey data for West Coast surveys.
 #'
 #' @details
-#' The design based index is calculated based on the area of the strata and
-#' the mean catch by strata. This function returns a list of design-based
+#' The design based index is calculated based on the area of the strata with the
+#' output estimates representing the adjusted median estimates
+#' (e.g., est * exp(0.5*log(var)). This function returns a list of design-based
 #' estimates by strata and estimates combined across stratas by year. This
 #' function is designed to work with data frames pulled from the NWFSC
 #' data warehouse using [pull_catch()].
