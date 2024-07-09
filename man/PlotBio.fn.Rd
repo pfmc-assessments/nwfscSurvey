@@ -2,7 +2,7 @@
 % Please edit documentation in R/plotBio.fn.R
 \name{PlotBio.fn}
 \alias{PlotBio.fn}
-\title{Plots the biomass with confidence intervals}
+\title{Plots the designed based biomass estimates with confidence intervals}
 \usage{
 PlotBio.fn(
   dir = NULL,
@@ -53,7 +53,7 @@ no longer have to specify \code{dopng} to save the plot as a png.}
 \item{...}{Additional arguments for the plots}
 }
 \description{
-Plots the biomass with confidence intervals
+Plots the designed based biomass estimates with confidence intervals
 }
 \author{
 Chantel Wetzel, Allan Hicks, and John Wallace

@@ -97,39 +97,39 @@ strata = CreateStrataDF.fn(
 Calculate the design based index of abundance:
 
 ```r
-biomass = Biomass.fn(dir = getwd(), 
-                     dat = catch,  
-                     strat.df = strata)
+biomass = get_design_based(
+  data = catch,  
+  strata = strata)
 ```
-`Biomass.fn()` returns a list with the second element containing the design-based index of abundance. The design based index is calculated based on the defined stratas. The function writes a csv file inside the dir input location to a "forSS3" folder. The function returns a list with the second element containing the design-based estimates by year:
+`get_design_based()` returns a list with the second element containing the design based index of abundance. The design based index is calculated based on the defined stratas. The function writes a csv file inside the dir input location to a "forSS3" folder. The function returns a list with the second element containing the design based estimates by year:
 
 ```{r, results = 'asis', echo = FALSE}
   library(xtable)
   library(kableExtra)
 
-  tab = rbind( c(2003, 1, "EnterFleet", 21055083, 0.357),
-               c("...", "", "", "", ""),
-               c(2015, 1, "EnterFleet", 9766200, 0.563))
+  tab = rbind( c(2003, 38888.94, 0.379, 18519.720, 81661.56),
+               c("...", "", ""),
+               c(2015, 22317.60, 0.135, 17135.936, 29066.13))
   
-  colnames(tab) = c("Year", "Season", "Fleet", "Value", "seLogB")
+  colnames(tab) = c("year", "est", "se_log", "lwr", "upr")
   
   table = tab 
   kable(table, "html")
 ```
 
-Plot the coastwide design-based index of abundance:
+Plot the coastwide design based index of abundance with uncertainty intervals:
 ```r
-PlotBio.fn(
-  dir = getwd(), 
-  dat = biomass)
+plot_index(
+  data = biomass,
+  plot = 1)
 ```
-Plot the coastwide design-based index of abundance for each strata:
+Plot the design based index of abundance for each strata without uncertainty
+intervals:
 ```r
-PlotBioStrata.fn(
-  dir = getwd(), 
-  dat = biomass)
+plot_index(
+  data = biomass,
+  plot = 2)
 ```
-If `dir` does not equal `NULL`, then a "plot" folder will be created in the directory location and a png of the plot will be saved.
 
 #### Length composition data
 

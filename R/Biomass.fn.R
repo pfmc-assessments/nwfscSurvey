@@ -62,12 +62,18 @@ Biomass.fn <- function(
   fleet = "Enter fleet",
   verbose = TRUE) {
 
+  lifecycle::deprecate_soft(
+    when = "2.4",
+    what = "nwfscSurvey::Biomass.fn()",
+    details = "Please switch to get_design_based()."
+  )
+
   if (is.null(dat$cpue_kg_km2)) stop("There must be a column called cpue_kg_km2 in the dataframe")
 
-  # Calculate the CPUE in terms of nubmer
+  # Calculate the CPUE in terms of number
   dat$cpue_km2_count <- (dat$total_catch_numbers / (0.01 * dat$Area_swept_ha))
 
-  row.names(strat.df) <- strat.df[, 1] # put in rownmaes to make easier to index later
+  row.names(strat.df) <- strat.df[, 1] # put in rownames to make easier to index later
   numStrata <- nrow(strat.df)
 
   numStrata <- nrow(strat.df)
