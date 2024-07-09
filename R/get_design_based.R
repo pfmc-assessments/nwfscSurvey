@@ -138,8 +138,8 @@ get_design_based <- function(
       year = biomass[, "year"],
       month = month,
       fleet = fleet,
-      est = est,
-      se_log = se_log
+      est = biomass[, "est"],
+      se_log = biomass[, "se_log"]
     )
     write.csv(
       biomass_out,
