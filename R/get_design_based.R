@@ -1,8 +1,9 @@
 #' Calculates design based estimates from survey data for West Coast surveys.
 #'
 #' @details
-#' The design based index is calculated based on the area of the strata and
-#' the mean catch by strata. This function returns a list of design-based
+#' The design based index is calculated based on the area of the strata with the
+#' output estimates representing the adjusted median estimates
+#' (e.g., est * exp(0.5*log(var)). This function returns a list of design-based
 #' estimates by strata and estimates combined across stratas by year. This
 #' function is designed to work with data frames pulled from the NWFSC
 #' data warehouse using [pull_catch()].
@@ -108,10 +109,7 @@ get_design_based <- function(
       mean_cpue = mean(cpue_mt_km2),
       var_cpue = var(cpue_mt_km2),
       est = area * mean_cpue,
-      var = var_cpue * (area * area) / ntows,
-      cv = sqrt(var_cpue) / (mean_cpue + 1e-09),
-      log_var = sqrt(log(cv^2 + 1)),
-      se = log(cv^2 + 1)
+      var = var_cpue * (area * area) / ntows
     ) |>
     dplyr::ungroup()
 
@@ -140,8 +138,8 @@ get_design_based <- function(
       year = biomass[, "year"],
       month = month,
       fleet = fleet,
-      est = est,
-      se_log = se_log
+      est = biomass[, "est"],
+      se_log = biomass[, "se_log"]
     )
     write.csv(
       biomass_out,

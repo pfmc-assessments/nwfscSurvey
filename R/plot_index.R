@@ -19,7 +19,7 @@
 #'   2. Design based index by year and strata.
 #' @param width,height Numeric values for the figure width and height in
 #'   inches. The defaults are 7 by 7 inches.
-#' @param res The resolution to apply when saving figures.  Lower resolution values
+#' @param dpi The resolution to apply when saving figures.  Lower resolution values
 #'    can reduce file size which can be helpful when creating large documents
 #'    with many figures. The default is 300.
 #'
@@ -34,7 +34,7 @@ plot_index <- function(
     plot = 1:2,
     height = 7,
     width = 7,
-    res = 300) {
+    dpi = 300) {
 
   plotdir <- file.path(dir, "plots")
   check_dir(plotdir)
@@ -88,7 +88,7 @@ plot_index <- function(
     if (!is.null(dir)) {
       ggplot2::ggsave(
         filename = plot_names[1], plot = gg,
-        height = height, width = width, units = "in", res = res
+        height = height, width = width, units = "in", dpi = dpi
       )
     } else {
       print(gg)
@@ -117,7 +117,7 @@ plot_index <- function(
     if (!is.null(dir)) {
       ggplot2::ggsave(
         filename = plot_names[1], plot = g2,
-        height = height, width = width, units = "in", res = res
+        height = height, width = width, units = "in", dpi = dpi
       )
     } else {
       print(g2)
