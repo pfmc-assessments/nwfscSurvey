@@ -74,7 +74,7 @@ check_strata <- function(
 
   if (!is.null(dir)) {
     write.csv(
-      x = out,
+      x = tows_by_strata,
       file = file.path(plotdir, "strata_observations.csv"),
       row.names = FALSE
     )
