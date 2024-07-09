@@ -1,237 +1,81 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url>
-    <loc>/404.html</loc>
-  </url>
-  <url>
-    <loc>/articles/index.html</loc>
-  </url>
-  <url>
-    <loc>/articles/nwfscSurvey.html</loc>
-  </url>
-  <url>
-    <loc>/authors.html</loc>
-  </url>
-  <url>
-    <loc>/index.html</loc>
-  </url>
-  <url>
-    <loc>/news/index.html</loc>
-  </url>
-  <url>
-    <loc>/reference/AFSCforeign_hauls.html</loc>
-  </url>
-  <url>
-    <loc>/reference/Biomass.fn.html</loc>
-  </url>
-  <url>
-    <loc>/reference/CheckStrata.fn.html</loc>
-  </url>
-  <url>
-    <loc>/reference/CreateStrataDF.fn.html</loc>
-  </url>
-  <url>
-    <loc>/reference/Format.AKSlope.fn.html</loc>
-  </url>
-  <url>
-    <loc>/reference/GetN.fn.html</loc>
-  </url>
-  <url>
-    <loc>/reference/GetSpp.fn.html</loc>
-  </url>
-  <url>
-    <loc>/reference/GetSppDefault.fn.html</loc>
-  </url>
-  <url>
-    <loc>/reference/GetStrata.fn.html</loc>
-  </url>
-  <url>
-    <loc>/reference/GetSurveyAbb.fn.html</loc>
-  </url>
-  <url>
-    <loc>/reference/PlotBio.fn.html</loc>
-  </url>
-  <url>
-    <loc>/reference/PlotBioStrata.fn.html</loc>
-  </url>
-  <url>
-    <loc>/reference/PlotFreqData.fn.html</loc>
-  </url>
-  <url>
-    <loc>/reference/PlotMap.fn.html</loc>
-  </url>
-  <url>
-    <loc>/reference/PlotPresenceAbsence.fn.html</loc>
-  </url>
-  <url>
-    <loc>/reference/PlotSexRatio.fn.html</loc>
-  </url>
-  <url>
-    <loc>/reference/PlotSexRatioStrata.fn.html</loc>
-  </url>
-  <url>
-    <loc>/reference/PlotVarLengthAtAge.fn.html</loc>
-  </url>
-  <url>
-    <loc>/reference/PullBio.fn.html</loc>
-  </url>
-  <url>
-    <loc>/reference/PullCatch.fn.html</loc>
-  </url>
-  <url>
-    <loc>/reference/PullHaul.fn.html</loc>
-  </url>
-  <url>
-    <loc>/reference/PullSpp.fn.html</loc>
-  </url>
-  <url>
-    <loc>/reference/PullSpp.html</loc>
-  </url>
-  <url>
-    <loc>/reference/ReadInAges.fn.html</loc>
-  </url>
-  <url>
-    <loc>/reference/ReadInLengths.fn.html</loc>
-  </url>
-  <url>
-    <loc>/reference/SA3.html</loc>
-  </url>
-  <url>
-    <loc>/reference/SA3_v2021.1.html</loc>
-  </url>
-  <url>
-    <loc>/reference/SexRatio.fn.html</loc>
-  </url>
-  <url>
-    <loc>/reference/StrataAreas.fn.html</loc>
-  </url>
-  <url>
-    <loc>/reference/StrataFactors.fn.html</loc>
-  </url>
-  <url>
-    <loc>/reference/SurveyAFs.fn.html</loc>
-  </url>
-  <url>
-    <loc>/reference/SurveyAgeAtLen.fn.html</loc>
-  </url>
-  <url>
-    <loc>/reference/SurveyLFs.fn.html</loc>
-  </url>
-  <url>
-    <loc>/reference/UnexpandedAFs.fn.html</loc>
-  </url>
-  <url>
-    <loc>/reference/UnexpandedLFs.fn.html</loc>
-  </url>
-  <url>
-    <loc>/reference/availablecells.html</loc>
-  </url>
-  <url>
-    <loc>/reference/bio_nwfsc_combo.html</loc>
-  </url>
-  <url>
-    <loc>/reference/catch_nwfsc_combo.html</loc>
-  </url>
-  <url>
-    <loc>/reference/check_dir.html</loc>
-  </url>
-  <url>
-    <loc>/reference/check_strata.html</loc>
-  </url>
-  <url>
-    <loc>/reference/check_survey.html</loc>
-  </url>
-  <url>
-    <loc>/reference/codify_sex.html</loc>
-  </url>
-  <url>
-    <loc>/reference/combine_tows.html</loc>
-  </url>
-  <url>
-    <loc>/reference/convert_to_hex_string.html</loc>
-  </url>
-  <url>
-    <loc>/reference/createMatrix.html</loc>
-  </url>
-  <url>
-    <loc>/reference/draw_USEEZ.html</loc>
-  </url>
-  <url>
-    <loc>/reference/draw_theme.html</loc>
-  </url>
-  <url>
-    <loc>/reference/est_growth.html</loc>
-  </url>
-  <url>
-    <loc>/reference/estimate_weight_length.html</loc>
-  </url>
-  <url>
-    <loc>/reference/fit_vbgrowth.html</loc>
-  </url>
-  <url>
-    <loc>/reference/get_design_based.html</loc>
-  </url>
-  <url>
-    <loc>/reference/get_json.html</loc>
-  </url>
-  <url>
-    <loc>/reference/get_raw_comps.html</loc>
-  </url>
-  <url>
-    <loc>/reference/get_url.html</loc>
-  </url>
-  <url>
-    <loc>/reference/index.html</loc>
-  </url>
-  <url>
-    <loc>/reference/plot_age_length_sampling.html</loc>
-  </url>
-  <url>
-    <loc>/reference/plot_bio_patterns.html</loc>
-  </url>
-  <url>
-    <loc>/reference/plot_comps.html</loc>
-  </url>
-  <url>
-    <loc>/reference/plot_cpue.html</loc>
-  </url>
-  <url>
-    <loc>/reference/plot_index.html</loc>
-  </url>
-  <url>
-    <loc>/reference/plot_proportion.html</loc>
-  </url>
-  <url>
-    <loc>/reference/plot_varlenage.html</loc>
-  </url>
-  <url>
-    <loc>/reference/plot_westcoast.html</loc>
-  </url>
-  <url>
-    <loc>/reference/pull_bio.html</loc>
-  </url>
-  <url>
-    <loc>/reference/pull_biological_samples.html</loc>
-  </url>
-  <url>
-    <loc>/reference/pull_catch.html</loc>
-  </url>
-  <url>
-    <loc>/reference/pull_gemm.html</loc>
-  </url>
-  <url>
-    <loc>/reference/pull_haul.html</loc>
-  </url>
-  <url>
-    <loc>/reference/pull_spp.html</loc>
-  </url>
-  <url>
-    <loc>/reference/save_rdata.html</loc>
-  </url>
-  <url>
-    <loc>/reference/stopifnotcolumn.html</loc>
-  </url>
-  <url>
-    <loc>/reference/wh_plot_proportion.html</loc>
-  </url>
+<urlset xmlns = 'http://www.sitemaps.org/schemas/sitemap/0.9'>
+<url><loc>/404.html</loc></url>
+<url><loc>/articles/index.html</loc></url>
+<url><loc>/articles/nwfscSurvey.html</loc></url>
+<url><loc>/authors.html</loc></url>
+<url><loc>/index.html</loc></url>
+<url><loc>/news/index.html</loc></url>
+<url><loc>/reference/AFSCforeign_hauls.html</loc></url>
+<url><loc>/reference/Biomass.fn.html</loc></url>
+<url><loc>/reference/CheckStrata.fn.html</loc></url>
+<url><loc>/reference/CreateStrataDF.fn.html</loc></url>
+<url><loc>/reference/Format.AKSlope.fn.html</loc></url>
+<url><loc>/reference/GetN.fn.html</loc></url>
+<url><loc>/reference/GetSpp.fn.html</loc></url>
+<url><loc>/reference/GetSppDefault.fn.html</loc></url>
+<url><loc>/reference/GetStrata.fn.html</loc></url>
+<url><loc>/reference/GetSurveyAbb.fn.html</loc></url>
+<url><loc>/reference/PlotBio.fn.html</loc></url>
+<url><loc>/reference/PlotBioStrata.fn.html</loc></url>
+<url><loc>/reference/PlotFreqData.fn.html</loc></url>
+<url><loc>/reference/PlotMap.fn.html</loc></url>
+<url><loc>/reference/PlotPresenceAbsence.fn.html</loc></url>
+<url><loc>/reference/PlotSexRatio.fn.html</loc></url>
+<url><loc>/reference/PlotSexRatioStrata.fn.html</loc></url>
+<url><loc>/reference/PlotVarLengthAtAge.fn.html</loc></url>
+<url><loc>/reference/PullBio.fn.html</loc></url>
+<url><loc>/reference/PullCatch.fn.html</loc></url>
+<url><loc>/reference/PullHaul.fn.html</loc></url>
+<url><loc>/reference/PullSpp.fn.html</loc></url>
+<url><loc>/reference/PullSpp.html</loc></url>
+<url><loc>/reference/ReadInAges.fn.html</loc></url>
+<url><loc>/reference/ReadInLengths.fn.html</loc></url>
+<url><loc>/reference/SA3.html</loc></url>
+<url><loc>/reference/SA3_v2021.1.html</loc></url>
+<url><loc>/reference/SexRatio.fn.html</loc></url>
+<url><loc>/reference/StrataAreas.fn.html</loc></url>
+<url><loc>/reference/StrataFactors.fn.html</loc></url>
+<url><loc>/reference/SurveyAFs.fn.html</loc></url>
+<url><loc>/reference/SurveyAgeAtLen.fn.html</loc></url>
+<url><loc>/reference/SurveyLFs.fn.html</loc></url>
+<url><loc>/reference/UnexpandedAFs.fn.html</loc></url>
+<url><loc>/reference/UnexpandedLFs.fn.html</loc></url>
+<url><loc>/reference/availablecells.html</loc></url>
+<url><loc>/reference/bio_nwfsc_combo.html</loc></url>
+<url><loc>/reference/catch_nwfsc_combo.html</loc></url>
+<url><loc>/reference/check_dir.html</loc></url>
+<url><loc>/reference/check_strata.html</loc></url>
+<url><loc>/reference/check_survey.html</loc></url>
+<url><loc>/reference/codify_sex.html</loc></url>
+<url><loc>/reference/combine_tows.html</loc></url>
+<url><loc>/reference/convert_to_hex_string.html</loc></url>
+<url><loc>/reference/createMatrix.html</loc></url>
+<url><loc>/reference/draw_USEEZ.html</loc></url>
+<url><loc>/reference/draw_theme.html</loc></url>
+<url><loc>/reference/est_growth.html</loc></url>
+<url><loc>/reference/estimate_weight_length.html</loc></url>
+<url><loc>/reference/fit_vbgrowth.html</loc></url>
+<url><loc>/reference/get_design_based.html</loc></url>
+<url><loc>/reference/get_json.html</loc></url>
+<url><loc>/reference/get_raw_comps.html</loc></url>
+<url><loc>/reference/get_url.html</loc></url>
+<url><loc>/reference/index.html</loc></url>
+<url><loc>/reference/plot_age_length_sampling.html</loc></url>
+<url><loc>/reference/plot_bio_patterns.html</loc></url>
+<url><loc>/reference/plot_comps.html</loc></url>
+<url><loc>/reference/plot_cpue.html</loc></url>
+<url><loc>/reference/plot_index.html</loc></url>
+<url><loc>/reference/plot_proportion.html</loc></url>
+<url><loc>/reference/plot_varlenage.html</loc></url>
+<url><loc>/reference/plot_westcoast.html</loc></url>
+<url><loc>/reference/pull_bio.html</loc></url>
+<url><loc>/reference/pull_biological_samples.html</loc></url>
+<url><loc>/reference/pull_catch.html</loc></url>
+<url><loc>/reference/pull_gemm.html</loc></url>
+<url><loc>/reference/pull_haul.html</loc></url>
+<url><loc>/reference/pull_spp.html</loc></url>
+<url><loc>/reference/save_rdata.html</loc></url>
+<url><loc>/reference/stopifnotcolumn.html</loc></url>
+<url><loc>/reference/wh_plot_proportion.html</loc></url>
 </urlset>
+
