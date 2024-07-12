@@ -1,0 +1,9 @@
+on:
+  workflow_dispatch:
+  schedule:
+      # Run every hour to test pulling from data warehouse
+      - cron: '0 */1 * * *'
+name: call-r-cmd-check
+jobs:
+  call-workflow:
+    uses: nmfs-fish-tools/ghactions4r/.github/workflows/r-cmd-check.yml@main
