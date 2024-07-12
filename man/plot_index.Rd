@@ -11,7 +11,7 @@ plot_index(
   plot = 1:2,
   height = 7,
   width = 7,
-  res = 300
+  dpi = 300
 )
 }
 \arguments{
@@ -37,7 +37,7 @@ correspond to the following figures:
 \item{width, height}{Numeric values for the figure width and height in
 inches. The defaults are 7 by 7 inches.}
 
-\item{res}{The resolution to apply when saving figures.  Lower resolution values
+\item{dpi}{The resolution to apply when saving figures.  Lower resolution values
 can reduce file size which can be helpful when creating large documents
 with many figures. The default is 300.}
 }

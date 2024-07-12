@@ -49,6 +49,6 @@ Remotes:
     github::haleyjeppson/ggmosaic
 Encoding: UTF-8
 VignetteBuilder: knitr
-RoxygenNote: 7.3.1
+RoxygenNote: 7.3.2
 LazyData: true
 Roxygen: list(markdown = TRUE)
