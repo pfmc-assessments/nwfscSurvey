@@ -2,7 +2,7 @@ Type: Package
 Package: nwfscSurvey
 Title: Northwest Fisheries Science Center Survey
 Version: 2.1
-Authors@R:c(
+Authors@R: c(
     person(c("Chantel", "R."), "Wetzel", , "chantel.wetzel@noaa.gov", role = c("aut", "cre")),
     person(c("Kelli", "F."), "Johnson", role = "aut"),
     person(c("Allan", "C."), "Hicks", role = "aut")
