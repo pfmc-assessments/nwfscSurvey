@@ -105,8 +105,9 @@ strata. The biomass estimates are in metric tons.</p>
     </div>
     <div class="section level2">
     <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
-    <p>The design based index is calculated based on the area of the strata and
-the mean catch by strata. This function returns a list of design-based
+    <p>The design based index is calculated based on the area of the strata with the
+output estimates representing the adjusted median estimates
+(e.g., est * exp(0.5*log(var)). This function returns a list of design-based
 estimates by strata and estimates combined across stratas by year. This
 function is designed to work with data frames pulled from the NWFSC
 data warehouse using <code><a href="pull_catch.html">pull_catch()</a></code>.
@@ -128,16 +129,16 @@ Oregon, and California during 1977. Marine Fisheries Review: March - April.</p>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">strata</span> <span class="op">&lt;-</span> <span class="fu"><a href="CreateStrataDF.fn.html">CreateStrataDF.fn</a></span><span class="op">(</span></span></span>
 <span class="r-in"><span>  names <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"shallow_wa"</span>, <span class="st">"shallow_or"</span>, <span class="st">"shallow_ca"</span>, <span class="st">"deep_wa"</span>, <span class="st">"deep_or"</span>, <span class="st">"deep_ca"</span><span class="op">)</span>,</span></span>
-<span class="r-in"><span>  depths.shallow <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span> <span class="fl">55</span>,   <span class="fl">55</span>,   <span class="fl">55</span>,  <span class="fl">183</span>,  <span class="fl">183</span>, <span class="fl">183</span><span class="op">)</span>,</span></span>
-<span class="r-in"><span>  depths.deep    <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">183</span>,  <span class="fl">183</span>,  <span class="fl">183</span>,  <span class="fl">549</span>,  <span class="fl">549</span>, <span class="fl">549</span><span class="op">)</span>,</span></span>
-<span class="r-in"><span>  lats.south     <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">46.0</span>, <span class="fl">42.0</span>, <span class="fl">32.0</span>, <span class="fl">46.0</span>, <span class="fl">42.0</span>, <span class="fl">32.0</span><span class="op">)</span>,</span></span>
-<span class="r-in"><span>  lats.north     <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">49.0</span>, <span class="fl">46.0</span>, <span class="fl">42.0</span>, <span class="fl">49.0</span>, <span class="fl">46.0</span>, <span class="fl">42.0</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span>  depths.shallow <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">55</span>, <span class="fl">55</span>, <span class="fl">55</span>, <span class="fl">183</span>, <span class="fl">183</span>, <span class="fl">183</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>  depths.deep <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">183</span>, <span class="fl">183</span>, <span class="fl">183</span>, <span class="fl">549</span>, <span class="fl">549</span>, <span class="fl">549</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>  lats.south <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">46.0</span>, <span class="fl">42.0</span>, <span class="fl">32.0</span>, <span class="fl">46.0</span>, <span class="fl">42.0</span>, <span class="fl">32.0</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>  lats.north <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">49.0</span>, <span class="fl">46.0</span>, <span class="fl">42.0</span>, <span class="fl">49.0</span>, <span class="fl">46.0</span>, <span class="fl">42.0</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">biommass</span> <span class="op">&lt;-</span> <span class="fu">get_design_based</span><span class="op">(</span></span></span>
 <span class="r-in"><span>  data <span class="op">=</span> <span class="va">catch</span>,</span></span>
 <span class="r-in"><span>  strata <span class="op">=</span> <span class="va">strata</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
-<span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="op">}</span> <span class="co"># }</span></span></span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
