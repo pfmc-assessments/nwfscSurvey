@@ -26,32 +26,37 @@
 #' @examples
 #' \dontrun{
 #' # SurveyName is only arg that has to be specified
-#'  bio_dat <- PullBio.fn(SurveyName = "NWFSC.Combo")
+#' bio_dat <- PullBio.fn(SurveyName = "NWFSC.Combo")
 #'
 #' # Example with specified common name
-#'  bio_dat <- PullBio.fn(Name = "vermilion rockfish",
-#'    SurveyName = "NWFSC.Combo")
+#' bio_dat <- PullBio.fn(
+#'   Name = "vermilion rockfish",
+#'   SurveyName = "NWFSC.Combo"
+#' )
 #'
 #' # Example with specified scientific name
-#'  bio_dat <- PullBio.fn(SciName = "Eopsetta jordani",
-#'    SurveyName = "NWFSC.Combo")
+#' bio_dat <- PullBio.fn(
+#'   SciName = "Eopsetta jordani",
+#'   SurveyName = "NWFSC.Combo"
+#' )
 #'
 #' # Example with multiple names
-#'  bio_dat <- PullBio.fn(SciName = c("Sebastes aurora","Eopsetta jordani"),
-#'    SurveyName = "NWFSC.Combo")
+#' bio_dat <- PullBio.fn(
+#'   SciName = c("Sebastes aurora", "Eopsetta jordani"),
+#'   SurveyName = "NWFSC.Combo"
+#' )
 #   bio_dat <- PullBio.fn(Name = c("Sunset rockfish", "vermilion rockfish",
 #     "vermilion and sunset rockfish"), SurveyName = "NWFSC.Combo")
 #' }
 #'
 PullBio.fn <- function(
-  Name = NULL,
-  SciName = NULL,
-  YearRange = c(1980, 5000),
-  SurveyName = NULL,
-  SaveFile = lifecycle::deprecated(),
-  Dir = NULL,
-  verbose = TRUE) {
-
+    Name = NULL,
+    SciName = NULL,
+    YearRange = c(1980, 5000),
+    SurveyName = NULL,
+    SaveFile = lifecycle::deprecated(),
+    Dir = NULL,
+    verbose = TRUE) {
   lifecycle::deprecate_soft(
     when = "2.3",
     what = "nwfscSurvey::PullBio.fn()",

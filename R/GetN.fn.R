@@ -38,26 +38,23 @@
 #'   type = "length",
 #'   species = "flatfish"
 #' )
-#'
 #' }
 #'
-#'
 GetN.fn <- function(
-  dir = NULL,
-  dat,
-  type = c("length", "age"),
-  species = c(
-    "all",
-    "flatfish",
-    "shelfrock",
-    "sloperock",
-    "thorny",
-    "others"
-  ),
-  printfolder = "forSS3",
-  output = NULL,
-  verbose = TRUE) {
-
+    dir = NULL,
+    dat,
+    type = c("length", "age"),
+    species = c(
+      "all",
+      "flatfish",
+      "shelfrock",
+      "sloperock",
+      "thorny",
+      "others"
+    ),
+    printfolder = "forSS3",
+    output = NULL,
+    verbose = TRUE) {
   species <- match.arg(species)
   type <- match.arg(type)
   n.unq <- NA

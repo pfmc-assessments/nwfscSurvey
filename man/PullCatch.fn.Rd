@@ -90,16 +90,22 @@ for more information.
 dat <- PullCatch.fn(SurveyName = "NWFSC.Combo")
 
 # Example with specified common name
-catch_dat <- PullCatch.fn(Name = "vermilion rockfish",
-SurveyName = "NWFSC.Combo")
+catch_dat <- PullCatch.fn(
+  Name = "vermilion rockfish",
+  SurveyName = "NWFSC.Combo"
+)
 
 # Example with specified scientific name
-catch_dat <- PullCatch.fn(SciName = "Eopsetta jordani",
-SurveyName = "NWFSC.Combo")
+catch_dat <- PullCatch.fn(
+  SciName = "Eopsetta jordani",
+  SurveyName = "NWFSC.Combo"
+)
 
 # Example with multiple names
-catch_dat <- PullBio.fn(Name = c("vermilion rockfish",
-"vermilion and sunset rockfish"), SurveyName = "NWFSC.Combo")
+catch_dat <- PullBio.fn(Name = c(
+  "vermilion rockfish",
+  "vermilion and sunset rockfish"
+), SurveyName = "NWFSC.Combo")
 
 }
 

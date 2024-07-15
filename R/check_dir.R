@@ -17,8 +17,7 @@
 #' # See more output
 #' check_dir(getwd())
 #'
-check_dir <- function(dir, verbose = TRUE){
-
+check_dir <- function(dir, verbose = TRUE) {
   if (is.null(dir) || length(dir) == 0) {
     if (verbose) {
       message("Output will not be saved in `dir` because dir = NULL.")
@@ -27,10 +26,9 @@ check_dir <- function(dir, verbose = TRUE){
     dir.create(dir, showWarnings = FALSE, recursive = TRUE)
     if (!file.exists(dir)) {
       stop(glue::glue(
-          "[ENOENT] Failed to make the following directory:
+        "[ENOENT] Failed to make the following directory:
           '{dir}'"
       ))
     }
   }
-
 }

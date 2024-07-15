@@ -46,21 +46,21 @@
 #' @family plot_
 #' @examples
 #' # Add presence/absence factor to data
-#'  temp <- catch_nwfsc_combo %>%
-#'    dplyr::mutate(new = factor(
-#'      cpue_kg_km2 <= 0,
-#'      levels = c(FALSE, TRUE),
-#'      labels = c("Present", "Absent")
-#'    ))
+#' temp <- catch_nwfsc_combo %>%
+#'   dplyr::mutate(new = factor(
+#'     cpue_kg_km2 <= 0,
+#'     levels = c(FALSE, TRUE),
+#'     labels = c("Present", "Absent")
+#'   ))
 #'
-#'  # Plot depth bins (50 m) by presence/absence with default colors
-#'  plot_proportion(
-#'    data = temp,
-#'    column_factor = new,
-#'    column_bin = Depth_m,
-#'    width = 50,
-#'    boundary = 0
-#'  )
+#' # Plot depth bins (50 m) by presence/absence with default colors
+#' plot_proportion(
+#'   data = temp,
+#'   column_factor = new,
+#'   column_bin = Depth_m,
+#'   width = 50,
+#'   boundary = 0
+#' )
 #' # Plot latitude bins (1 decimal degree) by presence/absence with custom
 #' # colors
 #' plot_proportion(
@@ -128,7 +128,7 @@ plot_proportion <- function(data,
     dplyr::mutate(
       calc_weight = dplyr::case_when(
         bar_width == "n" ~ 1,
-        bar_width == "equal" ~ 1/n()
+        bar_width == "equal" ~ 1 / n()
       )
     ) %>%
     dplyr::ungroup()
@@ -142,7 +142,7 @@ plot_proportion <- function(data,
     ggmosaic::geom_mosaic(
       ggplot2::aes(
         x = ggmosaic::product(calc_bin), # calc proportions per bin
-        fill = {{column_factor}},
+        fill = {{ column_factor }},
         weight = calc_weight # bar width
       ),
       offset = 0.01 # provides space between the bars
@@ -199,8 +199,12 @@ wh_plot_proportion <- function(data_catch,
     dir,
     t(outer(
       X = c(
-        if(!missing(data_catch)) {"presence-absence"},
-        if(!missing(data_bio)) {"sex"}
+        if (!missing(data_catch)) {
+          "presence-absence"
+        },
+        if (!missing(data_bio)) {
+          "sex"
+        }
       ),
       Y = paste0("_by_", c("depth", "latitude"), ".png"),
       FUN = paste0
@@ -235,7 +239,7 @@ wh_plot_proportion <- function(data_catch,
       x = rep(ggplot2::quos(Depth_m, Latitude_dd), length(data) / 2),
       width = rep(c(50, 1), length(data) / 2)
     ),
-    .f =  function(pdata, x, width, bar_width) {
+    .f = function(pdata, x, width, bar_width) {
       gg <- plot_proportion(
         data = pdata,
         column_factor = the_factor,

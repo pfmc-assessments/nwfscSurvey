@@ -16,7 +16,7 @@ test_that("wh_proportion leads to correct files", {
     data_bio = bio_nwfsc_combo,
     dir = temporary_directory
   )
-  testthat::expect_length(output_bio , 2)
+  testthat::expect_length(output_bio, 2)
   testthat::expect_true(all(file.exists(output_bio)))
   testthat::expect_true(all(grepl("sex", output_bio)))
   unlink(output_bio, force = TRUE)
@@ -26,7 +26,7 @@ test_that("wh_proportion leads to correct files", {
     data_bio = bio_nwfsc_combo,
     dir = temporary_directory
   )
-  testthat::expect_length(output_all , 4)
+  testthat::expect_length(output_all, 4)
   testthat::expect_true(all(file.exists(output_all)))
   testthat::expect_true(all(grepl("presence|sex", output_all)))
   unlink(output_all, force = TRUE)

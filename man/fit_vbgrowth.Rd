@@ -55,23 +55,31 @@ predicted lengths given ages and input parameters.
 }
 \examples{
 \dontrun{
-bio_dat <- data.frame(Age = rep(0:30, each = 20),
-  Length_cm = rnorm(n = 31 * 20, mean = 50, sd = 5))
+bio_dat <- data.frame(
+  Age = rep(0:30, each = 20),
+  Length_cm = rnorm(n = 31 * 20, mean = 50, sd = 5)
+)
 pars_in <- lapply(FUN = log, X = list(
   "K" = 0.13,
   "Linf" = 55,
   "L0" = 5,
   "CV0" = 0.1,
-  "CV1" = 0.1))
-solve <- optim(fn = estgrowth.vb, par = unlist(pars_in), hessian = FALSE,
+  "CV1" = 0.1
+))
+solve <- optim(
+  fn = estgrowth.vb, par = unlist(pars_in), hessian = FALSE,
   Ages = bio_dat[, "Age"],
-  Lengths = bio_dat[, "Length_cm"])
-predictions <- estgrowth.vb(Par = solve$par, ReturnType = "Pred",
+  Lengths = bio_dat[, "Length_cm"]
+)
+predictions <- estgrowth.vb(
+  Par = solve$par, ReturnType = "Pred",
   sdFactor = 1,
   Ages = bio_dat[, "Age"],
-  Lengths = bio_dat[, "Length_cm"])
+  Lengths = bio_dat[, "Length_cm"]
+)
 plot(bio_dat$Age, predictions[, "Lhat_pred"],
-  xlab = "Age (years)", ylab = "Predicted length (cm)")
+  xlab = "Age (years)", ylab = "Predicted length (cm)"
+)
 exp(solve$par)
 }
 }

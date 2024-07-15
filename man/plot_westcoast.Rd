@@ -16,12 +16,12 @@ figure or as a base to plot data points on.
 \examples{
 \dontrun{
 if (require("maps") && require("mapproj")) {
-map_object <- plot_westcoast()
-print(map_object)
-ggplot2::ggsave(
-  filename = "myfilename.png",
-  plot =  map_object
-)
+  map_object <- plot_westcoast()
+  print(map_object)
+  ggplot2::ggsave(
+    filename = "myfilename.png",
+    plot = map_object
+  )
 }
 }
 }

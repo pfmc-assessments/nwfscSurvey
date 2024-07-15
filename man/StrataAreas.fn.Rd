@@ -43,7 +43,7 @@ at that common management boundary near Cape Mendocino.
 \examples{
 areaexample <- StrataAreas.fn(data.frame(
   name = LETTERS[1:8],
-  Latitude_dd.2 = c(49, 49, 49, 45, 45, 40.5,40.5, 40.5),
+  Latitude_dd.2 = c(49, 49, 49, 45, 45, 40.5, 40.5, 40.5),
   Latitude_dd.1 = c(45, 45, 40.5, 40.5, 40.5, 34.5, 34.5, 34.5),
   Depth_m.1 = c(183, 549, 900, 183, 549, 183, 549, 900),
   Depth_m.2 = c(549, 900, 1280, 549, 900, 549, 900, 1280)

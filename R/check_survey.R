@@ -1,14 +1,13 @@
 #' Check and create survey string
 #'
-#' 
+#'
 #' @template survey
 #'
 #'
 #' @author Chantel Wetzel
 #' @export
 #'
-check_survey <- function(survey){
-
+check_survey <- function(survey) {
   # Survey options available in the data warehouse
   survey_options <- createMatrix()
 
@@ -34,9 +33,8 @@ check_survey <- function(survey){
   project_long <- NULL
   for (i in 1:length(survey)) {
     tmp <- survey_options[which(survey_options[, 1] %in% survey[i]), 2]
-    project_long  <- c(project_long, tmp)
+    project_long <- c(project_long, tmp)
   }
 
   return(project_long)
-
 }

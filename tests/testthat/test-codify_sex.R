@@ -1,4 +1,3 @@
-
 test_that("AFSC Slope pull biological table of Pacific ocean perch sexes", {
   skip_on_cran()
 

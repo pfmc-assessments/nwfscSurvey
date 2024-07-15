@@ -103,7 +103,6 @@ age_comps <- get_raw_comps(
   comp_bins = 1:20,
   comp_column_name = "Age"
 )
-
 }
 
 }

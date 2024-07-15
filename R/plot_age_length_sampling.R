@@ -10,12 +10,14 @@
 #' @export
 
 plot_age_length_sampling <- function(data,
-                                        xlim = c(0, 120),
-                                        ylim = c(0, 0.049),
-                                        dir = NULL) {
+                                     xlim = c(0, 120),
+                                     ylim = c(0, 0.049),
+                                     dir = NULL) {
   if (!is.null(dir)) {
-    png(filename = file.path(dir, "plots", "age_length_comparison.png"), 
-      width = 10, height = 7, units = "in", res = 300)
+    png(
+      filename = file.path(dir, "plots", "age_length_comparison.png"),
+      width = 10, height = 7, units = "in", res = 300
+    )
   }
   # make multi-panel plot comparing length samples to the subset with ages
   par(

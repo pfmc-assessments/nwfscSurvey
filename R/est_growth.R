@@ -23,11 +23,11 @@
 #' @author Chantel Wetzel
 #' @export
 
-est_growth <- function(dir = NULL, dat, return_df = TRUE,
-  Par = data.frame(K = 0.13, Linf = 55, L0 = 15, CV0 = 0.10, CV1 = 0.10),
-  bySex = TRUE, estVB = TRUE, bins = NULL, sdFactor = 1,
-  dopng = lifecycle::deprecated()) {
-
+est_growth <- function(
+    dir = NULL, dat, return_df = TRUE,
+    Par = data.frame(K = 0.13, Linf = 55, L0 = 15, CV0 = 0.10, CV1 = 0.10),
+    bySex = TRUE, estVB = TRUE, bins = NULL, sdFactor = 1,
+    dopng = lifecycle::deprecated()) {
   if (lifecycle::is_present(dopng)) {
     lifecycle::deprecate_warn(
       when = "2.1",
@@ -46,38 +46,38 @@ est_growth <- function(dir = NULL, dat, return_df = TRUE,
     dat$Age_2 <- findInterval(dat$Age, bins)
   }
 
-  if (bySex){
+  if (bySex) {
     use_data <- which(
       !is.na(dat$Length_cm) &
-      !is.na(dat$Age)
+        !is.na(dat$Age)
     )
     la_data <- dat[use_data, ]
 
     sex_list <- list(which(
-        !is.na(dat$Length_cm) &
+      !is.na(dat$Length_cm) &
         !is.na(dat$Age) &
         dat$Sex %in% c("F")
-      ), which(
-        !is.na(dat$Length_cm) &
+    ), which(
+      !is.na(dat$Length_cm) &
         !is.na(dat$Age) &
         dat$Sex %in% c("M")
-      ), which(
-        !is.na(dat$Length_cm) &
+    ), which(
+      !is.na(dat$Length_cm) &
         !is.na(dat$Age) &
         dat$Sex %in% c("U")
-      ))
+    ))
 
     la_data_list <- list(
       female = la_data[la_data$Sex == "F", ],
       male = la_data[la_data$Sex == "M", ],
-      unsexed = la_data[la_data$Sex == "U", ])
-    sex_vec = c("F", "M", "U")
+      unsexed = la_data[la_data$Sex == "U", ]
+    )
+    sex_vec <- c("F", "M", "U")
     nn <- 3
-
   } else {
     use_data <- which(
       !is.na(dat$Length_cm) &
-      !is.na(dat$Age)
+        !is.na(dat$Age)
     )
     la_data <- dat[use_data, ]
     sex_list <- list(use_data)
@@ -96,20 +96,22 @@ est_growth <- function(dir = NULL, dat, return_df = TRUE,
   # Loop by sex
   for (i in 1:length(la_data_list)) {
     if (estVB) {
-      ests_log <- stats::optim(fn = fit_vbgrowth,
-                  par = log(Par),
-                  hessian = FALSE,
-                  par_logspace = TRUE,
-                  Ages = la_data_list[[i]]$Age,
-                  Lengths = la_data_list[[i]]$Length_cm)$par
+      ests_log <- stats::optim(
+        fn = fit_vbgrowth,
+        par = log(Par),
+        hessian = FALSE,
+        par_logspace = TRUE,
+        Ages = la_data_list[[i]]$Age,
+        Lengths = la_data_list[[i]]$Length_cm
+      )$par
       xpar[[i]] <- exp(ests_log)
-      #cat("Estimated VB parameters for", names(la_data_list)[i], xpar, "\n")
+      # cat("Estimated VB parameters for", names(la_data_list)[i], xpar, "\n")
     } else {
       xpar[[i]] <- Par
     }
 
     # Predicts from 1 to the maximum observed age by sex
-    #predL <- VB.fn(1:max(la_data_list[[i]]$Age), xpar[1], xpar[2], xpar[3])
+    # predL <- VB.fn(1:max(la_data_list[[i]]$Age), xpar[1], xpar[2], xpar[3])
     predL <- fit_vbgrowth(
       Par = xpar[[i]],
       par_logspace = FALSE,
@@ -119,7 +121,7 @@ est_growth <- function(dir = NULL, dat, return_df = TRUE,
       sdFactor = sdFactor
     )
     rownames(predL) <- as.character(la_data_list[[i]]$Age)
-    dat[sex_list[[i]], c("Lhat_low","Lhat_pred", "Lhat_high")] <- predL
+    dat[sex_list[[i]], c("Lhat_low", "Lhat_pred", "Lhat_high")] <- predL
 
     x <- split(la_data_list[[i]]$Length_cm, la_data_list[[i]]$Age_2)
     xsd <- unlist(lapply(x, sd))
@@ -132,16 +134,15 @@ est_growth <- function(dir = NULL, dat, return_df = TRUE,
     out[[i]] <- data.frame(ages = ages, sd = xsd, cv = xcv)
   } # end sex loop
 
-  if (!is.null(dir)){
+  if (!is.null(dir)) {
     save(xpar, file = file.path(dir, "growth_vonB_estimates.Rdata"))
   }
 
   ests <- c(xpar, out)
 
-  if(return_df){
+  if (return_df) {
     return(dat)
   } else {
     return(ests)
   }
-
 }

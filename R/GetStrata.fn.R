@@ -29,8 +29,7 @@
 #' @author Chantel Wetzel and Kelli Faye Johnson
 #'
 GetStrata.fn <- function(
-  area = "coast") {
-
+    area = "coast") {
   # development instructions ... find the numbers for each comment
   # (1) Add your area here in lower-case text
   # (2) make a new strata and name the object the same lower-case text

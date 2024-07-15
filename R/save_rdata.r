@@ -10,7 +10,9 @@ save_rdata <- function(x,
                        dir = NULL,
                        name_base,
                        verbose = TRUE) {
-  if (is.null(dir)) return()
+  if (is.null(dir)) {
+    return()
+  }
   check_dir(dir = dir, verbose = verbose)
 
   time <- substring(Sys.time(), 1, 10)

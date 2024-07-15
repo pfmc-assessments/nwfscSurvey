@@ -21,11 +21,10 @@
 #' }
 #'
 pull_haul <- function(
-  years= c(1970, 2050),
-  survey,
-  dir = NULL,
-  verbose = TRUE) {
-
+    years = c(1970, 2050),
+    survey,
+    dir = NULL,
+    verbose = TRUE) {
   # increase the timeout period to avoid errors when pulling data
   options(timeout = 4000000)
 
@@ -52,10 +51,12 @@ pull_haul <- function(
     "vessel_start_latitude_dd", "vessel_start_longitude_dd"
   )
 
-  url_text <- get_url(data_table = "trawl.operation_haul_fact",
-                      years = years,
-                      project_long = project_long,
-                      vars_long = var_str)
+  url_text <- get_url(
+    data_table = "trawl.operation_haul_fact",
+    years = years,
+    project_long = project_long,
+    vars_long = var_str
+  )
 
 
   if (verbose) {
@@ -65,7 +66,8 @@ pull_haul <- function(
 
   haul_data$date_formatted <-
     chron::chron(format(as.POSIXlt(haul_data$datetime_utc_iso, format = "%Y-%m-%dT%H:%M:%S"), "%Y-%m-%d"),
-    format = "y-m-d", out.format = "YYYY-m-d")
+      format = "y-m-d", out.format = "YYYY-m-d"
+    )
 
   haul_data$trawl_id <- as.character(haul_data$trawl_id)
 

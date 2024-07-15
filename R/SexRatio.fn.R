@@ -76,13 +76,12 @@
 #'     across all years and strata.
 #'
 SexRatio.fn <- function(
-  x,
-  sexRatioStage,
-  sexRatioUnsexed,
-  maxSizeUnsexed,
-  bins = NULL,
-  verbose = TRUE) {
-
+    x,
+    sexRatioStage,
+    sexRatioUnsexed,
+    maxSizeUnsexed,
+    bins = NULL,
+    verbose = TRUE) {
   if (sexRatioStage == 1) {
     # incorporate unsexed fish using sex ratios
     if (length(sexRatioUnsexed) == 1 & !is.na(sexRatioUnsexed)) {
@@ -234,7 +233,7 @@ SexRatio.fn <- function(
       }
     }
 
-    #out$TotalLjhAll <- out$TotalLjhAll
+    # out$TotalLjhAll <- out$TotalLjhAll
     out$TotalLjhF <- out$TotalLjhF + out$TotalLjhU * out$sexRatio
     out$TotalLjhM <- out$TotalLjhM + out$TotalLjhU * (1 - out$sexRatio)
     out$TotalLjhU <- round(out$TotalLjhU - out$TotalLjhU * out$sexRatio - out$TotalLjhU * (1 - out$sexRatio), 0)

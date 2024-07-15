@@ -37,7 +37,6 @@ check_strata <- function(
     dir = NULL,
     printfolder = "forSS3",
     verbose = TRUE) {
-
   plotdir <- file.path(dir, printfolder)
   check_dir(dir = plotdir, verbose = verbose)
 
@@ -54,7 +53,7 @@ check_strata <- function(
     for (s in c("depth_m", "latitude_dd")) {
       ind <- ind &
         data[, s] >= strata[n, paste(s, ".1", sep = "")] &
-        data[, s] <  strata[n, paste(s, ".2", sep = "")]
+        data[, s] < strata[n, paste(s, ".2", sep = "")]
     }
     stratum[ind] <- as.character(strata[n, 1])
   }

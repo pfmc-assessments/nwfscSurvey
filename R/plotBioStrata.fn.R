@@ -27,24 +27,23 @@
 #' @export
 
 PlotBioStrata.fn <- function(
-  dir = NULL, dat,
-  CI = 0.95,
-  scalar = 1e6,
-  gap = 0.03,
-  ylab = "Biomass ('000 mt)",
-  xlab = "Year",
-  survey.name = NULL,
-  strata.names = NULL,
-  ylim = NULL,
-  sameylim = FALSE,
-  add = FALSE,
-  mfrow.in = NULL,
-  col = "black",
-  pch.col = "black",
-  pch.type = 16,
-  dopng = lifecycle::deprecated(),
-  ...) {
-
+    dir = NULL, dat,
+    CI = 0.95,
+    scalar = 1e6,
+    gap = 0.03,
+    ylab = "Biomass ('000 mt)",
+    xlab = "Year",
+    survey.name = NULL,
+    strata.names = NULL,
+    ylim = NULL,
+    sameylim = FALSE,
+    add = FALSE,
+    mfrow.in = NULL,
+    col = "black",
+    pch.col = "black",
+    pch.type = 16,
+    dopng = lifecycle::deprecated(),
+    ...) {
   lifecycle::deprecate_soft(
     when = "2.4",
     what = "nwfscSurvey::PlotBioStrata.fn()",
@@ -82,16 +81,16 @@ PlotBioStrata.fn <- function(
   }
 
   if (is.null(strata.names)) {
-      strata.names <- names(bio_strat)
-      if(length(strata.names) == 1){
-        strata.names[1] <- ""
-      }
+    strata.names <- names(bio_strat)
+    if (length(strata.names) == 1) {
+      strata.names[1] <- ""
+    }
   }
 
   if (!is.null(mfrow.in)) {
     par(mfrow = c(mfrow.in[1], mfrow.in[length(mfrow.in)]))
   } else {
-    par(mfrow = c(max(length(bio_strat)/2, 1), 2))
+    par(mfrow = c(max(length(bio_strat) / 2, 1), 2))
   }
 
   for (a in 1:length(bio_strat)) {
@@ -123,12 +122,10 @@ PlotBioStrata.fn <- function(
     # gap <- gap * max(y)
     if (add) {
       points(x, y, col = pch.col, pch = pch.type)
-    }
-    else {
+    } else {
       plot(x, y, ylab = ylab, xlab = xlab, ylim = ylim, main = strata.names[a], col = pch.col, pch = pch.type, ...)
     }
     segments(x0 = x, y0 = y + gap, x1 = x, y1 = ci[1, ], col = col)
     segments(x0 = x, y0 = y - gap, x1 = x, y1 = ci[2, ], col = col)
   }
-
 }

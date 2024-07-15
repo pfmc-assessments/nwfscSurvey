@@ -10,10 +10,11 @@
 #' @examples
 #' strata <- CreateStrataDF.fn(
 #'   names          = c("deep_s", "shallow_s", "deep_mn", "shallow_m", "shallow_n"),
-#'   depths.shallow = c(183,  55, 183, 55, 55),
+#'   depths.shallow = c(183, 55, 183, 55, 55),
 #'   depths.deep    = c(549, 183, 549, 183, 183),
-#'   lats.south     = c( 32,  32,  40,  40, 44),
-#'   lats.north     = c( 40,  40,  49,  44, 49))
+#'   lats.south     = c(32, 32, 40, 40, 44),
+#'   lats.north     = c(40, 40, 49, 44, 49)
+#' )
 #' # Which returns a data frame that looks like the following:
 #' #      name      area Depth_m.1 Depth_m.2 Latitude_dd.1 Latitude_dd.2
 #' #    deep_s 16468.110       183       549            32            40
@@ -43,15 +44,16 @@
 #' See \code{\link{Biomass.fn}} for how the areas are used to create design-based biomass estimates.
 #'
 CreateStrataDF.fn <- function(
-  names = NA,
-  depths.shallow,
-  depths.deep,
-  lats.south,
-  lats.north) {
-
+    names = NA,
+    depths.shallow,
+    depths.deep,
+    lats.south,
+    lats.north) {
   SA3_v2021.1 <- NULL
-  utils::data("SA3_v2021.1", envir = environment(),
-    overwrite = TRUE, package = "nwfscSurvey")
+  utils::data("SA3_v2021.1",
+    envir = environment(),
+    overwrite = TRUE, package = "nwfscSurvey"
+  )
 
   out <- data.frame(
     name = NA,
@@ -70,9 +72,11 @@ CreateStrataDF.fn <- function(
     if (is.na(names)) {
       names <- rep(NA, NROW(out))
     } else {
-      stop("The length of names needs to be the same as other input arguments, i.e., ",
+      stop(
+        "The length of names needs to be the same as other input arguments, i.e., ",
         NROW(out), ",\ninstead the single value of ", names, " that you supplied.",
-        "\nA single value will only be repeated if it is 'NA', which leads to LETTERS for names.")
+        "\nA single value will only be repeated if it is 'NA', which leads to LETTERS for names."
+      )
     }
   }
   nanames <- which(is.na(names))
