@@ -45,10 +45,11 @@ north and south ranges using latitudes.
 \examples{
 strata <- CreateStrataDF.fn(
   names          = c("deep_s", "shallow_s", "deep_mn", "shallow_m", "shallow_n"),
-  depths.shallow = c(183,  55, 183, 55, 55),
+  depths.shallow = c(183, 55, 183, 55, 55),
   depths.deep    = c(549, 183, 549, 183, 183),
-  lats.south     = c( 32,  32,  40,  40, 44),
-  lats.north     = c( 40,  40,  49,  44, 49))
+  lats.south     = c(32, 32, 40, 40, 44),
+  lats.north     = c(40, 40, 49, 44, 49)
+)
 # Which returns a data frame that looks like the following:
 #      name      area Depth_m.1 Depth_m.2 Latitude_dd.1 Latitude_dd.2
 #    deep_s 16468.110       183       549            32            40

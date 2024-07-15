@@ -32,12 +32,10 @@
 #' for example.
 #'
 estimate_weight_length <- function(
-  data,
-  col_length = "lengthcm",
-  col_weight = "weightkg",
-  verbose = FALSE
-  ) {
-
+    data,
+    col_length = "lengthcm",
+    col_weight = "weightkg",
+    verbose = FALSE) {
   col_length <- tolower(col_length)
   col_weight <- tolower(col_weight)
   colnames(data) <- tolower(colnames(data))
@@ -52,12 +50,15 @@ estimate_weight_length <- function(
   dims <- dim(data)
   data <- data[
     !is.na(data[[col_weight]]) &
-    !is.na(data[[col_length]]), ]
+      !is.na(data[[col_length]]),
+  ]
 
   if (verbose) {
-    message("Calculating the weight-length relationship from ",
+    message(
+      "Calculating the weight-length relationship from ",
       nrow(data), "\nfish because ", dims[1] - nrow(data),
-      " fish did not have empirical weights and lengths.")
+      " fish did not have empirical weights and lengths."
+    )
   }
 
   # Create a tibble data frame equal to the number of sexes
@@ -66,22 +67,25 @@ estimate_weight_length <- function(
     female = . %>% dplyr::filter(sex == "F"),
     male = . %>% dplyr::filter(sex == "M"),
     all = . %>% dplyr::filter(sex %in% c(NA, "F", "M", "U", "H"))
-    ) %>%
+  ) %>%
     purrr::map_dfr(~ tidyr::nest(.x(data), data = everything()),
-      .id = "group") %>%
+      .id = "group"
+    ) %>%
     dplyr::mutate(
       fits = purrr::map(data, ~ stats::lm(log(weight) ~ log(length_cm),
-        data = .x)))
+        data = .x
+      ))
+    )
 
   wghtlen_ests <- mresults %>%
     dplyr::reframe(
       group = group,
       median_intercept = purrr::map_dbl(fits, ~ exp(.x$coefficients[1])),
       SD = purrr::map_dbl(fits, ~ sd(.x$residuals)),
-      A = purrr::map_dbl(fits, ~ exp(.x$coefficients[1])*exp(0.5*sd(.x$residuals)^2)),
+      A = purrr::map_dbl(fits, ~ exp(.x$coefficients[1]) * exp(0.5 * sd(.x$residuals)^2)),
       B = purrr::map_dbl(fits, ~ .x$coefficients[2])
-      ) %>%
-    data.frame
+    ) %>%
+    data.frame()
 
   if (verbose) {
     message("Estimated weight-length by sex:")

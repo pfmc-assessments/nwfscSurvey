@@ -87,7 +87,8 @@ test_that("pull-sample-types", {
   )
   expect_equal(
     sum(table(data_hake[which(data_hake$Partition_sample_types != "Size"), "Partition_sample_types"])),
-    sum(table(data_hake_3_types[, "Partition_sample_types"])))
+    sum(table(data_hake_3_types[, "Partition_sample_types"]))
+  )
 
   data_eggs <- pull_catch(
     common_name = "big skate",
@@ -103,10 +104,12 @@ test_that("pull-sample-types", {
   )
   expect_equal(
     nrow(data_eggs) - sum(data_eggs$Partition %in% c("Eggs", "Egg Cases")),
-    nrow(combine_eggs))
-  expect_equal(sum(data_eggs$total_catch_numbers[which(!data_eggs$Partition %in% c("Eggs", "Egg Cases"))]),
-               sum(combine_eggs$total_catch_numbers))
-
+    nrow(combine_eggs)
+  )
+  expect_equal(
+    sum(data_eggs$total_catch_numbers[which(!data_eggs$Partition %in% c("Eggs", "Egg Cases"))]),
+    sum(combine_eggs$total_catch_numbers)
+  )
 })
 
 test_that("pull_haul", {

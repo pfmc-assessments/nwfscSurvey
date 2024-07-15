@@ -38,29 +38,27 @@
 #'
 #' strata <- CreateStrataDF.fn(
 #'   names = c("shallow_wa", "shallow_or", "shallow_ca", "deep_wa", "deep_or", "deep_ca"),
-#'   depths.shallow = c( 55,   55,   55,  183,  183, 183),
-#'   depths.deep    = c(183,  183,  183,  549,  549, 549),
-#'   lats.south     = c(46.0, 42.0, 32.0, 46.0, 42.0, 32.0),
-#'   lats.north     = c(49.0, 46.0, 42.0, 49.0, 46.0, 42.0))
+#'   depths.shallow = c(55, 55, 55, 183, 183, 183),
+#'   depths.deep = c(183, 183, 183, 549, 549, 549),
+#'   lats.south = c(46.0, 42.0, 32.0, 46.0, 42.0, 32.0),
+#'   lats.north = c(49.0, 46.0, 42.0, 49.0, 46.0, 42.0)
+#' )
 #'
 #' biommass <- get_design_based(
 #'   data = catch,
 #'   strata = strata
 #' )
-#'
 #' }
 #'
 get_design_based <- function(
-  data,
-  strata,
-  CI = 0.95,
-  dir = NULL,
-  month = NA,
-  fleet = NA,
-  printfolder = "forSS3",
-  verbose = TRUE)
-{
-
+    data,
+    strata,
+    CI = 0.95,
+    dir = NULL,
+    month = NA,
+    fleet = NA,
+    printfolder = "forSS3",
+    verbose = TRUE) {
   plotdir <- file.path(dir, printfolder)
   check_dir(dir = plotdir, verbose = verbose)
 
@@ -71,7 +69,8 @@ get_design_based <- function(
   if (sum(strata_vars %in% colnames(data)) != length(strata_vars)) {
     stop(glue::glue(
       "The {strata_vars[1]} and/or {strata_vars[2]} were not found in the data.
-      They can be either uppper or lower case."))
+      They can be either uppper or lower case."
+    ))
   }
 
   if (nrow(strata) == 1) {
@@ -91,7 +90,7 @@ get_design_based <- function(
     for (s in 1:length(strata_vars)) {
       ind <- ind &
         data[, strata_vars[s]] >= strata[n, paste(strata_vars[s], ".1", sep = "")] &
-        data[, strata_vars[s]] <  strata[n, paste(strata_vars[s], ".2", sep = "")]
+        data[, strata_vars[s]] < strata[n, paste(strata_vars[s], ".2", sep = "")]
     }
     stratum[ind] <- as.character(strata[n, 1])
   }
@@ -131,7 +130,8 @@ get_design_based <- function(
 
   biomass_estimates <- list(
     biomass_by_strata = as.data.frame(biomass_year_stratum),
-    biomass = as.data.frame(biomass))
+    biomass = as.data.frame(biomass)
+  )
 
   if (!is.null(dir)) {
     biomass_out <- data.frame(
@@ -144,7 +144,8 @@ get_design_based <- function(
     write.csv(
       biomass_out,
       file = file.path(plotdir, paste("design_based_indices.csv", sep = "")),
-      row.names = FALSE)
+      row.names = FALSE
+    )
   }
 
   return(biomass_estimates)

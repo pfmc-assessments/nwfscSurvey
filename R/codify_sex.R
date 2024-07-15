@@ -54,7 +54,6 @@
 #' # Change codified sex from letters to integers for Stock Synthesis
 #' codify_sex_SS3(c("M", "U", "K"))
 codify_sex <- function(x) {
-
   out <- dplyr::case_when(
     grepl(pattern = "^\\s*[fF].*", x) ~ "F",
     grepl(pattern = "^\\s*[mM].*", x) ~ "M",

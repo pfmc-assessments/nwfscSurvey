@@ -113,21 +113,31 @@ downloading all data can be done easily within this function.
 catch_data <- pull_catch(survey = "NWFSC.Combo")
 
 # Example with specified common name
-catch_data <- pull_catch(common_name = "vermilion rockfish",
-                 survey = "NWFSC.Combo")
+catch_data <- pull_catch(
+  common_name = "vermilion rockfish",
+  survey = "NWFSC.Combo"
+)
 
 # Example with specified scientific name
-catch_data <- pull_catch(sci_name = "Eopsetta jordani",
-                 survey = "NWFSC.Combo")
+catch_data <- pull_catch(
+  sci_name = "Eopsetta jordani",
+  survey = "NWFSC.Combo"
+)
 
 # Example with multiple names
-catch_data <- pull_catch(common_name = c("vermilion rockfish",
-                 "vermilion and sunset rockfish"), survey = "NWFSC.Combo")
+catch_data <- pull_catch(common_name = c(
+  "vermilion rockfish",
+  "vermilion and sunset rockfish"
+), survey = "NWFSC.Combo")
 
-catch_data <- pull_catch(sci_name = c("Sebastes miniatus",
-                 "Sebastes sp. (crocotulus)",
-                 "Sebastes sp. (miniatus / crocotulus)"),
-                 survey = "NWFSC.Combo")
+catch_data <- pull_catch(
+  sci_name = c(
+    "Sebastes miniatus",
+    "Sebastes sp. (crocotulus)",
+    "Sebastes sp. (miniatus / crocotulus)"
+  ),
+  survey = "NWFSC.Combo"
+)
 }
 
 }

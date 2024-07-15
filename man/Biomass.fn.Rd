@@ -73,16 +73,16 @@ catch <- pull_catch(
 
 strata <- CreateStrataDF.fn(
   names = c("shallow_wa", "shallow_or", "shallow_ca", "deep_wa", "deep_or", "deep_ca"),
-  depths.shallow = c( 55,   55,   55,  183,  183, 183),
-  depths.deep    = c(183,  183,  183,  549,  549, 549),
-  lats.south     = c(46.0, 42.0, 32.0, 46.0, 42.0, 32.0),
-  lats.north     = c(49.0, 46.0, 42.0, 49.0, 46.0, 42.0))
+  depths.shallow = c(55, 55, 55, 183, 183, 183),
+  depths.deep = c(183, 183, 183, 549, 549, 549),
+  lats.south = c(46.0, 42.0, 32.0, 46.0, 42.0, 32.0),
+  lats.north = c(49.0, 46.0, 42.0, 49.0, 46.0, 42.0)
+)
 
 biommass <- Biomass.fn(
   dat = catch,
   strat.df = strata
 )
-
 }
 
 }

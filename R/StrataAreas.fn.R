@@ -15,7 +15,7 @@
 #' @examples
 #' areaexample <- StrataAreas.fn(data.frame(
 #'   name = LETTERS[1:8],
-#'   Latitude_dd.2 = c(49, 49, 49, 45, 45, 40.5,40.5, 40.5),
+#'   Latitude_dd.2 = c(49, 49, 49, 45, 45, 40.5, 40.5, 40.5),
 #'   Latitude_dd.1 = c(45, 45, 40.5, 40.5, 40.5, 34.5, 34.5, 34.5),
 #'   Depth_m.1 = c(183, 549, 900, 183, 549, 183, 549, 900),
 #'   Depth_m.2 = c(549, 900, 1280, 549, 900, 549, 900, 1280)
@@ -41,9 +41,8 @@
 #' See \code{\link{CreateStrataDF.fn}} for a wrapper to this function.
 #' @export
 StrataAreas.fn <- function(
-  strat.df,
-  df = get(utils::data("SA3_v2021.1", overwrite = TRUE, package = "nwfscSurvey"))) {
-
+    strat.df,
+    df = get(utils::data("SA3_v2021.1", overwrite = TRUE, package = "nwfscSurvey"))) {
   S <- strat.df
   S$area <- NA
 
@@ -85,7 +84,7 @@ StrataAreas.fn <- function(
     minDep <- min(c(S$Depth_m.1[i], S$Depth_m.2[i])) <= df$MIN_DEPTH_M
 
     R <- df[maxLat & minLat & maxDep & minDep, ]
-    S$area[i] <- sum(R$AREA_HECTARES) * 0.01 #km2, alternative *10000 sq meter
+    S$area[i] <- sum(R$AREA_HECTARES) * 0.01 # km2, alternative *10000 sq meter
   }
   return(S)
 }
