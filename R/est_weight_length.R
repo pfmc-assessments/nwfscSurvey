@@ -63,25 +63,25 @@ estimate_weight_length <- function(
   # Create a tibble data frame equal to the number of sexes
   # in the data with 3 columns
   mresults <- tibble::lst(
-    female = . %>% dplyr::filter(sex == "F"),
-    male = . %>% dplyr::filter(sex == "M"),
-    all = . %>% dplyr::filter(sex %in% c(NA, "F", "M", "U", "H"))
-    ) %>%
+    female = . %>% dplyr::filter(sex %in% c("F", "Female", "f")),
+    male = . %>% dplyr::filter(sex %in% c("M", "Male", "m")),
+    all = . %>% dplyr::filter(sex %in% c(NA, "F", "M", "U", "H", "Male", "Female", "Unsexed", "m", "f", "u"))
+    ) |>
     purrr::map_dfr(~ tidyr::nest(.x(data), data = everything()),
-      .id = "group") %>%
+      .id = "group") |>
     dplyr::mutate(
       fits = purrr::map(data, ~ stats::lm(log(weight) ~ log(length_cm),
         data = .x)))
 
-  wghtlen_ests <- mresults %>%
+  wghtlen_ests <- mresults |>
     dplyr::reframe(
       group = group,
       median_intercept = purrr::map_dbl(fits, ~ exp(.x$coefficients[1])),
       SD = purrr::map_dbl(fits, ~ sd(.x$residuals)),
       A = purrr::map_dbl(fits, ~ exp(.x$coefficients[1])*exp(0.5*sd(.x$residuals)^2)),
       B = purrr::map_dbl(fits, ~ .x$coefficients[2])
-      ) %>%
-    data.frame
+      ) |>
+    data.frame()
 
   if (verbose) {
     message("Estimated weight-length by sex:")
