@@ -67,9 +67,10 @@ estimate_weight_length <- function(
     female = . %>% dplyr::filter(sex %in% c("F", "Female", "f")),
     male = . %>% dplyr::filter(sex %in% c("M", "Male", "m")),
     all = . %>% dplyr::filter(sex %in% c(NA, "F", "M", "U", "H", "Male", "Female", "Unsexed", "m", "f", "u"))
-    ) |>
+  ) |>
     purrr::map_dfr(~ tidyr::nest(.x(data), data = everything()),
-      .id = "group") |>
+      .id = "group"
+    ) |>
     dplyr::mutate(
       fits = purrr::map(data, ~ stats::lm(log(weight) ~ log(length_cm),
         data = .x
@@ -83,7 +84,7 @@ estimate_weight_length <- function(
       SD = purrr::map_dbl(fits, ~ sd(.x$residuals)),
       A = purrr::map_dbl(fits, ~ exp(.x$coefficients[1]) * exp(0.5 * sd(.x$residuals)^2)),
       B = purrr::map_dbl(fits, ~ .x$coefficients[2])
-      ) |>
+    ) |>
     data.frame()
 
   if (verbose) {
