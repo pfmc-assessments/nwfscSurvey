@@ -104,17 +104,19 @@ biomass = get_design_based(
 `get_design_based()` returns a list with the second element containing the design based index of abundance. The design based index is calculated based on the defined stratas. The function writes a csv file inside the dir input location to a "forSS3" folder. The function returns a list with the second element containing the design based estimates by year:
 
 ```{r, results = 'asis', echo = FALSE}
-  library(xtable)
-  library(kableExtra)
+library(xtable)
+library(kableExtra)
 
-  tab = rbind( c(2003, 38888.94, 0.379, 18519.720, 81661.56),
-               c("...", "", ""),
-               c(2015, 22317.60, 0.135, 17135.936, 29066.13))
-  
-  colnames(tab) = c("year", "est", "se_log", "lwr", "upr")
-  
-  table = tab 
-  kable(table, "html")
+tab <- rbind(
+  c(2003, 38888.94, 0.379, 18519.720, 81661.56),
+  c("...", "", ""),
+  c(2015, 22317.60, 0.135, 17135.936, 29066.13)
+)
+
+colnames(tab) <- c("year", "est", "se_log", "lwr", "upr")
+
+table <- tab
+kable(table, "html")
 ```
 
 Plot the coastwide design based index of abundance with uncertainty intervals:

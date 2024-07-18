@@ -27,18 +27,17 @@
 #' @export
 
 plot_varlenage <- function(
-  dir = NULL,
-  dat,
-  main = NULL,
-  Par = data.frame(K = 0.13, Linf = 55, L0 = 15, CV0 = 0.10, CV1 = 0.10),
-  bySex = TRUE,
-  estVB = TRUE,
-  bins = NULL,
-  legX = "bottomleft",
-  legY = NULL,
-  dopng = lifecycle::deprecated(),
-  ...) {
-
+    dir = NULL,
+    dat,
+    main = NULL,
+    Par = data.frame(K = 0.13, Linf = 55, L0 = 15, CV0 = 0.10, CV1 = 0.10),
+    bySex = TRUE,
+    estVB = TRUE,
+    bins = NULL,
+    legX = "bottomleft",
+    legY = NULL,
+    dopng = lifecycle::deprecated(),
+    ...) {
   if (lifecycle::is_present(dopng)) {
     lifecycle::deprecate_warn(
       when = "2.1",
@@ -46,7 +45,7 @@ plot_varlenage <- function(
     )
   }
 
-  calc_vb <- function(age, k, Linf, L0){
+  calc_vb <- function(age, k, Linf, L0) {
     out <- Linf - (Linf - L0) * exp(-age * k)
     return(out)
   }
@@ -71,8 +70,10 @@ plot_varlenage <- function(
 
   par(mfcol = c(2, nn), mar = c(4, 4, 4, 4), oma = c(2, 2, 2, 2))
 
-  ests <- est_growth(dir = dir, dat = dat, Par = Par, return_df = FALSE,
-    bySex = bySex, estVB = estVB, bins = bins)
+  ests <- est_growth(
+    dir = dir, dat = dat, Par = Par, return_df = FALSE,
+    bySex = bySex, estVB = estVB, bins = bins
+  )
   if (length(ests) > 2) {
     sex_names <- c("female", "male")
   } else {
@@ -81,7 +82,7 @@ plot_varlenage <- function(
   num <- grep("sd_cv", names(ests))
 
   colors <- c("#440154FF", "#1F998AFF", "#CBE11EFF")
-  #These colors correspond to viridis::viridis(14)[c(1, 8)]
+  # These colors correspond to viridis::viridis(14)[c(1, 8)]
 
   max_loop <- ifelse(length(num) > 1, 2, 1)
 
@@ -101,21 +102,23 @@ plot_varlenage <- function(
     plot(ages, xcv, col = colors[2], cex = 1.1, xlab = "", ylab = "", yaxt = "n", type = "b", pch = 3, lty = 2, ...)
     axis(4)
     mtext("CV", side = 4, line = 2.6)
-    legend(bty = 'n', x = legX, y = legY, c("SD", "CV"), col = colors, pch = c(16, 3), lty = c(1, 2))
-    plot(calc_vb(age = ages, k = xpar[1], Linf = xpar[2], L0 = xpar[3]), xsd, xlab = "Predicted Length at Age", ylab = "SD of L@A",
-      col = colors[1], cex = 1.1, type = "b", pch = 16, lty = 1, main = sex_names[i], ...)
+    legend(bty = "n", x = legX, y = legY, c("SD", "CV"), col = colors, pch = c(16, 3), lty = c(1, 2))
+    plot(calc_vb(age = ages, k = xpar[1], Linf = xpar[2], L0 = xpar[3]), xsd,
+      xlab = "Predicted Length at Age", ylab = "SD of L@A",
+      col = colors[1], cex = 1.1, type = "b", pch = 16, lty = 1, main = sex_names[i], ...
+    )
     par(new = T)
-    plot(calc_vb(age = ages, k = xpar[1], Linf = xpar[2], L0 = xpar[3]), xcv, xlab = "",
-      col = colors[2], cex = 1.1, ylab = "", yaxt = "n", type = "b", pch = 3, lty = 2, ...)
+    plot(calc_vb(age = ages, k = xpar[1], Linf = xpar[2], L0 = xpar[3]), xcv,
+      xlab = "",
+      col = colors[2], cex = 1.1, ylab = "", yaxt = "n", type = "b", pch = 3, lty = 2, ...
+    )
     axis(4)
     mtext("CV", side = 4, line = 2.6)
-    legend(bty = 'n', col = colors, x = legX, y = legY, c("SD", "CV"), pch = c(16, 3), lty = c(1, 2))
-
+    legend(bty = "n", col = colors, x = legX, y = legY, c("SD", "CV"), pch = c(16, 3), lty = c(1, 2))
   } # end sex loop
 
-  if (!is.null(dir)){
+  if (!is.null(dir)) {
     dev.off()
     save(ests, file = file.path(dir, "growth_variance_vonB_estimates.Rdata"))
   }
-
 }

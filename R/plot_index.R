@@ -35,7 +35,6 @@ plot_index <- function(
     height = 7,
     width = 7,
     dpi = 300) {
-
   plotdir <- file.path(dir, "plots")
   check_dir(plotdir)
   plot_names <- file.path(
@@ -43,13 +42,15 @@ plot_index <- function(
     paste0(
       add_save_name,
       ifelse(test = is.null(add_save_name), yes = "", no = "_"),
-      c("design_based_index.png",
-        "design_based_index_strata.png")
+      c(
+        "design_based_index.png",
+        "design_based_index_strata.png"
+      )
     )
   )
 
   if (is.list(data)) {
-    if ("biomass" %in% names(data) ) {
+    if ("biomass" %in% names(data)) {
       data_1 <- data$biomass
     } else {
       warning("Biomass not present in the data list. Annual biomass will not be plotted.")
@@ -66,7 +67,7 @@ plot_index <- function(
   }
 
   igroup <- 1
-  if (igroup %in% plot){
+  if (igroup %in% plot) {
     gg <- ggplot2::ggplot(
       data = data_1,
       ggplot2::aes(
@@ -96,7 +97,7 @@ plot_index <- function(
   }
 
   igroup <- 2
-  if (igroup %in% plot){
+  if (igroup %in% plot) {
     g2 <- ggplot2::ggplot(
       data = data_2,
       ggplot2::aes(
@@ -104,15 +105,16 @@ plot_index <- function(
         y = est,
       )
     ) +
-    ggplot2::geom_point() +
-    ggplot2::geom_line(lty = 2) +
-    ggplot2::theme_bw() +
-    ggplot2::scale_colour_viridis_d() +
-    ggplot2::xlab("Year") +
-    ggplot2::ylab("Design Based Index by Strata (mt)") +
-    ggplot2::expand_limits(y = 0) +
-    ggplot2::facet_wrap(
-      facets = "stratum", scales = "free", ncol = 2)
+      ggplot2::geom_point() +
+      ggplot2::geom_line(lty = 2) +
+      ggplot2::theme_bw() +
+      ggplot2::scale_colour_viridis_d() +
+      ggplot2::xlab("Year") +
+      ggplot2::ylab("Design Based Index by Strata (mt)") +
+      ggplot2::expand_limits(y = 0) +
+      ggplot2::facet_wrap(
+        facets = "stratum", scales = "free", ncol = 2
+      )
 
     if (!is.null(dir)) {
       ggplot2::ggsave(
@@ -123,5 +125,4 @@ plot_index <- function(
       print(g2)
     }
   }
-
 }

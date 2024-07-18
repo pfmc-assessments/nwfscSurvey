@@ -16,7 +16,6 @@
 #' used, e.g., [pull_catch()].
 #'
 get_json <- function(url) {
-
   out <- httr::GET(url) |>
     httr::content(as = "text", encoding = "UTF-8") |>
     jsonlite::fromJSON()
@@ -26,8 +25,8 @@ get_json <- function(url) {
       "\n No data returned by the warehouse for the filters given.
       \n Make sure the year range is correct (cannot include -Inf or Inf) for the project selected and the input name is correct,
       \n otherwise there may be no data for this species from this project.\n
-      URL: {url}")
-    )
+      URL: {url}"
+    ))
   }
   return(out)
 }

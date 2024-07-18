@@ -35,7 +35,6 @@
 #' )
 #'
 GetSpp.fn <- function(species, unident = FALSE) {
-
   # background information
   sppnames <- nwfscSurvey::PullSpp.fn()
   if (!unident) {
@@ -110,20 +109,22 @@ GetSpp.fn <- function(species, unident = FALSE) {
   index <- match(tolower(out[, "common_name"]), tolower(spplist[, 2]))
   if (any(is.na(index))) {
     bad <- which(is.na(index))
-    if(length(index) == 1){
-    warning("The following species were not found in the look up table\n",
-      "stored in GetSpp for default strata, please self-assign strata:\n",
-      paste(unique(out[bad, "input"]), collapse = ", "),
-      call. = FALSE
-    ) }
+    if (length(index) == 1) {
+      warning("The following species were not found in the look up table\n",
+        "stored in GetSpp for default strata, please self-assign strata:\n",
+        paste(unique(out[bad, "input"]), collapse = ", "),
+        call. = FALSE
+      )
+    }
 
-    if(length(index) != 1){
-    warning("Multiple matches were found for the input species in the look up table\n",
-      "stored in GetSpp. Only one match is returned. The common_name for the removed match is:\n",
-      paste(unique(out[bad, "common_name"]), collapse = ", "),
-      call. = FALSE
-    )}
-    out <- out[!is.na(index),]
+    if (length(index) != 1) {
+      warning("Multiple matches were found for the input species in the look up table\n",
+        "stored in GetSpp. Only one match is returned. The common_name for the removed match is:\n",
+        paste(unique(out[bad, "common_name"]), collapse = ", "),
+        call. = FALSE
+      )
+    }
+    out <- out[!is.na(index), ]
     index <- index[!is.na(index)]
   }
 
@@ -131,7 +132,7 @@ GetSpp.fn <- function(species, unident = FALSE) {
     test = is.na(index),
     yes = "coast",
     no = spplist[index, 1]
-    )
+  )
 
   return(out)
 }

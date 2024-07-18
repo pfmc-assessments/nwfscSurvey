@@ -11,7 +11,7 @@ label_land <- function(size = 3) {
   info_labels <- data.frame(
     label = c("California", "Oregon", "Washington", "Canada"),
     lon = c(-119.7, -120.5, -119.8, -118.5),
-    lat = c(36.778259,	43.5, 47.751076, 49.7)
+    lat = c(36.778259, 43.5, 47.751076, 49.7)
   )
   list(
     ggplot2::geom_text(

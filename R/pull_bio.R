@@ -25,39 +25,46 @@
 #' bio_dat <- PullBio.fn(SurveyName = "NWFSC.Combo")
 #'
 #' # Example with specified common name
-#' bio_dat <- PullBio.fn(Name = "vermilion rockfish",
-#' SurveyName = "NWFSC.Combo")
+#' bio_dat <- PullBio.fn(
+#'   Name = "vermilion rockfish",
+#'   SurveyName = "NWFSC.Combo"
+#' )
 #'
 #' # Example with specified scientific name
-#' bio_dat <- PullBio.fn(SciName = "Eopsetta jordani",
-#' SurveyName = "NWFSC.Combo")
+#' bio_dat <- PullBio.fn(
+#'   SciName = "Eopsetta jordani",
+#'   SurveyName = "NWFSC.Combo"
+#' )
 #'
 #' # Example with multiple names
-#' bio_dat <- PullBio.fn(SciName = c("Sebastes aurora","Eopsetta jordani"),
-#' SurveyName = "NWFSC.Combo")
+#' bio_dat <- PullBio.fn(
+#'   SciName = c("Sebastes aurora", "Eopsetta jordani"),
+#'   SurveyName = "NWFSC.Combo"
+#' )
 # bio_dat <- PullBio.fn(Name = c("Sunset rockfish", "vermilion rockfish",
 # "vermilion and sunset rockfish"), SurveyName = "NWFSC.Combo")
 #' }
 #'
 pull_bio <- function(
-  common_name = NULL,
-  sci_name = NULL,
-  years = c(1970, 2050),
-  survey,
-  dir = NULL,
-  convert = TRUE,
-  verbose = TRUE) {
-
+    common_name = NULL,
+    sci_name = NULL,
+    years = c(1970, 2050),
+    survey,
+    dir = NULL,
+    convert = TRUE,
+    verbose = TRUE) {
   options(timeout = 4000000)
   if (survey %in% c("NWFSC.Shelf.Rockfish", "NWFSC.Hook.Line")) {
-    stop("The catch pull currently does not work for NWFSC Hook & Line Survey data.",
+    stop(
+      "The catch pull currently does not work for NWFSC Hook & Line Survey data.",
       "\nA subset of the data is available on the data warehouse https://www.webapp.nwfsc.noaa.gov/data",
-      "\nContact John Harms (john.harms@noaa.gov) for the full data set.")
+      "\nContact John Harms (john.harms@noaa.gov) for the full data set."
+    )
   }
 
-  if(length(c(common_name, sci_name)) != max(c(length(common_name), length(sci_name)))){
+  if (length(c(common_name, sci_name)) != max(c(length(common_name), length(sci_name)))) {
     stop("Can not pull data using both the common_name or sci_name together.
-         \n Please retry using only one." )
+         \n Please retry using only one.")
   }
 
 
@@ -87,7 +94,8 @@ pull_bio <- function(
     "length_cm", "width_cm", "sex", "age_years", "latitude_dd", "longitude_dd"
   )
 
-  vars_long <- c(vars_short,
+  vars_long <- c(
+    vars_short,
     "ageing_laboratory_dim$laboratory",
     "standard_survey_age_indicator",
     "standard_survey_length_or_width_indicator",
@@ -97,17 +105,19 @@ pull_bio <- function(
 
   # symbols here are generally: %22 = ", %2C = ",", %20 = " "
   species_str <- convert_to_hex_string(species)
-  add_species <- paste0("field_identified_taxonomy_dim$", var_name, "|=[", species_str,"]")
+  add_species <- paste0("field_identified_taxonomy_dim$", var_name, "|=[", species_str, "]")
 
   if (any(species == "pull all")) {
     add_species <- ""
   }
 
-  url_text <- get_url(data_table = "trawl.individual_fact",
-                      project_long = project_long,
-                      add_species = add_species,
-                      years = years,
-                      vars_long = vars_long)
+  url_text <- get_url(
+    data_table = "trawl.individual_fact",
+    project_long = project_long,
+    add_species = add_species,
+    years = years,
+    vars_long = vars_long
+  )
 
   if (verbose) {
     message("Pulling biological data. This can take up to ~ 30 seconds (or more).")
@@ -152,12 +162,13 @@ pull_bio <- function(
   bio_pull <- bio_pull[, vars_short]
 
   if (survey %in% c("Triennial", "AFSC.Slope")) {
-
-    url_text <- get_url(data_table = "trawl.triennial_length_fact",
-                    project_long = project_long,
-                    add_species = add_species,
-                    years = years,
-                    vars_long = vars_long)
+    url_text <- get_url(
+      data_table = "trawl.triennial_length_fact",
+      project_long = project_long,
+      add_species = add_species,
+      years = years,
+      vars_long = vars_long
+    )
 
     len_pull <- try(get_json(url = url_text))
 
@@ -206,18 +217,18 @@ pull_bio <- function(
     }
   }
 
-  if(convert) {
+  if (convert) {
     bio$age <- bio$age_years
     bio$weight <- bio$weight_kg
     firstup <- function(x) {
       substr(x, 1, 1) <- toupper(substr(x, 1, 1))
       x
     }
-    if(survey %in% c("Triennial", "AFSC.Slope")){
+    if (survey %in% c("Triennial", "AFSC.Slope")) {
       bio[[1]][, "weight"] <- bio[[1]][, "weight_kg"]
       colnames(bio[[1]]) <- firstup(colnames(bio[[1]]))
 
-      if(!is.null(nrow(bio[[2]]))){
+      if (!is.null(nrow(bio[[2]]))) {
         bio[[2]][, "age"] <- bio[[2]][, "age_years"]
         bio[[2]][, "weight"] <- bio[[2]][, "weight_kg"]
         colnames(bio[[2]]) <- firstup(colnames(bio[[2]]))

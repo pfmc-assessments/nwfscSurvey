@@ -40,21 +40,31 @@
 #' catch_data <- pull_catch(survey = "NWFSC.Combo")
 #'
 #' # Example with specified common name
-#' catch_data <- pull_catch(common_name = "vermilion rockfish",
-#'                  survey = "NWFSC.Combo")
+#' catch_data <- pull_catch(
+#'   common_name = "vermilion rockfish",
+#'   survey = "NWFSC.Combo"
+#' )
 #'
 #' # Example with specified scientific name
-#' catch_data <- pull_catch(sci_name = "Eopsetta jordani",
-#'                  survey = "NWFSC.Combo")
+#' catch_data <- pull_catch(
+#'   sci_name = "Eopsetta jordani",
+#'   survey = "NWFSC.Combo"
+#' )
 #'
 #' # Example with multiple names
-#' catch_data <- pull_catch(common_name = c("vermilion rockfish",
-#'                  "vermilion and sunset rockfish"), survey = "NWFSC.Combo")
+#' catch_data <- pull_catch(common_name = c(
+#'   "vermilion rockfish",
+#'   "vermilion and sunset rockfish"
+#' ), survey = "NWFSC.Combo")
 #'
-#' catch_data <- pull_catch(sci_name = c("Sebastes miniatus",
-#'                  "Sebastes sp. (crocotulus)",
-#'                  "Sebastes sp. (miniatus / crocotulus)"),
-#'                  survey = "NWFSC.Combo")
+#' catch_data <- pull_catch(
+#'   sci_name = c(
+#'     "Sebastes miniatus",
+#'     "Sebastes sp. (crocotulus)",
+#'     "Sebastes sp. (miniatus / crocotulus)"
+#'   ),
+#'   survey = "NWFSC.Combo"
+#' )
 #' }
 #'
 pull_catch <- function(common_name = NULL,
@@ -65,16 +75,17 @@ pull_catch <- function(common_name = NULL,
                        convert = TRUE,
                        verbose = TRUE,
                        sample_types = c("NA", NA, "Life Stage", "Size")[1:2]) {
-
   if (survey %in% c("NWFSC.Shelf.Rockfish", "NWFSC.Hook.Line")) {
-    stop("The catch pull currently does not work for NWFSC Hook & Line Survey data.",
+    stop(
+      "The catch pull currently does not work for NWFSC Hook & Line Survey data.",
       "\nA subset of the data is available on the data warehouse https://www.webapp.nwfsc.noaa.gov/data",
-      "\nContact John Harms (john.harms@noaa.gov) for the full data set.")
+      "\nContact John Harms (john.harms@noaa.gov) for the full data set."
+    )
   }
 
   if (length(c(common_name, sci_name)) != max(c(length(common_name), length(sci_name)))) {
     stop("Can not pull data using both the common_name or sci_name together.
-         \n Please retry using only one." )
+         \n Please retry using only one.")
   }
 
   check_dir(dir = dir, verbose = verbose)
@@ -110,7 +121,7 @@ pull_catch <- function(common_name = NULL,
   vars_long <- c(
     "common_name", "scientific_name", "project", "year", "vessel", "tow",
     "total_catch_numbers", "total_catch_wt_kg",
-    "subsample_count", "subsample_wt_kg",  "cpue_kg_per_ha_der",
+    "subsample_count", "subsample_wt_kg", "cpue_kg_per_ha_der",
     "statistical_partition_dim$statistical_partition_type",
     "partition",
     perf_codes
@@ -121,17 +132,19 @@ pull_catch <- function(common_name = NULL,
 
   # symbols here are generally: %22 = ", %2C = ",", %20 = " "
   species_str <- convert_to_hex_string(species)
-  add_species <- paste0("field_identified_taxonomy_dim$", var_name, "|=[", species_str,"]")
+  add_species <- paste0("field_identified_taxonomy_dim$", var_name, "|=[", species_str, "]")
 
   if (any(species == "pull all")) {
     add_species <- ""
   }
 
-  url_text <- get_url(data_table = "trawl.catch_fact",
-                      project_long = project_long,
-                      add_species = add_species,
-                      years = years,
-                      vars_long = vars_long)
+  url_text <- get_url(
+    data_table = "trawl.catch_fact",
+    project_long = project_long,
+    add_species = add_species,
+    years = years,
+    vars_long = vars_long
+  )
 
   if (verbose) {
     message("Pulling catch data. This can take up to ~ 30 seconds (or more).")
@@ -163,16 +176,20 @@ pull_catch <- function(common_name = NULL,
   }
 
   # Pull all tow data including tows where the species was not observed
-  vars_long <- c("project", "year", "vessel", "pass", "tow", "datetime_utc_iso",
-                 "depth_m", "longitude_dd", "latitude_dd", "area_swept_ha_der",
-                 "trawl_id", "operation_dim$legacy_performance_code")
+  vars_long <- c(
+    "project", "year", "vessel", "pass", "tow", "datetime_utc_iso",
+    "depth_m", "longitude_dd", "latitude_dd", "area_swept_ha_der",
+    "trawl_id", "operation_dim$legacy_performance_code"
+  )
 
   vars_short <- vars_long[vars_long != "operation_dim$legacy_performance_code"]
 
-  url_text <- get_url(data_table = "trawl.operation_haul_fact",
-                      project_long = project_long,
-                      years = years,
-                      vars_long = vars_long)
+  url_text <- get_url(
+    data_table = "trawl.operation_haul_fact",
+    project_long = project_long,
+    years = years,
+    vars_long = vars_long
+  )
 
   all_tows <- try(get_json(url = url_text))
 
@@ -238,21 +255,24 @@ pull_catch <- function(common_name = NULL,
   if (length(no_area) > 0) {
     if (verbose) {
       print(
-        glue::glue("There are {length(no_area)} records with no area swept calculation. These record will be filled with the mean swept area across all tows."))
+        glue::glue("There are {length(no_area)} records with no area swept calculation. These record will be filled with the mean swept area across all tows.")
+      )
       print(
-        catch[no_area, c("trawl_id", "year", "area_swept_ha_der", "cpue_kg_per_ha_der", "total_catch_numbers")])
+        catch[no_area, c("trawl_id", "year", "area_swept_ha_der", "cpue_kg_per_ha_der", "total_catch_numbers")]
+      )
     }
     catch[no_area, "area_swept_ha_der"] <- mean(catch$area_swept_ha_der, trim = 0.05, na.rm = TRUE)
   }
 
   # Fill in zeros where needed
   catch[is.na(catch)] <- 0
-  catch[catch[,"partition_sample_types"] == 0, "partition_sample_types"] <- NA
-  catch[catch[,"partition"] == 0, "partition"] <- NA
+  catch[catch[, "partition_sample_types"] == 0, "partition_sample_types"] <- NA
+  catch[catch[, "partition"] == 0, "partition"] <- NA
 
   catch$date <- chron::chron(
     format(as.POSIXlt(catch$datetime_utc_iso, format = "%Y-%m-%dT%H:%M:%S"), "%Y-%m-%d"),
-    format = "y-m-d", out.format = "YYYY-m-d")
+    format = "y-m-d", out.format = "YYYY-m-d"
+  )
 
   catch$trawl_id <- as.character(catch$trawl_id)
   # kg / km2 <- (100 hectare / 1 *km2) * (kg / hectare)
@@ -268,7 +288,6 @@ pull_catch <- function(common_name = NULL,
   }
 
   if (convert) {
-
     firstup <- function(x) {
       substr(x, 1, 1) <- toupper(substr(x, 1, 1))
       x

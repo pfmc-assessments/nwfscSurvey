@@ -17,14 +17,13 @@
 #' @export
 
 PlotSexRatio.fn <- function(
-  dir,
-  dat,
-  data.type = "length",
-  main = NULL,
-  circleSize = 0.1,
-  dopng = lifecycle::deprecated(),
-  ...) {
-
+    dir,
+    dat,
+    data.type = "length",
+    main = NULL,
+    circleSize = 0.1,
+    dopng = lifecycle::deprecated(),
+    ...) {
   if (lifecycle::is_present(dopng)) {
     lifecycle::deprecate_warn(
       when = "2.1",
@@ -69,31 +68,39 @@ PlotSexRatio.fn <- function(
   nobs <- temp[, "F"] + temp[, "M"]
 
   par(mfrow = c(1, 1))
-  plot(x = names(ratioF), y = ratioF, type = "l", col = "red", lty = 2,
-    xlab = axis.name, ylim = c(0, 1), main = main, ylab = "Fraction female", ...)
+  plot(
+    x = names(ratioF), y = ratioF, type = "l", col = "red", lty = 2,
+    xlab = axis.name, ylim = c(0, 1), main = main, ylab = "Fraction female", ...
+  )
   abline(h = 0.50, col = "grey", lty = 2, lwd = 2)
-  symbols(x = names(ratioF), y = ratioF, circles = nobs,
+  symbols(
+    x = names(ratioF), y = ratioF, circles = nobs,
     inches = circleSize, fg = "red", bg = rgb(1, 0, 0, alpha = 0.5),
-    add = TRUE)
+    add = TRUE
+  )
 
   test <- dplyr::count(dat, bin, Sex) %>%
     mutate(Proportion = n / sum(n))
 
   p <- ggplot(test, aes(x = bin, y = Proportion, fill = Sex)) +
     geom_bar(position = "fill", stat = "identity") +
-    geom_hline(yintercept = 0.50, col = 'white', lwd = 2) +
-    scale_fill_manual(values = c('F' = 'red', 'M' = 'blue', 'U' = "forestgreen")) +
+    geom_hline(yintercept = 0.50, col = "white", lwd = 2) +
+    scale_fill_manual(values = c("F" = "red", "M" = "blue", "U" = "forestgreen")) +
     labs(y = "Proportion by Sex", x = axis.name) +
-    theme(panel.border = element_rect(colour = "black", fill = NA, size = 1),
+    theme(
+      panel.border = element_rect(colour = "black", fill = NA, size = 1),
       panel.background = element_blank(),
-      axis.title.x = element_text (size = 15),
-      axis.title.y = element_text (size = 15),
+      axis.title.x = element_text(size = 15),
+      axis.title.y = element_text(size = 15),
       axis.text.x = element_text(size = 15),
-      axis.text.y = element_text(size = 15))
+      axis.text.y = element_text(size = 15)
+    )
   print(p)
 
-  if (!is.null(dir)){
-      ggsave(filename = file.path(dir, "plots", paste0("proportion_by_", data.type, "_sex.png")),
-        width = 7, height = 7, units = 'in')
+  if (!is.null(dir)) {
+    ggsave(
+      filename = file.path(dir, "plots", paste0("proportion_by_", data.type, "_sex.png")),
+      width = 7, height = 7, units = "in"
+    )
   }
 }

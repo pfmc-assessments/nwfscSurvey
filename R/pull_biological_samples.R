@@ -1,4 +1,3 @@
-
 #' Pull biological sample information from the NWFSC data warehouse for biological
 #' collections taken at sea. Generally these are samples that require lab processing.
 #' Generally, these types of biological sample are maturity, stomach, fin clips, and
@@ -22,18 +21,17 @@
 #'
 #'
 pull_biological_samples <- function(common_name = NULL,
-                                   sci_name = NULL,
-                                   years= c(1980, 2050),
-                                   survey = "NWFSC.Combo",
-                                   dir = NULL,
-                                   verbose = TRUE) {
-
+                                    sci_name = NULL,
+                                    years = c(1980, 2050),
+                                    survey = "NWFSC.Combo",
+                                    dir = NULL,
+                                    verbose = TRUE) {
   # increase the timeout period to avoid errors when pulling data
   options(timeout = 4000000)
 
-  if(length(c(common_name, sci_name)) != max(c(length(common_name), length(sci_name)))){
+  if (length(c(common_name, sci_name)) != max(c(length(common_name), length(sci_name)))) {
     stop("Can not pull data using both the common_name or sci_name together.
-         \n Please retry using only one." )
+         \n Please retry using only one.")
   }
 
   check_dir(dir = dir, verbose = verbose)
@@ -58,7 +56,7 @@ pull_biological_samples <- function(common_name = NULL,
 
   # symbols here are generally: %22 = ", %2C = ",", %20 = " "
   species_str <- convert_to_hex_string(species)
-  add_species <- paste0("field_identified_taxonomy_dim$", var_name, "|=[", species_str,"]")
+  add_species <- paste0("field_identified_taxonomy_dim$", var_name, "|=[", species_str, "]")
 
   if (any(species == "pull all")) {
     add_species <- ""
@@ -67,7 +65,7 @@ pull_biological_samples <- function(common_name = NULL,
   vars_str <- c(
     "common_name", "scientific_name",
     "age_years",
-    #"best_available_taxonomy_observation_detail_dim$method_description",
+    # "best_available_taxonomy_observation_detail_dim$method_description",
     "best_available_taxonomy_observation_detail_whid",
     "date_yyyymmdd",
     "depth_m",
@@ -117,10 +115,10 @@ pull_biological_samples <- function(common_name = NULL,
     "https://www.webapps.nwfsc.noaa.gov/data/api/v1/source/",
     "trawl.individual_fact",
     "/selection.json?filters=",
-     paste0("project=",paste(strsplit(project_long, " ")[[1]], collapse = "%20")),
-     ",", add_species,
+    paste0("project=", paste(strsplit(project_long, " ")[[1]], collapse = "%20")),
+    ",", add_species,
     ",year>", years[1], ",year<", years[2],
-    #",ovary_id>0&",
+    # ",ovary_id>0&",
     "&variables=",
     glue::glue_collapse(vars_str, sep = ",")
   )
@@ -131,19 +129,24 @@ pull_biological_samples <- function(common_name = NULL,
   bio_samples <- try(get_json(url = url_text))
 
   keep <- which(bio_samples$ovary_id > 0 | bio_samples$stomach_id > 0 |
-      bio_samples$tissue_id > 0 | bio_samples$left_pectoral_fin_id > 0)
+    bio_samples$tissue_id > 0 | bio_samples$left_pectoral_fin_id > 0)
   bio_samples <- bio_samples[keep, ]
 
   rename_columns <- which(
     colnames(bio_samples) %in%
-    c("lab_maturity_detail_dim$biologically_mature_certain_indicator",
-    "lab_maturity_detail_dim$biologically_mature_indicator"))
+      c(
+        "lab_maturity_detail_dim$biologically_mature_certain_indicator",
+        "lab_maturity_detail_dim$biologically_mature_indicator"
+      )
+  )
 
   colnames(bio_samples)[rename_columns] <-
-    c("biologically_mature_certain_indicator",
-    "biologically_mature_indicator")
+    c(
+      "biologically_mature_certain_indicator",
+      "biologically_mature_indicator"
+    )
 
-  bio_samples[bio_samples == "NA"] = NA
+  bio_samples[bio_samples == "NA"] <- NA
 
   save_rdata(
     x = bio_samples,

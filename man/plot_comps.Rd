@@ -47,7 +47,9 @@ inches. The defaults are 10 by 7 inches.}
 Plot frequency data as bubble plots
 }
 \examples{
-\dontrun{ plot_comps(data = LFs)}
+\dontrun{
+plot_comps(data = LFs)
+}
 
 }
 \author{

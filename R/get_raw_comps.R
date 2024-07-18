@@ -66,25 +66,22 @@
 #'   comp_bins = 1:20,
 #'   comp_column_name = "Age"
 #' )
-#'
 #' }
 #'
 get_raw_comps <- function(
-  data,
-  comp_bins,
-  comp_column_name = "Length_cm",
-  two_sex_comps = TRUE,
-  fleet = "Enter Fleet",
-  month = "Enter Month",
-  partition = 0,
-  age_error = "Enter Age Error Vector",
-  age_low = -1,
-  age_high = -1,
-  dir = NULL,
-  printfolder = "forSS3",
-  verbose = TRUE)
-{
-
+    data,
+    comp_bins,
+    comp_column_name = "Length_cm",
+    two_sex_comps = TRUE,
+    fleet = "Enter Fleet",
+    month = "Enter Month",
+    partition = 0,
+    age_error = "Enter Age Error Vector",
+    age_low = -1,
+    age_high = -1,
+    dir = NULL,
+    printfolder = "forSS3",
+    verbose = TRUE) {
   plotdir <- file.path(dir, printfolder)
   check_dir(dir = plotdir, verbose = verbose)
 
@@ -92,22 +89,22 @@ get_raw_comps <- function(
   comp_column_name <- tolower(comp_column_name)
 
   vars <- c("year", "sex")
-  if(sum(vars %in% colnames(data)) != 2){
+  if (sum(vars %in% colnames(data)) != 2) {
     stop("Data frame does not contain a column name year and/or sex.
          \n The columns names can be either upper or lower case.")
   }
 
-  if(!comp_column_name %in% colnames(data)){
+  if (!comp_column_name %in% colnames(data)) {
     stop("Data frame does not contain a column name of comp_column_name.
          \n The columns names can be either upper or lower case. ")
   }
 
-  if (!two_sex_comps){
+  if (!two_sex_comps) {
     data[, "sex"] <- "U"
   }
 
   # Check to see if user is doing ages or lengths
-  if(length(grep("age", comp_column_name)) > 0) {
+  if (length(grep("age", comp_column_name)) > 0) {
     comp_type <- "age"
   } else {
     comp_type <- "length"
@@ -156,7 +153,7 @@ get_raw_comps <- function(
     } # end Which loop
   } # end year loop
 
-  if(!is.null(Results)){
+  if (!is.null(Results)) {
     Results <- as.data.frame(Results)
     tmp <- data.frame(
       year = Results[, 1],
@@ -169,7 +166,8 @@ get_raw_comps <- function(
     out <- cbind(tmp, Results[, -c(1:2)])
     colnames(out)[-c(1:6)] <- c(
       paste(rep("F", each = length(comp_bins)), comp_bins, sep = ""),
-      paste(rep("M", each = length(comp_bins)), comp_bins, sep = ""))
+      paste(rep("M", each = length(comp_bins)), comp_bins, sep = "")
+    )
   }
 
   # Create unsexed comps if present in the data
@@ -214,7 +212,7 @@ get_raw_comps <- function(
       nsamp = Results[, 2]
     )
 
-    if (two_sex_comps){
+    if (two_sex_comps) {
       out_u <- cbind(tmp, Results[, -c(1:2)], 0 * Results[, -c(1:2)])
     } else {
       out_u <- cbind(tmp, Results[, -c(1:2)])
@@ -247,14 +245,14 @@ get_raw_comps <- function(
   if (!is.null(dir)) {
     if (!is.null(out_comps)) {
       write.csv(out_comps,
-                file = file.path(plotdir, paste0(comp_type, "_raw_comps_sex_3_", comp_type, "_bins_", comp_bins[1], "-", max(comp_bins), ".csv")),
-                row.names = FALSE
+        file = file.path(plotdir, paste0(comp_type, "_raw_comps_sex_3_", comp_type, "_bins_", comp_bins[1], "-", max(comp_bins), ".csv")),
+        row.names = FALSE
       )
     }
     if (!is.null(out_u)) {
       write.csv(out_u_comps,
-                file = file.path(plotdir, paste0(comp_type, "_raw_comps_sex_0_", comp_type, "_bins_", comp_bins[1], "-", max(comp_bins), ".csv")),
-                row.names = FALSE
+        file = file.path(plotdir, paste0(comp_type, "_raw_comps_sex_0_", comp_type, "_bins_", comp_bins[1], "-", max(comp_bins), ".csv")),
+        row.names = FALSE
       )
     }
   }
@@ -270,5 +268,4 @@ get_raw_comps <- function(
   }
 
   return(comps)
-
 }

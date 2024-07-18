@@ -23,13 +23,12 @@
 #'
 #'
 CheckStrata.fn <- function(
-  dir = NULL,
-  dat,
-  strat.vars = c("Depth_m", "Latitude_dd"),
-  strat.df,
-  printfolder = "forSS3",
-  verbose = TRUE) {
-
+    dir = NULL,
+    dat,
+    strat.vars = c("Depth_m", "Latitude_dd"),
+    strat.df,
+    printfolder = "forSS3",
+    verbose = TRUE) {
   lifecycle::deprecate_soft(
     when = "2.4",
     what = "nwfscSurvey::CheckStrata.fn()",

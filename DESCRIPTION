@@ -1,54 +1,50 @@
-Package: nwfscSurvey
 Type: Package
+Package: nwfscSurvey
 Title: Northwest Fisheries Science Center Survey
 Version: 2.1
-Authors@R:
-    c(person(given = c("Chantel", "R."),
-             family = "Wetzel",
-             role = c("aut", "cre"),
-             email = "chantel.wetzel@noaa.gov"),
-      person(given = c("Kelli", "F."),
-             family = "Johnson",
-             role = "aut"),
-      person(given = c("Allan", "C."),
-             family = "Hicks",
-             role = c("aut")))
-Description: Northwest Fisheries Science Center survey data processing package.
+Authors@R: c(
+    person(c("Chantel", "R."), "Wetzel", , "chantel.wetzel@noaa.gov", role = c("aut", "cre")),
+    person(c("Kelli", "F."), "Johnson", role = "aut"),
+    person(c("Allan", "C."), "Hicks", role = "aut")
+  )
+Description: Northwest Fisheries Science Center survey data processing
+    package.
 License: GPL (>=3)
-Suggests:
-    knitr,
-    kableExtra,
-    xtable,
-    rmarkdown,
-    testthat,
-    usethis,
-    maps,
-    mapproj
+Depends:
+    dplyr (>= 1.0.0),
+    R (>= 4.0)
 Imports:
     chron,
+    cowplot,
+    ggmosaic (>= 0.3.4),
+    ggnewscale,
+    ggokabeito,
+    ggplot2 (>= 3.0.0),
     glue,
     httr,
+    janitor,
     jsonlite,
     lifecycle,
     purrr,
     reshape2,
-    tibble,
-    tidyr,
-    ggnewscale,
-    ggplot2 (>= 3.0.0),
-    ggokabeito,
-    ggmosaic (>= 0.3.4),
     rlang,
     stringr,
-    cowplot,
-    janitor
-Depends:
-    dplyr (>= 1.0.0),
-    R (>= 4.0)
+    tibble,
+    tidyr
+Suggests:
+    kableExtra,
+    knitr,
+    mapproj,
+    maps,
+    rmarkdown,
+    testthat,
+    usethis,
+    xtable
+VignetteBuilder: 
+    knitr
 Remotes:
     github::haleyjeppson/ggmosaic
 Encoding: UTF-8
-VignetteBuilder: knitr
-RoxygenNote: 7.3.1
 LazyData: true
 Roxygen: list(markdown = TRUE)
+RoxygenNote: 7.3.2

@@ -62,21 +62,21 @@ return.
 }
 \examples{
 # Add presence/absence factor to data
- temp <- catch_nwfsc_combo \%>\%
-   dplyr::mutate(new = factor(
-     cpue_kg_km2 <= 0,
-     levels = c(FALSE, TRUE),
-     labels = c("Present", "Absent")
-   ))
+temp <- catch_nwfsc_combo \%>\%
+  dplyr::mutate(new = factor(
+    cpue_kg_km2 <= 0,
+    levels = c(FALSE, TRUE),
+    labels = c("Present", "Absent")
+  ))
 
- # Plot depth bins (50 m) by presence/absence with default colors
- plot_proportion(
-   data = temp,
-   column_factor = new,
-   column_bin = Depth_m,
-   width = 50,
-   boundary = 0
- )
+# Plot depth bins (50 m) by presence/absence with default colors
+plot_proportion(
+  data = temp,
+  column_factor = new,
+  column_bin = Depth_m,
+  width = 50,
+  boundary = 0
+)
 # Plot latitude bins (1 decimal degree) by presence/absence with custom
 # colors
 plot_proportion(

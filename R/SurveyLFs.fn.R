@@ -52,31 +52,30 @@
 #' * [SexRatio.fn()]
 
 SurveyLFs.fn <- function(
-  dir = NULL, datL,
-  datTows,
-  strat.vars = c("Depth_m", "Latitude_dd"),
-  strat.df = NULL,
-  lgthBins = 1,
-  SSout = TRUE,
-  meanRatioMethod = TRUE,
-  sex = 3,
-  NAs2zero = T,
-  sexRatioUnsexed = NA,
-  maxSizeUnsexed = NA,
-  sexRatioStage = 1,
-  partition = 0,
-  fleet = "Enter Fleet",
-  agelow = "Enter",
-  agehigh = "Enter",
-  ageErr = "Enter",
-  nSamps = "Enter Samps",
-  month = "Enter Month",
-  printfolder = "forSS3",
-  remove999 = TRUE,
-  outputStage1 = FALSE,
-  sum100 = TRUE,
-  verbose = TRUE) {
-
+    dir = NULL, datL,
+    datTows,
+    strat.vars = c("Depth_m", "Latitude_dd"),
+    strat.df = NULL,
+    lgthBins = 1,
+    SSout = TRUE,
+    meanRatioMethod = TRUE,
+    sex = 3,
+    NAs2zero = T,
+    sexRatioUnsexed = NA,
+    maxSizeUnsexed = NA,
+    sexRatioStage = 1,
+    partition = 0,
+    fleet = "Enter Fleet",
+    agelow = "Enter",
+    agehigh = "Enter",
+    ageErr = "Enter",
+    nSamps = "Enter Samps",
+    month = "Enter Month",
+    printfolder = "forSS3",
+    remove999 = TRUE,
+    outputStage1 = FALSE,
+    sum100 = TRUE,
+    verbose = TRUE) {
   # Check for the number of tows were fish were observed but not measured
   postows <- datTows[which(datTows$total_catch_numbers > 0), ]
   find <- !(postows$Trawl_id %in% datL$Trawl_id)
@@ -103,8 +102,8 @@ SurveyLFs.fn <- function(
   Area_Swept <- Total_fish_number <- Sub_fish_number <- Sexed_fish <- numeric(dim(datB)[1])
   for (i in 1:length(tows)) {
     find <- which(tows[i] == datTows$Trawl_id)
-    area <- datTows$Area_swept_ha[find] * 0.01 #km2
-    #Alternative: * 10000 square meter
+    area <- datTows$Area_swept_ha[find] * 0.01 # km2
+    # Alternative: * 10000 square meter
     tot.num <- datTows$total_catch_numbers[find]
     sub.num <- datTows$Subsample_count[find]
 
@@ -163,16 +162,23 @@ SurveyLFs.fn <- function(
   # for females and males only
   TdatL.tows <- as.data.frame(table(datL$Trawl_id, datL$Sex %in% c("F", "M")))
   TdatL.tows <- TdatL.tows[TdatL.tows$Var2 == "TRUE", ]
-  if(dim(TdatL.tows)[1] > 0) {
+  if (dim(TdatL.tows)[1] > 0) {
     datB <- data.frame(
-      datB[match(as.character(TdatL.tows$Var1),
-      as.character(datB$Trawl_id)), ],
-      TowExpFactorMF = TdatL.tows$Freq)
+      datB[match(
+        as.character(TdatL.tows$Var1),
+        as.character(datB$Trawl_id)
+      ), ],
+      TowExpFactorMF = TdatL.tows$Freq
+    )
     # Find the numerator looking where the number of fish = sexed fish when all fish are sampled (e.g., sexed and unsexed in a fully sampled tow)
     # The previous approach expanded sexed fish relative to the full sample size resulting in expansions when there should not have been
-    datB <- data.frame(datB[match(as.character(TdatL.tows$Var1),
-      as.character(datB$Trawl_id)), ],
-      true_sub_MFfish = TdatL.tows$Freq)
+    datB <- data.frame(
+      datB[match(
+        as.character(TdatL.tows$Var1),
+        as.character(datB$Trawl_id)
+      ), ],
+      true_sub_MFfish = TdatL.tows$Freq
+    )
   }
   if (is.null(datB$true_sub_MFfish)) {
     datB$true_sub_MFfish <- 0

@@ -56,9 +56,7 @@ n <- GetN.fn(
   type = "length",
   species = "flatfish"
 )
-
 }
-
 
 }
 \references{

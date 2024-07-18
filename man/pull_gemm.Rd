@@ -49,7 +49,6 @@ data <- pull_gemm(common_name = c("Widow Rockfish", "Canary Rockfish"))
 widow_recent <- pull_gemm(common_name = "Widow Rockfish", years = 2014:2019)
 }
 
-
 }
 \author{
 Chantel Wetzel

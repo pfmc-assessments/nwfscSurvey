@@ -36,13 +36,11 @@
 #' @import ggplot2
 
 PlotMap.fn <- function(
-  dir = NULL,
-  dat,
-  main = NULL,
-  dopng = lifecycle::deprecated(),
-  plot = 1:2) {
-
-
+    dir = NULL,
+    dat,
+    main = NULL,
+    dopng = lifecycle::deprecated(),
+    plot = 1:2) {
   if (lifecycle::is_present(dopng)) {
     lifecycle::deprecate_warn(
       when = "2.1",
@@ -74,7 +72,6 @@ PlotMap.fn <- function(
 
   igroup <- 1
   if (igroup %in% plot) {
-
     g <- ggplot(dat) +
       geom_point(
         data = neg,
@@ -114,7 +111,7 @@ PlotMap.fn <- function(
     print(g)
 
     if (!is.null(dir)) {
-       ggsave(filename = plot_names[1], width = 7, height = 10, units = 'in')
+      ggsave(filename = plot_names[1], width = 7, height = 10, units = "in")
     }
   }
 
@@ -169,7 +166,7 @@ PlotMap.fn <- function(
     print(h)
 
     if (!is.null(dir)) {
-       ggsave(filename = plot_names[2], width = 7, height = 10, units = 'in')
+      ggsave(filename = plot_names[2], width = 7, height = 10, units = "in")
     }
   }
 }

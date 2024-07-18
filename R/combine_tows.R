@@ -21,8 +21,7 @@
 #'
 #'
 #'
-combine_tows <- function(data, dir = NULL, verbose = TRUE){
-
+combine_tows <- function(data, dir = NULL, verbose = TRUE) {
   check_dir(dir = dir, verbose = verbose)
 
   if (!"total_catch_numbers" %in% colnames(data)) {
