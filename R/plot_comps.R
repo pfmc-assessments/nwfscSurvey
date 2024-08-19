@@ -41,7 +41,7 @@ plot_comps <- function(
     height = 7) {
   data_type <- ifelse(sum(names(data) %in% c("ageErr", "age_error")) == 0, "length", "age")
   sex_type <- unique(data$sex)
-  input_nsamp <- which(colnames(data) %in% c("nsamp", "InputN"))
+  input_nsamp <- which(colnames(data) %in% c("nsamp", "InputN", "input_n"))
   if (is.numeric(data[, input_nsamp])) {
     N <- data[, input_nsamp]
   } else {
