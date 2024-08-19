@@ -22,6 +22,9 @@
 #' @param two_sex_comps Default TRUE. If TRUE composition data will be formatted for a
 #' Stock Synthesis two-sex model and if FALSE composition data will be formatted for a
 #' single-sex model.
+#' @param input_sample_size_method Determines the default input sample size to add to
+#' the composition data for SS3. There are three options: c("stewart_hamel", "tows",
+#' "total_samples") where the default is "stewart_hamel".
 #' @param fleet A fleet number to assign the composition data to based on the expected
 #' format for Stock Synthesis. Default "Enter Fleet".
 #' @param month Month the samples were collected based on the expected format for

@@ -13,7 +13,9 @@
 #' is used to determine whether to format the composition data for length or age
 #' compositions by looking for either age (e.g., age_years, Age, best_age) or length
 #' (e.g., Length, length, Length_cm) in the comp_column_name. Default Length_cm.
-#' @param input_sample_size_method description
+#' @param input_sample_size_method Determines the default input sample size to add to
+#' the composition data for SS3. There are three options: c("stewart_hamel", "tows",
+#' "total_samples") where the default is "stewart_hamel".
 #' @param species_group A string specifying the species group of interest, which
 #'   will lead to the use of the correct species-specific value for
 #'   the number of unique samples per tow. See the function call for

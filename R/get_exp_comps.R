@@ -22,26 +22,28 @@
 #' @param two_sex_comps Default TRUE. If TRUE composition data will be formatted for a
 #' Stock Synthesis two-sex model and if FALSE composition data will be formatted for a
 #' single-sex model.
-#' @param input_sample_size_method
-#' @template partition Partition to assign the composition data based on the expected
-#' format for Stock Synthesis. Partition of 0 indicates that the composition data
-#' include all composition data, 1 for discarded composition data, and 2 for retained
-#' fish only. Default of 0.
-#' @template age_low Lower age bin for all age composition data based on the expected
+#' @param input_sample_size_method Determines the default input sample size to add to
+#' the composition data for SS3. There are three options: c("stewart_hamel", "tows",
+#' "total_samples") where the default is "stewart_hamel".
+#' @template partition
+#' @param age_low Lower age bin for all age composition data based on the expected
 #' format for Stock Synthesis. Default value of -1 which translates to the lowest age
 #' bin.
-#' @template age_high Upper age bin for all age composition data based on the expected
+#' @param age_high Upper age bin for all age composition data based on the expected
 #' format for Stock Synthesis. Default value of -1 which translates to the highest
 #  age bin.
-#' @template age_error Number of ageing error vector to apply to the age data based on
+#' @param age_error Number of ageing error vector to apply to the age data based on
 #' Stock Synthesis. Default "Enter Age Error Vector".
 #' @param fleet A fleet number to assign the composition data to based on the expected
 #' format for Stock Synthesis. Default "Enter Fleet".
-#' @template month Month the samples were collected based on the expected format for
+#' @param month Month the samples were collected based on the expected format for
 #' Stock Synthesis to determine the length/age estimate to compare to. Default
 #' "Enter Month".
 #' @template printfolder
 #' @template verbose
+#'
+#' @seealso See
+#' \code{\link{get_input_n}} for information on input sample size calculations.
 #'
 #' @author Chantel Wetzel and Allan Hicks
 #' @export
