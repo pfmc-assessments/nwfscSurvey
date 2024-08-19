@@ -48,7 +48,7 @@
 #' @author Chantel Wetzel and Allan Hicks
 #' @export
 #'
-get_exp_comps <- function(
+get_expanded_comps <- function(
     bio_data,
     catch_data,
     comp_bins,
