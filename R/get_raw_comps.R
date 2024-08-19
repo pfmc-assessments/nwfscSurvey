@@ -72,6 +72,7 @@ get_raw_comps <- function(
     data,
     comp_bins,
     comp_column_name = "Length_cm",
+    input_sample_size_method = c("stewart_hamel", "tows", "total_samples")[3],
     two_sex_comps = TRUE,
     fleet = "Enter Fleet",
     month = "Enter Month",
@@ -82,6 +83,7 @@ get_raw_comps <- function(
     dir = NULL,
     printfolder = "forSS3",
     verbose = TRUE) {
+
   plotdir <- file.path(dir, printfolder)
   check_dir(dir = plotdir, verbose = verbose)
 
@@ -119,6 +121,36 @@ get_raw_comps <- function(
   if (sum(is.na(data[, "sex"])) > 0) {
     data[is.na(data[, "sex"]), "sex"] <- "U"
   }
+
+  if (!"common_name" %in% colnames(data) & input_sample_size_method == "stewart_hamel") {
+    stop("Data frame does not contain a column name of common_name which is required to calculate Stewart and Hamel input sample size.
+         \n The columns names can be either upper or lower case. ")
+  }
+
+  # Calculate input sample size based on existing function
+  species <- ifelse("common_name" %in% colnames(data), unique(data[, "common_name"]), "")
+  if ("common_name" %in% colnames(data)) {
+    species_type <- get_species_info(
+      species = species,
+      unident = FALSE,
+      verbose = FALSE
+    )$species_type
+  } else {
+    species_type <- "all"
+  }
+
+  if (!"trawl_id" %in% colnames(data)) {
+    data[, "trawl_id"] <- 1:nrow(data)
+  }
+
+  samples <- get_input_n(
+    dir = dir,
+    data = data,
+    comp_column_name = comp_column_name,
+    input_sample_size_method = input_sample_size_method,
+    species_group = species_type,
+    printfolder = printfolder,
+    verbose = verbose)
 
   # Create the comps
   Results <- out <- NULL
@@ -161,7 +193,7 @@ get_raw_comps <- function(
       fleet = fleet,
       sex = 3,
       partition = partition,
-      nsamp = Results[, 2]
+      input_n = samples |> dplyr::filter(sex_grouped == "sexed") |> dplyr::select(input_n) #Results[, 2]
     )
     out <- cbind(tmp, Results[, -c(1:2)])
     colnames(out)[-c(1:6)] <- c(
@@ -203,13 +235,19 @@ get_raw_comps <- function(
       } # end Which loop
     } # end year loop
     Results <- as.data.frame(Results)
+    if (sum(c("M", "F") %in% data[, "sex"]) == 0) {
+      input_n <- samples |> dplyr::filter(sex_grouped == "all") |> dplyr::select(input_n)
+    } else {
+      input_n <- samples |> dplyr::filter(sex_grouped == "unsexed") |> dplyr::select(input_n)
+    }
+
     tmp <- data.frame(
       year = Results[, 1],
       month = month,
       fleet = fleet,
       sex = 0,
       partition = partition,
-      nsamp = Results[, 2]
+      input_n =  input_n #Results[, 2]
     )
 
     if (two_sex_comps) {
@@ -243,15 +281,19 @@ get_raw_comps <- function(
   }
 
   if (!is.null(dir)) {
+    project <- ifelse("project" %in% colnames(data),
+                      gsub(" ", "_", tolower(unique(data[, "project"]))),
+                      "")
+    bin_range <- paste0(min(comp_bins), "_", max(comp_bins))
     if (!is.null(out_comps)) {
       write.csv(out_comps,
-        file = file.path(plotdir, paste0(comp_type, "_raw_comps_sex_3_", comp_type, "_bins_", comp_bins[1], "-", max(comp_bins), ".csv")),
+        file = file.path(plotdir, paste0(comp_column_name,"_sexed_raw_", bin_range, "_", species, "_", project, ".csv")),
         row.names = FALSE
       )
     }
     if (!is.null(out_u)) {
       write.csv(out_u_comps,
-        file = file.path(plotdir, paste0(comp_type, "_raw_comps_sex_0_", comp_type, "_bins_", comp_bins[1], "-", max(comp_bins), ".csv")),
+        file = file.path(plotdir, paste0(comp_column_name, "_unsexed_raw_", bin_range, "_", species, "_", project, ".csv")),
         row.names = FALSE
       )
     }
