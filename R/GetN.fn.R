@@ -55,6 +55,14 @@ GetN.fn <- function(
     printfolder = "forSS3",
     output = NULL,
     verbose = TRUE) {
+  lifecycle::deprecate_soft(
+    when = "2.5",
+    what = "nwfscSurvey::GetN.fn()",
+    details = "The get_expanded_comps() will now do this calculation if specified
+    in the function input via input_sample_size_method. get_expanded_comps() calls
+    internally a new function called get_input_n() to determine the input sample
+    size."
+  )
   species <- match.arg(species)
   type <- match.arg(type)
   n.unq <- NA

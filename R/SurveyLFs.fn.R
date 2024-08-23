@@ -76,6 +76,12 @@ SurveyLFs.fn <- function(
     outputStage1 = FALSE,
     sum100 = TRUE,
     verbose = TRUE) {
+  lifecycle::deprecate_soft(
+    when = "2.5",
+    what = "nwfscSurvey::SurveyLFs.fn()",
+    details = "Please switch to get_expanded_comps()."
+  )
+
   # Check for the number of tows were fish were observed but not measured
   postows <- datTows[which(datTows$total_catch_numbers > 0), ]
   find <- !(postows$Trawl_id %in% datL$Trawl_id)
