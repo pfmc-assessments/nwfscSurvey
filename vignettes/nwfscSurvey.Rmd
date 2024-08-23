@@ -66,11 +66,9 @@ There are a range of functions to create visualizations of the data by examining
 
 ```r
 plot_cpue(
-  dir = getwd(), 
   catch = catch)
 
 plot_bio_patterns(
-  dir = getwd(), 
   bio = bio, 
   col_name = "Length_cm")
 
@@ -135,114 +133,85 @@ plot_index(
 
 #### Length composition data
 
-`GetN.fn()` calculates the input sample size based on Stewart & Hamel (2014) which determined that the input sample size was related to the species group (flatfish, shelf rockfish, slope rockfish, thornyhead, others, or all groups) and number of tows. The function writes a csv file with the "forSS3" folder containing the number of tows and observed fish by year. 
-
+`get_expanded_comps()` calculates and formats the length-composition data for Stock Synthesis:
 ```r
-n <- GetN.fn(dir = getwd(), 
-         dat = bio, 
-         type = "length", 
-         species = "shelfrock")
+length_comps <- get_expanded_comps(
+    bio_data = bio,
+    catch_data = catch,
+    comp_bins = seq(10, 40, 2),
+    strata = strata,
+    comp_column_name = "length_cm",
+    output = "full_expansion_ss3_format",
+    two_sex_comps = TRUE,
+    input_sample_size_method = "stewart_hamel")
 ```
-
-`SurveyLFs.fn()` calculates and formats the length-composition data for Stock Synthesis:
-```r
-len_bins <- seq(10, 60, 2)
-
-Length_Freq <- SurveyLFs.fn(dir = getwd(), 
-                        datL =  bio, 
-                        datTows = catch,
-                        strat.df = strata,
-                        lgthBins = len_bins)
-```
-The above call will calculate the length frequencies for use in Stock Synthesis and write the files inside the "forSS3" folder. The example call does not assign unsexed fish to the sexed length comps but will produce csv files for both the sexed and unsexed fish. If you would like to assign the unsexed fish to a sex based on the sex ratio the user will need to specificy the sex ratio value (sexRatioUnsexed) to use for fish under a specified size (maxSizeUnsexed) where unsexed fish greater than the specified size will be assign based on the sex ratio from other observations. 
-
-There are many inputs to `SurveyLFs.fn()`, please look over the function inputs to explore additional ways to process the data.
+The above call will calculate the length frequencies for use in Stock Synthesis and write the files inside the "forSS3" folder. The example call will produce csv files for both the sexed and unsexed fish. This function returns a list of sexed and unsexed length composition data formatted for Stock Synthesis. In the above example the input sample size is calculated based on the Stewart and Hamel approach (e.g., unique samples calculated as a function of species type and tows).
 
 To plot the length frequency data:
 ```r
-PlotFreqData.fn(dir = getwd(), 
-                dat = Length_Freq)
+plot_comps(
+  data = length_comps)
 
 ```
-A new function to visualize length frequency data is also available:
-```r
-plot_comps(data = Length_Freq)
-```
 
-If `dir` does not equal `NULL`, then a "plot" folder will be created in the directory location and a png of the plot will be saved. 
+If the `dir` function input is specified, then a "plot" folder will be created in the directory location and a png of the plot will be saved. 
 
 There is also a function to create raw or unexpanded composition data that works
 for either length or age data.
 
 ```r
-length_comps <- get_raw_comps(
+raw_length_comps <- get_raw_comps(
     data = bio,
     comp_bins = seq(10, 40, 2),
-    comp_column_name = "Length_cm",
-    two_sex_comps = TRUE,
-    dir = getwd())
+    comp_column_name = "length_cm",
+    two_sex_comps = TRUE)
 ```
-This function returns a list of sexed and unsexed length composition data formatted
-for Stock Synthesis. The sample size (nsamp) is set equal to the number of samples
-in the data frame.
+This function returns a list of sexed and unsexed length composition data formatted for Stock Synthesis. The input sample size is set equal to the number of samples in the data frame.
 
 #### Marginal age composition data
 
-Calculate the marginal age sample size:
 ```r
-n <- GetN.fn(dir = getwd(), 
-         dat = bio,
-         type = "age", 
-         species = "shelfrock")
+age_comps <- get_expanded_comps(
+    bio_data = bio,
+    catch_data = catch,
+    comp_bins = 1:40,
+    strata = strata,
+    comp_column_name = "length_cm",
+    output = "full_expansion_ss3_format",
+    two_sex_comps = TRUE,
+    input_sample_size_method = "stewart_hamel")
 ```
-
-`SurveyAFs.fn()` calculates and formats the age-composition data for Stock Synthesis:
-```r
-age_bins <- 1:50
-
-Ages <- SurveyAFs.fn(dir = getwd(), 
-                     datA = bio,
-                     datTows = catch, 
-                     strat.df = strata,
-                     ageBins = age_bins,
-                     nSamps = n)
-```
-The above call will calculate the marginal age-composition data for the age data read in using `readInExcelAgeComps.fn()` and writes the files inside the "forSS3" folder. 
+The above call will calculate the marginal age-composition data for the age data in a format for Stock Synthesis. This function returns a list of sexed and unsexed marginal age composition data formatted for Stock Synthesis. The example call will produce csv files for both the sexed and unsexed fish. This function returns a list of sexed and unsexed length composition data formatted for Stock Synthesis. In the above example the input sample size is calculated based on the Stewart and Hamel approach (e.g., unique samples calculated as a function of species type and tows). 
 
 To plot the age frequency data:
 ```r
-PlotFreqData.fn(
-  dir = getwd(), 
-  dat = Ages)
-
 plot_comps(
-  data = Ages)
+  data = age_comps)
 ```
-If `dir` is not `NULL`, then a "plot" folder will be created in the directory location and a png of the plot will be saved.
+If the `dir` function input is specified, then a "plot" folder will be created in the directory location and a png of the plot will be saved.
 
 There is also a function to create raw or unexpanded composition data that works
 for either length or age data.
 
 ```r
-age_comps <- get_raw_comps(
+raw_age_comps <- get_raw_comps(
     data = bio,
     comp_bins = 1:40,
-    comp_column_name = "Age",
-    two_sex_comps = TRUE,
-    dir = getwd())
+    comp_column_name = "age",
+    two_sex_comps = TRUE)
 ```
-This function returns a list of sexed and unsexed marginal age composition data formatted for Stock Synthesis. The sample size (nsamp) is set equal to the number of samples in the data frame.
+This function returns a list of sexed and unsexed marginal age composition data formatted for Stock Synthesis. The input sample size is set equal to the number of samples in the data frame.
 
 #### Conditional-age-at-length data
 
 To calculate conditional-age-at-length data formatted for Stock Synthesis:
 ```r
-caal <- SurveyAgeAtLen.fn(dir = getwd(), 
-                          datAL = bio, 
-                          datTows = catch,
-                          strat.df = strata,
-                          lgthBins = len_bins, 
-                          ageBins = age_bins)
+caal <- SurveyAgeAtLen.fn(
+  datAL = bio, 
+  datTows = catch,
+  strat.df = strata,
+  lgthBins = seq(10, 40, 2), 
+  ageBins = 1:40)
 ```
 Creates unexpanded conditional-age-at-length data for both sexes with input sample sizes based on the observed number of fish in each length bin by year.
 
