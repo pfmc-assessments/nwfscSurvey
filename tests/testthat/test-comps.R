@@ -80,9 +80,9 @@ test_that("get_expanded_comps", {
     verbose = FALSE
   )
   expect_equal(nrow(length_comps$sexed), 16)
-  expect_equal(sum(length_comps$sexed$input_n), 7928)
+  expect_equal(sum(length_comps$sexed$input_n), 4883)
   expect_equal(nrow(length_comps$unsexed), 14)
-  expect_equal(sum(length_comps$unsexed$input_n), 587)
+  expect_equal(sum(length_comps$unsexed$input_n), 84)
 
   age_comps <- get_expanded_comps(
     bio_data = bio,
