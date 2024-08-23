@@ -138,29 +138,35 @@ plot_bio_patterns <- function(
     )
 
   # plot 1
-  cowplot::plot_grid(ll, ld, nrow = 2)
-  if (!is.null(dir)) {
-    ggsave(
-      filename = file.path(dir, "plots", paste0(col_name, "_by_lat_depth.png")),
-      width = width, height = height, units = "in"
-    )
+  if (1 %in% plot) {
+    print(cowplot::plot_grid(ll, ld, nrow = 2))
+    if (!is.null(dir)) {
+      ggsave(
+        filename = file.path(dir, "plots", paste0(col_name, "_by_lat_depth.png")),
+        width = width, height = height, units = "in"
+      )
+    }
   }
 
   # plot 2
-  print(ldy)
-  if (!is.null(dir)) {
-    ggsave(
-      filename = file.path(dir, "plots", paste0(col_name, "_by_year_depth.png")),
-      width = width + 3, height = height + 3, units = "in"
-    )
+  if (2 %in% plot) {
+    print(ldy)
+    if (!is.null(dir)) {
+      ggsave(
+        filename = file.path(dir, "plots", paste0(col_name, "_by_year_depth.png")),
+        width = width + 3, height = height + 3, units = "in"
+      )
+    }
   }
 
   # plot 3
-  print(lly)
-  if (!is.null(dir)) {
-    ggsave(
-      filename = file.path(dir, "plots", paste0(col_name, "_by_year_lat.png")),
-      width = width + 3, height = height + 3, units = "in"
-    )
+  if (3 %in% plot) {
+    print(lly)
+    if (!is.null(dir)) {
+      ggsave(
+        filename = file.path(dir, "plots", paste0(col_name, "_by_year_lat.png")),
+        width = width + 3, height = height + 3, units = "in"
+      )
+    }
   }
 }
