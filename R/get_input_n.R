@@ -99,6 +99,9 @@ get_input_n <- function(
     ) |>
     dplyr::ungroup()
 
+  samples_by_sex <- samples_by_sex |>
+    tidyr::complete(year, sex_grouped, fill = list(n = 0, tows = 0, stewart_hamel = 0))
+
   samples_all <- data_with_counts |>
     dplyr::group_by(year) |>
     dplyr::summarise(
@@ -108,6 +111,9 @@ get_input_n <- function(
       stewart_hamel = floor(unique(multiplier) * tows)
     ) |>
     dplyr::ungroup()
+
+  samples_all <- samples_all |>
+    tidyr::complete(year, sex_grouped, fill = list(n = 0, tows = 0, stewart_hamel = 0))
 
   samples <- rbind(samples_by_sex, samples_all)
 
@@ -128,10 +134,11 @@ get_input_n <- function(
   if (!is.null(dir)) {
     project <- ifelse("project" %in% colnames(data),
                       gsub(" ", "_", tolower(unique(data[, "project"]))), "")
-    species <- ifelse("common_name" %in% colnames(data), unique(data[, "common_name"]), "")
+    species <- ifelse("common_name" %in% colnames(data),
+                      gsub(" ", "_", tolower(unique(data[, "common_name"]))), "")
     write.csv(
       x = samples,
-      file = file.path(plotdir, paste0(species, "_", comp_column_name, "_samples_", project, ".csv")),
+      file = file.path(plotdir, paste0(comp_column_name, "_samples_",species, "_", project, ".csv")),
       row.names = FALSE
     )
   }

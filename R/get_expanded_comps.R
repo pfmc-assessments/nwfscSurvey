@@ -118,6 +118,12 @@ get_expanded_comps <- function(
         These tows contain ", missing, " ", comp_column_name, " that comprise ", percent, " percent of the total catch numbers.\n")
   }
 
+  bio_data <- data.frame(
+    bio_data,
+    strata = StrataFactors.fn(bio_data, strata_vars, strata)
+  )
+  bio_data <- bio_data |> dplyr::filter(!is.na(strata))
+
   catch_data[, "area_swept"] <- catch_data[, "area_swept_ha"] * 0.01
 
   catch_data <- data.frame(
@@ -149,6 +155,7 @@ get_expanded_comps <- function(
     bio_data[, c("year", "trawl_id", "comp_column", "sex", "bin", "all_fish")],
     catch_data[, c("trawl_id", "area_swept", "strata", "area", "tows", "total_catch_numbers")],
     by = "trawl_id") |>
+    dplyr::filter(!is.na(strata)) |>
     dplyr::group_by(trawl_id, comp_column) |>
     dplyr::summarize(
       year = unique(year),
@@ -206,7 +213,20 @@ get_expanded_comps <- function(
       prop_female = 100 * total_female / unique(prop_total_fm),
       prop_male = 100 * total_male / unique(prop_total_fm),
       prop_unsexed = 100 * total_unsexed / unique(prop_total_unsexed)
-    )
+    ) |>
+    dplyr::ungroup()
+
+  comps_by_year <- comps_by_year |>
+    tidyr::complete(year, bin,
+      fill = list(
+        total_all = 0,
+        total_female = 0,
+        total_male = 0,
+        total_unsexed = 0,
+        prop_all = 0,
+        prop_female = 0,
+        prop_male = 0,
+        prop_unsexed = 0))
 
   if (output == "full_expansion_unformatted") {
     return(comps_by_year)
@@ -243,7 +263,7 @@ get_expanded_comps <- function(
   male_comps[is.na(male_comps)] <- 0
 
   # Calculate input sample size based on existing function
-  species <- unique(bio_data[, "common_name"])
+  species <- gsub(" ", "_", tolower(unique(bio_data[, "common_name"])))
   species_type <- get_species_info(
     species = species,
     unident = FALSE,
@@ -275,7 +295,9 @@ get_expanded_comps <- function(
     )
     sexed_formatted <- cbind(sexed_formatted, female_comps[,dimensions], male_comps[, dimensions])
     remove <- which(apply(sexed_formatted[, 7:ncol(sexed_formatted)], 1, sum) == 0)
-    sexed_formatted <- sexed_formatted[-remove, ]
+    if(length(remove) > 0) {
+      sexed_formatted <- sexed_formatted[-remove, ]
+    }
 
     unsexed_formatted <- data.frame(
       year = unsexed_comps[, "year"],
@@ -287,7 +309,9 @@ get_expanded_comps <- function(
     )
     unsexed_formatted <- cbind(unsexed_formatted, unsexed_comps[, dimensions], 0 * unsexed_comps[, dimensions])
     remove <- which(apply(unsexed_formatted[, 7:ncol(unsexed_formatted)], 1, sum) == 0)
-    unsexed_formatted <- unsexed_formatted[-remove, ]
+    if(length(remove) > 0) {
+      unsexed_formatted <- unsexed_formatted[-remove, ]
+    }
 
     if (length(grep("age", comp_column_name, ignore.case = TRUE)) > 0) {
       sexed_formatted <- cbind(sexed_formatted[, 1:5], age_error, age_low, age_high, sexed_formatted[, 6:dim(sexed_formatted)[2]])
@@ -305,7 +329,7 @@ get_expanded_comps <- function(
       if (dim(unsexed_formatted)[1] > 0) {
         write.csv(
           x = unsexed_formatted,
-          file = file.path(dir, printfolder, paste0(comp_column_name, "_unsexed_expanded_", bin_range, "_", ,species,, "_", project, ".csv")),
+          file = file.path(dir, printfolder, paste0(comp_column_name, "_unsexed_expanded_", bin_range, "_", species, "_", project, ".csv")),
           row.names = FALSE
         )
       }
@@ -323,7 +347,9 @@ get_expanded_comps <- function(
     )
     all_formatted <- cbind(all_formatted, all_comps[, dimensions])
     remove <- which(apply(all_formatted[, 7:ncol(all_formatted)], 1, sum) == 0)
-    all_formatted <- all_formatted[-remove, ]
+    if(length(remove) > 0) {
+      all_formatted <- all_formatted[-remove, ]
+    }
 
     if (grep("age", comp_column_name, ignore.case = TRUE) > 0) {
       all_formatted <- cbind(all_formatted[, 1:5], age_error, age_low, age_high, all_formatted[, 6:dim(all_formatted)[2]])
