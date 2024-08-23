@@ -138,7 +138,7 @@ plot_bio_patterns <- function(
     )
 
   # plot 1
-  if(1 %in% plot){
+  if (1 %in% plot) {
     print(cowplot::plot_grid(ll, ld, nrow = 2))
     if (!is.null(dir)) {
       ggsave(
@@ -149,7 +149,7 @@ plot_bio_patterns <- function(
   }
 
   # plot 2
-  if(2 %in% plot){
+  if (2 %in% plot) {
     print(ldy)
     if (!is.null(dir)) {
       ggsave(
@@ -160,7 +160,7 @@ plot_bio_patterns <- function(
   }
 
   # plot 3
-  if(3 %in% plot){
+  if (3 %in% plot) {
     print(lly)
     if (!is.null(dir)) {
       ggsave(
