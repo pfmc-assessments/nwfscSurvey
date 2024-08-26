@@ -35,6 +35,13 @@
 #' )
 #'
 GetSpp.fn <- function(species, unident = FALSE) {
+
+  lifecycle::deprecate_soft(
+    when = "2.5",
+    what = "nwfscSurvey::GetSpp.n()",
+    details = "Please switch to get_species_info()."
+  )
+
   # background information
   sppnames <- nwfscSurvey::PullSpp.fn()
   if (!unident) {
