@@ -124,6 +124,15 @@ pull_bio <- function(
   }
   bio_pull <- try(get_json(url = url_text))
 
+  if (!(is.data.frame(bio_pull))) {
+    stop(glue::glue(
+      "\n No data returned by the warehouse for the filters given.
+      \n Make sure the year range is correct (cannot include -Inf or Inf) for the project selected and the input name is correct,
+      \n otherwise there may be no data for this species from this project.\n
+      URL: {url_text}"
+    ))
+  }
+
   if (!is.data.frame(bio_pull) & !survey %in% c("Triennial", "AFSC.Slope")) {
     stop(cat("\nNo data returned by the warehouse for the filters given.
             Make sure the year range is correct for the project selected and the input name is correct,
