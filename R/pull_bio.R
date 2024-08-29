@@ -202,12 +202,6 @@ pull_bio <- function(
       # Remove water hauls
       good_tows <- len_pull[, "operation_dim$legacy_performance_code"] != 8
       if (sum(good_tows) != dim(len_pull)[1]) {
-        if (verbose) {
-          n <- dim(len_pull)[1] - sum(good_tows)
-          cli::cli_alert_info(
-            "There were {n} tows removed because they were determined to be water hauls (e.g., net not on the bottom)."
-          )
-        }
         len_pull <- len_pull[good_tows, ]
       }
 
