@@ -17,7 +17,6 @@ Imports:
     chron,
     cli,
     cowplot,
-    dplyr,
     ggmosaic (>= 0.3.4),
     ggnewscale,
     ggokabeito,
