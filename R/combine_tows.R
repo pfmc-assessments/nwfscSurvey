@@ -12,6 +12,9 @@
 #' @param data A data frame of catches obtained by using the `pull_catch`
 #' function.
 #' @template dir
+#' @param single_species TRUE/FALSE Logical that indicates whether data should be
+#' grouped by trawl_id alone (TRUE, e.g., rougheye rockfish and blackspotted rockfish)
+#' or data should be grouped by common name and trawl_id (FALSE).
 #' @template verbose
 #'
 #' @author Chantel Wetzel
@@ -21,7 +24,7 @@
 #'
 #'
 #'
-combine_tows <- function(data, dir = NULL, verbose = TRUE) {
+combine_tows <- function(data, dir = NULL, single_species = TRUE, verbose = TRUE) {
   check_dir(dir = dir, verbose = verbose)
 
   if (!"total_catch_numbers" %in% colnames(data)) {
@@ -39,20 +42,39 @@ combine_tows <- function(data, dir = NULL, verbose = TRUE) {
 
   partition_to_keep <- c("NA", NA, "Large", "Small", "Unspecified", "YOY")
 
-  catch <- data |>
-    dplyr::filter(partition %in% partition_to_keep) |>
-    dplyr::group_by(common_name, trawl_id) |>
-    dplyr::mutate(
-      total_catch_numbers = sum(total_catch_numbers),
-      total_catch_wt_kg = sum(total_catch_wt_kg),
-      subsample_count = sum(subsample_count),
-      subsample_wt_kg = sum(subsample_wt_kg),
-      cpue_kg_per_ha_der = sum(cpue_kg_per_ha_der),
-      cpue_kg_km2 = sum(cpue_kg_km2),
-      partition_sample_types = paste0(partition_sample_types, collapse = "_"),
-      partition = paste0(partition, collapse = "_")
-    ) |>
-    dplyr::distinct(trawl_id, .keep_all = TRUE)
+  if (single_species) {
+    catch <- data |>
+      dplyr::filter(partition %in% partition_to_keep) |>
+      dplyr::group_by(trawl_id) |>
+      dplyr::mutate(
+        common_name = paste0(common_name, collapse = "_"),
+        scientific_name = paste0(scientific_name, collapse = "_"),
+        total_catch_numbers = sum(total_catch_numbers),
+        total_catch_wt_kg = sum(total_catch_wt_kg),
+        subsample_count = sum(subsample_count),
+        subsample_wt_kg = sum(subsample_wt_kg),
+        cpue_kg_per_ha_der = sum(cpue_kg_per_ha_der),
+        cpue_kg_km2 = sum(cpue_kg_km2),
+        partition_sample_types = paste0(partition_sample_types, collapse = "_"),
+        partition = paste0(partition, collapse = "_")
+      ) |>
+      dplyr::distinct(trawl_id, .keep_all = TRUE)
+  } else {
+    catch <- data |>
+      dplyr::filter(partition %in% partition_to_keep) |>
+      dplyr::group_by(common_name, trawl_id) |>
+      dplyr::mutate(
+        total_catch_numbers = sum(total_catch_numbers),
+        total_catch_wt_kg = sum(total_catch_wt_kg),
+        subsample_count = sum(subsample_count),
+        subsample_wt_kg = sum(subsample_wt_kg),
+        cpue_kg_per_ha_der = sum(cpue_kg_per_ha_der),
+        cpue_kg_km2 = sum(cpue_kg_km2),
+        partition_sample_types = paste0(partition_sample_types, collapse = "_"),
+        partition = paste0(partition, collapse = "_")
+      ) |>
+      dplyr::distinct(trawl_id, .keep_all = TRUE)
+  }
 
   catch <- as.data.frame(catch)
 
