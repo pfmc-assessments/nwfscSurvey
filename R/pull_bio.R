@@ -124,7 +124,10 @@ pull_bio <- function(
   }
   bio_pull <- try(get_json(url = url_text))
 
-  if (!(is.data.frame(bio_pull)) | !is.list(bio_pull)) {
+  # This is.list check here is to proceed on for Triennial and AFSC.Slope
+  # surveys which may return an empty list for ages since age and length
+  # are pulled separately.
+  if (!(is.data.frame(bio_pull)) & !is.list(bio_pull)) {
     cli::cli_abort(
       "\n No data returned by the warehouse for the filters given.
       \n Make sure the year range is correct (cannot include -Inf or Inf) for the project selected and the input name is correct,
