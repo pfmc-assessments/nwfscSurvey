@@ -136,70 +136,77 @@ pull_bio <- function(
     )
   }
 
-  # Filter out non-standard samples
-  # Some early entries are NA for standard sample indicators. These should be retained.
-  standard_lengths <- bio_pull[, "standard_survey_length_or_width_indicator"] %in% c(NA, "NA", "Standard Survey Length or Width")
-  if (length(standard_lengths) != dim(bio_pull)[1]) {
-    if (verbose) {
-      n <- dim(bio_pull)[1] - length(standard_lengths)
-      cli::cli_alert_info(
-        "There were {n} lengths removed because the were not within the standard sampling protocal."
-      )
+  # This check is needed to proceed on for species where there were no age from
+  # the AFSC.Slope and Triennial survey since lengths are checked later in the
+  # length_fact data table.
+  if (!is.null(dim(bio_pull))) {
+    # Filter out non-standard samples
+    # Some early entries are NA for standard sample indicators. These should be retained.
+    standard_lengths <- bio_pull[, "standard_survey_length_or_width_indicator"] %in% c(NA, "NA", "Standard Survey Length or Width")
+    if (length(standard_lengths) != dim(bio_pull)[1]) {
+      if (verbose) {
+        n <- dim(bio_pull)[1] - length(standard_lengths)
+        cli::cli_alert_info(
+          "There were {n} lengths removed because the were not within the standard sampling protocal."
+        )
+      }
+      bio_pull <- bio_pull[standard_lengths, ]
     }
-    bio_pull <- bio_pull[standard_lengths, ]
+
+    # Remove non-standard ages
+    nonstandard_age <- which(bio_pull[, "standard_survey_age_indicator"] == "Not Standard Survey Age")
+    if (length(nonstandard_age) > 0) {
+      if (verbose) {
+        n <- length(nonstandard_age)
+        cli::cli_alert_info(
+          "There were {n} ages removed because the were not within the standard sampling protocal."
+        )
+      }
+      bio_pull[nonstandard_age, "age_years"] <- NA
+    }
+
+    # Remove non-standard weights
+    nonstandard_wgt <- which(bio_pull[, "standard_survey_weight_indicator"] == "Not Standard Survey Weight")
+    if (length(nonstandard_wgt) > 0) {
+      if (verbose) {
+        n <- length(nonstandard_wgt)
+        cli::cli_alert_info(
+          "There were {n} weights removed because there were not collected at a standard survey location."
+        )
+      }
+      bio_pull[nonstandard_wgt, "weight_kg"] <- NA
+    }
+
+    fill_in  <- is.na(bio_pull[, "operation_dim$legacy_performance_code"])
+    if (sum(fill_in) > 0) {
+      bio_pull[fill_in, "operation_dim$legacy_performance_code"] <- -999
+    }
+    # A value of 8 in the Triennial data indicates a water haul
+    good_tows <- bio_pull[, "operation_dim$legacy_performance_code"] != 8
+    if (sum(good_tows) != dim(bio_pull)[1]) {
+      if (verbose) {
+        n <- dim(bio_pull)[1] - sum(good_tows)
+        cli::cli_alert_info(
+          "There were {n} tows removed because they were determined to be water hauls (e.g., net not on the bottom)."
+        )
+      }
+      bio_pull <- bio_pull[good_tows, ]
+    }
+    find <- colnames(bio_pull) == "ageing_laboratory_dim$laboratory"
+    colnames(bio_pull)[find] <- "ageing_lab"
+
+    # Remove the extra columns now that they are not needed
+    bio_pull <- bio_pull[, vars_short]
+    # These two columns are added for functionality since the older data
+    # pulls were weight and age and the subsequent functions have not been
+    # revised.
+    bio_pull$weight <- bio_pull$weight_kg
+    bio_pull$age <- bio_pull$age_years
+    bio_pull$date <- chron::chron(format(as.POSIXlt(bio_pull$datetime_utc_iso, format = "%Y-%m-%dT%H:%M:%S"), "%Y-%m-%d"), format = "y-m-d", out.format = "YYYY-m-d")
+    bio_pull$trawl_id <- as.character(bio_pull$trawl_id)
   }
 
-  # Remove non-standard ages
-  nonstandard_age <- which(bio_pull[, "standard_survey_age_indicator"] == "Not Standard Survey Age")
-  if (length(nonstandard_age) > 0) {
-    if (verbose) {
-      n <- length(nonstandard_age)
-      cli::cli_alert_info(
-        "There were {n} ages removed because the were not within the standard sampling protocal."
-      )
-    }
-    bio_pull[nonstandard_age, "age_years"] <- NA
-  }
-
-  # Remove non-standard weights
-  nonstandard_wgt <- which(bio_pull[, "standard_survey_weight_indicator"] == "Not Standard Survey Weight")
-  if (length(nonstandard_wgt) > 0) {
-    if (verbose) {
-      n <- length(nonstandard_wgt)
-      cli::cli_alert_info(
-        "There were {n} weights removed because there were not collected at a standard survey location."
-      )
-    }
-    bio_pull[nonstandard_wgt, "weight_kg"] <- NA
-  }
-
-  # Remove water hauls
-  water_hauls <- is.na(bio_pull[, "operation_dim$legacy_performance_code"])
-  if (sum(water_hauls) > 0) {
-    if (survey =="Triennial" & verbose == TRUE) {
-      n <- sum(water_hauls)
-      cli::cli_alert_info(
-        "There were {n} tows removed because they were determined to be water hauls (net not on the bottom)."
-      )
-    }
-    bio_pull[water_hauls, "operation_dim$legacy_performance_code"] <- -999
-  }
-  good_tows <- bio_pull[, "operation_dim$legacy_performance_code"] != 8
-  if (length(good_tows) != dim(bio_pull)[1]) {
-    if (verbose) {
-      n <- dim(bio_pull)[1] - length(good_tows)
-      cli::cli_alert_info(
-        "There were {n} tows removed because they were deemed bad tows."
-      )
-    }
-    bio_pull <- bio_pull[good_tows, ]
-  }
-
-  find <- colnames(bio_pull) == "ageing_laboratory_dim$laboratory"
-  colnames(bio_pull)[find] <- "ageing_lab"
-
-  # Remove the extra columns now that they are not needed
-  bio_pull <- bio_pull[, vars_short]
+  bio <- bio_pull
 
   if (survey %in% c("Triennial", "AFSC.Slope")) {
     url_text <- get_url(
@@ -209,43 +216,29 @@ pull_bio <- function(
       years = years,
       vars_long = vars_long
     )
-
     len_pull <- try(get_json(url = url_text))
 
-    # Remove water hauls
     if (is.data.frame(len_pull)) {
       fill_in <- is.na(len_pull[, "operation_dim$legacy_performance_code"])
       if (sum(fill_in) > 0) {
         len_pull[fill_in, "operation_dim$legacy_performance_code"] <- -999
       }
+      # Remove water hauls
       good_tows <- len_pull[, "operation_dim$legacy_performance_code"] != 8
-      if (length(good_tows) != dim(len_pull)[1]) {
+      if (sum(good_tows) != dim(len_pull)[1]) {
         if (verbose) {
-          n <- dim(len_pull)[1] - length(good_tows)
+          n <- dim(len_pull)[1] - sum(good_tows)
           cli::cli_alert_info(
-            "There were {n} tows removed because they were deemed bad tows."
+            "There were {n} tows removed because they were determined to be water hauls (e.g., net not on the bottom)."
           )
         }
+        len_pull <- len_pull[good_tows, ]
       }
-      len_pull <- len_pull[good_tows, ]
 
-      len_pull$weight_kg <- NA
+      len_pull$weight_kg <- len_pull$weight <- NA
       len_pull$date <- chron::chron(format(as.POSIXlt(len_pull$datetime_utc_iso, format = "%Y-%m-%dT%H:%M:%S"), "%Y-%m-%d"), format = "y-m-d", out.format = "YYYY-m-d")
       len_pull$trawl_id <- as.character(len_pull$trawl_id)
-    }
-  }
-
-  if (nrow(bio_pull) > 0) {
-    bio_pull$date <- chron::chron(format(as.POSIXlt(bio_pull$datetime_utc_iso, format = "%Y-%m-%dT%H:%M:%S"), "%Y-%m-%d"), format = "y-m-d", out.format = "YYYY-m-d")
-    bio_pull$trawl_id <- as.character(bio_pull$trawl_id)
-    bio <- bio_pull
-  }
-
-  if (survey %in% c("Triennial", "AFSC.Slope")) {
-    if (!is.null(bio_pull) & sum(is.na(bio_pull$age_years)) != length(bio_pull$age_years)) {
-      age_data <- bio_pull
-    } else {
-      age_data <- NULL
+      len_pull <- len_pull[, colnames(len_pull) != "operation_dim$legacy_performance_code"]
     }
 
     bio <- list()
@@ -254,8 +247,8 @@ pull_bio <- function(
     } else {
       bio$length_data <- "no_lengths_available"
     }
-    if (!is.null(age_data)) {
-      bio$age_data <- age_data
+    if (is.data.frame(bio_pull)) {
+      bio$age_data <- bio_pull
     } else {
       bio$age_data <- "no_ages_available"
     }
@@ -265,20 +258,17 @@ pull_bio <- function(
   }
 
   if (convert) {
-    bio$age <- bio$age_years
-    bio$weight <- bio$weight_kg
     firstup <- function(x) {
       substr(x, 1, 1) <- toupper(substr(x, 1, 1))
       x
     }
     if (survey %in% c("Triennial", "AFSC.Slope")) {
-      bio[[1]][, "weight"] <- bio[[1]][, "weight_kg"]
-      colnames(bio[[1]]) <- firstup(colnames(bio[[1]]))
+      if (!is.null(nrow(bio[["age_data"]]))) {
+        colnames(bio[["length_data"]]) <- firstup(colnames(bio[["length_data"]]))
+      }
 
-      if (!is.null(nrow(bio[[2]]))) {
-        bio[[2]][, "age"] <- bio[[2]][, "age_years"]
-        bio[[2]][, "weight"] <- bio[[2]][, "weight_kg"]
-        colnames(bio[[2]]) <- firstup(colnames(bio[[2]]))
+      if (!is.null(nrow(bio[["age_data"]]))) {
+        colnames(bio[["age_data"]]) <- firstup(colnames(bio[["age_data"]]))
       }
     } else {
       colnames(bio) <- firstup(colnames(bio))
