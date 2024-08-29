@@ -163,3 +163,21 @@ test_that("pull_biological_samples", {
   expect_is(dat, "data.frame")
   expect_equal(nrow(dat), 926)
 })
+
+test_that("combine_tows", {
+  skip_on_cran()
+
+  dat <- pull_catch(
+    common_name = "rougheye rockfish",
+    years = c(2019, 2023),
+    survey = "NWFSC.Combo",
+    verbose = TRUE
+  )
+  combined_dat <- combine_tows(
+    data = dat,
+    single_species = TRUE,
+    verbose = TRUE
+  )
+  expect_is(combined_dat, "data.frame")
+  expect_equal(nrow(combined_dat), 2319)
+})

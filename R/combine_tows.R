@@ -7,14 +7,16 @@
 #' then there will often be data from the same `trawl_id` included
 #' as multiple records. In these instances, this function allows
 #' for the sample data to be combined for each unique `trawl_id`.
+#' This also occurs if cryptic species pairs are all returned
+#' (e.g., rougheye rockfish and blackspotted rockfish)
 #'
 #'
 #' @param data A data frame of catches obtained by using the `pull_catch`
 #' function.
 #' @template dir
 #' @param single_species TRUE/FALSE Logical that indicates whether data should be
-#' grouped by trawl_id alone (TRUE, e.g., rougheye rockfish and blackspotted rockfish)
-#' or data should be grouped by common name and trawl_id (FALSE).
+#' grouped by `trawl_id` alone (TRUE, e.g., rougheye rockfish and blackspotted rockfish)
+#' or data should be grouped by `common name` and `trawl_id` (FALSE).
 #' @template verbose
 #'
 #' @author Chantel Wetzel
