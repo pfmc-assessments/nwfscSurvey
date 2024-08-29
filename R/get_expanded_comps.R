@@ -97,25 +97,32 @@ get_expanded_comps <- function(
   bio_data[, "bin"] <- bins[findInterval(as.numeric(bio_data[, "comp_column"]), bins, all.inside = T)]
   check <- sum(bio_data[, "bin"] == -999) / dim(bio_data)[1]
   if (verbose) {
-    message(paste("There are", sum(bio_data[, "bin"] == -999), "out of", dim(bio_data)[1], "records that are less than the minimum composition bin."))
-    message("These fish will be added to the minimum bin.")
-    if (check >= 0.01) {
-      message("WARNING:  The fraction of fish below the minimum composition bin is greater than 0.01%, consider lowering the minimum bin.")
+    n <- sum(bio_data[, "bin"] == -999)
+    if (n != 0){
+      cli::cli_alert_info(
+        "There are {n} out of {dim(bio_data)[1]} records that are less than the minimum composition bin.
+       These fish will be added to the minimum bin."
+      )
+      if (check >= 0.01) {
+        cli::cli_alert_warning(
+          "The fraction of fish below the minimum composition bin is > 0.01%.
+          Consider decreasing the minimum composition bin, if appropriate."
+        )
+      }
     }
   }
   bio_data[which(bio_data$bin == -999), "bin"] <- min(comp_bins)
 
-  # Check for the number of tows were fish were observed but not measured
-  # TODO: DECIDE WHETHER THIS CHECK SHOULD CONTINUE TO BE REPORTED AND IF IT
-  # SHOULD BE DONE IN A MORE INFORMATIVE MANNER
   positive_tows <- catch_data[which(catch_data$total_catch_numbers > 0), ]
   find <- !(positive_tows$trawl_id %in% bio_data$trawl_id)
   no_samples_taken <- sum(find)
   missing <- sum(positive_tows[find, "total_catch_numbers"])
   percent <- 100 * round(missing / sum(catch_data[, "total_catch_numbers"]), 3)
   if (verbose) {
-    message("\nThere are ", no_samples_taken, " tows where fish were observed but no ", comp_column_name, " taken.
-        These tows contain ", missing, " ", comp_column_name, " that comprise ", percent, " percent of the total catch numbers.\n")
+    cli::cli_alert_info("There are {no_samples_taken} tows where fish were observed but not sampled.
+        These tows comprise {percent} percent of the total catch numbers.
+        Only measured fished in the bio_data file are used for composition expansions"
+    )
   }
 
   bio_data <- data.frame(
@@ -179,7 +186,10 @@ get_expanded_comps <- function(
 
   if (output == "tow_expansion_only") {
     if (verbose) {
-      message("Data only expanded to the tow level. Composition file not written for SS3.\n")
+      cli::cli_alert_info(
+        "Composition data only expanded to the tow level.
+        Formatted composition data file not written for SS3."
+      )
     }
     tow_expansion_data <- bio_catch
     return(tow_expansion_data)
