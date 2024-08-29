@@ -93,18 +93,20 @@ get_species_info <- function(species, unident = FALSE, verbose = TRUE) {
 
   if (any(lapply(index, length) == 0)) {
     bad <- which(lapply(index, length) == 0)
-    warning("The following species were not found in the look up table\n",
-            "generated from the data warehouse (webapps.nwfsc.noaa.gov)\n",
-            "and only information for species in the table will be returned:\n",
-            paste(species[bad], collapse = ", "),
-            call. = FALSE
+    bad_names <- paste(species[bad], collapse = ", ")
+    cli::cli_alert_info(
+      "The following species were not found in the look up table from the data warehouse
+       (webapps.nwfsc.noaa.gov), and only information for species in the table will be returned:
+       {bad_names}."
     )
     species <- species[-1 * bad]
     index <- index[-1 * bad]
   }
 
   if (length(species) == 0) {
-    stop("No matches were found for your input species.")
+    cli::cli_abort(
+      "No matches were found for your input species: {species}."
+    )
   }
   out <- sppnames[unlist(index), ]
   out[, "input"] <- rep(species, times = vapply(index, length, FUN.VALUE = 1L))
@@ -113,25 +115,29 @@ get_species_info <- function(species, unident = FALSE, verbose = TRUE) {
   index <- match(tolower(out[, "common_name"]), tolower(spplist[, 2]))
   if (any(is.na(index))) {
     bad <- which(is.na(index))
+    bad_strata <- paste(unique(out[bad, "input"]), collapse = ", ")
     if (length(index) == 1) {
-      warning("The following species were not found in the look up table\n",
-              "stored in GetSpp for default strata, please self-assign strata:\n",
-              paste(unique(out[bad, "input"]), collapse = ", "),
-              call. = FALSE
+      cli::cli_alert_warning(
+        "The following species were not found in the look up table stored in
+        get_species_info(), please self-assign strata and species_type:
+        {bad_strata}."
       )
     }
 
     if (length(index) != 1) {
       if (verbose) {
-        warning("Multiple matches were found for the input species in the look up table\n",
-                "stored in GetSpp. Only one match is returned. The common_name for the removed match is:\n",
-                paste(unique(out[bad, "common_name"]), collapse = ", "),
-                call. = FALSE
+        multi_matches <- paste(unique(out[bad, "common_name"]), collapse = ", ")
+        cli::cli_alert_warning(
+          "Multiple matches were found for the {species} in the look up table
+          stored in PullSpp.fn(). Only one match is returned.
+          The common_name for the removed match is: {multi_matches}."
         )
       }
     }
-    out <- out[!is.na(index), ]
-    index <- index[!is.na(index)]
+    if (!is.na(index)) {
+      out <- out[!is.na(index), ]
+      index <- index[!is.na(index)]
+    }
   }
 
   out[, "strata"] <- ifelse(
@@ -139,7 +145,11 @@ get_species_info <- function(species, unident = FALSE, verbose = TRUE) {
     yes = "coast",
     no = spplist[index, 1]
   )
-  out[, "species_type"] <- spplist[index, 3]
+  out[, "species_type"] <- ifelse(
+    test = is.na(index),
+    yes = "all",
+    no = spplist[index, 3]
+  )
 
   return(out)
 }
