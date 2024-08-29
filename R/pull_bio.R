@@ -144,36 +144,18 @@ pull_bio <- function(
     # Some early entries are NA for standard sample indicators. These should be retained.
     standard_lengths <- bio_pull[, "standard_survey_length_or_width_indicator"] %in% c(NA, "NA", "Standard Survey Length or Width")
     if (length(standard_lengths) != dim(bio_pull)[1]) {
-      if (verbose) {
-        n <- dim(bio_pull)[1] - length(standard_lengths)
-        cli::cli_alert_info(
-          "There were {n} lengths removed because the were not within the standard sampling protocal."
-        )
-      }
       bio_pull <- bio_pull[standard_lengths, ]
     }
 
     # Remove non-standard ages
     nonstandard_age <- which(bio_pull[, "standard_survey_age_indicator"] == "Not Standard Survey Age")
     if (length(nonstandard_age) > 0) {
-      if (verbose) {
-        n <- length(nonstandard_age)
-        cli::cli_alert_info(
-          "There were {n} ages removed because the were not within the standard sampling protocal."
-        )
-      }
       bio_pull[nonstandard_age, "age_years"] <- NA
     }
 
     # Remove non-standard weights
     nonstandard_wgt <- which(bio_pull[, "standard_survey_weight_indicator"] == "Not Standard Survey Weight")
     if (length(nonstandard_wgt) > 0) {
-      if (verbose) {
-        n <- length(nonstandard_wgt)
-        cli::cli_alert_info(
-          "There were {n} weights removed because there were not collected at a standard survey location."
-        )
-      }
       bio_pull[nonstandard_wgt, "weight_kg"] <- NA
     }
 
@@ -184,12 +166,6 @@ pull_bio <- function(
     # A value of 8 in the Triennial data indicates a water haul
     good_tows <- bio_pull[, "operation_dim$legacy_performance_code"] != 8
     if (sum(good_tows) != dim(bio_pull)[1]) {
-      if (verbose) {
-        n <- dim(bio_pull)[1] - sum(good_tows)
-        cli::cli_alert_info(
-          "There were {n} tows removed because they were determined to be water hauls (e.g., net not on the bottom)."
-        )
-      }
       bio_pull <- bio_pull[good_tows, ]
     }
     find <- colnames(bio_pull) == "ageing_laboratory_dim$laboratory"
@@ -263,7 +239,7 @@ pull_bio <- function(
       x
     }
     if (survey %in% c("Triennial", "AFSC.Slope")) {
-      if (!is.null(nrow(bio[["age_data"]]))) {
+      if (!is.null(nrow(bio[["length_data"]]))) {
         colnames(bio[["length_data"]]) <- firstup(colnames(bio[["length_data"]]))
       }
 
