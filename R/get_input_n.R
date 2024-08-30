@@ -97,9 +97,7 @@ get_input_n <- function(
       n = n(),
       stewart_hamel = floor(unique(multiplier) * tows)
     ) |>
-    dplyr::ungroup()
-
-  samples_by_sex <- samples_by_sex |>
+    dplyr::ungroup() |>
     tidyr::complete(year, sex_grouped, fill = list(n = 0, tows = 0, stewart_hamel = 0))
 
   samples_all <- data_with_counts |>
@@ -110,9 +108,7 @@ get_input_n <- function(
       n = n(),
       stewart_hamel = floor(unique(multiplier) * tows)
     ) |>
-    dplyr::ungroup()
-
-  samples_all <- samples_all |>
+    dplyr::ungroup() |>
     tidyr::complete(year, sex_grouped, fill = list(n = 0, tows = 0, stewart_hamel = 0))
 
   samples <- rbind(samples_by_sex, samples_all)
