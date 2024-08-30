@@ -67,7 +67,6 @@ pull_bio <- function(
          \n Please retry using only one.")
   }
 
-
   check_dir(dir = dir, verbose = verbose)
 
   if (is.null(common_name)) {
@@ -194,7 +193,7 @@ pull_bio <- function(
     )
     len_pull <- try(get_json(url = url_text))
 
-    if (!(is.data.frame(len_pull))) {
+    if (is.null(dim(len_pull))) {
       cli::cli_abort(
         "\n No data returned by the warehouse for the filters given.
       \n Make sure the year range is correct (cannot include -Inf or Inf) for the project selected and the input name is correct,
