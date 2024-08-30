@@ -123,14 +123,12 @@ pull_bio <- function(
   }
   bio_pull <- try(get_json(url = url_text))
 
-  # This is.list check here is to proceed on for Triennial and AFSC.Slope
-  # surveys which may return an empty list for ages since age and length
-  # are pulled separately.
-  if (!(is.data.frame(bio_pull)) & !is.list(bio_pull)) {
+  if (!is.data.frame(bio_pull) & !survey %in% c("AFSC.Slope", "Triennial")) {
     cli::cli_abort(
-      "\n No data returned by the warehouse for the filters given.
-      \n Make sure the year range is correct (cannot include -Inf or Inf) for the project selected and the input name is correct,
-      \n otherwise there may be no data for this species from this project.\n
+      "No data returned by the warehouse for the filters given.
+      Make sure the year range is correct (cannot include -Inf or Inf) for the
+      project selected and the input name is correct, otherwise there may be no
+      data for this species from this project.
       URL: {url_text}"
     )
   }
@@ -195,10 +193,11 @@ pull_bio <- function(
 
     if (is.null(dim(len_pull))) {
       cli::cli_abort(
-        "\n No data returned by the warehouse for the filters given.
-      \n Make sure the year range is correct (cannot include -Inf or Inf) for the project selected and the input name is correct,
-      \n otherwise there may be no data for this species from this project.\n
-      URL: {url_text}"
+        "len_pull: No data returned by the warehouse for the filters given.
+        Make sure the year range is correct (cannot include -Inf or Inf) for the
+        project selected and the input name is correct,otherwise there may be no
+        data for this species from this project.
+        URL: {url_text}"
       )
     }
 
@@ -231,7 +230,9 @@ pull_bio <- function(
       bio$age_data <- "no_ages_available"
     }
     if (verbose) {
-      cli::cli_alert_info("Triennial & AFSC Slope data returned as a list: bio$length_data and bio$age_data\n")
+      cli::cli_alert_info(
+        "Triennial & AFSC Slope data returned as a list: bio$length_data and bio$age_data"
+      )
     }
   }
 
