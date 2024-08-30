@@ -61,8 +61,11 @@ get_input_n <- function(
 
   colnames(data) <- tolower(colnames(data))
   comp_column_name <- tolower(comp_column_name)
-  if (!comp_column_name %in% colnames(data)) {
-    stop("The comp_column_name is not a column name in the data.")
+  needed_columns <- c("sex", "trawl_id", "year", comp_column_name)
+  if (any(!needed_columns %in% colnames(data))) {
+    missing_columns <- needed_columns[!needed_columns %in% colnames(data)]
+    cli::cli_abort(
+      "The {missing_columns} is not a column name in the data.")
   }
 
   multiplier <- ifelse(
