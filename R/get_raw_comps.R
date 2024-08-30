@@ -76,7 +76,7 @@ get_raw_comps <- function(
     data,
     comp_bins,
     comp_column_name = "Length_cm",
-    input_n_method = c("stewart_hamel", "tows", "total_samples"),
+    input_n_method = c("stewart_hamel", "tows", "total_samples")[1],
     two_sex_comps = TRUE,
     fleet = "Enter Fleet",
     month = "Enter Month",
@@ -91,9 +91,9 @@ get_raw_comps <- function(
   plotdir <- file.path(dir, printfolder)
   check_dir(dir = plotdir, verbose = verbose)
 
-  input_n_method <- match.arg(
-    input_sample_size_method,
-    c("stewart_hamel", "tows", "total_samples"))
+  #input_n_method <- match.arg(
+  #  input_n_method,
+  #  c("stewart_hamel", "tows", "total_samples"))
 
   colnames(data) <- tolower(colnames(data))
   comp_column_name <- tolower(comp_column_name)
@@ -162,7 +162,7 @@ get_raw_comps <- function(
     dir = dir,
     data = data,
     comp_column_name = comp_column_name,
-    input_sample_size_method = input_sample_size_method,
+    input_n_method = input_n_method,
     species_group = species_type,
     printfolder = printfolder,
     verbose = verbose)

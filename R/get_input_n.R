@@ -51,7 +51,7 @@ get_input_n <- function(
     dir = NULL,
     data,
     comp_column_name = "length_cm",
-    input_n_method = c("stewart_hamel", "tows", "total_samples"),
+    input_n_method = c("stewart_hamel", "tows", "total_samples")[1],
     species_group = c(
       "all",
       "flatfish",
@@ -65,9 +65,9 @@ get_input_n <- function(
   plotdir <- file.path(dir, printfolder)
   check_dir(dir = plotdir, verbose = verbose)
 
-  input_n_method <- match.arg(
-    input_sample_size_method,
-    c("stewart_hamel", "tows", "total_samples"))
+  #input_n_method <- match.arg(
+  #  input_n_method,
+  #  c("stewart_hamel", "tows", "total_samples")[1])
 
   colnames(data) <- tolower(colnames(data))
   comp_column_name <- tolower(comp_column_name)
@@ -87,9 +87,8 @@ get_input_n <- function(
   )
 
   data[, "multiplier"] <- multiplier
-  data[, "codify_sex"] <- codify_sex(data[, "sex"])
   data[, "sex_grouped"] <- "sexed"
-  data[which(data[,"codify_sex"] == c("U")), "sex_grouped"] <- "unsexed"
+  data[which(data[,"sex"] == c("U")), "sex_grouped"] <- "unsexed"
   data_all <- data
   data_all[, "sex_grouped"] <- "all"
   binded_data <- rbind(data, data_all)
@@ -99,11 +98,11 @@ get_input_n <- function(
     dplyr::group_by(year) |>
     dplyr::mutate(
       n_all_fish = n(),
-      n_sexed_fish = sum(codify_sex %in% c("F", "M")),
-      n_unsexed_fish = sum(codify_sex == "U")
+      n_sexed_fish = sum(sex %in% c("F", "M")),
+      n_unsexed_fish = sum(sex == "U")
     )
 
-  samples_by_sex <- data_with_counts |>
+  samples <- data_with_counts |>
     dplyr::group_by(year, sex_grouped) |>
     dplyr::summarise(
       n_tows = length(unique(trawl_id)),

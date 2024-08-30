@@ -58,7 +58,7 @@ get_expanded_comps <- function(
     comp_column_name = "length_cm",
     output = c("tow_expansion_only", "full_expansion_unformatted", "full_expansion_ss3_format")[3],
     two_sex_comps = TRUE,
-    input_n_method = c("stewart_hamel", "tows", "total_samples"),
+    input_n_method = c("stewart_hamel", "tows", "total_samples")[1],
     partition = 0,
     fleet = "Enter Fleet",
     age_low = -1,
@@ -71,12 +71,12 @@ get_expanded_comps <- function(
   plotdir <- file.path(dir, printfolder)
   check_dir(dir = dir, verbose = verbose)
 
-  input_n_method <- match.arg(
-    input_sample_size_method,
-    c("stewart_hamel", "tows", "total_samples"))
-  output <- match.arg(
-    output[3],
-    c("tow_expansion_only", "full_expansion_unformatted", "full_expansion_ss3_format"))
+  #input_n_method <- match.arg(
+  #  input_n_method,
+  #  c("stewart_hamel", "tows", "total_samples")[1])
+  #output <- match.arg(
+  #  output,
+  #  c("tow_expansion_only", "full_expansion_unformatted", "full_expansion_ss3_format")[3])
 
   # Convert all the column names to lower case so that code works with old and
   # data pull formats
@@ -292,7 +292,7 @@ get_expanded_comps <- function(
     dir = dir,
     data = bio_data,
     comp_column_name = comp_column_name,
-    input_sample_size_method = input_n_method,
+    input_n_method = input_n_method,
     species_group = species_type,
     printfolder = printfolder,
     verbose = verbose)
