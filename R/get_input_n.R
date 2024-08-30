@@ -77,16 +77,17 @@ get_input_n <- function(
   )
 
   data[, "multiplier"] <- multiplier
+  data[, "codify_sex"] <- codify_sex(data[, "sex"])
   data[, "sex_grouped"] <- "sexed"
-  data[which(data[,"sex"] == c("U")), "sex_grouped"] <- "unsexed"
+  data[which(data[,"codify_sex"] == c("U")), "sex_grouped"] <- "unsexed"
 
   data_with_counts <- data |>
     dplyr::filter(!is.na(comp_column_name)) |>
     dplyr::group_by(year) |>
     dplyr::mutate(
       n_all_fish = n(),
-      n_sexed_fish = sum(sex %in% c("F", "M")),
-      n_unsexed_fish = sum(sex == "U")
+      n_sexed_fish = sum(codify_sex %in% c("F", "M")),
+      n_unsexed_fish = sum(codify_sex == "U")
     )
 
   samples_by_sex <- data_with_counts |>
