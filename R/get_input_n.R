@@ -105,10 +105,11 @@ get_input_n <- function(
 
   if (input_sample_size_method == "stewart_hamel") {
     samples[, "input_n"] <- samples[, "n_stewart_hamel"]
-    replace <- which(samples[, "input_n"] > samples[, "n"])
-    if (length(replace) > 0) {
-      samples[replace, "input_n"] <- samples[replace, "n"]
-    }
+    samples[["input_n"]] <- ifelse(
+      samples[["n_stewart_hamel"]] > samples[["n"]],
+      yes = samples[["n"]],
+      no = samples[["n_stewart_hamel"]]
+    )
   }
   if (input_sample_size_method == "tows") {
     samples[, "input_n"] <- samples[, "n_tows"]
@@ -118,13 +119,16 @@ get_input_n <- function(
   }
 
   if (!is.null(dir)) {
-    project <- ifelse("project" %in% colnames(data),
-                      gsub(" ", "_", tolower(unique(data[, "project"]))), "")
-    species <- ifelse("common_name" %in% colnames(data),
-                      gsub(" ", "_", tolower(unique(data[, "common_name"]))), "")
+    file_naming <- dplyr::if_else(
+      c("project","common_name") %in% colnames(data),
+      true = gsub(" ", "_", tolower(data[1, c("common_name", "project")])),
+      false = ""
+    )
     write.csv(
       x = samples,
-      file = file.path(plotdir, paste0(comp_column_name, "_samples_",species, "_", project, ".csv")),
+      file = file.path(
+        plotdir,
+        paste0(comp_column_name, "_samples_", file_naming[1], "_", file_naming[2], ".csv")),
       row.names = FALSE
     )
   }
