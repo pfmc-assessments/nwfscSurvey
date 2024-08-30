@@ -10,38 +10,39 @@
 #' two-sex model or all length/ages for single-sex model.
 #'
 #' @param data A data frame that includes columns of year, sex, and length/ages. The data
-#' frame can be survey data pulled using pull_bio from the data warehouse or any data frame
-#' that includes column names of sex, year, and the comp_column_name.  The sex column is
-#' expected to have sexes denoted by F, M, and U.
+#'   frame can be survey data pulled using pull_bio from the data warehouse or any data frame
+#'   that includes column names of sex, year, and the comp_column_name.  The sex column is
+#'   expected to have sexes denoted by F, M, and U.
 #' @param comp_bins A vector on length bins or age bins to create compositions across. The
-#' composition data is formatted for Stock Synthesis.
+#'   composition data is formatted for Stock Synthesis.
 #' @param comp_column_name The column name to create composition data for. This column can be
-#' is used to determine whether to format the composition data for length or age
-#' compositions by looking for either age (e.g., age_years, Age, best_age) or length
-#' (e.g., Length, length, Length_cm) in the comp_column_name. Default Length_cm.
+#'   is used to determine whether to format the composition data for length or age
+#'   compositions by looking for either age (e.g., `age_years`, `Age`, `best_age`) or length
+#'   (e.g., `Length`, `length`, `Length_cm`) in the comp_column_name. The default
+#'   is `Length_cm`.
 #' @param two_sex_comps Default TRUE. If TRUE composition data will be formatted for a
-#' Stock Synthesis two-sex model and if FALSE composition data will be formatted for a
-#' single-sex model.
+#'   Stock Synthesis two-sex model and if FALSE composition data will be formatted for a
+#'   single-sex model.
 #' @param input_n_method Determines the default input sample size to add to
-#' the composition data for SS3. There are three options: c("stewart_hamel", "tows",
-#' "total_samples") where the default is "stewart_hamel".
+#'   the composition data for SS3. There are three options: c("stewart_hamel", "tows",
+#'   "total_samples") where the default is "stewart_hamel".
 #' @param fleet A fleet number to assign the composition data to based on the expected
-#' format for Stock Synthesis. Default "Enter Fleet".
+#'   format for Stock Synthesis. Default "Enter Fleet".
 #' @param month Month the samples were collected based on the expected format for
-#' Stock Synthesis to determine the length/age estimate to compare to. Default
-#' "Enter Month".
+#'   Stock Synthesis to determine the length/age estimate to compare to. Default
+#'   "Enter Month".
 #' @param partition Partition to assign the composition data based on the expected
-#' format for Stock Synthesis. Partition of 0 indicates that the composition data
-#' include all composition data, 1 for discarded composition data, and 2 for retained
-#' fish only. Default of 0.
+#'   format for Stock Synthesis. Partition of 0 indicates that the composition data
+#'   include all composition data, 1 for discarded composition data, and 2 for retained
+#'   fish only. Default of 0.
 #' @param age_error Number of ageing error vector to apply to the age data based on
-#' Stock Synthesis. Default "Enter Age Error Vector".
+#'   Stock Synthesis. Default "Enter Age Error Vector".
 #' @param age_low Lower age bin for all age composition data based on the expected
-#' format for Stock Synthesis. Default value of -1 which translates to the lowest age
-#' bin.
+#'   format for Stock Synthesis. Default value of -1 which translates to the lowest age
+#'   bin.
 #' @param age_high Upper age bin for all age composition data based on the expected
-#' format for Stock Synthesis. Default value of -1 which translates to the highest
-#  age bin.
+#'   format for Stock Synthesis. Default value of -1 which translates to the highest
+#    age bin.
 #' @template dir
 #' @template printfolder
 #' @template verbose

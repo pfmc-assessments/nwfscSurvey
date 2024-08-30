@@ -10,11 +10,11 @@ get_expanded_comps(
   comp_bins,
   strata,
   dir = NULL,
-  comp_column_name = c("length_cm", "age")[1],
+  comp_column_name = "length_cm",
   output = c("tow_expansion_only", "full_expansion_unformatted",
     "full_expansion_ss3_format")[3],
   two_sex_comps = TRUE,
-  input_sample_size_method = c("stewart_hamel", "tows", "total_samples")[1],
+  input_n_method = c("stewart_hamel", "tows", "total_samples"),
   partition = 0,
   fleet = "Enter Fleet",
   age_low = -1,
@@ -42,8 +42,9 @@ If dir = NULL no output will be saved.}
 
 \item{comp_column_name}{The column name to create composition data for. This column can be
 is used to determine whether to format the composition data for length or age
-compositions by looking for either age (e.g., age_years, Age, best_age) or length
-(e.g., Length, length, Length_cm) in the comp_column_name. Default Length_cm.}
+compositions by looking for either age (e.g., \code{age_years}, \code{Age}, \code{best_age}) or length
+(e.g., \code{Length}, \code{length}, \code{Length_cm}) in the comp_column_name. The default
+is \code{Length_cm}.}
 
 \item{output}{Switch to specify how to return the composition data where the options
 are c("tow_expansion_only", "full_expansion_unformatted", "full_expansion_ss3_format").
@@ -53,7 +54,7 @@ The default is c("tow_expansion_only", "full_expansion_unformatted", "full_expan
 Stock Synthesis two-sex model and if FALSE composition data will be formatted for a
 single-sex model.}
 
-\item{input_sample_size_method}{Determines the default input sample size to add to
+\item{input_n_method}{Determines the default input sample size to add to
 the composition data for SS3. There are three options: c("stewart_hamel", "tows",
 "total_samples") where the default is "stewart_hamel".}
 

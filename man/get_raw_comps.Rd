@@ -8,7 +8,7 @@ get_raw_comps(
   data,
   comp_bins,
   comp_column_name = "Length_cm",
-  input_sample_size_method = c("stewart_hamel", "tows", "total_samples")[3],
+  input_n_method = c("stewart_hamel", "tows", "total_samples"),
   two_sex_comps = TRUE,
   fleet = "Enter Fleet",
   month = "Enter Month",
@@ -35,7 +35,7 @@ is used to determine whether to format the composition data for length or age
 compositions by looking for either age (e.g., age_years, Age, best_age) or length
 (e.g., Length, length, Length_cm) in the comp_column_name. Default Length_cm.}
 
-\item{input_sample_size_method}{Determines the default input sample size to add to
+\item{input_n_method}{Determines the default input sample size to add to
 the composition data for SS3. There are three options: c("stewart_hamel", "tows",
 "total_samples") where the default is "stewart_hamel".}
 

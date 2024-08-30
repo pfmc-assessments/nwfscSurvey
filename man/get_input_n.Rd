@@ -7,8 +7,8 @@
 get_input_n(
   dir = NULL,
   data,
-  comp_column_name = c("length_cm", "age")[1],
-  input_sample_size_method = c("stewart_hamel", "tows", "total_samples")[1],
+  comp_column_name = "length_cm",
+  input_n_method = c("stewart_hamel", "tows", "total_samples"),
   species_group = c("all", "flatfish", "shelfrock", "sloperock", "thorny", "other")[1],
   printfolder = "forSS3",
   verbose = TRUE
@@ -22,10 +22,11 @@ If dir = NULL no output will be saved.}
 
 \item{comp_column_name}{The column name to create composition data for. This column can be
 is used to determine whether to format the composition data for length or age
-compositions by looking for either age (e.g., age_years, Age, best_age) or length
-(e.g., Length, length, Length_cm) in the comp_column_name. Default Length_cm.}
+compositions by looking for either age (e.g., \code{age_years}, \code{Age}, \code{best_age}) or length
+(e.g., \code{Length}, \code{length}, \code{Length_cm}) in the comp_column_name. The default is
+\code{Length_cm}.}
 
-\item{input_sample_size_method}{Determines the default input sample size to add to
+\item{input_n_method}{Determines the default input sample size to add to
 the composition data for SS3. There are three options: c("stewart_hamel", "tows",
 "total_samples") where the default is "stewart_hamel".}
 
@@ -42,7 +43,10 @@ the output will just be saved directly in \code{dir}. The default is \code{"forS
 warnings to the console. The default is \code{TRUE}.}
 }
 \description{
-Calculate input sample sizes
+This function calculates the number of unique tows, samples, and input sample
+size based on alternative approaches.  The input sample size then is used
+within the \code{get_expanded_comps()} and \code{get_raw_comps()} when creating formatted
+composition data files for Stock Synthesis.
 }
 \examples{
 \dontrun{
