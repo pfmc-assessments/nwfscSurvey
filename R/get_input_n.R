@@ -68,16 +68,12 @@ get_input_n <- function(
       "The {missing_columns} is not a column name in the data.")
   }
 
-  multiplier <- ifelse(
-    species_group == "flatfish", 3.09, ifelse(
-      species_group %in% c("shelfrock", "sloperock"), 2.43, ifelse(
-        species_group == "thorny", 6.91, ifelse(
-          species_group == "other", 2.38, ifelse(
-            species_group == "all", 2.73, 1
-          )
-        )
-      )
-    )
+  multiplier <- dplyr::case_when(
+    species_group == "flatfish" ~ 3.09,
+    species_group %in% c("shelfrock", "sloperock") ~ 2.43,
+    species_group == "thorny" ~ 6.91,
+    species_group == "other" ~ 2.38,
+    TRUE ~ 2.73
   )
 
   data[, "multiplier"] <- multiplier
