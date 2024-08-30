@@ -1,5 +1,10 @@
 #' Calculate input sample sizes
 #'
+#' This function calculates the number of unique tows, samples, and input sample
+#' size based on alternative approaches.  The input sample size then is used
+#' within the `get_expanded_comps()` and `get_raw_comps()` when creating formatted
+#' composition data files for Stock Synthesis.
+#'
 #' @references
 #' Stewart, I.J. and O.S. Hamel. 2014.
 #' Bootstrapping of sample size for length- or age-composition data used in
@@ -10,12 +15,13 @@
 #' @template dir
 #' @param data A data frame of composition data created using [pull_bio()].
 #' @param comp_column_name The column name to create composition data for. This column can be
-#' is used to determine whether to format the composition data for length or age
-#' compositions by looking for either age (e.g., age_years, Age, best_age) or length
-#' (e.g., Length, length, Length_cm) in the comp_column_name. Default Length_cm.
+#'   is used to determine whether to format the composition data for length or age
+#'   compositions by looking for either age (e.g., `age_years`, `Age`, `best_age`) or length
+#'   (e.g., `Length`, `length`, `Length_cm`) in the comp_column_name. The default is
+#'   `Length_cm`.
 #' @param input_n_method Determines the default input sample size to add to
-#' the composition data for SS3. There are three options: c("stewart_hamel", "tows",
-#' "total_samples") where the default is "stewart_hamel".
+#'   the composition data for SS3. There are three options: c("stewart_hamel", "tows",
+#'   "total_samples") where the default is "stewart_hamel".
 #' @param species_group A string specifying the species group of interest, which
 #'   will lead to the use of the correct species-specific value for
 #'   the number of unique samples per tow. See the function call for
