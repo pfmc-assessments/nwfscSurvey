@@ -22,7 +22,7 @@
 #' @param two_sex_comps Default TRUE. If TRUE composition data will be formatted for a
 #' Stock Synthesis two-sex model and if FALSE composition data will be formatted for a
 #' single-sex model.
-#' @param input_sample_size_method Determines the default input sample size to add to
+#' @param input_n_method Determines the default input sample size to add to
 #' the composition data for SS3. There are three options: c("stewart_hamel", "tows",
 #' "total_samples") where the default is "stewart_hamel".
 #' @param fleet A fleet number to assign the composition data to based on the expected
@@ -75,7 +75,7 @@ get_raw_comps <- function(
     data,
     comp_bins,
     comp_column_name = "Length_cm",
-    input_sample_size_method = c("stewart_hamel", "tows", "total_samples")[3],
+    input_n_method = c("stewart_hamel", "tows", "total_samples"),
     two_sex_comps = TRUE,
     fleet = "Enter Fleet",
     month = "Enter Month",
@@ -90,18 +90,26 @@ get_raw_comps <- function(
   plotdir <- file.path(dir, printfolder)
   check_dir(dir = plotdir, verbose = verbose)
 
+  input_n_method <- match.arg(
+    input_sample_size_method,
+    c("stewart_hamel", "tows", "total_samples"))
+
   colnames(data) <- tolower(colnames(data))
   comp_column_name <- tolower(comp_column_name)
 
   vars <- c("year", "sex")
   if (sum(vars %in% colnames(data)) != 2) {
-    stop("Data frame does not contain a column name year and/or sex.
-         \n The columns names can be either upper or lower case.")
+    cli::cli_abort(
+      "Data frame does not contain a column name year and/or sex.
+      The columns names can be either upper or lower case."
+    )
   }
 
   if (!comp_column_name %in% colnames(data)) {
-    stop("Data frame does not contain a column name of comp_column_name.
-         \n The columns names can be either upper or lower case. ")
+    cli::cli_abort(
+      "Data frame does not contain a column name of comp_column_name.
+      The columns names can be either upper or lower case."
+    )
   }
 
   if (!two_sex_comps) {
@@ -125,9 +133,12 @@ get_raw_comps <- function(
     data[is.na(data[, "sex"]), "sex"] <- "U"
   }
 
-  if (!"common_name" %in% colnames(data) & input_sample_size_method == "stewart_hamel") {
-    stop("Data frame does not contain a column name of common_name which is required to calculate Stewart and Hamel input sample size.
-         \n The columns names can be either upper or lower case. ")
+  if (!"common_name" %in% colnames(data) & input_n_method == "stewart_hamel") {
+    cli::cli_abort(
+      "Data frame does not contain a column name of common_name which is required
+      to calculate Stewart and Hamel input sample size. The columns names can be
+      either upper or lower case."
+    )
   }
 
   # Calculate input sample size based on existing function

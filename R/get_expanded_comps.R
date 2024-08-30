@@ -22,7 +22,7 @@
 #' @param two_sex_comps Default TRUE. If TRUE composition data will be formatted for a
 #' Stock Synthesis two-sex model and if FALSE composition data will be formatted for a
 #' single-sex model.
-#' @param input_sample_size_method Determines the default input sample size to add to
+#' @param input_n_method Determines the default input sample size to add to
 #' the composition data for SS3. There are three options: c("stewart_hamel", "tows",
 #' "total_samples") where the default is "stewart_hamel".
 #' @template partition
@@ -54,10 +54,10 @@ get_expanded_comps <- function(
     comp_bins,
     strata,
     dir = NULL,
-    comp_column_name = c("length_cm", "age")[1],
+    comp_column_name = "length_cm",
     output = c("tow_expansion_only", "full_expansion_unformatted", "full_expansion_ss3_format")[3],
     two_sex_comps = TRUE,
-    input_sample_size_method = c("stewart_hamel", "tows", "total_samples")[1],
+    input_n_method = c("stewart_hamel", "tows", "total_samples"),
     partition = 0,
     fleet = "Enter Fleet",
     age_low = -1,
@@ -69,6 +69,13 @@ get_expanded_comps <- function(
 
   plotdir <- file.path(dir, printfolder)
   check_dir(dir = dir, verbose = verbose)
+
+  input_n_method <- match.arg(
+    input_sample_size_method,
+    c("stewart_hamel", "tows", "total_samples"))
+  output <- match.arg(
+    output[3],
+    c("tow_expansion_only", "full_expansion_unformatted", "full_expansion_ss3_format"))
 
   # Convert all the column names to lower case so that code works with old and
   # data pull formats
@@ -284,7 +291,7 @@ get_expanded_comps <- function(
     dir = dir,
     data = bio_data,
     comp_column_name = comp_column_name,
-    input_sample_size_method = input_sample_size_method,
+    input_sample_size_method = input_n_method,
     species_group = species_type,
     printfolder = printfolder,
     verbose = verbose)

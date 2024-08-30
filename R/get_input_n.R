@@ -13,7 +13,7 @@
 #' is used to determine whether to format the composition data for length or age
 #' compositions by looking for either age (e.g., age_years, Age, best_age) or length
 #' (e.g., Length, length, Length_cm) in the comp_column_name. Default Length_cm.
-#' @param input_sample_size_method Determines the default input sample size to add to
+#' @param input_n_method Determines the default input sample size to add to
 #' the composition data for SS3. There are three options: c("stewart_hamel", "tows",
 #' "total_samples") where the default is "stewart_hamel".
 #' @param species_group A string specifying the species group of interest, which
@@ -44,8 +44,8 @@
 get_input_n <- function(
     dir = NULL,
     data,
-    comp_column_name = c("length_cm", "age")[1],
-    input_sample_size_method = c("stewart_hamel", "tows", "total_samples"),
+    comp_column_name = "length_cm",
+    input_n_method = c("stewart_hamel", "tows", "total_samples"),
     species_group = c(
       "all",
       "flatfish",
@@ -59,7 +59,7 @@ get_input_n <- function(
   plotdir <- file.path(dir, printfolder)
   check_dir(dir = plotdir, verbose = verbose)
 
-  input_sample_size_method <- match.arg(
+  input_n_method <- match.arg(
     input_sample_size_method,
     c("stewart_hamel", "tows", "total_samples"))
 
@@ -107,7 +107,7 @@ get_input_n <- function(
     dplyr::ungroup() |>
     tidyr::complete(year, sex_grouped, fill = list(n = 0, n_tows = 0, n_stewart_hamel = 0))
 
-  if (input_sample_size_method == "stewart_hamel") {
+  if (input_n_method == "stewart_hamel") {
     samples[, "input_n"] <- samples[, "n_stewart_hamel"]
     samples[["input_n"]] <- ifelse(
       samples[["n_stewart_hamel"]] > samples[["n"]],
@@ -115,10 +115,10 @@ get_input_n <- function(
       no = samples[["n_stewart_hamel"]]
     )
   }
-  if (input_sample_size_method == "tows") {
+  if (input_n_method == "tows") {
     samples[, "input_n"] <- samples[, "n_tows"]
   }
-  if (input_sample_size_method == "total_samples") {
+  if (input_n_method == "total_samples") {
     samples[, "input_n"] <- samples[, "n"]
   }
 
