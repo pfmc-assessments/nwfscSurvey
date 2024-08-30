@@ -45,7 +45,7 @@ get_input_n <- function(
     dir = NULL,
     data,
     comp_column_name = c("length_cm", "age")[1],
-    input_sample_size_method = c("stewart_hamel", "tows", "total_samples")[1],
+    input_sample_size_method = c("stewart_hamel", "tows", "total_samples"),
     species_group = c(
       "all",
       "flatfish",
@@ -58,6 +58,10 @@ get_input_n <- function(
 
   plotdir <- file.path(dir, printfolder)
   check_dir(dir = plotdir, verbose = verbose)
+
+  input_sample_size_method <- match.arg(
+    input_sample_size_method,
+    c("stewart_hamel", "tows", "total_samples"))
 
   colnames(data) <- tolower(colnames(data))
   comp_column_name <- tolower(comp_column_name)
