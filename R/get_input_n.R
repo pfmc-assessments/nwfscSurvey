@@ -80,8 +80,11 @@ get_input_n <- function(
   data[, "codify_sex"] <- codify_sex(data[, "sex"])
   data[, "sex_grouped"] <- "sexed"
   data[which(data[,"codify_sex"] == c("U")), "sex_grouped"] <- "unsexed"
+  data_all <- data
+  data_all[, "sex_grouped"] <- "all"
+  binded_data <- rbind(data, data_all)
 
-  data_with_counts <- data |>
+  data_with_counts <- binded_data |>
     dplyr::filter(!is.na(comp_column_name)) |>
     dplyr::group_by(year) |>
     dplyr::mutate(
@@ -95,22 +98,10 @@ get_input_n <- function(
     dplyr::summarise(
       n_tows = length(unique(trawl_id)),
       n = n(),
-      stewart_hamel = floor(unique(multiplier) * n_tows)
+      n_stewart_hamel = floor(unique(multiplier) * n_tows)
     ) |>
     dplyr::ungroup() |>
-    tidyr::complete(year, sex_grouped, fill = list(n = 0, n_tows = 0, stewart_hamel = 0))
-
-  samples_all <- data_with_counts |>
-    dplyr::group_by(year) |>
-    dplyr::summarise(
-      sex_grouped = "all",
-      n_tows = length(unique(trawl_id)),
-      n = n(),
-      stewart_hamel = floor(unique(multiplier) * n_tows)
-    ) |>
-    dplyr::ungroup()
-
-  samples <- rbind(samples_by_sex, samples_all)
+    tidyr::complete(year, sex_grouped, fill = list(n = 0, n_tows = 0, n_stewart_hamel = 0))
 
   if (input_sample_size_method == "stewart_hamel") {
     samples[, "input_n"] <- samples[, "n_stewart_hamel"]
