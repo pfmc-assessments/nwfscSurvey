@@ -93,35 +93,34 @@ get_input_n <- function(
   samples_by_sex <- data_with_counts |>
     dplyr::group_by(year, sex_grouped) |>
     dplyr::summarise(
-      tows = length(unique(trawl_id)),
+      n_tows = length(unique(trawl_id)),
       n = n(),
-      stewart_hamel = floor(unique(multiplier) * tows)
+      stewart_hamel = floor(unique(multiplier) * n_tows)
     ) |>
     dplyr::ungroup() |>
-    tidyr::complete(year, sex_grouped, fill = list(n = 0, tows = 0, stewart_hamel = 0))
+    tidyr::complete(year, sex_grouped, fill = list(n = 0, n_tows = 0, stewart_hamel = 0))
 
   samples_all <- data_with_counts |>
     dplyr::group_by(year) |>
     dplyr::summarise(
       sex_grouped = "all",
-      tows = length(unique(trawl_id)),
+      n_tows = length(unique(trawl_id)),
       n = n(),
-      stewart_hamel = floor(unique(multiplier) * tows)
+      stewart_hamel = floor(unique(multiplier) * n_tows)
     ) |>
-    dplyr::ungroup() |>
-    tidyr::complete(year, sex_grouped, fill = list(n = 0, tows = 0, stewart_hamel = 0))
+    dplyr::ungroup()
 
   samples <- rbind(samples_by_sex, samples_all)
 
   if (input_sample_size_method == "stewart_hamel") {
-    samples[, "input_n"] <- samples[, "stewart_hamel"]
+    samples[, "input_n"] <- samples[, "n_stewart_hamel"]
     replace <- which(samples[, "input_n"] > samples[, "n"])
     if (length(replace) > 0) {
       samples[replace, "input_n"] <- samples[replace, "n"]
     }
   }
   if (input_sample_size_method == "tows") {
-    samples[, "input_n"] <- samples[, "tows"]
+    samples[, "input_n"] <- samples[, "n_tows"]
   }
   if (input_sample_size_method == "total_samples") {
     samples[, "input_n"] <- samples[, "n"]
