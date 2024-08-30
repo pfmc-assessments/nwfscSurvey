@@ -12,7 +12,7 @@ get_expanded_comps(
   dir = NULL,
   comp_column_name = "length_cm",
   output = c("tow_expansion_only", "full_expansion_unformatted",
-    "full_expansion_ss3_format")[3],
+    "full_expansion_ss3_format"),
   two_sex_comps = TRUE,
   input_n_method = c("stewart_hamel", "tows", "total_samples"),
   partition = 0,

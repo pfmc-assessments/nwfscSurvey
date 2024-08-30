@@ -18,7 +18,7 @@ test_that("get_raw_comps", {
     comp_bins = seq(16, 80, 4),
     comp_column_name = "Length_cm",
     two_sex_comps = TRUE,
-    input_sample_size_method = c("stewart_hamel", "tows", "total_samples")[3]
+    input_n_method = "total_samples"
   )
   expect_equal(nrow(length_comps$sexed), 16)
   expect_equal(sum(length_comps$sexed$input_n), sum(length_comps$sexed[, 7:ncol(length_comps$sexed)]))
@@ -30,17 +30,17 @@ test_that("get_raw_comps", {
     comp_bins = seq(16, 80, 4),
     comp_column_name = "Length_cm",
     two_sex_comps = FALSE,
-    input_sample_size_method = c("stewart_hamel", "tows", "total_samples")[3]
+    input_n_method = "stewart_hamel"
   )
   expect_equal(nrow(length_unsexed_comps$unsexed), 16)
-  expect_equal(sum(length_unsexed_comps$unsexed$input_n), sum(length_unsexed_comps$unsexed[, 7:ncol(length_unsexed_comps$unsexed)]))
+  expect_equal(sum(length_unsexed_comps$unsexed$input_n), 8195)
 
   age_comps <- get_raw_comps(
     data = dat,
     comp_bins = 1:12,
     comp_column_name = "Age",
     two_sex_comps = TRUE,
-    input_sample_size_method = c("stewart_hamel", "tows", "total_samples")[3]
+    input_n_method = c("stewart_hamel", "tows", "total_samples")[3]
   )
   expect_equal(nrow(age_comps$sexed), 16)
   expect_equal(sum(age_comps$sexed$input_n), sum(age_comps$sexed[, 10:ncol(age_comps$sexed)]))
@@ -76,7 +76,7 @@ test_that("get_expanded_comps", {
     strata = strata,
     comp_column_name = "length_cm",
     two_sex_comps = TRUE,
-    input_sample_size_method = "stewart_hamel",
+    input_n_method = "stewart_hamel",
     verbose = FALSE
   )
   expect_equal(nrow(length_comps$sexed), 16)
@@ -91,7 +91,7 @@ test_that("get_expanded_comps", {
     strata = strata,
     comp_column_name = "age",
     two_sex_comps = TRUE,
-    input_sample_size_method = "stewart_hamel"
+    input_n_method = "stewart_hamel"
    )
   expect_equal(nrow(age_comps$sexed), 15)
   expect_equal(sum(age_comps$sexed$input_n), 3541)
