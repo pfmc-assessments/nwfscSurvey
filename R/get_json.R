@@ -20,13 +20,5 @@ get_json <- function(url) {
     httr::content(as = "text", encoding = "UTF-8") |>
     jsonlite::fromJSON()
 
-  if (!(is.data.frame(out) && NROW(out) > 0)) {
-    stop(glue::glue(
-      "\n No data returned by the warehouse for the filters given.
-      \n Make sure the year range is correct (cannot include -Inf or Inf) for the project selected and the input name is correct,
-      \n otherwise there may be no data for this species from this project.\n
-      URL: {url}"
-    ))
-  }
   return(out)
 }
