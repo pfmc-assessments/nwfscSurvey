@@ -8,8 +8,8 @@ get_input_n(
   dir = NULL,
   data,
   comp_column_name = "length_cm",
-  input_n_method = c("stewart_hamel", "tows", "total_samples"),
-  species_group = c("all", "flatfish", "shelfrock", "sloperock", "thorny", "other")[1],
+  input_n_method = c("stewart_hamel", "tows", "total_samples")[1],
+  species_group = c("all", "flatfish", "shelfrock", "sloperock", "thorny", "other"),
   printfolder = "forSS3",
   verbose = TRUE
 )

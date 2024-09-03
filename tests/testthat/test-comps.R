@@ -40,7 +40,7 @@ test_that("get_raw_comps", {
     comp_bins = 1:12,
     comp_column_name = "Age",
     two_sex_comps = TRUE,
-    input_n_method = c("stewart_hamel", "tows", "total_samples")[3]
+    input_n_method = "total_samples"
   )
   expect_equal(nrow(age_comps$sexed), 16)
   expect_equal(sum(age_comps$sexed$input_n), sum(age_comps$sexed[, 10:ncol(age_comps$sexed)]))
@@ -76,6 +76,7 @@ test_that("get_expanded_comps", {
     strata = strata,
     comp_column_name = "length_cm",
     two_sex_comps = TRUE,
+    output = "full_expansion_ss3_format",
     input_n_method = "stewart_hamel",
     verbose = FALSE
   )
@@ -91,6 +92,7 @@ test_that("get_expanded_comps", {
     strata = strata,
     comp_column_name = "age",
     two_sex_comps = TRUE,
+    output = "full_expansion_ss3_format",
     input_n_method = "stewart_hamel"
    )
   expect_equal(nrow(age_comps$sexed), 15)
@@ -98,4 +100,31 @@ test_that("get_expanded_comps", {
   expect_equal(nrow(age_comps$unsexed), 11)
   expect_equal(sum(age_comps$unsexed$input_n), 45)
 
+})
+
+test_that("get_input_n", {
+
+  bio <- pull_bio(
+    common_name = "lingcod",
+    years = c(2003, 2018),
+    survey = "NWFSC.Combo",
+    verbose = FALSE
+  )
+
+  n <- get_input_n(
+    data = bio,
+    comp_column_name = "length_cm",
+    input_n_method = "stewart_hamel",
+    species_group = "other",
+    verbose = TRUE)
+  expect_equal(sum(n[n$sex_grouped == "all", "n_tows"]), 3447)
+
+  n <- get_input_n(
+    data = bio,
+    comp_column_name = "age",
+    input_n_method = "stewart_hamel",
+    species_group = "other",
+    verbose = TRUE)
+
+  expect_equal(sum(n[n$sex_grouped == "sexed", "n_tows"]), 3335)
 })
