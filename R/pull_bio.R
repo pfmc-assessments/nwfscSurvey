@@ -156,7 +156,7 @@ pull_bio <- function(
       bio_pull[nonstandard_wgt, "weight_kg"] <- NA
     }
 
-    fill_in  <- is.na(bio_pull[, "operation_dim$legacy_performance_code"])
+    fill_in <- is.na(bio_pull[, "operation_dim$legacy_performance_code"])
     if (sum(fill_in) > 0) {
       bio_pull[fill_in, "operation_dim$legacy_performance_code"] <- -999
     }
