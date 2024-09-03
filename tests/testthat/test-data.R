@@ -149,6 +149,16 @@ test_that("pull_bio_triennial", {
   expect_is(dat, "list")
   expect_equal(nrow(dat[[1]]), 1596)
   expect_equal(nrow(dat[[2]]), 382)
+
+  dat <- pull_bio(
+    common_name = "quillback rockfish",
+    years = c(1980, 2004),
+    survey = "Triennial",
+    verbose = TRUE
+  )
+  expect_is(dat, "list")
+  expect_equal(nrow(dat[[1]]), 48)
+  expect_equal(dat[[2]], "no_ages_available")
 })
 
 test_that("pull_biological_samples", {
