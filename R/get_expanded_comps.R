@@ -56,7 +56,7 @@ get_expanded_comps <- function(
     strata,
     dir = NULL,
     comp_column_name = "length_cm",
-    output = c("tow_expansion_only", "full_expansion_unformatted", "full_expansion_ss3_format")[3],
+    output = c(, "full_expansion_ss3_format", "tow_expansion_only", "full_expansion_unformatted")[1],
     two_sex_comps = TRUE,
     input_n_method = c("stewart_hamel", "tows", "total_samples")[1],
     partition = 0,
@@ -71,12 +71,8 @@ get_expanded_comps <- function(
   plotdir <- file.path(dir, printfolder)
   check_dir(dir = dir, verbose = verbose)
 
-  #input_n_method <- match.arg(
-  #  input_n_method,
-  #  c("stewart_hamel", "tows", "total_samples")[1])
-  #output <- match.arg(
-  #  output,
-  #  c("tow_expansion_only", "full_expansion_unformatted", "full_expansion_ss3_format")[3])
+  try(rlang::arg_match0(input_n_method, c("stewart_hamel", "tows", "total_samples")))
+  try(rlang::arg_match0(output, c("tow_expansion_only", "full_expansion_unformatted", "full_expansion_ss3_format")))
 
   # Convert all the column names to lower case so that code works with old and
   # data pull formats

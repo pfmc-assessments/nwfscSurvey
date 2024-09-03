@@ -58,16 +58,22 @@ get_input_n <- function(
       "shelfrock",
       "sloperock",
       "thorny",
-      "other")[1],
+      "other"),
     printfolder = "forSS3",
     verbose = TRUE) {
 
   plotdir <- file.path(dir, printfolder)
   check_dir(dir = plotdir, verbose = verbose)
 
-  #input_n_method <- match.arg(
-  #  input_n_method,
-  #  c("stewart_hamel", "tows", "total_samples")[1])
+  try(rlang::arg_match0(input_n_method, c("stewart_hamel", "tows", "total_samples")))
+  try(rlang::arg_match0(species_group, c(
+    "all",
+    "flatfish",
+    "shelfrock",
+    "sloperock",
+    "thorny",
+    "other"))
+  )
 
   colnames(data) <- tolower(colnames(data))
   comp_column_name <- tolower(comp_column_name)
