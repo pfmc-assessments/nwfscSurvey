@@ -12,26 +12,35 @@
 #' @template survey
 #' @template dir
 #' @template verbose
+#' @param standard_filtering A logical TRUE/FALSE that specifies whether data
+#'   should be filtered using the standard filtering which removes tows with bad
+#'   performance (water haul or poor net performance), or stations that have been
+#'   removed from the survey sampling protocol.
 #'
 #' @return Returns a data frame of special biological samples with sample number
 #' @author Chantel Wetzel
 #' @export
 #'
+#' @import cli
 #' @import glue
 #'
 #'
-pull_biological_samples <- function(common_name = NULL,
-                                    sci_name = NULL,
-                                    years = c(1980, 2050),
-                                    survey = "NWFSC.Combo",
-                                    dir = NULL,
-                                    verbose = TRUE) {
+pull_biological_samples <- function(
+    survey,
+    common_name = NULL,
+    sci_name = NULL,
+    years = c(1980, 2050),
+    dir = NULL,
+    verbose = TRUE,
+    standard_filtering = FALSE) {
   # increase the timeout period to avoid errors when pulling data
   options(timeout = 4000000)
 
   if (length(c(common_name, sci_name)) != max(c(length(common_name), length(sci_name)))) {
-    stop("Can not pull data using both the common_name or sci_name together.
-         \n Please retry using only one.")
+    cli::cli_abort(
+      "Can not pull data using both the common_name or sci_name together.
+       Please retry using only one."
+    )
   }
 
   check_dir(dir = dir, verbose = verbose)
@@ -54,7 +63,6 @@ pull_biological_samples <- function(common_name = NULL,
     species <- "pull all"
   }
 
-  # symbols here are generally: %22 = ", %2C = ",", %20 = " "
   species_str <- convert_to_hex_string(species)
   add_species <- paste0("field_identified_taxonomy_dim$", var_name, "|=[", species_str, "]")
 
@@ -62,10 +70,10 @@ pull_biological_samples <- function(common_name = NULL,
     add_species <- ""
   }
 
-  vars_str <- c(
+  vars_long <- c(
     "common_name", "scientific_name",
     "age_years",
-    # "best_available_taxonomy_observation_detail_dim$method_description",
+    #"best_available_taxonomy_observation_detail_dim$method_description",
     "best_available_taxonomy_observation_detail_whid",
     "date_yyyymmdd",
     "depth_m",
@@ -94,6 +102,7 @@ pull_biological_samples <- function(common_name = NULL,
     "sex",
     "species_category",
     "species_subcategory",
+    "station_invalid",
     "stomach_id",
     "taxon_rank",
     "taxon_source",
@@ -111,25 +120,27 @@ pull_biological_samples <- function(common_name = NULL,
     "lab_maturity_detail_dim$biologically_mature_indicator"
   )
 
-  url_text <- paste0(
-    "https://www.webapps.nwfsc.noaa.gov/data/api/v1/source/",
-    "trawl.individual_fact",
-    "/selection.json?filters=",
-    paste0("project=", paste(strsplit(project_long, " ")[[1]], collapse = "%20")),
-    ",", add_species,
-    ",year>", years[1], ",year<", years[2],
-    # ",ovary_id>0&",
-    "&variables=",
-    glue::glue_collapse(vars_str, sep = ",")
+  url_text <- get_url(
+    data_table = "trawl.individual_fact",
+    project_long = project_long,
+    add_species = add_species,
+    years = years,
+    vars_long = vars_long
   )
 
   if (verbose) {
-    message("Pulling maturity, stomach, fin clip, and tissue sample data.")
+    cli::cli_alert_info(
+      "Pulling maturity, stomach, fin clip, and tissue sample data."
+    )
   }
   bio_samples <- try(get_json(url = url_text))
 
-  keep <- which(bio_samples$ovary_id > 0 | bio_samples$stomach_id > 0 |
-    bio_samples$tissue_id > 0 | bio_samples$left_pectoral_fin_id > 0)
+  keep <- which(
+    bio_samples$ovary_id > 0 |
+    bio_samples$stomach_id > 0 |
+    bio_samples$tissue_id > 0 |
+    bio_samples$left_pectoral_fin_id > 0
+  )
   bio_samples <- bio_samples[keep, ]
 
   rename_columns <- which(
@@ -147,6 +158,49 @@ pull_biological_samples <- function(common_name = NULL,
     )
 
   bio_samples[bio_samples == "NA"] <- NA
+
+  # Remove tows outside of standard depths 55-1,280 m
+  good_depth <- which(bio_samples$depth_m >= 55 & bio_samples$depth_m <= 1280)
+  if (length(good_depth) != dim(bio_samples)[1]) {
+    if (verbose) {
+      n <- dim(bio_samples)[1] - length(good_depth)
+      cli::cli_alert_info(
+        "There were {n} biological samples collected in tows outside standard depth range (55-1,280 m)."
+      )
+    }
+    if (standard_filtering) {
+      bio_samples <- bio_samples[good_depth, ]
+    }
+  }
+
+  # Now start filtering out tows that have issues:
+  good_performance <- which(bio_samples$performance == "Satisfactory")
+  if (length(good_performance) != dim(bio_samples)[1]) {
+    if (verbose) {
+      n <- length(which(bio_samples$performance != "Satisfactory"))
+      cli::cli_alert_info(
+        "There were {n} biological samples collected in tows with poor performance (e.g., no area swept estimate, net issues, etc.)."
+      )
+    }
+    if (standard_filtering) {
+      bio_samples <- bio_samples[good_performance, ]
+    }
+  }
+
+  good_station <- which(bio_samples$station_invalid == 0)
+  if (length(good_station) != dim(bio_samples)[1]) {
+    if (verbose) {
+      n <- length(which(bio_samples$station_invalid != 0))
+      cli::cli_alert_info(
+        "There were {n} biological samples collected at stations that have being removed from the standard station list."
+      )
+    }
+    if (standard_filtering) {
+      bio_samples <- bio_samples[good_station, ]
+    } else {
+      bio_samples[good_station, "station_invalid"] <- "good_station"
+    }
+  }
 
   save_rdata(
     x = bio_samples,

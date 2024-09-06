@@ -25,18 +25,18 @@
 #' @template convert
 #' @template verbose
 #' @param standard_filtering A logical TRUE/FALSE that specifies whether data
-#' should be filtered using the standard filtering which removes tows with bad
-#' performance (water haul or poor net performance), or stations that have been
-#' removed from the survey sampling protocal.
+#'   should be filtered using the standard filtering which removes tows with bad
+#'   performance (water haul or poor net performance), or stations that have been
+#'   removed from the survey sampling protocol.
 
 #'
 #' @author Chantel Wetzel
 #' @export
 #'
 #' @import chron
+#' @import cli
 #' @importFrom stringr str_replace_all
 #' @importFrom dplyr left_join rename
-#' @import glue
 #'
 #' @examples
 #' \dontrun{
@@ -71,15 +71,16 @@
 #' )
 #' }
 #'
-pull_catch <- function(survey,
-                       common_name = NULL,
-                       sci_name = NULL,
-                       years = c(1970, 2050),
-                       dir = NULL,
-                       convert = TRUE,
-                       verbose = TRUE,
-                       sample_types = c("NA", NA, "Life Stage", "Size")[1:2],
-                       standard_filtering = TRUE) {
+pull_catch <- function(
+    survey,
+    common_name = NULL,
+    sci_name = NULL,
+    years = c(1970, 2050),
+    dir = NULL,
+    convert = TRUE,
+    verbose = TRUE,
+    sample_types = c("NA", NA, "Life Stage", "Size")[1:2],
+    standard_filtering = TRUE) {
   if (survey %in% c("NWFSC.Shelf.Rockfish", "NWFSC.Hook.Line")) {
     cli::cli_abort(
       "The catch pull currently does not work for NWFSC Hook & Line Survey data.",
@@ -122,11 +123,11 @@ pull_catch <- function(survey,
   # would allow us to eliminate vars_long form the main pull
   vars_long <- c(
     "common_name", "scientific_name", "project", "year", "vessel", "tow",
-    "total_catch_numbers", "total_catch_wt_kg",
+    "total_catch_numbers", "total_catch_wt_kg", "trawl_id",
     "subsample_count", "subsample_wt_kg", "cpue_kg_per_ha_der",
     "statistical_partition_dim$statistical_partition_type",
     "partition", "operation_dim$legacy_performance_code",
-    "performance", "station_invalid"
+    "performance", "station_invalid", "depth_m"
   )
 
   # These are the retained and returned fields
@@ -167,7 +168,7 @@ pull_catch <- function(survey,
     if (verbose) {
       n <- length(which(positive_tows$performance != "Satisfactory" & !is.na(positive_tows$total_catch_numbers)))
       cli::cli_alert_info(
-        "There were {n} positive tows removed due to poor tow performance (e.g., no area swept estimate, net issues, etc.)."
+        "There were {n} positive tows with non-satisfactory tow performance (e.g., no area swept estimate, net issues, etc.)."
       )
     }
     if (standard_filtering) {
@@ -180,7 +181,7 @@ pull_catch <- function(survey,
     if (verbose) {
       n <- sum(!is.na(positive_tows[-good_station, "total_catch_numbers"]))
       cli::cli_alert_info(
-        "There were {n} positive tow(s) removed due to the sample station being removed from the standard station list."
+        "There were {n} positive tows from stations that have been removed from the standard station list."
       )
     }
     if (standard_filtering) {
@@ -201,7 +202,7 @@ pull_catch <- function(survey,
     if (verbose) {
       n <- length(water_hauls)
       cli::cli_alert_info(
-        "There were {n} tows removed because they were determined to be water hauls (net not on the bottom)."
+        "There were {n} tows that were determined to be water hauls (net not on the bottom)."
       )
     }
     if (standard_filtering) {
@@ -215,22 +216,38 @@ pull_catch <- function(survey,
   if (length(bad_sample_types) > 0) {
     if (verbose) {
       cli::cli_alert_info(
-        "There were {length(bad_sample_types)} positive tows where the sample type
-        was not requested."
+        "There were {length(bad_sample_types)} positive tows where the sample type was not requested."
       )
     }
     positive_tows <- positive_tows[-bad_sample_types,]
   }
+
+  # Remove tows outside of standard depths 55-1,280 m
+  good_depth <- which(positive_tows$depth_m >= 55 & positive_tows$depth_m <= 1280)
+  if (length(good_depth) != dim(positive_tows)[1]) {
+    if (verbose) {
+      n <- dim(positive_tows)[1] - length(good_depth)
+      cli::cli_alert_info(
+        "There were {n} tows that are outside the standard depth range."
+      )
+    }
+    if (standard_filtering) {
+      positive_tows <- positive_tows[good_depth, ]
+    }
+  }
+
 
   if (sum(is.na(positive_tows[, "common_name"])) > 0) {
     replace <- which(is.na(positive_tows[, "common_name"]))
     positive_tows[replace, "common_name"] <- positive_tows[replace, "scientific_name"]
   }
 
+  positive_tows <- positive_tows[, colnames(positive_tows) != "depth_m"]
+
   # Pull all tow data including tows where the species was not observed
   vars_long <- c(
     "project", "year", "vessel", "pass", "tow", "datetime_utc_iso",
-    "depth_m", "longitude_dd", "latitude_dd", "area_swept_ha_der",
+    "depth_hi_prec_m", "longitude_dd", "latitude_dd", "area_swept_ha_der",
     "trawl_id", "operation_dim$legacy_performance_code", "performance", "station_invalid"
   )
 
@@ -242,6 +259,8 @@ pull_catch <- function(survey,
   )
 
   all_tows <- try(get_json(url = url_text))
+
+  all_tows[, "depth_m"] <- all_tows[, "depth_hi_prec_m"]
 
   # Now start filtering out tows that have issues:
   good_performance <- which(all_tows$performance == "Satisfactory")
@@ -272,6 +291,14 @@ pull_catch <- function(survey,
       all_tows <- all_tows[-water_hauls, ]
     } else {
       all_tows[water_hauls, "operation_dim$legacy_performance_code"] <- "water_hauls"
+    }
+  }
+
+  # Remove tows outside of standard depths 55-1,280 m
+  good_depth <- which(all_tows$depth_m >= 55 & all_tows$depth_m <= 1280)
+  if (length(good_depth) != dim(all_tows)[1]) {
+    if (standard_filtering) {
+      all_tows <- all_tows[good_depth, ]
     }
   }
 
@@ -359,10 +386,10 @@ pull_catch <- function(survey,
       if (verbose) {
         cli::cli_alert_warning(
           "There are multiple records for unique tows (trawl_id). This could be
-        because all sample types were included, multiple records for cryptic
-        species pairs were returned, or multiple species were requested.
-        The `combine_tows` function can be used to combine these multiple records
-        for unique tows if needed."
+          because all sample types were included, multiple records for cryptic
+          species pairs were returned, or multiple species were requested.
+          The `combine_tows` function can be used to combine these multiple records
+          for unique tows if needed."
         )
       }
     }
