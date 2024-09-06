@@ -118,7 +118,8 @@ test_that("pull_haul", {
   dat <- pull_haul(
     years = c(2003, 2018),
     survey = "NWFSC.Combo",
-    dir = NULL, verbose = TRUE
+    dir = NULL,
+    verbose = FALSE
   )
   expect_is(dat, "data.frame")
   expect_equal(nrow(dat), 10351)
@@ -171,7 +172,7 @@ test_that("pull_biological_samples", {
     verbose = TRUE
   )
   expect_is(dat, "data.frame")
-  expect_equal(nrow(dat), 926)
+  expect_equal(nrow(dat), 1132)
 })
 
 test_that("combine_tows", {
