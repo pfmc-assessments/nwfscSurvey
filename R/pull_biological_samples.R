@@ -117,7 +117,8 @@ pull_biological_samples <- function(
     "year",
     "year_stn_invalid",
     "lab_maturity_detail_dim$biologically_mature_certain_indicator",
-    "lab_maturity_detail_dim$biologically_mature_indicator"
+    "lab_maturity_detail_dim$biologically_mature_indicator",
+    "operation_dim$legacy_performance_code"
   )
 
   url_text <- get_url(
@@ -130,7 +131,7 @@ pull_biological_samples <- function(
 
   if (verbose) {
     cli::cli_alert_info(
-      "Pulling maturity, stomach, fin clip, and tissue sample data."
+      "Pulling maturity, stomach, fin clip, and tissue sample data for {species}."
     )
   }
   bio_samples <- try(get_json(url = url_text))
@@ -159,48 +160,15 @@ pull_biological_samples <- function(
 
   bio_samples[bio_samples == "NA"] <- NA
 
-  # Remove tows outside of standard depths 55-1,280 m
-  good_depth <- which(bio_samples$depth_m >= 55 & bio_samples$depth_m <= 1280)
-  if (length(good_depth) != dim(bio_samples)[1]) {
-    if (verbose) {
-      n <- dim(bio_samples)[1] - length(good_depth)
-      cli::cli_alert_info(
-        "There were {n} biological samples collected in tows outside standard depth range (55-1,280 m)."
-      )
-    }
-    if (standard_filtering) {
-      bio_samples <- bio_samples[good_depth, ]
-    }
-  }
+  bio_samples <- filter_pull(
+    data = bio_samples,
+    data_type = "biological samples",
+    standard_filtering = standard_filtering,
+    verbose = verbose)
 
-  # Now start filtering out tows that have issues:
-  good_performance <- which(bio_samples$performance == "Satisfactory")
-  if (length(good_performance) != dim(bio_samples)[1]) {
-    if (verbose) {
-      n <- length(which(bio_samples$performance != "Satisfactory"))
-      cli::cli_alert_info(
-        "There were {n} biological samples collected in tows with poor performance (e.g., no area swept estimate, net issues, etc.)."
-      )
-    }
-    if (standard_filtering) {
-      bio_samples <- bio_samples[good_performance, ]
-    }
-  }
-
-  good_station <- which(bio_samples$station_invalid == 0)
-  if (length(good_station) != dim(bio_samples)[1]) {
-    if (verbose) {
-      n <- length(which(bio_samples$station_invalid != 0))
-      cli::cli_alert_info(
-        "There were {n} biological samples collected at stations that have being removed from the standard station list."
-      )
-    }
-    if (standard_filtering) {
-      bio_samples <- bio_samples[good_station, ]
-    } else {
-      bio_samples[good_station, "station_invalid"] <- "good_station"
-    }
-  }
+  bio_samples$trawl_id <- as.character(bio_samples$trawl_id)
+  rename_columns <- which(colnames(bio_samples) %in% "operation_dim$legacy_performance_code")
+  colnames(bio_samples)[rename_columns] <- "legacy_performance_code"
 
   save_rdata(
     x = bio_samples,

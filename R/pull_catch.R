@@ -162,55 +162,11 @@ pull_catch <- function(
     )
   }
 
-  # Now start filtering out tows that have issues:
-  good_performance <- which(positive_tows$performance == "Satisfactory")
-  if (length(good_performance) != dim(positive_tows)[1]) {
-    if (verbose) {
-      n <- length(which(positive_tows$performance != "Satisfactory" & !is.na(positive_tows$total_catch_numbers)))
-      cli::cli_alert_info(
-        "There were {n} positive tows with non-satisfactory tow performance (e.g., no area swept estimate, net issues, etc.)."
-      )
-    }
-    if (standard_filtering) {
-      positive_tows <- positive_tows[good_performance, ]
-    }
-  }
-
-  good_station <- which(positive_tows$station_invalid == 0)
-  if (length(good_station) != dim(positive_tows)[1]) {
-    if (verbose) {
-      n <- sum(!is.na(positive_tows[-good_station, "total_catch_numbers"]))
-      cli::cli_alert_info(
-        "There were {n} positive tows from stations that have been removed from the standard station list."
-      )
-    }
-    if (standard_filtering) {
-      positive_tows <- positive_tows[good_station, ]
-    } else {
-      positive_tows[good_station, "station_invalid"] <- "good_station"
-    }
-  }
-
-  # Non-NA entries are only present in older surveys (e.g., Triennial) so this fills
-  # in a default value for later surveys to keep then
-  na_legacy_code <- is.na(positive_tows[, "operation_dim$legacy_performance_code"])
-  if (sum(na_legacy_code) > 0) {
-    positive_tows[na_legacy_code, "operation_dim$legacy_performance_code"] <- -999
-  }
-  water_hauls <- which(positive_tows[, "operation_dim$legacy_performance_code"] == 8)
-  if (length(water_hauls) > 0) {
-    if (verbose) {
-      n <- length(water_hauls)
-      cli::cli_alert_info(
-        "There were {n} tows that were determined to be water hauls (net not on the bottom)."
-      )
-    }
-    if (standard_filtering) {
-      positive_tows <- positive_tows[-water_hauls, ]
-    } else {
-      positive_tows[water_hauls, "operation_dim$legacy_performance_code"] <- "water_hauls"
-    }
-  }
+  positive_tows <- filter_pull(
+    data = positive_tows,
+    data_type = "positive tows",
+    standard_filtering = standard_filtering,
+    verbose = verbose)
 
   bad_sample_types <- which(!positive_tows[, "statistical_partition_dim$statistical_partition_type"] %in% sample_types)
   if (length(bad_sample_types) > 0) {
@@ -221,22 +177,6 @@ pull_catch <- function(
     }
     positive_tows <- positive_tows[-bad_sample_types,]
   }
-
-  # Remove tows outside of standard depths 55-1,280 m
-  good_depth <- which(positive_tows$depth_m >= 55 & positive_tows$depth_m <= 1280)
-  if (length(good_depth) != dim(positive_tows)[1]) {
-    if (verbose) {
-      n <- dim(positive_tows)[1] - length(good_depth)
-      cli::cli_alert_info(
-        "There were {n} tows that are outside the standard depth range."
-      )
-    }
-    if (standard_filtering) {
-      positive_tows <- positive_tows[good_depth, ]
-    }
-  }
-
-
   if (sum(is.na(positive_tows[, "common_name"])) > 0) {
     replace <- which(is.na(positive_tows[, "common_name"]))
     positive_tows[replace, "common_name"] <- positive_tows[replace, "scientific_name"]
@@ -260,47 +200,13 @@ pull_catch <- function(
 
   all_tows <- try(get_json(url = url_text))
 
-  all_tows[, "depth_m"] <- all_tows[, "depth_hi_prec_m"]
+  colnames(all_tows)[(colnames(all_tows) == "depth_hi_prec_m")] <- "depth_m"
 
-  # Now start filtering out tows that have issues:
-  good_performance <- which(all_tows$performance == "Satisfactory")
-  if (length(good_performance) != dim(all_tows)[1]) {
-    if (standard_filtering) {
-      all_tows <- all_tows[good_performance, ]
-    }
-  }
-
-  good_station <- which(all_tows$station_invalid == 0)
-  if (length(good_station) != dim(all_tows)[1]) {
-    if (standard_filtering) {
-      all_tows <- all_tows[good_station, ]
-    } else {
-      all_tows[-good_station, "station_invalid"] <- "non_standard_station"
-    }
-  }
-
-  # Non-NA entries are only present in older surveys (e.g., Triennial) so this fills
-  # in a default value for later surveys to keep then
-  na_legacy_code <- is.na(all_tows[, "operation_dim$legacy_performance_code"])
-  if (sum(na_legacy_code) > 0) {
-    all_tows[na_legacy_code, "operation_dim$legacy_performance_code"] <- -999
-  }
-  water_hauls <- which(all_tows[, "operation_dim$legacy_performance_code"] == 8)
-  if (length(water_hauls) > 0) {
-    if (standard_filtering) {
-      all_tows <- all_tows[-water_hauls, ]
-    } else {
-      all_tows[water_hauls, "operation_dim$legacy_performance_code"] <- "water_hauls"
-    }
-  }
-
-  # Remove tows outside of standard depths 55-1,280 m
-  good_depth <- which(all_tows$depth_m >= 55 & all_tows$depth_m <= 1280)
-  if (length(good_depth) != dim(all_tows)[1]) {
-    if (standard_filtering) {
-      all_tows <- all_tows[good_depth, ]
-    }
-  }
+  all_tows <- filter_pull(
+    data = all_tows,
+    data_type = "tows",
+    standard_filtering = standard_filtering,
+    verbose = FALSE)
 
   all_tows <- all_tows[
     !duplicated(paste(all_tows$year, all_tows$pass, all_tows$vessel, all_tows$tow)),
