@@ -51,7 +51,7 @@ get_input_n <- function(
     dir = NULL,
     data,
     comp_column_name = "length_cm",
-    input_n_method = c("stewart_hamel", "tows", "total_samples")[1],
+    input_n_method = c("stewart_hamel", "tows", "total_samples"),
     species_group = c(
       "all",
       "flatfish",
@@ -65,15 +65,8 @@ get_input_n <- function(
   plotdir <- file.path(dir, printfolder)
   check_dir(dir = plotdir, verbose = verbose)
 
-  try(rlang::arg_match0(input_n_method, c("stewart_hamel", "tows", "total_samples")))
-  try(rlang::arg_match0(species_group, c(
-    "all",
-    "flatfish",
-    "shelfrock",
-    "sloperock",
-    "thorny",
-    "other"))
-  )
+  input_n_method <- rlang::arg_match0(input_n_method, input_n_method)
+  species_group <- rlang::arg_match0(species_group, species_group)
 
   colnames(data) <- tolower(colnames(data))
   comp_column_name <- tolower(comp_column_name)

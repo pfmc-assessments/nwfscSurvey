@@ -83,8 +83,8 @@ get_expanded_comps <- function(
   plotdir <- file.path(dir, printfolder)
   check_dir(dir = dir, verbose = verbose)
 
-  try(rlang::arg_match0(input_n_method, c("stewart_hamel", "tows", "total_samples")))
-  try(rlang::arg_match0(output, c("tow_expansion_only", "full_expansion_unformatted", "full_expansion_ss3_format")))
+  input_n_method <- rlang::arg_match0(input_n_method, input_n_method)
+  output <- rlang::arg_match0(output, output)
 
   # Convert all the column names to lower case so that code works with old and
   # data pull formats
