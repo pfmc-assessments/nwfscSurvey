@@ -138,6 +138,18 @@ test_that("pull_bio", {
   expect_equal(nrow(dat), 3363)
 })
 
+test_that("pull_catch_triennial", {
+  skip_on_cran()
+
+  dat <- pull_catch(
+    common_name = "Pacific ocean perch",
+    survey = "Triennial",
+    verbose = TRUE
+  )
+  expect_is(dat, "data.frame")
+  expect_equal(nrow(dat), 4457)
+})
+
 test_that("pull_bio_triennial", {
   skip_on_cran()
 
@@ -190,5 +202,5 @@ test_that("combine_tows", {
     verbose = TRUE
   )
   expect_is(combined_dat, "data.frame")
-  expect_equal(nrow(combined_dat), 2319)
+  expect_equal(nrow(combined_dat), 2327)
 })
