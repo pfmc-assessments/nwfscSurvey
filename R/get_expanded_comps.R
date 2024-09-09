@@ -8,15 +8,20 @@
 #' @param bio_data A data frame of length-composition data returned from
 #'   [pull_bio()].
 #' @param catch_data A data frame of catch data returned from [pull_catch()].
-#' @param comp_bins Vector of length bins to create length compositions across. Values above or below the
-#'   minimum or maximum values, respectively, are grouped into the first size or plus group size.
+#' @param comp_bins Vector of intergers to bin length or age data by
+#'   create expanded composition data.Values above or below the minimum or maximum
+#'   values in the vector are grouped into the first size or plus group size, respectively.
+#'   For example, creating length compositions that uses a vector bin of seq(10, 50, 2)
+#'   would create 2 cm bins where fish length between [0, 11.99) would be included in the
+#'   10 cm bin, fish of length [12, 13.99) would be included in the 12 cm bin, and
+#'   all fish [50- Inf) would be included in the 50 cm plus bin.
 #' @template strata
 #' @template dir
-#' @param comp_column_name The column name to create composition data for. This column can be
-#'   is used to determine whether to format the composition data for length or age
-#'   compositions by looking for either age (e.g., `age_years`, `Age`, `best_age`) or length
-#'   (e.g., `Length`, `length`, `Length_cm`) in the comp_column_name. The default
-#'   is `Length_cm`.
+#' @param comp_column_name A string of the column name to create composition data for.
+#'   This column can be is used to determine whether to format the composition data for
+#'   length or age compositions by looking for either age (e.g., `age_years`, `Age`,
+#'   `age`, `best_age`) or length (e.g., `length`, `length_cm`, `Length`, `Length_cm`)
+#'   in the comp_column_name. The default is `length_cm`.
 #' @param output Switch to specify how to return the composition data where the options
 #'   are c("tow_expansion_only", "full_expansion_unformatted", "full_expansion_ss3_format").
 #'   The default is c("tow_expansion_only", "full_expansion_unformatted", "full_expansion_ss3_format")[3].
