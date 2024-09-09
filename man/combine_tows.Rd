@@ -14,8 +14,8 @@ function.}
 If dir = NULL no output will be saved.}
 
 \item{single_species}{TRUE/FALSE Logical that indicates whether data should be
-grouped by trawl_id alone (TRUE, e.g., rougheye rockfish and blackspotted rockfish)
-or data should be grouped by common name and trawl_id (FALSE).}
+grouped by \code{trawl_id} alone (TRUE, e.g., rougheye rockfish and blackspotted rockfish)
+or data should be grouped by \verb{common name} and \code{trawl_id} (FALSE).}
 
 \item{verbose}{A logical that specifies if you want to print messages and
 warnings to the console. The default is \code{TRUE}.}
@@ -28,6 +28,8 @@ For example, if data are pulled with all sample_types included,
 then there will often be data from the same \code{trawl_id} included
 as multiple records. In these instances, this function allows
 for the sample data to be combined for each unique \code{trawl_id}.
+This also occurs if cryptic species pairs are all returned
+(e.g., rougheye rockfish and blackspotted rockfish)
 }
 \author{
 Chantel Wetzel
