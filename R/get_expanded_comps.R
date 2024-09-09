@@ -1,4 +1,4 @@
-#' Calculate expanded composition data
+#' Calculate expanded composition data for lengths and marginal ages
 #'
 #' Conduct a two-stage expansion of length and age composition data. The first
 #' stage expands data up to the tow level and the second stage expands the data
@@ -17,14 +17,18 @@
 #'   all fish [50- Inf) would be included in the 50 cm plus bin.
 #' @template strata
 #' @template dir
-#' @param comp_column_name A string of the column name to create composition data for.
-#'   This column can be is used to determine whether to format the composition data for
-#'   length or age compositions by looking for either age (e.g., `age_years`, `Age`,
-#'   `age`, `best_age`) or length (e.g., `length`, `length_cm`, `Length`, `Length_cm`)
-#'   in the comp_column_name. The default is `length_cm`.
+#' @param comp_column_name The name of the column to create composition data for that
+#'   must be a string. This column can be is used to determine whether to format the
+#'   composition data for length or age compositions by looking for either age
+#'   (e.g., `age_years`, `Age`, `age`, `best_age`) or length (e.g., `length`,
+#'   `length_cm`, `Length`, `Length_cm`) in the comp_column_name. The default is `length_cm`.
 #' @param output Switch to specify how to return the composition data where the options
-#'   are c("tow_expansion_only", "full_expansion_unformatted", "full_expansion_ss3_format").
-#'   The default is c("tow_expansion_only", "full_expansion_unformatted", "full_expansion_ss3_format")[3].
+#'   are c("full_expansion_ss3_format", "tow_expansion_only", "full_expansion_unformatted").
+#'   The default is `output = "full_expansion_ss3_format"` where a list is returned with
+#'   formatted composition data for SS3. The `tow_expansion_only` retuns a dataframe of
+#'   composition data only expanded up to the tow level (first-stage) and
+#'   `full_expansion_unformatted` returns a dataframe with compositon data expanded up to
+#'   the tow and strata level but not formatted for SS3.
 #' @param two_sex_comps Default TRUE. If TRUE composition data will be formatted for a
 #'   Stock Synthesis two-sex model and if FALSE composition data will be formatted for a
 #'   single-sex model.
@@ -68,9 +72,9 @@ get_expanded_comps <- function(
     strata,
     dir = NULL,
     comp_column_name = "length_cm",
-    output = c("full_expansion_ss3_format", "tow_expansion_only", "full_expansion_unformatted")[1],
+    output = c("full_expansion_ss3_format", "tow_expansion_only", "full_expansion_unformatted"),
     two_sex_comps = TRUE,
-    input_n_method = c("stewart_hamel", "tows", "total_samples")[1],
+    input_n_method = c("stewart_hamel", "tows", "total_samples"),
     partition = 0,
     fleet = "Enter Fleet",
     age_low = -1,
