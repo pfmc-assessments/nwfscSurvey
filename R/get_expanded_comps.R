@@ -1,9 +1,9 @@
-#' Expands the lengths up to the total stratum area then sums over strata for each year
+#' Calculate expanded composition data
 #'
-#' Create expanded length composition data based on the pre-specified strata.
-#' This function is designed to be used with catch pulled using [pull_catch()] and
-#' biological data pulled using [pull_bio()]. The default output is formatted based
-#' on the formatting required by Stock Synthesis.
+#' Conduct a two-stage expansion of length and age composition data. The first
+#' stage expands data up to the tow level and the second stage expands the data
+#' up the user-defined strata areas. This function is designed to be used with
+#' catch pulled using [pull_catch()] and biological data pulled using [pull_bio()].
 #'
 #' @param bio_data A data frame of length-composition data returned from
 #'   [pull_bio()].
@@ -47,6 +47,13 @@
 #' \code{\link{get_input_n}} for information on input sample size calculations.
 #'
 #' @author Chantel Wetzel and Allan Hicks
+#' @return A list or dataframe is returned depending upon `output`.
+#' The default `output = "full_expansion_ss3_format"` returns a list of
+#' expanded composition data by sex grouping (e.g., sexed and unsexed fish)
+#' formatted for Stock Synthesis v.3.30+. If `output = "full_expansion_unformatted"`
+#' a dataframe is returned of unformatted expanded composition data and if
+#' `output = "tow_expansion_only"` a dataframe is returned with the composition
+#' data only expanded to the tow level (first stage expansion only).
 #' @export
 #'
 get_expanded_comps <- function(
@@ -56,7 +63,7 @@ get_expanded_comps <- function(
     strata,
     dir = NULL,
     comp_column_name = "length_cm",
-    output = c(, "full_expansion_ss3_format", "tow_expansion_only", "full_expansion_unformatted")[1],
+    output = c("full_expansion_ss3_format", "tow_expansion_only", "full_expansion_unformatted")[1],
     two_sex_comps = TRUE,
     input_n_method = c("stewart_hamel", "tows", "total_samples")[1],
     partition = 0,
