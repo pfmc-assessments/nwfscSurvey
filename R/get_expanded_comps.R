@@ -95,6 +95,22 @@ get_expanded_comps <- function(
   colnames(bio_data) <- tolower(colnames(bio_data))
   colnames(catch_data) <- tolower(colnames(catch_data))
   colnames(strata) <- tolower(colnames(strata))
+  # Check for needed columns
+  required_bio_columns <- c(comp_column_name, "sex", "year", "trawl_id")
+  required_catch_columns <- c("year", "trawl_id", "depth_m", "latitude_dd",
+                              "area_swept_ha", "total_catch_numbers")
+  if (any(!required_bio_columns %in% colnames(bio_data))) {
+    missing_columns <- required_bio_columns[!required_bio_columns %in% colnames(bio_data)]
+    cli::cli_abort(
+      "The following column(s) are missing in the bio_data: {missing_columns}"
+    )
+  }
+  if (any(!required_catch_columns %in% colnames(catch_data))) {
+    missing_columns <- required_catch_columns[!required_catch_columns %in% colnames(cath_data)]
+    cli::cli_abort(
+      "The following column(s) are missing in the catch_data: {missing_columns}"
+    )
+  }
   # Put in row names to make easier to index later
   row.names(strata) <- strata[, 1]
   comp_column_name <- tolower(comp_column_name)
@@ -170,8 +186,6 @@ get_expanded_comps <- function(
       tows = n()
     )
 
-  # Create a data frame used to calculate expansions - this could be added to the
-  # bio_data data frame but parsing this out to a new data frame for now.
   bio_data <- bio_data |>
     dplyr::group_by(trawl_id) |>
     dplyr::mutate(
