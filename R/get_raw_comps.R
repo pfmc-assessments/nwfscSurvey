@@ -91,7 +91,7 @@ get_raw_comps <- function(
   plotdir <- file.path(dir, printfolder)
   check_dir(dir = plotdir, verbose = verbose)
 
-  input_n_method <- rlang::arg_match0(input_n_method, input_n_method)
+  input_n_method <- rlang::arg_match(input_n_method)
 
   colnames(data) <- tolower(colnames(data))
   comp_column_name <- tolower(comp_column_name)

@@ -65,8 +65,8 @@ get_input_n <- function(
   plotdir <- file.path(dir, printfolder)
   check_dir(dir = plotdir, verbose = verbose)
 
-  input_n_method <- rlang::arg_match0(input_n_method, input_n_method)
-  species_group <- rlang::arg_match0(species_group, species_group)
+  input_n_method <- rlang::arg_match(input_n_method)
+  species_group <- rlang::arg_match(species_group)
 
   colnames(data) <- tolower(colnames(data))
   comp_column_name <- tolower(comp_column_name)
