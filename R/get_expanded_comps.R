@@ -126,7 +126,7 @@ get_expanded_comps <- function(
   colnames(catch_data) <- tolower(colnames(catch_data))
   colnames(strata) <- tolower(colnames(strata))
 
-  species <- gsub(" ", "_", tolower(unique(bio_data[, "common_name"])))
+  species <- gsub(" ", "_", tolower(unique(bio_data[, "common_name"])))[1]
   project <- project <- gsub(" ", "_", tolower(unique(bio_data[, "project"])))
 
   # Check for needed columns
@@ -221,7 +221,6 @@ get_expanded_comps <- function(
     )
 
   bio_data[, "strata"] <- StrataFactors.fn(bio_data, strata_vars, strata)
-  #bio_data <- bio_data |> dplyr::filter(!is.na(strata))
   bio_data <- bio_data |>
     dplyr::group_by(trawl_id) |>
     dplyr::mutate(
@@ -243,12 +242,10 @@ get_expanded_comps <- function(
       total_catch_numbers = unique(total_catch_numbers),
       bin = unique(bin),
       all_fish = unique(all_fish),
-      n_all = n(),
       n_female = sum(sex == "F"),
       n_male = sum(sex == "M"),
       n_unsexed = sum(sex == "U"),
       multiplier = total_catch_numbers / all_fish,
-      exp_all = n_all * multiplier,
       exp_f = n_female * multiplier,
       exp_m = n_male * multiplier,
       exp_u = n_unsexed * multiplier
@@ -283,7 +280,6 @@ get_expanded_comps <- function(
   stratum_exp <- bio_catch |>
     dplyr::group_by(year, strata, bin) |>
     dplyr::reframe(
-      all = unique(strata_area) * sum(exp_all / area_swept) / unique(tows),
       female = unique(strata_area) * sum(exp_f / area_swept) / unique(tows),
       male = unique(strata_area) * sum(exp_m / area_swept) / unique(tows),
       unsexed = unique(strata_area) * sum(exp_u / area_swept) / unique(tows),
@@ -292,7 +288,6 @@ get_expanded_comps <- function(
   total_by_year <- stratum_exp |>
     dplyr::group_by(year) |>
     dplyr::mutate(
-      prop_total_all = sum(all),
       prop_total_fm = sum(female + male),
       prop_total_unsexed = sum(unsexed)
     )
@@ -300,11 +295,9 @@ get_expanded_comps <- function(
   comps_by_year <- total_by_year |>
     dplyr::group_by(year, bin) |>
     dplyr::summarize(
-      total_all = sum(all),
       total_female = sum(female),
       total_male = sum(male),
       total_unsexed = sum(unsexed),
-      prop_all = 100 * total_all / unique(prop_total_all),
       prop_female = 100 * total_female / unique(prop_total_fm),
       prop_male = 100 * total_male / unique(prop_total_fm),
       prop_unsexed = 100 * total_unsexed / unique(prop_total_unsexed)
@@ -314,11 +307,9 @@ get_expanded_comps <- function(
   comps_by_year <- comps_by_year |>
     tidyr::complete(year, bin,
       fill = list(
-        total_all = 0,
         total_female = 0,
         total_male = 0,
         total_unsexed = 0,
-        prop_all = 0,
         prop_female = 0,
         prop_male = 0,
         prop_unsexed = 0))
@@ -334,15 +325,6 @@ get_expanded_comps <- function(
     }
     return(comps_by_year)
   }
-
-  lgths <- as.character(unique(comps_by_year$bin))
-  # otherwise return SS3 output for gender type
-  all_comps <- comps_by_year[, c("year", "bin", "prop_all")] |>
-    tidyr::pivot_wider(
-    names_from = bin,
-    names_prefix = "U",
-    values_from = prop_all)
-  all_comps[is.na(all_comps)] <- 0
 
   unsexed_comps <- comps_by_year[, c("year", "bin", "prop_unsexed")] |>
     tidyr::pivot_wider(
@@ -381,7 +363,7 @@ get_expanded_comps <- function(
     printfolder = printfolder,
     verbose = verbose)
 
-  dimensions <- 2:ncol(all_comps)
+  dimensions <- 2:(length(comp_bins) + 1)
   bin_range <- paste0(min(comp_bins), "_", max(comp_bins))
 
   comps <- list()
@@ -439,14 +421,14 @@ get_expanded_comps <- function(
     comps$unsexed <- unsexed_formatted
   } else {
     all_formatted <- data.frame(
-      year = all_comps[, "year"],
+      year = unsexed_comps[, "year"],
       month = month,
       fleet = fleet,
       sex = 0,
       partition = partition,
-      input_n = samples |> dplyr::filter(sex_grouped == "all") |> dplyr::select(input_n)
+      input_n = samples |> dplyr::filter(sex_grouped == "unsexed") |> dplyr::select(input_n)
     )
-    all_formatted <- cbind(all_formatted, all_comps[, dimensions])
+    all_formatted <- cbind(all_formatted, unsexed_comps[, dimensions])
     remove <- which(apply(all_formatted[, 7:ncol(all_formatted)], 1, sum) == 0)
     if(length(remove) > 0) {
       all_formatted <- all_formatted[-remove, ]
@@ -466,7 +448,6 @@ get_expanded_comps <- function(
 
     comps$unsexed <- all_formatted
   }
-
 
   return(comps)
 }
