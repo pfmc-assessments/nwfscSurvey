@@ -117,8 +117,8 @@ get_expanded_comps <- function(
   plotdir <- file.path(dir, printfolder)
   check_dir(dir = dir, verbose = verbose)
 
-  input_n_method <- rlang::arg_match0(input_n_method, input_n_method)
-  output <- rlang::arg_match0(output, output)
+  input_n_method <- rlang::arg_match(input_n_method)
+  output <- rlang::arg_match(output)
 
   # Convert all the column names to lower case so that code works with old and
   # data pull formats
@@ -167,22 +167,16 @@ get_expanded_comps <- function(
       "The strata needs to be by depth_m and latitude_dd."
     )
   }
+
+  bio_data[, "comp_column"] <- bio_data[, comp_column_name]
+  if (two_sex_comps) {
+    bio_data[, "sex"] <- codify_sex(bio_data[, "sex"])
+  } else {
     bio_data[, "sex"] <- "U"
   }
 
-  strata_vars = c("depth_m", "latitude_dd")
-  bio_data[, "comp_column"] <- bio_data[, comp_column_name]
-
-  bio_data <- bio_data |>
-    dplyr::filter(
-      !is.na(comp_column)) |>
-    dplyr::mutate(
-      sex = ifelse(is.na(sex), "U", sex)
-    )
-
   bins <- c(-999, comp_bins, Inf)
-  bio_data[, "bin"] <- bins[findInterval(as.numeric(bio_data[, "comp_column"]), bins, all.inside = T)]
-  check <- sum(bio_data[, "bin"] == -999) / dim(bio_data)[1]
+  bio_data[, "bin"] <- bins[findInterval(as.numeric(bio_data[, "comp_column"]), bins, all.inside = TRUE)]
   if (verbose) {
     percent_min <- round(100 * sum(bio_data[, "bin"] == -999) / dim(bio_data)[1], 2)
     percent_max <- round(100 * sum(bio_data[, "comp_column"] >= max(comp_bins)) / dim(bio_data)[1], 2)
@@ -201,37 +195,29 @@ get_expanded_comps <- function(
   missing <- sum(positive_tows[find, "total_catch_numbers"])
   percent <- 100 * round(missing / sum(catch_data[, "total_catch_numbers"]), 3)
   if (verbose) {
-    cli::cli_alert_info("There are {no_samples_taken} tows where fish were observed but not sampled.
-        These tows comprise {percent} percent of the total catch numbers.
-        Only measured fished in the bio_data file are used for composition expansions"
+    cli::cli_alert_info(
+      "There are {no_samples_taken} tows where fish were observed but not sampled.
+      These tows comprise {percent} percent of the total catch numbers.
+      Only measured fished in the bio_data file are used for composition expansions."
     )
   }
 
-  bio_data <- data.frame(
-    bio_data,
-    strata = StrataFactors.fn(bio_data, strata_vars, strata)
-  )
-  bio_data <- bio_data |> dplyr::filter(!is.na(strata))
-
-  catch_data[, "area_swept"] <- catch_data[, "area_swept_ha"] * 0.01
-
-  catch_data <- data.frame(
-    catch_data,
-    strata = StrataFactors.fn(catch_data, strata_vars, strata)
-  )
   strata[, "strata"] <- strata[, "name"]
+  catch_data[, "strata"] <- StrataFactors.fn(catch_data, strata_vars, strata)
   catch_data <- dplyr::left_join(
     catch_data,
     strata[, c("strata", "area")],
-    by = "strata"
-  )
-
-  catch_data <- catch_data |>
+    by = "strata") |>
+    dplyr::mutate(
+      area_swept = area_swept_ha * 0.01
+    ) |>
     dplyr::group_by(year, strata) |>
     dplyr::mutate(
       tows = n()
     )
 
+  bio_data[, "strata"] <- StrataFactors.fn(bio_data, strata_vars, strata)
+  #bio_data <- bio_data |> dplyr::filter(!is.na(strata))
   bio_data <- bio_data |>
     dplyr::group_by(trawl_id) |>
     dplyr::mutate(
@@ -271,8 +257,7 @@ get_expanded_comps <- function(
         Formatted composition data file not written for SS3."
       )
     }
-    tow_expansion_data <- bio_catch
-    return(tow_expansion_data)
+    return(bio_catch)
   }
 
   stratum_exp <- bio_catch |>
