@@ -171,8 +171,8 @@ get_expanded_comps <- function(
       "The strata needs to be by depth_m and latitude_dd."
     )
   }
-
   bio_data[, "comp_column"] <- bio_data[, comp_column_name]
+  bio_data <- bio_data |> filter(!is.na(comp_column))
   if (two_sex_comps) {
     bio_data[, "sex"] <- codify_sex(bio_data[, "sex"])
   } else {
@@ -222,6 +222,7 @@ get_expanded_comps <- function(
 
   bio_data[, "strata"] <- StrataFactors.fn(bio_data, strata_vars, strata)
   bio_data <- bio_data |>
+    dplyr::filter(!is.na(strata)) |>
     dplyr::group_by(trawl_id) |>
     dplyr::mutate(
       all_fish = n()
