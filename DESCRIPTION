@@ -25,6 +25,7 @@ Imports:
     httr,
     janitor,
     jsonlite,
+    labelled,
     lifecycle,
     plyr,
     purrr,

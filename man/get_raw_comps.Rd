@@ -8,7 +8,7 @@ get_raw_comps(
   data,
   comp_bins,
   comp_column_name = "Length_cm",
-  input_n_method = c("stewart_hamel", "tows", "total_samples")[1],
+  input_n_method = c("stewart_hamel", "tows", "total_samples"),
   two_sex_comps = TRUE,
   fleet = "Enter Fleet",
   month = "Enter Month",

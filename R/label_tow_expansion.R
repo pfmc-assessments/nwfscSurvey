@@ -20,12 +20,10 @@ label_tow_expansion <- function(x){
       total_catch_numbers = "The total number of fish of selected species within the tow.",
       bin = "User-specified composition bin based on the comp_column.",
       all_fish = "Total number of fish sampled in the unique trawl_id.",
-      n_all = "Number of all samples by bin.",
       n_female = "Number of female fish samples by bin.",
       n_male = "Number of male fish samples by bin.",
       n_unsexed = "Number of unsexed fish samples by bin.",
       multiplier = "The total_catch_numbers divided by all fish sampled (tow expansion multiplier).",
-      exp_all = "Multiplier multiplied by the n_all.",
       exp_f = "Multiplier multiplied by the n_female.",
       exp_m = "Multiplier multiplied by the n_male.",
       exp_u = "Multiplier multiplied by the n_unsexed."
