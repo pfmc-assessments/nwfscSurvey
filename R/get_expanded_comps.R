@@ -126,9 +126,24 @@ get_expanded_comps <- function(
   colnames(catch_data) <- tolower(colnames(catch_data))
   colnames(strata) <- tolower(colnames(strata))
   # Check for needed columns
-  required_bio_columns <- c(comp_column_name, "sex", "year", "trawl_id")
-  required_catch_columns <- c("year", "trawl_id", "depth_m", "latitude_dd",
-                              "area_swept_ha", "total_catch_numbers")
+  required_bio_columns <- c(
+    comp_column_name,
+    "sex",
+    "year",
+    "trawl_id",
+    "depth_m",
+    "latitude_dd",
+    "common_name",
+    "project"
+  )
+  required_catch_columns <- c(
+    "year",
+    "trawl_id",
+    "depth_m",
+    "latitude_dd",
+    "area_swept_ha",
+    "total_catch_numbers"
+  )
   if (any(!required_bio_columns %in% colnames(bio_data))) {
     missing_columns <- required_bio_columns[!required_bio_columns %in% colnames(bio_data)]
     cli::cli_abort(
@@ -136,7 +151,7 @@ get_expanded_comps <- function(
     )
   }
   if (any(!required_catch_columns %in% colnames(catch_data))) {
-    missing_columns <- required_catch_columns[!required_catch_columns %in% colnames(cath_data)]
+    missing_columns <- required_catch_columns[!required_catch_columns %in% colnames(catch_data)]
     cli::cli_abort(
       "The following column(s) are missing in the catch_data: {missing_columns}"
     )
