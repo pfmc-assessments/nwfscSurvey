@@ -65,6 +65,36 @@
 #' data only expanded to the tow level (first stage expansion only).
 #' @export
 #'
+#' @examples
+#' \dontrun{
+#' bio <- pull_bio(
+#'   common_name = "lingcod",
+#'   survey = "NWFSC.Combo"
+#' )
+#'
+#' catch <- pull_catch(
+#'   common_name = "lingcod",
+#'   survey = "NWFSC.Combo"
+#' )
+#'
+#' strata <-  CreateStrataDF.fn(
+#'   names = c("shallow_wa", "shallow_or", "shallow_nca", "shelf_wa", "shelf_or", "shelf_nca"),
+#'   depths.shallow = c( 55,   55,    55,  183,  183,  183),
+#'   depths.deep    = c(183,  183,   183,  350,  350,  350),
+#'   lats.south     = c(46.0, 42.0, 40.10, 46.0, 42.0, 40.10),
+#'   lats.north     = c(49.0, 46.0, 42.0,  49.0, 46.0, 42.0)
+#' )
+#'
+#' length_comps <- get_expanded_comps(
+#'   bio_data = bio,
+#'   catch_data = catch,
+#'   strata = strata,
+#'   comp_bins = seq(20, 70, 4),
+#'   comp_column_name = "length_cm"
+#' )
+#'
+#' }
+#'
 get_expanded_comps <- function(
     bio_data,
     catch_data,
