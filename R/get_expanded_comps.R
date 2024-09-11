@@ -125,6 +125,10 @@ get_expanded_comps <- function(
   colnames(bio_data) <- tolower(colnames(bio_data))
   colnames(catch_data) <- tolower(colnames(catch_data))
   colnames(strata) <- tolower(colnames(strata))
+
+  species <- gsub(" ", "_", tolower(unique(bio_data[, "common_name"])))
+  project <- project <- gsub(" ", "_", tolower(unique(bio_data[, "project"])))
+
   # Check for needed columns
   required_bio_columns <- c(
     comp_column_name,
@@ -257,6 +261,22 @@ get_expanded_comps <- function(
         Formatted composition data file not written for SS3."
       )
     }
+    bio_catch <- label_tow_expansion(x = bio_catch)
+    if (!is.null(dir)) {
+      save_rdata(
+        x = bio_catch,
+        dir = dir,
+        name_base = paste0(comp_column_name, "_tow_expanded_comps_", species, "_", project),
+        verbose = verbose
+      )
+      metadata <- bio_catch |> labelled::generate_dictionary()
+      save_rdata(
+        x = metadata,
+        dir = dir,
+        name_base = paste0("metadata_tow_expanded_comps_", species, "_", project),
+        verbose = verbose
+      )
+    }
     return(bio_catch)
   }
 
@@ -304,6 +324,14 @@ get_expanded_comps <- function(
         prop_unsexed = 0))
 
   if (output == "full_expansion_unformatted") {
+    if (!is.null(dir)) {
+      save_rdata(
+        x = comps_by_year,
+        dir = dir,
+        name_base = paste0(comp_column_name, "_expanded_comps", species, "_", project),
+        verbose = verbose
+      )
+    }
     return(comps_by_year)
   }
 
@@ -338,7 +366,6 @@ get_expanded_comps <- function(
   male_comps[is.na(male_comps)] <- 0
 
   # Calculate input sample size based on existing function
-  species <- gsub(" ", "_", tolower(unique(bio_data[, "common_name"])))
   species_type <- get_species_info(
     species = species,
     unident = FALSE,
@@ -355,7 +382,6 @@ get_expanded_comps <- function(
     verbose = verbose)
 
   dimensions <- 2:ncol(all_comps)
-  project <- gsub(" ", "_", tolower(unique(bio_data[, "project"])))
   bin_range <- paste0(min(comp_bins), "_", max(comp_bins))
 
   comps <- list()
