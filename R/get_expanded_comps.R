@@ -184,19 +184,14 @@ get_expanded_comps <- function(
   bio_data[, "bin"] <- bins[findInterval(as.numeric(bio_data[, "comp_column"]), bins, all.inside = T)]
   check <- sum(bio_data[, "bin"] == -999) / dim(bio_data)[1]
   if (verbose) {
-    n <- sum(bio_data[, "bin"] == -999)
-    if (n != 0){
-      cli::cli_alert_info(
-        "There are {n} out of {dim(bio_data)[1]} records that are less than the minimum composition bin.
-       These fish will be added to the minimum bin."
-      )
-      if (check >= 0.01) {
-        cli::cli_alert_warning(
-          "The fraction of fish below the minimum composition bin is > 0.01%.
-          Consider decreasing the minimum composition bin, if appropriate."
-        )
-      }
-    }
+    percent_min <- round(100 * sum(bio_data[, "bin"] == -999) / dim(bio_data)[1], 2)
+    percent_max <- round(100 * sum(bio_data[, "comp_column"] >= max(comp_bins)) / dim(bio_data)[1], 2)
+    cli::cli_bullets(c(
+     i = "There are {percent_min}% of records that are less than the minimum
+     composition bin. These fish will be added to the minimum bin.",
+     i = "There are {percent_max}% of records that are greater than the maximum
+     composition bin. These fish will be added to the maximum bin.")
+    )
   }
   bio_data[which(bio_data$bin == -999), "bin"] <- min(comp_bins)
 
