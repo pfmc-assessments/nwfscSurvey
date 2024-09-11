@@ -160,7 +160,13 @@ get_expanded_comps <- function(
   row.names(strata) <- strata[, 1]
   comp_column_name <- tolower(comp_column_name)
 
-  if (!two_sex_comps) {
+  strata_vars <- c("depth_m", "latitude_dd")
+  check_strata <- tolower(unique(gsub("\\..*", "", colnames(strata))))
+  if (any(!c("depth_m", "latitude_dd") %in% check_strata)) {
+    cli::cli_abort(
+      "The strata needs to be by depth_m and latitude_dd."
+    )
+  }
     bio_data[, "sex"] <- "U"
   }
 
