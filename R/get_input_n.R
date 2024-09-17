@@ -2,7 +2,7 @@
 #'
 #' This function calculates the number of unique tows, samples, and input sample
 #' size based on alternative approaches.  The input sample size then is used
-#' within the `get_expanded_comps()` and `get_raw_comps()` when creating formatted
+#' within the [get_expanded_comps()] and [get_raw_comps()] when creating formatted
 #' composition data files for Stock Synthesis.
 #'
 #' @references
