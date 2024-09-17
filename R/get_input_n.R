@@ -74,7 +74,8 @@ get_input_n <- function(
   if (any(!needed_columns %in% colnames(data))) {
     missing_columns <- needed_columns[!needed_columns %in% colnames(data)]
     cli::cli_abort(
-      "The {missing_columns} is not a column name in the data.")
+      "The {.val {missing_columns}} {cli::qty(missing_columns)} column{?s} {?is/are} not in the data."
+    )
   }
 
   multiplier <- dplyr::case_when(
