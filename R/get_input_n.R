@@ -67,6 +67,11 @@ get_input_n <- function(
 
   input_n_method <- rlang::arg_match(input_n_method)
   species_group <- rlang::arg_match(species_group)
+  if (verbose) {
+    cli::cli_inform(
+      "Sample size will be calculated based on {input_n_method}. "
+    )
+  }
 
   colnames(data) <- tolower(colnames(data))
   comp_column_name <- tolower(comp_column_name)
@@ -85,6 +90,11 @@ get_input_n <- function(
     species_group == "other" ~ 2.38,
     TRUE ~ 2.73
   )
+  if (input_n_method == "stewart_hamel" & verbose == TRUE) {
+    cli::cli_inform(
+      "The unique samples by tow for {species_group} is {multiplier}."
+    )
+  }
 
   data[, "multiplier"] <- multiplier
   data[, "sex_grouped"] <- "sexed"
