@@ -221,6 +221,12 @@ get_expanded_comps <- function(
     )
 
   bio_data[, "strata"] <- StrataFactors.fn(bio_data, strata_vars, strata)
+  if (verbose) {
+    n <- sum(is.na(bio_data[, "strata"]))
+    cli::cli_alert_info(
+      "There were {n} biological samples removed out of {dim(bio_data)[1]} after filtering for strata."
+    )
+  }
   bio_data <- bio_data |>
     dplyr::filter(!is.na(strata)) |>
     dplyr::group_by(trawl_id) |>
