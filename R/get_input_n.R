@@ -18,7 +18,7 @@
 #'   is used to determine whether to format the composition data for length or age
 #'   compositions by looking for either age (e.g., `age_years`, `Age`, `best_age`) or length
 #'   (e.g., `Length`, `length`, `Length_cm`, `length_cm`) in the comp_column_name.
-#'   The default is `length_cm`.
+#'   The comp_column_name is not case sensitive. The default is `length_cm`.
 #' @param input_n_method Determines the default input sample size to add to
 #'   the composition data for SS3. There are three options: c("stewart_hamel", "tows",
 #'   "total_samples") where the default is "stewart_hamel".

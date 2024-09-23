@@ -21,7 +21,8 @@
 #'   must be a string. This column can be is used to determine whether to format the
 #'   composition data for length or age compositions by looking for either age
 #'   (e.g., `age_years`, `Age`, `age`, `best_age`) or length (e.g., `length`,
-#'   `length_cm`, `Length`, `Length_cm`) in the comp_column_name. The default is `length_cm`.
+#'   `length_cm`, `Length`, `Length_cm`) in the comp_column_name. The comp_column_name
+#'   is not case sensitive.The default is `length_cm`.
 #' @param output Switch to specify how to return the composition data where the options
 #'   are c("full_expansion_ss3_format", "tow_expansion_only", "full_expansion_unformatted").
 #'   The default is `output = "full_expansion_ss3_format"` where a list is returned with
