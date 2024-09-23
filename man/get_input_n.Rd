@@ -45,7 +45,7 @@ warnings to the console. The default is \code{TRUE}.}
 \description{
 This function calculates the number of unique tows, samples, and input sample
 size based on alternative approaches.  The input sample size then is used
-within the \code{get_expanded_comps()} and \code{get_raw_comps()} when creating formatted
+within the \code{\link[=get_expanded_comps]{get_expanded_comps()}} and \code{\link[=get_raw_comps]{get_raw_comps()}} when creating formatted
 composition data files for Stock Synthesis.
 }
 \examples{
