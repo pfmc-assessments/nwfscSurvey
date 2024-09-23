@@ -23,8 +23,8 @@ If dir = NULL no output will be saved.}
 \item{comp_column_name}{The column name to create composition data for. This column can be
 is used to determine whether to format the composition data for length or age
 compositions by looking for either age (e.g., \code{age_years}, \code{Age}, \code{best_age}) or length
-(e.g., \code{Length}, \code{length}, \code{Length_cm}) in the comp_column_name. The default is
-\code{Length_cm}.}
+(e.g., \code{Length}, \code{length}, \code{Length_cm}, \code{length_cm}) in the comp_column_name.
+The comp_column_name is not case sensitive. The default is \code{length_cm}.}
 
 \item{input_n_method}{Determines the default input sample size to add to
 the composition data for SS3. There are three options: c("stewart_hamel", "tows",

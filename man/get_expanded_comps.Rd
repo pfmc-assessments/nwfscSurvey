@@ -49,7 +49,8 @@ If dir = NULL no output will be saved.}
 must be a string. This column can be is used to determine whether to format the
 composition data for length or age compositions by looking for either age
 (e.g., \code{age_years}, \code{Age}, \code{age}, \code{best_age}) or length (e.g., \code{length},
-\code{length_cm}, \code{Length}, \code{Length_cm}) in the comp_column_name. The default is \code{length_cm}.}
+\code{length_cm}, \code{Length}, \code{Length_cm}) in the comp_column_name. The comp_column_name
+is not case sensitive.The default is \code{length_cm}.}
 
 \item{output}{Switch to specify how to return the composition data where the options
 are c("full_expansion_ss3_format", "tow_expansion_only", "full_expansion_unformatted").
