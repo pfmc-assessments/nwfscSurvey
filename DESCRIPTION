@@ -15,6 +15,7 @@ Depends:
     R (>= 4.0)
 Imports:
     chron,
+    cli,
     cowplot,
     ggmosaic (>= 0.3.4),
     ggnewscale,
@@ -24,7 +25,9 @@ Imports:
     httr,
     janitor,
     jsonlite,
+    labelled,
     lifecycle,
+    plyr,
     purrr,
     reshape2,
     rlang,

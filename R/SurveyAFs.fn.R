@@ -70,6 +70,11 @@ SurveyAFs.fn <- function(
     remove999 = TRUE,
     outputStage1 = FALSE,
     verbose = TRUE) {
+  lifecycle::deprecate_soft(
+    when = "2.5",
+    what = "nwfscSurvey::SurveyAFs.fn()",
+    details = "Please switch to get_expanded_comps()."
+  )
   # Overwrite inputs to use the same code for lengths as ages
   datL <- datA
   lgthBins <- ageBins

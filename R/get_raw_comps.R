@@ -10,35 +10,39 @@
 #' two-sex model or all length/ages for single-sex model.
 #'
 #' @param data A data frame that includes columns of year, sex, and length/ages. The data
-#' frame can be survey data pulled using pull_bio from the data warehouse or any data frame
-#' that includes column names of sex, year, and the comp_column_name.  The sex column is
-#' expected to have sexes denoted by F, M, and U.
+#'   frame can be survey data pulled using pull_bio from the data warehouse or any data frame
+#'   that includes column names of sex, year, and the comp_column_name.  The sex column is
+#'   expected to have sexes denoted by F, M, and U.
 #' @param comp_bins A vector on length bins or age bins to create compositions across. The
-#' composition data is formatted for Stock Synthesis.
+#'   composition data is formatted for Stock Synthesis.
 #' @param comp_column_name The column name to create composition data for. This column can be
-#' is used to determine whether to format the composition data for length or age
-#' compositions by looking for either age (e.g., age_years, Age, best_age) or length
-#' (e.g., Length, length, Length_cm) in the comp_column_name. Default Length_cm.
+#'   is used to determine whether to format the composition data for length or age
+#'   compositions by looking for either age (e.g., `age_years`, `Age`, `best_age`) or length
+#'   (e.g., `Length`, `length`, `Length_cm`) in the comp_column_name. The default
+#'   is `Length_cm`.
 #' @param two_sex_comps Default TRUE. If TRUE composition data will be formatted for a
-#' Stock Synthesis two-sex model and if FALSE composition data will be formatted for a
-#' single-sex model.
+#'   Stock Synthesis two-sex model and if FALSE composition data will be formatted for a
+#'   single-sex model.
+#' @param input_n_method Determines the default input sample size to add to
+#'   the composition data for SS3. There are three options: c("stewart_hamel", "tows",
+#'   "total_samples") where the default is "stewart_hamel".
 #' @param fleet A fleet number to assign the composition data to based on the expected
-#' format for Stock Synthesis. Default "Enter Fleet".
+#'   format for Stock Synthesis. Default "Enter Fleet".
 #' @param month Month the samples were collected based on the expected format for
-#' Stock Synthesis to determine the length/age estimate to compare to. Default
-#' "Enter Month".
+#'   Stock Synthesis to determine the length/age estimate to compare to. Default
+#'   "Enter Month".
 #' @param partition Partition to assign the composition data based on the expected
-#' format for Stock Synthesis. Partition of 0 indicates that the composition data
-#' include all composition data, 1 for discarded composition data, and 2 for retained
-#' fish only. Default of 0.
+#'   format for Stock Synthesis. Partition of 0 indicates that the composition data
+#'   include all composition data, 1 for discarded composition data, and 2 for retained
+#'   fish only. Default of 0.
 #' @param age_error Number of ageing error vector to apply to the age data based on
-#' Stock Synthesis. Default "Enter Age Error Vector".
+#'   Stock Synthesis. Default "Enter Age Error Vector".
 #' @param age_low Lower age bin for all age composition data based on the expected
-#' format for Stock Synthesis. Default value of -1 which translates to the lowest age
-#' bin.
+#'   format for Stock Synthesis. Default value of -1 which translates to the lowest age
+#'   bin.
 #' @param age_high Upper age bin for all age composition data based on the expected
-#' format for Stock Synthesis. Default value of -1 which translates to the highest
-#  age bin.
+#'   format for Stock Synthesis. Default value of -1 which translates to the highest
+#    age bin.
 #' @template dir
 #' @template printfolder
 #' @template verbose
@@ -72,6 +76,7 @@ get_raw_comps <- function(
     data,
     comp_bins,
     comp_column_name = "Length_cm",
+    input_n_method = c("stewart_hamel", "tows", "total_samples"),
     two_sex_comps = TRUE,
     fleet = "Enter Fleet",
     month = "Enter Month",
@@ -82,21 +87,28 @@ get_raw_comps <- function(
     dir = NULL,
     printfolder = "forSS3",
     verbose = TRUE) {
+
   plotdir <- file.path(dir, printfolder)
   check_dir(dir = plotdir, verbose = verbose)
+
+  input_n_method <- rlang::arg_match(input_n_method)
 
   colnames(data) <- tolower(colnames(data))
   comp_column_name <- tolower(comp_column_name)
 
   vars <- c("year", "sex")
   if (sum(vars %in% colnames(data)) != 2) {
-    stop("Data frame does not contain a column name year and/or sex.
-         \n The columns names can be either upper or lower case.")
+    cli::cli_abort(
+      "Data frame does not contain a column name year and/or sex.
+      The columns names can be either upper or lower case."
+    )
   }
 
   if (!comp_column_name %in% colnames(data)) {
-    stop("Data frame does not contain a column name of comp_column_name.
-         \n The columns names can be either upper or lower case. ")
+    cli::cli_abort(
+      "Data frame does not contain a column name of comp_column_name.
+      The columns names can be either upper or lower case."
+    )
   }
 
   if (!two_sex_comps) {
@@ -119,6 +131,39 @@ get_raw_comps <- function(
   if (sum(is.na(data[, "sex"])) > 0) {
     data[is.na(data[, "sex"]), "sex"] <- "U"
   }
+
+  if (!"common_name" %in% colnames(data) & input_n_method == "stewart_hamel") {
+    cli::cli_abort(
+      "Data frame does not contain a column name of common_name which is required
+      to calculate Stewart and Hamel input sample size. The columns names can be
+      either upper or lower case."
+    )
+  }
+
+  # Calculate input sample size based on existing function
+  species <- ifelse("common_name" %in% colnames(data), unique(data[, "common_name"]), "")
+  if ("common_name" %in% colnames(data)) {
+    species_type <- get_species_info(
+      species = species,
+      unident = FALSE,
+      verbose = FALSE
+    )$species_type
+  } else {
+    species_type <- "all"
+  }
+
+  if (!"trawl_id" %in% colnames(data)) {
+    data[, "trawl_id"] <- 1:nrow(data)
+  }
+
+  samples <- get_input_n(
+    dir = dir,
+    data = data,
+    comp_column_name = comp_column_name,
+    input_n_method = input_n_method,
+    species_group = species_type,
+    printfolder = printfolder,
+    verbose = verbose)
 
   # Create the comps
   Results <- out <- NULL
@@ -161,7 +206,7 @@ get_raw_comps <- function(
       fleet = fleet,
       sex = 3,
       partition = partition,
-      nsamp = Results[, 2]
+      input_n = samples |> dplyr::filter(sex_grouped == "sexed") |> dplyr::select(input_n) #Results[, 2]
     )
     out <- cbind(tmp, Results[, -c(1:2)])
     colnames(out)[-c(1:6)] <- c(
@@ -203,13 +248,19 @@ get_raw_comps <- function(
       } # end Which loop
     } # end year loop
     Results <- as.data.frame(Results)
+    if (sum(c("M", "F") %in% data[, "sex"]) == 0) {
+      input_n <- samples |> dplyr::filter(sex_grouped == "all") |> dplyr::select(input_n)
+    } else {
+      input_n <- samples |> dplyr::filter(sex_grouped == "unsexed") |> dplyr::select(input_n)
+    }
+
     tmp <- data.frame(
       year = Results[, 1],
       month = month,
       fleet = fleet,
       sex = 0,
       partition = partition,
-      nsamp = Results[, 2]
+      input_n =  input_n #Results[, 2]
     )
 
     if (two_sex_comps) {
@@ -243,15 +294,19 @@ get_raw_comps <- function(
   }
 
   if (!is.null(dir)) {
+    project <- ifelse("project" %in% colnames(data),
+                      gsub(" ", "_", tolower(unique(data[, "project"]))),
+                      "")
+    bin_range <- paste0(min(comp_bins), "_", max(comp_bins))
     if (!is.null(out_comps)) {
       write.csv(out_comps,
-        file = file.path(plotdir, paste0(comp_type, "_raw_comps_sex_3_", comp_type, "_bins_", comp_bins[1], "-", max(comp_bins), ".csv")),
+        file = file.path(plotdir, paste0(comp_column_name,"_sexed_raw_", bin_range, "_", species, "_", project, ".csv")),
         row.names = FALSE
       )
     }
     if (!is.null(out_u)) {
       write.csv(out_u_comps,
-        file = file.path(plotdir, paste0(comp_type, "_raw_comps_sex_0_", comp_type, "_bins_", comp_bins[1], "-", max(comp_bins), ".csv")),
+        file = file.path(plotdir, paste0(comp_column_name, "_unsexed_raw_", bin_range, "_", species, "_", project, ".csv")),
         row.names = FALSE
       )
     }
