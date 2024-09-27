@@ -58,10 +58,10 @@ get_input_n <- function(
       "shelfrock",
       "sloperock",
       "thorny",
-      "other"),
+      "other"
+    ),
     printfolder = "forSS3",
     verbose = TRUE) {
-
   plotdir <- file.path(dir, printfolder)
   check_dir(dir = plotdir, verbose = verbose)
 
@@ -98,7 +98,7 @@ get_input_n <- function(
 
   data[, "multiplier"] <- multiplier
   data[, "sex_grouped"] <- "sexed"
-  data[which(data[,"sex"] == c("U")), "sex_grouped"] <- "unsexed"
+  data[which(data[, "sex"] == c("U")), "sex_grouped"] <- "unsexed"
   data_all <- data
   data_all[, "sex_grouped"] <- "all"
   binded_data <- rbind(data, data_all)
@@ -139,7 +139,7 @@ get_input_n <- function(
 
   if (!is.null(dir)) {
     file_naming <- dplyr::if_else(
-      c("project","common_name") %in% colnames(data),
+      c("project", "common_name") %in% colnames(data),
       true = gsub(" ", "_", tolower(data[1, c("common_name", "project")])),
       false = ""
     )
@@ -147,7 +147,8 @@ get_input_n <- function(
       x = samples,
       file = file.path(
         plotdir,
-        paste0(comp_column_name, "_samples_", file_naming[1], "_", file_naming[2], ".csv")),
+        paste0(comp_column_name, "_samples_", file_naming[1], "_", file_naming[2], ".csv")
+      ),
       row.names = FALSE
     )
   }

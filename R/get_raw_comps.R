@@ -87,7 +87,6 @@ get_raw_comps <- function(
     dir = NULL,
     printfolder = "forSS3",
     verbose = TRUE) {
-
   plotdir <- file.path(dir, printfolder)
   check_dir(dir = plotdir, verbose = verbose)
 
@@ -163,7 +162,8 @@ get_raw_comps <- function(
     input_n_method = input_n_method,
     species_group = species_type,
     printfolder = printfolder,
-    verbose = verbose)
+    verbose = verbose
+  )
 
   # Create the comps
   Results <- out <- NULL
@@ -206,7 +206,7 @@ get_raw_comps <- function(
       fleet = fleet,
       sex = 3,
       partition = partition,
-      input_n = samples |> dplyr::filter(sex_grouped == "sexed") |> dplyr::select(input_n) #Results[, 2]
+      input_n = samples |> dplyr::filter(sex_grouped == "sexed") |> dplyr::select(input_n) # Results[, 2]
     )
     out <- cbind(tmp, Results[, -c(1:2)])
     colnames(out)[-c(1:6)] <- c(
@@ -249,9 +249,13 @@ get_raw_comps <- function(
     } # end year loop
     Results <- as.data.frame(Results)
     if (sum(c("M", "F") %in% data[, "sex"]) == 0) {
-      input_n <- samples |> dplyr::filter(sex_grouped == "all") |> dplyr::select(input_n)
+      input_n <- samples |>
+        dplyr::filter(sex_grouped == "all") |>
+        dplyr::select(input_n)
     } else {
-      input_n <- samples |> dplyr::filter(sex_grouped == "unsexed") |> dplyr::select(input_n)
+      input_n <- samples |>
+        dplyr::filter(sex_grouped == "unsexed") |>
+        dplyr::select(input_n)
     }
 
     tmp <- data.frame(
@@ -260,7 +264,7 @@ get_raw_comps <- function(
       fleet = fleet,
       sex = 0,
       partition = partition,
-      input_n =  input_n #Results[, 2]
+      input_n = input_n # Results[, 2]
     )
 
     if (two_sex_comps) {
@@ -295,12 +299,13 @@ get_raw_comps <- function(
 
   if (!is.null(dir)) {
     project <- ifelse("project" %in% colnames(data),
-                      gsub(" ", "_", tolower(unique(data[, "project"]))),
-                      "")
+      gsub(" ", "_", tolower(unique(data[, "project"]))),
+      ""
+    )
     bin_range <- paste0(min(comp_bins), "_", max(comp_bins))
     if (!is.null(out_comps)) {
       write.csv(out_comps,
-        file = file.path(plotdir, paste0(comp_column_name,"_sexed_raw_", bin_range, "_", species, "_", project, ".csv")),
+        file = file.path(plotdir, paste0(comp_column_name, "_sexed_raw_", bin_range, "_", species, "_", project, ".csv")),
         row.names = FALSE
       )
     }

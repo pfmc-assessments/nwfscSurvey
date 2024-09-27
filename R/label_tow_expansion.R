@@ -7,7 +7,7 @@
 #' @return A labelled data frame.
 #' @export
 #'
-label_tow_expansion <- function(x){
+label_tow_expansion <- function(x) {
   data_labelled <- x |>
     labelled::set_variable_labels(
       trawl_id = "Unique tow id.",
@@ -30,7 +30,3 @@ label_tow_expansion <- function(x){
     )
   return(data_labelled)
 }
-
-
-
-

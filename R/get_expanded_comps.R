@@ -78,12 +78,12 @@
 #'   survey = "NWFSC.Combo"
 #' )
 #'
-#' strata <-  CreateStrataDF.fn(
+#' strata <- CreateStrataDF.fn(
 #'   names = c("shallow_wa", "shallow_or", "shallow_nca", "shelf_wa", "shelf_or", "shelf_nca"),
-#'   depths.shallow = c( 55,   55,    55,  183,  183,  183),
-#'   depths.deep    = c(183,  183,   183,  350,  350,  350),
-#'   lats.south     = c(46.0, 42.0, 40.10, 46.0, 42.0, 40.10),
-#'   lats.north     = c(49.0, 46.0, 42.0,  49.0, 46.0, 42.0)
+#'   depths.shallow = c(55, 55, 55, 183, 183, 183),
+#'   depths.deep = c(183, 183, 183, 350, 350, 350),
+#'   lats.south = c(46.0, 42.0, 40.10, 46.0, 42.0, 40.10),
+#'   lats.north = c(49.0, 46.0, 42.0, 49.0, 46.0, 42.0)
 #' )
 #'
 #' length_comps <- get_expanded_comps(
@@ -93,7 +93,6 @@
 #'   comp_bins = seq(20, 70, 4),
 #'   comp_column_name = "length_cm"
 #' )
-#'
 #' }
 #'
 get_expanded_comps <- function(
@@ -114,7 +113,6 @@ get_expanded_comps <- function(
     month = "Enter Month",
     printfolder = "forSS3",
     verbose = TRUE) {
-
   plotdir <- file.path(dir, printfolder)
   check_dir(dir = dir, verbose = verbose)
 
@@ -186,11 +184,11 @@ get_expanded_comps <- function(
     percent_min <- round(100 * sum(bio_data[, "bin"] == -999) / dim(bio_data)[1], 2)
     percent_max <- round(100 * sum(bio_data[, "comp_column"] >= max(comp_bins)) / dim(bio_data)[1], 2)
     cli::cli_bullets(c(
-     i = "There are {percent_min}% of records that are less than the minimum
+      i = "There are {percent_min}% of records that are less than the minimum
      composition bin. These fish will be added to the minimum bin.",
-     i = "There are {percent_max}% of records that are greater than the maximum
-     composition bin. These fish will be added to the maximum bin.")
-    )
+      i = "There are {percent_max}% of records that are greater than the maximum
+     composition bin. These fish will be added to the maximum bin."
+    ))
   }
   bio_data[which(bio_data$bin == -999), "bin"] <- min(comp_bins)
 
@@ -212,7 +210,8 @@ get_expanded_comps <- function(
   catch_data <- dplyr::left_join(
     catch_data,
     strata[, c("strata", "area")],
-    by = "strata") |>
+    by = "strata"
+  ) |>
     dplyr::mutate(
       area_swept = area_swept_ha * 0.01
     ) |>
@@ -238,13 +237,14 @@ get_expanded_comps <- function(
   bio_catch <- dplyr::left_join(
     bio_data[, c("year", "trawl_id", "comp_column", "sex", "bin", "all_fish")],
     catch_data[, c("trawl_id", "area_swept", "strata", "area", "tows", "total_catch_numbers")],
-    by = "trawl_id") |>
+    by = "trawl_id"
+  ) |>
     dplyr::filter(!is.na(strata)) |>
     dplyr::group_by(trawl_id, comp_column) |>
     dplyr::summarize(
       year = unique(year),
-      area_swept =  unique(area_swept),
-      strata =  unique(strata),
+      area_swept = unique(area_swept),
+      strata = unique(strata),
       strata_area = unique(area),
       tows = unique(tows),
       total_catch_numbers = unique(total_catch_numbers),
@@ -257,7 +257,7 @@ get_expanded_comps <- function(
       exp_f = n_female * multiplier,
       exp_m = n_male * multiplier,
       exp_u = n_unsexed * multiplier
-      )
+    )
 
   if (output == "tow_expansion_only") {
     if (verbose) {
@@ -320,7 +320,9 @@ get_expanded_comps <- function(
         total_unsexed = 0,
         prop_female = 0,
         prop_male = 0,
-        prop_unsexed = 0))
+        prop_unsexed = 0
+      )
+    )
 
   if (output == "full_expansion_unformatted") {
     if (!is.null(dir)) {
@@ -338,21 +340,24 @@ get_expanded_comps <- function(
     tidyr::pivot_wider(
       names_from = bin,
       names_prefix = "U",
-      values_from = prop_unsexed)
+      values_from = prop_unsexed
+    )
   unsexed_comps[is.na(unsexed_comps)] <- 0
 
   female_comps <- comps_by_year[, c("year", "bin", "prop_female")] |>
     tidyr::pivot_wider(
       names_from = bin,
       names_prefix = "F",
-      values_from = prop_female)
+      values_from = prop_female
+    )
   female_comps[is.na(female_comps)] <- 0
 
   male_comps <- comps_by_year[, c("year", "bin", "prop_male")] |>
     tidyr::pivot_wider(
       names_from = bin,
       names_prefix = "M",
-      values_from = prop_male)
+      values_from = prop_male
+    )
   male_comps[is.na(male_comps)] <- 0
 
   # Calculate input sample size based on existing function
@@ -369,7 +374,8 @@ get_expanded_comps <- function(
     input_n_method = input_n_method,
     species_group = species_type,
     printfolder = printfolder,
-    verbose = verbose)
+    verbose = verbose
+  )
 
   dimensions <- 2:(length(comp_bins) + 1)
   bin_range <- paste0(min(comp_bins), "_", max(comp_bins))
@@ -384,9 +390,9 @@ get_expanded_comps <- function(
       partition = partition,
       input_n = samples |> dplyr::filter(sex_grouped == "sexed") |> dplyr::select(input_n)
     )
-    sexed_formatted <- cbind(sexed_formatted, female_comps[,dimensions], male_comps[, dimensions])
+    sexed_formatted <- cbind(sexed_formatted, female_comps[, dimensions], male_comps[, dimensions])
     remove <- which(apply(sexed_formatted[, 7:ncol(sexed_formatted)], 1, sum) == 0)
-    if(length(remove) > 0) {
+    if (length(remove) > 0) {
       sexed_formatted <- sexed_formatted[-remove, ]
     }
 
@@ -400,7 +406,7 @@ get_expanded_comps <- function(
     )
     unsexed_formatted <- cbind(unsexed_formatted, unsexed_comps[, dimensions], 0 * unsexed_comps[, dimensions])
     remove <- which(apply(unsexed_formatted[, 7:ncol(unsexed_formatted)], 1, sum) == 0)
-    if(length(remove) > 0) {
+    if (length(remove) > 0) {
       unsexed_formatted <- unsexed_formatted[-remove, ]
     }
 
@@ -438,7 +444,7 @@ get_expanded_comps <- function(
     )
     all_formatted <- cbind(all_formatted, unsexed_comps[, dimensions])
     remove <- which(apply(all_formatted[, 7:ncol(all_formatted)], 1, sum) == 0)
-    if(length(remove) > 0) {
+    if (length(remove) > 0) {
       all_formatted <- all_formatted[-remove, ]
     }
 
@@ -449,7 +455,7 @@ get_expanded_comps <- function(
     if (!is.null(dir)) {
       write.csv(
         x = all_formatted,
-        file = file.path(dir, printfolder, paste0(comp_column_name, "_unsexed_expanded_", bin_range, "_", ,species,, "_", project, ".csv")),
+        file = file.path(dir, printfolder, paste0(comp_column_name, "_unsexed_expanded_", bin_range, "_", , species, , "_", project, ".csv")),
         row.names = FALSE
       )
     }

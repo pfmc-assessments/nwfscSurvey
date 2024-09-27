@@ -49,7 +49,6 @@ test_that("get_raw_comps", {
 })
 
 test_that("get_expanded_comps", {
-
   catch <- pull_catch(
     common_name = "lingcod",
     years = c(2003, 2018),
@@ -62,12 +61,13 @@ test_that("get_expanded_comps", {
     survey = "NWFSC.Combo",
     verbose = TRUE
   )
-  strata <-  CreateStrataDF.fn(
+  strata <- CreateStrataDF.fn(
     names = c("shallow_wa", "shallow_or", "shallow_nca", "shelf_wa", "shelf_or", "shelf_nca"),
-    depths.shallow = c( 55,   55,   55,  183,  183, 183),
-    depths.deep    = c(183,  183,  183,  300,  300, 300),
-    lats.south     = c(46.0, 42.0, 40.0, 46.0, 42.0, 40.0),
-    lats.north     = c(49.0, 46.0, 42.0, 49.0, 46.0, 42.0))
+    depths.shallow = c(55, 55, 55, 183, 183, 183),
+    depths.deep = c(183, 183, 183, 300, 300, 300),
+    lats.south = c(46.0, 42.0, 40.0, 46.0, 42.0, 40.0),
+    lats.north = c(49.0, 46.0, 42.0, 49.0, 46.0, 42.0)
+  )
 
   length_comps <- get_expanded_comps(
     bio_data = bio,
@@ -94,16 +94,14 @@ test_that("get_expanded_comps", {
     two_sex_comps = TRUE,
     output = "full_expansion_ss3_format",
     input_n_method = "stewart_hamel"
-   )
+  )
   expect_equal(nrow(age_comps$sexed), 15)
   expect_equal(sum(age_comps$sexed$input_n), 3541)
   expect_equal(nrow(age_comps$unsexed), 11)
   expect_equal(sum(age_comps$unsexed$input_n), 45)
-
 })
 
 test_that("tow_expansions", {
-
   catch <- pull_catch(
     common_name = "lingcod",
     years = c(2003, 2018),
@@ -116,12 +114,13 @@ test_that("tow_expansions", {
     survey = "NWFSC.Combo",
     verbose = TRUE
   )
-  strata <-  CreateStrataDF.fn(
+  strata <- CreateStrataDF.fn(
     names = c("shallow_wa", "shallow_or", "shallow_nca", "shelf_wa", "shelf_or", "shelf_nca"),
-    depths.shallow = c( 55,   55,   55,  183,  183, 183),
-    depths.deep    = c(183,  183,  183,  300,  300, 300),
-    lats.south     = c(46.0, 42.0, 40.0, 46.0, 42.0, 40.0),
-    lats.north     = c(49.0, 46.0, 42.0, 49.0, 46.0, 42.0))
+    depths.shallow = c(55, 55, 55, 183, 183, 183),
+    depths.deep = c(183, 183, 183, 300, 300, 300),
+    lats.south = c(46.0, 42.0, 40.0, 46.0, 42.0, 40.0),
+    lats.north = c(49.0, 46.0, 42.0, 49.0, 46.0, 42.0)
+  )
 
   length_comps <- get_expanded_comps(
     bio_data = bio,
@@ -132,13 +131,12 @@ test_that("tow_expansions", {
     output = "tow_expansion_only"
   )
   expect_equal(nrow(length_comps), 10104)
-  expect_equal(round(sum(length_comps$exp_m),0), 6262)
-  expect_equal(round(sum(length_comps$exp_f),0), 11558)
-  expect_equal(round(sum(length_comps$exp_u),0), 133)
+  expect_equal(round(sum(length_comps$exp_m), 0), 6262)
+  expect_equal(round(sum(length_comps$exp_f), 0), 11558)
+  expect_equal(round(sum(length_comps$exp_u), 0), 133)
 })
 
 test_that("unformatted_comps", {
-
   catch <- pull_catch(
     common_name = "lingcod",
     years = c(2003, 2018),
@@ -151,12 +149,13 @@ test_that("unformatted_comps", {
     survey = "NWFSC.Combo",
     verbose = TRUE
   )
-  strata <-  CreateStrataDF.fn(
+  strata <- CreateStrataDF.fn(
     names = c("shallow_wa", "shallow_or", "shallow_nca", "shelf_wa", "shelf_or", "shelf_nca"),
-    depths.shallow = c( 55,   55,   55,  183,  183, 183),
-    depths.deep    = c(183,  183,  183,  300,  300, 300),
-    lats.south     = c(46.0, 42.0, 40.0, 46.0, 42.0, 40.0),
-    lats.north     = c(49.0, 46.0, 42.0, 49.0, 46.0, 42.0))
+    depths.shallow = c(55, 55, 55, 183, 183, 183),
+    depths.deep = c(183, 183, 183, 300, 300, 300),
+    lats.south = c(46.0, 42.0, 40.0, 46.0, 42.0, 40.0),
+    lats.north = c(49.0, 46.0, 42.0, 49.0, 46.0, 42.0)
+  )
 
   length_comps <- get_expanded_comps(
     bio_data = bio,
@@ -167,13 +166,12 @@ test_that("unformatted_comps", {
     output = "full_expansion_unformatted"
   )
   expect_equal(nrow(length_comps), 272)
-  expect_equal(round(sum(length_comps$prop_female),0),1017)
-  expect_equal(round(sum(length_comps$prop_male),0), 583)
-  expect_equal(round(sum(length_comps$prop_unsexed),0), 1400)
+  expect_equal(round(sum(length_comps$prop_female), 0), 1017)
+  expect_equal(round(sum(length_comps$prop_male), 0), 583)
+  expect_equal(round(sum(length_comps$prop_unsexed), 0), 1400)
 })
 
 test_that("get_input_n", {
-
   bio <- pull_bio(
     common_name = "lingcod",
     years = c(2003, 2018),
@@ -186,7 +184,8 @@ test_that("get_input_n", {
     comp_column_name = "length_cm",
     input_n_method = "stewart_hamel",
     species_group = "other",
-    verbose = TRUE)
+    verbose = TRUE
+  )
   expect_equal(sum(n[n$sex_grouped == "all", "n_tows"]), 3447)
 
   n <- get_input_n(
@@ -194,7 +193,8 @@ test_that("get_input_n", {
     comp_column_name = "age",
     input_n_method = "stewart_hamel",
     species_group = "other",
-    verbose = TRUE)
+    verbose = TRUE
+  )
 
   expect_equal(sum(n[n$sex_grouped == "sexed", "n_tows"]), 3335)
 })
