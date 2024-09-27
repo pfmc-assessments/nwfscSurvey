@@ -11,7 +11,6 @@
 <url><loc>/reference/CreateStrataDF.fn.html</loc></url>
 <url><loc>/reference/Format.AKSlope.fn.html</loc></url>
 <url><loc>/reference/GetN.fn.html</loc></url>
-<url><loc>/reference/GetSpp.fn.html</loc></url>
 <url><loc>/reference/GetSppDefault.fn.html</loc></url>
 <url><loc>/reference/GetStrata.fn.html</loc></url>
 <url><loc>/reference/GetSurveyAbb.fn.html</loc></url>
@@ -56,10 +55,14 @@
 <url><loc>/reference/estimate_weight_length.html</loc></url>
 <url><loc>/reference/fit_vbgrowth.html</loc></url>
 <url><loc>/reference/get_design_based.html</loc></url>
+<url><loc>/reference/get_expanded_comps.html</loc></url>
+<url><loc>/reference/get_input_n.html</loc></url>
 <url><loc>/reference/get_json.html</loc></url>
 <url><loc>/reference/get_raw_comps.html</loc></url>
+<url><loc>/reference/get_species_info.html</loc></url>
 <url><loc>/reference/get_url.html</loc></url>
 <url><loc>/reference/index.html</loc></url>
+<url><loc>/reference/label_tow_expansion.html</loc></url>
 <url><loc>/reference/plot_age_length_sampling.html</loc></url>
 <url><loc>/reference/plot_bio_patterns.html</loc></url>
 <url><loc>/reference/plot_comps.html</loc></url>

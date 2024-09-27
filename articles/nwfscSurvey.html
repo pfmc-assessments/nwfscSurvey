@@ -54,7 +54,7 @@
                         <h4 data-toc-skip class="author">Chantel
 Wetzel</h4>
             
-            <h4 data-toc-skip class="date">2024-09-06</h4>
+            <h4 data-toc-skip class="date">2024-09-27</h4>
       
 
       <div class="d-none name"><code>nwfscSurvey.Rmd</code></div>
@@ -127,11 +127,9 @@ latitude and depth, presence/absence in tows, and observed sex
 ratios.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/plot_cpue.html">plot_cpue</a></span><span class="op">(</span></span>
-<span>  dir <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/getwd.html" class="external-link">getwd</a></span><span class="op">(</span><span class="op">)</span>, </span>
 <span>  catch <span class="op">=</span> <span class="va">catch</span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu"><a href="../reference/plot_bio_patterns.html">plot_bio_patterns</a></span><span class="op">(</span></span>
-<span>  dir <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/getwd.html" class="external-link">getwd</a></span><span class="op">(</span><span class="op">)</span>, </span>
 <span>  bio <span class="op">=</span> <span class="va">bio</span>, </span>
 <span>  col_name <span class="op">=</span> <span class="st">"Length_cm"</span><span class="op">)</span></span>
 <span></span>
@@ -251,122 +249,97 @@ uncertainty intervals:</p>
 <div class="section level4">
 <h4 id="length-composition-data">Length composition data<a class="anchor" aria-label="anchor" href="#length-composition-data"></a>
 </h4>
-<p><code><a href="../reference/GetN.fn.html">GetN.fn()</a></code> calculates the input sample size based on
-Stewart &amp; Hamel (2014) which determined that the input sample size
-was related to the species group (flatfish, shelf rockfish, slope
-rockfish, thornyhead, others, or all groups) and number of tows. The
-function writes a csv file with the “forSS3” folder containing the
-number of tows and observed fish by year.</p>
-<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">n</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/GetN.fn.html">GetN.fn</a></span><span class="op">(</span>dir <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/getwd.html" class="external-link">getwd</a></span><span class="op">(</span><span class="op">)</span>, </span>
-<span>         dat <span class="op">=</span> <span class="va">bio</span>, </span>
-<span>         type <span class="op">=</span> <span class="st">"length"</span>, </span>
-<span>         species <span class="op">=</span> <span class="st">"shelfrock"</span><span class="op">)</span></span></code></pre></div>
-<p><code><a href="../reference/SurveyLFs.fn.html">SurveyLFs.fn()</a></code> calculates and formats the
+<p><code><a href="../reference/get_expanded_comps.html">get_expanded_comps()</a></code> calculates and formats the
 length-composition data for Stock Synthesis:</p>
-<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">len_bins</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="fl">10</span>, <span class="fl">60</span>, <span class="fl">2</span><span class="op">)</span></span>
-<span></span>
-<span><span class="va">Length_Freq</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/SurveyLFs.fn.html">SurveyLFs.fn</a></span><span class="op">(</span>dir <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/getwd.html" class="external-link">getwd</a></span><span class="op">(</span><span class="op">)</span>, </span>
-<span>                        datL <span class="op">=</span>  <span class="va">bio</span>, </span>
-<span>                        datTows <span class="op">=</span> <span class="va">catch</span>,</span>
-<span>                        strat.df <span class="op">=</span> <span class="va">strata</span>,</span>
-<span>                        lgthBins <span class="op">=</span> <span class="va">len_bins</span><span class="op">)</span></span></code></pre></div>
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">length_comps</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/get_expanded_comps.html">get_expanded_comps</a></span><span class="op">(</span></span>
+<span>    bio_data <span class="op">=</span> <span class="va">bio</span>,</span>
+<span>    catch_data <span class="op">=</span> <span class="va">catch</span>,</span>
+<span>    comp_bins <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="fl">10</span>, <span class="fl">40</span>, <span class="fl">2</span><span class="op">)</span>,</span>
+<span>    strata <span class="op">=</span> <span class="va">strata</span>,</span>
+<span>    comp_column_name <span class="op">=</span> <span class="st">"length_cm"</span>,</span>
+<span>    output <span class="op">=</span> <span class="st">"full_expansion_ss3_format"</span>,</span>
+<span>    two_sex_comps <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>    input_sample_size_method <span class="op">=</span> <span class="st">"stewart_hamel"</span><span class="op">)</span></span></code></pre></div>
 <p>The above call will calculate the length frequencies for use in Stock
 Synthesis and write the files inside the “forSS3” folder. The example
-call does not assign unsexed fish to the sexed length comps but will
-produce csv files for both the sexed and unsexed fish. If you would like
-to assign the unsexed fish to a sex based on the sex ratio the user will
-need to specificy the sex ratio value (sexRatioUnsexed) to use for fish
-under a specified size (maxSizeUnsexed) where unsexed fish greater than
-the specified size will be assign based on the sex ratio from other
-observations.</p>
-<p>There are many inputs to <code><a href="../reference/SurveyLFs.fn.html">SurveyLFs.fn()</a></code>, please look
-over the function inputs to explore additional ways to process the
-data.</p>
+call will produce csv files for both the sexed and unsexed fish. This
+function returns a list of sexed and unsexed length composition data
+formatted for Stock Synthesis. In the above example the input sample
+size is calculated based on the Stewart and Hamel approach (e.g., unique
+samples calculated as a function of species type and tows).</p>
 <p>To plot the length frequency data:</p>
-<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="../reference/PlotFreqData.fn.html">PlotFreqData.fn</a></span><span class="op">(</span>dir <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/getwd.html" class="external-link">getwd</a></span><span class="op">(</span><span class="op">)</span>, </span>
-<span>                dat <span class="op">=</span> <span class="va">Length_Freq</span><span class="op">)</span></span></code></pre></div>
-<p>A new function to visualize length frequency data is also
-available:</p>
-<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="../reference/plot_comps.html">plot_comps</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">Length_Freq</span><span class="op">)</span></span></code></pre></div>
-<p>If <code>dir</code> does not equal <code>NULL</code>, then a “plot”
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/plot_comps.html">plot_comps</a></span><span class="op">(</span></span>
+<span>  data <span class="op">=</span> <span class="va">length_comps</span><span class="op">)</span></span></code></pre></div>
+<p>If the <code>dir</code> function input is specified, then a “plot”
 folder will be created in the directory location and a png of the plot
 will be saved.</p>
 <p>There is also a function to create raw or unexpanded composition data
 that works for either length or age data.</p>
-<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">length_comps</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/get_raw_comps.html">get_raw_comps</a></span><span class="op">(</span></span>
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">raw_length_comps</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/get_raw_comps.html">get_raw_comps</a></span><span class="op">(</span></span>
 <span>    data <span class="op">=</span> <span class="va">bio</span>,</span>
 <span>    comp_bins <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="fl">10</span>, <span class="fl">40</span>, <span class="fl">2</span><span class="op">)</span>,</span>
-<span>    comp_column_name <span class="op">=</span> <span class="st">"Length_cm"</span>,</span>
-<span>    two_sex_comps <span class="op">=</span> <span class="cn">TRUE</span>,</span>
-<span>    dir <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/getwd.html" class="external-link">getwd</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<span>    comp_column_name <span class="op">=</span> <span class="st">"length_cm"</span>,</span>
+<span>    two_sex_comps <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
 <p>This function returns a list of sexed and unsexed length composition
-data formatted for Stock Synthesis. The sample size (nsamp) is set equal
+data formatted for Stock Synthesis. The input sample size is set equal
 to the number of samples in the data frame.</p>
 </div>
 <div class="section level4">
 <h4 id="marginal-age-composition-data">Marginal age composition data<a class="anchor" aria-label="anchor" href="#marginal-age-composition-data"></a>
 </h4>
-<p>Calculate the marginal age sample size:</p>
-<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">n</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/GetN.fn.html">GetN.fn</a></span><span class="op">(</span>dir <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/getwd.html" class="external-link">getwd</a></span><span class="op">(</span><span class="op">)</span>, </span>
-<span>         dat <span class="op">=</span> <span class="va">bio</span>,</span>
-<span>         type <span class="op">=</span> <span class="st">"age"</span>, </span>
-<span>         species <span class="op">=</span> <span class="st">"shelfrock"</span><span class="op">)</span></span></code></pre></div>
-<p><code><a href="../reference/SurveyAFs.fn.html">SurveyAFs.fn()</a></code> calculates and formats the
-age-composition data for Stock Synthesis:</p>
-<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">age_bins</span> <span class="op">&lt;-</span> <span class="fl">1</span><span class="op">:</span><span class="fl">50</span></span>
-<span></span>
-<span><span class="va">Ages</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/SurveyAFs.fn.html">SurveyAFs.fn</a></span><span class="op">(</span>dir <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/getwd.html" class="external-link">getwd</a></span><span class="op">(</span><span class="op">)</span>, </span>
-<span>                     datA <span class="op">=</span> <span class="va">bio</span>,</span>
-<span>                     datTows <span class="op">=</span> <span class="va">catch</span>, </span>
-<span>                     strat.df <span class="op">=</span> <span class="va">strata</span>,</span>
-<span>                     ageBins <span class="op">=</span> <span class="va">age_bins</span>,</span>
-<span>                     nSamps <span class="op">=</span> <span class="va">n</span><span class="op">)</span></span></code></pre></div>
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">age_comps</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/get_expanded_comps.html">get_expanded_comps</a></span><span class="op">(</span></span>
+<span>    bio_data <span class="op">=</span> <span class="va">bio</span>,</span>
+<span>    catch_data <span class="op">=</span> <span class="va">catch</span>,</span>
+<span>    comp_bins <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">40</span>,</span>
+<span>    strata <span class="op">=</span> <span class="va">strata</span>,</span>
+<span>    comp_column_name <span class="op">=</span> <span class="st">"length_cm"</span>,</span>
+<span>    output <span class="op">=</span> <span class="st">"full_expansion_ss3_format"</span>,</span>
+<span>    two_sex_comps <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>    input_sample_size_method <span class="op">=</span> <span class="st">"stewart_hamel"</span><span class="op">)</span></span></code></pre></div>
 <p>The above call will calculate the marginal age-composition data for
-the age data read in using <code>readInExcelAgeComps.fn()</code> and
-writes the files inside the “forSS3” folder.</p>
+the age data in a format for Stock Synthesis. This function returns a
+list of sexed and unsexed marginal age composition data formatted for
+Stock Synthesis. The example call will produce csv files for both the
+sexed and unsexed fish. This function returns a list of sexed and
+unsexed length composition data formatted for Stock Synthesis. In the
+above example the input sample size is calculated based on the Stewart
+and Hamel approach (e.g., unique samples calculated as a function of
+species type and tows).</p>
 <p>To plot the age frequency data:</p>
-<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="../reference/PlotFreqData.fn.html">PlotFreqData.fn</a></span><span class="op">(</span></span>
-<span>  dir <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/getwd.html" class="external-link">getwd</a></span><span class="op">(</span><span class="op">)</span>, </span>
-<span>  dat <span class="op">=</span> <span class="va">Ages</span><span class="op">)</span></span>
-<span></span>
-<span><span class="fu"><a href="../reference/plot_comps.html">plot_comps</a></span><span class="op">(</span></span>
-<span>  data <span class="op">=</span> <span class="va">Ages</span><span class="op">)</span></span></code></pre></div>
-<p>If <code>dir</code> is not <code>NULL</code>, then a “plot” folder
-will be created in the directory location and a png of the plot will be
-saved.</p>
+<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/plot_comps.html">plot_comps</a></span><span class="op">(</span></span>
+<span>  data <span class="op">=</span> <span class="va">age_comps</span><span class="op">)</span></span></code></pre></div>
+<p>If the <code>dir</code> function input is specified, then a “plot”
+folder will be created in the directory location and a png of the plot
+will be saved.</p>
 <p>There is also a function to create raw or unexpanded composition data
 that works for either length or age data.</p>
-<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">age_comps</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/get_raw_comps.html">get_raw_comps</a></span><span class="op">(</span></span>
+<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">raw_age_comps</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/get_raw_comps.html">get_raw_comps</a></span><span class="op">(</span></span>
 <span>    data <span class="op">=</span> <span class="va">bio</span>,</span>
 <span>    comp_bins <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">40</span>,</span>
-<span>    comp_column_name <span class="op">=</span> <span class="st">"Age"</span>,</span>
-<span>    two_sex_comps <span class="op">=</span> <span class="cn">TRUE</span>,</span>
-<span>    dir <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/getwd.html" class="external-link">getwd</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<span>    comp_column_name <span class="op">=</span> <span class="st">"age"</span>,</span>
+<span>    two_sex_comps <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
 <p>This function returns a list of sexed and unsexed marginal age
-composition data formatted for Stock Synthesis. The sample size (nsamp)
-is set equal to the number of samples in the data frame.</p>
+composition data formatted for Stock Synthesis. The input sample size is
+set equal to the number of samples in the data frame.</p>
 </div>
 <div class="section level4">
 <h4 id="conditional-age-at-length-data">Conditional-age-at-length data<a class="anchor" aria-label="anchor" href="#conditional-age-at-length-data"></a>
 </h4>
 <p>To calculate conditional-age-at-length data formatted for Stock
 Synthesis:</p>
-<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">caal</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/SurveyAgeAtLen.fn.html">SurveyAgeAtLen.fn</a></span><span class="op">(</span>dir <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/getwd.html" class="external-link">getwd</a></span><span class="op">(</span><span class="op">)</span>, </span>
-<span>                          datAL <span class="op">=</span> <span class="va">bio</span>, </span>
-<span>                          datTows <span class="op">=</span> <span class="va">catch</span>,</span>
-<span>                          strat.df <span class="op">=</span> <span class="va">strata</span>,</span>
-<span>                          lgthBins <span class="op">=</span> <span class="va">len_bins</span>, </span>
-<span>                          ageBins <span class="op">=</span> <span class="va">age_bins</span><span class="op">)</span></span></code></pre></div>
+<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">caal</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/SurveyAgeAtLen.fn.html">SurveyAgeAtLen.fn</a></span><span class="op">(</span></span>
+<span>  datAL <span class="op">=</span> <span class="va">bio</span>, </span>
+<span>  datTows <span class="op">=</span> <span class="va">catch</span>,</span>
+<span>  strat.df <span class="op">=</span> <span class="va">strata</span>,</span>
+<span>  lgthBins <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="fl">10</span>, <span class="fl">40</span>, <span class="fl">2</span><span class="op">)</span>, </span>
+<span>  ageBins <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">40</span><span class="op">)</span></span></code></pre></div>
 <p>Creates unexpanded conditional-age-at-length data for both sexes with
 input sample sizes based on the observed number of fish in each length
 bin by year.</p>
@@ -376,7 +349,7 @@ bin by year.</p>
 </h4>
 <p>To make a map showing the distribution of density in aggregate and by
 year:</p>
-<div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/PlotMap.fn.html">PlotMap.fn</a></span><span class="op">(</span></span>
 <span>  dat <span class="op">=</span> <span class="va">catch</span><span class="op">)</span></span></code></pre></div>
 </div>
@@ -400,7 +373,7 @@ in the package:<code><a href="../reference/PlotVarLengthAtAge.fn.html">PlotVarLe
 </div>
 
 <div class="pkgdown-footer-right">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.0.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.1.</p>
 </div>
 
     </footer>

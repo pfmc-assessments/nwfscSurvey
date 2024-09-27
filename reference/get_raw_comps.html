@@ -43,6 +43,7 @@
 <span>  <span class="va">data</span>,</span>
 <span>  <span class="va">comp_bins</span>,</span>
 <span>  comp_column_name <span class="op">=</span> <span class="st">"Length_cm"</span>,</span>
+<span>  input_n_method <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"stewart_hamel"</span>, <span class="st">"tows"</span>, <span class="st">"total_samples"</span><span class="op">)</span>,</span>
 <span>  two_sex_comps <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  fleet <span class="op">=</span> <span class="st">"Enter Fleet"</span>,</span>
 <span>  month <span class="op">=</span> <span class="st">"Enter Month"</span>,</span>
@@ -75,8 +76,15 @@ composition data is formatted for Stock Synthesis.</p></dd>
 <dt id="arg-comp-column-name">comp_column_name<a class="anchor" aria-label="anchor" href="#arg-comp-column-name"></a></dt>
 <dd><p>The column name to create composition data for. This column can be
 is used to determine whether to format the composition data for length or age
-compositions by looking for either age (e.g., age_years, Age, best_age) or length
-(e.g., Length, length, Length_cm) in the comp_column_name. Default Length_cm.</p></dd>
+compositions by looking for either age (e.g., <code>age_years</code>, <code>Age</code>, <code>best_age</code>) or length
+(e.g., <code>Length</code>, <code>length</code>, <code>Length_cm</code>) in the comp_column_name. The default
+is <code>Length_cm</code>.</p></dd>
+
+
+<dt id="arg-input-n-method">input_n_method<a class="anchor" aria-label="anchor" href="#arg-input-n-method"></a></dt>
+<dd><p>Determines the default input sample size to add to
+the composition data for SS3. There are three options: c("stewart_hamel", "tows",
+"total_samples") where the default is "stewart_hamel".</p></dd>
 
 
 <dt id="arg-two-sex-comps">two_sex_comps<a class="anchor" aria-label="anchor" href="#arg-two-sex-comps"></a></dt>
@@ -186,7 +194,7 @@ two-sex model or all length/ages for single-sex model.</p>
 </div>
 
 <div class="pkgdown-footer-right">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.0.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.1.</p>
 </div>
 
     </footer></div>
