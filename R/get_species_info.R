@@ -72,6 +72,7 @@ get_species_info <- function(species, unident = FALSE, verbose = TRUE) {
     c("coast", "rex_sole", "flatfish"),
     c("coast", "rosethorn_rockfish", "shelfrock"),
     c("coast", "rougheye_rockfish", "sloperock"),
+    c("coast", "rougheye_and_blackspotted_rockfish", "sloperock"),
     c("sablefish", "sablefish", "other"),
     c("coast", "sharpchin_rockfish", "sloperockf"),
     c("north_south", "shortbelly_rockfish", "shelfrock"),
