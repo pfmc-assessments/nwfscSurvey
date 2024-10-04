@@ -143,7 +143,7 @@ length_comps <- get_expanded_comps(
     comp_column_name = "length_cm",
     output = "full_expansion_ss3_format",
     two_sex_comps = TRUE,
-    input_sample_size_method = "stewart_hamel")
+    input_n_method = "stewart_hamel")
 ```
 The above call will calculate the length frequencies for use in Stock Synthesis and write the files inside the "forSS3" folder. The example call will produce csv files for both the sexed and unsexed fish. This function returns a list of sexed and unsexed length composition data formatted for Stock Synthesis. In the above example the input sample size is calculated based on the Stewart and Hamel approach (e.g., unique samples calculated as a function of species type and tows).
 
@@ -179,7 +179,7 @@ age_comps <- get_expanded_comps(
     comp_column_name = "length_cm",
     output = "full_expansion_ss3_format",
     two_sex_comps = TRUE,
-    input_sample_size_method = "stewart_hamel")
+    input_n_method = "stewart_hamel")
 ```
 The above call will calculate the marginal age-composition data for the age data in a format for Stock Synthesis. This function returns a list of sexed and unsexed marginal age composition data formatted for Stock Synthesis. The example call will produce csv files for both the sexed and unsexed fish. This function returns a list of sexed and unsexed length composition data formatted for Stock Synthesis. In the above example the input sample size is calculated based on the Stewart and Hamel approach (e.g., unique samples calculated as a function of species type and tows). 
 
