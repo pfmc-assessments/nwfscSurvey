@@ -5,35 +5,18 @@
 \title{Pull catch data for satisfactory tows from the NWFSC data warehouse}
 \usage{
 pull_catch(
+  survey,
   common_name = NULL,
   sci_name = NULL,
   years = c(1970, 2050),
-  survey,
   dir = NULL,
   convert = TRUE,
   verbose = TRUE,
-  sample_types = c("NA", NA, "Life Stage", "Size")[1:2]
+  sample_types = c("NA", NA, "Life Stage", "Size")[1:2],
+  standard_filtering = TRUE
 )
 }
 \arguments{
-\item{common_name}{A character entry with the desired common name of the
-species you want to pull data for from the data warehouse.
-Use a vector of names if you want information for more than one species or
-if the desired species is included in the database using more than one name,
-e.g., vermilion rockfish (see the example below).
-Use the \code{sci_name} argument if you know the latin name.}
-
-\item{sci_name}{A character entry with the desired scientific name of the
-species you want to pull data for from the data warehouse.
-Use a vector of names if you want information for more than one species or
-if the desired species is included in the database using more than one name,
-e.g., vermilion rockfish (see the example below).
-Use the \code{common_name} argument if you know the common name.}
-
-\item{years}{An integer vector of length two with the
-range of years to pull data for (e.g., c(2003, 2024)).
-Vector can not contain -Inf or Inf.}
-
 \item{survey}{A character entry from one of the following options that
 specifies which survey to pull the data for. The input options are:
 \itemize{
@@ -69,6 +52,24 @@ Data can only be pulled from one survey at a time, though we are working on
 allowing for a vector of survey names.
 Currently, \code{NWFSC.Shelf.Rockfish} and \code{NWFSC.Hook.Line} are not supported.}
 
+\item{common_name}{A character entry with the desired common name of the
+species you want to pull data for from the data warehouse.
+Use a vector of names if you want information for more than one species or
+if the desired species is included in the database using more than one name,
+e.g., vermilion rockfish (see the example below).
+Use the \code{sci_name} argument if you know the latin name.}
+
+\item{sci_name}{A character entry with the desired scientific name of the
+species you want to pull data for from the data warehouse.
+Use a vector of names if you want information for more than one species or
+if the desired species is included in the database using more than one name,
+e.g., vermilion rockfish (see the example below).
+Use the \code{common_name} argument if you know the common name.}
+
+\item{years}{An integer vector of length two with the
+range of years to pull data for (e.g., c(2003, 2024)).
+Vector can not contain -Inf or Inf.}
+
 \item{dir}{Directory where output will be saved. The directory where the file should be saved.
 If dir = NULL no output will be saved.}
 
@@ -78,16 +79,10 @@ which aligns with the expected names in data processing functions.}
 \item{verbose}{A logical that specifies if you want to print messages and
 warnings to the console. The default is \code{TRUE}.}
 
-\item{sample_types}{A character vector of sample types, i.e.,
-\code{"statistical_partition_dim"}, that you would like to keep. The default is
-to only keep \code{NA} values, both real and character NA. But, for some
-instances you may want to keep Life Stage and Size samples. The majority
-of samples with \code{"statistical_partition_dim"} of Size and Life Stage are
-Pacific hake and should not be considered different than regular survey
-samples. The other types of samples that may be designated Life Stage are
-egg cases that can be caught and identified for select elasmobranch
-species. These type of samples should not be included in the data used
-to estimate indices of abundance and are omitted by default.}
+\item{standard_filtering}{A logical TRUE/FALSE that specifies whether data
+should be filtered using the standard filtering which removes tows with bad
+performance (water haul or poor net performance), or stations that have been
+removed from the survey sampling protocol.}
 }
 \description{
 Pull catch data from the

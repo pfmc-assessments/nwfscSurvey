@@ -4,13 +4,15 @@
 \alias{pull_haul}
 \title{Pull haul data from the NWFSC data warehouse.}
 \usage{
-pull_haul(years = c(1970, 2050), survey, dir = NULL, verbose = TRUE)
+pull_haul(
+  survey,
+  years = c(1970, 2050),
+  dir = NULL,
+  verbose = TRUE,
+  standard_filtering = TRUE
+)
 }
 \arguments{
-\item{years}{An integer vector of length two with the
-range of years to pull data for (e.g., c(2003, 2024)).
-Vector can not contain -Inf or Inf.}
-
 \item{survey}{A character entry from one of the following options that
 specifies which survey to pull the data for. The input options are:
 \itemize{
@@ -46,11 +48,20 @@ Data can only be pulled from one survey at a time, though we are working on
 allowing for a vector of survey names.
 Currently, \code{NWFSC.Shelf.Rockfish} and \code{NWFSC.Hook.Line} are not supported.}
 
+\item{years}{An integer vector of length two with the
+range of years to pull data for (e.g., c(2003, 2024)).
+Vector can not contain -Inf or Inf.}
+
 \item{dir}{Directory where output will be saved. The directory where the file should be saved.
 If dir = NULL no output will be saved.}
 
 \item{verbose}{A logical that specifies if you want to print messages and
 warnings to the console. The default is \code{TRUE}.}
+
+\item{standard_filtering}{A logical TRUE/FALSE that specifies whether data
+should be filtered using the standard filtering which removes tows with bad
+performance (water haul or poor net performance), or stations that have been
+removed from the survey sampling protocol.}
 }
 \value{
 Returns a data frame of haul characteristics for satisfactory hauls
