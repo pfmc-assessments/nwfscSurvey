@@ -75,7 +75,8 @@ pull_haul <- function(
     data = haul_data,
     data_type = "positive tows",
     standard_filtering = standard_filtering,
-    verbose = verbose)
+    verbose = verbose
+  )
 
   haul_data$date_formatted <-
     chron::chron(format(as.POSIXlt(haul_data$datetime_utc_iso, format = "%Y-%m-%dT%H:%M:%S"), "%Y-%m-%d"),

@@ -146,7 +146,7 @@ pull_bio <- function(
     if (survey %in% c("Triennial", "AFSC.Slope")) {
       data_text <- "age/otolith samples"
     } else {
-      data_text <-"biological samples"
+      data_text <- "biological samples"
     }
     if (verbose) {
       cli::cli_alert_info(
@@ -157,7 +157,8 @@ pull_bio <- function(
       data = bio_pull,
       data_type = data_text,
       standard_filtering = standard_filtering,
-      verbose = verbose)
+      verbose = verbose
+    )
 
     # Filter out non-standard samples
     # Some early entries are NA for standard sample indicators. These should be retained.
@@ -240,7 +241,8 @@ pull_bio <- function(
         data = len_pull,
         data_type = "length samples",
         standard_filtering = standard_filtering,
-        verbose = verbose)
+        verbose = verbose
+      )
 
       len_pull$weight_kg <- len_pull$weight <- NA
       len_pull$date <- chron::chron(format(as.POSIXlt(len_pull$datetime_utc_iso, format = "%Y-%m-%dT%H:%M:%S"), "%Y-%m-%d"), format = "y-m-d", out.format = "YYYY-m-d")
@@ -290,11 +292,13 @@ pull_bio <- function(
       n_len <- ifelse(
         length(nrow(bio[["length_data"]])) > 0,
         nrow(bio[["length_data"]]),
-        0)
+        0
+      )
       n_age <- ifelse(
         length(nrow(bio[["age_data"]])) > 0,
         nrow(bio[["age_data"]]),
-        0)
+        0
+      )
       cli::cli_alert_info(
         "There were {n_len} lengths and {n_age} ages samples remaining after applying standard filtering."
       )

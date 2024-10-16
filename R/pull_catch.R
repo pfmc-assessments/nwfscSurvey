@@ -132,7 +132,7 @@ pull_catch <- function(
   )
 
   # These are the retained and returned fields
-  #vars_short <- vars_long[!vars_long %in% perf_codes]
+  # vars_short <- vars_long[!vars_long %in% perf_codes]
 
   species_str <- convert_to_hex_string(species)
   add_species <- paste0("field_identified_taxonomy_dim$", var_name, "|=[", species_str, "]")
@@ -162,7 +162,7 @@ pull_catch <- function(
       "There are no tows where {species} was caught."
     )
   } else {
-    if (verbose){
+    if (verbose) {
       cli::cli_inform(
         "There are {nrow(positive_tows)} positive tows across all years pulled."
       )
@@ -173,7 +173,8 @@ pull_catch <- function(
     data = positive_tows,
     data_type = "positive tows",
     standard_filtering = standard_filtering,
-    verbose = verbose)
+    verbose = verbose
+  )
 
   bad_sample_types <- which(!positive_tows[, "statistical_partition_dim$statistical_partition_type"] %in% sample_types)
   if (length(bad_sample_types) > 0) {
@@ -182,7 +183,7 @@ pull_catch <- function(
         "There were {length(bad_sample_types)} positive tows where the sample type was not requested (e.g., Life Stage, Size)."
       )
     }
-    positive_tows <- positive_tows[-bad_sample_types,]
+    positive_tows <- positive_tows[-bad_sample_types, ]
   }
   if (sum(is.na(positive_tows[, "common_name"])) > 0) {
     replace <- which(is.na(positive_tows[, "common_name"]))
@@ -219,7 +220,8 @@ pull_catch <- function(
     data = all_tows,
     data_type = "tows",
     standard_filtering = standard_filtering,
-    verbose = FALSE)
+    verbose = FALSE
+  )
 
   all_tows <- all_tows[
     !duplicated(paste(all_tows$year, all_tows$pass, all_tows$vessel, all_tows$tow)),

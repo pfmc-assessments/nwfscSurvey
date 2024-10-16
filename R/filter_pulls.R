@@ -100,5 +100,4 @@ filter_pull <- function(
   }
 
   return(data)
-
 }
