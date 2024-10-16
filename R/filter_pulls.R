@@ -3,7 +3,7 @@
 #' Function to create messages on data that are outside the standard survey protocol
 #' and to remove these samples if `standard_filtering` = TRUE. The data are checked
 #' for tow performance, valid stations, and depth range. This function is called
-#' within the pull functions, but can be called on pulled data frames is filtering
+#' within the pull functions, but can be called on pulled data frames if filtering
 #' was not selected in the original data pull.
 #'
 #' @param data Data frame of pulled data created by the [pull_catch()], [pull_bio()],
