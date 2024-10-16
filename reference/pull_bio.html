@@ -46,13 +46,14 @@ In order to pull all species leave common_name or sci_name as NULL</p>
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">pull_bio</span><span class="op">(</span></span>
+<span>  <span class="va">survey</span>,</span>
 <span>  common_name <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  sci_name <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  years <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1970</span>, <span class="fl">2050</span><span class="op">)</span>,</span>
-<span>  <span class="va">survey</span>,</span>
 <span>  dir <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  convert <span class="op">=</span> <span class="cn">TRUE</span>,</span>
-<span>  verbose <span class="op">=</span> <span class="cn">TRUE</span></span>
+<span>  verbose <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  standard_filtering <span class="op">=</span> <span class="cn">TRUE</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
 
@@ -60,31 +61,7 @@ In order to pull all species leave common_name or sci_name as NULL</p>
     <h2 id="arguments">Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h2>
 
 
-<dl><dt id="arg-common-name">common_name<a class="anchor" aria-label="anchor" href="#arg-common-name"></a></dt>
-<dd><p>A character entry with the desired common name of the
-species you want to pull data for from the data warehouse.
-Use a vector of names if you want information for more than one species or
-if the desired species is included in the database using more than one name,
-e.g., vermilion rockfish (see the example below).
-Use the <code>sci_name</code> argument if you know the latin name.</p></dd>
-
-
-<dt id="arg-sci-name">sci_name<a class="anchor" aria-label="anchor" href="#arg-sci-name"></a></dt>
-<dd><p>A character entry with the desired scientific name of the
-species you want to pull data for from the data warehouse.
-Use a vector of names if you want information for more than one species or
-if the desired species is included in the database using more than one name,
-e.g., vermilion rockfish (see the example below).
-Use the <code>common_name</code> argument if you know the common name.</p></dd>
-
-
-<dt id="arg-years">years<a class="anchor" aria-label="anchor" href="#arg-years"></a></dt>
-<dd><p>An integer vector of length two with the
-range of years to pull data for (e.g., c(2003, 2024)).
-Vector can not contain -Inf or Inf.</p></dd>
-
-
-<dt id="arg-survey">survey<a class="anchor" aria-label="anchor" href="#arg-survey"></a></dt>
+<dl><dt id="arg-survey">survey<a class="anchor" aria-label="anchor" href="#arg-survey"></a></dt>
 <dd><p>A character entry from one of the following options that
 specifies which survey to pull the data for. The input options are:</p><ul><li><p>Triennial,</p></li>
 <li><p>AFSC.Slope,</p></li>
@@ -117,6 +94,30 @@ allowing for a vector of survey names.
 Currently, <code>NWFSC.Shelf.Rockfish</code> and <code>NWFSC.Hook.Line</code> are not supported.</p></dd>
 
 
+<dt id="arg-common-name">common_name<a class="anchor" aria-label="anchor" href="#arg-common-name"></a></dt>
+<dd><p>A character entry with the desired common name of the
+species you want to pull data for from the data warehouse.
+Use a vector of names if you want information for more than one species or
+if the desired species is included in the database using more than one name,
+e.g., vermilion rockfish (see the example below).
+Use the <code>sci_name</code> argument if you know the latin name.</p></dd>
+
+
+<dt id="arg-sci-name">sci_name<a class="anchor" aria-label="anchor" href="#arg-sci-name"></a></dt>
+<dd><p>A character entry with the desired scientific name of the
+species you want to pull data for from the data warehouse.
+Use a vector of names if you want information for more than one species or
+if the desired species is included in the database using more than one name,
+e.g., vermilion rockfish (see the example below).
+Use the <code>common_name</code> argument if you know the common name.</p></dd>
+
+
+<dt id="arg-years">years<a class="anchor" aria-label="anchor" href="#arg-years"></a></dt>
+<dd><p>An integer vector of length two with the
+range of years to pull data for (e.g., c(2003, 2024)).
+Vector can not contain -Inf or Inf.</p></dd>
+
+
 <dt id="arg-dir">dir<a class="anchor" aria-label="anchor" href="#arg-dir"></a></dt>
 <dd><p>Directory where output will be saved. The directory where the file should be saved.
 If dir = NULL no output will be saved.</p></dd>
@@ -130,6 +131,13 @@ which aligns with the expected names in data processing functions.</p></dd>
 <dt id="arg-verbose">verbose<a class="anchor" aria-label="anchor" href="#arg-verbose"></a></dt>
 <dd><p>A logical that specifies if you want to print messages and
 warnings to the console. The default is <code>TRUE</code>.</p></dd>
+
+
+<dt id="arg-standard-filtering">standard_filtering<a class="anchor" aria-label="anchor" href="#arg-standard-filtering"></a></dt>
+<dd><p>A logical TRUE/FALSE that specifies whether data
+should be filtered using the standard filtering which removes tows with bad
+performance (water haul or poor net performance), or stations that have been
+removed from the survey sampling protocol.</p></dd>
 
 </dl></div>
     <div class="section level2">

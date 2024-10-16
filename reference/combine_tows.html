@@ -5,13 +5,17 @@ by species and in those instances this function is not needed.
 For example, if data are pulled with all sample_types included,
 then there will often be data from the same trawl_id included
 as multiple records. In these instances, this function allows
-for the sample data to be combined for each unique trawl_id."><meta property="og:description" content="Combine catch data by trawl_id for data pulled using the
+for the sample data to be combined for each unique trawl_id.
+This also occurs if cryptic species pairs are all returned
+(e.g., rougheye rockfish and blackspotted rockfish)"><meta property="og:description" content="Combine catch data by trawl_id for data pulled using the
 pull_catch function. Generally, only a single tow is returned
 by species and in those instances this function is not needed.
 For example, if data are pulled with all sample_types included,
 then there will often be data from the same trawl_id included
 as multiple records. In these instances, this function allows
-for the sample data to be combined for each unique trawl_id."></head><body>
+for the sample data to be combined for each unique trawl_id.
+This also occurs if cryptic species pairs are all returned
+(e.g., rougheye rockfish and blackspotted rockfish)"></head><body>
     <a href="#main" class="visually-hidden-focusable">Skip to contents</a>
 
 
@@ -52,12 +56,14 @@ by species and in those instances this function is not needed.
 For example, if data are pulled with all sample_types included,
 then there will often be data from the same <code>trawl_id</code> included
 as multiple records. In these instances, this function allows
-for the sample data to be combined for each unique <code>trawl_id</code>.</p>
+for the sample data to be combined for each unique <code>trawl_id</code>.
+This also occurs if cryptic species pairs are all returned
+(e.g., rougheye rockfish and blackspotted rockfish)</p>
     </div>
 
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">combine_tows</span><span class="op">(</span><span class="va">data</span>, dir <span class="op">=</span> <span class="cn">NULL</span>, verbose <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">combine_tows</span><span class="op">(</span><span class="va">data</span>, dir <span class="op">=</span> <span class="cn">NULL</span>, single_species <span class="op">=</span> <span class="cn">TRUE</span>, verbose <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
@@ -72,6 +78,12 @@ function.</p></dd>
 <dt id="arg-dir">dir<a class="anchor" aria-label="anchor" href="#arg-dir"></a></dt>
 <dd><p>Directory where output will be saved. The directory where the file should be saved.
 If dir = NULL no output will be saved.</p></dd>
+
+
+<dt id="arg-single-species">single_species<a class="anchor" aria-label="anchor" href="#arg-single-species"></a></dt>
+<dd><p>TRUE/FALSE Logical that indicates whether data should be
+grouped by <code>trawl_id</code> alone (TRUE, e.g., rougheye rockfish and blackspotted rockfish)
+or data should be grouped by <code>common name</code> and <code>trawl_id</code> (FALSE).</p></dd>
 
 
 <dt id="arg-verbose">verbose<a class="anchor" aria-label="anchor" href="#arg-verbose"></a></dt>
