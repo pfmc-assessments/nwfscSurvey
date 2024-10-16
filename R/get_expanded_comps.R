@@ -323,7 +323,7 @@ get_expanded_comps <- function(
   }
   bin_width <- check_bin_width[1]
   grid <- init_comps_by_year |>
-    tidyr::expand(year, tidyr::full_seq(bin, bin_width))
+    tidyr::expand(year, tidyr::full_seq(comp_bins, bin_width))
   colnames(grid)[2] <- "bin"
   # Join the grid with the composition data by year:
   full_comps <- init_comps_by_year |>
