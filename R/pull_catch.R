@@ -24,6 +24,7 @@
 #' @template dir
 #' @template convert
 #' @template verbose
+#' @template sample_types
 #' @param standard_filtering A logical TRUE/FALSE that specifies whether data
 #'   should be filtered using the standard filtering which removes tows with bad
 #'   performance (water haul or poor net performance), or stations that have been
@@ -178,7 +179,7 @@ pull_catch <- function(
   if (length(bad_sample_types) > 0) {
     if (verbose) {
       cli::cli_alert_info(
-        "There were {length(bad_sample_types)} positive tows where the sample type was not requested."
+        "There were {length(bad_sample_types)} positive tows where the sample type was not requested (e.g., Life Stage, Size)."
       )
     }
     positive_tows <- positive_tows[-bad_sample_types,]
