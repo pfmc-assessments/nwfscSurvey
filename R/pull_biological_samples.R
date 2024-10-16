@@ -135,11 +135,6 @@ pull_biological_samples <- function(
     )
   }
   bio_samples <- try(get_json(url = url_text))
-  if (verbose){
-    cli::cli_inform(
-      "There are {nrow(bio_samples)} biological samples in the pulled data."
-    )
-  }
 
   keep <- which(
     bio_samples$ovary_id > 0 |
@@ -148,6 +143,12 @@ pull_biological_samples <- function(
     bio_samples$left_pectoral_fin_id > 0
   )
   bio_samples <- bio_samples[keep, ]
+
+  if (verbose){
+    cli::cli_inform(
+      "There are {nrow(bio_samples)} biological samples in the pulled data."
+    )
+  }
 
   rename_columns <- which(
     colnames(bio_samples) %in%
