@@ -79,6 +79,17 @@ which aligns with the expected names in data processing functions.}
 \item{verbose}{A logical that specifies if you want to print messages and
 warnings to the console. The default is \code{TRUE}.}
 
+\item{sample_types}{A character vector of sample types, i.e.,
+\code{"statistical_partition_dim"}, that you would like to keep. The default is
+to only keep \code{NA} values, both real and character NA. But, for some
+instances you may want to keep Life Stage and Size samples. The majority
+of samples with \code{"statistical_partition_dim"} of Size and Life Stage are
+Pacific hake and should not be considered different than regular survey
+samples. The other types of samples that may be designated Life Stage are
+egg cases that can be caught and identified for select elasmobranch
+species. These type of samples should not be included in the data used
+to estimate indices of abundance and are omitted by default.}
+
 \item{standard_filtering}{A logical TRUE/FALSE that specifies whether data
 should be filtered using the standard filtering which removes tows with bad
 performance (water haul or poor net performance), or stations that have been

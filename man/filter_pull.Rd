@@ -4,14 +4,20 @@
 \alias{filter_pull}
 \title{Filter data pulls}
 \usage{
-filter_pull(data, data_type, standard_filtering = TRUE, verbose = TRUE)
+filter_pull(
+  data,
+  data_type = "samples",
+  standard_filtering = TRUE,
+  verbose = TRUE
+)
 }
 \arguments{
 \item{data}{Data frame of pulled data created by the \code{\link[=pull_catch]{pull_catch()}}, \code{\link[=pull_bio]{pull_bio()}},
 \code{\link[=pull_haul]{pull_haul()}}, or \link{pull_biological_samples}.}
 
 \item{data_type}{Character string to include within data filtering messages
-to indicate the type of data being filtered.}
+to indicate the type of data being filtered such as "biological samples".
+Default is "samples".}
 
 \item{standard_filtering}{A logical TRUE/FALSE that specifies whether data
 should be filtered using the standard filtering which removes tows with bad
@@ -25,7 +31,7 @@ warnings to the console. The default is \code{TRUE}.}
 Function to create messages on data that are outside the standard survey protocol
 and to remove these samples if \code{standard_filtering} = TRUE. The data are checked
 for tow performance, valid stations, and depth range. This function is called
-within the pull functions, but can be called on pulled data frames is filtering
+within the pull functions, but can be called on pulled data frames if filtering
 was not selected in the original data pull.
 }
 \author{
