@@ -9,7 +9,8 @@
 #' @param data Data frame of pulled data created by the [pull_catch()], [pull_bio()],
 #'   [pull_haul()], or [pull_biological_samples].
 #' @param data_type Character string to include within data filtering messages
-#'   to indicate the type of data being filtered.
+#'   to indicate the type of data being filtered such as "biological samples".
+#'   Default is "samples".
 #' @param standard_filtering A logical TRUE/FALSE that specifies whether data
 #'   should be filtered using the standard filtering which removes tows with bad
 #'   performance (water haul or poor net performance), or stations that have been
@@ -23,7 +24,7 @@
 #'
 filter_pull <- function(
     data,
-    data_type,
+    data_type = "samples",
     standard_filtering = TRUE,
     verbose = TRUE) {
   # Now start filtering out tows that have issues:
