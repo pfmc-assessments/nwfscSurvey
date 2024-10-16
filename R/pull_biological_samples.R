@@ -135,6 +135,11 @@ pull_biological_samples <- function(
     )
   }
   bio_samples <- try(get_json(url = url_text))
+  if (verbose){
+    cli::cli_inform(
+      "There are {nrow(bio_samples)} biological samples in the pulled data."
+    )
+  }
 
   keep <- which(
     bio_samples$ovary_id > 0 |
@@ -169,6 +174,12 @@ pull_biological_samples <- function(
   bio_samples$trawl_id <- as.character(bio_samples$trawl_id)
   rename_columns <- which(colnames(bio_samples) %in% "operation_dim$legacy_performance_code")
   colnames(bio_samples)[rename_columns] <- "legacy_performance_code"
+
+  if (standard_filtering == TRUE & verbose == TRUE){
+    cli::cli_inform(
+      "There are {nrow(bio_samples)} biological samples remain after standard filtering."
+    )
+  }
 
   save_rdata(
     x = bio_samples,

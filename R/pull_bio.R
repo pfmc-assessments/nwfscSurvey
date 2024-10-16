@@ -124,7 +124,7 @@ pull_bio <- function(
 
   if (verbose) {
     cli::cli_alert_info(
-      "Pulling biological data for {species}. This can take up to ~ 30 seconds (or more)."
+      "Pulling biological data for {species}."
     )
   }
   bio_pull <- try(get_json(url = url_text))
@@ -147,6 +147,11 @@ pull_bio <- function(
       data_text <- "age/otolith samples"
     } else {
       data_text <-"biological samples"
+    }
+    if (verbose) {
+      cli::cli_alert_info(
+        "There were {nrow(bio_pull)} {data_text} pulled."
+      )
     }
     bio_pull <- filter_pull(
       data = bio_pull,
@@ -226,6 +231,11 @@ pull_bio <- function(
     }
 
     if (is.data.frame(len_pull)) {
+      if (verbose) {
+        cli::cli_alert_info(
+          "There were {nrow(len_pull)} length samples pulled."
+        )
+      }
       len_pull <- filter_pull(
         data = len_pull,
         data_type = "length samples",
@@ -272,6 +282,28 @@ pull_bio <- function(
       }
     } else {
       colnames(bio) <- firstup(colnames(bio))
+    }
+  }
+
+  if (survey %in% c("Triennial", "AFSC.Slope")) {
+    if (standard_filtering == TRUE & verbose == TRUE) {
+      n_len <- ifelse(
+        length(nrow(bio[["length_data"]])) > 0,
+        nrow(bio[["length_data"]]),
+        0)
+      n_age <- ifelse(
+        length(nrow(bio[["age_data"]])) > 0,
+        nrow(bio[["age_data"]]),
+        0)
+      cli::cli_alert_info(
+        "There were {n_len} lengths and {n_age} ages samples remaining after applying standard filtering."
+      )
+    }
+  } else {
+    if (standard_filtering == TRUE & verbose == TRUE) {
+      cli::cli_alert_info(
+        "There were {nrow(bio)} biological samples remaining after applying standard filtering."
+      )
     }
   }
 

@@ -150,7 +150,7 @@ pull_catch <- function(
 
   if (verbose) {
     cli::cli_alert_info(
-      "Pulling catch data for {species}. This can take up to ~ 30 seconds (or more)."
+      "Pulling catch data for {species}."
     )
   }
 
@@ -160,6 +160,12 @@ pull_catch <- function(
     cli::cli_abort(
       "There are no tows where {species} was caught."
     )
+  } else {
+    if (verbose){
+      cli::cli_inform(
+        "There are {nrow(positive_tows)} positive tows across all years pulled."
+      )
+    }
   }
 
   positive_tows <- filter_pull(
@@ -201,6 +207,12 @@ pull_catch <- function(
   all_tows <- try(get_json(url = url_text))
 
   colnames(all_tows)[(colnames(all_tows) == "depth_hi_prec_m")] <- "depth_m"
+
+  if (standard_filtering == TRUE & verbose == TRUE) {
+    cli::cli_inform(
+      "There are {nrow(positive_tows)} positive tows remaining across all years after standard filtering."
+    )
+  }
 
   all_tows <- filter_pull(
     data = all_tows,
