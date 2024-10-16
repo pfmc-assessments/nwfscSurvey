@@ -118,7 +118,8 @@ test_that("pull_haul", {
   dat <- pull_haul(
     years = c(2003, 2018),
     survey = "NWFSC.Combo",
-    dir = NULL, verbose = TRUE
+    dir = NULL,
+    verbose = FALSE
   )
   expect_is(dat, "data.frame")
   expect_equal(nrow(dat), 10351)
@@ -135,6 +136,18 @@ test_that("pull_bio", {
   )
   expect_is(dat, "data.frame")
   expect_equal(nrow(dat), 3363)
+})
+
+test_that("pull_catch_triennial", {
+  skip_on_cran()
+
+  dat <- pull_catch(
+    common_name = "Pacific ocean perch",
+    survey = "Triennial",
+    verbose = TRUE
+  )
+  expect_is(dat, "data.frame")
+  expect_equal(nrow(dat), 4457)
 })
 
 test_that("pull_bio_triennial", {
@@ -171,5 +184,23 @@ test_that("pull_biological_samples", {
     verbose = TRUE
   )
   expect_is(dat, "data.frame")
-  expect_equal(nrow(dat), 926)
+  expect_equal(nrow(dat), 1132)
+})
+
+test_that("combine_tows", {
+  skip_on_cran()
+
+  dat <- pull_catch(
+    common_name = "rougheye rockfish",
+    years = c(2019, 2023),
+    survey = "NWFSC.Combo",
+    verbose = TRUE
+  )
+  combined_dat <- combine_tows(
+    data = dat,
+    single_species = TRUE,
+    verbose = TRUE
+  )
+  expect_is(combined_dat, "data.frame")
+  expect_equal(nrow(combined_dat), 2327)
 })

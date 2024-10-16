@@ -300,7 +300,7 @@ get_expanded_comps <- function(
       prop_total_unsexed = sum(unsexed)
     )
 
-  comps_by_year <- total_by_year |>
+  init_comps_by_year <- total_by_year |>
     dplyr::group_by(year, bin) |>
     dplyr::summarize(
       total_female = sum(female),
@@ -312,7 +312,24 @@ get_expanded_comps <- function(
     ) |>
     dplyr::ungroup()
 
-  comps_by_year <- comps_by_year |>
+  # Create grid of all combinations of year and bin that includes combinations
+  # that are not observed in the data across all years
+  check_bin_width <- diff(comp_bins)
+  if (any(check_bin_width != check_bin_width[1])) {
+    cli::cli_inform(
+      "The output should be careful checked to ensure correctness when unequal
+      bin intervals are used."
+    )
+  }
+  bin_width <- check_bin_width[1]
+  grid <- init_comps_by_year |>
+    tidyr::expand(year, tidyr::full_seq(comp_bins, bin_width))
+  colnames(grid)[2] <- "bin"
+  # Join the grid with the composition data by year:
+  full_comps <- init_comps_by_year |>
+    right_join(grid)
+  # Fill in any missing combinations that have NA or NaN with 0:
+  comps_by_year <- full_comps |>
     tidyr::complete(year, bin,
       fill = list(
         total_female = 0,
@@ -448,7 +465,7 @@ get_expanded_comps <- function(
       all_formatted <- all_formatted[-remove, ]
     }
 
-    if (grep("age", comp_column_name, ignore.case = TRUE) > 0) {
+    if (length(grep("age", comp_column_name, ignore.case = TRUE)) > 0) {
       all_formatted <- cbind(all_formatted[, 1:5], age_error, age_low, age_high, all_formatted[, 6:dim(all_formatted)[2]])
     }
 

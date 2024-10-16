@@ -12,26 +12,35 @@
 #' @template survey
 #' @template dir
 #' @template verbose
+#' @param standard_filtering A logical TRUE/FALSE that specifies whether data
+#'   should be filtered using the standard filtering which removes tows with bad
+#'   performance (water haul or poor net performance), or stations that have been
+#'   removed from the survey sampling protocol.
 #'
 #' @return Returns a data frame of special biological samples with sample number
 #' @author Chantel Wetzel
 #' @export
 #'
+#' @import cli
 #' @import glue
 #'
 #'
-pull_biological_samples <- function(common_name = NULL,
-                                    sci_name = NULL,
-                                    years = c(1980, 2050),
-                                    survey = "NWFSC.Combo",
-                                    dir = NULL,
-                                    verbose = TRUE) {
+pull_biological_samples <- function(
+    survey,
+    common_name = NULL,
+    sci_name = NULL,
+    years = c(1980, 2050),
+    dir = NULL,
+    verbose = TRUE,
+    standard_filtering = FALSE) {
   # increase the timeout period to avoid errors when pulling data
   options(timeout = 4000000)
 
   if (length(c(common_name, sci_name)) != max(c(length(common_name), length(sci_name)))) {
-    stop("Can not pull data using both the common_name or sci_name together.
-         \n Please retry using only one.")
+    cli::cli_abort(
+      "Can not pull data using both the common_name or sci_name together.
+       Please retry using only one."
+    )
   }
 
   check_dir(dir = dir, verbose = verbose)
@@ -54,7 +63,6 @@ pull_biological_samples <- function(common_name = NULL,
     species <- "pull all"
   }
 
-  # symbols here are generally: %22 = ", %2C = ",", %20 = " "
   species_str <- convert_to_hex_string(species)
   add_species <- paste0("field_identified_taxonomy_dim$", var_name, "|=[", species_str, "]")
 
@@ -62,10 +70,10 @@ pull_biological_samples <- function(common_name = NULL,
     add_species <- ""
   }
 
-  vars_str <- c(
+  vars_long <- c(
     "common_name", "scientific_name",
     "age_years",
-    # "best_available_taxonomy_observation_detail_dim$method_description",
+    #"best_available_taxonomy_observation_detail_dim$method_description",
     "best_available_taxonomy_observation_detail_whid",
     "date_yyyymmdd",
     "depth_m",
@@ -94,6 +102,7 @@ pull_biological_samples <- function(common_name = NULL,
     "sex",
     "species_category",
     "species_subcategory",
+    "station_invalid",
     "stomach_id",
     "taxon_rank",
     "taxon_source",
@@ -108,29 +117,38 @@ pull_biological_samples <- function(common_name = NULL,
     "year",
     "year_stn_invalid",
     "lab_maturity_detail_dim$biologically_mature_certain_indicator",
-    "lab_maturity_detail_dim$biologically_mature_indicator"
+    "lab_maturity_detail_dim$biologically_mature_indicator",
+    "operation_dim$legacy_performance_code"
   )
 
-  url_text <- paste0(
-    "https://www.webapps.nwfsc.noaa.gov/data/api/v1/source/",
-    "trawl.individual_fact",
-    "/selection.json?filters=",
-    paste0("project=", paste(strsplit(project_long, " ")[[1]], collapse = "%20")),
-    ",", add_species,
-    ",year>", years[1], ",year<", years[2],
-    # ",ovary_id>0&",
-    "&variables=",
-    glue::glue_collapse(vars_str, sep = ",")
+  url_text <- get_url(
+    data_table = "trawl.individual_fact",
+    project_long = project_long,
+    add_species = add_species,
+    years = years,
+    vars_long = vars_long
   )
 
   if (verbose) {
-    message("Pulling maturity, stomach, fin clip, and tissue sample data.")
+    cli::cli_alert_info(
+      "Pulling maturity, stomach, fin clip, and tissue sample data for {species}."
+    )
   }
   bio_samples <- try(get_json(url = url_text))
 
-  keep <- which(bio_samples$ovary_id > 0 | bio_samples$stomach_id > 0 |
-    bio_samples$tissue_id > 0 | bio_samples$left_pectoral_fin_id > 0)
+  keep <- which(
+    bio_samples$ovary_id > 0 |
+    bio_samples$stomach_id > 0 |
+    bio_samples$tissue_id > 0 |
+    bio_samples$left_pectoral_fin_id > 0
+  )
   bio_samples <- bio_samples[keep, ]
+
+  if (verbose){
+    cli::cli_inform(
+      "There are {nrow(bio_samples)} biological samples in the pulled data."
+    )
+  }
 
   rename_columns <- which(
     colnames(bio_samples) %in%
@@ -147,6 +165,22 @@ pull_biological_samples <- function(common_name = NULL,
     )
 
   bio_samples[bio_samples == "NA"] <- NA
+
+  bio_samples <- filter_pull(
+    data = bio_samples,
+    data_type = "biological samples",
+    standard_filtering = standard_filtering,
+    verbose = verbose)
+
+  bio_samples$trawl_id <- as.character(bio_samples$trawl_id)
+  rename_columns <- which(colnames(bio_samples) %in% "operation_dim$legacy_performance_code")
+  colnames(bio_samples)[rename_columns] <- "legacy_performance_code"
+
+  if (standard_filtering == TRUE & verbose == TRUE){
+    cli::cli_inform(
+      "There are {nrow(bio_samples)} biological samples remain after standard filtering."
+    )
+  }
 
   save_rdata(
     x = bio_samples,
