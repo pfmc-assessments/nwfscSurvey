@@ -472,7 +472,7 @@ get_expanded_comps <- function(
     if (!is.null(dir)) {
       write.csv(
         x = all_formatted,
-        file = file.path(dir, printfolder, paste0(comp_column_name, "_unsexed_expanded_", bin_range, "_", , species, , "_", project, ".csv")),
+        file = file.path(dir, printfolder, paste0(comp_column_name, "_unsexed_expanded_", bin_range, "_", species, "_", project, ".csv")),
         row.names = FALSE
       )
     }
