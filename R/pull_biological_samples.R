@@ -73,7 +73,7 @@ pull_biological_samples <- function(
   vars_long <- c(
     "common_name", "scientific_name",
     "age_years",
-    #"best_available_taxonomy_observation_detail_dim$method_description",
+    # "best_available_taxonomy_observation_detail_dim$method_description",
     "best_available_taxonomy_observation_detail_whid",
     "date_yyyymmdd",
     "depth_m",
@@ -138,13 +138,13 @@ pull_biological_samples <- function(
 
   keep <- which(
     bio_samples$ovary_id > 0 |
-    bio_samples$stomach_id > 0 |
-    bio_samples$tissue_id > 0 |
-    bio_samples$left_pectoral_fin_id > 0
+      bio_samples$stomach_id > 0 |
+      bio_samples$tissue_id > 0 |
+      bio_samples$left_pectoral_fin_id > 0
   )
   bio_samples <- bio_samples[keep, ]
 
-  if (verbose){
+  if (verbose) {
     cli::cli_inform(
       "There are {nrow(bio_samples)} biological samples in the pulled data."
     )
@@ -170,13 +170,14 @@ pull_biological_samples <- function(
     data = bio_samples,
     data_type = "biological samples",
     standard_filtering = standard_filtering,
-    verbose = verbose)
+    verbose = verbose
+  )
 
   bio_samples$trawl_id <- as.character(bio_samples$trawl_id)
   rename_columns <- which(colnames(bio_samples) %in% "operation_dim$legacy_performance_code")
   colnames(bio_samples)[rename_columns] <- "legacy_performance_code"
 
-  if (standard_filtering == TRUE & verbose == TRUE){
+  if (standard_filtering == TRUE & verbose == TRUE) {
     cli::cli_inform(
       "There are {nrow(bio_samples)} biological samples remain after standard filtering."
     )
