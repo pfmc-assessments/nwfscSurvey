@@ -54,10 +54,10 @@ estimate_weight_length <- function(
   ]
 
   if (verbose) {
-    message(
-      "Calculating the weight-length relationship from ",
-      nrow(data), "\nfish because ", dims[1] - nrow(data),
-      " fish did not have empirical weights and lengths."
+    cli::cli_alert_info(
+      "Calculating the weight-length relationship from {nrow(data)} nfish
+      because {dims[1] - nrow(data)} fish did not have empirical weights
+      and lengths."
     )
   }
 
@@ -88,8 +88,8 @@ estimate_weight_length <- function(
     data.frame()
 
   if (verbose) {
-    message("Estimated weight-length by sex:")
-    utils::capture.output(lapply(mresults[["fits"]], summary), type = "message")
+    fits <- lapply(mresults[["fits"]], summary)
+    cli::cli_alert_info("Estimated weight-length by sex: {fits}")
   }
 
   return(wghtlen_ests)

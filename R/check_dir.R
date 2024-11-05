@@ -20,15 +20,15 @@
 check_dir <- function(dir, verbose = TRUE) {
   if (is.null(dir) || length(dir) == 0) {
     if (verbose) {
-      message("Output will not be saved in `dir` because dir = NULL.")
+      cli::cli_alert_info("Output will not be saved in dir because dir = NULL.")
     }
   } else {
     dir.create(dir, showWarnings = FALSE, recursive = TRUE)
     if (!file.exists(dir)) {
-      stop(glue::glue(
+      cli::cli_abort(
         "[ENOENT] Failed to make the following directory:
           '{dir}'"
-      ))
+      )
     }
   }
 }
