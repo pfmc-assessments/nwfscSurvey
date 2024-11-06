@@ -39,10 +39,6 @@ estimate_weight_length <- function(
   col_length <- tolower(col_length)
   col_weight <- tolower(col_weight)
   colnames(data) <- tolower(colnames(data))
-  colnames(data) <- gsub(col_weight, "weight", colnames(data))
-  colnames(data) <- gsub(col_length, "length_cm", colnames(data))
-  col_length <- "length_cm"
-  col_weight <- "weight"
   stopifnotcolumn(data = data, string = col_length)
   stopifnotcolumn(data = data, string = col_weight)
   stopifnotcolumn(data = data, string = "sex")
@@ -72,9 +68,14 @@ estimate_weight_length <- function(
       .id = "group"
     ) |>
     dplyr::mutate(
-      fits = purrr::map(data, ~ stats::lm(log(weight) ~ log(length_cm),
-        data = .x
-      ))
+      fits = purrr::map(
+        data,
+        ~ stats::lm(
+          log(!!rlang::parse_expr(col_weight)) ~
+            log(!!rlang::parse_expr(col_length)),
+          data = .x
+        )
+      )
     )
 
   wghtlen_ests <- mresults |>
@@ -89,7 +90,8 @@ estimate_weight_length <- function(
 
   if (verbose) {
     fits <- lapply(mresults[["fits"]], summary)
-    cli::cli_alert_info("Estimated weight-length by sex: {fits}")
+    cli::cli_alert_info("Estimated weight-length by sex:")
+    print(fits)
   }
 
   return(wghtlen_ests)
