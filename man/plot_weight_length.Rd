@@ -2,7 +2,7 @@
 % Please edit documentation in R/plot_weight_length.R
 \name{plot_weight_length}
 \alias{plot_weight_length}
-\title{Plots the weight-at-length data and estiamtes}
+\title{Plots the weight-at-length data and estimates}
 \usage{
 plot_weight_length(
   data,
@@ -18,7 +18,7 @@ plot_weight_length(
 )
 }
 \arguments{
-\item{data}{Dataframe created by \code{\link[=pull_bio]{pull_bio()}}}
+\item{data}{Data frame created by \code{\link[=pull_bio]{pull_bio()}}}
 
 \item{dir}{Directory where output will be saved. The directory where the file should be saved.
 If dir = NULL no output will be saved.}
@@ -52,12 +52,12 @@ inches. The defaults are 7 by 7 inches.}
 can reduce file size which can be helpful when creating large documents
 with many figures. The default is 300.}
 
-\item{estimates}{Dataframe of weight-at-length estimates from \code{\link[=est_weight_length]{est_weight_length()}}.
+\item{estimates}{Data frame of weight-at-length estimates from \code{\link[=est_weight_length]{est_weight_length()}}.
 If passed to the function the estimated parameter values will be added to
 the plot. The default is \code{NULL} and will not add parameters to the plot.}
 }
 \description{
-Plots the weight-at-length data and estiamtes
+Plots the weight-at-length data and estimates
 }
 \author{
 Chantel Wetzel

@@ -8,16 +8,10 @@
 #'   from sampled fish. Sexes should be available in the column `sex` or `SEX`.
 #' @param col_length A numeric or character value specifying the column
 #'   to use in `data` for length information. These lengths are assumed to
-#'   be in centimeters. The default value is `lengthcm`, which is added
-#'   to a data set automatically when running [cleanPacFIN()].
+#'   be in centimeters. The default value is `length_cm`.
 #' @param col_weight A numeric or character value specifying the column
 #'   to use in `data` for weight information. These weights are assumed to
-#'   be in kilograms The default value is `weightkg`, which is added
-#'   to a data set automatically when running [cleanPacFIN()].
-#'   Using kilograms is the default because Stock Synthesis assumes the
-#'   weight-length parameters are calculated using centimeters and kilograms.
-#'   The reported values are easily scaled to give you results in grams if
-#'   you wish to have more standard parameter estimates.
+#'   be in kilograms The default value is `weight_kg`.
 #' @template verbose
 #'
 #' @author Kelli F. Johnson and Chantel Wetzel

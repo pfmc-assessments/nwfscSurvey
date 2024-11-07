@@ -1,9 +1,9 @@
-#' Plots the weight-at-length data and estiamtes
+#' Plots the weight-at-length data and estimates
 #'
 #'
-#' @param data Dataframe created by [pull_bio()]
+#' @param data Data frame created by [pull_bio()]
 #' @template dir
-#' @param estimates Dataframe of weight-at-length estimates from [est_weight_length()].
+#' @param estimates Data frame of weight-at-length estimates from [est_weight_length()].
 #'   If passed to the function the estimated parameter values will be added to
 #'   the plot. The default is `NULL` and will not add parameters to the plot.
 #' @param col_length A numeric or character value specifying the column
