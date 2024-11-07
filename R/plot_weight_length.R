@@ -69,7 +69,8 @@ plot_weight_length <- function(
       !is.na(weight_column),
       weight_column > 0,
       !is.na(length_column),
-      length_column > 0)
+      length_column > 0
+    )
 
   xlims <- c(0, ceiling(max(data_to_plot[, "length_column"])))
   ylims <- c(0, max(data_to_plot[, "weight_column"]))
@@ -82,7 +83,7 @@ plot_weight_length <- function(
       dplyr::group_by(sex) |>
       dplyr::reframe(
         plot_length = seq(lmin, lmax, 1),
-        plot_weight = A * plot_length ^ B,
+        plot_weight = A * plot_length^B,
         a = A,
         b = B
       ) |>
@@ -119,10 +120,10 @@ plot_weight_length <- function(
   }
 
   p1 <- ggplot2::ggplot(data_to_plot) +
-    ggplot2::geom_point(aes(x = length_column, y = weight_column, color = sex), alpha = point_alpha, size = 1)+
+    ggplot2::geom_point(aes(x = length_column, y = weight_column, color = sex), alpha = point_alpha, size = 1) +
     ggplot2::ylab("Weight (kg)") +
     ggplot2::xlab("Length (cm)") +
-        ggplot2::xlim(xlims[1], xlims[2]) +
+    ggplot2::xlim(xlims[1], xlims[2]) +
     ggplot2::ylim(ylims[1], ylims[2]) +
     ggplot2::theme_bw() +
     ggplot2::scale_color_manual(name = "Sex", values = colors) +
@@ -133,17 +134,20 @@ plot_weight_length <- function(
     if (two_sex) {
       p1 <- p1 +
         ggplot2::geom_text(data = label, show.legend = FALSE, ggplot2::aes(x = x, y = y, label = label, color = sex)) +
-        ggplot2::geom_line(data = lines_to_plot,
-                           ggplot2::aes(x = plot_length, y = plot_weight, linetype = sex, color = sex), linewidth = 1.0) +
-                ggplot2::guides(color = guide_legend(override.aes = list(alpha = 1, size = 3, linetype = 0)), shape = "none")
+        ggplot2::geom_line(
+          data = lines_to_plot,
+          ggplot2::aes(x = plot_length, y = plot_weight, linetype = sex, color = sex), linewidth = 1.0
+        ) +
+        ggplot2::guides(color = guide_legend(override.aes = list(alpha = 1, size = 3, linetype = 0)), shape = "none")
     } else {
       p1 <- p1 +
         ggplot2::geom_text(data = label, show.legend = FALSE, ggplot2::aes(x = x, y = y, label = label), color = line_colors) +
-        ggplot2::geom_line(data = lines_to_plot,
-                           ggplot2::aes(x = plot_length, y = plot_weight, linetype = sex), color = line_colors, linewidth = 1.0) +
+        ggplot2::geom_line(
+          data = lines_to_plot,
+          ggplot2::aes(x = plot_length, y = plot_weight, linetype = sex), color = line_colors, linewidth = 1.0
+        ) +
         ggplot2::guides(color = guide_legend(override.aes = list(alpha = 1, size = 3, linetype = 0)), shape = "none")
     }
-
   }
 
   if (!is.null(dir)) {
@@ -152,6 +156,6 @@ plot_weight_length <- function(
       height = height, width = width, units = "in", dpi = dpi
     )
   } else {
-      print(p1)
+    print(p1)
   }
 }

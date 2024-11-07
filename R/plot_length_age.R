@@ -65,7 +65,8 @@ plot_length_age <- function(
       !is.na(age_column),
       age_column > 0,
       !is.na(length_column),
-      length_column > 0)
+      length_column > 0
+    )
 
   ylims <- c(0, ceiling(max(data_to_plot[, "length_column"])))
   xlims <- c(0, max(data_to_plot[, "age_column"]))
@@ -116,7 +117,7 @@ plot_length_age <- function(
   }
 
   p1 <- ggplot2::ggplot(data_to_plot) +
-    ggplot2::geom_point(aes(y = length_column, x = age_column, color = sex), alpha = point_alpha, size = 1)+
+    ggplot2::geom_point(aes(y = length_column, x = age_column, color = sex), alpha = point_alpha, size = 1) +
     ggplot2::xlab("Age (years)") +
     ggplot2::ylab("Length (cm)") +
     ggplot2::xlim(xlims[1], xlims[2]) +
@@ -130,17 +131,20 @@ plot_length_age <- function(
     if (two_sex) {
       p1 <- p1 +
         ggplot2::geom_text(data = label, show.legend = FALSE, ggplot2::aes(x = x, y = y, label = label, color = sex)) +
-        ggplot2::geom_line(data = lines_to_plot,
-                           ggplot2::aes(y = length_cm, x = age, linetype = sex, color = sex), linewidth = 1.0) +
+        ggplot2::geom_line(
+          data = lines_to_plot,
+          ggplot2::aes(y = length_cm, x = age, linetype = sex, color = sex), linewidth = 1.0
+        ) +
         ggplot2::guides(color = guide_legend(override.aes = list(alpha = 1, size = 3, linetype = 0)), shape = "none")
     } else {
       p1 <- p1 +
         ggplot2::geom_text(data = label, show.legend = FALSE, ggplot2::aes(x = x, y = y, label = label), color = line_colors) +
-        ggplot2::geom_line(data = lines_to_plot,
-                           ggplot2::aes(y = length_cm, x = age, linetype = sex), color = line_colors, linewidth = 1.0) +
+        ggplot2::geom_line(
+          data = lines_to_plot,
+          ggplot2::aes(y = length_cm, x = age, linetype = sex), color = line_colors, linewidth = 1.0
+        ) +
         ggplot2::guides(color = guide_legend(override.aes = list(alpha = 1, size = 3, linetype = 0)), shape = "none")
     }
-
   }
 
   if (!is.null(dir)) {
