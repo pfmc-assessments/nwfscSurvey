@@ -6,8 +6,8 @@
 \usage{
 estimate_weight_length(
   data,
-  col_length = "lengthcm",
-  col_weight = "weightkg",
+  col_length = "length_cm",
+  col_weight = "weight_kg",
   verbose = FALSE
 )
 }
