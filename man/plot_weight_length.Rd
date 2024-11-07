@@ -25,13 +25,11 @@ If dir = NULL no output will be saved.}
 
 \item{col_length}{A numeric or character value specifying the column
 to use in \code{data} for length information. These lengths are assumed to
-be in centimeters. The default value is \code{lengthcm}, which is added
-to a data set automatically when running \code{\link[=cleanPacFIN]{cleanPacFIN()}}.}
+be in centimeters. The default value is \code{length_cm}.}
 
 \item{col_weight}{A numeric or character value specifying the column
 to use in \code{data} for weight information. These weights are assumed to
-be in kilograms The default value is \code{weightkg}, which is added
-to a data set automatically when running \code{\link[=cleanPacFIN]{cleanPacFIN()}}.
+be in kilograms The default value is \code{weight_kg}.
 Using kilograms is the default because Stock Synthesis assumes the
 weight-length parameters are calculated using centimeters and kilograms.
 The reported values are easily scaled to give you results in grams if
