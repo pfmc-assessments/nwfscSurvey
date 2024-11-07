@@ -29,11 +29,8 @@ save_rdata <- function(x,
   )
 
   if (verbose) {
-    message(
-      glue::glue(
-        "{type_message} data file saved to following location:
-         {dir}"
-      )
+    cli::cli_alert_info(
+      "{type_message} data file saved to following location: {dir}"
     )
   }
 }

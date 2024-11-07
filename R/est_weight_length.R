@@ -5,19 +5,13 @@
 #' sex and all sexes combined, where the latter includes unsexed fish.
 #'
 #' @param data A data frame containing empirical weights and lengths
-#' from sampled fish. Sexes should be available in the column `sex` or `SEX`.
+#'   from sampled fish. Sexes should be available in the column `sex` or `SEX`.
 #' @param col_length A numeric or character value specifying the column
-#' to use in `data` for length information. These lengths are assumed to
-#' be in centimeters. The default value is `lengthcm`, which is added
-#' to a data set automatically when running [cleanPacFIN()].
+#'   to use in `data` for length information. These lengths are assumed to
+#'   be in centimeters. The default value is `length_cm`.
 #' @param col_weight A numeric or character value specifying the column
-#' to use in `data` for weight information. These weights are assumed to
-#' be in kilograms The default value is `weightkg`, which is added
-#' to a data set automatically when running [cleanPacFIN()].
-#' Using kilograms is the default because Stock Synthesis assumes the
-#' weight-length parameters are calculated using centimeters and kilograms.
-#' The reported values are easily scaled to give you results in grams if
-#' you wish to have more standard parameter estimates.
+#'   to use in `data` for weight information. These weights are assumed to
+#'   be in kilograms The default value is `weight_kg`.
 #' @template verbose
 #'
 #' @author Kelli F. Johnson and Chantel Wetzel
@@ -33,16 +27,12 @@
 #'
 estimate_weight_length <- function(
     data,
-    col_length = "lengthcm",
-    col_weight = "weightkg",
+    col_length = "length_cm",
+    col_weight = "weight_kg",
     verbose = FALSE) {
   col_length <- tolower(col_length)
   col_weight <- tolower(col_weight)
   colnames(data) <- tolower(colnames(data))
-  colnames(data) <- gsub(col_weight, "weight", colnames(data))
-  colnames(data) <- gsub(col_length, "length_cm", colnames(data))
-  col_length <- "length_cm"
-  col_weight <- "weight"
   stopifnotcolumn(data = data, string = col_length)
   stopifnotcolumn(data = data, string = col_weight)
   stopifnotcolumn(data = data, string = "sex")
@@ -54,10 +44,10 @@ estimate_weight_length <- function(
   ]
 
   if (verbose) {
-    message(
-      "Calculating the weight-length relationship from ",
-      nrow(data), "\nfish because ", dims[1] - nrow(data),
-      " fish did not have empirical weights and lengths."
+    cli::cli_alert_info(
+      "Calculating the weight-length relationship from {nrow(data)} nfish
+      because {dims[1] - nrow(data)} fish did not have empirical weights
+      and lengths."
     )
   }
 
@@ -72,14 +62,19 @@ estimate_weight_length <- function(
       .id = "group"
     ) |>
     dplyr::mutate(
-      fits = purrr::map(data, ~ stats::lm(log(weight) ~ log(length_cm),
-        data = .x
-      ))
+      fits = purrr::map(
+        data,
+        ~ stats::lm(
+          log(!!rlang::parse_expr(col_weight)) ~
+            log(!!rlang::parse_expr(col_length)),
+          data = .x
+        )
+      )
     )
 
   wghtlen_ests <- mresults |>
     dplyr::reframe(
-      group = group,
+      sex = group,
       median_intercept = purrr::map_dbl(fits, ~ exp(.x$coefficients[1])),
       SD = purrr::map_dbl(fits, ~ sd(.x$residuals)),
       A = purrr::map_dbl(fits, ~ exp(.x$coefficients[1]) * exp(0.5 * sd(.x$residuals)^2)),
@@ -88,8 +83,9 @@ estimate_weight_length <- function(
     data.frame()
 
   if (verbose) {
-    message("Estimated weight-length by sex:")
-    utils::capture.output(lapply(mresults[["fits"]], summary), type = "message")
+    fits <- lapply(mresults[["fits"]], summary)
+    cli::cli_alert_info("Estimated weight-length by sex:")
+    print(fits)
   }
 
   return(wghtlen_ests)

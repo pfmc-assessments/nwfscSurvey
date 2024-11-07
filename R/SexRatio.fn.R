@@ -82,13 +82,18 @@ SexRatio.fn <- function(
     maxSizeUnsexed,
     bins = NULL,
     verbose = TRUE) {
+
+  cli::cli_alert_warning(
+    "Applying sex ratios is no longer best practice. Please consider turning off
+    sex ratio application in SurveyLFs.fn() or using get_expanded_comps()."
+  )
   if (sexRatioStage == 1) {
     # incorporate unsexed fish using sex ratios
     if (length(sexRatioUnsexed) == 1 & !is.na(sexRatioUnsexed)) {
       if (verbose) {
-        message("Sex ratio for unsexed fish being applied to the expanded numbers within a tow (stage 1) when possible.
+        cli::cli_alert_infor("Sex ratio for unsexed fish being applied to the expanded numbers within a tow (stage 1) when possible.
             If no data within a tow for bin then the sex ratio for the bin across all years applied to unsexed fish.
-            If no data for that bin across all years then the sex ratio for nearby bins was applied to unsexed fish.\n")
+            If no data for that bin across all years then the sex ratio for nearby bins was applied to unsexed fish.")
       }
 
       x$sexRatio <- x$expF / (x$expF + x$expM)
@@ -104,10 +109,17 @@ SexRatio.fn <- function(
       check <- round(length(noRatio) / length(x$sexRatio), 3)
       if (check > 0.10) {
         if (verbose) {
-          message("\n There are", check, "percent of tows with observations that the sex ratio will be filled based on other tows.
-                        Consider increasing the maxSizeUnsexed or create the comps as unsexed.\n")
+          cli::cli_alert_info(
+            "There are {check} percent of tows with observations that the sex ratio
+            will be filled based on other tows. Consider increasing the maxSizeUnsexed
+            or create the comps as unsexed.")
         }
-        if (length(noRatio) > 0) cat("\nThese are sex ratios that were filled in using observations from the same lengths from different strata and years:\n")
+        if (length(noRatio) > 0) {
+          cli::cli_alert_info(
+            "These are sex ratios that were filled in using observations from the
+            same lengths from different strata and years:"
+          )
+        }
       }
       for (i in noRatio) {
         inds <- x$allLs == x$allLs[i]
@@ -115,14 +127,20 @@ SexRatio.fn <- function(
         tmpM <- sum(x$expM[inds])
         x$sexRatio[i] <- tmpF / (tmpF + tmpM)
         if (verbose) {
-          message(cat("LengthAge:", x[i, c("Length_cm")], "Bin:", x[i, c("allLs")], "Sex Ratio:", x[i, c("sexRatio")]))
+          len_check <- x[i, "Length_cm"]
+          bin_check <- x[i, "allLs"]
+          sex_ratio_check <- x[i, "sexRatio"]
+          cli::cli_alert_info(
+            "LengthAge: {len_check}, Bin: {bin_check}, Sex Ratio: {sex_ratio_check}")
         }
       }
 
       noRatio <- which(is.na(x$sexRatio))
       if (length(noRatio) > 0) {
         if (verbose) {
-          message("\nThese are sex ratios that were filled in using observations from nearby lengths\n")
+          cli::cli_alert_info(
+            "These are sex ratios that were filled in using observations from
+            nearby lengths.")
         }
       }
 
@@ -133,18 +151,22 @@ SexRatio.fn <- function(
         tmpM <- sum(x$expM[inds])
         x$sexRatio[i] <- tmpF / (tmpF + tmpM)
         if (verbose) {
-          message(cat("Length/Age:", x[i, c("Length_cm")], "Bin:", x[i, c("allLs")], "Sex Ratio:", x[i, c("sexRatio")]))
+          len_check <- x[i, "Length_cm"]
+          bin_check <- x[i, "allLs"]
+          sex_ratio_check <- x[i, "sexRatio"]
+          cli::cli_alert_info(
+            "Length/Age: {len_check}, Bin: {bin_check}, Sex Ratio: {sex_ratio_check}")
         }
       }
       noRatio <- which(is.na(x$sexRatio))
       if (length(noRatio) > 0) {
         if (verbose) {
-          message("Some sex ratios were left unknown and omitted\n\n")
+          cli::cli_alert_info("Some sex ratios were left unknown and omitted")
         }
       }
       if (length(noRatio) == 0) {
         if (verbose) {
-          message("Done filling in sex ratios\n\n")
+          cli::cli_alert_info("Done filling in sex ratios")
         }
       }
 
@@ -157,8 +179,9 @@ SexRatio.fn <- function(
 
   if (sexRatioStage == 2) {
     if (verbose) {
-      message("Sex ratio for unsexed fish being applied to the expanded numbers within a strata and year (stage 2).
-            If no data within a strata and year for bin then the sex ratio for the bin across all years and strata applied to unsexed fish.\n")
+      cli::cli_alert_info(
+        "Sex ratio for unsexed fish being applied to the expanded numbers within a strata and year (stage 2).
+         If no data within a strata and year for bin then the sex ratio for the bin across all years and strata applied to unsexed fish.")
     }
     # Take everything out of the list into a dataframe
     out <- NULL
@@ -189,14 +212,18 @@ SexRatio.fn <- function(
     check <- round(length(noRatio) / length(out$sexRatio), 3)
     if (check > 0.10) {
       if (verbose) {
-        message("\n There are", check, "percent of tows with observations that the sex ratio will be filled based on other tows.
-                    Consider increasing the maxSizeUnsexed or create the comps as unsexed.\n")
+        cli::cli_alert_info(
+        "There are {check} percent of tows with observations that the sex ratio
+        will be filled based on other tows. Consider increasing the maxSizeUnsexed
+        or create the comps as unsexed.")
       }
     }
 
     if (length(noRatio) > 0) {
       if (verbose) {
-        ("\nThese are sex ratios that were filled in using observations from the same lengths from different strata and years\n")
+        cli::cli_alert_info(
+          "These are sex ratios that were filled in using observations from the
+          same lengths from different strata and years.")
       }
     }
     for (i in noRatio) {
@@ -205,7 +232,10 @@ SexRatio.fn <- function(
       tmpM <- sum(out$TotalLjhM[inds])
       out$sexRatio[i] <- tmpF / (tmpF + tmpM)
       if (verbose) {
-        message(cat("Length/Age:", out[i, "LENGTH"], "Sex Ratio:", round(out[i, "sexRatio"], 3)))
+        len_check <- out[i, "LENGTH"]
+        sex_ratio_check <- round(out[i, "sexRatio"], 3)
+        cli::cli_alert_info(
+          "Length/Age: {len_check}, Sex Ratio: {sex_ratio_check}")
       }
     }
 
@@ -213,7 +243,9 @@ SexRatio.fn <- function(
     noRatio <- which(is.na(out$sexRatio))
     if (length(noRatio) > 0) {
       if (verbose) {
-        message("\nThese are sex ratios that were filled in using observations from nearby lengths\n")
+        cli::cli_alert_info(
+          "These are sex ratios that were filled in using observations from nearby
+          lengths.")
       }
       for (i in noRatio) {
         unq.len <- sort(unique(out$LENGTH))
@@ -228,7 +260,10 @@ SexRatio.fn <- function(
         tmpM <- sum(out$TotalLjhM[nearLens])
         out$sexRatio[i] <- tmpF / (tmpF + tmpM)
         if (verbose) {
-          message(cat("Length/Age:", out[i, "LENGTH"], "Sex Ratio:", round(out[i, "sexRatio"], 3)))
+          len_check <- out[i, "LENGTH"]
+          sex_ratio_check <- round(out[i, "sexRatio"], 3)
+          cli::cli_alert_info(
+            "Length/Age: {len_check}, Sex Ratio: {sex_ratio_check}")
         }
       }
     }

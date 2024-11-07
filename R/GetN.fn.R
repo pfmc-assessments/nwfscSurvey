@@ -86,7 +86,9 @@ GetN.fn <- function(
   }
 
   if (verbose) {
-    message("\nThe effN sample size is calculated using the ", species, " multiplier of ", n.unq, ". This number is multiplied by the number of tows in each year.\n")
+    cli::cli_alert_info(
+      "The effN sample size is calculated using the {species} multiplier of {n.unq}.
+      This number is multiplied by the number of tows in each year.")
   }
 
 
@@ -135,7 +137,9 @@ GetN.fn <- function(
 
   if (sum(ind) > 0) {
     if (verbose) {
-      cat("\nInput sample size exceded the number of fish for", yr[ind], "and has been capped equal to number of fish.\n")
+      cli::cli_alert_info(
+        "Input sample size exceded the number of fish for {yr[ind]} and has been
+        capped equal to number of fish.")
     }
   }
 
