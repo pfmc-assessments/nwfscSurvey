@@ -82,7 +82,6 @@ SexRatio.fn <- function(
     maxSizeUnsexed,
     bins = NULL,
     verbose = TRUE) {
-
   cli::cli_alert_warning(
     "Applying sex ratios is no longer best practice. Please consider turning off
     sex ratio application in SurveyLFs.fn() or using get_expanded_comps()."
@@ -112,7 +111,8 @@ SexRatio.fn <- function(
           cli::cli_alert_info(
             "There are {check} percent of tows with observations that the sex ratio
             will be filled based on other tows. Consider increasing the maxSizeUnsexed
-            or create the comps as unsexed.")
+            or create the comps as unsexed."
+          )
         }
         if (length(noRatio) > 0) {
           cli::cli_alert_info(
@@ -131,7 +131,8 @@ SexRatio.fn <- function(
           bin_check <- x[i, "allLs"]
           sex_ratio_check <- x[i, "sexRatio"]
           cli::cli_alert_info(
-            "LengthAge: {len_check}, Bin: {bin_check}, Sex Ratio: {sex_ratio_check}")
+            "LengthAge: {len_check}, Bin: {bin_check}, Sex Ratio: {sex_ratio_check}"
+          )
         }
       }
 
@@ -140,7 +141,8 @@ SexRatio.fn <- function(
         if (verbose) {
           cli::cli_alert_info(
             "These are sex ratios that were filled in using observations from
-            nearby lengths.")
+            nearby lengths."
+          )
         }
       }
 
@@ -155,7 +157,8 @@ SexRatio.fn <- function(
           bin_check <- x[i, "allLs"]
           sex_ratio_check <- x[i, "sexRatio"]
           cli::cli_alert_info(
-            "Length/Age: {len_check}, Bin: {bin_check}, Sex Ratio: {sex_ratio_check}")
+            "Length/Age: {len_check}, Bin: {bin_check}, Sex Ratio: {sex_ratio_check}"
+          )
         }
       }
       noRatio <- which(is.na(x$sexRatio))
@@ -181,7 +184,8 @@ SexRatio.fn <- function(
     if (verbose) {
       cli::cli_alert_info(
         "Sex ratio for unsexed fish being applied to the expanded numbers within a strata and year (stage 2).
-         If no data within a strata and year for bin then the sex ratio for the bin across all years and strata applied to unsexed fish.")
+         If no data within a strata and year for bin then the sex ratio for the bin across all years and strata applied to unsexed fish."
+      )
     }
     # Take everything out of the list into a dataframe
     out <- NULL
@@ -213,9 +217,10 @@ SexRatio.fn <- function(
     if (check > 0.10) {
       if (verbose) {
         cli::cli_alert_info(
-        "There are {check} percent of tows with observations that the sex ratio
+          "There are {check} percent of tows with observations that the sex ratio
         will be filled based on other tows. Consider increasing the maxSizeUnsexed
-        or create the comps as unsexed.")
+        or create the comps as unsexed."
+        )
       }
     }
 
@@ -223,7 +228,8 @@ SexRatio.fn <- function(
       if (verbose) {
         cli::cli_alert_info(
           "These are sex ratios that were filled in using observations from the
-          same lengths from different strata and years.")
+          same lengths from different strata and years."
+        )
       }
     }
     for (i in noRatio) {
@@ -235,7 +241,8 @@ SexRatio.fn <- function(
         len_check <- out[i, "LENGTH"]
         sex_ratio_check <- round(out[i, "sexRatio"], 3)
         cli::cli_alert_info(
-          "Length/Age: {len_check}, Sex Ratio: {sex_ratio_check}")
+          "Length/Age: {len_check}, Sex Ratio: {sex_ratio_check}"
+        )
       }
     }
 
@@ -245,7 +252,8 @@ SexRatio.fn <- function(
       if (verbose) {
         cli::cli_alert_info(
           "These are sex ratios that were filled in using observations from nearby
-          lengths.")
+          lengths."
+        )
       }
       for (i in noRatio) {
         unq.len <- sort(unique(out$LENGTH))
@@ -263,7 +271,8 @@ SexRatio.fn <- function(
           len_check <- out[i, "LENGTH"]
           sex_ratio_check <- round(out[i, "sexRatio"], 3)
           cli::cli_alert_info(
-            "Length/Age: {len_check}, Sex Ratio: {sex_ratio_check}")
+            "Length/Age: {len_check}, Sex Ratio: {sex_ratio_check}"
+          )
         }
       }
     }
