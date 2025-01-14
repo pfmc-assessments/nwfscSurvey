@@ -42,118 +42,18 @@ plot_proportion() instead."></head><body>
 
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">PlotPresenceAbsence.fn</span><span class="op">(</span></span>
-<span>  <span class="va">data</span>,</span>
-<span>  dim <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"depth"</span>, <span class="st">"lat"</span>, <span class="st">"sex"</span><span class="op">)</span>,</span>
-<span>  dir <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>  dopng <span class="op">=</span> <span class="fu">lifecycle</span><span class="fu">::</span><span class="fu"><a href="https://lifecycle.r-lib.org/reference/deprecated.html" class="external-link">deprecated</a></span><span class="op">(</span><span class="op">)</span>,</span>
-<span>  plot_type <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"proportion"</span>, <span class="st">"total"</span><span class="op">)</span>,</span>
-<span>  depth_min <span class="op">=</span> <span class="fl">50</span>,</span>
-<span>  depth_max <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>  depth_bin_width <span class="op">=</span> <span class="fl">25</span>,</span>
-<span>  lat_min <span class="op">=</span> <span class="fl">32</span>,</span>
-<span>  lat_max <span class="op">=</span> <span class="fl">49</span>,</span>
-<span>  lat_bin_width <span class="op">=</span> <span class="fl">1</span>,</span>
-<span>  add_range_to_main <span class="op">=</span> <span class="cn">TRUE</span>,</span>
-<span>  xlab <span class="op">=</span> <span class="cn">NULL</span></span>
-<span><span class="op">)</span></span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">PlotPresenceAbsence.fn</span><span class="op">(</span><span class="va">...</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
     <h2 id="arguments">Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h2>
 
 
-<dl><dt id="arg-data">data<a class="anchor" aria-label="anchor" href="#arg-data"></a></dt>
-<dd><p>Data frame containing data per haul created by <code><a href="pull_catch.html">pull_catch()</a></code>
-or biological data created by <code><a href="pull_bio.html">pull_bio()</a></code> where the <code>dim = "sex"</code> must
-be true for the latter.</p></dd>
-
-
-<dt id="arg-dim">dim<a class="anchor" aria-label="anchor" href="#arg-dim"></a></dt>
-<dd><p>Dimension of interest, either "depth", "lat", or "sex".</p></dd>
-
-
-<dt id="arg-dir">dir<a class="anchor" aria-label="anchor" href="#arg-dir"></a></dt>
-<dd><p>Directory where output will be saved. The directory where the file should be saved.
-If dir = NULL no output will be saved.</p></dd>
-
-
-<dt id="arg-dopng">dopng<a class="anchor" aria-label="anchor" href="#arg-dopng"></a></dt>
-<dd><p>Deprecated with nwfscSurvey 2.1 because providing a non-NULL
-value to <code>dir</code> can serve the same purpose as <code>dopng = TRUE</code> without the
-potential for errors when <code>dopng = TRUE</code> and <code>dir = NULL</code>. Thus, users
-no longer have to specify <code>dopng</code> to save the plot as a png.</p></dd>
-
-
-<dt id="arg-plot-type">plot_type<a class="anchor" aria-label="anchor" href="#arg-plot-type"></a></dt>
-<dd><p>Two options area available "proportion" or "total" where the
-default, "proportion", plot the proportion by depth/latitude with equal bar
-widths and the "total" option plot the numbers by depth/latitude were the
-bar widths in a production of sampling by depth/latitude.</p></dd>
-
-
-<dt id="arg-depth-min">depth_min<a class="anchor" aria-label="anchor" href="#arg-depth-min"></a></dt>
-<dd><p>Minimum depth (in meters).</p></dd>
-
-
-<dt id="arg-depth-max">depth_max<a class="anchor" aria-label="anchor" href="#arg-depth-max"></a></dt>
-<dd><p>Maximum depth (in meters). A NULL value will cause the
-function to automatically set depth_max to the multiple of depth_bin_width
-beyond the 99.9 percentile of the observations.</p></dd>
-
-
-<dt id="arg-depth-bin-width">depth_bin_width<a class="anchor" aria-label="anchor" href="#arg-depth-bin-width"></a></dt>
-<dd><p>Width of each depth bin (in meters).</p></dd>
-
-
-<dt id="arg-lat-min">lat_min<a class="anchor" aria-label="anchor" href="#arg-lat-min"></a></dt>
-<dd><p>Minimum latitute (in decimal degrees).</p></dd>
-
-
-<dt id="arg-lat-max">lat_max<a class="anchor" aria-label="anchor" href="#arg-lat-max"></a></dt>
-<dd><p>Maximum latitute (in decimal degrees).</p></dd>
-
-
-<dt id="arg-lat-bin-width">lat_bin_width<a class="anchor" aria-label="anchor" href="#arg-lat-bin-width"></a></dt>
-<dd><p>Width of each latitude bin (in decimal degrees).</p></dd>
-
-
-<dt id="arg-add-range-to-main">add_range_to_main<a class="anchor" aria-label="anchor" href="#arg-add-range-to-main"></a></dt>
-<dd><p>Add the range of latitude or depth by which the data
-are filtered.</p></dd>
-
-
-<dt id="arg-xlab">xlab<a class="anchor" aria-label="anchor" href="#arg-xlab"></a></dt>
-<dd><p>Label for x-axis. A NULL value will cause the function
-to choose either "Depth (m)" or "Latitude (°N)".</p></dd>
+<dl><dt id="arg--">...<a class="anchor" aria-label="anchor" href="#arg--"></a></dt>
+<dd><p>Any arguments associated with now-deprecated function</p></dd>
 
 </dl></div>
-    <div class="section level2">
-    <h2 id="author">Author<a class="anchor" aria-label="anchor" href="#author"></a></h2>
-    <p>Ian G. Taylor and Chantel Wetzel</p>
-    </div>
 
-    <div class="section level2">
-    <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span> <span class="co"># \dontrun{</span></span></span>
-<span class="r-in"><span><span class="co"># load WCGBTS data data</span></span></span>
-<span class="r-in"><span><span class="va">data.WCGBTS.ling</span> <span class="op">&lt;-</span> <span class="fu">nwfscSurvey</span><span class="fu">::</span><span class="fu"><a href="PullCatch.fn.html">PullCatch.fn</a></span><span class="op">(</span></span></span>
-<span class="r-in"><span>  Name <span class="op">=</span> <span class="st">"lingcod"</span>,</span></span>
-<span class="r-in"><span>  SurveyName <span class="op">=</span> <span class="st">"NWFSC.Combo"</span></span></span>
-<span class="r-in"><span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="va">bio.WCGBTS.ling</span> <span class="op">&lt;-</span> <span class="fu">nwfscSurvey</span><span class="fu">::</span><span class="fu"><a href="PullBio.fn.html">PullBio.fn</a></span><span class="op">(</span></span></span>
-<span class="r-in"><span>  Name <span class="op">=</span> <span class="st">"lingcod"</span>,</span></span>
-<span class="r-in"><span>  SurveyName <span class="op">=</span> <span class="st">"NWFSC.Combo"</span></span></span>
-<span class="r-in"><span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="fu">PlotPresenceAbsence.fn</span><span class="op">(</span>data <span class="op">=</span> <span class="va">data.WCGBTS.ling</span>, dim <span class="op">=</span> <span class="st">"lat"</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="fu">PlotPresenceAbsence.fn</span><span class="op">(</span>data <span class="op">=</span> <span class="va">data.WCGBTS.ling</span>, dim <span class="op">=</span> <span class="st">"depth"</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="fu">PlotPresenceAbsence.fn</span><span class="op">(</span>data <span class="op">=</span> <span class="va">bio.WCGBTS.ling</span>, dim <span class="op">=</span> <span class="st">"sex"</span><span class="op">)</span></span></span>
-<span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co"># Plot with package data</span></span></span>
-<span class="r-in"><span><span class="fu">PlotPresenceAbsence.fn</span><span class="op">(</span><span class="va">catch_nwfsc_combo</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="op">}</span> <span class="co"># }</span></span></span>
-</code></pre></div>
-    </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
     </nav></aside></div>
 
