@@ -4,12 +4,12 @@
 #'
 #' @template dir
 #' @param data Data frame of biological data from [pull_bio()]
-#' @param col_length A numeric or character value specifying the column
+#' @param col_length A character string specifying the column
 #'   to use in `data` for length information. These lengths are assumed to
 #'   be in centimeters. The default value is `length_cm`.
-#' @param col_weight A numeric or character value specifying the column
-#'   to use in `data` for weight information. These weights are assumed to
-#'   be in kilograms The default value is `weight_kg`.
+#' @param col_age A character string specifying the column
+#'   to use in `data` for age information. These ages are assumed to
+#'   be in years. The default value is `age`.
 #' @param init_params  Data frame of starting parameters for K, Linf, L0, CV0, and CV2 based on the
 #' Stock Synthesis parameterization of von Bertanlaffy growth.
 #' @param bins The bins to put ages into. If NULL then simply uses the ages as recorded.

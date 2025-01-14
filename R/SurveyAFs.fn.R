@@ -26,6 +26,7 @@
 #' @param maxSizeUnsexed all sizes below this threshold will assign unsexed fish by sexRatio set equal to 0.50, fish larger than this size will have unsexed fish assigned by the calculated sex ratio in the data.
 #' @param sexRatioStage 1/2 apply the sex ratio based on the tows (1) or the expanded numbers (2)
 #' @template partition
+#' @template fleet
 #' @template agelow
 #' @template agehigh
 #' @template ageErr

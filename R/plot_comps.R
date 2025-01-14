@@ -76,10 +76,10 @@ plot_comps <- function(
   year <- as.numeric(as.character(data$year))
   sex <- unique(data$sex)
   if (length(sex) > 1) {
-    stop("This function does not work on processed composition
+    cli::cli_abort("This function does not work on processed composition
       files with multiple Stock Synthesis sex specifications
       (sex = 0, sex = 1, sex = 3). Please filter file down to
-      a single sex and re-run.")
+      a single SS3 sex type and re-run.")
   }
   if (data_type == "length") {
     comps <- data[, -c(1:6)]
@@ -148,7 +148,7 @@ plot_comps <- function(
       data = df |> dplyr::filter(value > 0),
       aes(x = year, y = variable)
     ) +
-      geom_point(aes(size = value, fill = sex, colour = sex), # add alpha = n inside the aes to shade by annual sample size
+      geom_point(aes(size = value, fill = sex, colour = sex),
         alpha = 0.75, shape = 21
       ) +
       scale_fill_manual(values = c("FEMALE" = "red", "MALE" = "blue", "UNSEXED" = "darkseagreen")) +
