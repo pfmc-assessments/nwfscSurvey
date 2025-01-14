@@ -25,6 +25,16 @@ test_that("get_raw_comps", {
   expect_equal(nrow(length_comps$unsexed), 16)
   expect_equal(sum(length_comps$unsexed$input_n), sum(length_comps$unsexed[, 7:ncol(length_comps$unsexed)]))
 
+  # confirm that plot_comps works when providing the full list
+  comp_plot <- plot_comps(length_comps)
+  expand_equal(is(comp_plot), "gg")
+  # confirm that plot_comps works when providing sexed comps
+  comp_plot <- plot_comps(length_comps$sexed)
+  expand_equal(is(comp_plot), "gg")
+  # confirm that plot_comps works when providing unsexed comps
+  comp_plot <- plot_comps(length_comps$unsexed)
+  expand_equal(is(comp_plot), "gg")
+
   length_unsexed_comps <- get_raw_comps(
     data = dat,
     comp_bins = seq(16, 80, 4),
@@ -85,6 +95,10 @@ test_that("get_expanded_comps", {
   expect_equal(nrow(length_comps$unsexed), 14)
   expect_equal(sum(length_comps$unsexed$input_n), 84)
 
+  # confirm that plot_comps works for expanded length comps
+  comp_plot <- plot_comps(length_comps)
+  expand_equal(is(comp_plot), "gg")
+
   age_comps <- get_expanded_comps(
     bio_data = bio,
     catch_data = catch,
@@ -99,6 +113,10 @@ test_that("get_expanded_comps", {
   expect_equal(sum(age_comps$sexed$input_n), 3541)
   expect_equal(nrow(age_comps$unsexed), 11)
   expect_equal(sum(age_comps$unsexed$input_n), 45)
+
+  # confirm that plot_comps works for expanded age comps
+  comp_plot <- plot_comps(age_comps)
+  expand_equal(is(comp_plot), "gg")
 })
 
 test_that("tow_expansions", {
