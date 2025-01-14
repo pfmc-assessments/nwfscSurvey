@@ -77,6 +77,10 @@ format for Stock Synthesis. Partition of 0 indicates that the composition data
 include all composition data, 1 for discarded composition data, and 2 for retained
 fish only. Default of 0.}
 
+\item{fleet}{A single integer value. A user input fleet
+number to assign to the fleet column based on the expected
+format for Stock Synthesis. Default "Enter Fleet".}
+
 \item{agelow}{Lower age bin for all age composition data based on the expected
 format for Stock Synthesis. Default value of -1 which translates to the lowest age
 bin.}

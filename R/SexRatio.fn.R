@@ -90,7 +90,7 @@ SexRatio.fn <- function(
     # incorporate unsexed fish using sex ratios
     if (length(sexRatioUnsexed) == 1 & !is.na(sexRatioUnsexed)) {
       if (verbose) {
-        cli::cli_alert_infor("Sex ratio for unsexed fish being applied to the expanded numbers within a tow (stage 1) when possible.
+        cli::cli_alert_info("Sex ratio for unsexed fish being applied to the expanded numbers within a tow (stage 1) when possible.
             If no data within a tow for bin then the sex ratio for the bin across all years applied to unsexed fish.
             If no data for that bin across all years then the sex ratio for nearby bins was applied to unsexed fish.")
       }

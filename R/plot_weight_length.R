@@ -37,7 +37,7 @@
 plot_weight_length <- function(
     data,
     dir = NULL,
-    estitmates = NULL,
+    estimates = NULL,
     col_length = "length_cm",
     col_weight = "weight_kg",
     two_sex = TRUE,

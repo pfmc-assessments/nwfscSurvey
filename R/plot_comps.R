@@ -1,7 +1,7 @@
 #' Plot frequency data as bubble plots
 #'
 #' @template dir
-#' @param data Data file object created by [SurveyLF.fn()] or [SurveyAF.fn()].
+#' @param data Data file object created by [get_expanded_comps()] or [get_raw_comps()].
 #' @param add_save_name Option to add text to a saved figure name. This option
 #'   can be useful if creating plots across multiple species and saving them
 #'   into a single folder. The default is `NULL`. Note that the data type,
@@ -39,6 +39,16 @@ plot_comps <- function(
     add_0_ylim = TRUE,
     width = 10,
     height = 7) {
+  # if data is a list with both sexed and unsexed fish, choose sexed fish
+  if ("sexed" %in% names(data) & "unsexed" %in% names(data)) {
+    data <- data$sexed
+    message("data input includes both sexed and unsexed comps, plotting sexed comps only")
+  }
+  # if data is just sexed or unsexed, pull that dataframe from the list
+  if (length(data) == 1 && names(data) %in% c("sexed", "unsexed")) {
+    data <- data[[1]]
+  }
+
   data_type <- ifelse(sum(names(data) %in% c("ageErr", "age_error")) == 0, "length", "age")
   sex_type <- unique(data$sex)
   input_nsamp <- which(colnames(data) %in% c("nsamp", "InputN", "input_n"))
@@ -66,10 +76,10 @@ plot_comps <- function(
   year <- as.numeric(as.character(data$year))
   sex <- unique(data$sex)
   if (length(sex) > 1) {
-    stop("This function does not work on processed composition
+    cli::cli_abort("This function does not work on processed composition
       files with multiple Stock Synthesis sex specifications
       (sex = 0, sex = 1, sex = 3). Please filter file down to
-      a single sex and re-run.")
+      a single SS3 sex type and re-run.")
   }
   if (data_type == "length") {
     comps <- data[, -c(1:6)]
@@ -138,7 +148,7 @@ plot_comps <- function(
       data = df |> dplyr::filter(value > 0),
       aes(x = year, y = variable)
     ) +
-      geom_point(aes(size = value, fill = sex, colour = sex), # add alpha = n inside the aes to shade by annual sample size
+      geom_point(aes(size = value, fill = sex, colour = sex),
         alpha = 0.75, shape = 21
       ) +
       scale_fill_manual(values = c("FEMALE" = "red", "MALE" = "blue", "UNSEXED" = "darkseagreen")) +
@@ -185,14 +195,14 @@ plot_comps <- function(
     df2 <- df
     df2$value <- df2$value / 100
     df2[df2$sex == "MALE", "value"] <- -1 * df2[df2$sex == "MALE", "value"]
-
+    values <- c("FEMALE" = "red", "MALE" = "blue", "UNSEXED" = "darkseagreen")[which(c("FEMALE", "MALE", "UNSEXED") %in% df2$sex)]
     p2 <- ggplot2::ggplot(df2, aes(x = variable, y = value)) +
       geom_line(aes(colour = sex), # add alpha = n inside the aes to shade by annual sample size
         lwd = 1.1
       ) +
       facet_wrap(facets = "year") +
-      scale_fill_manual(values = c("FEMALE" = "red", "MALE" = "blue", "UNSEXED" = "darkseagreen")) +
-      scale_color_manual(values = c("FEMALE" = "darkred", "MALE" = "darkblue", "UNSEXED" = "darkgreen")) +
+      scale_fill_manual(values = values) +
+      scale_color_manual(values = values) +
       labs(x = ylabel, y = "Proportion") +
       geom_hline(yintercept = 0) +
       theme(

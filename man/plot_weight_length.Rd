@@ -7,7 +7,7 @@
 plot_weight_length(
   data,
   dir = NULL,
-  estitmates = NULL,
+  estimates = NULL,
   col_length = "length_cm",
   col_weight = "weight_kg",
   two_sex = TRUE,
@@ -22,6 +22,10 @@ plot_weight_length(
 
 \item{dir}{Directory where output will be saved. The directory where the file should be saved.
 If dir = NULL no output will be saved.}
+
+\item{estimates}{Data frame of weight-at-length estimates from \code{\link[=est_weight_length]{est_weight_length()}}.
+If passed to the function the estimated parameter values will be added to
+the plot. The default is \code{NULL} and will not add parameters to the plot.}
 
 \item{col_length}{A numeric or character value specifying the column
 to use in \code{data} for length information. These lengths are assumed to
@@ -51,10 +55,6 @@ inches. The defaults are 7 by 7 inches.}
 \item{dpi}{The resolution to apply when saving figures.  Lower resolution values
 can reduce file size which can be helpful when creating large documents
 with many figures. The default is 300.}
-
-\item{estimates}{Data frame of weight-at-length estimates from \code{\link[=est_weight_length]{est_weight_length()}}.
-If passed to the function the estimated parameter values will be added to
-the plot. The default is \code{NULL} and will not add parameters to the plot.}
 }
 \description{
 Plots the weight-at-length data and estimates
