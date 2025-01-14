@@ -15,7 +15,7 @@ plot_comps(
 )
 }
 \arguments{
-\item{data}{Data file object created by \code{\link[=SurveyLF.fn]{SurveyLF.fn()}} or \code{\link[=SurveyAF.fn]{SurveyAF.fn()}}.}
+\item{data}{Data file object created by \code{\link[=get_expanded_comps]{get_expanded_comps()}} or \code{\link[=get_raw_comps]{get_raw_comps()}}.}
 
 \item{dir}{Directory where output will be saved. The directory where the file should be saved.
 If dir = NULL no output will be saved.}
