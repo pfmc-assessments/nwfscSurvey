@@ -327,7 +327,7 @@ get_expanded_comps <- function(
   colnames(grid)[2] <- "bin"
   # Join the grid with the composition data by year:
   full_comps <- init_comps_by_year |>
-    right_join(grid)
+    dplyr::right_join(grid)
   # Fill in any missing combinations that have NA or NaN with 0:
   comps_by_year <- full_comps |>
     tidyr::complete(year, bin,

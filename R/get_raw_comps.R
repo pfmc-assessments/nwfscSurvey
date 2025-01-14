@@ -250,11 +250,11 @@ get_raw_comps <- function(
     Results <- as.data.frame(Results)
     if (sum(c("M", "F") %in% data[, "sex"]) == 0) {
       input_n <- samples |>
-        dplyr::filter(sex_grouped == "all") |>
+        dplyr::filter(sex_grouped == "all", input_n != 0) |>
         dplyr::select(input_n)
     } else {
       input_n <- samples |>
-        dplyr::filter(sex_grouped == "unsexed") |>
+        dplyr::filter(sex_grouped == "unsexed", , input_n != 0) |>
         dplyr::select(input_n)
     }
 
