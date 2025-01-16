@@ -99,7 +99,7 @@ biomass = get_design_based(
   data = catch,  
   strata = strata)
 ```
-`get_design_based()` returns a list with the second element containing the design based index of abundance. The design based index is calculated based on the defined stratas. The function writes a csv file inside the dir input location to a "forSS3" folder. The function returns a list with the second element containing the design based estimates by year:
+`get_design_based()` returns a list with the second element containing the design based index of abundance. The design based index is calculated based on the defined stratas. If the `dir` function input is specified, the function writes a csv file inside the dir input location to a "forSS3" folder. The function returns a list with the second element containing the design based estimates by year:
 
 ```{r, results = 'asis', echo = FALSE}
 library(xtable)
@@ -145,7 +145,7 @@ length_comps <- get_expanded_comps(
     two_sex_comps = TRUE,
     input_n_method = "stewart_hamel")
 ```
-The above call will calculate the length frequencies for use in Stock Synthesis and write the files inside the "forSS3" folder. The example call will produce csv files for both the sexed and unsexed fish. This function returns a list of sexed and unsexed length composition data formatted for Stock Synthesis. In the above example the input sample size is calculated based on the Stewart and Hamel approach (e.g., unique samples calculated as a function of species type and tows).
+The above call will calculate the length frequencies for use in Stock Synthesis. This function returns a list of sexed and unsexed length composition data formatted for Stock Synthesis. If the `dir` function input is specified, it will write these dataframes to separate csv files inside the dir input location to a "forSS3" folder. In the above example the input sample size is calculated based on the Stewart and Hamel approach (e.g., unique samples calculated as a function of species type and tows).
 
 To plot the length frequency data:
 ```r
@@ -176,12 +176,12 @@ age_comps <- get_expanded_comps(
     catch_data = catch,
     comp_bins = 1:40,
     strata = strata,
-    comp_column_name = "length_cm",
+    comp_column_name = "age",
     output = "full_expansion_ss3_format",
     two_sex_comps = TRUE,
     input_n_method = "stewart_hamel")
 ```
-The above call will calculate the marginal age-composition data for the age data in a format for Stock Synthesis. This function returns a list of sexed and unsexed marginal age composition data formatted for Stock Synthesis. The example call will produce csv files for both the sexed and unsexed fish. This function returns a list of sexed and unsexed length composition data formatted for Stock Synthesis. In the above example the input sample size is calculated based on the Stewart and Hamel approach (e.g., unique samples calculated as a function of species type and tows). 
+The above call will calculate the marginal age-composition data for the age data in a format for Stock Synthesis. This function returns a list of sexed and unsexed age composition data formatted for Stock Synthesis. If the `dir` function input is specified, it will write these dataframes to separate csv files as well. In the above example the input sample size is calculated based on the Stewart and Hamel approach (e.g., unique samples calculated as a function of species type and tows). 
 
 To plot the age frequency data:
 ```r
@@ -213,7 +213,7 @@ caal <- SurveyAgeAtLen.fn(
   lgthBins = seq(10, 40, 2), 
   ageBins = 1:40)
 ```
-Creates unexpanded conditional-age-at-length data for both sexes with input sample sizes based on the observed number of fish in each length bin by year.
+Creates unexpanded conditional-age-at-length data for each sex with input sample sizes based on the observed number of fish in each length bin by year. It returns a list of three dataframes: "female", "male", and "unsexed". If the `dir` function input is specified, it will write these dataframes to separate csv files as well.
 
 #### Maps
 
