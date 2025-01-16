@@ -124,6 +124,7 @@ get_expanded_comps <- function(
   colnames(bio_data) <- tolower(colnames(bio_data))
   colnames(catch_data) <- tolower(colnames(catch_data))
   colnames(strata) <- tolower(colnames(strata))
+  comp_column_name <- tolower(comp_column_name)
 
   species <- gsub(" ", "_", tolower(unique(bio_data[, "common_name"])))[1]
   project <- project <- gsub(" ", "_", tolower(unique(bio_data[, "project"])))
@@ -161,7 +162,6 @@ get_expanded_comps <- function(
   }
   # Put in row names to make easier to index later
   row.names(strata) <- strata[, 1]
-  comp_column_name <- tolower(comp_column_name)
 
   strata_vars <- c("depth_m", "latitude_dd")
   check_strata <- tolower(unique(gsub("\\..*", "", colnames(strata))))
