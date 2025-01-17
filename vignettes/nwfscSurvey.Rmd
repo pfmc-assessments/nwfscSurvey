@@ -78,19 +78,22 @@ wh_plot_proportion(
 )
 ```
 
-#### Index of abundance
-Define the stratification by depth and latitude that will be used to calculate a design-based index of abundance:
+#### Define strata
+
+Depth and latitude strata are required to calculate a design-based index of abundance as well as length and age compositions. The strata should be specific to the range where the species in question has been observed. Note that the WCGBT Survey sampling design has changes in sampling intensity at 183 and 549 meters and north and south of 34.5 degrees latitude, so these should generally be included as strata breaks if the range spans these values. Pacific ocean perch are rarely observed south of 34.5 degrees or deeper than 540 m, so there's no need to include strata that have very few observations (the survey extends southward to about 32 degrees and as deep as 1280 m):
 
 ```r
 
-strata = CreateStrataDF.fn(
-  names = c("shallow_s", "mid_s", "deep_s", "shallow_n", "mid_n", "deep_n"), 
-  depths.shallow = c( 55,   200, 300,    55, 200, 300),
-  depths.deep    = c(200,   300, 400,   200, 300, 400),
-  lats.south     = c( 32,    32,  32,    42,  42,  42),
-  lats.north     = c( 42,    42,  42,    49,  49,  49))
-
+strata <- CreateStrataDF.fn(
+  names = c("shallow_s", "deep_s", "shallow_n", "deep_n"), 
+  depths.shallow = c(  55,  183,  55, 183),
+  depths.deep    = c( 183,  400, 183, 400),
+  lats.south     = c(34.5, 34.5,  42,  42),
+  lats.north     = c(  42,   42,  49,  49)
+)
 ```
+
+#### Index of abundance
 
 Calculate the design based index of abundance:
 
@@ -99,23 +102,8 @@ biomass = get_design_based(
   data = catch,  
   strata = strata)
 ```
-`get_design_based()` returns a list with the second element containing the design based index of abundance. The design based index is calculated based on the defined stratas. If the `dir` function input is specified, the function writes a csv file inside the dir input location to a "forSS3" folder. The function returns a list with the second element containing the design based estimates by year:
+`get_design_based()` returns a list with elements `$biomass_by_strata` and `$biomass`, where the second element is the design based index of abundance aggregated across strata. If the `dir` function input is specified, the function writes a csv file inside the dir input location to a "forSS3" folder.
 
-```{r, results = 'asis', echo = FALSE}
-library(xtable)
-library(kableExtra)
-
-tab <- rbind(
-  c(2003, 38888.94, 0.379, 18519.720, 81661.56),
-  c("...", "", ""),
-  c(2015, 22317.60, 0.135, 17135.936, 29066.13)
-)
-
-colnames(tab) <- c("year", "est", "se_log", "lwr", "upr")
-
-table <- tab
-kable(table, "html")
-```
 
 Plot the coastwide design based index of abundance with uncertainty intervals:
 ```r
