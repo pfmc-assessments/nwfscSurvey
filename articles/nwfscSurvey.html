@@ -54,7 +54,7 @@
                         <h4 data-toc-skip class="author">Chantel
 Wetzel</h4>
             
-            <h4 data-toc-skip class="date">2025-01-14</h4>
+            <h4 data-toc-skip class="date">2025-01-17</h4>
       
 
       <div class="d-none name"><code>nwfscSurvey.Rmd</code></div>
@@ -139,109 +139,51 @@ ratios.</p>
 <span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level4">
-<h4 id="index-of-abundance">Index of abundance<a class="anchor" aria-label="anchor" href="#index-of-abundance"></a>
+<h4 id="define-strata">Define strata<a class="anchor" aria-label="anchor" href="#define-strata"></a>
 </h4>
-<p>Define the stratification by depth and latitude that will be used to
-calculate a design-based index of abundance:</p>
+<p>Depth and latitude strata are required to calculate a design-based
+index of abundance as well as length and age compositions. The strata
+should be specific to the range where the species in question has been
+observed. Note that the WCGBT Survey sampling design has changes in
+sampling intensity at 183 and 549 meters and north and south of 34.5
+degrees latitude, so these should generally be included as strata breaks
+if the range spans these values. Pacific ocean perch are rarely observed
+south of 34.5 degrees or deeper than 540 m, so there’s no need to
+include strata that have very few observations (the survey extends
+southward to about 32 degrees and as deep as 1280 m):</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span></span>
-<span><span class="va">strata</span> <span class="op">=</span> <span class="fu"><a href="../reference/CreateStrataDF.fn.html">CreateStrataDF.fn</a></span><span class="op">(</span></span>
-<span>  names <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"shallow_s"</span>, <span class="st">"mid_s"</span>, <span class="st">"deep_s"</span>, <span class="st">"shallow_n"</span>, <span class="st">"mid_n"</span>, <span class="st">"deep_n"</span><span class="op">)</span>, </span>
-<span>  depths.shallow <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span> <span class="fl">55</span>,   <span class="fl">200</span>, <span class="fl">300</span>,    <span class="fl">55</span>, <span class="fl">200</span>, <span class="fl">300</span><span class="op">)</span>,</span>
-<span>  depths.deep    <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">200</span>,   <span class="fl">300</span>, <span class="fl">400</span>,   <span class="fl">200</span>, <span class="fl">300</span>, <span class="fl">400</span><span class="op">)</span>,</span>
-<span>  lats.south     <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span> <span class="fl">32</span>,    <span class="fl">32</span>,  <span class="fl">32</span>,    <span class="fl">42</span>,  <span class="fl">42</span>,  <span class="fl">42</span><span class="op">)</span>,</span>
-<span>  lats.north     <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span> <span class="fl">42</span>,    <span class="fl">42</span>,  <span class="fl">42</span>,    <span class="fl">49</span>,  <span class="fl">49</span>,  <span class="fl">49</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<span><span class="va">strata</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/CreateStrataDF.fn.html">CreateStrataDF.fn</a></span><span class="op">(</span></span>
+<span>  names <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"shallow_s"</span>, <span class="st">"deep_s"</span>, <span class="st">"shallow_n"</span>, <span class="st">"deep_n"</span><span class="op">)</span>, </span>
+<span>  depths.shallow <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span>  <span class="fl">55</span>,  <span class="fl">183</span>,  <span class="fl">55</span>, <span class="fl">183</span><span class="op">)</span>,</span>
+<span>  depths.deep    <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span> <span class="fl">183</span>,  <span class="fl">400</span>, <span class="fl">183</span>, <span class="fl">400</span><span class="op">)</span>,</span>
+<span>  lats.south     <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">34.5</span>, <span class="fl">34.5</span>,  <span class="fl">42</span>,  <span class="fl">42</span><span class="op">)</span>,</span>
+<span>  lats.north     <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span>  <span class="fl">42</span>,   <span class="fl">42</span>,  <span class="fl">49</span>,  <span class="fl">49</span><span class="op">)</span></span>
+<span><span class="op">)</span></span></code></pre></div>
+</div>
+<div class="section level4">
+<h4 id="index-of-abundance">Index of abundance<a class="anchor" aria-label="anchor" href="#index-of-abundance"></a>
+</h4>
 <p>Calculate the design based index of abundance:</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">biomass</span> <span class="op">=</span> <span class="fu"><a href="../reference/get_design_based.html">get_design_based</a></span><span class="op">(</span></span>
 <span>  data <span class="op">=</span> <span class="va">catch</span>,  </span>
 <span>  strata <span class="op">=</span> <span class="va">strata</span><span class="op">)</span></span></code></pre></div>
-<p><code><a href="../reference/get_design_based.html">get_design_based()</a></code> returns a list with the second
-element containing the design based index of abundance. The design based
-index is calculated based on the defined stratas. The function writes a
-csv file inside the dir input location to a “forSS3” folder. The
-function returns a list with the second element containing the design
-based estimates by year:</p>
-<pre><code><span><span class="co">#&gt; Warning in rbind(c(2003, 38888.94, 0.379, 18519.72, 81661.56), c("...", :</span></span>
-<span><span class="co">#&gt; number of columns of result is not a multiple of vector length (arg 2)</span></span></code></pre>
-<table class="table">
-<thead><tr>
-<th style="text-align:left;">
-year
-</th>
-<th style="text-align:left;">
-est
-</th>
-<th style="text-align:left;">
-se_log
-</th>
-<th style="text-align:left;">
-lwr
-</th>
-<th style="text-align:left;">
-upr
-</th>
-</tr></thead>
-<tbody>
-<tr>
-<td style="text-align:left;">
-2003
-</td>
-<td style="text-align:left;">
-38888.94
-</td>
-<td style="text-align:left;">
-0.379
-</td>
-<td style="text-align:left;">
-18519.72
-</td>
-<td style="text-align:left;">
-81661.56
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-…
-</td>
-<td style="text-align:left;">
-</td>
-<td style="text-align:left;">
-</td>
-<td style="text-align:left;">
-…
-</td>
-<td style="text-align:left;">
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-2015
-</td>
-<td style="text-align:left;">
-22317.6
-</td>
-<td style="text-align:left;">
-0.135
-</td>
-<td style="text-align:left;">
-17135.936
-</td>
-<td style="text-align:left;">
-29066.13
-</td>
-</tr>
-</tbody>
-</table>
+<p><code><a href="../reference/get_design_based.html">get_design_based()</a></code> returns a list with elements
+<code>$biomass_by_strata</code> and <code>$biomass</code>, where the
+second element is the design based index of abundance aggregated across
+strata. If the <code>dir</code> function input is specified, the
+function writes a csv file inside the dir input location to a “forSS3”
+folder.</p>
 <p>Plot the coastwide design based index of abundance with uncertainty
 intervals:</p>
-<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/plot_index.html">plot_index</a></span><span class="op">(</span></span>
 <span>  data <span class="op">=</span> <span class="va">biomass</span>,</span>
 <span>  plot <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span></code></pre></div>
 <p>Plot the design based index of abundance for each strata without
 uncertainty intervals:</p>
-<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/plot_index.html">plot_index</a></span><span class="op">(</span></span>
 <span>  data <span class="op">=</span> <span class="va">biomass</span>,</span>
 <span>  plot <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span></code></pre></div>
@@ -251,7 +193,7 @@ uncertainty intervals:</p>
 </h4>
 <p><code><a href="../reference/get_expanded_comps.html">get_expanded_comps()</a></code> calculates and formats the
 length-composition data for Stock Synthesis:</p>
-<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">length_comps</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/get_expanded_comps.html">get_expanded_comps</a></span><span class="op">(</span></span>
 <span>    bio_data <span class="op">=</span> <span class="va">bio</span>,</span>
 <span>    catch_data <span class="op">=</span> <span class="va">catch</span>,</span>
@@ -262,14 +204,15 @@ length-composition data for Stock Synthesis:</p>
 <span>    two_sex_comps <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>    input_n_method <span class="op">=</span> <span class="st">"stewart_hamel"</span><span class="op">)</span></span></code></pre></div>
 <p>The above call will calculate the length frequencies for use in Stock
-Synthesis and write the files inside the “forSS3” folder. The example
-call will produce csv files for both the sexed and unsexed fish. This
-function returns a list of sexed and unsexed length composition data
-formatted for Stock Synthesis. In the above example the input sample
-size is calculated based on the Stewart and Hamel approach (e.g., unique
-samples calculated as a function of species type and tows).</p>
+Synthesis. This function returns a list of sexed and unsexed length
+composition data formatted for Stock Synthesis. If the <code>dir</code>
+function input is specified, it will write these dataframes to separate
+csv files inside the dir input location to a “forSS3” folder. In the
+above example the input sample size is calculated based on the Stewart
+and Hamel approach (e.g., unique samples calculated as a function of
+species type and tows).</p>
 <p>To plot the length frequency data:</p>
-<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/plot_comps.html">plot_comps</a></span><span class="op">(</span></span>
 <span>  data <span class="op">=</span> <span class="va">length_comps</span><span class="op">)</span></span></code></pre></div>
 <p>If the <code>dir</code> function input is specified, then a “plot”
@@ -277,7 +220,7 @@ folder will be created in the directory location and a png of the plot
 will be saved.</p>
 <p>There is also a function to create raw or unexpanded composition data
 that works for either length or age data.</p>
-<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">raw_length_comps</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/get_raw_comps.html">get_raw_comps</a></span><span class="op">(</span></span>
 <span>    data <span class="op">=</span> <span class="va">bio</span>,</span>
 <span>    comp_bins <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="fl">10</span>, <span class="fl">40</span>, <span class="fl">2</span><span class="op">)</span>,</span>
@@ -290,27 +233,26 @@ to the number of samples in the data frame.</p>
 <div class="section level4">
 <h4 id="marginal-age-composition-data">Marginal age composition data<a class="anchor" aria-label="anchor" href="#marginal-age-composition-data"></a>
 </h4>
-<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">age_comps</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/get_expanded_comps.html">get_expanded_comps</a></span><span class="op">(</span></span>
 <span>    bio_data <span class="op">=</span> <span class="va">bio</span>,</span>
 <span>    catch_data <span class="op">=</span> <span class="va">catch</span>,</span>
 <span>    comp_bins <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">40</span>,</span>
 <span>    strata <span class="op">=</span> <span class="va">strata</span>,</span>
-<span>    comp_column_name <span class="op">=</span> <span class="st">"length_cm"</span>,</span>
+<span>    comp_column_name <span class="op">=</span> <span class="st">"age"</span>,</span>
 <span>    output <span class="op">=</span> <span class="st">"full_expansion_ss3_format"</span>,</span>
 <span>    two_sex_comps <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>    input_n_method <span class="op">=</span> <span class="st">"stewart_hamel"</span><span class="op">)</span></span></code></pre></div>
 <p>The above call will calculate the marginal age-composition data for
 the age data in a format for Stock Synthesis. This function returns a
-list of sexed and unsexed marginal age composition data formatted for
-Stock Synthesis. The example call will produce csv files for both the
-sexed and unsexed fish. This function returns a list of sexed and
-unsexed length composition data formatted for Stock Synthesis. In the
-above example the input sample size is calculated based on the Stewart
-and Hamel approach (e.g., unique samples calculated as a function of
-species type and tows).</p>
+list of sexed and unsexed age composition data formatted for Stock
+Synthesis. If the <code>dir</code> function input is specified, it will
+write these dataframes to separate csv files as well. In the above
+example the input sample size is calculated based on the Stewart and
+Hamel approach (e.g., unique samples calculated as a function of species
+type and tows).</p>
 <p>To plot the age frequency data:</p>
-<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/plot_comps.html">plot_comps</a></span><span class="op">(</span></span>
 <span>  data <span class="op">=</span> <span class="va">age_comps</span><span class="op">)</span></span></code></pre></div>
 <p>If the <code>dir</code> function input is specified, then a “plot”
@@ -318,7 +260,7 @@ folder will be created in the directory location and a png of the plot
 will be saved.</p>
 <p>There is also a function to create raw or unexpanded composition data
 that works for either length or age data.</p>
-<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">raw_age_comps</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/get_raw_comps.html">get_raw_comps</a></span><span class="op">(</span></span>
 <span>    data <span class="op">=</span> <span class="va">bio</span>,</span>
 <span>    comp_bins <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">40</span>,</span>
@@ -333,23 +275,25 @@ set equal to the number of samples in the data frame.</p>
 </h4>
 <p>To calculate conditional-age-at-length data formatted for Stock
 Synthesis:</p>
-<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">caal</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/SurveyAgeAtLen.fn.html">SurveyAgeAtLen.fn</a></span><span class="op">(</span></span>
 <span>  datAL <span class="op">=</span> <span class="va">bio</span>, </span>
 <span>  datTows <span class="op">=</span> <span class="va">catch</span>,</span>
 <span>  strat.df <span class="op">=</span> <span class="va">strata</span>,</span>
 <span>  lgthBins <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="fl">10</span>, <span class="fl">40</span>, <span class="fl">2</span><span class="op">)</span>, </span>
 <span>  ageBins <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">40</span><span class="op">)</span></span></code></pre></div>
-<p>Creates unexpanded conditional-age-at-length data for both sexes with
+<p>Creates unexpanded conditional-age-at-length data for each sex with
 input sample sizes based on the observed number of fish in each length
-bin by year.</p>
+bin by year. It returns a list of three dataframes: “female”, “male”,
+and “unsexed”. If the <code>dir</code> function input is specified, it
+will write these dataframes to separate csv files as well.</p>
 </div>
 <div class="section level4">
 <h4 id="maps">Maps<a class="anchor" aria-label="anchor" href="#maps"></a>
 </h4>
 <p>To make a map showing the distribution of density in aggregate and by
 year:</p>
-<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/PlotMap.fn.html">PlotMap.fn</a></span><span class="op">(</span></span>
 <span>  dat <span class="op">=</span> <span class="va">catch</span><span class="op">)</span></span></code></pre></div>
 </div>
