@@ -31,6 +31,9 @@
 #' @param returnSamps A logical with the default of `FALSE`. A value of `TRUE`
 #'   stops the function after the sample size is calculated.
 #' @template printfolder
+#' @param newnames A logical to choose whether to align the names closer
+#' to the names used in `r4ss::SS_readdat()` as revised in July 2024
+#' (`partition` and `input_n` still don't match)
 #' @template verbose
 #'
 #' @author Allan Hicks and Chantel Wetzel
@@ -57,6 +60,7 @@ SurveyAgeAtLen.fn <- function(
     ageErr = "Enter Age Error",
     returnSamps = FALSE,
     printfolder = "forSS3",
+    newnames = FALSE,
     verbose = TRUE) {
   plotdir <- file.path(dir, printfolder)
   check_dir(plotdir, verbose = verbose)
@@ -479,7 +483,7 @@ SurveyAgeAtLen.fn <- function(
   if ("F" %in% sexes_present) {
     outF <- data.frame(
       year = as.numeric(substring(names(AL.year), 1, 4)), month = month, Fleet = fleet, sex = 1, partition = partition, ageErr = ageErr,
-      LbinLo = as.numeric(substring(names(AL.year), 6)), LbinHi = as.numeric(substring(names(AL.year), 6)), nSamps = "ENTER", AsF, AsF
+      LbinLo = as.numeric(substring(names(AL.year), 6)), LbinHi = as.numeric(substring(names(AL.year), 6)), nSamps = "ENTER", AsF, 0 * AsF
     )
     indZero <- apply(outF[, -c(1:9)], 1, sum) == 0
     outF <- outF[!indZero, ] # remove any rows that have no female observations (they may be there because of male obs)
@@ -491,7 +495,7 @@ SurveyAgeAtLen.fn <- function(
   if ("M" %in% sexes_present) {
     outM <- data.frame(
       year = as.numeric(substring(names(AL.year), 1, 4)), month = month, Fleet = fleet, sex = 2, partition = partition, ageErr = ageErr,
-      LbinLo = as.numeric(substring(names(AL.year), 6)), LbinHi = as.numeric(substring(names(AL.year), 6)), nSamps = "ENTER", AsM, AsM
+      LbinLo = as.numeric(substring(names(AL.year), 6)), LbinHi = as.numeric(substring(names(AL.year), 6)), nSamps = "ENTER", 0 * AsM, AsM
     )
     indZero <- apply(outM[, -c(1:9)], 1, sum) == 0
     outM <- outM[!indZero, ] # remove any rows that have no male observations (they may be there because of female obs)
@@ -506,6 +510,35 @@ SurveyAgeAtLen.fn <- function(
   # Add in the eff N values
   outAll$nSamps <- getn.all
   rownames(outAll) <- paste("All", 1:nrow(outAll), sep = "")
+
+  if (newnames) {
+    # makes the names match better with those
+    # r4ss::SS_readdat() as revised in July 2024
+    # see https://github.com/pfmc-assessments/nwfscSurvey/issues/164
+    apply_newnames <- function(x) {
+      # sort out mismatches among first 9 columns
+      x <- x |> dplyr::rename(
+        fleet = Fleet,
+        ageerr = ageErr,
+        Lbin_lo = LbinLo,
+        Lbin_hi = LbinHi,
+        input_n = nSamps
+      )
+      # rename age bins
+      if (ncol(x) == 9 + length(ageBins)) {
+        # single-sex model
+        names(x)[-(1:9)] <- paste0("u", ageBins)
+      } else {
+        # two-sex model
+        names(x)[-(1:9)] <- c(paste0("f", ageBins), paste0("m", ageBins))
+      }
+      return(x)
+    }
+    outAll <- apply_newnames(outAll)
+    outU <- apply_newnames(outU)
+    outF <- apply_newnames(outF)
+    outM <- apply_newnames(outM)
+  }
 
   if (is.null(dir) & verbose) {
     cat("\nDirectory not specified and csv will not be written.\n")
