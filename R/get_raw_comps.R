@@ -9,46 +9,16 @@
 #' list of composition data based upon the sexes present in the data for a
 #' two-sex model or all length/ages for single-sex model.
 #'
+#' @inheritParams get_expanded_comps
 #' @param data A data frame that includes columns of year, sex, and length/ages. The data
 #'   frame can be survey data pulled using pull_bio from the data warehouse or any data frame
 #'   that includes column names of sex, year, and the comp_column_name.  The sex column is
 #'   expected to have sexes denoted by F, M, and U.
-#' @param comp_bins A vector on length bins or age bins to create compositions across. The
-#'   composition data is formatted for Stock Synthesis.
 #' @param comp_column_name The column name to create composition data for. This column can be
 #'   is used to determine whether to format the composition data for length or age
 #'   compositions by looking for either age (e.g., `age_years`, `Age`, `best_age`) or length
 #'   (e.g., `Length`, `length`, `Length_cm`) in the comp_column_name. The default
 #'   is `Length_cm`.
-#' @param two_sex_comps Default TRUE. If TRUE composition data will be formatted for a
-#'   Stock Synthesis two-sex model and if FALSE composition data will be formatted for a
-#'   single-sex model.
-#' @param input_n_method Determines the default input sample size to add to
-#'   the composition data for SS3. There are three options: c("stewart_hamel", "tows",
-#'   "total_samples") where the default is "stewart_hamel".
-#' @param month Month the samples were collected based on the expected format for
-#'   Stock Synthesis to determine the length/age estimate to compare to. Default
-#'   "Enter Month".
-#' @param fleet A fleet number to assign the composition data to based on the expected
-#'   format for Stock Synthesis. Default "Enter Fleet".
-#' @param partition Partition to assign the composition data based on the expected
-#'   format for Stock Synthesis. Partition of 0 indicates that the composition data
-#'   include all composition data, 1 for discarded composition data, and 2 for retained
-#'   fish only. Default of 0.
-#' @param ageerr Number of ageing error vector to apply to the age data based on
-#'   Stock Synthesis. Default "Enter Numeric".
-#' @param Lbin_lo Lower age bin for all age composition data based on the expected
-#'   format for Stock Synthesis. Default value of -1 which translates to the lowest age
-#'   bin.
-#' @param Lbin_hi Upper age bin for all age composition data based on the expected
-#'   format for Stock Synthesis. Default value of -1 which translates to the highest
-#    age bin.
-#' @param age_error Deprecated with {nwfscSurvey} 2.2. Use Lbin_hi instead.
-#' @param age_low Deprecated with {nwfscSurvey} 2.2. Use Lbin_lo instead.
-#' @param age_high Deprecated with {nwfscSurvey} 2.2. Use Lbin_hi instead.
-#' @template dir
-#' @template printfolder
-#' @template verbose
 #'
 #' @returns A list of length or marginal age compositions for sexed and
 #' unsexed fish formatted for Stock Synthesis.
@@ -93,9 +63,8 @@ get_raw_comps <- function(
     dir = NULL,
     printfolder = "forSS3",
     verbose = TRUE) {
-
   # arguments deprecated to be consistent with output column names
-  # revised to better match r4ss 
+  # revised to better match r4ss
   # https://github.com/pfmc-assessments/nwfscSurvey/issues/164
   if (lifecycle::is_present(age_low)) {
     lifecycle::deprecate_warn(
@@ -105,7 +74,7 @@ get_raw_comps <- function(
     )
   }
   if (lifecycle::is_present(age_high)) {
-      lifecycle::deprecate_warn(
+    lifecycle::deprecate_warn(
       when = "2.2",
       what = "nwfscSurvey::get_expanded_comps(age_high =)",
       with = "nwfscSurvey::get_expanded_comps(Lbin_hi =)"

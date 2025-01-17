@@ -30,8 +30,13 @@ frame can be survey data pulled using pull_bio from the data warehouse or any da
 that includes column names of sex, year, and the comp_column_name.  The sex column is
 expected to have sexes denoted by F, M, and U.}
 
-\item{comp_bins}{A vector on length bins or age bins to create compositions across. The
-composition data is formatted for Stock Synthesis.}
+\item{comp_bins}{Vector of intergers to bin length or age data by
+create expanded composition data.Values above or below the minimum or maximum
+values in the vector are grouped into the first size or plus group size, respectively.
+For example, creating length compositions that uses a vector bin of seq(10, 50, 2)
+would create 2 cm bins where fish length between [0, 11.99) would be included in the
+10 cm bin, fish of length [12, 13.99) would be included in the 12 cm bin, and
+all fish [50- Inf) would be included in the 50 cm plus bin.}
 
 \item{comp_column_name}{The column name to create composition data for. This column can be
 is used to determine whether to format the composition data for length or age

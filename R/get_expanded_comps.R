@@ -119,9 +119,8 @@ get_expanded_comps <- function(
     age_error = lifecycle::deprecated(),
     printfolder = "forSS3",
     verbose = TRUE) {
-
   # arguments deprecated to be consistent with output column names
-  # revised to better match r4ss 
+  # revised to better match r4ss
   # https://github.com/pfmc-assessments/nwfscSurvey/issues/164
   if (lifecycle::is_present(age_low)) {
     lifecycle::deprecate_warn(
@@ -131,7 +130,7 @@ get_expanded_comps <- function(
     )
   }
   if (lifecycle::is_present(age_high)) {
-      lifecycle::deprecate_warn(
+    lifecycle::deprecate_warn(
       when = "2.2",
       what = "nwfscSurvey::get_expanded_comps(age_high =)",
       with = "nwfscSurvey::get_expanded_comps(Lbin_hi =)"
