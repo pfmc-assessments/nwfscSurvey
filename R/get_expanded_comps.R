@@ -36,20 +36,23 @@
 #' @param input_n_method Determines the default input sample size to add to
 #'   the composition data for SS3. There are three options: c("stewart_hamel", "tows",
 #'   "total_samples") where the default is "stewart_hamel".
-#' @template partition
-#' @param age_low Lower age bin for all age composition data based on the expected
-#'   format for Stock Synthesis. Default value of -1 which translates to the lowest age
-#'   bin.
-#' @param age_high Upper age bin for all age composition data based on the expected
-#'   format for Stock Synthesis. Default value of -1 which translates to the highest
-#    age bin.
-#' @param age_error Number of ageing error vector to apply to the age data based on
-#'   Stock Synthesis. Default "Enter Age Error Vector".
-#' @param fleet A fleet number to assign the composition data to based on the expected
-#'   format for Stock Synthesis. Default "Enter Fleet".
 #' @param month Month the samples were collected based on the expected format for
 #'   Stock Synthesis to determine the length/age estimate to compare to. Default
 #'   "Enter Month".
+#' @param fleet A fleet number to assign the composition data to based on the expected
+#'   format for Stock Synthesis. Default "Enter Fleet".
+#' @template partition
+#' @param ageerr Number of ageing error vector to apply to the age data based on
+#'   Stock Synthesis. Default "Enter Numeric".
+#' @param Lbin_lo Lower age bin for all age composition data based on the expected
+#'   format for Stock Synthesis. Default value of -1 which translates to the lowest age
+#'   bin.
+#' @param Lbin_hi Upper age bin for all age composition data based on the expected
+#'   format for Stock Synthesis. Default value of -1 which translates to the highest
+#    age bin.
+#' @param age_error Deprecated with {nwfscSurvey} 2.2. Use Lbin_hi instead.
+#' @param age_low Deprecated with {nwfscSurvey} 2.2. Use Lbin_lo instead.
+#' @param age_high Deprecated with {nwfscSurvey} 2.2. Use Lbin_hi instead.
 #' @template printfolder
 #' @template verbose
 #'
@@ -105,14 +108,42 @@ get_expanded_comps <- function(
     output = c("full_expansion_ss3_format", "tow_expansion_only", "full_expansion_unformatted"),
     two_sex_comps = TRUE,
     input_n_method = c("stewart_hamel", "tows", "total_samples"),
-    partition = 0,
-    fleet = "Enter Fleet",
-    age_low = -1,
-    age_high = -1,
-    age_error = "Enter Numeric",
     month = "Enter Month",
+    fleet = "Enter Fleet",
+    partition = 0,
+    ageerr = "Enter Numeric",
+    Lbin_lo = -1,
+    Lbin_hi = -1,
+    age_low = lifecycle::deprecated(),
+    age_high = lifecycle::deprecated(),
+    age_error = lifecycle::deprecated(),
     printfolder = "forSS3",
     verbose = TRUE) {
+  # arguments deprecated to be consistent with output column names
+  # revised to better match r4ss
+  # https://github.com/pfmc-assessments/nwfscSurvey/issues/164
+  if (lifecycle::is_present(age_low)) {
+    lifecycle::deprecate_warn(
+      when = "2.2",
+      what = "nwfscSurvey::get_expanded_comps(age_low =)",
+      with = "nwfscSurvey::get_expanded_comps(Lbin_lo =)"
+    )
+  }
+  if (lifecycle::is_present(age_high)) {
+    lifecycle::deprecate_warn(
+      when = "2.2",
+      what = "nwfscSurvey::get_expanded_comps(age_high =)",
+      with = "nwfscSurvey::get_expanded_comps(Lbin_hi =)"
+    )
+  }
+  if (lifecycle::is_present(age_error)) {
+    lifecycle::deprecate_warn(
+      when = "2.2",
+      what = "nwfscSurvey::get_expanded_comps(age_error =)",
+      with = "nwfscSurvey::get_expanded_comps(ageerr =)"
+    )
+  }
+
   plotdir <- file.path(dir, printfolder)
   check_dir(dir = dir, verbose = verbose)
 
@@ -131,7 +162,7 @@ get_expanded_comps <- function(
 
   # Check for needed columns
   required_bio_columns <- c(
-    comp_column_name,
+    tolower(comp_column_name),
     "sex",
     "year",
     "trawl_id",
@@ -356,7 +387,7 @@ get_expanded_comps <- function(
   unsexed_comps <- comps_by_year[, c("year", "bin", "prop_unsexed")] |>
     tidyr::pivot_wider(
       names_from = bin,
-      names_prefix = "U",
+      names_prefix = "u",
       values_from = prop_unsexed
     )
   unsexed_comps[is.na(unsexed_comps)] <- 0
@@ -364,7 +395,7 @@ get_expanded_comps <- function(
   female_comps <- comps_by_year[, c("year", "bin", "prop_female")] |>
     tidyr::pivot_wider(
       names_from = bin,
-      names_prefix = "F",
+      names_prefix = "f",
       values_from = prop_female
     )
   female_comps[is.na(female_comps)] <- 0
@@ -372,7 +403,7 @@ get_expanded_comps <- function(
   male_comps <- comps_by_year[, c("year", "bin", "prop_male")] |>
     tidyr::pivot_wider(
       names_from = bin,
-      names_prefix = "M",
+      names_prefix = "m",
       values_from = prop_male
     )
   male_comps[is.na(male_comps)] <- 0
@@ -421,16 +452,21 @@ get_expanded_comps <- function(
       partition = partition,
       input_n = samples |> dplyr::filter(sex_grouped == "unsexed") |> dplyr::select(input_n)
     )
-    unsexed_formatted <- cbind(unsexed_formatted, unsexed_comps[, dimensions], 0 * unsexed_comps[, dimensions])
+    # change u0, u1, ..., u0.1, u1.1, etc. to f0 f1, ..., m0, m1, etc.
+    unsexed_comps_good <- unsexed_comps[, dimensions]
+    names(unsexed_comps_good) <- gsub("^u", "f", names(unsexed_comps_good))
+    placeholder_comps <- 0 * unsexed_comps[, dimensions]
+    names(placeholder_comps) <- gsub("^u", "m", names(placeholder_comps))
+    unsexed_formatted <- cbind(unsexed_formatted, unsexed_comps_good, placeholder_comps)
     remove <- which(apply(unsexed_formatted[, 7:ncol(unsexed_formatted)], 1, sum) == 0)
     if (length(remove) > 0) {
       unsexed_formatted <- unsexed_formatted[-remove, ]
     }
 
     if (length(grep("age", comp_column_name, ignore.case = TRUE)) > 0) {
-      sexed_formatted <- cbind(sexed_formatted[, 1:5], age_error, age_low, age_high, sexed_formatted[, 6:dim(sexed_formatted)[2]])
+      sexed_formatted <- cbind(sexed_formatted[, 1:5], ageerr, Lbin_lo, Lbin_hi, sexed_formatted[, 6:dim(sexed_formatted)[2]])
       if (dim(unsexed_formatted)[1] > 0) {
-        unsexed_formatted <- cbind(unsexed_formatted[, 1:5], age_error, age_low, age_high, unsexed_formatted[, 6:dim(unsexed_formatted)[2]])
+        unsexed_formatted <- cbind(unsexed_formatted[, 1:5], ageerr, Lbin_lo, Lbin_hi, unsexed_formatted[, 6:dim(unsexed_formatted)[2]])
       }
     }
 
@@ -466,7 +502,7 @@ get_expanded_comps <- function(
     }
 
     if (length(grep("age", comp_column_name, ignore.case = TRUE)) > 0) {
-      all_formatted <- cbind(all_formatted[, 1:5], age_error, age_low, age_high, all_formatted[, 6:dim(all_formatted)[2]])
+      all_formatted <- cbind(all_formatted[, 1:5], ageerr, Lbin_lo, Lbin_hi, all_formatted[, 6:dim(all_formatted)[2]])
     }
 
     if (!is.null(dir)) {

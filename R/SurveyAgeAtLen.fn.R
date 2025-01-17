@@ -24,10 +24,7 @@
 #'   unexpanded sample numbers.
 #' @param NAs2zero A logical specifying if `NA`s should be changed to zeros.
 #'   The default is `TRUE`.
-#' @template month
-#' @template fleet
-#' @template partition
-#' @template ageErr
+#' @inheritParams get_expanded_comps
 #' @param returnSamps A logical with the default of `FALSE`. A value of `TRUE`
 #'   stops the function after the sample size is calculated.
 #' @template printfolder
@@ -54,10 +51,20 @@ SurveyAgeAtLen.fn <- function(
     month = "Enter Month",
     fleet = "Enter Fleet",
     partition = 0,
-    ageErr = "Enter Age Error",
+    ageerr = "Enter Numeric",
+    ageErr = lifecycle::deprecated(),
     returnSamps = FALSE,
     printfolder = "forSS3",
     verbose = TRUE) {
+  # deprecate old arguments
+  if (lifecycle::is_present(ageErr)) {
+    lifecycle::deprecate_warn(
+      when = "2.2",
+      what = "nwfscSurvey::SurveyAgeAtLen.fn(ageErr =)",
+      with = "nwfscSurvey::SurveyAgeAtLen.fn(ageerr =)"
+    )
+  }
+
   plotdir <- file.path(dir, printfolder)
   check_dir(plotdir, verbose = verbose)
 
@@ -65,7 +72,7 @@ SurveyAgeAtLen.fn <- function(
   datAL <- datAL[!is.na(datAL$Length_cm), ]
   datAL <- datAL[!is.na(datAL$Age), ]
   if (verbose) {
-    cat("There are ", nrow(datAL), " records kept out of", totRows, "records after removing missing records.\n")
+    cli::cli_alert_info("There are {nrow(datAL)} records kept out of {totRows} records after removing missing records.")
   }
 
   row.names(strat.df) <- strat.df[, 1] # put in rownames to make easier to index later
@@ -197,7 +204,7 @@ SurveyAgeAtLen.fn <- function(
   nSamps.all <- reshape2::dcast(datB, Year ~ allLs, value.var = "numAll", sum)
 
   if (verbose) {
-    cat("\nEffective sample size is based on number of fish.\n\n")
+    cli::cli_alert_info("Input sample size is based on number of fish.")
   }
   if (returnSamps) {
     return(list(nSamps.f, nSamps.m, nSamps.u))
@@ -350,8 +357,8 @@ SurveyAgeAtLen.fn <- function(
 
   if (meanRatioMethod) {
     if (verbose) {
-      if (raw) cat("\nUsing raw numbers of age-at-length\n\n")
-      if (!raw) cat("\nUsing expanded numbers of age-at-length\n\n")
+      if (raw) cli::cli_alert_info("Using raw numbers of age-at-length")
+      if (!raw) cli::cli_alert_info("Using expanded numbers of age-at-length")
     }
     A.year.L.str <- lapply(datB.yrLstr, function(x) {
       lapply(x, MeanRatio.fn, strat = strat.df, numTows = numTows, raw = raw)
@@ -461,13 +468,13 @@ SurveyAgeAtLen.fn <- function(
   }
 
   outAll <- data.frame(
-    year = as.numeric(substring(names(AL.year), 1, 4)), month = month, Fleet = fleet, sex = 0, partition = partition, ageErr = ageErr,
-    LbinLo = as.numeric(substring(names(AL.year), 6)), LbinHi = as.numeric(substring(names(AL.year), 6)), nSamps = "ENTER", AsAll
+    year = as.numeric(substring(names(AL.year), 1, 4)), month = month, fleet = fleet, sex = 0, partition = partition, ageerr = ageerr,
+    Lbin_lo = as.numeric(substring(names(AL.year), 6)), Lbin_hi = as.numeric(substring(names(AL.year), 6)), nSamps = "ENTER", AsAll
   )
   if ("U" %in% sexes_present) {
     outU <- data.frame(
-      year = as.numeric(substring(names(AL.year), 1, 4)), month = month, Fleet = fleet, sex = 0, partition = partition, ageErr = ageErr,
-      LbinLo = as.numeric(substring(names(AL.year), 6)), LbinHi = as.numeric(substring(names(AL.year), 6)), nSamps = "ENTER", AsU
+      year = as.numeric(substring(names(AL.year), 1, 4)), month = month, fleet = fleet, sex = 0, partition = partition, ageerr = ageerr,
+      Lbin_lo = as.numeric(substring(names(AL.year), 6)), Lbin_hi = as.numeric(substring(names(AL.year), 6)), nSamps = "ENTER", AsU
     )
     indZero <- apply(outU[, -c(1:9)], 1, sum) == 0
     outU <- outU[!indZero, ] # remove any rows that have no female observations (they may be there because of male obs)
@@ -478,8 +485,8 @@ SurveyAgeAtLen.fn <- function(
   }
   if ("F" %in% sexes_present) {
     outF <- data.frame(
-      year = as.numeric(substring(names(AL.year), 1, 4)), month = month, Fleet = fleet, sex = 1, partition = partition, ageErr = ageErr,
-      LbinLo = as.numeric(substring(names(AL.year), 6)), LbinHi = as.numeric(substring(names(AL.year), 6)), nSamps = "ENTER", AsF, AsF
+      year = as.numeric(substring(names(AL.year), 1, 4)), month = month, fleet = fleet, sex = 1, partition = partition, ageerr = ageerr,
+      Lbin_lo = as.numeric(substring(names(AL.year), 6)), Lbin_hi = as.numeric(substring(names(AL.year), 6)), nSamps = "ENTER", AsF, 0 * AsF
     )
     indZero <- apply(outF[, -c(1:9)], 1, sum) == 0
     outF <- outF[!indZero, ] # remove any rows that have no female observations (they may be there because of male obs)
@@ -490,8 +497,8 @@ SurveyAgeAtLen.fn <- function(
   }
   if ("M" %in% sexes_present) {
     outM <- data.frame(
-      year = as.numeric(substring(names(AL.year), 1, 4)), month = month, Fleet = fleet, sex = 2, partition = partition, ageErr = ageErr,
-      LbinLo = as.numeric(substring(names(AL.year), 6)), LbinHi = as.numeric(substring(names(AL.year), 6)), nSamps = "ENTER", AsM, AsM
+      year = as.numeric(substring(names(AL.year), 1, 4)), month = month, fleet = fleet, sex = 2, partition = partition, ageerr = ageerr,
+      Lbin_lo = as.numeric(substring(names(AL.year), 6)), Lbin_hi = as.numeric(substring(names(AL.year), 6)), nSamps = "ENTER", 0 * AsM, AsM
     )
     indZero <- apply(outM[, -c(1:9)], 1, sum) == 0
     outM <- outM[!indZero, ] # remove any rows that have no male observations (they may be there because of female obs)
@@ -503,12 +510,35 @@ SurveyAgeAtLen.fn <- function(
 
   indZero <- apply(outAll[, -c(1:9)], 1, sum) == 0
   outAll <- outAll[!indZero, ] # remove any rows that have no male observations (they may be there because of female obs)
-  # Add in the eff N values
+  # Add in the input N values
   outAll$nSamps <- getn.all
   rownames(outAll) <- paste("All", 1:nrow(outAll), sep = "")
 
+  # function to make the names match better with those
+  # r4ss::SS_readdat() as revised in July 2024
+  # see https://github.com/pfmc-assessments/nwfscSurvey/issues/164
+  apply_newnames <- function(x) {
+    # sort out mismatches among first 9 columns
+    x <- x |> dplyr::rename(
+      input_n = nSamps
+    )
+    # rename age bins
+    if (ncol(x) == 9 + length(ageBins)) {
+      # single-sex model
+      names(x)[-(1:9)] <- paste0("u", ageBins)
+    } else {
+      # two-sex model
+      names(x)[-(1:9)] <- c(paste0("f", ageBins), paste0("m", ageBins))
+    }
+    return(x)
+  }
+  outAll <- apply_newnames(outAll)
+  outU <- apply_newnames(outU)
+  outF <- apply_newnames(outF)
+  outM <- apply_newnames(outM)
+
   if (is.null(dir) & verbose) {
-    cat("\nDirectory not specified and csv will not be written.\n")
+    warning("Directory not specified and csv will not be written.")
   }
   if (!is.null(dir) & sex != 0) {
     write.csv(outU, file = file.path(plotdir, paste("Survey_CAAL_Unsexed_Bins_", min(lgthBins), "_", max(lgthBins), "_", min(ageBins), "_", max(ageBins), ".csv", sep = "")), row.names = FALSE)
@@ -518,16 +548,6 @@ SurveyAgeAtLen.fn <- function(
   if (!is.null(dir) & sex == 0) {
     write.csv(outAll, file = file.path(plotdir, paste("Survey_CAAL_All_Sexes_Bins_", min(lgthBins), "_", max(lgthBins), "_", min(ageBins), "_", max(ageBins), ".csv", sep = "")), row.names = FALSE)
   }
-
-  # if (verbose) {
-  #  if (sex != 0) {
-  #    cat("There are", numFzero, "females age 0 to age", ages[2], "minus group that were added into the first age bin\n")
-  #    cat("There are", numMzero, "males age 0 to age", ages[2], "minus group that were added into the first age bin\n")
-  #    cat("There are", numUzero, "unsexed age 0 to age", ages[2], "minus group that were added into the first age bin\n")
-  #  } else {
-  #    cat("There are", numAllzero, "unsexed age 0 to age", ages[2], "minus group that were added into the first age bin\n")
-  #  }
-  # }
 
   if (sex != 0) {
     return(list(female = outF, male = outM, unsexed = outU))

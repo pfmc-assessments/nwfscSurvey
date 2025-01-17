@@ -20,7 +20,8 @@ SurveyAgeAtLen.fn(
   month = "Enter Month",
   fleet = "Enter Fleet",
   partition = 0,
-  ageErr = "Enter Age Error",
+  ageerr = "Enter Numeric",
+  ageErr = lifecycle::deprecated(),
   returnSamps = FALSE,
   printfolder = "forSS3",
   verbose = TRUE
@@ -66,13 +67,11 @@ unexpanded sample numbers.}
 \item{NAs2zero}{A logical specifying if \code{NA}s should be changed to zeros.
 The default is \code{TRUE}.}
 
-\item{month}{A single integer value between 1-12. A user input fleet
-number to assign to the month column based on the expected
-format for Stock Synthesis. See the Stock Synthesis manual for
-more information. Default "Enter Month".}
+\item{month}{Month the samples were collected based on the expected format for
+Stock Synthesis to determine the length/age estimate to compare to. Default
+"Enter Month".}
 
-\item{fleet}{A single integer value. A user input fleet
-number to assign to the fleet column based on the expected
+\item{fleet}{A fleet number to assign the composition data to based on the expected
 format for Stock Synthesis. Default "Enter Fleet".}
 
 \item{partition}{Partition to assign the composition data based on the expected
@@ -80,9 +79,8 @@ format for Stock Synthesis. Partition of 0 indicates that the composition data
 include all composition data, 1 for discarded composition data, and 2 for retained
 fish only. Default of 0.}
 
-\item{ageErr}{Single interget value  of ageing error
-vector to apply to the age data based on
-Stock Synthesis. Default "Enter".}
+\item{ageerr}{Number of ageing error vector to apply to the age data based on
+Stock Synthesis. Default "Enter Numeric".}
 
 \item{returnSamps}{A logical with the default of \code{FALSE}. A value of \code{TRUE}
 stops the function after the sample size is calculated.}

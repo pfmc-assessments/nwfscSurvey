@@ -118,7 +118,7 @@ plot_index <- function(
 
     if (!is.null(dir)) {
       ggplot2::ggsave(
-        filename = plot_names[1], plot = g2,
+        filename = plot_names[2], plot = g2,
         height = height, width = width, units = "in", dpi = dpi
       )
     } else {
