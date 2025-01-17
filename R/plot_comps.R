@@ -112,11 +112,11 @@ plot_comps <- function(
   df <- reshape2::melt(mod_comps, id = "year")
   df$year <- factor(df$year, levels = unique(df$year))
   df$sex <- substr(df$variable, 1, 1)
-  df$sex <- replace(df$sex, df$sex == "F", "FEMALE")
-  df$sex <- replace(df$sex, df$sex == "M", "MALE")
-  df$sex <- replace(df$sex, df$sex == "U", "UNSEXED")
+  df$sex <- replace(df$sex, df$sex %in% c("f", "F"), "FEMALE")
+  df$sex <- replace(df$sex, df$sex %in% c("m", "M"), "MALE")
+  df$sex <- replace(df$sex, df$sex %in% c("u", "U"), "UNSEXED")
   df$sex <- factor(df$sex, levels = unique(df$sex))
-  df$variable <- utils::type.convert(gsub("[FMU]", "", df$variable), as.is = TRUE)
+  df$variable <- utils::type.convert(gsub("[FMUfmu]", "", df$variable), as.is = TRUE)
   df$n <- 0
   a <- 1
   for (y in year) {
