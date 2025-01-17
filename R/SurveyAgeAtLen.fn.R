@@ -60,8 +60,8 @@ SurveyAgeAtLen.fn <- function(
   if (lifecycle::is_present(ageErr)) {
     lifecycle::deprecate_warn(
       when = "2.2",
-      what = "nwfscSurvey::get_expanded_comps(ageErr =)",
-      with = "nwfscSurvey::get_expanded_comps(ageerr =)"
+      what = "nwfscSurvey::SurveyAgeAtLen.fn(ageErr =)",
+      with = "nwfscSurvey::SurveyAgeAtLen.fn(ageerr =)"
     )
   }
 
