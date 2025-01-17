@@ -2,11 +2,18 @@
 #'
 #' @template dir
 #' @param catch Data catch file pulled using [pull_catch()]
-#' @param plot A vector of integers specifying the figures you want.
-#' @param ... additional arguments to [ggsave()]. Figure width and height default to 7 in.
+#' @param plot A vector of integers specifying the figures you want. See 'Details' for options.
+#' @param ... Additional arguments to [ggsave()]. Figure width and height default to 7 in.
 #'
 #' @import ggplot2
 #' @import cowplot
+#'
+#' @details
+#' Plots produced:
+#' 1. Marginal log(CPUE) by depth and latitude
+#' 2. log(CPUE) by latitude and year
+#' 3. log(CPUE) by depth and year
+#'
 #'
 #' @author Chantel Wetzel
 #' @export
@@ -25,10 +32,11 @@ plot_cpue <- function(
   size_adj <- 100 / floor(sum(pos))
 
   # ggsave arguments
-  l <- list(...)
+  l <- as.list(substitute(...()))
   if (is.null(l$width)) l$width <- 7
   if (is.null(l$height)) l$height <- 7
   if (is.null(l$units)) l$units <- "in"
+  if (is.null(l$device)) l$device <- "png" else l$device <- gsub("[^[:alnum:] ]", "", deparse(l$device))
 
   # plot 1 - marginal log(cpue) by depth and latitude
   if (1 %in% plot) {
@@ -73,7 +81,7 @@ plot_cpue <- function(
     # plot 1
     print(cowplot::plot_grid(cl, cd, nrow = 2))
     if (!is.null(dir)) {
-      l$filename <- file.path(dir, "plots", "cpue_by_lat_depth.png")
+      l$filename <- file.path(dir, "plots", paste0("cpue_by_lat_depth.", l$device))
       do.call(ggsave, l)
     }
 
@@ -95,7 +103,7 @@ plot_cpue <- function(
 
     print(cly)
     if (!is.null(dir)) {
-      l$filename <- file.path(dir, "plots", "cpue_by_year_lat.png")
+      l$filename <- file.path(dir, "plots", paste0("cpue_by_year_lat.", l$device))
       l2 <- l; l2$width <- l2$width + 3; l2$height <- l2$height + 3
       do.call(ggsave, l2)
     }
@@ -118,7 +126,7 @@ plot_cpue <- function(
 
     print(cdy)
     if (!is.null(dir)) {
-      l$filename <- file.path(dir, "plots", "cpue_by_year_depth.png")
+      l$filename <- file.path(dir, "plots", paste0("cpue_by_year_depth.", l$device))
       l2 <- l; l2$width <- l2$width + 3; l2$height <- l2$height + 3
       do.call(ggsave, l2)
     }

@@ -12,12 +12,20 @@ plot_cpue(catch, dir = NULL, plot = 1:3, ...)
 \item{dir}{Directory where output will be saved. The directory where the file should be saved.
 If dir = NULL no output will be saved.}
 
-\item{plot}{A vector of integers specifying the figures you want.}
+\item{plot}{A vector of integers specifying the figures you want. See 'Details' for options.}
 
-\item{...}{additional arguments to \code{\link[=ggsave]{ggsave()}}. Figure width and height default to 7 in.}
+\item{...}{Additional arguments to \code{\link[=ggsave]{ggsave()}}. Figure width and height default to 7 in.}
 }
 \description{
 This function plots cpue and length by latitude and depth
+}
+\details{
+Plots produced:
+\enumerate{
+\item Marginal log(CPUE) by depth and latitude
+\item log(CPUE) by latitude and year
+\item log(CPUE) by depth and year
+}
 }
 \author{
 Chantel Wetzel
