@@ -15,12 +15,15 @@ get_expanded_comps(
     "full_expansion_unformatted"),
   two_sex_comps = TRUE,
   input_n_method = c("stewart_hamel", "tows", "total_samples"),
-  partition = 0,
-  fleet = "Enter Fleet",
-  age_low = -1,
-  age_high = -1,
-  age_error = "Enter Numeric",
   month = "Enter Month",
+  fleet = "Enter Fleet",
+  partition = 0,
+  ageerr = "Enter Numeric",
+  Lbin_lo = -1,
+  Lbin_hi = -1,
+  age_low = lifecycle::deprecated(),
+  age_high = lifecycle::deprecated(),
+  age_error = lifecycle::deprecated(),
   printfolder = "forSS3",
   verbose = TRUE
 )
@@ -68,27 +71,33 @@ single-sex model.}
 the composition data for SS3. There are three options: c("stewart_hamel", "tows",
 "total_samples") where the default is "stewart_hamel".}
 
+\item{month}{Month the samples were collected based on the expected format for
+Stock Synthesis to determine the length/age estimate to compare to. Default
+"Enter Month".}
+
+\item{fleet}{A fleet number to assign the composition data to based on the expected
+format for Stock Synthesis. Default "Enter Fleet".}
+
 \item{partition}{Partition to assign the composition data based on the expected
 format for Stock Synthesis. Partition of 0 indicates that the composition data
 include all composition data, 1 for discarded composition data, and 2 for retained
 fish only. Default of 0.}
 
-\item{fleet}{A fleet number to assign the composition data to based on the expected
-format for Stock Synthesis. Default "Enter Fleet".}
+\item{ageerr}{Number of ageing error vector to apply to the age data based on
+Stock Synthesis. Default "Enter Numeric".}
 
-\item{age_low}{Lower age bin for all age composition data based on the expected
+\item{Lbin_lo}{Lower age bin for all age composition data based on the expected
 format for Stock Synthesis. Default value of -1 which translates to the lowest age
 bin.}
 
-\item{age_high}{Upper age bin for all age composition data based on the expected
+\item{Lbin_hi}{Upper age bin for all age composition data based on the expected
 format for Stock Synthesis. Default value of -1 which translates to the highest}
 
-\item{age_error}{Number of ageing error vector to apply to the age data based on
-Stock Synthesis. Default "Enter Age Error Vector".}
+\item{age_low}{Deprecated with {nwfscSurvey} 2.2. Use Lbin_lo instead.}
 
-\item{month}{Month the samples were collected based on the expected format for
-Stock Synthesis to determine the length/age estimate to compare to. Default
-"Enter Month".}
+\item{age_high}{Deprecated with {nwfscSurvey} 2.2. Use Lbin_hi instead.}
+
+\item{age_error}{Deprecated with {nwfscSurvey} 2.2. Use Lbin_hi instead.}
 
 \item{printfolder}{A string that will be appended to \code{dir}, creating a folder
 where the output will be saved. If specified as \code{""},

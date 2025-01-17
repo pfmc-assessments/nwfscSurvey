@@ -31,9 +31,6 @@
 #' @param returnSamps A logical with the default of `FALSE`. A value of `TRUE`
 #'   stops the function after the sample size is calculated.
 #' @template printfolder
-#' @param newnames A logical to choose whether to align the names closer
-#' to the names used in `r4ss::SS_readdat()` as revised in July 2024
-#' (`partition` and `input_n` still don't match)
 #' @template verbose
 #'
 #' @author Allan Hicks and Chantel Wetzel
@@ -60,7 +57,6 @@ SurveyAgeAtLen.fn <- function(
     ageErr = "Enter Age Error",
     returnSamps = FALSE,
     printfolder = "forSS3",
-    newnames = FALSE,
     verbose = TRUE) {
   plotdir <- file.path(dir, printfolder)
   check_dir(plotdir, verbose = verbose)
@@ -69,7 +65,7 @@ SurveyAgeAtLen.fn <- function(
   datAL <- datAL[!is.na(datAL$Length_cm), ]
   datAL <- datAL[!is.na(datAL$Age), ]
   if (verbose) {
-    cat("There are ", nrow(datAL), " records kept out of", totRows, "records after removing missing records.\n")
+    cli::cli_alert_info("There are {nrow(datAL)} records kept out of {totRows} records after removing missing records.")
   }
 
   row.names(strat.df) <- strat.df[, 1] # put in rownames to make easier to index later
@@ -201,7 +197,7 @@ SurveyAgeAtLen.fn <- function(
   nSamps.all <- reshape2::dcast(datB, Year ~ allLs, value.var = "numAll", sum)
 
   if (verbose) {
-    cat("\nEffective sample size is based on number of fish.\n\n")
+    cli::cli_alert_info("Input sample size is based on number of fish.")
   }
   if (returnSamps) {
     return(list(nSamps.f, nSamps.m, nSamps.u))
@@ -354,8 +350,8 @@ SurveyAgeAtLen.fn <- function(
 
   if (meanRatioMethod) {
     if (verbose) {
-      if (raw) cat("\nUsing raw numbers of age-at-length\n\n")
-      if (!raw) cat("\nUsing expanded numbers of age-at-length\n\n")
+      if (raw) cli::cli_alert_info("Using raw numbers of age-at-length")
+      if (!raw) cli::cli_alert_info("Using expanded numbers of age-at-length")
     }
     A.year.L.str <- lapply(datB.yrLstr, function(x) {
       lapply(x, MeanRatio.fn, strat = strat.df, numTows = numTows, raw = raw)
@@ -507,41 +503,39 @@ SurveyAgeAtLen.fn <- function(
 
   indZero <- apply(outAll[, -c(1:9)], 1, sum) == 0
   outAll <- outAll[!indZero, ] # remove any rows that have no male observations (they may be there because of female obs)
-  # Add in the eff N values
+  # Add in the input N values
   outAll$nSamps <- getn.all
   rownames(outAll) <- paste("All", 1:nrow(outAll), sep = "")
 
-  if (newnames) {
-    # makes the names match better with those
-    # r4ss::SS_readdat() as revised in July 2024
-    # see https://github.com/pfmc-assessments/nwfscSurvey/issues/164
-    apply_newnames <- function(x) {
-      # sort out mismatches among first 9 columns
-      x <- x |> dplyr::rename(
-        fleet = Fleet,
-        ageerr = ageErr,
-        Lbin_lo = LbinLo,
-        Lbin_hi = LbinHi,
-        input_n = nSamps
-      )
-      # rename age bins
-      if (ncol(x) == 9 + length(ageBins)) {
-        # single-sex model
-        names(x)[-(1:9)] <- paste0("u", ageBins)
-      } else {
-        # two-sex model
-        names(x)[-(1:9)] <- c(paste0("f", ageBins), paste0("m", ageBins))
-      }
-      return(x)
+  # function to make the names match better with those
+  # r4ss::SS_readdat() as revised in July 2024
+  # see https://github.com/pfmc-assessments/nwfscSurvey/issues/164
+  apply_newnames <- function(x) {
+    # sort out mismatches among first 9 columns
+    x <- x |> dplyr::rename(
+      fleet = Fleet,
+      ageerr = ageErr,
+      Lbin_lo = LbinLo,
+      Lbin_hi = LbinHi,
+      input_n = nSamps
+    )
+    # rename age bins
+    if (ncol(x) == 9 + length(ageBins)) {
+      # single-sex model
+      names(x)[-(1:9)] <- paste0("u", ageBins)
+    } else {
+      # two-sex model
+      names(x)[-(1:9)] <- c(paste0("f", ageBins), paste0("m", ageBins))
     }
-    outAll <- apply_newnames(outAll)
-    outU <- apply_newnames(outU)
-    outF <- apply_newnames(outF)
-    outM <- apply_newnames(outM)
+    return(x)
   }
+  outAll <- apply_newnames(outAll)
+  outU <- apply_newnames(outU)
+  outF <- apply_newnames(outF)
+  outM <- apply_newnames(outM)
 
   if (is.null(dir) & verbose) {
-    cat("\nDirectory not specified and csv will not be written.\n")
+    warning("Directory not specified and csv will not be written.")
   }
   if (!is.null(dir) & sex != 0) {
     write.csv(outU, file = file.path(plotdir, paste("Survey_CAAL_Unsexed_Bins_", min(lgthBins), "_", max(lgthBins), "_", min(ageBins), "_", max(ageBins), ".csv", sep = "")), row.names = FALSE)
@@ -551,16 +545,6 @@ SurveyAgeAtLen.fn <- function(
   if (!is.null(dir) & sex == 0) {
     write.csv(outAll, file = file.path(plotdir, paste("Survey_CAAL_All_Sexes_Bins_", min(lgthBins), "_", max(lgthBins), "_", min(ageBins), "_", max(ageBins), ".csv", sep = "")), row.names = FALSE)
   }
-
-  # if (verbose) {
-  #  if (sex != 0) {
-  #    cat("There are", numFzero, "females age 0 to age", ages[2], "minus group that were added into the first age bin\n")
-  #    cat("There are", numMzero, "males age 0 to age", ages[2], "minus group that were added into the first age bin\n")
-  #    cat("There are", numUzero, "unsexed age 0 to age", ages[2], "minus group that were added into the first age bin\n")
-  #  } else {
-  #    cat("There are", numAllzero, "unsexed age 0 to age", ages[2], "minus group that were added into the first age bin\n")
-  #  }
-  # }
 
   if (sex != 0) {
     return(list(female = outF, male = outM, unsexed = outU))

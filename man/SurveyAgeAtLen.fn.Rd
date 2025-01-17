@@ -23,7 +23,6 @@ SurveyAgeAtLen.fn(
   ageErr = "Enter Age Error",
   returnSamps = FALSE,
   printfolder = "forSS3",
-  newnames = FALSE,
   verbose = TRUE
 )
 }
@@ -91,10 +90,6 @@ stops the function after the sample size is calculated.}
 \item{printfolder}{A string that will be appended to \code{dir}, creating a folder
 where the output will be saved. If specified as \code{""},
 the output will just be saved directly in \code{dir}. The default is \code{"forSS3"}.}
-
-\item{newnames}{A logical to choose whether to align the names closer
-to the names used in \code{r4ss::SS_readdat()} as revised in July 2024
-(\code{partition} and \code{input_n} still don't match)}
 
 \item{verbose}{A logical that specifies if you want to print messages and
 warnings to the console. The default is \code{TRUE}.}

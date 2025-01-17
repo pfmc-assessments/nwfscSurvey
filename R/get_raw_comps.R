@@ -26,23 +26,26 @@
 #' @param input_n_method Determines the default input sample size to add to
 #'   the composition data for SS3. There are three options: c("stewart_hamel", "tows",
 #'   "total_samples") where the default is "stewart_hamel".
-#' @param fleet A fleet number to assign the composition data to based on the expected
-#'   format for Stock Synthesis. Default "Enter Fleet".
 #' @param month Month the samples were collected based on the expected format for
 #'   Stock Synthesis to determine the length/age estimate to compare to. Default
 #'   "Enter Month".
+#' @param fleet A fleet number to assign the composition data to based on the expected
+#'   format for Stock Synthesis. Default "Enter Fleet".
 #' @param partition Partition to assign the composition data based on the expected
 #'   format for Stock Synthesis. Partition of 0 indicates that the composition data
 #'   include all composition data, 1 for discarded composition data, and 2 for retained
 #'   fish only. Default of 0.
-#' @param age_error Number of ageing error vector to apply to the age data based on
-#'   Stock Synthesis. Default "Enter Age Error Vector".
-#' @param age_low Lower age bin for all age composition data based on the expected
+#' @param ageerr Number of ageing error vector to apply to the age data based on
+#'   Stock Synthesis. Default "Enter Numeric".
+#' @param Lbin_lo Lower age bin for all age composition data based on the expected
 #'   format for Stock Synthesis. Default value of -1 which translates to the lowest age
 #'   bin.
-#' @param age_high Upper age bin for all age composition data based on the expected
+#' @param Lbin_hi Upper age bin for all age composition data based on the expected
 #'   format for Stock Synthesis. Default value of -1 which translates to the highest
 #    age bin.
+#' @param age_error Deprecated with {nwfscSurvey} 2.2. Use Lbin_hi instead.
+#' @param age_low Deprecated with {nwfscSurvey} 2.2. Use Lbin_lo instead.
+#' @param age_high Deprecated with {nwfscSurvey} 2.2. Use Lbin_hi instead.
 #' @template dir
 #' @template printfolder
 #' @template verbose
@@ -78,15 +81,44 @@ get_raw_comps <- function(
     comp_column_name = "Length_cm",
     input_n_method = c("stewart_hamel", "tows", "total_samples"),
     two_sex_comps = TRUE,
-    fleet = "Enter Fleet",
     month = "Enter Month",
+    fleet = "Enter Fleet",
     partition = 0,
-    age_error = "Enter Age Error Vector",
-    age_low = -1,
-    age_high = -1,
+    ageerr = "Enter Numeric",
+    Lbin_lo = -1,
+    Lbin_hi = -1,
+    age_low = lifecycle::deprecated(),
+    age_high = lifecycle::deprecated(),
+    age_error = lifecycle::deprecated(),
     dir = NULL,
     printfolder = "forSS3",
     verbose = TRUE) {
+
+  # arguments deprecated to be consistent with output column names
+  # revised to better match r4ss 
+  # https://github.com/pfmc-assessments/nwfscSurvey/issues/164
+  if (lifecycle::is_present(age_low)) {
+    lifecycle::deprecate_warn(
+      when = "2.2",
+      what = "nwfscSurvey::get_expanded_comps(age_low =)",
+      with = "nwfscSurvey::get_expanded_comps(Lbin_lo =)"
+    )
+  }
+  if (lifecycle::is_present(age_high)) {
+      lifecycle::deprecate_warn(
+      when = "2.2",
+      what = "nwfscSurvey::get_expanded_comps(age_high =)",
+      with = "nwfscSurvey::get_expanded_comps(Lbin_hi =)"
+    )
+  }
+  if (lifecycle::is_present(age_error)) {
+    lifecycle::deprecate_warn(
+      when = "2.2",
+      what = "nwfscSurvey::get_expanded_comps(age_error =)",
+      with = "nwfscSurvey::get_expanded_comps(ageerr =)"
+    )
+  }
+
   plotdir <- file.path(dir, printfolder)
   check_dir(dir = plotdir, verbose = verbose)
 
@@ -210,8 +242,8 @@ get_raw_comps <- function(
     )
     out <- cbind(tmp, Results[, -c(1:2)])
     colnames(out)[-c(1:6)] <- c(
-      paste(rep("F", each = length(comp_bins)), comp_bins, sep = ""),
-      paste(rep("M", each = length(comp_bins)), comp_bins, sep = "")
+      paste(rep("f", each = length(comp_bins)), comp_bins, sep = ""),
+      paste(rep("m", each = length(comp_bins)), comp_bins, sep = "")
     )
   }
 
@@ -272,7 +304,7 @@ get_raw_comps <- function(
     } else {
       out_u <- cbind(tmp, Results[, -c(1:2)])
     }
-    colnames(out_u)[-c(1:6)] <- paste(rep("U", each = length(comp_bins)), comp_bins, sep = "")
+    colnames(out_u)[-c(1:6)] <- paste(rep("u", each = length(comp_bins)), comp_bins, sep = "")
   }
 
   if (comp_type == "length") {
@@ -288,12 +320,12 @@ get_raw_comps <- function(
 
   if (comp_type == "age") {
     if (!is.null(out)) {
-      out_comps <- cbind(out[, 1:5], age_error, age_low, age_high, out[, 6:dim(out)[2]])
+      out_comps <- cbind(out[, 1:5], ageerr, Lbin_lo, Lbin_hi, out[, 6:dim(out)[2]])
     } else {
       out_comps <- NULL
     }
     if (!is.null(out_u)) {
-      out_u_comps <- cbind(out_u[, 1:5], age_error, age_low, age_high, out_u[, 6:dim(out_u)[2]])
+      out_u_comps <- cbind(out_u[, 1:5], ageerr, Lbin_lo, Lbin_hi, out_u[, 6:dim(out_u)[2]])
     }
   }
 
