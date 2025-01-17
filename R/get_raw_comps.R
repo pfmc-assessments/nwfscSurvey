@@ -270,10 +270,11 @@ get_raw_comps <- function(
 
     if (two_sex_comps) {
       out_u <- cbind(tmp, Results[, -c(1:2)], 0 * Results[, -c(1:2)])
+      colnames(out_u)[-c(1:6)] <- c(paste0("f", comp_bins), paste0("m", comp_bins))
     } else {
       out_u <- cbind(tmp, Results[, -c(1:2)])
+      colnames(out_u)[-c(1:6)] <- paste0("u", comp_bins)
     }
-    colnames(out_u)[-c(1:6)] <- paste(rep("u", each = length(comp_bins)), comp_bins, sep = "")
   }
 
   if (comp_type == "length") {

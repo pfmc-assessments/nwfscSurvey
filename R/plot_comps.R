@@ -49,7 +49,8 @@ plot_comps <- function(
     data <- data[[1]]
   }
 
-  data_type <- ifelse(sum(names(data) %in% c("ageErr", "age_error")) == 0, "length", "age")
+  # determine length vs age comps based on the presence of "age" in the column names
+  data_type <- ifelse(any(grepl("age", names(data))), "age", "length")
   sex_type <- unique(data$sex)
   input_nsamp <- which(colnames(data) %in% c("nsamp", "InputN", "input_n"))
   if (is.numeric(data[, input_nsamp])) {
@@ -93,11 +94,12 @@ plot_comps <- function(
     comps <- comps[, -match(".999", names(comps))]
   }
 
-  # Check to see if the unsexed or single sexed comps are
-  # double printed
-  if (sum(grepl(".", colnames(comps), fixed = TRUE)) > 0) {
-    comps <- comps[, !grepl(".", colnames(comps), fixed = TRUE)]
-  }
+  ## column names for two-sex models now have separate "f" and "m" columns
+  # # Check to see if the unsexed or single sexed comps are
+  # # double printed
+  # if (sum(grepl(".", colnames(comps), fixed = TRUE)) > 0) {
+  #   comps <- comps[, !grepl(".", colnames(comps), fixed = TRUE)]
+  # }
 
   # Determine if entries are proportions (e.g., sum to 1 or 100)
   # and convert if needed
@@ -112,11 +114,11 @@ plot_comps <- function(
   df <- reshape2::melt(mod_comps, id = "year")
   df$year <- factor(df$year, levels = unique(df$year))
   df$sex <- substr(df$variable, 1, 1)
-  df$sex <- replace(df$sex, df$sex == "F", "FEMALE")
-  df$sex <- replace(df$sex, df$sex == "M", "MALE")
-  df$sex <- replace(df$sex, df$sex == "U", "UNSEXED")
+  df$sex <- replace(df$sex, df$sex == "f", "FEMALE")
+  df$sex <- replace(df$sex, df$sex == "m", "MALE")
+  df$sex <- replace(df$sex, df$sex == "u", "UNSEXED")
   df$sex <- factor(df$sex, levels = unique(df$sex))
-  df$variable <- utils::type.convert(gsub("[FMU]", "", df$variable), as.is = TRUE)
+  df$variable <- utils::type.convert(gsub("[fmu]", "", df$variable), as.is = TRUE)
   df$n <- 0
   a <- 1
   for (y in year) {
