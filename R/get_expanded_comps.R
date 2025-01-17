@@ -161,7 +161,7 @@ get_expanded_comps <- function(
 
   # Check for needed columns
   required_bio_columns <- c(
-    comp_column_name,
+    tolower(comp_column_name),
     "sex",
     "year",
     "trawl_id",
