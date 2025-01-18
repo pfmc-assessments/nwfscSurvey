@@ -2,18 +2,18 @@
 #'
 #' @template dir
 #' @param catch Data catch file pulled using [pull_catch()]
-#' @param plot A vector of integers specifying the figures you want. See 'Details' for options.
-#' @param ... Additional arguments to [ggsave()]. Figure width and height default to 7 in.
+#' @param plot A vector of integers to specify which plots to return. The
+#'   default is to print or save all figures, i.e., `plot = 1:3`. Integers
+#'   correspond to the following figures:
+#'   1. log(CPUE) by depth & log(CPUE) by latitude
+#'   2. log(CPUE) by latitude and year
+#'   3. log(CPUE) by depth and year
+#' @param width,height Numeric values for the figure width and height in
+#'   inches. The defaults are 7 by 7 inches.
+#' @param ... Additional arguments to [ggsave()]
 #'
 #' @import ggplot2
 #' @import cowplot
-#'
-#' @details
-#' Plots produced:
-#' 1. Marginal log(CPUE) by depth and latitude
-#' 2. log(CPUE) by latitude and year
-#' 3. log(CPUE) by depth and year
-#'
 #'
 #' @author Chantel Wetzel
 #' @export
@@ -22,6 +22,8 @@ plot_cpue <- function(
     catch,
     dir = NULL,
     plot = 1:3,
+    width = 7,
+    height = 7,
     ...) {
 
   plotdir <- file.path(dir, "plots")
@@ -33,8 +35,8 @@ plot_cpue <- function(
 
   # ggsave arguments
   l <- as.list(substitute(...()))
-  if (is.null(l$width)) l$width <- 7
-  if (is.null(l$height)) l$height <- 7
+  l$width <- width
+  l$height <- height
   if (is.null(l$units)) l$units <- "in"
   if (is.null(l$device)) l$device <- "png" else l$device <- gsub("[^[:alnum:] ]", "", deparse(l$device))
 
