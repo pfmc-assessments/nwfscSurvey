@@ -14,13 +14,12 @@
 #'   frame can be survey data pulled using pull_bio from the data warehouse or any data frame
 #'   that includes column names of sex, year, and the comp_column_name.  The sex column is
 #'   expected to have sexes denoted by F, M, and U.
-#' @param comp_column_name The column name to create composition data for. This column can be
-#'   is used to determine whether to format the composition data for length or age
-#'   compositions by looking for either age (e.g., `age_years`, `Age`, `best_age`) or length
-#'   (e.g., `Length`, `length`, `Length_cm`) in the comp_column_name. The default
-#'   is `Length_cm`.
+#' @param length_column_name The length column name to create conditional age-at-length
+#'  data for. The default is `length_cm`.
+#' @param age_column_name The age column name to create conditional age-at-length
+#'  data for. The default is `age`.
 #'
-#' @returns A list of length or marginal age compositions for sexed and
+#' @returns A data frame of conditiona age-at-length compositions for sexed and
 #' unsexed fish formatted for Stock Synthesis.
 #'
 #' @author Chantel Wetzel
@@ -33,15 +32,10 @@
 #'   survey = "NWFSC.Combo"
 #' )
 #'
-#' length_comps <- get_raw_comps(
+#' caal_data <- get_raw_comps(
 #'   data = bio,
-#'   comp_bins = seq(20, 70, 4)
-#' )
-#'
-#' age_comps <- get_raw_comps(
-#'   data = bio,
-#'   comp_bins = 1:20,
-#'   comp_column_name = "Age"
+#'   len_bins = seq(20, 70, 4),
+#'   age_bins = 1:30,
 #' )
 #' }
 #'
@@ -52,7 +46,6 @@ get_raw_caal <- function(
   length_column_name = "length_cm",
   age_column_name = "age",
   dir = NULL,
-  input_n_method = c("total_samples", "stewart_hamel", "tows"),
   month = "Enter Month",
   fleet = "Enter Fleet",
   partition = 0,
@@ -62,8 +55,6 @@ get_raw_caal <- function(
 
   plotdir <- file.path(dir, printfolder)
   check_dir(dir = plotdir, verbose = verbose)
-
-  input_n_method <- rlang::arg_match(input_n_method)
 
   colnames(data) <- tolower(colnames(data))
   length_column_name <- tolower(length_column_name)
@@ -77,8 +68,8 @@ get_raw_caal <- function(
     )
   }
 
-  data[, "len_col"] <- data[, colnames(data) == "length_column_name"]
-  data[, "age_col"] <- data[, colnames(data) == "age_column_name"]
+  data[, "len_col"] <- data[, colnames(data) == length_column_name]
+  data[, "age_col"] <- data[, colnames(data) == age_column_name]
 
   data <- data |>
     dplyr::filter(!is.na(len_col), !is.na(age_col))
@@ -90,40 +81,6 @@ get_raw_caal <- function(
   # Start matrix to save results
   data[, "allLs"] <- ls[findInterval(data[, "len_col"], ls, all.inside = TRUE)]
   data[, "allAs"] <- as[findInterval(data[, "age_col"], as, all.inside = TRUE)]
-
-  if (!"common_name" %in% colnames(data) & input_n_method == "stewart_hamel") {
-    cli::cli_abort(
-      "Data frame does not contain a column name of common_name which is required
-      to calculate Stewart and Hamel input sample size. The columns names can be
-      either upper or lower case."
-    )
-  }
-
-  # Calculate input sample size based on existing function
-  species <- ifelse("common_name" %in% colnames(data), unique(data[, "common_name"]), "")
-  if ("common_name" %in% colnames(data)) {
-    species_type <- get_species_info(
-      species = species,
-      unident = FALSE,
-      verbose = FALSE
-    )$species_type
-  } else {
-    species_type <- "all"
-  }
-
-  if (!"trawl_id" %in% colnames(data)) {
-    data[, "trawl_id"] <- 1:nrow(data)
-  }
-
-  samples <- get_input_n(
-    dir = dir,
-    data = data,
-    comp_column_name = comp_column_name,
-    input_n_method = input_n_method,
-    species_group = species_type,
-    printfolder = printfolder,
-    verbose = verbose
-  )
 
   Results = NULL
   sex_loop <- unique(data[, "sex"])
@@ -164,10 +121,10 @@ get_raw_caal <- function(
           for(a in age_bins){
             # Subset to relevant rows
             if(a == min(age_bins)) {
-              find2 = find[which(data[find, age_col] %in% c(-999, a))]
+              find2 = find[which(data[find, "allAs"] %in% c(-999, a))]
             }
             if(a == max(age_bins)){
-              find2 = find[which(data[find, age_col] %in% c(Inf, a))]
+              find2 = find[which(data[find, "allAs"] %in% c(Inf, a))]
             }
             if(!a %in% c(min(age_bins), max(age_bins))){
               find2 = which(data[find,'allAs'] == a)
