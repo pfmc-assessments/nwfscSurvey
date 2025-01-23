@@ -128,7 +128,7 @@ pull_catch <- function(
     "subsample_count", "subsample_wt_kg", "cpue_kg_per_ha_der",
     "statistical_partition_dim$statistical_partition_type",
     "partition", "operation_dim$legacy_performance_code",
-    "performance", "station_invalid", "depth_m"
+    "performance", "station_invalid", "actual_station_design_dim$reason_station_invalid", "depth_m"
   )
 
   # These are the retained and returned fields
@@ -196,7 +196,8 @@ pull_catch <- function(
   vars_long <- c(
     "project", "year", "vessel", "pass", "tow", "datetime_utc_iso",
     "depth_hi_prec_m", "longitude_dd", "latitude_dd", "area_swept_ha_der",
-    "trawl_id", "operation_dim$legacy_performance_code", "performance", "station_invalid"
+    "trawl_id", "operation_dim$legacy_performance_code", "performance", "station_invalid",
+    "actual_station_design_dim$reason_station_invalid"
   )
 
   url_text <- get_url(
@@ -268,7 +269,7 @@ pull_catch <- function(
     by = c(colnames(group_names), colnames(all_tows))
   ) |>
     dplyr::arrange(common_name, trawl_id)
-
+  colnames(catch)[colnames(catch) == "actual_station_design_dim$reason_station_invalid"] <- "reason_station_invalid"
   colnames(catch)[colnames(catch) == "statistical_partition_dim$statistical_partition_type"] <- "partition_sample_types"
   colnames(catch)[colnames(catch) == "operation_dim$legacy_performance_code"] <- "legacy_performance_code"
 
