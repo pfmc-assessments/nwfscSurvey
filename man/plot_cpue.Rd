@@ -4,19 +4,27 @@
 \alias{plot_cpue}
 \title{This function plots cpue and length by latitude and depth}
 \usage{
-plot_cpue(dir = NULL, catch, plot = 1:3, width = 7, height = 7)
+plot_cpue(catch, dir = NULL, plot = 1:3, width = 7, height = 7, ...)
 }
 \arguments{
+\item{catch}{Data catch file pulled using \code{\link[=pull_catch]{pull_catch()}}}
+
 \item{dir}{Directory where output will be saved. The directory where the file should be saved.
 If dir = NULL no output will be saved.}
 
-\item{catch}{Data catch file pulled using \code{\link[=pull_catch]{pull_catch()}}}
+\item{plot}{A vector of integers to specify which plots to return. The
+default is to print or save all figures, i.e., \code{plot = 1:3}. Integers
+correspond to the following figures:
+\enumerate{
+\item log(CPUE) by depth & log(CPUE) by latitude
+\item log(CPUE) by latitude and year
+\item log(CPUE) by depth and year
+}}
 
-\item{plot}{A vector of integers specifying the figures you want.}
+\item{width, height}{Numeric values for the figure width and height in
+inches. The defaults are 7 by 7 inches.}
 
-\item{width}{Numeric figure width in inches, defaults to 7}
-
-\item{height}{Numeric figure height in inches, defaults to 7}
+\item{...}{Additional arguments to \code{\link[=ggsave]{ggsave()}}}
 }
 \description{
 This function plots cpue and length by latitude and depth
