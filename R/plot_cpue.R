@@ -25,7 +25,6 @@ plot_cpue <- function(
     width = 7,
     height = 7,
     ...) {
-
   plotdir <- file.path(dir, "plots")
   check_dir(dir = plotdir)
 
@@ -42,7 +41,6 @@ plot_cpue <- function(
 
   # plot 1 - marginal log(cpue) by depth and latitude
   if (1 %in% plot) {
-
     # log(cpue) by depth
     cd <- ggplot2::ggplot(catch[pos, ], aes(x = Depth_m, y = log_cpue)) +
       geom_point(aes(size = log_cpue / size_adj), fill = "darkorange", colour = "darkorange", alpha = 0.75, shape = 21) +
@@ -86,12 +84,10 @@ plot_cpue <- function(
       l$filename <- file.path(dir, "plots", paste0("cpue_by_lat_depth.", l$device))
       do.call(ggsave, l)
     }
-
   }
 
   # plot 2 - log(cpue) by latitude and year
   if (2 %in% plot) {
-
     cly <- ggplot2::ggplot(catch[pos, ], aes(x = Latitude_dd, y = log_cpue)) +
       geom_point(aes(size = log_cpue / (100 * size_adj)), fill = "darkorange", colour = "darkorange", alpha = 0.75, shape = 21) +
       facet_wrap(facets = "Year") +
@@ -106,15 +102,15 @@ plot_cpue <- function(
     print(cly)
     if (!is.null(dir)) {
       l$filename <- file.path(dir, "plots", paste0("cpue_by_year_lat.", l$device))
-      l2 <- l; l2$width <- l2$width + 3; l2$height <- l2$height + 3
+      l2 <- l
+      l2$width <- l2$width + 3
+      l2$height <- l2$height + 3
       do.call(ggsave, l2)
     }
-
   }
 
   # plot 3 - log(cpue) by depth and year
   if (3 %in% plot) {
-
     cdy <- ggplot2::ggplot(catch[pos, ], aes(x = Depth_m, y = log_cpue)) +
       geom_point(aes(size = log_cpue / (100 * size_adj)), fill = "darkorange", colour = "darkorange", alpha = 0.75, shape = 21) +
       facet_wrap(facets = "Year") +
@@ -129,11 +125,10 @@ plot_cpue <- function(
     print(cdy)
     if (!is.null(dir)) {
       l$filename <- file.path(dir, "plots", paste0("cpue_by_year_depth.", l$device))
-      l2 <- l; l2$width <- l2$width + 3; l2$height <- l2$height + 3
+      l2 <- l
+      l2$width <- l2$width + 3
+      l2$height <- l2$height + 3
       do.call(ggsave, l2)
     }
-
   }
-
-
 }
