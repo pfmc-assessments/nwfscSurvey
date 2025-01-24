@@ -58,6 +58,26 @@ test_that("get_raw_comps", {
   expect_equal(sum(age_comps$unsexed$input_n), sum(age_comps$unsexed[, 10:ncol(age_comps$unsexed)]))
 })
 
+
+test_that("get_raw_caal", {
+  skip_on_cran()
+
+  dat <- pull_bio(
+    common_name = "lingcod",
+    years = c(2003, 2018),
+    survey = "NWFSC.Combo",
+    verbose = TRUE
+  )
+  caal <- get_raw_caal(
+    data = dat,
+    len_bins = seq(16, 80, 4),
+    age_bins = 1:12
+  )
+  expect_equal(nrow(caal), 582)
+  expect_equal(ncol(caal), 33)
+  expect_equal(sum(as.numeric(caal$input_n)), 8780)
+})
+
 test_that("get_expanded_comps", {
   catch <- pull_catch(
     common_name = "lingcod",
