@@ -142,7 +142,7 @@ get_raw_caal <- function(
   # Add headers
   Results <-  data.frame(Results)
   caal <- cbind(Results, Results[, 10:ncol(Results)])
-  colnames(caal)[-c(1:9)] = c(paste("f", age_bins, sep=""), paste("m", age_bins, sep=""))
+  colnames(caal)[-c(1:9)] = c(age_bins,  paste("1.", age_bins, sep=""))
 
   if (!is.null(dir)) {
     project <- dplyr::if_else(
