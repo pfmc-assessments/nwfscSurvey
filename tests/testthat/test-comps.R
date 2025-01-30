@@ -61,21 +61,29 @@ test_that("get_raw_comps", {
 
 test_that("get_raw_caal", {
   skip_on_cran()
-
-  dat <- pull_bio(
+  bio <- pull_bio(
     common_name = "lingcod",
     years = c(2003, 2018),
     survey = "NWFSC.Combo",
     verbose = TRUE
   )
   caal <- get_raw_caal(
-    data = dat,
+    data = bio,
     len_bins = seq(16, 80, 4),
     age_bins = 1:12
   )
   expect_equal(nrow(caal), 582)
   expect_equal(ncol(caal), 33)
-  expect_equal(sum(as.numeric(caal$input_n)), 8780)
+  expect_equal(sum(caal$input_n), sum(caal[, 10:ncol(caal)]))
+
+  caal_unsexed <- get_raw_caal(
+    data = bio |> dplyr::filter(Sex == "U"),
+    len_bins = seq(16, 80, 4),
+    age_bins = 1:12
+  )
+  expect_equal(nrow(caal_unsexed), 68)
+  expect_equal(ncol(caal_unsexed), 21)
+  expect_equal(sum(caal_unsexed$input_n), sum(caal_unsexed[, 10:ncol(caal_unsexed)]))
 })
 
 test_that("get_expanded_comps", {
