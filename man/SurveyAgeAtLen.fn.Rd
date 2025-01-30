@@ -93,8 +93,7 @@ the output will just be saved directly in \code{dir}. The default is \code{"forS
 warnings to the console. The default is \code{TRUE}.}
 }
 \description{
-Calculates conditional age-at-length composition data using raw numbers at length,
-assuming that is a random sample conditioned on length and sex.
+This function has been deprecated as of version 2.6. Please use get_raw_caal().
 }
 \seealso{
 \code{\link{StrataFactors.fn}}

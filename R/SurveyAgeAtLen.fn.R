@@ -1,7 +1,6 @@
 #' Calculates conditional age-at-length composition data
 #'
-#' Calculates conditional age-at-length composition data using raw numbers at length,
-#' assuming that is a random sample conditioned on length and sex.
+#' This function has been deprecated as of version 2.6. Please use get_raw_caal().
 #'
 #'
 #' @template dir
@@ -57,6 +56,11 @@ SurveyAgeAtLen.fn <- function(
     printfolder = "forSS3",
     verbose = TRUE) {
   # deprecate old arguments
+  lifecycle::deprecate_stop(
+    when = "2.6",
+    what = "nwfscSurvey::SurveyAgeAtLen.fn()",
+    with = "nwfscSurvey::get_raw_caal()"
+  )
   if (lifecycle::is_present(ageErr)) {
     lifecycle::deprecate_warn(
       when = "2.2",
