@@ -452,11 +452,8 @@ get_expanded_comps <- function(
       partition = partition,
       input_n = samples |> dplyr::filter(sex_grouped == "unsexed") |> dplyr::select(input_n)
     )
-    # change u0, u1, ..., u0.1, u1.1, etc. to f0 f1, ..., m0, m1, etc.
     unsexed_comps_good <- unsexed_comps[, dimensions]
-    #names(unsexed_comps_good) <- gsub("^u", "f", names(unsexed_comps_good))
     placeholder_comps <- 0 * unsexed_comps[, dimensions]
-    #names(placeholder_comps) <- gsub("^u", "m", names(placeholder_comps))
     unsexed_formatted <- cbind(unsexed_formatted, unsexed_comps_good, placeholder_comps)
     remove <- which(apply(unsexed_formatted[, 7:ncol(unsexed_formatted)], 1, sum) == 0)
     if (length(remove) > 0) {
