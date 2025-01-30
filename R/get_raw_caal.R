@@ -82,18 +82,18 @@ get_raw_caal <- function(
   data[, "allLs"] <- ls[findInterval(data[, "len_col"], ls, all.inside = TRUE)]
   data[, "allAs"] <- as[findInterval(data[, "age_col"], as, all.inside = TRUE)]
 
-  Results = NULL
   sex_loop <- unique(data[, "sex"])
   year_loop <- unique(data[, "year"])
 
+  comps_df <- comps_row <- year <- sex <- input_n <- lbin_low <- NULL
   #Loop across F then M
-  for(s in sex_loop){
+  for(s in sex_loop) {
     # Loop across years
     year_loop <- sort(unique(data[, "year"][data[, "sex"] == s]))
-    for(y in year_loop){
+    for(y in year_loop) {
       ########## CONDITIONAL
       # Loop across Length-bins
-      for(l in len_bins){
+      for(l in len_bins) {
         # Identify relevant rows
         if(l == min(len_bins)) {
           find = which(data[, "sex"] == s & data[, "year"] == y & data[,'allLs'] %in% c(-999, l))
@@ -106,43 +106,63 @@ get_raw_caal <- function(
         }
         # Skip this year unless there are rows
         if(length(find) > 0){
-          # Format reference stuff
-          Row = c(
-            'year' = y,
-            'month' = month,
-            'fleet'= fleet,
-            'sex' = ifelse(s == "F", 1, ifelse(s == "M", 2, 0)),
-            'partition' = partition,
-            'age_error' = ageerr,
-            'Lbin_lo' = l,
-            'Lbin_hi' = l,
-            'input_n'= NA)
           # Loop across age bins
-          for(a in age_bins){
+          comps_row <- NULL
+          for(a in age_bins) {
             # Subset to relevant rows
             if(a == min(age_bins)) {
               find2 = find[which(data[find, "allAs"] %in% c(-999, a))]
             }
-            if(a == max(age_bins)){
-              find2 = find[which(data[find, "allAs"] %in% c(Inf, a))]
+            if(a == max(age_bins)) {
+              find2 <- find[which(data[find, "allAs"] %in% c(Inf, a))]
             }
-            if(!a %in% c(min(age_bins), max(age_bins))){
-              find2 = which(data[find,'allAs'] == a)
+            if(!a %in% c(min(age_bins), max(age_bins))) {
+              find2 <- which(data[find,'allAs'] == a)
             }
-            Row = c(Row, length(find2))
+            comps_row <- c(comps_row, length(find2))
           } # End Age loop
           # Add to results matrix
-          Row['input_n'] <- sum(as.numeric(Row[10:length(Row)]))
-          Results = rbind(Results, Row)
+          input_n <- c(input_n, sum(comps_row))
+          sex <- c(sex, dplyr::case_when(s == "M" ~ 2, s == "F" ~ 1, .default = 0))
+          year <- c(year, y)
+          lbin_low <- c(lbin_low, l)
+          comps_df <- rbind(comps_df, comps_row)
         } # length(Which)
       } # End Length loop
     } # End Year loop
   } # End Sex loop
 
-  # Add headers
-  Results <-  data.frame(Results)
-  caal <- cbind(Results, Results[, 10:ncol(Results)])
-  colnames(caal)[-c(1:9)] = c(age_bins,  paste("1.", age_bins, sep=""))
+  row_info <- data.frame(
+    'year' = year,
+    'month' = month,
+    'fleet'= fleet,
+    'sex' = sex,
+    'partition' = partition,
+    'age_error' = ageerr,
+    'Lbin_lo' = lbin_low,
+    'Lbin_hi' = lbin_low,
+    'input_n'= input_n)
+
+  rownames(comps_df) <- NULL
+  if (any(c("M", "F") %in% sex_loop)) {
+    caal <- cbind(row_info, comps_df, comps_df)
+    colnames(caal)[-c(1:9)] <- c(paste("f", age_bins, sep = ""), paste("m", age_bins, sep = ""))
+    # 0 out the needed location by sex
+    female_loc <- 10:(length(age_bins) + 9)
+    male_loc <- (1 + max(female_loc)):ncol(caal)
+    caal[which(caal[, "sex"] == 1), male_loc] <- caal[which(caal[, "sex"] == 1), male_loc] * 0
+    caal[which(caal[, "sex"] == 2), female_loc] <- caal[which(caal[, "sex"] == 2), female_loc] * 0
+    caal[which(caal[, "sex"] == 0), male_loc] <- caal[which(caal[, "sex"] == 0), male_loc] * 0
+  } else {
+    caal <- cbind(row_info, comps_df)
+    colnames(caal)[-c(1:9)] <- paste("u", age_bins, sep = "")
+  }
+
+  if (any(caal[, "input_n"] == 0)) {
+    # Remove any rows with no samples
+    remove <- which(caal[, "input_n"] == 0)
+    caal <- caal[-remove, ]
+  }
 
   if (!is.null(dir)) {
     project <- dplyr::if_else(
@@ -151,7 +171,7 @@ get_raw_caal <- function(
       false = ""
     )
     bin_range <- paste0("a", min(age_bins), "-a", max(age_bins), "_l", min(len_bins), "-l", max(len_bins))
-
+    species <- gsub(" ", "_", tolower(unique(data[, "common_name"])))[1]
     write.csv(
       caal,
       file = file.path(plotdir, paste0("survey_caal_bins_", bin_range,"_", species, "_", project, ".csv")),
