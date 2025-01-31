@@ -54,7 +54,7 @@
                         <h4 data-toc-skip class="author">Chantel
 Wetzel</h4>
             
-            <h4 data-toc-skip class="date">2025-01-23</h4>
+            <h4 data-toc-skip class="date">2025-01-31</h4>
       
 
       <div class="d-none name"><code>nwfscSurvey.Rmd</code></div>
@@ -276,17 +276,15 @@ set equal to the number of samples in the data frame.</p>
 <p>To calculate conditional-age-at-length data formatted for Stock
 Synthesis:</p>
 <div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">caal</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/SurveyAgeAtLen.fn.html">SurveyAgeAtLen.fn</a></span><span class="op">(</span></span>
-<span>  datAL <span class="op">=</span> <span class="va">bio</span>, </span>
-<span>  datTows <span class="op">=</span> <span class="va">catch</span>,</span>
-<span>  strat.df <span class="op">=</span> <span class="va">strata</span>,</span>
-<span>  lgthBins <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="fl">10</span>, <span class="fl">40</span>, <span class="fl">2</span><span class="op">)</span>, </span>
-<span>  ageBins <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">40</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">caal</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/get_raw_caal.html">get_raw_caal</a></span><span class="op">(</span></span>
+<span>  data <span class="op">=</span> <span class="va">bio</span>, </span>
+<span>  len_bins <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="fl">10</span>, <span class="fl">40</span>, <span class="fl">2</span><span class="op">)</span>,</span>
+<span>  age_bins <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">40</span><span class="op">)</span></span></code></pre></div>
 <p>Creates unexpanded conditional-age-at-length data for each sex with
 input sample sizes based on the observed number of fish in each length
-bin by year. It returns a list of three dataframes: “female”, “male”,
-and “unsexed”. If the <code>dir</code> function input is specified, it
-will write these dataframes to separate csv files as well.</p>
+bin by year. It returns a dataframe with conditional-age-at-length data
+by sex (sex = 0, sex = 1, sex = 2). If the <code>dir</code> function
+input is specified, it will write the dataframe to a csv file.</p>
 </div>
 <div class="section level4">
 <h4 id="maps">Maps<a class="anchor" aria-label="anchor" href="#maps"></a>
