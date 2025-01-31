@@ -125,6 +125,21 @@ test_that("pull_haul", {
   expect_equal(nrow(dat), 10351)
 })
 
+test_that("pull_catch_unfiltered", {
+  skip_on_cran()
+
+  dat <- pull_catch(
+    common_name = "lingcod",
+    years = c(2003, 2018),
+    survey = "NWFSC.Combo",
+    dir = NULL,
+    verbose = FALSE,
+    standard_filtering = FALSE
+  )
+  expect_is(dat, "data.frame")
+  expect_equal(nrow(dat), 11302)
+})
+
 test_that("pull_bio", {
   skip_on_cran()
 

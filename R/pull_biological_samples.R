@@ -99,6 +99,7 @@ pull_biological_samples <- function(
     "program",
     "project",
     "reason_stn_invalid",
+    "actual_station_design_dim$reason_station_invalid",
     "sex",
     "species_category",
     "species_subcategory",
@@ -176,6 +177,7 @@ pull_biological_samples <- function(
   bio_samples$trawl_id <- as.character(bio_samples$trawl_id)
   rename_columns <- which(colnames(bio_samples) %in% "operation_dim$legacy_performance_code")
   colnames(bio_samples)[rename_columns] <- "legacy_performance_code"
+  colnames(bio_samples)[colnames(bio_samples) == "actual_station_design_dim$reason_station_invalid"] <- "reason_station_invalid"
 
   if (standard_filtering == TRUE & verbose == TRUE) {
     cli::cli_inform(

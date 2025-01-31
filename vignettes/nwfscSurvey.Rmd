@@ -194,14 +194,12 @@ This function returns a list of sexed and unsexed marginal age composition data 
 
 To calculate conditional-age-at-length data formatted for Stock Synthesis:
 ```r
-caal <- SurveyAgeAtLen.fn(
-  datAL = bio, 
-  datTows = catch,
-  strat.df = strata,
-  lgthBins = seq(10, 40, 2), 
-  ageBins = 1:40)
+caal <- get_raw_caal(
+  data = bio, 
+  len_bins = seq(10, 40, 2),
+  age_bins = 1:40)
 ```
-Creates unexpanded conditional-age-at-length data for each sex with input sample sizes based on the observed number of fish in each length bin by year. It returns a list of three dataframes: "female", "male", and "unsexed". If the `dir` function input is specified, it will write these dataframes to separate csv files as well.
+Creates unexpanded conditional-age-at-length data for each sex with input sample sizes based on the observed number of fish in each length bin by year. It returns a dataframe with conditional-age-at-length data by sex (sex = 0, sex = 1, sex = 2). If the `dir` function input is specified, it will write the dataframe to a csv file.
 
 #### Maps
 
