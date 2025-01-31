@@ -138,7 +138,7 @@ get_raw_caal <- function(
     'fleet'= fleet,
     'sex' = sex,
     'partition' = partition,
-    'age_error' = ageerr,
+    'ageerr' = ageerr,
     'Lbin_lo' = lbin_low,
     'Lbin_hi' = lbin_low,
     'input_n'= input_n)
