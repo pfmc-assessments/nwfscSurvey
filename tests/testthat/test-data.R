@@ -14,7 +14,9 @@ test_that("pull_catch", {
     verbose = TRUE
   )
   expect_is(dat, "data.frame")
-  expect_equal(nrow(dat), 10351)
+  expect_equal(nrow(dat), 10353)
+  # the number of records changed to 10353 on 2/7/2025
+  #expect_equal(nrow(dat), 10351)
 })
 
 test_that("pull_catch-multispecies", {
@@ -122,7 +124,9 @@ test_that("pull_haul", {
     verbose = FALSE
   )
   expect_is(dat, "data.frame")
-  expect_equal(nrow(dat), 10351)
+  expect_equal(nrow(dat), 10353)
+  # the number of records changed to 10353 on 2/7/2025
+  #expect_equal(nrow(dat), 10351)
 })
 
 test_that("pull_catch_unfiltered", {
