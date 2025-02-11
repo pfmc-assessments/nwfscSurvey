@@ -40,19 +40,18 @@
 #' }
 #'
 get_raw_caal <- function(
-  data,
-  len_bins,
-  age_bins,
-  length_column_name = "length_cm",
-  age_column_name = "age",
-  dir = NULL,
-  month = "Enter Month",
-  fleet = "Enter Fleet",
-  partition = 0,
-  ageerr = "Enter Numeric",
-  printfolder = "forSS3",
-  verbose = TRUE) {
-
+    data,
+    len_bins,
+    age_bins,
+    length_column_name = "length_cm",
+    age_column_name = "age",
+    dir = NULL,
+    month = "Enter Month",
+    fleet = "Enter Fleet",
+    partition = 0,
+    ageerr = "Enter Numeric",
+    printfolder = "forSS3",
+    verbose = TRUE) {
   plotdir <- file.path(dir, printfolder)
   check_dir(dir = plotdir, verbose = verbose)
 
@@ -86,38 +85,38 @@ get_raw_caal <- function(
   year_loop <- unique(data[, "year"])
 
   comps_df <- comps_row <- year <- sex <- input_n <- lbin_low <- NULL
-  #Loop across F then M
-  for(s in sex_loop) {
+  # Loop across F then M
+  for (s in sex_loop) {
     # Loop across years
     year_loop <- sort(unique(data[, "year"][data[, "sex"] == s]))
-    for(y in year_loop) {
+    for (y in year_loop) {
       ########## CONDITIONAL
       # Loop across Length-bins
-      for(l in len_bins) {
+      for (l in len_bins) {
         # Identify relevant rows
-        if(l == min(len_bins)) {
-          find = which(data[, "sex"] == s & data[, "year"] == y & data[,'allLs'] %in% c(-999, l))
+        if (l == min(len_bins)) {
+          find <- which(data[, "sex"] == s & data[, "year"] == y & data[, "allLs"] %in% c(-999, l))
         }
-        if(l == max(len_bins)){
-          find = which(data[, "sex"] == s & data[, "year"] == y & data[,'allLs'] %in% c(Inf, l))
+        if (l == max(len_bins)) {
+          find <- which(data[, "sex"] == s & data[, "year"] == y & data[, "allLs"] %in% c(Inf, l))
         }
-        if(!l %in% c(min(len_bins), max(len_bins))){
-          find = which(data[, "sex"] == s & data[, "year"] == y & data[,'allLs'] == l)
+        if (!l %in% c(min(len_bins), max(len_bins))) {
+          find <- which(data[, "sex"] == s & data[, "year"] == y & data[, "allLs"] == l)
         }
         # Skip this year unless there are rows
-        if(length(find) > 0){
+        if (length(find) > 0) {
           # Loop across age bins
           comps_row <- NULL
-          for(a in age_bins) {
+          for (a in age_bins) {
             # Subset to relevant rows
-            if(a == min(age_bins)) {
-              find2 = find[which(data[find, "allAs"] %in% c(-999, a))]
+            if (a == min(age_bins)) {
+              find2 <- find[which(data[find, "allAs"] %in% c(-999, a))]
             }
-            if(a == max(age_bins)) {
+            if (a == max(age_bins)) {
               find2 <- find[which(data[find, "allAs"] %in% c(Inf, a))]
             }
-            if(!a %in% c(min(age_bins), max(age_bins))) {
-              find2 <- which(data[find,'allAs'] == a)
+            if (!a %in% c(min(age_bins), max(age_bins))) {
+              find2 <- which(data[find, "allAs"] == a)
             }
             comps_row <- c(comps_row, length(find2))
           } # End Age loop
@@ -133,15 +132,16 @@ get_raw_caal <- function(
   } # End Sex loop
 
   row_info <- data.frame(
-    'year' = year,
-    'month' = month,
-    'fleet'= fleet,
-    'sex' = sex,
-    'partition' = partition,
-    'ageerr' = ageerr,
-    'Lbin_lo' = lbin_low,
-    'Lbin_hi' = lbin_low,
-    'input_n'= input_n)
+    "year" = year,
+    "month" = month,
+    "fleet" = fleet,
+    "sex" = sex,
+    "partition" = partition,
+    "ageerr" = ageerr,
+    "Lbin_lo" = lbin_low,
+    "Lbin_hi" = lbin_low,
+    "input_n" = input_n
+  )
 
   rownames(comps_df) <- NULL
   if (any(c("M", "F") %in% sex_loop)) {
@@ -174,7 +174,7 @@ get_raw_caal <- function(
     species <- gsub(" ", "_", tolower(unique(data[, "common_name"])))[1]
     write.csv(
       caal,
-      file = file.path(plotdir, paste0("survey_caal_bins_", bin_range,"_", species, "_", project, ".csv")),
+      file = file.path(plotdir, paste0("survey_caal_bins_", bin_range, "_", species, "_", project, ".csv")),
       row.names = FALSE
     )
   }
