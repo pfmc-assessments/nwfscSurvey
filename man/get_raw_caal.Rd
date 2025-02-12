@@ -79,7 +79,7 @@ bio <- pull_bio(
   survey = "NWFSC.Combo"
 )
 
-caal_data <- get_raw_comps(
+caal_data <- get_raw_caal(
   data = bio,
   len_bins = seq(20, 70, 4),
   age_bins = 1:30,
