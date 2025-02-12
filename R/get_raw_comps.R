@@ -207,7 +207,7 @@ get_raw_comps <- function(
       fleet = fleet,
       sex = 3,
       partition = partition,
-      input_n = samples |> dplyr::filter(sex_grouped == "sexed") |> dplyr::select(input_n) # Results[, 2]
+      input_n = samples |> dplyr::filter(sex_grouped == "sexed", input_n > 0) |> dplyr::select(input_n) # Results[, 2]
     )
     out <- cbind(tmp, Results[, -c(1:2)])
     colnames(out)[-c(1:6)] <- c(
