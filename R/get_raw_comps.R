@@ -135,8 +135,11 @@ get_raw_comps <- function(
   if (!"common_name" %in% colnames(data) & input_n_method == "stewart_hamel") {
     cli::cli_abort(
       "Data frame does not contain a column name of common_name which is required
-      to calculate Stewart and Hamel input sample size. The columns names can be
-      either upper or lower case."
+      to calculate Stewart and Hamel input sample size. This method was developed based on
+      bootstrapping of trawl survey data and is generally only applied to trawl survey data
+      for West Coast groundfish assessments. If trying to calculate input sample size for
+      other data sources, please consider using either the input_n_method options of
+      tows (if that information is available) or total samples."
     )
   }
 
