@@ -444,13 +444,19 @@ get_expanded_comps <- function(
       sexed_formatted <- sexed_formatted[-remove, ]
     }
 
+    input_n <- samples |> dplyr::filter(sex_grouped == "unsexed") |> dplyr::select(input_n)
+    # if there are no unsexed fish, input_n will be empty
+    if(nrow(input_n) == 0) {
+      input_n <- 0
+    }
+
     unsexed_formatted <- data.frame(
       year = unsexed_comps[, "year"],
       month = month,
       fleet = fleet,
       sex = 0,
       partition = partition,
-      input_n = samples |> dplyr::filter(sex_grouped == "unsexed") |> dplyr::select(input_n)
+      input_n = input_n
     )
     unsexed_comps_good <- unsexed_comps[, dimensions]
     placeholder_comps <- 0 * unsexed_comps[, dimensions]
