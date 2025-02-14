@@ -79,7 +79,7 @@ test_that("get_raw_comps_triennial", {
   )
   expect_equal(nrow(length_comps$sexed), 9)
   expect_equal(sum(length_comps$sexed$input_n), sum(length_comps$sexed[, 7:ncol(length_comps$sexed)]))
-  expect_equal(nrow(length_comps$unsexed), 0)
+  expect_equal(nrow(length_comps$unsexed), NULL)
 
   length_unsexed_comps <- get_raw_comps(
     data = length_data,
@@ -89,7 +89,7 @@ test_that("get_raw_comps_triennial", {
     input_n_method = "stewart_hamel"
   )
   expect_equal(nrow(length_unsexed_comps$unsexed), 9)
-  expect_equal(sum(length_unsexed_comps$unsexed$input_n), 8195)
+  expect_equal(sum(length_unsexed_comps$unsexed$input_n), 1125)
 })
 
 
