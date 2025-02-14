@@ -58,6 +58,40 @@ test_that("get_raw_comps", {
   expect_equal(sum(age_comps$unsexed$input_n), sum(age_comps$unsexed[, 10:ncol(age_comps$unsexed)]))
 })
 
+test_that("get_raw_comps_triennial", {
+  skip_on_cran()
+
+  dat <- pull_bio(
+    common_name = "yellowtail rockfish",
+    years = c(1980, 2004),
+    survey = "Triennial",
+    verbose = TRUE
+  )
+  length_data <- dat$length_data |>
+    dplyr::filter(Sex != "U")
+
+  length_comps <- get_raw_comps(
+    data = length_data,
+    comp_bins = seq(20, 50, 2),
+    comp_column_name = "Length_cm",
+    two_sex_comps = TRUE,
+    input_n_method = "total_samples"
+  )
+  expect_equal(nrow(length_comps$sexed), 9)
+  expect_equal(sum(length_comps$sexed$input_n), sum(length_comps$sexed[, 7:ncol(length_comps$sexed)]))
+  expect_equal(nrow(length_comps$unsexed), NULL)
+
+  length_unsexed_comps <- get_raw_comps(
+    data = length_data,
+    comp_bins = seq(20, 50, 2),
+    comp_column_name = "Length_cm",
+    two_sex_comps = FALSE,
+    input_n_method = "stewart_hamel"
+  )
+  expect_equal(nrow(length_unsexed_comps$unsexed), 9)
+  expect_equal(sum(length_unsexed_comps$unsexed$input_n), 1125)
+})
+
 
 test_that("get_raw_caal", {
   skip_on_cran()
@@ -122,6 +156,21 @@ test_that("get_expanded_comps", {
   expect_equal(sum(length_comps$sexed$input_n), 4883)
   expect_equal(nrow(length_comps$unsexed), 14)
   expect_equal(sum(length_comps$unsexed$input_n), 84)
+
+  length_comps_sexed <- get_expanded_comps(
+    bio_data = bio |> dplyr::filter(Sex != "U"),
+    catch_data = catch,
+    comp_bins = seq(14, 80, 4),
+    strata = strata,
+    comp_column_name = "length_cm",
+    two_sex_comps = TRUE,
+    output = "full_expansion_ss3_format",
+    input_n_method = "stewart_hamel",
+    verbose = FALSE
+  )
+  expect_equal(nrow(length_comps_sexed$sexed), 16)
+  expect_equal(sum(length_comps_sexed$sexed$input_n), 4883)
+  expect_equal(nrow(length_comps_sexed$unsexed), 0)
 
   # confirm that plot_comps works for expanded length comps
   comp_plot <- plot_comps(length_comps)
