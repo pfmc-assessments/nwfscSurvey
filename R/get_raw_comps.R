@@ -16,7 +16,7 @@
 #'   that includes column names of sex, year, and the comp_column_name. The sex column is
 #'   expected to have sexes denoted by F, M, and U. If tows/trips are desired for `input_n_method`
 #'   and a column exists within the data frame with this information, the column needs to be named `trawl_id`,
-#'   otherwise the function will set a unique `trawl_id` for each record. 
+#'   otherwise the function will set a unique `trawl_id` for each record.
 #' @param comp_column_name The column name to create composition data for. This column can be
 #'   is used to determine whether to format the composition data for length or age
 #'   compositions by looking for either age (e.g., `age_years`, `Age`, `best_age`) or length
