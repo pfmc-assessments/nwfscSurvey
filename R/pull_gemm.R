@@ -45,7 +45,7 @@ pull_gemm <- function(
 
   # Pull all gemm data
   gemm <- utils::read.csv(
-    url("https://www.webapps.nwfsc.noaa.gov/data/api/v1/source/observer.gemm_fact/selection.csv"),
+    url("https://www.webapps.nwfsc.noaa.gov/trips/api/v1/source/observer.gemm_fact/selection.csv"),
     encoding = "UTF-8-BOM"
   ) %>%
     janitor::clean_names()
