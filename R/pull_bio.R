@@ -248,7 +248,6 @@ pull_bio <- function(
       len_pull$date <- chron::chron(format(as.POSIXlt(len_pull$datetime_utc_iso, format = "%Y-%m-%dT%H:%M:%S"), "%Y-%m-%d"), format = "y-m-d", out.format = "YYYY-m-d")
       len_pull$trawl_id <- as.character(len_pull$trawl_id)
       colnames(len_pull)[colnames(len_pull) == "actual_station_design_dim$reason_station_invalid"] <- "reason_station_invalid"
-      colnames(len_pull)[colnames(len_pull) == "standard_survey_length_or_width_indicator"] <- "ageing_lab"
       colnames(len_pull)[colnames(len_pull) == "operation_dim$legacy_performance_code"] <- "legacy_performance_code"
     }
 
