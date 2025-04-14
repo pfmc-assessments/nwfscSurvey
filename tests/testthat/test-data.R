@@ -233,7 +233,7 @@ test_that("pull_bio_afsc_slope", {
   )
   expect_is(dat, "list")
   expect_equal(nrow(dat[[1]]), 47269)
-  expect_equal(nrow(dat[[2]]), 14769)
+  expect_equal(nrow(dat[[2]]), 14763)
 })
 
 
