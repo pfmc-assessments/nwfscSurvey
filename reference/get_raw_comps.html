@@ -65,10 +65,13 @@
 
 
 <dl><dt id="arg-data">data<a class="anchor" aria-label="anchor" href="#arg-data"></a></dt>
-<dd><p>A data frame that includes columns of year, sex, and length/ages. The data
+<dd><p>A data frame that includes columns of year, sex, and length/ages. The case
+of the column names does not matter as the function reduces them to lower case. The data
 frame can be survey data pulled using pull_bio from the data warehouse or any data frame
-that includes column names of sex, year, and the comp_column_name.  The sex column is
-expected to have sexes denoted by F, M, and U.</p></dd>
+that includes column names of sex, year, and the comp_column_name. The sex column is
+expected to have sexes denoted by F, M, and U. If tows/trips are desired for <code>input_n_method</code>
+and a column exists within the data frame with this information, the column needs to be named <code>trawl_id</code>,
+otherwise the function will set a unique <code>trawl_id</code> for each record.</p></dd>
 
 
 <dt id="arg-comp-bins">comp_bins<a class="anchor" aria-label="anchor" href="#arg-comp-bins"></a></dt>
