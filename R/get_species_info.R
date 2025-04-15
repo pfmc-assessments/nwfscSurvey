@@ -37,7 +37,7 @@
 #'
 get_species_info <- function(species, unident = FALSE, verbose = TRUE) {
   # background information
-  sppnames <- PullSpp.fn()
+  sppnames <- pull_spp()
   if (!unident) {
     sppnames <- sppnames[!grepl("unident", sppnames[["common"]]), ]
   }
