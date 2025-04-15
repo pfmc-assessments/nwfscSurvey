@@ -97,14 +97,14 @@ and <code><a href="GetStrata.fn.html">GetStrata.fn</a></code> for the different 
 <span class="r-out co"><span class="r-pr">#&gt;</span> 74    Eopsetta jordani petrale sole petrale_sole   Eopsetta_jordani   petrale</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>        strata species_type</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 133 sablefish        other</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 74      coast     flatfish</span>
-<span class="r-in"><span><span class="co"># Expect a warning because vermilion doesn't have an strata assigned to it</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 74  sablefish        other</span>
+<span class="r-in"><span><span class="fu">get_species_info</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"vermilion"</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                 latin             common        common_name   scientific_name</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 644 Sebastes miniatus vermilion rockfish vermilion_rockfish Sebastes_miniatus</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         input strata species_type</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 644 vermilion  coast     flatfish</span>
 <span class="r-in"><span><span class="fu">testthat</span><span class="fu">::</span><span class="fu"><a href="https://testthat.r-lib.org/reference/expect_error.html" class="external-link">expect_message</a></span><span class="op">(</span></span></span>
-<span class="r-in"><span>  <span class="fu">get_species_info</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"vermilion"</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="co"># Dusky returns multiple entries</span></span></span>
-<span class="r-in"><span><span class="fu">testthat</span><span class="fu">::</span><span class="fu"><a href="https://testthat.r-lib.org/reference/expect_error.html" class="external-link">expect_message</a></span><span class="op">(</span></span></span>
-<span class="r-in"><span>  <span class="fu">get_species_info</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"dusky"</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span>  <span class="fu">get_species_info</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"chilipepper"</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
