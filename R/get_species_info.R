@@ -115,15 +115,15 @@ get_species_info <- function(species, unident = FALSE, verbose = TRUE) {
   # Match strata
   index <- match(tolower(out[, "common_name"]), tolower(spplist[, 2]))
   if (any(is.na(index))) {
-    bad <- which(is.na(index))
-    bad_strata <- paste(unique(out[bad, "input"]), collapse = ", ")
-    if (any(is.na(index))) {
-      cli::cli_alert_warning(
-        "The following species were not found in the look up table stored in
-        get_species_info(), please self-assign strata and species_type:
-        {bad_strata}."
-      )
-    }
+    #bad <- which(is.na(index))
+    #bad_strata <- paste(unique(out[bad, "input"]), collapse = ", ")
+    #if (any(is.na(index))) {
+    #  cli::cli_alert_warning(
+    #    "The following species were not found in the look up table stored in
+    #    get_species_info(), please self-assign strata and species_type:
+    #    {bad_strata}."
+    #  )
+    #}
 
     if (length(index) != 1) {
       if (verbose) {
@@ -135,7 +135,7 @@ get_species_info <- function(species, unident = FALSE, verbose = TRUE) {
         )
       }
     }
-    if (sum(!is.na(index)) == length(index)) {
+    if (sum(!is.na(index)) != length(index)) {
       out <- out[!is.na(index), ]
       index <- index[!is.na(index)]
     }
