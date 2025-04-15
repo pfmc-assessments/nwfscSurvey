@@ -23,6 +23,7 @@
 #'   unexpanded sample numbers.
 #' @param NAs2zero A logical specifying if `NA`s should be changed to zeros.
 #'   The default is `TRUE`.
+#' @param ageErr Deprecated.
 #' @inheritParams get_expanded_comps
 #' @param returnSamps A logical with the default of `FALSE`. A value of `TRUE`
 #'   stops the function after the sample size is calculated.
