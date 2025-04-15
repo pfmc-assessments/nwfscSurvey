@@ -26,18 +26,14 @@
 #' @author Kelli Faye Johnson
 #' @examples
 #' get_species_info(c("sablefish", "petrale"))
-#' # Expect a warning because vermilion doesn't have an strata assigned to it
+#' get_species_info(c("vermilion"))
 #' testthat::expect_message(
-#'   get_species_info(c("vermilion"))
-#' )
-#' # Dusky returns multiple entries
-#' testthat::expect_message(
-#'   get_species_info(c("dusky"))
+#'   get_species_info(c("chilipepper"))
 #' )
 #'
 get_species_info <- function(species, unident = FALSE, verbose = TRUE) {
   # background information
-  sppnames <- nwfscSurvey::PullSpp.fn()
+  sppnames <- pull_spp()
   if (!unident) {
     sppnames <- sppnames[!grepl("unident", sppnames[["common"]]), ]
   }
@@ -55,6 +51,7 @@ get_species_info <- function(species, unident = FALSE, verbose = TRUE) {
     c("coast", "curlfin_sole", "flatfish"),
     c("coast", "darkblotched_rockfish", "shelfrock"),
     c("coast", "dover_sole", "flatfish"),
+    c("coast", "dusky_rockfish", "shelfrock"),
     c("coast", "english_sole", "flatfish"),
     c("wa_or", "flathead_sole", "flatfish"),
     c("coast", "greenspotted_rockfish", "shelfrock"),
@@ -114,42 +111,37 @@ get_species_info <- function(species, unident = FALSE, verbose = TRUE) {
 
   # Match strata
   index <- match(tolower(out[, "common_name"]), tolower(spplist[, 2]))
-  if (any(is.na(index))) {
-    bad <- which(is.na(index))
-    bad_strata <- paste(unique(out[bad, "input"]), collapse = ", ")
+  if (sum(is.na(index)) == length(index)) {
+    index <- grep(species, tolower(out[, "common_name"]))[1]
+    out <- out[index, ]
+  } else {
     if (any(is.na(index))) {
-      cli::cli_alert_warning(
-        "The following species were not found in the look up table stored in
-        get_species_info(), please self-assign strata and species_type:
-        {bad_strata}."
-      )
-    }
+      bad <- which(is.na(index))
+      bad_strata <- paste(unique(out[bad, "input"]), collapse = ", ")
 
-    if (length(index) != 1) {
-      if (verbose) {
-        multi_matches <- paste(unique(out[bad, "common_name"]), collapse = ", ")
-        cli::cli_alert_warning(
-          "Multiple matches were found for the {species} in the look up table
-          stored in PullSpp.fn(). Only one match is returned.
-          The common_name for the removed match is: {multi_matches}."
-        )
+      if (length(index) != 1) {
+        if (verbose) {
+          multi_matches <- paste(unique(out[bad, "common_name"]), collapse = ", ")
+          cli::cli_alert_warning(
+            "Multiple matches were found for the {species} in the look up table
+           stored in pull_spp(). Only one match is returned. The common_name for the removed match is: {multi_matches}."
+          )
+        }
       }
-    }
-    if (sum(!is.na(index)) == length(index)) {
       out <- out[!is.na(index), ]
       index <- index[!is.na(index)]
     }
   }
 
   out[, "strata"] <- ifelse(
-    test = is.na(index),
+    test = is.na(index[1]),
     yes = "coast",
-    no = spplist[index, 1]
+    no = spplist[index[1], 1]
   )
   out[, "species_type"] <- ifelse(
-    test = is.na(index),
+    test = is.na(index[1]),
     yes = "all",
-    no = spplist[index, 3]
+    no = spplist[index[1], 3]
   )
 
   return(out)
