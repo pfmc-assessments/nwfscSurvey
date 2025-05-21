@@ -36,13 +36,9 @@ a vector of species.
 }
 \examples{
 get_species_info(c("sablefish", "petrale"))
-# Expect a warning because vermilion doesn't have an strata assigned to it
+get_species_info(c("vermilion"))
 testthat::expect_message(
-  get_species_info(c("vermilion"))
-)
-# Dusky returns multiple entries
-testthat::expect_message(
-  get_species_info(c("dusky"))
+  get_species_info(c("chilipepper"))
 )
 
 }

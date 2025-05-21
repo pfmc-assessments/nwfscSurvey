@@ -82,6 +82,8 @@ fish only. Default of 0.}
 \item{ageerr}{Number of ageing error vector to apply to the age data based on
 Stock Synthesis. Default "Enter Numeric".}
 
+\item{ageErr}{Deprecated.}
+
 \item{returnSamps}{A logical with the default of \code{FALSE}. A value of \code{TRUE}
 stops the function after the sample size is calculated.}
 
