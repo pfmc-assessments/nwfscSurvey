@@ -1,3 +1,5 @@
+#' A {ggplot2} mapping for drawing land areas on maps
+#'
 #' @export
 draw_land <- function() {
   # Get world data so islands are plotted
@@ -43,7 +45,8 @@ draw_land <- function() {
     ggnewscale::new_scale_color()
   )
 }
-
+#' A {ggplot2} projection for drawing maps
+#'
 #' @export
 draw_projection <- function() {
   # Set the projection outside of the {ggplot2} object to avoid the

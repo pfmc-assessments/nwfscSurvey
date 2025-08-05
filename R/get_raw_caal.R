@@ -10,6 +10,12 @@
 #' two-sex model or all length/ages for single-sex model.
 #'
 #' @inheritParams get_expanded_comps
+#' @param len_bins Vector of integers to bin length data.  All lengths smaller than the
+#'   first integer bin will be added to the first integer bin.  All lengths greater than the
+#'   highest integer bin will be added the the highest integer bin.
+#' @param age_bins Vector of integers to bin age data.  All ages smaller than the
+#'   first integer bin will be added to the first integer bin.  All ages greater than the
+#'   highest integer bin will be added the the highest integer bin.
 #' @param data A data frame that includes columns of year, sex, and length/ages. The data
 #'   frame can be survey data pulled using pull_bio from the data warehouse or any data frame
 #'   that includes column names of sex, year, and the comp_column_name.  The sex column is

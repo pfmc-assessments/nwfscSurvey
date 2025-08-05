@@ -25,6 +25,14 @@ frame can be survey data pulled using pull_bio from the data warehouse or any da
 that includes column names of sex, year, and the comp_column_name.  The sex column is
 expected to have sexes denoted by F, M, and U.}
 
+\item{len_bins}{Vector of integers to bin length data.  All lengths smaller than the
+first integer bin will be added to the first integer bin.  All lengths greater than the
+highest integer bin will be added the the highest integer bin.}
+
+\item{age_bins}{Vector of integers to bin age data.  All ages smaller than the
+first integer bin will be added to the first integer bin.  All ages greater than the
+highest integer bin will be added the the highest integer bin.}
+
 \item{length_column_name}{The length column name to create conditional age-at-length
 data for. The default is \code{length_cm}.}
 
