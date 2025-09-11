@@ -12,6 +12,7 @@
 #' @template common_name
 #' @template years
 #' @template dir
+#' @template verbose
 #'
 #' @author Chantel Wetzel
 #' @export
@@ -38,7 +39,8 @@
 pull_gemm <- function(
     common_name,
     years,
-    dir = NULL) {
+    dir = NULL,
+    verbose = TRUE) {
   check_dir(dir = dir, verbose = verbose)
 
   # Pull all gemm data
@@ -58,6 +60,12 @@ pull_gemm <- function(
     if (sum(years %in% gemm$year) == 0) {
       cli::cli_abort(
         "The input years were not found in the available gemm years: {years}."
+      )
+    }
+    if(length(years) == 2 & (max(years) - min(years)) > 1) {
+      cli::cli_inform(
+        "Only two years of data being returned: {years}.
+        The expected form of years is a vector (e.g., 2012:2018) which will return all years within the vector."
       )
     }
     gemm <- gemm |>
