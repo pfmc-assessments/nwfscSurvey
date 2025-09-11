@@ -54,9 +54,9 @@ estimate_weight_length <- function(
   # Create a tibble data frame equal to the number of sexes
   # in the data with 3 columns
   mresults <- tibble::lst(
-    female = . %>% dplyr::filter(sex %in% c("F", "Female", "f")),
-    male = . %>% dplyr::filter(sex %in% c("M", "Male", "m")),
-    all = . %>% dplyr::filter(sex %in% c(NA, "F", "M", "U", "H", "Male", "Female", "Unsexed", "m", "f", "u"))
+    female = . |> dplyr::filter(sex %in% c("F", "Female", "f")),
+    male = . |> dplyr::filter(sex %in% c("M", "Male", "m")),
+    all = . |> dplyr::filter(sex %in% c(NA, "F", "M", "U", "H", "Male", "Female", "Unsexed", "m", "f", "u"))
   ) |>
     purrr::map_dfr(~ tidyr::nest(.x(data), data = everything()),
       .id = "group"
