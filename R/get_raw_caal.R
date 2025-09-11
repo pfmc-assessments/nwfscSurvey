@@ -32,7 +32,7 @@
 #' @param age_column_name The age column name to create conditional age-at-length
 #'  data for. The default is `age`.
 #'
-#' @returns A data frame of conditiona age-at-length compositions for sexed and
+#' @returns A data frame of conditional age-at-length compositions for sexed and
 #' unsexed fish formatted for Stock Synthesis.
 #'
 #' @author Chantel Wetzel

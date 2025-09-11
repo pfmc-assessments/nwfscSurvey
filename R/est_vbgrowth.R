@@ -1,5 +1,5 @@
 #' Estimate length-at-age using the von Bertanlaffy
-#' parametization
+#' parameterization
 #'
 #'
 #' @template dir

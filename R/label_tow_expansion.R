@@ -4,11 +4,11 @@
 #' [get_expanded_comps()].
 #'
 #' @author Chantel Wetzel
-#' @return A labelled data frame.
+#' @return A labeled data frame.
 #' @export
 #'
 label_tow_expansion <- function(x) {
-  data_labelled <- x |>
+  data_labeled <- x |>
     labelled::set_variable_labels(
       trawl_id = "Unique tow id.",
       comp_column = "Length or age.",
@@ -28,5 +28,5 @@ label_tow_expansion <- function(x) {
       exp_m = "Multiplier multiplied by the n_male.",
       exp_u = "Multiplier multiplied by the n_unsexed."
     )
-  return(data_labelled)
+  return(data_labeled)
 }

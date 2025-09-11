@@ -3,7 +3,7 @@
 \name{est_growth}
 \alias{est_growth}
 \title{Estimate length-at-age using the von Bertanlaffy
-parametization}
+parameterization}
 \usage{
 est_growth(
   dir = NULL,
@@ -31,7 +31,7 @@ Stock Synthesis parameterization of von Bertanlaffy growth.}
 
 \item{bySex}{Logical to indicate if plot by sex}
 
-\item{estVB}{Logical. Estimate vonB growth to plot against predicted length. If F, it uses the paramters in \code{parStart}.}
+\item{estVB}{Logical. Estimate vonB growth to plot against predicted length. If F, it uses the parameters in \code{parStart}.}
 
 \item{bins}{The bins to put ages into. If NULL then simply uses the ages as recorded.}
 
@@ -45,7 +45,7 @@ no longer have to specify \code{dopng} to save the plot as a png.}
 }
 \description{
 Estimate length-at-age using the von Bertanlaffy
-parametization
+parameterization
 }
 \seealso{
 \code{\link[=fit_vbgrowth]{fit_vbgrowth()}}

@@ -12,7 +12,7 @@
 #' @param Par Starting parameters for K, Linf, L0, CV0, and CV2 based on the
 #'   Stock Synthesis parameterization of von Bertanlaffy growth.
 #' @param estVB Logical. Estimate vonB growth to plot against predicted length.
-#'   If F, it uses the paramters in \code{parStart}.
+#'   If F, it uses the parameters in \code{parStart}.
 #' @param bins The bins to put ages into. If NULL then simply uses the ages as
 #'   recorded.
 #' @param legX legend location for x axis, defaults to "bottomleft"

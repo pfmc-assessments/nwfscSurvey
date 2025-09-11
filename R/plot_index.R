@@ -2,7 +2,7 @@
 #'
 #' @details
 #' Plots both the design based biomass estimates by year with confidence intervals
-#' and the design based biomass estiamtes by year and strata with no confidence
+#' and the design based biomass estimates by year and strata with no confidence
 #' intervals.
 #'
 #' @param data List of design based biomass estimates created by the [get_design_based()]

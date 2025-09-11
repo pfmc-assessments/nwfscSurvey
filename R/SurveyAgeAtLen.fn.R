@@ -4,7 +4,7 @@
 #'
 #'
 #' @template dir
-#' @param datAL the biological data frame exctrated from the data warehouse using [pull_bio()]
+#' @param datAL the biological data frame extracted from the data warehouse using [pull_bio()]
 #' @param datTows the catch data frame extracted from the data warehouse using [pull_catch()]
 #' @template strat.vars
 #' @template strat.df

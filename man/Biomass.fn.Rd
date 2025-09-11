@@ -23,7 +23,7 @@ If dir = NULL no output will be saved.}
 \item{dat}{Data frame of catch data that has been created by the \code{\link[=pull_catch]{pull_catch()}}.}
 
 \item{strat.vars}{Variables in both data frame that are used to
-define the stratas. Default is bottom depth (m) and latitudes (decimal
+define the strata. Default is bottom depth (m) and latitudes (decimal
 degrees), i.e., \code{c("Depth_m", "Latitude_dd")}.}
 
 \item{strat.df}{A data frame that defines the strata and provides the
@@ -58,7 +58,7 @@ Calculates design based estimates from survey data for West Coast surveys.
 \details{
 The design based index is calculated based on the area of the strata and
 the mean catch by strata. This function returns a list of design-based
-estimates by strata and estimates combined across stratas by year. This
+estimates by strata and estimates combined across strata by year. This
 function is designed to work with data frames pulled from the NWFSC
 data warehouse using \code{\link[=pull_catch]{pull_catch()}}.
 See: Gunderson, D.R. and Sample, T.M. 1980. Distribution and abundance of rockfish off Washington,

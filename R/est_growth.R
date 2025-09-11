@@ -1,5 +1,5 @@
 #' Estimate length-at-age using the von Bertanlaffy
-#' parametization
+#' parameterization
 #'
 #'
 #' @template dir
@@ -9,7 +9,7 @@
 #' @param bySex Logical to indicate if plot by sex
 #' @param Par  Data frame of starting parameters for K, Linf, L0, CV0, and CV2 based on the
 #' Stock Synthesis parameterization of von Bertanlaffy growth.
-#' @param estVB Logical. Estimate vonB growth to plot against predicted length. If F, it uses the paramters in \code{parStart}.
+#' @param estVB Logical. Estimate vonB growth to plot against predicted length. If F, it uses the parameters in \code{parStart}.
 #' @param bins The bins to put ages into. If NULL then simply uses the ages as recorded.
 #' @param sdFactor The number of standard deviations to include in the
 #' low and high calculations. The default is 1.0.
