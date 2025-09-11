@@ -11,12 +11,12 @@ Description: Northwest Fisheries Science Center survey data processing
     package.
 License: GPL (>=3)
 Depends:
-    dplyr (>= 1.0.0),
     R (>= 4.0)
 Imports:
     chron,
     cli,
     cowplot,
+    dplyr,
     ggmosaic (>= 0.3.4),
     ggnewscale,
     ggokabeito,
