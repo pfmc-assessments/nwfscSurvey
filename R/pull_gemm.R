@@ -52,9 +52,9 @@ pull_gemm <- function(
   if (!missing(common_name)) {
     format_common_name <- sub("_", " ", common_name)
     format_common_name <- stringr::str_to_title(format_common_name)
-    if (common_name %in% gemm[, "species"]) {
+    if (!format_common_name %in% gemm[, "species"]) {
       cli::cli_abort(
-        "The common_name was not found in the available gemm species."
+        "The common_name was not found in the available gemm species. Try `pull_gemm()` to download data for all available species."
       )
     }
     gemm <- gemm |>
