@@ -68,7 +68,7 @@ pull_gemm <- function(
         "The input years were not found in the available gemm years: {years}."
       )
     }
-    if(length(years) == 2 & (max(years) - min(years)) > 1) {
+    if (length(years) == 2 & (max(years) - min(years)) > 1) {
       cli::cli_inform(
         "Only two years of data being returned: {years}.
         The expected form of years is a vector (e.g., 2012:2018) which will return all years within the vector."
