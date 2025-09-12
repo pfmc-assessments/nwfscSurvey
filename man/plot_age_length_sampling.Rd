@@ -2,7 +2,7 @@
 % Please edit documentation in R/plot_age_length_sampling.R
 \name{plot_age_length_sampling}
 \alias{plot_age_length_sampling}
-\title{Plot the represntativeness of age sampling based on lengths}
+\title{Plot the representativeness of age sampling based on lengths}
 \usage{
 plot_age_length_sampling(
   data,
@@ -22,5 +22,5 @@ plot_age_length_sampling(
 by year and sex}
 }
 \description{
-Plot the represntativeness of age sampling based on lengths
+Plot the representativeness of age sampling based on lengths
 }

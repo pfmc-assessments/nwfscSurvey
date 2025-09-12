@@ -17,7 +17,7 @@ Utility function used throughout the package
 Function that converts a string to a hex string
 for common name or scientific name when pulling
 data. This function is used within the pull_*
-functions that retrive species specific data
+functions that retrieve species specific data
 }
 \examples{
 \dontrun{

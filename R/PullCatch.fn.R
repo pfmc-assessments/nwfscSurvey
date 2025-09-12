@@ -6,7 +6,7 @@
 #' by leaving both `Name = NULL` and `SciName = NULL`.
 #'
 #' @details
-#' The data available in the warehouse are cleaned pior to being downloaded
+#' The data available in the warehouse are cleaned prior to being downloaded
 #' with the intent that they provide the best available information for use
 #' in an index-standardization procedure. The removed samples may be of use
 #' to others with a less-restrictive goal than producing an index of abundance.

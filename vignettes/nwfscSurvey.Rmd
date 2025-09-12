@@ -28,11 +28,11 @@ The **nwfscSurvey** package was written by scientists at the Northwest Fisheries
 
 * Calculate the design based indices based upon pre-specified stratification.
 
-* Create length- and age-composition data expanded by the design-based indices formated for use in Stock Synthesis.
+* Create length- and age-composition data expanded by the design-based indices formatted for use in Stock Synthesis.
 
 * Create unexpanded conditional age-at-length composition data for use in Stock Synthesis.
 
-* Create plots to visualize the data: design-based index plots, bubble plots of length and age data, observeed sex ratio, and distributions across depth and latitude. 
+* Create plots to visualize the data: design-based index plots, bubble plots of length and age data, observed sex ratio, and distributions across depth and latitude. 
 
 ## Functions
 

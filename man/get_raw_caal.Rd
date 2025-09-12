@@ -72,7 +72,7 @@ the output will just be saved directly in \code{dir}. The default is \code{"forS
 warnings to the console. The default is \code{TRUE}.}
 }
 \value{
-A data frame of conditiona age-at-length compositions for sexed and
+A data frame of conditional age-at-length compositions for sexed and
 unsexed fish formatted for Stock Synthesis.
 }
 \description{

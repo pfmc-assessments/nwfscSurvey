@@ -25,7 +25,7 @@
 #' and complete survey coverage (1997, 1999-2001). The Northwest Fisheries Science
 #' Center (NWFSC) Slope survey (NWFSC.Slope) was conducted between 1998 - 2001.
 #' The NWFSC West Coast Groundfish Bottom Trawl survey (NWFSC.Combo) is conducted
-#' annualy starting in 2003 (excluding 2020) and samples both the U.S. west coast
+#' annually starting in 2003 (excluding 2020) and samples both the U.S. west coast
 #' shelf and slope between 55 - 1,280 meters.
 #' Data can only be pulled from one survey at a time, though we are working on
 #' allowing for a vector of survey names.

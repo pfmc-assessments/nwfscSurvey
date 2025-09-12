@@ -34,7 +34,7 @@ If dir = NULL no output will be saved.}
 
 \item{parStart}{Vector of starting parameters for Linf, k, and t0 in VonB estimation}
 
-\item{estVB}{Logical. Estimate vonB growth to plot against predicted length. If F, it uses the paramters in \code{parStart}.}
+\item{estVB}{Logical. Estimate vonB growth to plot against predicted length. If F, it uses the parameters in \code{parStart}.}
 
 \item{bins}{The bins to put ages into. If NULL then simply uses the ages as recorded.}
 

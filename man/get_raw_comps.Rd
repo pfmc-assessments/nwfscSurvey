@@ -33,7 +33,7 @@ expected to have sexes denoted by F, M, and U. If tows/trips are desired for \co
 and a column exists within the data frame with this information, the column needs to be named \code{trawl_id},
 otherwise the function will set a unique \code{trawl_id} for each record.}
 
-\item{comp_bins}{Vector of intergers to bin length or age data by
+\item{comp_bins}{Vector of integers to bin length or age data by
 create expanded composition data.Values above or below the minimum or maximum
 values in the vector are grouped into the first size or plus group size, respectively.
 For example, creating length compositions that uses a vector bin of seq(10, 50, 2)

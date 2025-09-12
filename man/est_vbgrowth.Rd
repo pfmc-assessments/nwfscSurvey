@@ -3,7 +3,7 @@
 \name{est_vbgrowth}
 \alias{est_vbgrowth}
 \title{Estimate length-at-age using the von Bertanlaffy
-parametization}
+parameterization}
 \usage{
 est_vbgrowth(
   data,
@@ -35,7 +35,7 @@ Stock Synthesis parameterization of von Bertanlaffy growth.}
 }
 \description{
 Estimate length-at-age using the von Bertanlaffy
-parametization
+parameterization
 }
 \seealso{
 \code{\link[=fit_vbgrowth]{fit_vbgrowth()}}
