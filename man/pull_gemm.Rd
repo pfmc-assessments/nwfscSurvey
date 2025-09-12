@@ -2,7 +2,7 @@
 % Please edit documentation in R/pull_gemm.R
 \name{pull_gemm}
 \alias{pull_gemm}
-\title{Pull gemm data from the NWFSC data warehouse}
+\title{Pull Groundfish Expanded Multiyear Mortality data}
 \usage{
 pull_gemm(common_name, years, dir = NULL, verbose = TRUE)
 }
@@ -25,14 +25,14 @@ If dir = NULL no output will be saved.}
 warnings to the console. The default is \code{TRUE}.}
 }
 \description{
-The website is: https://www.webapps.nwfsc.noaa.gov/data
+The data are being pulled from: https://connect.fisheries.noaa.gov/gemm_csv/
 This function can be used to pull all gemm data, a single species, or a
 subset of species c("Canary Rockfish", "Widow Rockfish"). Species names in
 the gemm are capitalized (e.g. Canary Rockfish). However, there are checks in
 the function to adjust input species names if the input names do not match
 the expected capitalization (e.g. "canary rockfish", "canary_rockfish"). The
-fuction also allows you to subset the data by year using the years input and to
-save the object if the dir function input is given.
+function also allows you to subset the data by year using the years input and
+to save the object if the dir function input is given.
 }
 \examples{
 \dontrun{

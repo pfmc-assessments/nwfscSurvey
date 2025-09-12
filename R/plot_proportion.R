@@ -46,7 +46,7 @@
 #' @family plot_
 #' @examples
 #' # Add presence/absence factor to data
-#' temp <- catch_nwfsc_combo %>%
+#' temp <- catch_nwfsc_combo |>
 #'   dplyr::mutate(new = factor(
 #'     cpue_kg_km2 <= 0,
 #'     levels = c(FALSE, TRUE),
@@ -76,7 +76,7 @@
 #'   ))
 #' # Plot depth bins (25 m) by sex (F, M, U)
 #' plot_proportion(
-#'   data = bio_nwfsc_combo %>%
+#'   data = bio_nwfsc_combo |>
 #'     dplyr::mutate(Sex = codify_sex(Sex)),
 #'   column_factor = Sex,
 #'   column_bin = Depth_m,
@@ -85,7 +85,7 @@
 #' )
 #' # Change to equal sized bars
 #' plot_proportion(
-#'   data = bio_nwfsc_combo %>%
+#'   data = bio_nwfsc_combo |>
 #'     dplyr::mutate(Sex = codify_sex(Sex)),
 #'   column_factor = Sex,
 #'   column_bin = Depth_m,
@@ -123,14 +123,14 @@ plot_proportion <- function(data,
   #    calc_weight by group to determine the width. Here I reverse-engineer that
   #    to ensure the summed weight will equal 1 for every group to get
   #    equal-sized bars if bar_width is "equal".
-  data_plot <- data_plot %>%
-    dplyr::group_by(calc_bin, .add = TRUE) %>%
+  data_plot <- data_plot |>
+    dplyr::group_by(calc_bin, .add = TRUE) |>
     dplyr::mutate(
       calc_weight = dplyr::case_when(
         bar_width == "n" ~ 1,
         bar_width == "equal" ~ 1 / n()
       )
-    ) %>%
+    ) |>
     dplyr::ungroup()
 
   # Create {ggplot2} figure
@@ -216,7 +216,7 @@ wh_plot_proportion <- function(data_catch,
   # rerun repeats the augmented data frame .n times
   data <- c(
     if (!missing(data_catch)) {
-      1:2 %>%
+      1:2 |>
         purrr::map(\(i) dplyr::mutate(data_catch, the_factor = factor(
           cpue_kg_km2 <= 0,
           levels = c(FALSE, TRUE),
@@ -224,7 +224,7 @@ wh_plot_proportion <- function(data_catch,
         )))
     },
     if (!missing(data_bio)) {
-      1:2 %>%
+      1:2 |>
         purrr::map(\(i) dplyr::mutate(data_bio, the_factor = codify_sex(Sex)))
     }
   )

@@ -62,7 +62,7 @@ return.
 }
 \examples{
 # Add presence/absence factor to data
-temp <- catch_nwfsc_combo \%>\%
+temp <- catch_nwfsc_combo |>
   dplyr::mutate(new = factor(
     cpue_kg_km2 <= 0,
     levels = c(FALSE, TRUE),
@@ -92,7 +92,7 @@ plot_proportion(
   ))
 # Plot depth bins (25 m) by sex (F, M, U)
 plot_proportion(
-  data = bio_nwfsc_combo \%>\%
+  data = bio_nwfsc_combo |>
     dplyr::mutate(Sex = codify_sex(Sex)),
   column_factor = Sex,
   column_bin = Depth_m,
@@ -101,7 +101,7 @@ plot_proportion(
 )
 # Change to equal sized bars
 plot_proportion(
-  data = bio_nwfsc_combo \%>\%
+  data = bio_nwfsc_combo |>
     dplyr::mutate(Sex = codify_sex(Sex)),
   column_factor = Sex,
   column_bin = Depth_m,

@@ -79,7 +79,7 @@ PlotSexRatio.fn <- function(
     add = TRUE
   )
 
-  test <- dplyr::count(dat, bin, Sex) %>%
+  test <- dplyr::count(dat, bin, Sex) |>
     mutate(Proportion = n / sum(n))
 
   p <- ggplot(test, aes(x = bin, y = Proportion, fill = Sex)) +
