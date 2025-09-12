@@ -25,7 +25,7 @@ frame can be survey data pulled using pull_bio from the data warehouse or any da
 that includes column names of sex, year, and the comp_column_name.  The sex column is
 expected to have sexes denoted by F, M, and U.}
 
-\item{len_bins}{Vector of intergers to bin length data by
+\item{len_bins}{Vector of integers to bin length data by
 create expanded composition data. Values above or below the minimum or maximum
 values in the vector are grouped into the first size or plus group size, respectively.
 For example, creating length compositions that uses a vector bin of seq(10, 50, 2)
@@ -33,7 +33,7 @@ would create 2 cm bins where fish length between [0, 11.99) would be included in
 10 cm bin, fish of length [12, 13.99) would be included in the 12 cm bin, and
 all fish [50- Inf) would be included in the 50 cm plus bin.}
 
-\item{age_bins}{Vector of intergers to bin age data by
+\item{age_bins}{Vector of integers to bin age data by
 create expanded composition data. Values above or below the minimum or maximum
 values in the vector are grouped into the first size or plus group size, respectively.
 For example, creating age compositions that uses a vector bin of seq(1, 50, 1)
