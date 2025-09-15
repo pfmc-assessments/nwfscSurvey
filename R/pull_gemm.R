@@ -1,13 +1,13 @@
-#' Pull gemm data from the NWFSC data warehouse
+#' Pull Groundfish Expanded Multiyear Mortality data
 #'
-#' The website is: https://www.webapps.nwfsc.noaa.gov/data
+#' The data are being pulled from: https://connect.fisheries.noaa.gov/gemm_csv/
 #' This function can be used to pull all gemm data, a single species, or a
 #' subset of species c("Canary Rockfish", "Widow Rockfish"). Species names in
 #' the gemm are capitalized (e.g. Canary Rockfish). However, there are checks in
 #' the function to adjust input species names if the input names do not match
 #' the expected capitalization (e.g. "canary rockfish", "canary_rockfish"). The
-#' fuction also allows you to subset the data by year using the years input and to
-#' save the object if the dir function input is given.
+#' function also allows you to subset the data by year using the years input and
+#' to save the object if the dir function input is given.
 #'
 #' @template common_name
 #' @template years
@@ -44,43 +44,42 @@ pull_gemm <- function(
   check_dir(dir = dir, verbose = verbose)
 
   # Pull all gemm data
-  gemm <- utils::read.csv(
-    url("https://www.webapps.nwfsc.noaa.gov/data/api/v1/source/observer.gemm_fact/selection.csv"),
-    encoding = "UTF-8-BOM"
-  ) %>%
+  # gemm <- pins::pin_read(pins::board_connect(), "kayleigh.somers/gemmdatcsv")
+  gemm <- read.csv("https://connect.fisheries.noaa.gov/gemm_csv/gemmdatcsv.csv") |>
     janitor::clean_names()
 
-  # Check the species name if provided
+  # Clean up the common_name if necessary
   if (!missing(common_name)) {
-    tmp <- NULL
-    for (ii in 1:length(common_name)) {
-      new_name <- sub("_", " ", common_name[ii])
-      new_name <- stringr::str_to_title(new_name)
-      find <- which(gemm$species == new_name)
-      if (length(find) == 0) {
-        stop(cat("The species name was not found: ", new_name))
-      }
-      tmp <- rbind(tmp, gemm[find, ])
+    format_common_name <- sub("_", " ", common_name)
+    format_common_name <- stringr::str_to_title(format_common_name)
+    if (!format_common_name %in% gemm[, "species"]) {
+      cli::cli_abort(
+        "The common_name was not found in the available gemm species. Try `pull_gemm()` to download data for all available species."
+      )
     }
-    gemm <- tmp
+    gemm <- gemm |>
+      dplyr::filter(species %in% format_common_name)
   }
 
   # Check the years if provided
   if (!missing(years)) {
     if (sum(years %in% gemm$year) == 0) {
-      stop(cat("The input years were not found in the available gemm years: ", min(gemm$year), "-", max(gemm$year)))
+      cli::cli_abort(
+        "The input years were not found in the available gemm years: {years}."
+      )
     }
-    gemm <- gemm[gemm$year %in% years, ]
+    if (length(years) == 2 & (max(years) - min(years)) > 1) {
+      cli::cli_inform(
+        "Only two years of data being returned: {years}.
+        The expected form of years is a vector (e.g., 2012:2018) which will return all years within the vector."
+      )
+    }
+    gemm <- gemm |>
+      dplyr::filter(year %in% years)
   }
 
   if (!is.null(dir)) {
-    if (missing(common_name)) {
-      save(gemm, file = paste0(dir, "/gemm_out.Rdat"))
-    } else {
-      save_name <- sub(" ", "_", common_name)
-      save(gemm, file = paste0(dir, "/gemm_", save_name, ".rdata"))
-    }
+    save(gemm, file = file.path(dir, "gemm_data.rdata"))
   }
-
   return(gemm)
 }

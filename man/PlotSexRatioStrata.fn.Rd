@@ -25,7 +25,7 @@ If dir = NULL no output will be saved.}
 \item{type}{Specify where to calculate the sex ration by length or age.}
 
 \item{strat.vars}{Variables in both data frame that are used to
-define the stratas. Default is bottom depth (m) and latitudes (decimal
+define the strata. Default is bottom depth (m) and latitudes (decimal
 degrees), i.e., \code{c("Depth_m", "Latitude_dd")}.}
 
 \item{strat.df}{A data frame that defines the strata and provides the

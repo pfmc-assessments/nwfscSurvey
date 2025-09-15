@@ -25,12 +25,15 @@ get_raw_comps(
 )
 }
 \arguments{
-\item{data}{A data frame that includes columns of year, sex, and length/ages. The data
+\item{data}{A data frame that includes columns of year, sex, and length/ages. The case
+of the column names does not matter as the function reduces them to lower case. The data
 frame can be survey data pulled using pull_bio from the data warehouse or any data frame
-that includes column names of sex, year, and the comp_column_name.  The sex column is
-expected to have sexes denoted by F, M, and U.}
+that includes column names of sex, year, and the comp_column_name. The sex column is
+expected to have sexes denoted by F, M, and U. If tows/trips are desired for \code{input_n_method}
+and a column exists within the data frame with this information, the column needs to be named \code{trawl_id},
+otherwise the function will set a unique \code{trawl_id} for each record.}
 
-\item{comp_bins}{Vector of intergers to bin length or age data by
+\item{comp_bins}{Vector of integers to bin length or age data by
 create expanded composition data.Values above or below the minimum or maximum
 values in the vector are grouped into the first size or plus group size, respectively.
 For example, creating length compositions that uses a vector bin of seq(10, 50, 2)

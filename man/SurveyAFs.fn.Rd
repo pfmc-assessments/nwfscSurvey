@@ -35,12 +35,12 @@ SurveyAFs.fn(
 \item{dir}{Directory where output will be saved. The directory where the file should be saved.
 If dir = NULL no output will be saved.}
 
-\item{datA}{the biological data frame exctrated from the data warehouse using the \code{\link[=pull_bio]{pull_bio()}}}
+\item{datA}{the biological data frame extracted from the data warehouse using the \code{\link[=pull_bio]{pull_bio()}}}
 
 \item{datTows}{the catch data frame extracted from the data warehouse using the \code{\link[=pull_catch]{pull_catch()}}}
 
 \item{strat.vars}{Variables in both data frame that are used to
-define the stratas. Default is bottom depth (m) and latitudes (decimal
+define the strata. Default is bottom depth (m) and latitudes (decimal
 degrees), i.e., \code{c("Depth_m", "Latitude_dd")}.}
 
 \item{strat.df}{A data frame that defines the strata and provides the
@@ -88,7 +88,7 @@ bin.}
 \item{agehigh}{Upper age bin for all age composition data based on the expected
 format for Stock Synthesis. Default value of -1 which translates to the highest}
 
-\item{ageErr}{Single interget value  of ageing error
+\item{ageErr}{Single integer value  of ageing error
 vector to apply to the age data based on
 Stock Synthesis. Default "Enter".}
 

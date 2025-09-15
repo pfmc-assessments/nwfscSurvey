@@ -5,6 +5,6 @@
 
 availablecells <- readxl::read_excel(
   path = dir(pattern = "Selection Set 2018 with Cell Corners", recursive = TRUE)
-) %>% data.frame()
+) |> data.frame()
 
 usethis::use_data(availablecells, overwrite = TRUE)

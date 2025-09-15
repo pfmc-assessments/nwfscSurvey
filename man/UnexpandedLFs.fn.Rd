@@ -44,7 +44,7 @@ fish only. Default of 0.}
 number to assign to the fleet column based on the expected
 format for Stock Synthesis. Default "Enter Fleet".}
 
-\item{ageErr}{Single interget value  of ageing error
+\item{ageErr}{Single integer value  of ageing error
 vector to apply to the age data based on
 Stock Synthesis. Default "Enter".}
 

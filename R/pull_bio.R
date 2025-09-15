@@ -100,7 +100,6 @@ pull_bio <- function(
     "tow", "datetime_utc_iso", "depth_m", "weight_kg", "ageing_lab", "otosag_id",
     "length_cm", "width_cm", "sex", "age_years", "latitude_dd", "longitude_dd",
     "performance", "station_invalid",
-    "ageing_laboratory_dim$laboratory",
     "standard_survey_age_indicator",
     "standard_survey_length_or_width_indicator",
     "standard_survey_weight_indicator",
@@ -203,7 +202,6 @@ pull_bio <- function(
     }
 
     colnames(bio_pull)[colnames(bio_pull) == "actual_station_design_dim$reason_station_invalid"] <- "reason_station_invalid"
-    colnames(bio_pull)[colnames(bio_pull) == "standard_survey_length_or_width_indicator"] <- "ageing_lab"
     colnames(bio_pull)[colnames(bio_pull) == "operation_dim$legacy_performance_code"] <- "legacy_performance_code"
     bio_pull$weight <- bio_pull$weight_kg
     bio_pull$age <- bio_pull$age_years
@@ -250,7 +248,6 @@ pull_bio <- function(
       len_pull$date <- chron::chron(format(as.POSIXlt(len_pull$datetime_utc_iso, format = "%Y-%m-%dT%H:%M:%S"), "%Y-%m-%d"), format = "y-m-d", out.format = "YYYY-m-d")
       len_pull$trawl_id <- as.character(len_pull$trawl_id)
       colnames(len_pull)[colnames(len_pull) == "actual_station_design_dim$reason_station_invalid"] <- "reason_station_invalid"
-      colnames(len_pull)[colnames(len_pull) == "standard_survey_length_or_width_indicator"] <- "ageing_lab"
       colnames(len_pull)[colnames(len_pull) == "operation_dim$legacy_performance_code"] <- "legacy_performance_code"
     }
 
