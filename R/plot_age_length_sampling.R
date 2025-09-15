@@ -1,4 +1,4 @@
-#' Plot the represntativeness of age sampling based on lengths
+#' Plot the representativeness of age sampling based on lengths
 #'
 #' @param data data frame
 #' @param xlim x limits for plot, defaults to c(0,120)

@@ -8,7 +8,7 @@
 #' @param bio_data A data frame of length-composition data returned from
 #'   [pull_bio()].
 #' @param catch_data A data frame of catch data returned from [pull_catch()].
-#' @param comp_bins Vector of intergers to bin length or age data by
+#' @param comp_bins Vector of integers to bin length or age data by
 #'   create expanded composition data.Values above or below the minimum or maximum
 #'   values in the vector are grouped into the first size or plus group size, respectively.
 #'   For example, creating length compositions that uses a vector bin of seq(10, 50, 2)
@@ -26,7 +26,7 @@
 #' @param output Switch to specify how to return the composition data where the options
 #'   are c("full_expansion_ss3_format", "tow_expansion_only", "full_expansion_unformatted").
 #'   The default is `output = "full_expansion_ss3_format"` where a list is returned with
-#'   formatted composition data for SS3. The `tow_expansion_only` retuns a dataframe of
+#'   formatted composition data for SS3. The `tow_expansion_only` returns a dataframe of
 #'   composition data only expanded up to the tow level (first-stage) and
 #'   `full_expansion_unformatted` returns a dataframe with compositon data expanded up to
 #'   the tow and strata level but not formatted for SS3.

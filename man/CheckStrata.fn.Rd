@@ -21,7 +21,7 @@ If dir = NULL no output will be saved.}
 created by \code{\link[=pull_catch]{pull_catch()}}.}
 
 \item{strat.vars}{Variables in both data frame that are used to
-define the stratas. Default is bottom depth (m) and latitudes (decimal
+define the strata. Default is bottom depth (m) and latitudes (decimal
 degrees), i.e., \code{c("Depth_m", "Latitude_dd")}.}
 
 \item{strat.df}{A data frame that defines the strata and provides the
@@ -44,7 +44,7 @@ Calculate the number of observations by year and strata
 \details{
 Calculates and returns the total number of tows and
 positive tows conducted in each strata by year. The
-selected stratas are used to expand the length and
+selected strata are used to expand the length and
 marginal age compositions and to calculate a design
 based index using the \code{\link[=Biomass.fn]{Biomass.fn()}}.
 }

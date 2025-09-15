@@ -10,7 +10,7 @@
 #' @param Ages A vector of ages in years. Values of \code{NA} are accepted.
 #' @param Lengths A vector of Lengths in cm. Lengths can be \code{NULL} if
 #' \code{ReturnType == "Pred"} because you are only predicting using ages, where
-#' the lengths are just needed for estimation purpopses. If not \code{NULL},
+#' the lengths are just needed for estimation purposes. If not \code{NULL},
 #' ensure that there is one length measurement for every age measurement.
 #' Values of \code{NA} are accepted.
 #' @param par_logspace TRUE/FALSE Indicates if the values in the \code{"Par"} are in
@@ -71,7 +71,7 @@ fit_vbgrowth <- function(Par, Ages, Lengths, par_logspace = TRUE, ReturnType = c
     stopifnot("Ages & Lengths are not the same length" = length(Ages) == length(Lengths))
   }
   ReturnType <- match.arg(ReturnType, several.ok = FALSE)
-  # Exponentiate parameters, which are provided in log space such that estiamtes are not
+  # Exponentiate parameters, which are provided in log space such that estimates are not
   # negative when using optim.
   if (par_logspace == TRUE) {
     Par <- lapply(Par, exp)

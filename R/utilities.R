@@ -4,7 +4,7 @@
 #' Function that converts a string to a hex string
 #' for common name or scientific name when pulling
 #' data. This function is used within the pull_*
-#' functions that retrive species specific data
+#' functions that retrieve species specific data
 #'
 #' @param x A string of either common_name or
 #' sci_name

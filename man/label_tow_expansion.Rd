@@ -11,7 +11,7 @@ label_tow_expansion(x)
 \code{\link[=get_expanded_comps]{get_expanded_comps()}}.}
 }
 \value{
-A labelled data frame.
+A labeled data frame.
 }
 \description{
 Label tow expanded compositions

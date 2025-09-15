@@ -1,7 +1,7 @@
 #' Cleans triennial survey data by year and area
 #'
 #' @details
-#' Reads in the West Coast Trienial survey data and filters the data into what
+#' Reads in the West Coast Triennial survey data and filters the data into what
 #' is necessary. It reads in data and makes sure only the species necessary are
 #' kept may want to keep NA (blank in Excel) to select the zero tows
 #' removeCAN is a flag if you want tows in Canadian waters removed.

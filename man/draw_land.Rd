@@ -2,10 +2,10 @@
 % Please edit documentation in R/draw.r
 \name{draw_land}
 \alias{draw_land}
-\title{A {ggplot2} mapping for drawing land areas on maps}
+\title{Mapping function to draw land areas}
 \usage{
 draw_land()
 }
 \description{
-A {ggplot2} mapping for drawing land areas on maps
+Mapping function to draw land areas
 }

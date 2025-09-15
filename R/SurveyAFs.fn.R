@@ -7,7 +7,7 @@
 #' on the formatting required by Stock Synthesis.
 #'
 #' @template dir
-#' @param datA the biological data frame exctrated from the data warehouse using the [pull_bio()]
+#' @param datA the biological data frame extracted from the data warehouse using the [pull_bio()]
 #' @param datTows the catch data frame extracted from the data warehouse using the [pull_catch()]
 #' @template strat.vars
 #' @template strat.df

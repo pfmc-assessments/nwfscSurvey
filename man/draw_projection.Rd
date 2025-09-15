@@ -2,10 +2,10 @@
 % Please edit documentation in R/draw.r
 \name{draw_projection}
 \alias{draw_projection}
-\title{A {ggplot2} projection for drawing maps}
+\title{Mapping projection}
 \usage{
 draw_projection()
 }
 \description{
-A {ggplot2} projection for drawing maps
+Mapping projection
 }

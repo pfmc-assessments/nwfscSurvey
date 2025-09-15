@@ -32,7 +32,7 @@ Stock Synthesis parameterization of von Bertanlaffy growth.}
 \item{bySex}{Logical to indicate if plot by sex}
 
 \item{estVB}{Logical. Estimate vonB growth to plot against predicted length.
-If F, it uses the paramters in \code{parStart}.}
+If F, it uses the parameters in \code{parStart}.}
 
 \item{bins}{The bins to put ages into. If NULL then simply uses the ages as
 recorded.}

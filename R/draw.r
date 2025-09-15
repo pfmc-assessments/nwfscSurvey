@@ -1,4 +1,4 @@
-#' A {ggplot2} mapping for drawing land areas on maps
+#' Mapping function to draw land areas
 #'
 #' @export
 draw_land <- function() {
@@ -45,7 +45,7 @@ draw_land <- function() {
     ggnewscale::new_scale_color()
   )
 }
-#' A {ggplot2} projection for drawing maps
+#' Mapping projection
 #'
 #' @export
 draw_projection <- function() {

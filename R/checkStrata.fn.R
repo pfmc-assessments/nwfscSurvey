@@ -3,7 +3,7 @@
 #' @details
 #' Calculates and returns the total number of tows and
 #' positive tows conducted in each strata by year. The
-#' selected stratas are used to expand the length and
+#' selected strata are used to expand the length and
 #' marginal age compositions and to calculate a design
 #' based index using the [Biomass.fn()].
 #'

@@ -4,7 +4,7 @@
 #' The design based index is calculated based on the area of the strata with the
 #' output estimates representing the adjusted median estimates
 #' (e.g., est * exp(0.5*log(var)). This function returns a list of design-based
-#' estimates by strata and estimates combined across stratas by year. This
+#' estimates by strata and estimates combined across strata by year. This
 #' function is designed to work with data frames pulled from the NWFSC
 #' data warehouse using [pull_catch()].
 #' See: Gunderson, D.R. and Sample, T.M. 1980. Distribution and abundance of rockfish off Washington,
