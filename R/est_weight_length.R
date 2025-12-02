@@ -45,20 +45,21 @@ estimate_weight_length <- function(
 
   if (verbose) {
     cli::cli_alert_info(
-      "Calculating the weight-length relationship from {nrow(data)} nfish
-      because {dims[1] - nrow(data)} fish did not have empirical weights
-      and lengths."
+      "Calculating the weight-length relationship from {nrow(data)} samples 
+      out of {dims[1]} because {dims[1] - nrow(data)} fish did not have 
+      empirical weights and lengths."
     )
   }
 
   # Create a tibble data frame equal to the number of sexes
   # in the data with 3 columns
-  mresults <- tibble::lst(
-    female = . |> dplyr::filter(sex %in% c("F", "Female", "f")),
-    male = . |> dplyr::filter(sex %in% c("M", "Male", "m")),
-    all = . |> dplyr::filter(sex %in% c(NA, "F", "M", "U", "H", "Male", "Female", "Unsexed", "m", "f", "u"))
+  mresults <- list(
+    female = dplyr::filter(data, sex %in% c("F", "Female", "f")),
+    male = dplyr::filter(data, sex %in% c("M", "Male", "m")),
+    all = dplyr::filter(data, sex %in% c(NA, "F", "M", "U", "H", "Male", "Female", "Unsexed", "m", "f", "u"))
   ) |>
-    purrr::map_dfr(~ tidyr::nest(.x(data), data = everything()),
+    purrr::map_dfr(~ tidyr::nest(.x, 
+      data = everything()), 
       .id = "group"
     ) |>
     dplyr::mutate(
@@ -84,6 +85,8 @@ estimate_weight_length <- function(
 
   if (verbose) {
     fits <- lapply(mresults[["fits"]], summary)
+    # add names to the fits list so each element is labeled by sex
+    names(fits) <- mresults[["group"]]
     cli::cli_alert_info("Estimated weight-length by sex:")
     print(fits)
   }
