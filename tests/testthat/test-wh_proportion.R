@@ -1,8 +1,8 @@
-#test_that("wh_proportion errors when 2 arguments are missing", {
+# test_that("wh_proportion errors when 2 arguments are missing", {
 #  testthat::expect_error(wh_plot_proportion(dir = getwd()))
-#})
+# })
 #
-#test_that("wh_proportion leads to correct files", {
+# test_that("wh_proportion leads to correct files", {
 #  temporary_directory <- tempdir()
 #  output_catch <- wh_plot_proportion(
 #    data_catch = catch_nwfsc_combo,
@@ -30,5 +30,5 @@
 #  testthat::expect_true(all(file.exists(output_all)))
 #  testthat::expect_true(all(grepl("presence|sex", output_all)))
 #  unlink(output_all, force = TRUE)
-#})
+# })
 #
