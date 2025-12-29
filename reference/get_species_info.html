@@ -97,12 +97,13 @@ and <code><a href="GetStrata.fn.html">GetStrata.fn</a></code> for the different 
 <span class="r-out co"><span class="r-pr">#&gt;</span> 74    Eopsetta jordani petrale sole petrale_sole   Eopsetta_jordani   petrale</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>        strata species_type</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 133 sablefish        other</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 74  sablefish        other</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 74      coast     flatfish</span>
 <span class="r-in"><span><span class="fu">get_species_info</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"vermilion"</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                 latin             common        common_name   scientific_name</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 644 Sebastes miniatus vermilion rockfish vermilion_rockfish Sebastes_miniatus</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>         input strata species_type</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 644 vermilion  coast     flatfish</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #BBBB00;">!</span> Multiple matches were found for the vermilion in the look up table</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> stored in pull_spp(). Only one match is returned. The common_name for the removed match is: vermilion_rockfish, vermilion_and_sunset_rockfish, vermilion_and_canary_rockfish.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] latin           common          common_name     scientific_name</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [5] input           strata          species_type   </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;0 rows&gt; (or 0-length row.names)</span>
 <span class="r-in"><span><span class="fu">testthat</span><span class="fu">::</span><span class="fu"><a href="https://testthat.r-lib.org/reference/expect_error.html" class="external-link">expect_message</a></span><span class="op">(</span></span></span>
 <span class="r-in"><span>  <span class="fu">get_species_info</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"chilipepper"</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
@@ -118,7 +119,7 @@ and <code><a href="GetStrata.fn.html">GetStrata.fn</a></code> for the different 
 </div>
 
 <div class="pkgdown-footer-right">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.3.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.0.</p>
 </div>
 
     </footer></div>

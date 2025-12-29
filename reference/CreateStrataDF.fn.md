@@ -1,0 +1,84 @@
+# Create strata data frame using [`StrataAreas.fn`](StrataAreas.fn.md)
+
+Create strata data frame using [`StrataAreas.fn`](StrataAreas.fn.md)
+
+## Usage
+
+``` r
+CreateStrataDF.fn(
+  names = NA,
+  depths.shallow,
+  depths.deep,
+  lats.south,
+  lats.north
+)
+```
+
+## Arguments
+
+- names:
+
+  A vector of character values providing a name for each strata; if left
+  at the default value of `NA`, then names will be created using capital
+  letters starting with `A` for each `NA` value.
+
+- depths.shallow:
+
+  vector of the shallow depths splits for each strata
+
+- depths.deep:
+
+  vector of the deep depths splits for each strata
+
+- lats.south:
+
+  vector of the southern latitude splits for each strata
+
+- lats.north:
+
+  vector of the northern latitude splits for each strata
+
+## Value
+
+Returns the data frame formatted for use by
+[`Biomass.fn`](Biomass.fn.md) and additional prediction functions in
+other downstream packages. The data frame will have six columns, (1)
+name, (2) area, (3) Depth_m.1, (4) Depth_m.2, (5) Latitude_dd.1, and (6)
+Latitude_dd.2.
+
+## Details
+
+Create a data frame of strata formatted for use by models that need
+estimates of the area for each strata to expand estimates of abundance.
+Strata limits are provided by the user in terms of and east and west
+ranges using depth (shallow and deep, respectively) and north and south
+ranges using latitudes.
+
+## See also
+
+See [`StrataAreas.fn`](StrataAreas.fn.md) for how areas are calculated.
+See [`Biomass.fn`](Biomass.fn.md) for how the areas are used to create
+design-based biomass estimates.
+
+## Author
+
+Chantel Wetzel and Kelli Johnson
+
+## Examples
+
+``` r
+strata <- CreateStrataDF.fn(
+  names          = c("deep_s", "shallow_s", "deep_mn", "shallow_m", "shallow_n"),
+  depths.shallow = c(183, 55, 183, 55, 55),
+  depths.deep    = c(549, 183, 549, 183, 183),
+  lats.south     = c(32, 32, 40, 40, 44),
+  lats.north     = c(40, 40, 49, 44, 49)
+)
+# Which returns a data frame that looks like the following:
+#      name      area Depth_m.1 Depth_m.2 Latitude_dd.1 Latitude_dd.2
+#    deep_s 16468.110       183       549            32            40
+# shallow_s 16109.711        55       183            32            40
+#   deep_mn 12478.575       183       549            40            49
+# shallow_m  7042.491        55       183            40            44
+# shallow_n 16390.383        55       183            44            49
+```

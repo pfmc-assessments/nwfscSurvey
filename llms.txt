@@ -1,0 +1,285 @@
+## Installation
+
+`nwfscSurvey` provides code for analysis of the Northwest Fisheries
+Science Center (NWFSC) West Coast Groundfish Bottom Trawl, NWFSC slope,
+Alaska Fisheries Science Center (AFSC) slope, and AFSC Triennial
+surveys. Code within this package allows for pulling of data from the
+[NWFSC data warehouse](https://www.nwfsc.noaa.gov/data), calculating the
+design-based indices of abundance, visualization of data, and processing
+length- and age-composition data for use in West Coast groundfish stock
+assessment.
+
+This code was developed for use by scientists at the NWFSC and is
+intended to work on the specific data products that we have access to
+using methods specific to the needs of this group.
+
+``` r
+install.packages("remotes")
+remotes::install_github("pfmc-assessments/nwfscSurvey")
+```
+
+## Package information
+
+A [website](http://pfmc-assessments.github.io/nwfscSurvey/index.md) is
+now available for the package. The [“Get
+started”](http://pfmc-assessments.github.io/nwfscSurvey/articles/nwfscSurvey.md)
+tab provide general information on how to pull, visualize, and process
+survey data. Additionally, the
+[“Reference”](http://pfmc-assessments.github.io/nwfscSurvey/reference/index.md)
+tab provides a detailed list of all available functions.
+
+# Package index
+
+## All functions
+
+- [`AFSCforeign_hauls`](AFSCforeign_hauls.md) : Example data for
+  AFSCforeign_hauls
+
+- [`Biomass.fn()`](Biomass.fn.md) : Calculates design based estimates
+  from survey data for West Coast surveys.
+
+- [`CheckStrata.fn()`](CheckStrata.fn.md) : Calculate the number of
+  observations by year and strata
+
+- [`CreateStrataDF.fn()`](CreateStrataDF.fn.md) :
+
+  Create strata data frame using `StrataAreas.fn`
+
+- [`Format.AKSlope.fn()`](Format.AKSlope.fn.md) : Rename AFSC slope
+  survey columns from data pulled before 2017
+
+- [`GetN.fn()`](GetN.fn.md) : Calculate input sample sizes
+
+- [`GetSppDefault.fn()`](GetSppDefault.fn.md) : Get Vector of Default
+  Species Names for US West Coast
+
+- [`GetStrata.fn()`](GetStrata.fn.md) : Get Default Strata
+
+- [`GetSurveyAbb.fn()`](GetSurveyAbb.fn.md) : Get Survey Abbreviation
+
+- [`PlotBio.fn()`](PlotBio.fn.md) : Plots the designed based biomass
+  estimates with confidence intervals
+
+- [`PlotBioStrata.fn()`](PlotBioStrata.fn.md) : Plots the design-based
+  biomass estimates by strata with confidence intervals
+
+- [`PlotFreqData.fn()`](PlotFreqData.fn.md) : Plot length or age
+  compositions by year in bubble plots
+
+- [`PlotMap.fn()`](PlotMap.fn.md) : Plot two figures showing
+  catch-per-unit-effort data
+
+- [`PlotPresenceAbsence.fn()`](PlotPresenceAbsence.fn.md) : Plot showing
+  presence and absence per haul by depth, latitude, or sex bin
+
+- [`PlotSexRatio.fn()`](PlotSexRatio.fn.md) : Function to plot sex ratio
+
+- [`PlotSexRatioStrata.fn()`](PlotSexRatioStrata.fn.md) : Function to
+  plot sex ratio by strata
+
+- [`PlotVarLengthAtAge.fn()`](PlotVarLengthAtAge.fn.md) : Plot
+  variability of length at age
+
+- [`PullBio.fn()`](PullBio.fn.md) : Pull biological data (age, length,
+  weight) from the NWFSC data warehouse The website is:
+  https://www.webapps.nwfsc.noaa.gov/data This function can be used to
+  pull a single species or all observed species In order to pull all
+  species leave Name = NULL and SciName = NULL
+
+- [`PullCatch.fn()`](PullCatch.fn.md) : Pull catch data from the NWFSC
+  data warehouse
+
+- [`PullHaul.fn()`](PullHaul.fn.md) : Pull haul data from the NWFSC data
+  warehouse The website is: https://www.webapps.nwfsc.noaa.gov/data This
+  function can be used to pull haul data and associated covariates
+
+- [`PullSpp`](PullSpp.md) : Sql pull of species names
+
+- [`PullSpp.fn()`](PullSpp.fn.md) : Pull species names from the
+  warehouse
+
+- [`ReadInAges.fn()`](ReadInAges.fn.md) : Cleans triennial survey data
+  by year and area
+
+- [`ReadInLengths.fn()`](ReadInLengths.fn.md) :
+
+  Reads in the compositional survey data and filters the data into what
+  is necessary It reads in catch and station data and makes sure only
+  the species necessary are kept
+
+  ### may want to keep NA (blank in Excel) to select the zero tows
+
+  removeCAN is a flag if you want tows in Canadian waters removed need
+  the file called foreign_hauls.csv
+
+- [`SA3`](SA3.md) : A data set for determining strata areas (hectares)
+
+- [`SA3_v2021.1`](SA3_v2021.1.md) : A data set for determining strata
+  areas (hectares)
+
+- [`SexRatio.fn()`](SexRatio.fn.md) : Assign sex to unsexed fish based
+  on fish with similar traits
+
+- [`StrataAreas.fn()`](StrataAreas.fn.md) : Calculate strata area
+
+- [`StrataFactors.fn()`](StrataFactors.fn.md) : Creates a vector of
+  strata factors by name
+
+- [`SurveyAFs.fn()`](SurveyAFs.fn.md) : Create marginal age composition
+  data
+
+- [`SurveyAgeAtLen.fn()`](SurveyAgeAtLen.fn.md) : Calculates conditional
+  age-at-length composition data
+
+- [`SurveyLFs.fn()`](SurveyLFs.fn.md) : Expands the lengths up to the
+  total stratum area then sums over strata for each year
+
+- [`UnexpandedAFs.fn()`](UnexpandedAFs.fn.md) : Creates a matrix of
+  unexpanded age compositions
+
+- [`UnexpandedLFs.fn()`](UnexpandedLFs.fn.md) : Creates a matrix of
+  unexpanded length composition data
+
+- [`availablecells`](availablecells.md) : Available grid cell locations
+  for the survey
+
+- [`bio_nwfsc_combo`](bio_nwfsc_combo.md) : Example data for NWFSC bio
+  data
+
+- [`catch_nwfsc_combo`](catch_nwfsc_combo.md) : Example data for NWFSC
+  catch data
+
+- [`check_dir()`](check_dir.md) : Directory check
+
+- [`check_strata()`](check_strata.md) : Calculate the number of
+  observations by year and strata
+
+- [`check_survey()`](check_survey.md) : Check and create survey string
+
+- [`codify_sex()`](codify_sex.md) [`codify_sex_SS3()`](codify_sex.md) :
+  Code sexes into standardized strings
+
+- [`combine_tows()`](combine_tows.md) : Combine data with multiple
+  records for unique tows
+
+- [`convert_to_hex_string()`](convert_to_hex_string.md) : Utility
+  function used throughout the package
+
+- [`createMatrix()`](createMatrix.md) : Survey name matching function
+  used when pull from the data warehouse The website is:
+  https://www.webapp.nwfsc.noaa.gov/data
+
+- [`draw_USEEZ()`](draw_USEEZ.md) : Bounds the figure with the limits of
+  the U.S. EEZ
+
+- [`draw_land()`](draw_land.md) : Mapping function to draw land areas
+
+- [`draw_projection()`](draw_projection.md) : Mapping projection
+
+- [`draw_theme()`](draw_theme.md) : A ggplot2 theme for drawing maps
+
+- [`est_growth()`](est_growth.md) : Estimate length-at-age using the von
+  Bertanlaffy parameterization
+
+- [`est_vbgrowth()`](est_vbgrowth.md) : Estimate length-at-age using the
+  von Bertanlaffy parameterization
+
+- [`estimate_weight_length()`](estimate_weight_length.md) : Calculate
+  weight-length relationship parameters
+
+- [`filter_pull()`](filter_pull.md) : Filter data pulls
+
+- [`fit_vbgrowth()`](fit_vbgrowth.md) : Estimate von Bertanlaffy growth
+  parameters from lengths and ages
+
+- [`get_design_based()`](get_design_based.md) : Calculates design based
+  estimates from survey data for West Coast surveys.
+
+- [`get_expanded_comps()`](get_expanded_comps.md) : Calculate expanded
+  composition data for lengths and marginal ages
+
+- [`get_input_n()`](get_input_n.md) : Calculate input sample sizes
+
+- [`get_json()`](get_json.md) : Get json content from a URL
+
+- [`get_raw_caal()`](get_raw_caal.md) : Calculate unexpanded/raw length
+  or marginal age compositions
+
+- [`get_raw_comps()`](get_raw_comps.md) : Calculate unexpanded/raw
+  length or marginal age compositions
+
+- [`get_species_info()`](get_species_info.md) : Get Species Information
+
+- [`get_url()`](get_url.md) : Function to create url to pull data from
+  the data warehouse
+
+- [`label_tow_expansion()`](label_tow_expansion.md) : Label tow expanded
+  compositions
+
+- [`plot_age_length_sampling()`](plot_age_length_sampling.md) : Plot the
+  representativeness of age sampling based on lengths
+
+- [`plot_bio_patterns()`](plot_bio_patterns.md) : This function plots
+  length by latitude and depth
+
+- [`plot_comps()`](plot_comps.md) : Plot frequency data as bubble plots
+
+- [`plot_cpue()`](plot_cpue.md) : This function plots cpue and length by
+  latitude and depth
+
+- [`plot_index()`](plot_index.md) : Plots the design based biomass
+  estimates with confidence intervals
+
+- [`plot_length_age()`](plot_length_age.md) : Plots the length-at-age
+  data and estimates
+
+- [`plot_proportion()`](plot_proportion.md) : Plot proportions of factor
+  levels (y axis) by bins (x axis)
+
+- [`plot_varlenage()`](plot_varlenage.md) : Plot variability of length
+  at age
+
+- [`plot_weight_length()`](plot_weight_length.md) : Plots the
+  weight-at-length data and estimates
+
+- [`plot_westcoast()`](plot_westcoast.md) : Plot the United States west
+  coast using ggplot2
+
+- [`pull_bio()`](pull_bio.md) : Pull biological data (age, length,
+  weight) from the NWFSC data warehouse
+
+- [`pull_biological_samples()`](pull_biological_samples.md) : Pull
+  biological sample information from the NWFSC data warehouse for
+  biological collections taken at sea. Generally these are samples that
+  require lab processing. Generally, these types of biological sample
+  are maturity, stomach, fin clips, and tissue samples. This function
+  returns collection information for these samples include the sample
+  numbers which allows the lab analysis to be linked back to the sampled
+  fish. The website is: https://www.webapps.nwfsc.noaa.gov/data.
+
+- [`pull_catch()`](pull_catch.md) : Pull catch data for satisfactory
+  tows from the NWFSC data warehouse
+
+- [`pull_gemm()`](pull_gemm.md) : Pull Groundfish Expanded Multiyear
+  Mortality data
+
+- [`pull_haul()`](pull_haul.md) : Pull haul data from the NWFSC data
+  warehouse.
+
+- [`pull_spp()`](pull_spp.md) : Pull species names from the warehouse
+
+- [`save_rdata()`](save_rdata.md) :
+
+  Save an object in an `.rdata` file
+
+- [`stopifnotcolumn()`](stopifnotcolumn.md) : Stop if column name is not
+  present in the data
+
+- [`wh_plot_proportion()`](wh_plot_proportion.md) : Save figures of
+  proportions by depth and latitude using warehouse data
+
+# Articles
+
+### All vignettes
+
+- [nwfscSurvey](nwfscSurvey.md):

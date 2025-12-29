@@ -1,0 +1,269 @@
+# nwfscSurvey
+
+## Introduction
+
+The **nwfscSurvey** package was written by scientists at the Northwest
+Fisheries Science Center (NWFSC) to explore and process survey
+composition data for use in groundfish stockassessments. The package can
+be used for the NWFSC West Coast Groundfish Bottom Trawl (WCGBT) survey,
+the NWFSC slope survey, the Alaska Fisheries Science Center (AFSC) slope
+survey, and the AFSC Triennial survey. The package includes functions
+that query the [NWFSC data warehouse](https://www.nwfsc.noaa.gov/data),
+visualize, and process the data for use in groundfish assessments.
+
+## Use
+
+**nwfscSurvey** can be used to:
+
+- Pull survey catch, haul, and biological data from the NWFSC data
+  warehouse.
+
+- Calculate the design based indices based upon pre-specified
+  stratification.
+
+- Create length- and age-composition data expanded by the design-based
+  indices formatted for use in Stock Synthesis.
+
+- Create unexpanded conditional age-at-length composition data for use
+  in Stock Synthesis.
+
+- Create plots to visualize the data: design-based index plots, bubble
+  plots of length and age data, observed sex ratio, and distributions
+  across depth and latitude.
+
+## Functions
+
+A list of all functions in the packages can be viewed by:
+
+``` r
+ls("package:nwfscSurvey")
+```
+
+## Examples
+
+### NWFSC WCGBT Survey
+
+#### Pull data
+
+Pull both the catch and biological data:
+
+``` r
+catch = pull_catch(
+  common_name = "Pacific ocean perch", 
+  survey = "NWFSC.Combo")
+
+bio = pull_bio(
+  common_name = "Pacific ocean perch", 
+  survey = "NWFSC.Combo")
+```
+
+#### Initial data visualization
+
+There are a range of functions to create visualizations of the data by
+examining catch rates by latitude or depth, lengths or ages by latitude
+and depth, presence/absence in tows, and observed sex ratios.
+
+``` r
+plot_cpue(
+  catch = catch)
+
+plot_bio_patterns(
+  bio = bio, 
+  col_name = "Length_cm")
+
+wh_plot_proportion(
+  data_catch = catch,
+  data_bio = bio
+)
+```
+
+#### Define strata
+
+Depth and latitude strata are required to calculate a design-based index
+of abundance as well as length and age compositions. The strata should
+be specific to the range where the species in question has been
+observed. Note that the WCGBT Survey sampling design has changes in
+sampling intensity at 183 and 549 meters and north and south of 34.5
+degrees latitude, so these should generally be included as strata breaks
+if the range spans these values. Pacific ocean perch are rarely observed
+south of 34.5 degrees or deeper than 540 m, so there’s no need to
+include strata that have very few observations (the survey extends
+southward to about 32 degrees and as deep as 1280 m):
+
+``` r
+
+strata <- CreateStrataDF.fn(
+  names = c("shallow_s", "deep_s", "shallow_n", "deep_n"), 
+  depths.shallow = c(  55,  183,  55, 183),
+  depths.deep    = c( 183,  400, 183, 400),
+  lats.south     = c(34.5, 34.5,  42,  42),
+  lats.north     = c(  42,   42,  49,  49)
+)
+```
+
+#### Index of abundance
+
+Calculate the design based index of abundance:
+
+``` r
+biomass = get_design_based(
+  data = catch,  
+  strata = strata)
+```
+
+[`get_design_based()`](../reference/get_design_based.md) returns a list
+with elements `$biomass_by_strata` and `$biomass`, where the second
+element is the design based index of abundance aggregated across strata.
+If the `dir` function input is specified, the function writes a csv file
+inside the dir input location to a “forSS3” folder.
+
+Plot the coastwide design based index of abundance with uncertainty
+intervals:
+
+``` r
+plot_index(
+  data = biomass,
+  plot = 1)
+```
+
+Plot the design based index of abundance for each strata without
+uncertainty intervals:
+
+``` r
+plot_index(
+  data = biomass,
+  plot = 2)
+```
+
+#### Length composition data
+
+[`get_expanded_comps()`](../reference/get_expanded_comps.md) calculates
+and formats the length-composition data for Stock Synthesis:
+
+``` r
+length_comps <- get_expanded_comps(
+    bio_data = bio,
+    catch_data = catch,
+    comp_bins = seq(10, 40, 2),
+    strata = strata,
+    comp_column_name = "length_cm",
+    output = "full_expansion_ss3_format",
+    two_sex_comps = TRUE,
+    input_n_method = "stewart_hamel")
+```
+
+The above call will calculate the length frequencies for use in Stock
+Synthesis. This function returns a list of sexed and unsexed length
+composition data formatted for Stock Synthesis. If the `dir` function
+input is specified, it will write these dataframes to separate csv files
+inside the dir input location to a “forSS3” folder. In the above example
+the input sample size is calculated based on the Stewart and Hamel
+approach (e.g., unique samples calculated as a function of species type
+and tows).
+
+To plot the length frequency data:
+
+``` r
+plot_comps(
+  data = length_comps)
+```
+
+If the `dir` function input is specified, then a “plot” folder will be
+created in the directory location and a png of the plot will be saved.
+
+There is also a function to create raw or unexpanded composition data
+that works for either length or age data.
+
+``` r
+raw_length_comps <- get_raw_comps(
+    data = bio,
+    comp_bins = seq(10, 40, 2),
+    comp_column_name = "length_cm",
+    two_sex_comps = TRUE)
+```
+
+This function returns a list of sexed and unsexed length composition
+data formatted for Stock Synthesis. The input sample size is set equal
+to the number of samples in the data frame.
+
+#### Marginal age composition data
+
+``` r
+age_comps <- get_expanded_comps(
+    bio_data = bio,
+    catch_data = catch,
+    comp_bins = 1:40,
+    strata = strata,
+    comp_column_name = "age",
+    output = "full_expansion_ss3_format",
+    two_sex_comps = TRUE,
+    input_n_method = "stewart_hamel")
+```
+
+The above call will calculate the marginal age-composition data for the
+age data in a format for Stock Synthesis. This function returns a list
+of sexed and unsexed age composition data formatted for Stock Synthesis.
+If the `dir` function input is specified, it will write these dataframes
+to separate csv files as well. In the above example the input sample
+size is calculated based on the Stewart and Hamel approach (e.g., unique
+samples calculated as a function of species type and tows).
+
+To plot the age frequency data:
+
+``` r
+plot_comps(
+  data = age_comps)
+```
+
+If the `dir` function input is specified, then a “plot” folder will be
+created in the directory location and a png of the plot will be saved.
+
+There is also a function to create raw or unexpanded composition data
+that works for either length or age data.
+
+``` r
+raw_age_comps <- get_raw_comps(
+    data = bio,
+    comp_bins = 1:40,
+    comp_column_name = "age",
+    two_sex_comps = TRUE)
+```
+
+This function returns a list of sexed and unsexed marginal age
+composition data formatted for Stock Synthesis. The input sample size is
+set equal to the number of samples in the data frame.
+
+#### Conditional-age-at-length data
+
+To calculate conditional-age-at-length data formatted for Stock
+Synthesis:
+
+``` r
+caal <- get_raw_caal(
+  data = bio, 
+  len_bins = seq(10, 40, 2),
+  age_bins = 1:40)
+```
+
+Creates unexpanded conditional-age-at-length data for each sex with
+input sample sizes based on the observed number of fish in each length
+bin by year. It returns a dataframe with conditional-age-at-length data
+by sex (sex = 0, sex = 1, sex = 2). If the `dir` function input is
+specified, it will write the dataframe to a csv file.
+
+#### Maps
+
+To make a map showing the distribution of density in aggregate and by
+year:
+
+``` r
+PlotMap.fn(
+  dat = catch)
+```
+
+#### Additional data visualization
+
+There are a couple of additional plotting functions that are included in
+the
+package:[`PlotVarLengthAtAge.fn()`](../reference/PlotVarLengthAtAge.fn.md)
+and [`PlotSexRatio.fn()`](../reference/PlotSexRatio.fn.md).
