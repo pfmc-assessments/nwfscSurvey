@@ -17,13 +17,14 @@
 #' @export
 
 PlotSexRatio.fn <- function(
-    dir,
-    dat,
-    data.type = "length",
-    main = NULL,
-    circleSize = 0.1,
-    dopng = lifecycle::deprecated(),
-    ...) {
+  dir,
+  dat,
+  data.type = "length",
+  main = NULL,
+  circleSize = 0.1,
+  dopng = lifecycle::deprecated(),
+  ...
+) {
   if (lifecycle::is_present(dopng)) {
     lifecycle::deprecate_warn(
       when = "2.1",

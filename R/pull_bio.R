@@ -51,14 +51,15 @@
 #' }
 #'
 pull_bio <- function(
-    survey,
-    common_name = NULL,
-    sci_name = NULL,
-    years = c(1970, 2050),
-    dir = NULL,
-    convert = TRUE,
-    verbose = TRUE,
-    standard_filtering = TRUE) {
+  survey,
+  common_name = NULL,
+  sci_name = NULL,
+  years = c(1970, 2050),
+  dir = NULL,
+  convert = TRUE,
+  verbose = TRUE,
+  standard_filtering = TRUE
+) {
   options(timeout = 4000000)
   if (survey %in% c("NWFSC.Shelf.Rockfish", "NWFSC.Hook.Line")) {
     cli::cli_abort(

@@ -99,26 +99,27 @@
 #' }
 #'
 get_expanded_comps <- function(
-    bio_data,
-    catch_data,
-    comp_bins,
-    strata,
-    dir = NULL,
-    comp_column_name = "length_cm",
-    output = c("full_expansion_ss3_format", "tow_expansion_only", "full_expansion_unformatted"),
-    two_sex_comps = TRUE,
-    input_n_method = c("stewart_hamel", "tows", "total_samples"),
-    month = "Enter Month",
-    fleet = "Enter Fleet",
-    partition = 0,
-    ageerr = "Enter Numeric",
-    Lbin_lo = -1,
-    Lbin_hi = -1,
-    age_low = lifecycle::deprecated(),
-    age_high = lifecycle::deprecated(),
-    age_error = lifecycle::deprecated(),
-    printfolder = "forSS3",
-    verbose = TRUE) {
+  bio_data,
+  catch_data,
+  comp_bins,
+  strata,
+  dir = NULL,
+  comp_column_name = "length_cm",
+  output = c("full_expansion_ss3_format", "tow_expansion_only", "full_expansion_unformatted"),
+  two_sex_comps = TRUE,
+  input_n_method = c("stewart_hamel", "tows", "total_samples"),
+  month = "Enter Month",
+  fleet = "Enter Fleet",
+  partition = 0,
+  ageerr = "Enter Numeric",
+  Lbin_lo = -1,
+  Lbin_hi = -1,
+  age_low = lifecycle::deprecated(),
+  age_high = lifecycle::deprecated(),
+  age_error = lifecycle::deprecated(),
+  printfolder = "forSS3",
+  verbose = TRUE
+) {
   # arguments deprecated to be consistent with output column names
   # revised to better match r4ss
   # https://github.com/pfmc-assessments/nwfscSurvey/issues/164

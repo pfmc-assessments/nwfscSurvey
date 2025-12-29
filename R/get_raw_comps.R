@@ -49,23 +49,24 @@
 #' }
 #'
 get_raw_comps <- function(
-    data,
-    comp_bins,
-    comp_column_name = "Length_cm",
-    input_n_method = c("stewart_hamel", "tows", "total_samples"),
-    two_sex_comps = TRUE,
-    month = "Enter Month",
-    fleet = "Enter Fleet",
-    partition = 0,
-    ageerr = "Enter Numeric",
-    Lbin_lo = -1,
-    Lbin_hi = -1,
-    age_low = lifecycle::deprecated(),
-    age_high = lifecycle::deprecated(),
-    age_error = lifecycle::deprecated(),
-    dir = NULL,
-    printfolder = "forSS3",
-    verbose = TRUE) {
+  data,
+  comp_bins,
+  comp_column_name = "Length_cm",
+  input_n_method = c("stewart_hamel", "tows", "total_samples"),
+  two_sex_comps = TRUE,
+  month = "Enter Month",
+  fleet = "Enter Fleet",
+  partition = 0,
+  ageerr = "Enter Numeric",
+  Lbin_lo = -1,
+  Lbin_hi = -1,
+  age_low = lifecycle::deprecated(),
+  age_high = lifecycle::deprecated(),
+  age_error = lifecycle::deprecated(),
+  dir = NULL,
+  printfolder = "forSS3",
+  verbose = TRUE
+) {
   # arguments deprecated to be consistent with output column names
   # revised to better match r4ss
   # https://github.com/pfmc-assessments/nwfscSurvey/issues/164

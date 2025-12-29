@@ -26,10 +26,11 @@
 #' for example.
 #'
 estimate_weight_length <- function(
-    data,
-    col_length = "length_cm",
-    col_weight = "weight_kg",
-    verbose = FALSE) {
+  data,
+  col_length = "length_cm",
+  col_weight = "weight_kg",
+  verbose = FALSE
+) {
   col_length <- tolower(col_length)
   col_weight <- tolower(col_weight)
   colnames(data) <- tolower(colnames(data))
@@ -45,8 +46,8 @@ estimate_weight_length <- function(
 
   if (verbose) {
     cli::cli_alert_info(
-      "Calculating the weight-length relationship from {nrow(data)} samples 
-      out of {dims[1]} because {dims[1] - nrow(data)} fish did not have 
+      "Calculating the weight-length relationship from {nrow(data)} samples
+      out of {dims[1]} because {dims[1] - nrow(data)} fish did not have
       empirical weights and lengths."
     )
   }
@@ -58,8 +59,10 @@ estimate_weight_length <- function(
     male = dplyr::filter(data, sex %in% c("M", "Male", "m")),
     all = dplyr::filter(data, sex %in% c(NA, "F", "M", "U", "H", "Male", "Female", "Unsexed", "m", "f", "u"))
   ) |>
-    purrr::map_dfr(~ tidyr::nest(.x, 
-      data = everything()), 
+    purrr::map_dfr(
+      ~ tidyr::nest(.x,
+        data = everything()
+      ),
       .id = "group"
     ) |>
     dplyr::mutate(

@@ -31,16 +31,17 @@
 #' @export
 #'
 plot_length_age <- function(
-    data,
-    dir = NULL,
-    col_length = "length_cm",
-    col_age = "age",
-    estimates = NULL,
-    two_sex = TRUE,
-    add_save_name = NULL,
-    height = 7,
-    width = 7,
-    dpi = 300) {
+  data,
+  dir = NULL,
+  col_length = "length_cm",
+  col_age = "age",
+  estimates = NULL,
+  two_sex = TRUE,
+  add_save_name = NULL,
+  height = 7,
+  width = 7,
+  dpi = 300
+) {
   plotdir <- file.path(dir, "plots")
   check_dir(plotdir)
   plot_names <- file.path(

@@ -20,17 +20,18 @@
 #' @export
 
 UnexpandedLFs.fn <- function(
-    dir = NULL, datL,
-    lgthBins = 1,
-    sex = 3,
-    partition = 0,
-    fleet = "Enter Fleet",
-    ageErr = "NA",
-    agelow = -1,
-    agehigh = -1,
-    month = "Enter Month",
-    printfolder = "forSS3",
-    verbose = TRUE) {
+  dir = NULL, datL,
+  lgthBins = 1,
+  sex = 3,
+  partition = 0,
+  fleet = "Enter Fleet",
+  ageErr = "NA",
+  agelow = -1,
+  agehigh = -1,
+  month = "Enter Month",
+  printfolder = "forSS3",
+  verbose = TRUE
+) {
   plotdir <- file.path(dir, printfolder)
   check_dir(dir = plotdir, verbose = verbose)
 

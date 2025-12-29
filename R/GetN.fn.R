@@ -41,20 +41,21 @@
 #' }
 #'
 GetN.fn <- function(
-    dir = NULL,
-    dat,
-    type = c("length", "age"),
-    species = c(
-      "all",
-      "flatfish",
-      "shelfrock",
-      "sloperock",
-      "thorny",
-      "others"
-    ),
-    printfolder = "forSS3",
-    output = NULL,
-    verbose = TRUE) {
+  dir = NULL,
+  dat,
+  type = c("length", "age"),
+  species = c(
+    "all",
+    "flatfish",
+    "shelfrock",
+    "sloperock",
+    "thorny",
+    "others"
+  ),
+  printfolder = "forSS3",
+  output = NULL,
+  verbose = TRUE
+) {
   lifecycle::deprecate_soft(
     when = "2.5",
     what = "nwfscSurvey::GetN.fn()",

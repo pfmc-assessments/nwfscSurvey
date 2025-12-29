@@ -24,18 +24,19 @@
 #' @export
 
 PlotVarLengthAtAge.fn <- function(
-    dir = NULL,
-    dat,
-    main = NULL,
-    ageBin = 1,
-    bySex = T,
-    parStart = c(52, 0.09, 1),
-    estVB = T,
-    bins = NULL,
-    legX = "bottomleft",
-    legY = NULL,
-    dopng = lifecycle::deprecated(),
-    ...) {
+  dir = NULL,
+  dat,
+  main = NULL,
+  ageBin = 1,
+  bySex = T,
+  parStart = c(52, 0.09, 1),
+  estVB = T,
+  bins = NULL,
+  legX = "bottomleft",
+  legY = NULL,
+  dopng = lifecycle::deprecated(),
+  ...
+) {
   if (lifecycle::is_present(dopng)) {
     lifecycle::deprecate_warn(
       when = "2.1",

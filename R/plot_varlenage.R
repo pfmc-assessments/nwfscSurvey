@@ -27,17 +27,18 @@
 #' @export
 
 plot_varlenage <- function(
-    dir = NULL,
-    dat,
-    main = NULL,
-    Par = data.frame(K = 0.13, Linf = 55, L0 = 15, CV0 = 0.10, CV1 = 0.10),
-    bySex = TRUE,
-    estVB = TRUE,
-    bins = NULL,
-    legX = "bottomleft",
-    legY = NULL,
-    dopng = lifecycle::deprecated(),
-    ...) {
+  dir = NULL,
+  dat,
+  main = NULL,
+  Par = data.frame(K = 0.13, Linf = 55, L0 = 15, CV0 = 0.10, CV1 = 0.10),
+  bySex = TRUE,
+  estVB = TRUE,
+  bins = NULL,
+  legX = "bottomleft",
+  legY = NULL,
+  dopng = lifecycle::deprecated(),
+  ...
+) {
   if (lifecycle::is_present(dopng)) {
     lifecycle::deprecate_warn(
       when = "2.1",

@@ -35,16 +35,17 @@
 #' @export
 #'
 plot_weight_length <- function(
-    data,
-    dir = NULL,
-    estimates = NULL,
-    col_length = "length_cm",
-    col_weight = "weight_kg",
-    two_sex = TRUE,
-    add_save_name = NULL,
-    height = 7,
-    width = 7,
-    dpi = 300) {
+  data,
+  dir = NULL,
+  estimates = NULL,
+  col_length = "length_cm",
+  col_weight = "weight_kg",
+  two_sex = TRUE,
+  add_save_name = NULL,
+  height = 7,
+  width = 7,
+  dpi = 300
+) {
   plotdir <- file.path(dir, "plots")
   check_dir(plotdir)
   plot_names <- file.path(

@@ -25,11 +25,12 @@
 #' }
 #'
 pull_haul <- function(
-    survey,
-    years = c(1970, 2050),
-    dir = NULL,
-    verbose = TRUE,
-    standard_filtering = TRUE) {
+  survey,
+  years = c(1970, 2050),
+  dir = NULL,
+  verbose = TRUE,
+  standard_filtering = TRUE
+) {
   # increase the timeout period to avoid errors when pulling data
   options(timeout = 4000000)
 

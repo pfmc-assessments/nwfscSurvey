@@ -22,19 +22,20 @@
 #' @export
 
 PlotFreqData.fn <- function(
-    dir = NULL,
-    dat,
-    inch = 0.15,
-    ylab = "Bins",
-    xlab = "Year",
-    zero2NAs = TRUE,
-    main = NULL,
-    xlim = NULL,
-    ymax = NULL,
-    dopng = lifecycle::deprecated(),
-    w = 7,
-    h = 7,
-    ...) {
+  dir = NULL,
+  dat,
+  inch = 0.15,
+  ylab = "Bins",
+  xlab = "Year",
+  zero2NAs = TRUE,
+  main = NULL,
+  xlim = NULL,
+  ymax = NULL,
+  dopng = lifecycle::deprecated(),
+  w = 7,
+  h = 7,
+  ...
+) {
   if (lifecycle::is_present(dopng)) {
     lifecycle::deprecate_warn(
       when = "2.1",

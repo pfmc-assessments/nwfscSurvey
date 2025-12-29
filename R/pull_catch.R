@@ -73,15 +73,16 @@
 #' }
 #'
 pull_catch <- function(
-    survey,
-    common_name = NULL,
-    sci_name = NULL,
-    years = c(1970, 2050),
-    dir = NULL,
-    convert = TRUE,
-    verbose = TRUE,
-    sample_types = c("NA", NA, "Life Stage", "Size")[1:2],
-    standard_filtering = TRUE) {
+  survey,
+  common_name = NULL,
+  sci_name = NULL,
+  years = c(1970, 2050),
+  dir = NULL,
+  convert = TRUE,
+  verbose = TRUE,
+  sample_types = c("NA", NA, "Life Stage", "Size")[1:2],
+  standard_filtering = TRUE
+) {
   if (survey %in% c("NWFSC.Shelf.Rockfish", "NWFSC.Hook.Line")) {
     cli::cli_abort(
       "The catch pull currently does not work for NWFSC Hook & Line Survey data.",

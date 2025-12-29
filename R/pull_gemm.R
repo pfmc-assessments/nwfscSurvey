@@ -37,10 +37,11 @@
 #' }
 #'
 pull_gemm <- function(
-    common_name,
-    years,
-    dir = NULL,
-    verbose = TRUE) {
+  common_name,
+  years,
+  dir = NULL,
+  verbose = TRUE
+) {
   check_dir(dir = dir, verbose = verbose)
 
   # Pull all gemm data

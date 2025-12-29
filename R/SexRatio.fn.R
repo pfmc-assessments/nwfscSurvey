@@ -76,12 +76,13 @@
 #'     across all years and strata.
 #'
 SexRatio.fn <- function(
-    x,
-    sexRatioStage,
-    sexRatioUnsexed,
-    maxSizeUnsexed,
-    bins = NULL,
-    verbose = TRUE) {
+  x,
+  sexRatioStage,
+  sexRatioUnsexed,
+  maxSizeUnsexed,
+  bins = NULL,
+  verbose = TRUE
+) {
   cli::cli_alert_warning(
     "Applying sex ratios is no longer best practice. Please consider turning off
     sex ratio application in SurveyLFs.fn() or using get_expanded_comps()."

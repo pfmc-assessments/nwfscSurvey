@@ -32,11 +32,12 @@
 #'
 #'
 check_strata <- function(
-    data,
-    strata,
-    dir = NULL,
-    printfolder = "forSS3",
-    verbose = TRUE) {
+  data,
+  strata,
+  dir = NULL,
+  printfolder = "forSS3",
+  verbose = TRUE
+) {
   plotdir <- file.path(dir, printfolder)
   check_dir(dir = plotdir, verbose = verbose)
 

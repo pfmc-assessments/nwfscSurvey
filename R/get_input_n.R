@@ -48,20 +48,21 @@
 #' }
 #'
 get_input_n <- function(
-    dir = NULL,
-    data,
-    comp_column_name = "length_cm",
-    input_n_method = c("stewart_hamel", "tows", "total_samples"),
-    species_group = c(
-      "all",
-      "flatfish",
-      "shelfrock",
-      "sloperock",
-      "thorny",
-      "other"
-    ),
-    printfolder = "forSS3",
-    verbose = TRUE) {
+  dir = NULL,
+  data,
+  comp_column_name = "length_cm",
+  input_n_method = c("stewart_hamel", "tows", "total_samples"),
+  species_group = c(
+    "all",
+    "flatfish",
+    "shelfrock",
+    "sloperock",
+    "thorny",
+    "other"
+  ),
+  printfolder = "forSS3",
+  verbose = TRUE
+) {
   plotdir <- file.path(dir, printfolder)
   check_dir(dir = plotdir, verbose = verbose)
 
