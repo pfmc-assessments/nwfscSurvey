@@ -43,9 +43,9 @@ get_url <- function(data_table, project_long, add_species, years, vars_long) {
   url_text <- paste0(
     "https://www.webapps.nwfsc.noaa.gov/trips/api/v1/source/",
     # pre-april 2025 site with final data
-    #"https://www.webapps.nwfsc.noaa.gov/data/api/v1/source/",
+    # "https://www.webapps.nwfsc.noaa.gov/data/api/v1/source/",
     # pre-april 2025 development site when data are being qaqcd
-    #"https://www.devwebapps.nwfsc.noaa.gov/data/api/v1/source/",
+    # "https://www.devwebapps.nwfsc.noaa.gov/data/api/v1/source/",
     data_table,
     "/selection.json?filters=",
     project_str,

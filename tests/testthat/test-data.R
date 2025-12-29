@@ -220,7 +220,7 @@ test_that("pull_catch_afsc_slope", {
     )
   expect_is(dat, "data.frame")
   expect_equal(nrow(dat), 1696)
-  expect_equal(sum(dat[,"positive"]), 1671)
+  expect_equal(sum(dat[, "positive"]), 1671)
 })
 
 test_that("pull_bio_afsc_slope", {
@@ -286,7 +286,6 @@ test_that("pull_haul_triennial", {
   )
   expect_is(dat, "data.frame")
   expect_equal(nrow(dat), 4457)
-
 })
 
 test_that("pull_haul_afsc_slope", {
@@ -298,7 +297,6 @@ test_that("pull_haul_afsc_slope", {
   )
   expect_is(dat, "data.frame")
   expect_equal(nrow(dat), 1696)
-
 })
 
 test_that("pull_haul_nwfsc_slope", {
@@ -310,5 +308,4 @@ test_that("pull_haul_nwfsc_slope", {
   )
   expect_is(dat, "data.frame")
   expect_equal(nrow(dat), 1714)
-
 })
