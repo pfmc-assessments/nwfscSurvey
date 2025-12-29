@@ -72,7 +72,8 @@ pull_biological_samples <- function(
   }
 
   vars_long <- c(
-    "common_name", "scientific_name",
+    "common_name",
+    "scientific_name",
     "age_years",
     # "best_available_taxonomy_observation_detail_dim$method_description",
     "best_available_taxonomy_observation_detail_whid",

@@ -114,21 +114,6 @@ test_that("pull-sample-types", {
   )
 })
 
-test_that("pull_haul", {
-  skip_on_cran()
-
-  dat <- pull_haul(
-    years = c(2003, 2018),
-    survey = "NWFSC.Combo",
-    dir = NULL,
-    verbose = FALSE
-  )
-  expect_is(dat, "data.frame")
-  expect_equal(nrow(dat), 10353)
-  # the number of records changed to 10353 on 2/7/2025
-  # expect_equal(nrow(dat), 10351)
-})
-
 test_that("pull_catch_unfiltered", {
   skip_on_cran()
 
@@ -193,6 +178,65 @@ test_that("pull_bio_triennial", {
   expect_equal(dat[[2]], "no_ages_available")
 })
 
+
+test_that("pull_catch_nwfsc_slope", {
+  skip_on_cran()
+
+  dat <- pull_catch(
+    common_name = "sablefish",
+    survey = "NWFSC.Slope",
+    verbose = TRUE
+  ) |>
+    dplyr::mutate(
+      positive = dplyr::case_when(total_catch_numbers > 0 ~ 1, .default = 0)
+    )
+  expect_is(dat, "data.frame")
+  expect_equal(nrow(dat), 1714)
+  expect_equal(sum(dat[, "positive"]), 1481)
+})
+
+test_that("pull_bio_nwfsc_slope", {
+  skip_on_cran()
+
+  dat <- pull_bio(
+    common_name = "sablefish",
+    survey = "NWFSC.Slope",
+    verbose = TRUE
+  )
+  expect_is(dat, "data.frame")
+  expect_equal(nrow(dat), 15336)
+})
+
+test_that("pull_catch_afsc_slope", {
+  skip_on_cran()
+
+  dat <- pull_catch(
+    common_name = "sablefish",
+    survey = "AFSC.Slope",
+    verbose = TRUE
+  ) |>
+    dplyr::mutate(
+      positive = dplyr::case_when(total_catch_numbers > 0 ~ 1, .default = 0)
+    )
+  expect_is(dat, "data.frame")
+  expect_equal(nrow(dat), 1696)
+  expect_equal(sum(dat[,"positive"]), 1671)
+})
+
+test_that("pull_bio_afsc_slope", {
+  skip_on_cran()
+
+  dat <- pull_bio(
+    common_name = "sablefish",
+    survey = "AFSC.Slope",
+    verbose = TRUE
+  )
+  expect_is(dat, "list")
+  expect_equal(nrow(dat[[1]]), 47269)
+  expect_equal(nrow(dat[[2]]), 14763)
+})
+
+
 test_that("pull_biological_samples", {
   skip_on_cran()
 
@@ -204,4 +248,67 @@ test_that("pull_biological_samples", {
   )
   expect_is(dat, "data.frame")
   expect_equal(nrow(dat), 1132)
+})
+
+test_that("pull_gemm", {
+  skip_on_cran()
+
+  dat <- pull_gemm(
+    common_name = "lingcod",
+    years = c(2005, 2010)
+  )
+  expect_is(dat, "data.frame")
+  expect_equal(nrow(dat), 64)
+})
+
+test_that("pull_haul_nwfsc_combo", {
+  skip_on_cran()
+
+  dat <- pull_haul(
+    years = c(2003, 2018),
+    survey = "NWFSC.Combo",
+    dir = NULL,
+    verbose = FALSE
+  )
+  expect_is(dat, "data.frame")
+  expect_equal(nrow(dat), 10353)
+  # the number of records changed to 10353 on 2/7/2025
+  # expect_equal(nrow(dat), 10351)
+})
+
+test_that("pull_haul_triennial", {
+  skip_on_cran()
+
+  dat <- pull_haul(
+    survey = "Triennial",
+    dir = NULL,
+    verbose = FALSE
+  )
+  expect_is(dat, "data.frame")
+  expect_equal(nrow(dat), 4457)
+
+})
+
+test_that("pull_haul_afsc_slope", {
+  skip_on_cran()
+
+  dat <- pull_haul(
+    survey = "AFSC.Slope",
+    verbose = FALSE
+  )
+  expect_is(dat, "data.frame")
+  expect_equal(nrow(dat), 1696)
+
+})
+
+test_that("pull_haul_nwfsc_slope", {
+  skip_on_cran()
+
+  dat <- pull_haul(
+    survey = "NWFSC.Slope",
+    verbose = FALSE
+  )
+  expect_is(dat, "data.frame")
+  expect_equal(nrow(dat), 1714)
+
 })

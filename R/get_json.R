@@ -16,7 +16,11 @@
 #' used, e.g., [pull_catch()].
 #'
 get_json <- function(url) {
-  out <- httr::GET(url) |>
+  ua <- httr::user_agent(
+    "nwfscSurvey R package; https://github.com/pfmc-assessments/nwfscSurvey"
+  )
+
+  out <- httr::GET(url, ua) |>
     httr::content(as = "text", encoding = "UTF-8") |>
     jsonlite::fromJSON()
 

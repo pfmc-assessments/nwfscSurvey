@@ -87,6 +87,7 @@ filter_pull <- function(
 
   # Remove tows outside of standard depths 55-1,280 m
   col_to_use <- which(colnames(data) %in% c("depth_hi_prec_m", "depth_m"))
+  #data[, col_to_use] <- as.numeric(data[, col_to_use])
   good_depth <- which(data[, col_to_use] >= 55 & data[, col_to_use] <= 1280)
   if (length(good_depth) != dim(data)[1]) {
     if (verbose) {
