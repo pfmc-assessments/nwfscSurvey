@@ -20,7 +20,6 @@ GetSppDefault.fn <- function() {
     "bocaccio",
     "canary_rockfish",
     "chilipepper",
-    "curlfin_sole",
     "darkblotched_rockfish",
     "dover_sole",
     "english_sole",
