@@ -114,10 +114,10 @@ get_species_info <- function(species, unident = FALSE, verbose = TRUE) {
 
   # Match strata
   index <- match(tolower(out[, "common_name"]), tolower(spplist[, 2]))
-  #if (sum(is.na(index)) == length(index)) {
+  # if (sum(is.na(index)) == length(index)) {
   #  index <- grep(species, tolower(out[, "common_name"]))[1]
   #  out <- out[index, ]
-  #} else {
+  # } else {
   if (any(is.na(index))) {
     bad <- which(is.na(index))
     bad_strata <- paste(unique(out[bad, "input"]), collapse = ", ")
@@ -137,7 +137,7 @@ get_species_info <- function(species, unident = FALSE, verbose = TRUE) {
     out <- out[!is.na(index), ]
     index <- index[!is.na(index)]
   }
-  #}
+  # }
 
   out[, "strata"] <- ifelse(
     test = is.na(index),

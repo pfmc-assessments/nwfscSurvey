@@ -18,14 +18,15 @@
 #' @seealso \code{\link{StrataFactors.fn}}
 
 PlotSexRatioStrata.fn <- function(
-    dir = NULL,
-    dat,
-    type = "length",
-    strat.vars = c("Depth_m", "Latitude_dd"),
-    strat.df = NULL,
-    circleSize = 0.05,
-    dopng = lifecycle::deprecated(),
-    ...) {
+  dir = NULL,
+  dat,
+  type = "length",
+  strat.vars = c("Depth_m", "Latitude_dd"),
+  strat.df = NULL,
+  circleSize = 0.05,
+  dopng = lifecycle::deprecated(),
+  ...
+) {
   if (lifecycle::is_present(dopng)) {
     lifecycle::deprecate_warn(
       when = "2.1",

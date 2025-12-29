@@ -20,12 +20,13 @@
 #' @export
 #'
 est_vbgrowth <- function(
-    data,
-    dir = NULL,
-    col_length = "length_cm",
-    col_age = "age",
-    init_params = data.frame(K = 0.13, Linf = 55, L0 = 15, CV0 = 0.10, CV1 = 0.10),
-    bins = NULL) {
+  data,
+  dir = NULL,
+  col_length = "length_cm",
+  col_age = "age",
+  init_params = data.frame(K = 0.13, Linf = 55, L0 = 15, CV0 = 0.10, CV1 = 0.10),
+  bins = NULL
+) {
   check_dir(dir = dir)
   col_length <- tolower(col_length)
   col_age <- tolower(col_age)

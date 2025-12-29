@@ -39,11 +39,12 @@
 #' }
 #'
 Format.AKSlope.fn <- function(
-    dir = NULL,
-    datTows,
-    datL = NA,
-    start.year = 1997,
-    verbose = TRUE) {
+  dir = NULL,
+  datTows,
+  datL = NA,
+  start.year = 1997,
+  verbose = TRUE
+) {
   check_dir(dir = dir, verbose)
 
   # Filter for only the AKFSC Slope survey

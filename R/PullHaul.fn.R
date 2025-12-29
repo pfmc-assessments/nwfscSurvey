@@ -24,11 +24,12 @@
 #' }
 #'
 PullHaul.fn <- function(
-    YearRange = c(1980, 5000),
-    SurveyName = NULL,
-    SaveFile = lifecycle::deprecated(),
-    Dir = NULL,
-    verbose = TRUE) {
+  YearRange = c(1980, 5000),
+  SurveyName = NULL,
+  SaveFile = lifecycle::deprecated(),
+  Dir = NULL,
+  verbose = TRUE
+) {
   lifecycle::deprecate_soft(
     when = "2.3",
     what = "nwfscSurvey::PullHaul.fn()",

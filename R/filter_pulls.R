@@ -23,10 +23,11 @@
 #' @import cli
 #'
 filter_pull <- function(
-    data,
-    data_type = "samples",
-    standard_filtering = TRUE,
-    verbose = TRUE) {
+  data,
+  data_type = "samples",
+  standard_filtering = TRUE,
+  verbose = TRUE
+) {
   # Now start filtering out tows that have issues:
   good_performance <- which(data$performance == "Satisfactory")
   if (length(good_performance) != dim(data)[1]) {

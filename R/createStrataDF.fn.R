@@ -44,11 +44,12 @@
 #' See \code{\link{Biomass.fn}} for how the areas are used to create design-based biomass estimates.
 #'
 CreateStrataDF.fn <- function(
-    names = NA,
-    depths.shallow,
-    depths.deep,
-    lats.south,
-    lats.north) {
+  names = NA,
+  depths.shallow,
+  depths.deep,
+  lats.south,
+  lats.north
+) {
   SA3_v2021.1 <- NULL
   utils::data("SA3_v2021.1",
     envir = environment(),

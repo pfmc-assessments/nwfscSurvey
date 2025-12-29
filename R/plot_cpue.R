@@ -19,12 +19,13 @@
 #' @export
 #'
 plot_cpue <- function(
-    catch,
-    dir = NULL,
-    plot = 1:3,
-    width = 7,
-    height = 7,
-    ...) {
+  catch,
+  dir = NULL,
+  plot = 1:3,
+  width = 7,
+  height = 7,
+  ...
+) {
   plotdir <- file.path(dir, "plots")
   check_dir(dir = plotdir)
 

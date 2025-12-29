@@ -53,18 +53,19 @@
 #' }
 #'
 get_raw_caal <- function(
-    data,
-    len_bins,
-    age_bins,
-    length_column_name = "length_cm",
-    age_column_name = "age",
-    dir = NULL,
-    month = "Enter Month",
-    fleet = "Enter Fleet",
-    partition = 0,
-    ageerr = "Enter Numeric",
-    printfolder = "forSS3",
-    verbose = TRUE) {
+  data,
+  len_bins,
+  age_bins,
+  length_column_name = "length_cm",
+  age_column_name = "age",
+  dir = NULL,
+  month = "Enter Month",
+  fleet = "Enter Fleet",
+  partition = 0,
+  ageerr = "Enter Numeric",
+  printfolder = "forSS3",
+  verbose = TRUE
+) {
   plotdir <- file.path(dir, printfolder)
   check_dir(dir = plotdir, verbose = verbose)
 

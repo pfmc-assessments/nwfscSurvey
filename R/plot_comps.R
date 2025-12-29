@@ -32,13 +32,14 @@
 #' }
 #'
 plot_comps <- function(
-    data,
-    dir = NULL,
-    add_save_name = NULL,
-    plot = 1:2,
-    add_0_ylim = TRUE,
-    width = 10,
-    height = 7) {
+  data,
+  dir = NULL,
+  add_save_name = NULL,
+  plot = 1:2,
+  add_0_ylim = TRUE,
+  width = 10,
+  height = 7
+) {
   # if data is a list with both sexed and unsexed fish, choose sexed fish
   if ("sexed" %in% names(data) & "unsexed" %in% names(data)) {
     data <- data$sexed

@@ -36,26 +36,27 @@
 #' @import reshape2
 
 SurveyAgeAtLen.fn <- function(
-    dir = NULL,
-    datAL,
-    datTows,
-    strat.vars = c("Depth_m", "Latitude_dd"),
-    strat.df = NULL,
-    lgthBins = 1,
-    ageBins = 1,
-    sex = 3,
-    SSout = TRUE,
-    meanRatioMethod = TRUE,
-    raw = TRUE,
-    NAs2zero = TRUE,
-    month = "Enter Month",
-    fleet = "Enter Fleet",
-    partition = 0,
-    ageerr = "Enter Numeric",
-    ageErr = lifecycle::deprecated(),
-    returnSamps = FALSE,
-    printfolder = "forSS3",
-    verbose = TRUE) {
+  dir = NULL,
+  datAL,
+  datTows,
+  strat.vars = c("Depth_m", "Latitude_dd"),
+  strat.df = NULL,
+  lgthBins = 1,
+  ageBins = 1,
+  sex = 3,
+  SSout = TRUE,
+  meanRatioMethod = TRUE,
+  raw = TRUE,
+  NAs2zero = TRUE,
+  month = "Enter Month",
+  fleet = "Enter Fleet",
+  partition = 0,
+  ageerr = "Enter Numeric",
+  ageErr = lifecycle::deprecated(),
+  returnSamps = FALSE,
+  printfolder = "forSS3",
+  verbose = TRUE
+) {
   # deprecate old arguments
   lifecycle::deprecate_stop(
     when = "2.6",

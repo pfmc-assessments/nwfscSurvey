@@ -41,8 +41,9 @@
 #' See \code{\link{CreateStrataDF.fn}} for a wrapper to this function.
 #' @export
 StrataAreas.fn <- function(
-    strat.df,
-    df = get(utils::data("SA3_v2021.1", overwrite = TRUE, package = "nwfscSurvey"))) {
+  strat.df,
+  df = get(utils::data("SA3_v2021.1", overwrite = TRUE, package = "nwfscSurvey"))
+) {
   S <- strat.df
   S$area <- NA
 

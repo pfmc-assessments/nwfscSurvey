@@ -28,13 +28,14 @@
 #' @export
 #'
 plot_index <- function(
-    data,
-    dir = NULL,
-    add_save_name = NULL,
-    plot = 1:2,
-    height = 7,
-    width = 7,
-    dpi = 300) {
+  data,
+  dir = NULL,
+  add_save_name = NULL,
+  plot = 1:2,
+  height = 7,
+  width = 7,
+  dpi = 300
+) {
   plotdir <- file.path(dir, "plots")
   check_dir(plotdir)
   plot_names <- file.path(

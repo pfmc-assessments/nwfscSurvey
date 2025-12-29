@@ -27,23 +27,24 @@
 #' @export
 
 PlotBioStrata.fn <- function(
-    dir = NULL, dat,
-    CI = 0.95,
-    scalar = 1e6,
-    gap = 0.03,
-    ylab = "Biomass ('000 mt)",
-    xlab = "Year",
-    survey.name = NULL,
-    strata.names = NULL,
-    ylim = NULL,
-    sameylim = FALSE,
-    add = FALSE,
-    mfrow.in = NULL,
-    col = "black",
-    pch.col = "black",
-    pch.type = 16,
-    dopng = lifecycle::deprecated(),
-    ...) {
+  dir = NULL, dat,
+  CI = 0.95,
+  scalar = 1e6,
+  gap = 0.03,
+  ylab = "Biomass ('000 mt)",
+  xlab = "Year",
+  survey.name = NULL,
+  strata.names = NULL,
+  ylim = NULL,
+  sameylim = FALSE,
+  add = FALSE,
+  mfrow.in = NULL,
+  col = "black",
+  pch.col = "black",
+  pch.type = 16,
+  dopng = lifecycle::deprecated(),
+  ...
+) {
   lifecycle::deprecate_soft(
     when = "2.4",
     what = "nwfscSurvey::PlotBioStrata.fn()",

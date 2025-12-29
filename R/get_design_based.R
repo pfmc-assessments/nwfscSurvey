@@ -51,14 +51,15 @@
 #' }
 #'
 get_design_based <- function(
-    data,
-    strata,
-    CI = 0.95,
-    dir = NULL,
-    month = NA,
-    fleet = NA,
-    printfolder = "forSS3",
-    verbose = TRUE) {
+  data,
+  strata,
+  CI = 0.95,
+  dir = NULL,
+  month = NA,
+  fleet = NA,
+  printfolder = "forSS3",
+  verbose = TRUE
+) {
   plotdir <- file.path(dir, printfolder)
   check_dir(dir = plotdir, verbose = verbose)
 

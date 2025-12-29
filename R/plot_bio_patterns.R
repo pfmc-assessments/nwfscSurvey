@@ -16,12 +16,13 @@
 #'
 #'
 plot_bio_patterns <- function(
-    dir = NULL,
-    bio,
-    col_name = "Length_cm",
-    plot = 1:3,
-    width = 7,
-    height = 7) {
+  dir = NULL,
+  bio,
+  col_name = "Length_cm",
+  plot = 1:3,
+  width = 7,
+  height = 7
+) {
   # plot 1 = length/age by latitude and depth
   # plot 2 = length/age by depth and year
   # plot 3 = length/age by lat and year

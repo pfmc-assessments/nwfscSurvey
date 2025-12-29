@@ -52,15 +52,16 @@
 #' }
 #'
 Biomass.fn <- function(
-    dir = NULL,
-    dat,
-    strat.vars = c("Depth_m", "Latitude_dd"),
-    strat.df,
-    printfolder = "forSS3",
-    outputMedian = TRUE,
-    month = "Enter month",
-    fleet = "Enter fleet",
-    verbose = TRUE) {
+  dir = NULL,
+  dat,
+  strat.vars = c("Depth_m", "Latitude_dd"),
+  strat.df,
+  printfolder = "forSS3",
+  outputMedian = TRUE,
+  month = "Enter month",
+  fleet = "Enter fleet",
+  verbose = TRUE
+) {
   lifecycle::deprecate_soft(
     when = "2.4",
     what = "nwfscSurvey::Biomass.fn()",

@@ -26,13 +26,14 @@
 #'
 #'
 pull_biological_samples <- function(
-    survey,
-    common_name = NULL,
-    sci_name = NULL,
-    years = c(1980, 2050),
-    dir = NULL,
-    verbose = TRUE,
-    standard_filtering = FALSE) {
+  survey,
+  common_name = NULL,
+  sci_name = NULL,
+  years = c(1980, 2050),
+  dir = NULL,
+  verbose = TRUE,
+  standard_filtering = FALSE
+) {
   # increase the timeout period to avoid errors when pulling data
   options(timeout = 4000000)
 

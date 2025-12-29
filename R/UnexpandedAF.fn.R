@@ -19,18 +19,19 @@
 #' @export
 
 UnexpandedAFs.fn <- function(
-    dir = NULL,
-    datA,
-    ageBins = 1,
-    sex = 3,
-    partition = 0,
-    fleet = "Enter Fleet",
-    ageErr = "NA",
-    agelow = -1,
-    agehigh = -1,
-    month = "Enter Month",
-    printfolder = "forSS3",
-    verbose = TRUE) {
+  dir = NULL,
+  datA,
+  ageBins = 1,
+  sex = 3,
+  partition = 0,
+  fleet = "Enter Fleet",
+  ageErr = "NA",
+  agelow = -1,
+  agehigh = -1,
+  month = "Enter Month",
+  printfolder = "forSS3",
+  verbose = TRUE
+) {
   # Overwrite inputs to use the same code for lengths as ages
   datL <- datA
   lgthBins <- ageBins

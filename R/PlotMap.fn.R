@@ -36,11 +36,12 @@
 #' @import ggplot2
 
 PlotMap.fn <- function(
-    dir = NULL,
-    dat,
-    main = NULL,
-    dopng = lifecycle::deprecated(),
-    plot = 1:2) {
+  dir = NULL,
+  dat,
+  main = NULL,
+  dopng = lifecycle::deprecated(),
+  plot = 1:2
+) {
   if (lifecycle::is_present(dopng)) {
     lifecycle::deprecate_warn(
       when = "2.1",
