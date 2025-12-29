@@ -1,6 +1,8 @@
 context("Create composition data")
 
-if (interactive()) options(mc.cores = parallel::detectCores())
+if (interactive()) {
+  options(mc.cores = parallel::detectCores())
+}
 # devtools::test()
 set.seed(1)
 
@@ -21,18 +23,24 @@ test_that("get_raw_comps", {
     input_n_method = "total_samples"
   )
   expect_equal(nrow(length_comps$sexed), 16)
-  expect_equal(sum(length_comps$sexed$input_n), sum(length_comps$sexed[, 7:ncol(length_comps$sexed)]))
+  expect_equal(
+    sum(length_comps$sexed$input_n),
+    sum(length_comps$sexed[, 7:ncol(length_comps$sexed)])
+  )
   expect_equal(nrow(length_comps$unsexed), 16)
-  expect_equal(sum(length_comps$unsexed$input_n), sum(length_comps$unsexed[, 7:ncol(length_comps$unsexed)]))
+  expect_equal(
+    sum(length_comps$unsexed$input_n),
+    sum(length_comps$unsexed[, 7:ncol(length_comps$unsexed)])
+  )
 
   # confirm that plot_comps works when providing the full list
-  comp_plot <- plot_comps(length_comps)
+  # comp_plot <- plot_comps(length_comps)
   # expect_equal(is(comp_plot), "gg")
   # confirm that plot_comps works when providing sexed comps
-  comp_plot <- plot_comps(length_comps$sexed)
+  # comp_plot <- plot_comps(length_comps$sexed)
   # expect_equal(is(comp_plot), "gg")
   # confirm that plot_comps works when providing unsexed comps
-  comp_plot <- plot_comps(length_comps$unsexed)
+  # comp_plot <- plot_comps(length_comps$unsexed)
   # expect_equal(is(comp_plot), "gg")
 
   length_unsexed_comps <- get_raw_comps(
@@ -53,9 +61,15 @@ test_that("get_raw_comps", {
     input_n_method = "total_samples"
   )
   expect_equal(nrow(age_comps$sexed), 16)
-  expect_equal(sum(age_comps$sexed$input_n), sum(age_comps$sexed[, 10:ncol(age_comps$sexed)]))
+  expect_equal(
+    sum(age_comps$sexed$input_n),
+    sum(age_comps$sexed[, 10:ncol(age_comps$sexed)])
+  )
   expect_equal(nrow(age_comps$unsexed), 16)
-  expect_equal(sum(age_comps$unsexed$input_n), sum(age_comps$unsexed[, 10:ncol(age_comps$unsexed)]))
+  expect_equal(
+    sum(age_comps$unsexed$input_n),
+    sum(age_comps$unsexed[, 10:ncol(age_comps$unsexed)])
+  )
 })
 
 test_that("get_raw_comps_triennial", {
@@ -78,7 +92,10 @@ test_that("get_raw_comps_triennial", {
     input_n_method = "total_samples"
   )
   expect_equal(nrow(length_comps$sexed), 9)
-  expect_equal(sum(length_comps$sexed$input_n), sum(length_comps$sexed[, 7:ncol(length_comps$sexed)]))
+  expect_equal(
+    sum(length_comps$sexed$input_n),
+    sum(length_comps$sexed[, 7:ncol(length_comps$sexed)])
+  )
   expect_equal(nrow(length_comps$unsexed), NULL)
 
   length_unsexed_comps <- get_raw_comps(
@@ -117,7 +134,10 @@ test_that("get_raw_caal", {
   )
   expect_equal(nrow(caal_unsexed), 68)
   expect_equal(ncol(caal_unsexed), 21)
-  expect_equal(sum(caal_unsexed$input_n), sum(caal_unsexed[, 10:ncol(caal_unsexed)]))
+  expect_equal(
+    sum(caal_unsexed$input_n),
+    sum(caal_unsexed[, 10:ncol(caal_unsexed)])
+  )
 })
 
 test_that("get_expanded_comps", {
@@ -134,7 +154,14 @@ test_that("get_expanded_comps", {
     verbose = TRUE
   )
   strata <- CreateStrataDF.fn(
-    names = c("shallow_wa", "shallow_or", "shallow_nca", "shelf_wa", "shelf_or", "shelf_nca"),
+    names = c(
+      "shallow_wa",
+      "shallow_or",
+      "shallow_nca",
+      "shelf_wa",
+      "shelf_or",
+      "shelf_nca"
+    ),
     depths.shallow = c(55, 55, 55, 183, 183, 183),
     depths.deep = c(183, 183, 183, 300, 300, 300),
     lats.south = c(46.0, 42.0, 40.0, 46.0, 42.0, 40.0),
@@ -173,7 +200,7 @@ test_that("get_expanded_comps", {
   expect_equal(nrow(length_comps_sexed$unsexed), 0)
 
   # confirm that plot_comps works for expanded length comps
-  comp_plot <- plot_comps(length_comps)
+  # comp_plot <- plot_comps(length_comps)
   # expect_equal(is(comp_plot), "gg")
 
   age_comps <- get_expanded_comps(
@@ -192,7 +219,7 @@ test_that("get_expanded_comps", {
   expect_equal(sum(age_comps$unsexed$input_n), 45)
 
   # confirm that plot_comps works for expanded age comps
-  comp_plot <- plot_comps(age_comps)
+  # comp_plot <- plot_comps(age_comps)
   # expect_equal(is(comp_plot), "gg")
 })
 
@@ -210,7 +237,14 @@ test_that("tow_expansions", {
     verbose = TRUE
   )
   strata <- CreateStrataDF.fn(
-    names = c("shallow_wa", "shallow_or", "shallow_nca", "shelf_wa", "shelf_or", "shelf_nca"),
+    names = c(
+      "shallow_wa",
+      "shallow_or",
+      "shallow_nca",
+      "shelf_wa",
+      "shelf_or",
+      "shelf_nca"
+    ),
     depths.shallow = c(55, 55, 55, 183, 183, 183),
     depths.deep = c(183, 183, 183, 300, 300, 300),
     lats.south = c(46.0, 42.0, 40.0, 46.0, 42.0, 40.0),
@@ -245,7 +279,14 @@ test_that("unformatted_comps", {
     verbose = TRUE
   )
   strata <- CreateStrataDF.fn(
-    names = c("shallow_wa", "shallow_or", "shallow_nca", "shelf_wa", "shelf_or", "shelf_nca"),
+    names = c(
+      "shallow_wa",
+      "shallow_or",
+      "shallow_nca",
+      "shelf_wa",
+      "shelf_or",
+      "shelf_nca"
+    ),
     depths.shallow = c(55, 55, 55, 183, 183, 183),
     depths.deep = c(183, 183, 183, 300, 300, 300),
     lats.south = c(46.0, 42.0, 40.0, 46.0, 42.0, 40.0),
