@@ -62,10 +62,16 @@ get_species_info(c("sablefish", "petrale"))
 #> 74      coast     flatfish
 get_species_info(c("vermilion"))
 #> ! Multiple matches were found for the vermilion in the look up table
-#> stored in pull_spp(). Only one match is returned. The common_name for the removed match is: vermilion_rockfish, vermilion_and_sunset_rockfish, vermilion_and_canary_rockfish.
-#> [1] latin           common          common_name     scientific_name
-#> [5] input           strata          species_type   
-#> <0 rows> (or 0-length row.names)
+#> stored in pull_spp(). Only one match is returned. The common_name for the removed match is: vermilion_and_canary_rockfish.
+#>                                    latin                        common
+#> 644                    Sebastes miniatus            vermilion rockfish
+#> 836 Sebastes sp. (miniatus / crocotulus) vermilion and sunset rockfish
+#>                       common_name                      scientific_name
+#> 644            vermilion_rockfish                    Sebastes_miniatus
+#> 836 vermilion_and_sunset_rockfish Sebastes_sp._(miniatus_/_crocotulus)
+#>         input strata species_type
+#> 644 vermilion  coast    shelfrock
+#> 836 vermilion  coast    shelfrock
 testthat::expect_message(
   get_species_info(c("chilipepper"))
 )
