@@ -121,7 +121,11 @@ get_input_n <- function(
       n_stewart_hamel = floor(unique(multiplier) * n_tows)
     ) |>
     dplyr::ungroup() |>
-    tidyr::complete(year, sex_grouped, fill = list(n = 0, n_tows = 0, n_stewart_hamel = 0))
+    tidyr::complete(
+      year,
+      sex_grouped,
+      fill = list(n = 0, n_tows = 0, n_stewart_hamel = 0)
+    )
 
   if (input_n_method == "stewart_hamel") {
     samples[, "input_n"] <- samples[, "n_stewart_hamel"]
@@ -148,7 +152,14 @@ get_input_n <- function(
       x = samples,
       file = file.path(
         plotdir,
-        paste0(comp_column_name, "_samples_", file_naming[1], "_", file_naming[2], ".csv")
+        paste0(
+          comp_column_name,
+          "_samples_",
+          file_naming[1],
+          "_",
+          file_naming[2],
+          ".csv"
+        )
       ),
       row.names = FALSE
     )
