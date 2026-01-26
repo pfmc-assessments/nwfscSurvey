@@ -129,7 +129,7 @@ get_raw_comps <- function(
   keep <- !is.na(data[, comp_column_name])
   data <- data[keep, ]
   bins <- c(comp_bins, Inf)
-  data$bin <- bins[findInterval(data[, comp_column_name], bins, all.inside = T)]
+  data$bin <- bins[findInterval(data[[comp_column_name]], bins, all.inside = T)]
 
   # if there are NA sexes replace them with U
   if (sum(is.na(data[, "sex"])) > 0) {
@@ -148,7 +148,11 @@ get_raw_comps <- function(
   }
 
   # Calculate input sample size based on existing function
-  species <- ifelse("common_name" %in% colnames(data), unique(data[, "common_name"]), "")
+  species <- ifelse(
+    "common_name" %in% colnames(data),
+    unique(data[, "common_name"]),
+    ""
+  )
   if ("common_name" %in% colnames(data)) {
     species_type <- get_species_info(
       species = species,
@@ -175,7 +179,7 @@ get_raw_comps <- function(
 
   # Create the comps
   Results <- out <- NULL
-  for (y in sort(unique(data[, "year"]))) {
+  for (y in sort(unique(data[["year"]]))) {
     # Identify relevant rows
     Which <- which(data[, "year"] == y & data[, "sex"] %in% c("F", "M"))
     # Skip this year unless there are rows
@@ -184,20 +188,27 @@ get_raw_comps <- function(
       # Loop across F then M
       for (s in c("F", "M")) {
         # Loop across length bins
-        for (l in comp_bins)
-        {
+        for (l in comp_bins) {
           # Subset to relevant rows
           if (l == min(bins)) {
-            Which2 <- Which[which(data[Which, "bin"] %in% l & data[Which, "sex"] == s)]
+            Which2 <- Which[which(
+              data[Which, "bin"] %in% l & data[Which, "sex"] == s
+            )]
           }
           if (l != min(bins)) {
-            Which2 <- Which[which(data[Which, "bin"] == l & data[Which, "sex"] == s)]
+            Which2 <- Which[which(
+              data[Which, "bin"] == l & data[Which, "sex"] == s
+            )]
           }
           if (l == max(bins)) {
-            Which2 <- Which[which(data[Which, "bin"] %in% c(l, Inf) & data[Which, "sex"] == s)]
+            Which2 <- Which[which(
+              data[Which, "bin"] %in% c(l, Inf) & data[Which, "sex"] == s
+            )]
           }
           # Sum to effective sample size by length_bin x Sex x Fleet x Year
-          if (length(Which2) == 0) Row <- c(Row, 0)
+          if (length(Which2) == 0) {
+            Row <- c(Row, 0)
+          }
           if (length(Which2) >= 1) Row <- c(Row, length(Which2))
         }
       }
@@ -214,7 +225,9 @@ get_raw_comps <- function(
       fleet = fleet,
       sex = 3,
       partition = partition,
-      input_n = samples |> dplyr::filter(sex_grouped == "sexed", input_n > 0) |> dplyr::select(input_n) # Results[, 2]
+      input_n = samples |>
+        dplyr::filter(sex_grouped == "sexed", input_n > 0) |>
+        dplyr::select(input_n) # Results[, 2]
     )
     out <- cbind(tmp, Results[, -c(1:2)])
     colnames(out)[-c(1:6)] <- c(
@@ -227,7 +240,7 @@ get_raw_comps <- function(
   out_u <- NULL
   if (length(data[data[, "sex"] == "U", "sex"]) > 0) {
     Results <- NULL
-    for (y in sort(unique(data[, "year"]))) {
+    for (y in sort(unique(data[["year"]]))) {
       # Identify relevant rows
       Which <- which(data[, "year"] == y & data[, "sex"] == "U")
       # Skip this year unless there are rows
@@ -235,8 +248,7 @@ get_raw_comps <- function(
         # Format reference stuff
         Row <- c(y, length(Which))
         # Loop across length bins
-        for (l in comp_bins)
-        {
+        for (l in comp_bins) {
           # Subset to relevant rows
           if (l == min(bins)) {
             Which2 <- Which[which(data[Which, "bin"] %in% l)]
@@ -248,7 +260,9 @@ get_raw_comps <- function(
             Which2 <- Which[which(data[Which, "bin"] %in% c(l, Inf))]
           }
           # Sum to effective sample size by length_bin x Sex x Fleet x Year
-          if (length(Which2) == 0) Row <- c(Row, 0)
+          if (length(Which2) == 0) {
+            Row <- c(Row, 0)
+          }
           if (length(Which2) >= 1) Row <- c(Row, length(Which2))
         }
         # Add to results matrix
@@ -277,7 +291,10 @@ get_raw_comps <- function(
 
     if (two_sex_comps) {
       out_u <- cbind(tmp, Results[, -c(1:2)], 0 * Results[, -c(1:2)])
-      colnames(out_u)[-c(1:6)] <- c(paste0("f", comp_bins), paste0("m", comp_bins))
+      colnames(out_u)[-c(1:6)] <- c(
+        paste0("f", comp_bins),
+        paste0("m", comp_bins)
+      )
     } else {
       out_u <- cbind(tmp, Results[, -c(1:2)])
       colnames(out_u)[-c(1:6)] <- paste0("u", comp_bins)
@@ -297,30 +314,69 @@ get_raw_comps <- function(
 
   if (comp_type == "age") {
     if (!is.null(out)) {
-      out_comps <- cbind(out[, 1:5], ageerr, Lbin_lo, Lbin_hi, out[, 6:dim(out)[2]])
+      out_comps <- cbind(
+        out[, 1:5],
+        ageerr,
+        Lbin_lo,
+        Lbin_hi,
+        out[, 6:dim(out)[2]]
+      )
     } else {
       out_comps <- NULL
     }
     if (!is.null(out_u)) {
-      out_u_comps <- cbind(out_u[, 1:5], ageerr, Lbin_lo, Lbin_hi, out_u[, 6:dim(out_u)[2]])
+      out_u_comps <- cbind(
+        out_u[, 1:5],
+        ageerr,
+        Lbin_lo,
+        Lbin_hi,
+        out_u[, 6:dim(out_u)[2]]
+      )
     }
   }
 
   if (!is.null(dir)) {
-    project <- ifelse("project" %in% colnames(data),
+    project <- ifelse(
+      "project" %in% colnames(data),
       gsub(" ", "_", tolower(unique(data[, "project"]))),
       ""
     )
     bin_range <- paste0(min(comp_bins), "_", max(comp_bins))
     if (!is.null(out_comps)) {
-      write.csv(out_comps,
-        file = file.path(plotdir, paste0(comp_column_name, "_sexed_raw_", bin_range, "_", species, "_", project, ".csv")),
+      write.csv(
+        out_comps,
+        file = file.path(
+          plotdir,
+          paste0(
+            comp_column_name,
+            "_sexed_raw_",
+            bin_range,
+            "_",
+            species,
+            "_",
+            project,
+            ".csv"
+          )
+        ),
         row.names = FALSE
       )
     }
     if (!is.null(out_u)) {
-      write.csv(out_u_comps,
-        file = file.path(plotdir, paste0(comp_column_name, "_unsexed_raw_", bin_range, "_", species, "_", project, ".csv")),
+      write.csv(
+        out_u_comps,
+        file = file.path(
+          plotdir,
+          paste0(
+            comp_column_name,
+            "_unsexed_raw_",
+            bin_range,
+            "_",
+            species,
+            "_",
+            project,
+            ".csv"
+          )
+        ),
         row.names = FALSE
       )
     }
