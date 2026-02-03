@@ -25,16 +25,15 @@ plot_proportion(
 
 - column_factor:
 
-  \<[`data-masking`](https://dplyr.tidyverse.org/reference/dplyr_data_masking.html)\>
-  Variable in `data` for the grouping structure. Should be a variable in
-  `data` that contains a factor but it can also be a variable in `data`
-  that stores characters. See the examples for ideas.
+  \<`data-masking`\> Variable in `data` for the grouping structure.
+  Should be a variable in `data` that contains a factor but it can also
+  be a variable in `data` that stores characters. See the examples for
+  ideas.
 
 - column_bin:
 
-  \<[`data-masking`](https://dplyr.tidyverse.org/reference/dplyr_data_masking.html)\>
-  Variable in `data` for the binning structure. If this is not already a
-  factor or character, then
+  \<`data-masking`\> Variable in `data` for the binning structure. If
+  this is not already a factor or character, then
   [`ggplot2::cut_width()`](https://ggplot2.tidyverse.org/reference/cut_interval.html)
   will be used to create bins. The bins are saved in `bin` in the
   returned ggplot2 object.
@@ -93,61 +92,54 @@ Ian G. Taylor, Chantel R. Wetzel, Kelli F. Johnson
 ## Examples
 
 ``` r
+if (FALSE) { # \dontrun{
 # Add presence/absence factor to data
-temp <- catch_nwfsc_combo |>
-  dplyr::mutate(new = factor(
-    cpue_kg_km2 <= 0,
-    levels = c(FALSE, TRUE),
-    labels = c("Present", "Absent")
-  ))
+#temp <- catch_nwfsc_combo |>
+#   dplyr::mutate(new = factor(
+#    cpue_kg_km2 <= 0,
+#     levels = c(FALSE, TRUE),
+#     labels = c("Present", "Absent")
+#   ))
 
 # Plot depth bins (50 m) by presence/absence with default colors
-plot_proportion(
-  data = temp,
-  column_factor = new,
-  column_bin = Depth_m,
-  width = 50,
-  boundary = 0
-)
-
+#plot_proportion(
+#  data = temp,
+#  column_factor = new,
+#  column_bin = Depth_m,
+#  width = 50,
+#  boundary = 0
+#)
 # Plot latitude bins (1 decimal degree) by presence/absence with custom
 # colors
-plot_proportion(
-  data = temp,
-  column_factor = new,
-  column_bin = Latitude_dd,
-  width = 1,
-  boundary = 0
-) +
-  ggplot2::scale_fill_manual(values = c(
-    "darkorchid3",
-    grDevices::gray(0.7)
-  ))
-#> Scale for fill is already present.
-#> Adding another scale for fill, which will replace the existing scale.
-
+#plot_proportion(
+#  data = temp,
+#  column_factor = new,
+#  column_bin = Latitude_dd,
+#  width = 1,
+#  boundary = 0
+#) +
+#  ggplot2::scale_fill_manual(values = c(
+#    "darkorchid3",
+#    grDevices::gray(0.7)
+#  ))
 # Plot depth bins (25 m) by sex (F, M, U)
-plot_proportion(
-  data = bio_nwfsc_combo |>
-    dplyr::mutate(Sex = codify_sex(Sex)),
-  column_factor = Sex,
-  column_bin = Depth_m,
-  width = 25,
-  boundary = 0
-)
-#> The following unmatched values were found n times in `codify_sex()`:
-#> 'NA' (n = 1)
-
+#plot_proportion(
+#  data = bio_nwfsc_combo |>
+#    dplyr::mutate(Sex = codify_sex(Sex)),
+#  column_factor = Sex,
+#  column_bin = Depth_m,
+#  width = 25,
+#  boundary = 0
+#)
 # Change to equal sized bars
-plot_proportion(
-  data = bio_nwfsc_combo |>
-    dplyr::mutate(Sex = codify_sex(Sex)),
-  column_factor = Sex,
-  column_bin = Depth_m,
-  width = 25,
-  boundary = 0,
-  bar_width = "equal"
-)
-#> The following unmatched values were found n times in `codify_sex()`:
-#> 'NA' (n = 1)
+#plot_proportion(
+#  data = bio_nwfsc_combo |>
+#    dplyr::mutate(Sex = codify_sex(Sex)),
+#  column_factor = Sex,
+#  column_bin = Depth_m,
+#  width = 25,
+#  boundary = 0,
+#  bar_width = "equal"
+#)
+} # }
 ```

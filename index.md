@@ -4,7 +4,7 @@
 Science Center (NWFSC) West Coast Groundfish Bottom Trawl, NWFSC slope,
 Alaska Fisheries Science Center (AFSC) slope, and AFSC Triennial
 surveys. Code within this package allows for pulling of data from the
-[NWFSC data warehouse](https://www.nwfsc.noaa.gov/data), calculating the
+NWFSC data warehouse (currently, unavailable)), calculating the
 design-based indices of abundance, visualization of data, and processing
 length- and age-composition data for use in West Coast groundfish stock
 assessment.

@@ -8,8 +8,8 @@ composition data for use in groundfish stockassessments. The package can
 be used for the NWFSC West Coast Groundfish Bottom Trawl (WCGBT) survey,
 the NWFSC slope survey, the Alaska Fisheries Science Center (AFSC) slope
 survey, and the AFSC Triennial survey. The package includes functions
-that query the [NWFSC data warehouse](https://www.nwfsc.noaa.gov/data),
-visualize, and process the data for use in groundfish assessments.
+that query the NWFSC data warehouse (currently, unavailable), visualize,
+and process the data for use in groundfish assessments.
 
 ## Use
 
@@ -70,11 +70,6 @@ plot_cpue(
 plot_bio_patterns(
   bio = bio, 
   col_name = "Length_cm")
-
-wh_plot_proportion(
-  data_catch = catch,
-  data_bio = bio
-)
 ```
 
 #### Define strata

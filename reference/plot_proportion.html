@@ -64,14 +64,14 @@ like sex, by x-axis bins.</p>
 
 
 <dt id="arg-column-factor">column_factor<a class="anchor" aria-label="anchor" href="#arg-column-factor"></a></dt>
-<dd><p>&lt;<code><a href="https://dplyr.tidyverse.org/reference/dplyr_data_masking.html" class="external-link">data-masking</a></code>&gt; Variable in
+<dd><p>&lt;<code>data-masking</code>&gt; Variable in
 <code>data</code> for the grouping structure. Should be a variable in <code>data</code> that
 contains a factor but it can also be a variable in <code>data</code> that stores
 characters. See the examples for ideas.</p></dd>
 
 
 <dt id="arg-column-bin">column_bin<a class="anchor" aria-label="anchor" href="#arg-column-bin"></a></dt>
-<dd><p>&lt;<code><a href="https://dplyr.tidyverse.org/reference/dplyr_data_masking.html" class="external-link">data-masking</a></code>&gt; Variable in <code>data</code>
+<dd><p>&lt;<code>data-masking</code>&gt; Variable in <code>data</code>
 for the binning structure. If this is not already a factor or character,
 then <code><a href="https://ggplot2.tidyverse.org/reference/cut_interval.html" class="external-link">ggplot2::cut_width()</a></code> will be used to create bins. The bins are saved
 in <code>bin</code> in the returned ggplot2 object.</p></dd>
@@ -129,64 +129,56 @@ return.</p>
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># Add presence/absence factor to data</span></span></span>
-<span class="r-in"><span><span class="va">temp</span> <span class="op">&lt;-</span> <span class="va">catch_nwfsc_combo</span> <span class="op">|&gt;</span></span></span>
-<span class="r-in"><span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>new <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html" class="external-link">factor</a></span><span class="op">(</span></span></span>
-<span class="r-in"><span>    <span class="va">cpue_kg_km2</span> <span class="op">&lt;=</span> <span class="fl">0</span>,</span></span>
-<span class="r-in"><span>    levels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="cn">FALSE</span>, <span class="cn">TRUE</span><span class="op">)</span>,</span></span>
-<span class="r-in"><span>    labels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Present"</span>, <span class="st">"Absent"</span><span class="op">)</span></span></span>
-<span class="r-in"><span>  <span class="op">)</span><span class="op">)</span></span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span> <span class="co"># \dontrun{</span></span></span>
+<span class="r-in"><span><span class="co"># Add presence/absence factor to data</span></span></span>
+<span class="r-in"><span><span class="co">#temp &lt;- catch_nwfsc_combo |&gt;</span></span></span>
+<span class="r-in"><span><span class="co">#   dplyr::mutate(new = factor(</span></span></span>
+<span class="r-in"><span><span class="co">#    cpue_kg_km2 &lt;= 0,</span></span></span>
+<span class="r-in"><span><span class="co">#     levels = c(FALSE, TRUE),</span></span></span>
+<span class="r-in"><span><span class="co">#     labels = c("Present", "Absent")</span></span></span>
+<span class="r-in"><span><span class="co">#   ))</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Plot depth bins (50 m) by presence/absence with default colors</span></span></span>
-<span class="r-in"><span><span class="fu">plot_proportion</span><span class="op">(</span></span></span>
-<span class="r-in"><span>  data <span class="op">=</span> <span class="va">temp</span>,</span></span>
-<span class="r-in"><span>  column_factor <span class="op">=</span> <span class="va">new</span>,</span></span>
-<span class="r-in"><span>  column_bin <span class="op">=</span> <span class="va">Depth_m</span>,</span></span>
-<span class="r-in"><span>  width <span class="op">=</span> <span class="fl">50</span>,</span></span>
-<span class="r-in"><span>  boundary <span class="op">=</span> <span class="fl">0</span></span></span>
-<span class="r-in"><span><span class="op">)</span></span></span>
-<span class="r-plt img"><img src="plot_proportion-1.png" alt="" width="700" height="433"></span>
+<span class="r-in"><span><span class="co">#plot_proportion(</span></span></span>
+<span class="r-in"><span><span class="co">#  data = temp,</span></span></span>
+<span class="r-in"><span><span class="co">#  column_factor = new,</span></span></span>
+<span class="r-in"><span><span class="co">#  column_bin = Depth_m,</span></span></span>
+<span class="r-in"><span><span class="co">#  width = 50,</span></span></span>
+<span class="r-in"><span><span class="co">#  boundary = 0</span></span></span>
+<span class="r-in"><span><span class="co">#)</span></span></span>
 <span class="r-in"><span><span class="co"># Plot latitude bins (1 decimal degree) by presence/absence with custom</span></span></span>
 <span class="r-in"><span><span class="co"># colors</span></span></span>
-<span class="r-in"><span><span class="fu">plot_proportion</span><span class="op">(</span></span></span>
-<span class="r-in"><span>  data <span class="op">=</span> <span class="va">temp</span>,</span></span>
-<span class="r-in"><span>  column_factor <span class="op">=</span> <span class="va">new</span>,</span></span>
-<span class="r-in"><span>  column_bin <span class="op">=</span> <span class="va">Latitude_dd</span>,</span></span>
-<span class="r-in"><span>  width <span class="op">=</span> <span class="fl">1</span>,</span></span>
-<span class="r-in"><span>  boundary <span class="op">=</span> <span class="fl">0</span></span></span>
-<span class="r-in"><span><span class="op">)</span> <span class="op">+</span></span></span>
-<span class="r-in"><span>  <span class="fu">ggplot2</span><span class="fu">::</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_manual.html" class="external-link">scale_fill_manual</a></span><span class="op">(</span>values <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span></span></span>
-<span class="r-in"><span>    <span class="st">"darkorchid3"</span>,</span></span>
-<span class="r-in"><span>    <span class="fu">grDevices</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/r/grDevices/gray.html" class="external-link">gray</a></span><span class="op">(</span><span class="fl">0.7</span><span class="op">)</span></span></span>
-<span class="r-in"><span>  <span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Scale for <span style="color: #00BB00;">fill</span> is already present.</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Adding another scale for <span style="color: #00BB00;">fill</span>, which will replace the existing scale.</span>
-<span class="r-plt img"><img src="plot_proportion-2.png" alt="" width="700" height="433"></span>
+<span class="r-in"><span><span class="co">#plot_proportion(</span></span></span>
+<span class="r-in"><span><span class="co">#  data = temp,</span></span></span>
+<span class="r-in"><span><span class="co">#  column_factor = new,</span></span></span>
+<span class="r-in"><span><span class="co">#  column_bin = Latitude_dd,</span></span></span>
+<span class="r-in"><span><span class="co">#  width = 1,</span></span></span>
+<span class="r-in"><span><span class="co">#  boundary = 0</span></span></span>
+<span class="r-in"><span><span class="co">#) +</span></span></span>
+<span class="r-in"><span><span class="co">#  ggplot2::scale_fill_manual(values = c(</span></span></span>
+<span class="r-in"><span><span class="co">#    "darkorchid3",</span></span></span>
+<span class="r-in"><span><span class="co">#    grDevices::gray(0.7)</span></span></span>
+<span class="r-in"><span><span class="co">#  ))</span></span></span>
 <span class="r-in"><span><span class="co"># Plot depth bins (25 m) by sex (F, M, U)</span></span></span>
-<span class="r-in"><span><span class="fu">plot_proportion</span><span class="op">(</span></span></span>
-<span class="r-in"><span>  data <span class="op">=</span> <span class="va">bio_nwfsc_combo</span> <span class="op">|&gt;</span></span></span>
-<span class="r-in"><span>    <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>Sex <span class="op">=</span> <span class="fu"><a href="codify_sex.html">codify_sex</a></span><span class="op">(</span><span class="va">Sex</span><span class="op">)</span><span class="op">)</span>,</span></span>
-<span class="r-in"><span>  column_factor <span class="op">=</span> <span class="va">Sex</span>,</span></span>
-<span class="r-in"><span>  column_bin <span class="op">=</span> <span class="va">Depth_m</span>,</span></span>
-<span class="r-in"><span>  width <span class="op">=</span> <span class="fl">25</span>,</span></span>
-<span class="r-in"><span>  boundary <span class="op">=</span> <span class="fl">0</span></span></span>
-<span class="r-in"><span><span class="op">)</span></span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> The following unmatched values were found n times in `codify_sex()`:</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> 'NA' (n = 1)</span>
-<span class="r-plt img"><img src="plot_proportion-3.png" alt="" width="700" height="433"></span>
+<span class="r-in"><span><span class="co">#plot_proportion(</span></span></span>
+<span class="r-in"><span><span class="co">#  data = bio_nwfsc_combo |&gt;</span></span></span>
+<span class="r-in"><span><span class="co">#    dplyr::mutate(Sex = codify_sex(Sex)),</span></span></span>
+<span class="r-in"><span><span class="co">#  column_factor = Sex,</span></span></span>
+<span class="r-in"><span><span class="co">#  column_bin = Depth_m,</span></span></span>
+<span class="r-in"><span><span class="co">#  width = 25,</span></span></span>
+<span class="r-in"><span><span class="co">#  boundary = 0</span></span></span>
+<span class="r-in"><span><span class="co">#)</span></span></span>
 <span class="r-in"><span><span class="co"># Change to equal sized bars</span></span></span>
-<span class="r-in"><span><span class="fu">plot_proportion</span><span class="op">(</span></span></span>
-<span class="r-in"><span>  data <span class="op">=</span> <span class="va">bio_nwfsc_combo</span> <span class="op">|&gt;</span></span></span>
-<span class="r-in"><span>    <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>Sex <span class="op">=</span> <span class="fu"><a href="codify_sex.html">codify_sex</a></span><span class="op">(</span><span class="va">Sex</span><span class="op">)</span><span class="op">)</span>,</span></span>
-<span class="r-in"><span>  column_factor <span class="op">=</span> <span class="va">Sex</span>,</span></span>
-<span class="r-in"><span>  column_bin <span class="op">=</span> <span class="va">Depth_m</span>,</span></span>
-<span class="r-in"><span>  width <span class="op">=</span> <span class="fl">25</span>,</span></span>
-<span class="r-in"><span>  boundary <span class="op">=</span> <span class="fl">0</span>,</span></span>
-<span class="r-in"><span>  bar_width <span class="op">=</span> <span class="st">"equal"</span></span></span>
-<span class="r-in"><span><span class="op">)</span></span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> The following unmatched values were found n times in `codify_sex()`:</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> 'NA' (n = 1)</span>
-<span class="r-plt img"><img src="plot_proportion-4.png" alt="" width="700" height="433"></span>
+<span class="r-in"><span><span class="co">#plot_proportion(</span></span></span>
+<span class="r-in"><span><span class="co">#  data = bio_nwfsc_combo |&gt;</span></span></span>
+<span class="r-in"><span><span class="co">#    dplyr::mutate(Sex = codify_sex(Sex)),</span></span></span>
+<span class="r-in"><span><span class="co">#  column_factor = Sex,</span></span></span>
+<span class="r-in"><span><span class="co">#  column_bin = Depth_m,</span></span></span>
+<span class="r-in"><span><span class="co">#  width = 25,</span></span></span>
+<span class="r-in"><span><span class="co">#  boundary = 0,</span></span></span>
+<span class="r-in"><span><span class="co">#  bar_width = "equal"</span></span></span>
+<span class="r-in"><span><span class="co">#)</span></span></span>
+<span class="r-in"><span><span class="op">}</span> <span class="co"># }</span></span></span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
