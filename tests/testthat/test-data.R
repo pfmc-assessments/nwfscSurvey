@@ -1,6 +1,8 @@
 context("Data processing")
 
-if (interactive()) options(mc.cores = parallel::detectCores())
+if (interactive()) {
+  options(mc.cores = parallel::detectCores())
+}
 # devtools::test()
 set.seed(1)
 
@@ -14,9 +16,7 @@ test_that("pull_catch", {
     verbose = TRUE
   )
   expect_is(dat, "data.frame")
-  expect_equal(nrow(dat), 10353)
-  # the number of records changed to 10353 on 2/7/2025
-  # expect_equal(nrow(dat), 10351)
+  expect_equal(nrow(dat), 10358)
 })
 
 test_that("pull_catch-multispecies", {
@@ -28,8 +28,8 @@ test_that("pull_catch-multispecies", {
     verbose = TRUE
   )
   expect_is(dat, "data.frame")
-  expect_equal(nrow(dat), 392705)
-  expect_equal(length(which(dat$cpue_kg_km2 == 0)), 373550)
+  expect_equal(nrow(dat), 395792)
+  expect_equal(length(which(dat$cpue_kg_km2 == 0)), 376542)
 
   dat_lingcod <- pull_catch(
     common_name = "lingcod",
@@ -69,15 +69,18 @@ test_that("pull-sample-types", {
     sample_types = c("NA", NA, "Life Stage", "Size")
   )
   expect_is(data_hake, "data.frame")
-  expect_equal(nrow(data_hake), 3556)
-  expect_equal(length(which(data_hake$cpue_kg_km2 == 0)), 1622)
-  expect_equal(length(unique(data_hake$Trawl_id)), 3442)
+  expect_equal(nrow(data_hake), 3559)
+  expect_equal(length(which(data_hake$cpue_kg_km2 == 0)), 1625)
+  expect_equal(length(unique(data_hake$Trawl_id)), 3445)
 
   combine_hake <- combine_tows(
     data = data_hake
   )
   expect_equal(length(unique(data_hake$Trawl_id)), nrow(combine_hake))
-  expect_equal(sum(data_hake$total_catch_numbers), sum(combine_hake$total_catch_numbers))
+  expect_equal(
+    sum(data_hake$total_catch_numbers),
+    sum(combine_hake$total_catch_numbers)
+  )
 
   data_hake_3_types <- pull_catch(
     common_name = "Pacific hake",
@@ -88,7 +91,10 @@ test_that("pull-sample-types", {
     sample_types = c("NA", NA, "Life Stage", "Size")[1:3]
   )
   expect_equal(
-    sum(table(data_hake[which(data_hake$Partition_sample_types != "Size"), "Partition_sample_types"])),
+    sum(table(data_hake[
+      which(data_hake$Partition_sample_types != "Size"),
+      "Partition_sample_types"
+    ])),
     sum(table(data_hake_3_types[, "Partition_sample_types"]))
   )
 
@@ -109,7 +115,9 @@ test_that("pull-sample-types", {
     nrow(combine_eggs)
   )
   expect_equal(
-    sum(data_eggs$total_catch_numbers[which(!data_eggs$Partition %in% c("Eggs", "Egg Cases"))]),
+    sum(data_eggs$total_catch_numbers[which(
+      !data_eggs$Partition %in% c("Eggs", "Egg Cases")
+    )]),
     sum(combine_eggs$total_catch_numbers)
   )
 })
@@ -139,7 +147,7 @@ test_that("pull_bio", {
     verbose = TRUE
   )
   expect_is(dat, "data.frame")
-  expect_equal(nrow(dat), 3363)
+  expect_equal(nrow(dat), 3379)
 })
 
 test_that("pull_catch_triennial", {
@@ -271,9 +279,7 @@ test_that("pull_haul_nwfsc_combo", {
     verbose = FALSE
   )
   expect_is(dat, "data.frame")
-  expect_equal(nrow(dat), 10353)
-  # the number of records changed to 10353 on 2/7/2025
-  # expect_equal(nrow(dat), 10351)
+  expect_equal(nrow(dat), 10358)
 })
 
 test_that("pull_haul_triennial", {

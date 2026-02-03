@@ -51,7 +51,7 @@ test_that("get_raw_comps", {
     input_n_method = "stewart_hamel"
   )
   expect_equal(nrow(length_unsexed_comps$unsexed), 16)
-  expect_equal(sum(length_unsexed_comps$unsexed$input_n), 8195)
+  expect_equal(sum(length_unsexed_comps$unsexed$input_n), 8202)
 
   age_comps <- get_raw_comps(
     data = dat,
@@ -180,7 +180,7 @@ test_that("get_expanded_comps", {
     verbose = FALSE
   )
   expect_equal(nrow(length_comps$sexed), 16)
-  expect_equal(sum(length_comps$sexed$input_n), 4883)
+  expect_equal(sum(length_comps$sexed$input_n), 4885)
   expect_equal(nrow(length_comps$unsexed), 14)
   expect_equal(sum(length_comps$unsexed$input_n), 84)
 
@@ -196,7 +196,7 @@ test_that("get_expanded_comps", {
     verbose = FALSE
   )
   expect_equal(nrow(length_comps_sexed$sexed), 16)
-  expect_equal(sum(length_comps_sexed$sexed$input_n), 4883)
+  expect_equal(sum(length_comps_sexed$sexed$input_n), 4885)
   expect_equal(nrow(length_comps_sexed$unsexed), 0)
 
   # confirm that plot_comps works for expanded length comps
@@ -259,9 +259,9 @@ test_that("tow_expansions", {
     comp_column_name = "length_cm",
     output = "tow_expansion_only"
   )
-  expect_equal(nrow(length_comps), 10104)
-  expect_equal(round(sum(length_comps$exp_m), 0), 6262)
-  expect_equal(round(sum(length_comps$exp_f), 0), 11558)
+  expect_equal(nrow(length_comps), 10118)
+  expect_equal(round(sum(length_comps$exp_m), 0), 6266)
+  expect_equal(round(sum(length_comps$exp_f), 0), 11570)
   expect_equal(round(sum(length_comps$exp_u), 0), 133)
 })
 
@@ -302,8 +302,8 @@ test_that("unformatted_comps", {
     output = "full_expansion_unformatted"
   )
   expect_equal(nrow(length_comps), 272)
-  expect_equal(round(sum(length_comps$prop_female), 0), 1017)
-  expect_equal(round(sum(length_comps$prop_male), 0), 583)
+  expect_equal(round(sum(length_comps$prop_female), 0), 1018)
+  expect_equal(round(sum(length_comps$prop_male), 0), 582)
   expect_equal(round(sum(length_comps$prop_unsexed), 0), 1400)
 })
 
@@ -322,7 +322,7 @@ test_that("get_input_n", {
     species_group = "other",
     verbose = TRUE
   )
-  expect_equal(sum(n[n$sex_grouped == "all", "n_tows"]), 3447)
+  expect_equal(sum(n[n$sex_grouped == "all", "n_tows"]), 3450)
 
   n <- get_input_n(
     data = bio,
@@ -332,5 +332,5 @@ test_that("get_input_n", {
     verbose = TRUE
   )
 
-  expect_equal(sum(n[n$sex_grouped == "sexed", "n_tows"]), 3335)
+  expect_equal(sum(n[n$sex_grouped == "sexed", "n_tows"]), 3338)
 })

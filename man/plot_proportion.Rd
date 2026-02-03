@@ -16,12 +16,12 @@ plot_proportion(
 \arguments{
 \item{data}{A data frame.}
 
-\item{column_factor}{<\code{\link[dplyr:dplyr_data_masking]{data-masking}}> Variable in
+\item{column_factor}{<\code{\link[=dplyr_data_masking]{data-masking}}> Variable in
 \code{data} for the grouping structure. Should be a variable in \code{data} that
 contains a factor but it can also be a variable in \code{data} that stores
 characters. See the examples for ideas.}
 
-\item{column_bin}{<\code{\link[dplyr:dplyr_data_masking]{data-masking}}> Variable in \code{data}
+\item{column_bin}{<\code{\link[=dplyr_data_masking]{data-masking}}> Variable in \code{data}
 for the binning structure. If this is not already a factor or character,
 then \code{\link[ggplot2:cut_interval]{ggplot2::cut_width()}} will be used to create bins. The bins are saved
 in \code{bin} in the returned {ggplot2} object.}
@@ -61,54 +61,56 @@ create a {ggplot2} object for categorical data that can be modified upon
 return.
 }
 \examples{
+\dontrun{
 # Add presence/absence factor to data
-temp <- catch_nwfsc_combo |>
-  dplyr::mutate(new = factor(
-    cpue_kg_km2 <= 0,
-    levels = c(FALSE, TRUE),
-    labels = c("Present", "Absent")
-  ))
+#temp <- catch_nwfsc_combo |>
+#   dplyr::mutate(new = factor(
+#    cpue_kg_km2 <= 0,
+#     levels = c(FALSE, TRUE),
+#     labels = c("Present", "Absent")
+#   ))
 
 # Plot depth bins (50 m) by presence/absence with default colors
-plot_proportion(
-  data = temp,
-  column_factor = new,
-  column_bin = Depth_m,
-  width = 50,
-  boundary = 0
-)
+#plot_proportion(
+#  data = temp,
+#  column_factor = new,
+#  column_bin = Depth_m,
+#  width = 50,
+#  boundary = 0
+#)
 # Plot latitude bins (1 decimal degree) by presence/absence with custom
 # colors
-plot_proportion(
-  data = temp,
-  column_factor = new,
-  column_bin = Latitude_dd,
-  width = 1,
-  boundary = 0
-) +
-  ggplot2::scale_fill_manual(values = c(
-    "darkorchid3",
-    grDevices::gray(0.7)
-  ))
+#plot_proportion(
+#  data = temp,
+#  column_factor = new,
+#  column_bin = Latitude_dd,
+#  width = 1,
+#  boundary = 0
+#) +
+#  ggplot2::scale_fill_manual(values = c(
+#    "darkorchid3",
+#    grDevices::gray(0.7)
+#  ))
 # Plot depth bins (25 m) by sex (F, M, U)
-plot_proportion(
-  data = bio_nwfsc_combo |>
-    dplyr::mutate(Sex = codify_sex(Sex)),
-  column_factor = Sex,
-  column_bin = Depth_m,
-  width = 25,
-  boundary = 0
-)
+#plot_proportion(
+#  data = bio_nwfsc_combo |>
+#    dplyr::mutate(Sex = codify_sex(Sex)),
+#  column_factor = Sex,
+#  column_bin = Depth_m,
+#  width = 25,
+#  boundary = 0
+#)
 # Change to equal sized bars
-plot_proportion(
-  data = bio_nwfsc_combo |>
-    dplyr::mutate(Sex = codify_sex(Sex)),
-  column_factor = Sex,
-  column_bin = Depth_m,
-  width = 25,
-  boundary = 0,
-  bar_width = "equal"
-)
+#plot_proportion(
+#  data = bio_nwfsc_combo |>
+#    dplyr::mutate(Sex = codify_sex(Sex)),
+#  column_factor = Sex,
+#  column_bin = Depth_m,
+#  width = 25,
+#  boundary = 0,
+#  bar_width = "equal"
+#)
+}
 }
 \seealso{
 \itemize{

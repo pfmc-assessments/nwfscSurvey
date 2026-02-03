@@ -24,7 +24,7 @@ correspond to the following figures:
 \item{width, height}{Numeric values for the figure width and height in
 inches. The defaults are 7 by 7 inches.}
 
-\item{...}{Additional arguments to \code{\link[ggplot2:ggsave]{ggplot2::ggsave()}}}
+\item{...}{Additional arguments to \code{\link[=ggsave]{ggsave()}}}
 }
 \description{
 This function plots cpue and length by latitude and depth

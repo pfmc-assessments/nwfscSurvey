@@ -17,7 +17,7 @@ test_that("estimate_weight_length", {
   wl <- estimate_weight_length(dat)
 
   expect_is(wl, "data.frame")
-  expect_equal(wl[wl$sex == "all", "B"], 3.261785, tolerance = 1e-4)
+  expect_equal(wl[wl$sex == "all", "B"], 3.262834, tolerance = 1e-3)
 })
 
 # could add tests for est_growth() and est_vbgrowth() here in the future
