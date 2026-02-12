@@ -25,7 +25,7 @@
 #' and \code{\link{GetStrata.fn}} for the different stratifications.
 #' @author Kelli Faye Johnson
 #' @examples
-#' get_species_info(c("sablefish", "petrale"))
+#' get_species_info(c("sablefish"))
 #' get_species_info(c("vermilion"))
 #' testthat::expect_message(
 #'   get_species_info(c("chilipepper"))
