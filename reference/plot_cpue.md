@@ -38,7 +38,8 @@ plot_cpue(catch, dir = NULL, plot = 1:3, width = 7, height = 7, ...)
 
 - ...:
 
-  Additional arguments to `ggsave()`
+  Additional arguments to
+  [`ggplot2::ggsave()`](https://ggplot2.tidyverse.org/reference/ggsave.html)
 
 ## Author
 
