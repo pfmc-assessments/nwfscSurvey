@@ -54,24 +54,14 @@ Kelli Faye Johnson
 
 ``` r
 get_species_info(c("sablefish", "petrale"))
-#>                  latin       common  common_name    scientific_name     input
-#> 133 Anoplopoma fimbria    sablefish    sablefish Anoplopoma_fimbria sablefish
-#> 74    Eopsetta jordani petrale sole petrale_sole   Eopsetta_jordani   petrale
-#>        strata species_type
-#> 133 sablefish        other
-#> 74      coast     flatfish
+#> Error in if (lapply(index, length) > 1) {    cli::cli_alert_warning("Multiple matches were found for the {species} in the look up table\n           stored in pull_spp(). Only one match is returned.")    index <- index[[1]][1]}: the condition has length > 1
 get_species_info(c("vermilion"))
 #> ! Multiple matches were found for the vermilion in the look up table
-#> stored in pull_spp(). Only one match is returned. The common_name for the removed match is: vermilion_and_canary_rockfish.
-#>                                    latin                        common
-#> 644                    Sebastes miniatus            vermilion rockfish
-#> 836 Sebastes sp. (miniatus / crocotulus) vermilion and sunset rockfish
-#>                       common_name                      scientific_name
-#> 644            vermilion_rockfish                    Sebastes_miniatus
-#> 836 vermilion_and_sunset_rockfish Sebastes_sp._(miniatus_/_crocotulus)
+#> stored in pull_spp(). Only one match is returned.
+#>                 latin             common        common_name   scientific_name
+#> 644 Sebastes miniatus vermilion rockfish vermilion_rockfish Sebastes_miniatus
 #>         input strata species_type
 #> 644 vermilion  coast    shelfrock
-#> 836 vermilion  coast    shelfrock
 testthat::expect_message(
   get_species_info(c("chilipepper"))
 )
