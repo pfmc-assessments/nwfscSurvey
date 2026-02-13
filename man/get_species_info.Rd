@@ -35,7 +35,7 @@ Get the scientific name, common name, and strata group for
 a vector of species.
 }
 \examples{
-get_species_info(c("sablefish", "petrale"))
+get_species_info(c("sablefish"))
 get_species_info(c("vermilion"))
 testthat::expect_message(
   get_species_info(c("chilipepper"))
