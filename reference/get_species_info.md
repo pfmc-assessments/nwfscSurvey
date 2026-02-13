@@ -53,8 +53,11 @@ Kelli Faye Johnson
 ## Examples
 
 ``` r
-get_species_info(c("sablefish", "petrale"))
-#> Error in if (lapply(index, length) > 1) {    cli::cli_alert_warning("Multiple matches were found for the {species} in the look up table\n           stored in pull_spp(). Only one match is returned.")    index <- index[[1]][1]}: the condition has length > 1
+get_species_info(c("sablefish"))
+#>                  latin    common common_name    scientific_name     input
+#> 133 Anoplopoma fimbria sablefish   sablefish Anoplopoma_fimbria sablefish
+#>        strata species_type
+#> 133 sablefish        other
 get_species_info(c("vermilion"))
 #> ! Multiple matches were found for the vermilion in the look up table
 #> stored in pull_spp(). Only one match is returned.
