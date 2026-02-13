@@ -47,7 +47,7 @@
 #' @examples
 #' \dontrun{
 #' # Add presence/absence factor to data
-#' #temp <- catch_nwfsc_combo |>
+#' # temp <- catch_nwfsc_combo |>
 #' #   dplyr::mutate(new = factor(
 #' #    cpue_kg_km2 <= 0,
 #' #     levels = c(FALSE, TRUE),
@@ -55,37 +55,37 @@
 #' #   ))
 #'
 #' # Plot depth bins (50 m) by presence/absence with default colors
-#' #plot_proportion(
+#' # plot_proportion(
 #' #  data = temp,
 #' #  column_factor = new,
 #' #  column_bin = Depth_m,
 #' #  width = 50,
 #' #  boundary = 0
-#' #)
+#' # )
 #' # Plot latitude bins (1 decimal degree) by presence/absence with custom
 #' # colors
-#' #plot_proportion(
+#' # plot_proportion(
 #' #  data = temp,
 #' #  column_factor = new,
 #' #  column_bin = Latitude_dd,
 #' #  width = 1,
 #' #  boundary = 0
-#' #) +
+#' # ) +
 #' #  ggplot2::scale_fill_manual(values = c(
 #' #    "darkorchid3",
 #' #    grDevices::gray(0.7)
 #' #  ))
 #' # Plot depth bins (25 m) by sex (F, M, U)
-#' #plot_proportion(
+#' # plot_proportion(
 #' #  data = bio_nwfsc_combo |>
 #' #    dplyr::mutate(Sex = codify_sex(Sex)),
 #' #  column_factor = Sex,
 #' #  column_bin = Depth_m,
 #' #  width = 25,
 #' #  boundary = 0
-#' #)
+#' # )
 #' # Change to equal sized bars
-#' #plot_proportion(
+#' # plot_proportion(
 #' #  data = bio_nwfsc_combo |>
 #' #    dplyr::mutate(Sex = codify_sex(Sex)),
 #' #  column_factor = Sex,
@@ -93,7 +93,7 @@
 #' #  width = 25,
 #' #  boundary = 0,
 #' #  bar_width = "equal"
-#' #)
+#' # )
 #' }
 plot_proportion <- function(
   data,
@@ -189,7 +189,7 @@ plot_proportion <- function(
 #' @family warehouse
 #' @examples
 #' \dontrun{
-#' #test <- wh_plot_proportion(catch_nwfsc_combo, bio_nwfsc_combo)
+#' # test <- wh_plot_proportion(catch_nwfsc_combo, bio_nwfsc_combo)
 #' }
 wh_plot_proportion <- function(
   data_catch,

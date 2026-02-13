@@ -122,7 +122,7 @@ get_species_info <- function(species, unident = FALSE, verbose = TRUE) {
     species <- species[-1 * bad]
     index <- index[-1 * bad]
   }
-  if(lapply(index, length) > 1) {
+  if (lapply(index, length) > 1) {
     cli::cli_alert_warning(
       "Multiple matches were found for the {species} in the look up table
            stored in pull_spp(). Only one match is returned."

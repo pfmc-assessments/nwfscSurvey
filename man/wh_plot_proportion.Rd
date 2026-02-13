@@ -40,7 +40,7 @@ standard column names of data pulled from the warehouse.
 }
 \examples{
 \dontrun{
-#test <- wh_plot_proportion(catch_nwfsc_combo, bio_nwfsc_combo)
+# test <- wh_plot_proportion(catch_nwfsc_combo, bio_nwfsc_combo)
 }
 }
 \seealso{
