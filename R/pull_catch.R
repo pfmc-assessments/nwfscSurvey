@@ -191,7 +191,8 @@ pull_catch <- function(
   )
 
   bad_sample_types <- which(
-    !positive_tows[,
+    !positive_tows[
+      ,
       "statistical_partition_dim$statistical_partition_type"
     ] %in%
       sample_types

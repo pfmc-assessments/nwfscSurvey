@@ -187,7 +187,8 @@ pull_bio <- function(
 
     # Filter out non-standard samples
     # Some early entries are NA for standard sample indicators. These should be retained.
-    standard_lengths <- bio_pull[,
+    standard_lengths <- bio_pull[
+      ,
       "standard_survey_length_or_width_indicator"
     ] %in%
       c(NA, "NA", "Standard Survey Length or Width")
