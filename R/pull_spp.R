@@ -2,7 +2,6 @@
 #'
 #' Pull common name and scientific name information from the
 #' data warehouse.
-#' The website is https://www.webapps.nwfsc.noaa.gov/data
 #'
 #' @author Kelli Faye Johnson
 #' @export

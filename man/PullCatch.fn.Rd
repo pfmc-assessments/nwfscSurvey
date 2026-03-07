@@ -64,25 +64,14 @@ Default NULL which will not save an output file.}
 warnings to the console. The default is \code{TRUE}.}
 }
 \description{
-Pull catch data from the
-\href{https://www.webapps.nwfsc.noaa.gov/data}{NWFSC data warehouse}
+Pull catch data from the NWFSC data warehouse
 for a single species or all observed species, where the latter is specified
 by leaving both \code{Name = NULL} and \code{SciName = NULL}.
 }
 \details{
 The data available in the warehouse are cleaned prior to being downloaded
 with the intent that they provide the best available information for use
-in an index-standardization procedure. The removed samples may be of use
-to others with a less-restrictive goal than producing an index of abundance.
-For example, life-stage samples are excluded because they are not collected
-using the same protocols as standard samples.
-To download all data, we currently recommend going to the
-\href{https://www.webapps.nwfsc.noaa.gov/data}{NWFSC data warehouse}
-and using the csv link to extract data for a single species at a time.
-In the future, we hope to add functionality to this package such that
-downloading all data can be done easily within this function.
-See \href{https://github.com/pfmc-assessments/nwfscSurvey/issues/43}{Issue #43}
-for more information.
+in an index-standardization procedure.
 }
 \examples{
 \dontrun{

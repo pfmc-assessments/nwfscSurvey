@@ -67,7 +67,6 @@ removed from the survey sampling protocol.}
 Returns a data frame of haul characteristics for satisfactory hauls
 }
 \description{
-The website is: https://www.webapps.nwfsc.noaa.gov/data.
 This function can be used to pull haul data and associated covariates.
 }
 \examples{

@@ -46,20 +46,28 @@ pull_gemm <- function(
 
   # Pull all gemm data
   # gemm <- pins::pin_read(pins::board_connect(), "kayleigh.somers/gemmdatcsv")
-  gemm <- read.csv("https://connect.fisheries.noaa.gov/gemm_csv/gemmdatcsv.csv") |>
+  gemm <- read.csv(
+    "https://connect.fisheries.noaa.gov/gemm_csv/gemmdatcsv.csv"
+  ) |>
     janitor::clean_names()
 
   # Clean up the common_name if necessary
   if (!missing(common_name)) {
     format_common_name <- sub("_", " ", common_name)
     format_common_name <- stringr::str_to_title(format_common_name)
-    if (!format_common_name %in% gemm[, "species"]) {
+    all_format <- paste(format_common_name, collapse = "|")
+    gemm <- gemm |>
+      dplyr::filter(grepl(all_format, species, ignore.case = TRUE))
+    if (dim(gemm)[1] == 0) {
       cli::cli_abort(
         "The common_name was not found in the available gemm species. Try `pull_gemm()` to download data for all available species."
       )
     }
-    gemm <- gemm |>
-      dplyr::filter(species %in% format_common_name)
+    if (length(unique(gemm$species)) > 1) {
+      cli::cli_inform(
+        "Multiple species or species-areas are being returned."
+      )
+    }
   }
 
   # Check the years if provided

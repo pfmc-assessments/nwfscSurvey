@@ -1,11 +1,9 @@
 #' Survey name matching function used when pull from the data warehouse
-#' The website is: https://www.webapp.nwfsc.noaa.gov/data
 #'
 #'
 #' @author Chantel Wetzel based on code by John Wallace
 #' @export
-
-
+#'
 createMatrix <- function() {
   # Survey options available in the data warehouse
   # Triennial - Groundfish Triennial Shelf Survey - Conducted between 1977 - 2004 every 3rd year
@@ -14,17 +12,39 @@ createMatrix <- function() {
   # NWFSC.Shelf - Groundfish Shelf Survey - Only conducted in 2001 (not used in West Coast groundfish assessments)
   matrix(
     data = c(
-      "Triennial", "Groundfish Triennial Shelf Survey", "Triennial Survey",
-      "AFSC.Slope", "AFSC/RACE Slope Survey", "AFSC Slope Survey",
-      "NWFSC.Combo", "Groundfish Slope and Shelf Combination Survey", "NWFSC WCGBTS",
-      "NWFSC.Slope", "Groundfish Slope Survey", "NWFSC Slope Survey",
-      "NWFSC.Shelf", "Groundfish Shelf Survey", "NWFSC Shelf Survey",
-      "NWFSC.Hypoxia", "Hypoxia Study", "",
-      "NWFSC.Santa.Barb.Basin", "Santa Barbara Basin Study", "",
-      "NWFSC.Shelf.Rockfish", "Shelf Rockfish [2004-2015]", "",
-      "NWFSC.Hook.Line", "Hook and Line", "NWFSC Hook and Line Survey",
-      "NWFSC.Video", "Video Study", "",
-      "Triennial.Canada", "Triennial Shelf Groundfish Survey: Canada", ""
+      "Triennial",
+      "Groundfish Triennial Shelf Survey",
+      "Triennial Survey",
+      "AFSC.Slope",
+      "AFSC/RACE Slope Survey",
+      "AFSC Slope Survey",
+      "NWFSC.Combo",
+      "Groundfish Slope and Shelf Combination Survey",
+      "NWFSC WCGBTS",
+      "NWFSC.Slope",
+      "Groundfish Slope Survey",
+      "NWFSC Slope Survey",
+      "NWFSC.Shelf",
+      "Groundfish Shelf Survey",
+      "NWFSC Shelf Survey",
+      "NWFSC.Hypoxia",
+      "Hypoxia Study",
+      "",
+      "NWFSC.Santa.Barb.Basin",
+      "Santa Barbara Basin Study",
+      "",
+      "NWFSC.Shelf.Rockfish",
+      "Shelf Rockfish [2004-2015]",
+      "",
+      "NWFSC.Hook.Line",
+      "Hook and Line",
+      "NWFSC Hook and Line Survey",
+      "NWFSC.Video",
+      "Video Study",
+      "",
+      "Triennial.Canada",
+      "Triennial Shelf Groundfish Survey: Canada",
+      ""
     ),
     ncol = 3,
     byrow = TRUE

@@ -7,8 +7,7 @@ collections taken at sea. Generally these are samples that require lab processin
 Generally, these types of biological sample are maturity, stomach, fin clips, and
 tissue samples. This function returns collection information for these samples
 include the sample numbers which allows the lab analysis to be linked back to
-the sampled fish.
-The website is: https://www.webapps.nwfsc.noaa.gov/data.}
+the sampled fish.}
 \usage{
 pull_biological_samples(
   survey,
@@ -95,7 +94,6 @@ Generally, these types of biological sample are maturity, stomach, fin clips, an
 tissue samples. This function returns collection information for these samples
 include the sample numbers which allows the lab analysis to be linked back to
 the sampled fish.
-The website is: https://www.webapps.nwfsc.noaa.gov/data.
 }
 \author{
 Chantel Wetzel

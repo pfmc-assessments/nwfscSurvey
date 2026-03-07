@@ -1,5 +1,4 @@
 #' Pull biological data (age, length, weight) from the NWFSC data warehouse
-#' The website is: https://www.webapps.nwfsc.noaa.gov/data
 #' This function can be used to pull a single species or all observed species
 #' In order to pull all species leave Name = NULL and SciName = NULL
 #'

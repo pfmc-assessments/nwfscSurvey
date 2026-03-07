@@ -1,6 +1,5 @@
 #' Pull haul data from the NWFSC data warehouse.
 #'
-#' The website is: https://www.webapps.nwfsc.noaa.gov/data.
 #' This function can be used to pull haul data and associated covariates.
 #'
 #' @template years
@@ -43,20 +42,43 @@ pull_haul <- function(
   }
 
   var_str <- c(
-    "area_swept_ha_der", "year", "datetime_utc_iso",
-    "depth_hi_prec_m", "door_width_m_der", "fluorescence_at_surface_mg_per_m3_der",
-    "gear_end_latitude_dd", "gear_end_longitude_dd", "gear_start_latitude_dd",
-    "gear_start_longitude_dd", "invertebrate_weight_kg", "latitude_dd", "leg",
-    "operation_dim$legacy_performance_code", "longitude_dd", "net_height_m_der",
-    "net_width_m_der", "nonspecific_organics_weight_kg", "o2_at_gear_ml_per_l_der",
-    "pass", "performance", "project", "salinity_at_gear_psu_der",
-    "station_invalid", "sampling_end_hhmmss", "sampling_start_hhmmss",
+    "area_swept_ha_der",
+    "year",
+    "datetime_utc_iso",
+    "depth_hi_prec_m",
+    "door_width_m_der",
+    "fluorescence_at_surface_mg_per_m3_der",
+    "gear_end_latitude_dd",
+    "gear_end_longitude_dd",
+    "gear_start_latitude_dd",
+    "gear_start_longitude_dd",
+    "invertebrate_weight_kg",
+    "latitude_dd",
+    "leg",
+    "operation_dim$legacy_performance_code",
+    "longitude_dd",
+    "net_height_m_der",
+    "net_width_m_der",
+    "nonspecific_organics_weight_kg",
+    "o2_at_gear_ml_per_l_der",
+    "pass",
+    "performance",
+    "project",
+    "salinity_at_gear_psu_der",
+    "station_invalid",
+    "sampling_end_hhmmss",
+    "sampling_start_hhmmss",
     "target_station_design_dim.stn_invalid_for_trawl_date_whid",
     "temperature_at_gear_c_der",
     "temperature_at_surface_c_der",
-    "trawl_id", "turbidity_ntu_der", "vertebrate_weight_kg", "vessel",
-    "vessel_end_latitude_dd", "vessel_end_longitude_dd",
-    "vessel_start_latitude_dd", "vessel_start_longitude_dd",
+    "trawl_id",
+    "turbidity_ntu_der",
+    "vertebrate_weight_kg",
+    "vessel",
+    "vessel_end_latitude_dd",
+    "vessel_end_longitude_dd",
+    "vessel_start_latitude_dd",
+    "vessel_start_longitude_dd",
     "actual_station_design_dim$reason_station_invalid"
   )
 
@@ -82,10 +104,17 @@ pull_haul <- function(
   )
 
   haul_data$date_formatted <-
-    chron::chron(format(as.POSIXlt(haul_data$datetime_utc_iso, format = "%Y-%m-%dT%H:%M:%S"), "%Y-%m-%d"),
-      format = "y-m-d", out.format = "YYYY-m-d"
+    chron::chron(
+      format(
+        as.POSIXlt(haul_data$datetime_utc_iso, format = "%Y-%m-%dT%H:%M:%S"),
+        "%Y-%m-%d"
+      ),
+      format = "y-m-d",
+      out.format = "YYYY-m-d"
     )
-  colnames(haul_data)[colnames(haul_data) == "actual_station_design_dim$reason_station_invalid"] <- "reason_station_invalid"
+  colnames(haul_data)[
+    colnames(haul_data) == "actual_station_design_dim$reason_station_invalid"
+  ] <- "reason_station_invalid"
   haul_data$trawl_id <- as.character(haul_data$trawl_id)
 
   save_rdata(
