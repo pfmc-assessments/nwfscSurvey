@@ -84,7 +84,6 @@ performance (water haul or poor net performance), or stations that have been
 removed from the survey sampling protocol.}
 }
 \description{
-The website is: https://www.webapps.nwfsc.noaa.gov/data
 This function can be used to pull a single species or all observed species
 In order to pull all species leave common_name or sci_name as NULL
 }

@@ -1,6 +1,5 @@
 #' Pull biological data (age, length, weight) from the NWFSC data warehouse
 #'
-#' The website is: https://www.webapps.nwfsc.noaa.gov/data
 #' This function can be used to pull a single species or all observed species
 #' In order to pull all species leave common_name or sci_name as NULL
 #'
@@ -64,12 +63,14 @@ pull_bio <- function(
   if (survey %in% c("NWFSC.Shelf.Rockfish", "NWFSC.Hook.Line")) {
     cli::cli_abort(
       "The catch pull currently does not work for NWFSC Hook & Line Survey data.",
-      "A subset of the data is available on the data warehouse https://www.webapp.nwfsc.noaa.gov/data",
       "Contact John Harms (john.harms@noaa.gov) for the full data set."
     )
   }
 
-  if (length(c(common_name, sci_name)) != max(c(length(common_name), length(sci_name)))) {
+  if (
+    length(c(common_name, sci_name)) !=
+      max(c(length(common_name), length(sci_name)))
+  ) {
     cli::cli_abort(
       "Function is unable to pull data using both the common_name or sci_name together.
       Please retry using only one."
@@ -97,10 +98,27 @@ pull_bio <- function(
   }
 
   vars_long <- c(
-    "project", "trawl_id", "common_name", "scientific_name", "year", "vessel", "pass",
-    "tow", "datetime_utc_iso", "depth_m", "weight_kg", "ageing_lab", "otosag_id",
-    "length_cm", "width_cm", "sex", "age_years", "latitude_dd", "longitude_dd",
-    "performance", "station_invalid",
+    "project",
+    "trawl_id",
+    "common_name",
+    "scientific_name",
+    "year",
+    "vessel",
+    "pass",
+    "tow",
+    "datetime_utc_iso",
+    "depth_m",
+    "weight_kg",
+    "ageing_lab",
+    "otosag_id",
+    "length_cm",
+    "width_cm",
+    "sex",
+    "age_years",
+    "latitude_dd",
+    "longitude_dd",
+    "performance",
+    "station_invalid",
     "standard_survey_age_indicator",
     "standard_survey_length_or_width_indicator",
     "standard_survey_weight_indicator",
@@ -109,7 +127,13 @@ pull_bio <- function(
   )
 
   species_str <- convert_to_hex_string(species)
-  add_species <- paste0("field_identified_taxonomy_dim$", var_name, "|=[", species_str, "]")
+  add_species <- paste0(
+    "field_identified_taxonomy_dim$",
+    var_name,
+    "|=[",
+    species_str,
+    "]"
+  )
 
   if (any(species == "pull all")) {
     add_species <- ""
@@ -163,7 +187,10 @@ pull_bio <- function(
 
     # Filter out non-standard samples
     # Some early entries are NA for standard sample indicators. These should be retained.
-    standard_lengths <- bio_pull[, "standard_survey_length_or_width_indicator"] %in% c(NA, "NA", "Standard Survey Length or Width")
+    standard_lengths <- bio_pull[,
+      "standard_survey_length_or_width_indicator"
+    ] %in%
+      c(NA, "NA", "Standard Survey Length or Width")
     if (length(standard_lengths) != dim(bio_pull)[1]) {
       if (verbose) {
         n <- dim(bio_pull)[1] - length(standard_lengths)
@@ -177,7 +204,9 @@ pull_bio <- function(
     }
 
     # Remove non-standard ages
-    nonstandard_age <- which(bio_pull[, "standard_survey_age_indicator"] == "Not Standard Survey Age")
+    nonstandard_age <- which(
+      bio_pull[, "standard_survey_age_indicator"] == "Not Standard Survey Age"
+    )
     if (length(nonstandard_age) > 0) {
       if (verbose) {
         cli::cli_alert_info(
@@ -190,7 +219,10 @@ pull_bio <- function(
     }
 
     # Remove non-standard weights
-    nonstandard_wgt <- which(bio_pull[, "standard_survey_weight_indicator"] == "Not Standard Survey Weight")
+    nonstandard_wgt <- which(
+      bio_pull[, "standard_survey_weight_indicator"] ==
+        "Not Standard Survey Weight"
+    )
     if (length(nonstandard_wgt) > 0) {
       if (verbose) {
         cli::cli_alert_info(
@@ -202,11 +234,22 @@ pull_bio <- function(
       }
     }
 
-    colnames(bio_pull)[colnames(bio_pull) == "actual_station_design_dim$reason_station_invalid"] <- "reason_station_invalid"
-    colnames(bio_pull)[colnames(bio_pull) == "operation_dim$legacy_performance_code"] <- "legacy_performance_code"
+    colnames(bio_pull)[
+      colnames(bio_pull) == "actual_station_design_dim$reason_station_invalid"
+    ] <- "reason_station_invalid"
+    colnames(bio_pull)[
+      colnames(bio_pull) == "operation_dim$legacy_performance_code"
+    ] <- "legacy_performance_code"
     bio_pull$weight <- bio_pull$weight_kg
     bio_pull$age <- bio_pull$age_years
-    bio_pull$date <- chron::chron(format(as.POSIXlt(bio_pull$datetime_utc_iso, format = "%Y-%m-%dT%H:%M:%S"), "%Y-%m-%d"), format = "y-m-d", out.format = "YYYY-m-d")
+    bio_pull$date <- chron::chron(
+      format(
+        as.POSIXlt(bio_pull$datetime_utc_iso, format = "%Y-%m-%dT%H:%M:%S"),
+        "%Y-%m-%d"
+      ),
+      format = "y-m-d",
+      out.format = "YYYY-m-d"
+    )
     bio_pull$trawl_id <- as.character(bio_pull$trawl_id)
   }
 
@@ -246,10 +289,21 @@ pull_bio <- function(
       )
 
       len_pull$weight_kg <- len_pull$weight <- NA
-      len_pull$date <- chron::chron(format(as.POSIXlt(len_pull$datetime_utc_iso, format = "%Y-%m-%dT%H:%M:%S"), "%Y-%m-%d"), format = "y-m-d", out.format = "YYYY-m-d")
+      len_pull$date <- chron::chron(
+        format(
+          as.POSIXlt(len_pull$datetime_utc_iso, format = "%Y-%m-%dT%H:%M:%S"),
+          "%Y-%m-%d"
+        ),
+        format = "y-m-d",
+        out.format = "YYYY-m-d"
+      )
       len_pull$trawl_id <- as.character(len_pull$trawl_id)
-      colnames(len_pull)[colnames(len_pull) == "actual_station_design_dim$reason_station_invalid"] <- "reason_station_invalid"
-      colnames(len_pull)[colnames(len_pull) == "operation_dim$legacy_performance_code"] <- "legacy_performance_code"
+      colnames(len_pull)[
+        colnames(len_pull) == "actual_station_design_dim$reason_station_invalid"
+      ] <- "reason_station_invalid"
+      colnames(len_pull)[
+        colnames(len_pull) == "operation_dim$legacy_performance_code"
+      ] <- "legacy_performance_code"
     }
 
     bio <- list()
@@ -277,7 +331,9 @@ pull_bio <- function(
     }
     if (survey %in% c("Triennial", "AFSC.Slope")) {
       if (!is.null(nrow(bio[["length_data"]]))) {
-        colnames(bio[["length_data"]]) <- firstup(colnames(bio[["length_data"]]))
+        colnames(bio[["length_data"]]) <- firstup(colnames(bio[[
+          "length_data"
+        ]]))
       }
 
       if (!is.null(nrow(bio[["age_data"]]))) {

@@ -4,7 +4,6 @@
 #' tissue samples. This function returns collection information for these samples
 #' include the sample numbers which allows the lab analysis to be linked back to
 #' the sampled fish.
-#' The website is: https://www.webapps.nwfsc.noaa.gov/data.
 #'
 #' @template common_name
 #' @template sci_name
@@ -37,7 +36,10 @@ pull_biological_samples <- function(
   # increase the timeout period to avoid errors when pulling data
   options(timeout = 4000000)
 
-  if (length(c(common_name, sci_name)) != max(c(length(common_name), length(sci_name)))) {
+  if (
+    length(c(common_name, sci_name)) !=
+      max(c(length(common_name), length(sci_name)))
+  ) {
     cli::cli_abort(
       "Can not pull data using both the common_name or sci_name together.
        Please retry using only one."
@@ -65,7 +67,13 @@ pull_biological_samples <- function(
   }
 
   species_str <- convert_to_hex_string(species)
-  add_species <- paste0("field_identified_taxonomy_dim$", var_name, "|=[", species_str, "]")
+  add_species <- paste0(
+    "field_identified_taxonomy_dim$",
+    var_name,
+    "|=[",
+    species_str,
+    "]"
+  )
 
   if (any(species == "pull all")) {
     add_species <- ""
@@ -177,9 +185,13 @@ pull_biological_samples <- function(
   )
 
   bio_samples$trawl_id <- as.character(bio_samples$trawl_id)
-  rename_columns <- which(colnames(bio_samples) %in% "operation_dim$legacy_performance_code")
+  rename_columns <- which(
+    colnames(bio_samples) %in% "operation_dim$legacy_performance_code"
+  )
   colnames(bio_samples)[rename_columns] <- "legacy_performance_code"
-  colnames(bio_samples)[colnames(bio_samples) == "actual_station_design_dim$reason_station_invalid"] <- "reason_station_invalid"
+  colnames(bio_samples)[
+    colnames(bio_samples) == "actual_station_design_dim$reason_station_invalid"
+  ] <- "reason_station_invalid"
 
   if (standard_filtering == TRUE & verbose == TRUE) {
     cli::cli_inform(

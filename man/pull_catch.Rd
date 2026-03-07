@@ -103,14 +103,7 @@ by leaving both \code{common_name = NULL} and \code{sci_name = NULL}.
 \details{
 The data available in the warehouse are cleaned prior to being downloaded
 with the intent that they provide the best available information for use
-in an index-standardization procedure. The removed samples may be of use
-to others with a less-restrictive goal than producing an index of abundance.
-For example, depths sampled outside the standard protocol are excluded.
-To download all data, we currently recommend going to the
-\href{https://www.webapps.nwfsc.noaa.gov/data}{NWFSC data warehouse}
-and using the csv link to extract data for a single species at a time.
-In the future, we hope to add functionality to this package such that
-downloading all data can be done easily within this function.
+in an index-standardization procedure.
 }
 \examples{
 \dontrun{

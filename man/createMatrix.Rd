@@ -2,14 +2,12 @@
 % Please edit documentation in R/createMatrix.fn.R
 \name{createMatrix}
 \alias{createMatrix}
-\title{Survey name matching function used when pull from the data warehouse
-The website is: https://www.webapp.nwfsc.noaa.gov/data}
+\title{Survey name matching function used when pull from the data warehouse}
 \usage{
 createMatrix()
 }
 \description{
 Survey name matching function used when pull from the data warehouse
-The website is: https://www.webapp.nwfsc.noaa.gov/data
 }
 \author{
 Chantel Wetzel based on code by John Wallace
