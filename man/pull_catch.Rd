@@ -96,8 +96,7 @@ performance (water haul or poor net performance), or stations that have been
 removed from the survey sampling protocol.}
 }
 \description{
-Pull catch data from the
-\href{https://www.webapps.nwfsc.noaa.gov/data}{NWFSC data warehouse}
+Pull catch data from the NWFSC data warehouse
 for a single species or all observed species, where the latter is specified
 by leaving both \code{common_name = NULL} and \code{sci_name = NULL}.
 }
