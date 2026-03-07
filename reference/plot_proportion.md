@@ -25,15 +25,16 @@ plot_proportion(
 
 - column_factor:
 
-  \<`data-masking`\> Variable in `data` for the grouping structure.
-  Should be a variable in `data` that contains a factor but it can also
-  be a variable in `data` that stores characters. See the examples for
-  ideas.
+  \<[`data-masking`](https://dplyr.tidyverse.org/reference/dplyr_data_masking.html)\>
+  Variable in `data` for the grouping structure. Should be a variable in
+  `data` that contains a factor but it can also be a variable in `data`
+  that stores characters. See the examples for ideas.
 
 - column_bin:
 
-  \<`data-masking`\> Variable in `data` for the binning structure. If
-  this is not already a factor or character, then
+  \<[`data-masking`](https://dplyr.tidyverse.org/reference/dplyr_data_masking.html)\>
+  Variable in `data` for the binning structure. If this is not already a
+  factor or character, then
   [`ggplot2::cut_width()`](https://ggplot2.tidyverse.org/reference/cut_interval.html)
   will be used to create bins. The bins are saved in `bin` in the
   returned ggplot2 object.
