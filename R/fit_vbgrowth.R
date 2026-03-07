@@ -62,13 +62,22 @@
 #' )
 #' exp(solve$par)
 #' }
-fit_vbgrowth <- function(Par, Ages, Lengths, par_logspace = TRUE, ReturnType = c("NLL", "Pred"), sdFactor = 1) {
+fit_vbgrowth <- function(
+  Par,
+  Ages,
+  Lengths,
+  par_logspace = TRUE,
+  ReturnType = c("NLL", "Pred"),
+  sdFactor = 1
+) {
   #### Initialization
   if (is.null(names(Par))) {
     names(Par) <- c("K", "Linf", "L0", "CV0", "CV1")
   }
   if (!is.null(Lengths)) {
-    stopifnot("Ages & Lengths are not the same length" = length(Ages) == length(Lengths))
+    stopifnot(
+      "Ages & Lengths are not the same length" = length(Ages) == length(Lengths)
+    )
   }
   ReturnType <- match.arg(ReturnType, several.ok = FALSE)
   # Exponentiate parameters, which are provided in log space such that estimates are not
@@ -82,12 +91,15 @@ fit_vbgrowth <- function(Par, Ages, Lengths, par_logspace = TRUE, ReturnType = c
   # PacFIN.Utilities.
   # See Ogle and Isermann (2017) 10.1080/02755947.2017.1342725
   lhat.L0 <- function(Par, Ages, variability = 0) {
-    Par[["Linf"]] - (Par[["Linf"]] - Par[["L0"]]) * exp(-Ages * Par[["K"]]) + variability
+    Par[["Linf"]] -
+      (Par[["Linf"]] - Par[["L0"]]) * exp(-Ages * Par[["K"]]) +
+      variability
   }
   if ("L0" %in% names(Par)) {
     lhat.here <- lhat.L0
     Lhat <- lhat.here(Par, Ages)
-    CV <- Par[["CV0"]] + (Par[["CV1"]] - Par[["CV0"]]) * (Lhat - Par[["L0"]]) / Par[["Linf"]]
+    CV <- Par[["CV0"]] +
+      (Par[["CV1"]] - Par[["CV0"]]) * (Lhat - Par[["L0"]]) / Par[["Linf"]]
     SD <- CV * Lhat
   }
   # todo: figure out CV of this parameterization and implement a switch if parameter t0
@@ -99,7 +111,9 @@ fit_vbgrowth <- function(Par, Ages, Lengths, par_logspace = TRUE, ReturnType = c
     Par[["Linf"]] * (1 - exp(-Par[["K"]] * (Ages - Par[["t0"]]))) + variability
   }
   if ("t0" %in% names(Par)) {
-    stop("t0 parameterization is not complete, please contact developers to estimate CV")
+    cli::cli_abort(
+      "t0 parameterization is not complete, please contact developers to estimate CV"
+    )
     lhat.here <- lhat.t0
     Lhat <- lhat.here(Par, Ages)
     CV <- Par[["CV1"]]
@@ -108,12 +122,17 @@ fit_vbgrowth <- function(Par, Ages, Lengths, par_logspace = TRUE, ReturnType = c
 
   #### Return
   if (ReturnType == "NLL") {
-    Return <- -1 * sum(dnorm(Lengths, mean = Lhat, sd = SD, log = TRUE), na.rm = TRUE)
+    Return <- -1 *
+      sum(dnorm(Lengths, mean = Lhat, sd = SD, log = TRUE), na.rm = TRUE)
   }
   if (ReturnType == "Pred") {
     Lhat_low <- lhat.here(Par, Ages, variability = (-sdFactor * SD))
     Lhat_high <- lhat.here(Par, Ages, variability = (sdFactor * SD))
-    Return <- cbind(Lhat_low = Lhat_low, Lhat_pred = Lhat, Lhat_high = Lhat_high)
+    Return <- cbind(
+      Lhat_low = Lhat_low,
+      Lhat_pred = Lhat,
+      Lhat_high = Lhat_high
+    )
   }
   return(Return)
 }

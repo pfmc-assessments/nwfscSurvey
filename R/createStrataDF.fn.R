@@ -51,9 +51,11 @@ CreateStrataDF.fn <- function(
   lats.north
 ) {
   SA3_v2021.1 <- NULL
-  utils::data("SA3_v2021.1",
+  utils::data(
+    "SA3_v2021.1",
     envir = environment(),
-    overwrite = TRUE, package = "nwfscSurvey"
+    overwrite = TRUE,
+    package = "nwfscSurvey"
   )
 
   out <- data.frame(
@@ -73,10 +75,9 @@ CreateStrataDF.fn <- function(
     if (is.na(names)) {
       names <- rep(NA, NROW(out))
     } else {
-      stop(
-        "The length of names needs to be the same as other input arguments, i.e., ",
-        NROW(out), ",\ninstead the single value of ", names, " that you supplied.",
-        "\nA single value will only be repeated if it is 'NA', which leads to LETTERS for names."
+      nrows <- NROW(out)
+      cli::cli_abort(
+        "The length of names needs to be the same as other input arguments, i.e. {nrows} instead the single value of {names} that you supplied. A single value will only be repeated if it is 'NA', which leads to LETTERS for names."
       )
     }
   }

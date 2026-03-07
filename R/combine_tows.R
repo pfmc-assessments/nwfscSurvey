@@ -26,11 +26,18 @@
 #'
 #'
 #'
-combine_tows <- function(data, dir = NULL, single_species = TRUE, verbose = TRUE) {
+combine_tows <- function(
+  data,
+  dir = NULL,
+  single_species = TRUE,
+  verbose = TRUE
+) {
   check_dir(dir = dir, verbose = verbose)
 
   if (!"total_catch_numbers" %in% colnames(data)) {
-    stop("The data object needs to be a data frame of pulled catches from the `pull_catch` function.")
+    cli::cli_abort(
+      "The data object needs to be a data frame of pulled catches from the `pull_catch` function."
+    )
   }
 
   original_colname <- colnames(data)
@@ -39,7 +46,9 @@ combine_tows <- function(data, dir = NULL, single_species = TRUE, verbose = TRUE
   find <- grep("trawl_id", colnames(data), ignore.case = TRUE)
   n_id <- table(data[, find])
   if (all(n_id == 1)) {
-    stop("All trawl_ids are unique and there is no need to combine data.")
+    cli::cli_abort(
+      "All trawl_ids are unique and there is no need to combine data."
+    )
   }
 
   partition_to_keep <- c("NA", NA, "Large", "Small", "Unspecified", "YOY")
@@ -88,9 +97,22 @@ combine_tows <- function(data, dir = NULL, single_species = TRUE, verbose = TRUE
 
   colnames(catch) <- original_colname
   if (!is.null(dir)) {
-    save(catch, file = file.path(dir, paste0("combined_catch_data_", sp, "_", survey, "_", Sys.Date(), ".rdata")))
+    save(
+      catch,
+      file = file.path(
+        dir,
+        paste0(
+          "combined_catch_data_",
+          sp,
+          "_",
+          survey,
+          "_",
+          Sys.Date(),
+          ".rdata"
+        )
+      )
+    )
   }
-
 
   return(catch)
 }
