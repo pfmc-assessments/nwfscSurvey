@@ -1,5 +1,4 @@
 #' Pull haul data from the NWFSC data warehouse
-#' The website is: https://www.webapps.nwfsc.noaa.gov/data
 #' This function can be used to pull haul data and associated covariates
 #'
 #' @param YearRange range of years to pull data. Defaults to all years, 1977 - present.

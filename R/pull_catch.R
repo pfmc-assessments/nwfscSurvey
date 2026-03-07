@@ -1,7 +1,6 @@
 #' Pull catch data for satisfactory tows from the NWFSC data warehouse
 #'
-#' Pull catch data from the
-#' [NWFSC data warehouse](https://www.webapps.nwfsc.noaa.gov/data)
+#' Pull catch data from the NWFSC data warehouse
 #' for a single species or all observed species, where the latter is specified
 #' by leaving both `common_name = NULL` and `sci_name = NULL`.
 #'
@@ -91,7 +90,10 @@ pull_catch <- function(
     )
   }
 
-  if (length(c(common_name, sci_name)) != max(c(length(common_name), length(sci_name)))) {
+  if (
+    length(c(common_name, sci_name)) !=
+      max(c(length(common_name), length(sci_name)))
+  ) {
     cli::cli_abort(
       "Function is unable to pull data using both the common_name or sci_name together.
       Please retry using only one."
@@ -124,19 +126,38 @@ pull_catch <- function(
   # the main table fields are specified. Could pull separate and then join which
   # would allow us to eliminate vars_long form the main pull
   vars_long <- c(
-    "common_name", "scientific_name", "project", "year", "vessel", "tow",
-    "total_catch_numbers", "total_catch_wt_kg", "trawl_id",
-    "subsample_count", "subsample_wt_kg", "cpue_kg_per_ha_der",
+    "common_name",
+    "scientific_name",
+    "project",
+    "year",
+    "vessel",
+    "tow",
+    "total_catch_numbers",
+    "total_catch_wt_kg",
+    "trawl_id",
+    "subsample_count",
+    "subsample_wt_kg",
+    "cpue_kg_per_ha_der",
     "statistical_partition_dim$statistical_partition_type",
-    "partition", "operation_dim$legacy_performance_code",
-    "performance", "station_invalid", "actual_station_design_dim$reason_station_invalid", "depth_m"
+    "partition",
+    "operation_dim$legacy_performance_code",
+    "performance",
+    "station_invalid",
+    "actual_station_design_dim$reason_station_invalid",
+    "depth_m"
   )
 
   # These are the retained and returned fields
   # vars_short <- vars_long[!vars_long %in% perf_codes]
 
   species_str <- convert_to_hex_string(species)
-  add_species <- paste0("field_identified_taxonomy_dim$", var_name, "|=[", species_str, "]")
+  add_species <- paste0(
+    "field_identified_taxonomy_dim$",
+    var_name,
+    "|=[",
+    species_str,
+    "]"
+  )
 
   if (any(species == "pull all")) {
     add_species <- ""
@@ -177,7 +198,12 @@ pull_catch <- function(
     verbose = verbose
   )
 
-  bad_sample_types <- which(!positive_tows[, "statistical_partition_dim$statistical_partition_type"] %in% sample_types)
+  bad_sample_types <- which(
+    !positive_tows[,
+      "statistical_partition_dim$statistical_partition_type"
+    ] %in%
+      sample_types
+  )
   if (length(bad_sample_types) > 0) {
     if (verbose) {
       cli::cli_alert_info(
@@ -188,16 +214,30 @@ pull_catch <- function(
   }
   if (sum(is.na(positive_tows[, "common_name"])) > 0) {
     replace <- which(is.na(positive_tows[, "common_name"]))
-    positive_tows[replace, "common_name"] <- positive_tows[replace, "scientific_name"]
+    positive_tows[replace, "common_name"] <- positive_tows[
+      replace,
+      "scientific_name"
+    ]
   }
 
   positive_tows <- positive_tows[, colnames(positive_tows) != "depth_m"]
 
   # Pull all tow data including tows where the species was not observed
   vars_long <- c(
-    "project", "year", "vessel", "pass", "tow", "datetime_utc_iso",
-    "depth_hi_prec_m", "longitude_dd", "latitude_dd", "area_swept_ha_der",
-    "trawl_id", "operation_dim$legacy_performance_code", "performance", "station_invalid",
+    "project",
+    "year",
+    "vessel",
+    "pass",
+    "tow",
+    "datetime_utc_iso",
+    "depth_hi_prec_m",
+    "longitude_dd",
+    "latitude_dd",
+    "area_swept_ha_der",
+    "trawl_id",
+    "operation_dim$legacy_performance_code",
+    "performance",
+    "station_invalid",
     "actual_station_design_dim$reason_station_invalid"
   )
 
@@ -226,12 +266,18 @@ pull_catch <- function(
   )
 
   all_tows <- all_tows[
-    !duplicated(paste(all_tows$year, all_tows$pass, all_tows$vessel, all_tows$tow)),
+    !duplicated(paste(
+      all_tows$year,
+      all_tows$pass,
+      all_tows$vessel,
+      all_tows$tow
+    )),
   ]
 
   positive_tows_grouped <- dplyr::group_by(
     .data = positive_tows,
-    common_name, scientific_name
+    common_name,
+    scientific_name
   )
   # Split positive_tows into 1 data frame for each combination of common_name
   # and scientific_name and store in a named list for purrr::map()
@@ -270,9 +316,15 @@ pull_catch <- function(
     by = c(colnames(group_names), colnames(all_tows))
   ) |>
     dplyr::arrange(common_name, trawl_id)
-  colnames(catch)[colnames(catch) == "actual_station_design_dim$reason_station_invalid"] <- "reason_station_invalid"
-  colnames(catch)[colnames(catch) == "statistical_partition_dim$statistical_partition_type"] <- "partition_sample_types"
-  colnames(catch)[colnames(catch) == "operation_dim$legacy_performance_code"] <- "legacy_performance_code"
+  colnames(catch)[
+    colnames(catch) == "actual_station_design_dim$reason_station_invalid"
+  ] <- "reason_station_invalid"
+  colnames(catch)[
+    colnames(catch) == "statistical_partition_dim$statistical_partition_type"
+  ] <- "partition_sample_types"
+  colnames(catch)[
+    colnames(catch) == "operation_dim$legacy_performance_code"
+  ] <- "legacy_performance_code"
 
   no_area <- which(is.na(catch$area_swept_ha_der))
   if (length(no_area) > 0) {
@@ -283,7 +335,11 @@ pull_catch <- function(
       )
     }
     if (standard_filtering) {
-      catch[no_area, "area_swept_ha_der"] <- mean(catch$area_swept_ha_der, trim = 0.05, na.rm = TRUE)
+      catch[no_area, "area_swept_ha_der"] <- mean(
+        catch$area_swept_ha_der,
+        trim = 0.05,
+        na.rm = TRUE
+      )
     }
   }
 
@@ -293,14 +349,20 @@ pull_catch <- function(
   catch[catch[, "partition"] == 0, "partition"] <- NA
 
   catch$date <- chron::chron(
-    format(as.POSIXlt(catch$datetime_utc_iso, format = "%Y-%m-%dT%H:%M:%S"), "%Y-%m-%d"),
-    format = "y-m-d", out.format = "YYYY-m-d"
+    format(
+      as.POSIXlt(catch$datetime_utc_iso, format = "%Y-%m-%dT%H:%M:%S"),
+      "%Y-%m-%d"
+    ),
+    format = "y-m-d",
+    out.format = "YYYY-m-d"
   )
 
   catch$trawl_id <- as.character(catch$trawl_id)
   # kg / km2 <- (100 hectare / 1 *km2) * (kg / hectare)
   catch$cpue_kg_km2 <- catch$cpue_kg_per_ha_der * 100
-  colnames(catch)[which(colnames(catch) == "area_swept_ha_der")] <- "area_swept_ha"
+  colnames(catch)[which(
+    colnames(catch) == "area_swept_ha_der"
+  )] <- "area_swept_ha"
 
   find <- grep("trawl_id", colnames(catch), ignore.case = TRUE)
   n_id <- table(catch[, find])
@@ -325,9 +387,15 @@ pull_catch <- function(
     }
     colnames(catch) <- firstup(colnames(catch))
     colnames(catch)[colnames(catch) == "Cpue_kg_km2"] <- "cpue_kg_km2"
-    colnames(catch)[colnames(catch) == "Cpue_kg_per_ha_der"] <- "cpue_kg_per_ha_der"
-    colnames(catch)[colnames(catch) == "Total_catch_numbers"] <- "total_catch_numbers"
-    colnames(catch)[colnames(catch) == "Total_catch_wt_kg"] <- "total_catch_wt_kg"
+    colnames(catch)[
+      colnames(catch) == "Cpue_kg_per_ha_der"
+    ] <- "cpue_kg_per_ha_der"
+    colnames(catch)[
+      colnames(catch) == "Total_catch_numbers"
+    ] <- "total_catch_numbers"
+    colnames(catch)[
+      colnames(catch) == "Total_catch_wt_kg"
+    ] <- "total_catch_wt_kg"
   }
 
   save_rdata(
