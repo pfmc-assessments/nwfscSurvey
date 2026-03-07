@@ -1,7 +1,6 @@
 # Pull haul data from the NWFSC data warehouse.
 
-The website is: https://www.webapps.nwfsc.noaa.gov/data. This function
-can be used to pull haul data and associated covariates.
+This function can be used to pull haul data and associated covariates.
 
 ## Usage
 

@@ -51,8 +51,7 @@
   variability of length at age
 
 - [`PullBio.fn()`](PullBio.fn.md) : Pull biological data (age, length,
-  weight) from the NWFSC data warehouse The website is:
-  https://www.webapps.nwfsc.noaa.gov/data This function can be used to
+  weight) from the NWFSC data warehouse This function can be used to
   pull a single species or all observed species In order to pull all
   species leave Name = NULL and SciName = NULL
 
@@ -60,8 +59,8 @@
   data warehouse
 
 - [`PullHaul.fn()`](PullHaul.fn.md) : Pull haul data from the NWFSC data
-  warehouse The website is: https://www.webapps.nwfsc.noaa.gov/data This
-  function can be used to pull haul data and associated covariates
+  warehouse This function can be used to pull haul data and associated
+  covariates
 
 - [`PullSpp`](PullSpp.md) : Sql pull of species names
 
@@ -136,8 +135,7 @@
   function used throughout the package
 
 - [`createMatrix()`](createMatrix.md) : Survey name matching function
-  used when pull from the data warehouse The website is:
-  https://www.webapp.nwfsc.noaa.gov/data
+  used when pull from the data warehouse
 
 - [`draw_USEEZ()`](draw_USEEZ.md) : Bounds the figure with the limits of
   the U.S. EEZ
@@ -225,7 +223,7 @@
   are maturity, stomach, fin clips, and tissue samples. This function
   returns collection information for these samples include the sample
   numbers which allows the lab analysis to be linked back to the sampled
-  fish. The website is: https://www.webapps.nwfsc.noaa.gov/data.
+  fish.
 
 - [`pull_catch()`](pull_catch.md) : Pull catch data for satisfactory
   tows from the NWFSC data warehouse
