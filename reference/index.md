@@ -5,20 +5,12 @@
 - [`AFSCforeign_hauls`](AFSCforeign_hauls.md) : Example data for
   AFSCforeign_hauls
 
-- [`Biomass.fn()`](Biomass.fn.md) : Calculates design based estimates
-  from survey data for West Coast surveys.
-
-- [`CheckStrata.fn()`](CheckStrata.fn.md) : Calculate the number of
-  observations by year and strata
-
 - [`CreateStrataDF.fn()`](CreateStrataDF.fn.md) :
 
   Create strata data frame using `StrataAreas.fn`
 
 - [`Format.AKSlope.fn()`](Format.AKSlope.fn.md) : Rename AFSC slope
   survey columns from data pulled before 2017
-
-- [`GetN.fn()`](GetN.fn.md) : Calculate input sample sizes
 
 - [`GetSppDefault.fn()`](GetSppDefault.fn.md) : Get Vector of Default
   Species Names for US West Coast
@@ -27,20 +19,8 @@
 
 - [`GetSurveyAbb.fn()`](GetSurveyAbb.fn.md) : Get Survey Abbreviation
 
-- [`PlotBio.fn()`](PlotBio.fn.md) : Plots the designed based biomass
-  estimates with confidence intervals
-
-- [`PlotBioStrata.fn()`](PlotBioStrata.fn.md) : Plots the design-based
-  biomass estimates by strata with confidence intervals
-
-- [`PlotFreqData.fn()`](PlotFreqData.fn.md) : Plot length or age
-  compositions by year in bubble plots
-
 - [`PlotMap.fn()`](PlotMap.fn.md) : Plot two figures showing
   catch-per-unit-effort data
-
-- [`PlotPresenceAbsence.fn()`](PlotPresenceAbsence.fn.md) : Plot showing
-  presence and absence per haul by depth, latitude, or sex bin
 
 - [`PlotSexRatio.fn()`](PlotSexRatio.fn.md) : Function to plot sex ratio
 
@@ -50,22 +30,7 @@
 - [`PlotVarLengthAtAge.fn()`](PlotVarLengthAtAge.fn.md) : Plot
   variability of length at age
 
-- [`PullBio.fn()`](PullBio.fn.md) : Pull biological data (age, length,
-  weight) from the NWFSC data warehouse This function can be used to
-  pull a single species or all observed species In order to pull all
-  species leave Name = NULL and SciName = NULL
-
-- [`PullCatch.fn()`](PullCatch.fn.md) : Pull catch data from the NWFSC
-  data warehouse
-
-- [`PullHaul.fn()`](PullHaul.fn.md) : Pull haul data from the NWFSC data
-  warehouse This function can be used to pull haul data and associated
-  covariates
-
 - [`PullSpp`](PullSpp.md) : Sql pull of species names
-
-- [`PullSpp.fn()`](PullSpp.fn.md) : Pull species names from the
-  warehouse
 
 - [`ReadInAges.fn()`](ReadInAges.fn.md) : Cleans triennial survey data
   by year and area
@@ -93,21 +58,6 @@
 
 - [`StrataFactors.fn()`](StrataFactors.fn.md) : Creates a vector of
   strata factors by name
-
-- [`SurveyAFs.fn()`](SurveyAFs.fn.md) : Create marginal age composition
-  data
-
-- [`SurveyAgeAtLen.fn()`](SurveyAgeAtLen.fn.md) : Calculates conditional
-  age-at-length composition data
-
-- [`SurveyLFs.fn()`](SurveyLFs.fn.md) : Expands the lengths up to the
-  total stratum area then sums over strata for each year
-
-- [`UnexpandedAFs.fn()`](UnexpandedAFs.fn.md) : Creates a matrix of
-  unexpanded age compositions
-
-- [`UnexpandedLFs.fn()`](UnexpandedLFs.fn.md) : Creates a matrix of
-  unexpanded length composition data
 
 - [`availablecells`](availablecells.md) : Available grid cell locations
   for the survey

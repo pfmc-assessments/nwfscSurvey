@@ -116,21 +116,17 @@ wrong in <code>x</code>. See for yourself in the examples.</p>
 <span class="r-in"><span><span class="co"># warning messages are printed to the screen prior to</span></span></span>
 <span class="r-in"><span><span class="co"># changing the uncoded values to "U"</span></span></span>
 <span class="r-in"><span><span class="fu">codify_sex</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"U"</span>, <span class="st">"F"</span>, <span class="st">"M"</span>, <span class="st">"both"</span>, <span class="fl">1</span>, <span class="fl">2</span>, <span class="cn">NA</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> The following unmatched values were found n times in `codify_sex()`:</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> 'both' (n = 1)</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> 'NA' (n = 1)</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> The following unmatched values were found n times in codify_sex() 'both' (n =</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> 1) and 'NA' (n = 1)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "U" "F" "M" "U" "M" "F" "U"</span>
 <span class="r-in"><span><span class="fu">codify_sex</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"both"</span>, <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">5</span>, <span class="fl">10</span><span class="op">)</span>, <span class="st">"both"</span>, <span class="fl">1</span>, <span class="fl">2</span>, <span class="cn">NA</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> The following unmatched values were found n times in `codify_sex()`:</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> '5' (n = 10)</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> 'both' (n = 2)</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> 'NA' (n = 1)</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> The following unmatched values were found n times in codify_sex() '5' (n = 10),</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> 'both' (n = 2), and 'NA' (n = 1)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  [1] "U" "U" "U" "U" "U" "U" "U" "U" "U" "U" "U" "U" "M" "F" "U"</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Change codified sex from letters to integers for Stock Synthesis</span></span></span>
 <span class="r-in"><span><span class="fu">codify_sex_SS3</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"M"</span>, <span class="st">"U"</span>, <span class="st">"K"</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> The following unmatched values were found n times in `codify_sex()`:</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> 'K' (n = 1)</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> The following unmatched values were found n times in codify_sex() 'K' (n = 1)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 3 0 0</span>
 </code></pre></div>
     </div>

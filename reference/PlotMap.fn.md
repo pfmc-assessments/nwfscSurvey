@@ -57,7 +57,7 @@ they are not saved to the disk.
 
 ## See also
 
-- [`PullCatch.fn()`](PullCatch.fn.md)
+- `PullCatch.fn()`
 
 - [`plot_westcoast()`](plot_westcoast.md)
 

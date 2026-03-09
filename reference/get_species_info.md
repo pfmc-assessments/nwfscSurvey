@@ -42,9 +42,8 @@ species.
 
 ## See also
 
-See [`PullSpp.fn`](PullSpp.fn.md) for information on common and
-scientific names; and [`GetStrata.fn`](GetStrata.fn.md) for the
-different stratifications.
+See `PullSpp.fn` for information on common and scientific names; and
+[`GetStrata.fn`](GetStrata.fn.md) for the different stratifications.
 
 ## Author
 

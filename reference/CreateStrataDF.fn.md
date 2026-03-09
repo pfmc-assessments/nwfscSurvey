@@ -41,10 +41,10 @@ CreateStrataDF.fn(
 ## Value
 
 Returns the data frame formatted for use by
-[`Biomass.fn`](Biomass.fn.md) and additional prediction functions in
-other downstream packages. The data frame will have six columns, (1)
-name, (2) area, (3) Depth_m.1, (4) Depth_m.2, (5) Latitude_dd.1, and (6)
-Latitude_dd.2.
+[`get_design_based`](get_design_based.md) and additional prediction
+functions in other downstream packages. The data frame will have six
+columns, (1) name, (2) area, (3) Depth_m.1, (4) Depth_m.2, (5)
+Latitude_dd.1, and (6) Latitude_dd.2.
 
 ## Details
 
@@ -57,8 +57,8 @@ ranges using latitudes.
 ## See also
 
 See [`StrataAreas.fn`](StrataAreas.fn.md) for how areas are calculated.
-See [`Biomass.fn`](Biomass.fn.md) for how the areas are used to create
-design-based biomass estimates.
+See [`get_design_based`](get_design_based.md) for how the areas are used
+to create design-based biomass estimates.
 
 ## Author
 

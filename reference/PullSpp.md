@@ -16,7 +16,7 @@ scientific_name.
 
 ## See also
 
-[`PullSpp.fn`](PullSpp.fn.md) for more information.
+`PullSpp.fn` for more information.
 
 ## Author
 

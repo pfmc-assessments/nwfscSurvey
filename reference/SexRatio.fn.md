@@ -21,8 +21,7 @@ SexRatio.fn(
 
   A data frame or a nested list depending on `sexRatioStage` which will
   dictate where this function is called inside code that expands the
-  data such as [`SurveyLFs.fn()`](SurveyLFs.fn.md) or
-  [`SurveyAFs.fn()`](SurveyAFs.fn.md).
+  data such as [`get_expanded_comps()`](get_expanded_comps.md).
 
 - sexRatioStage:
 
