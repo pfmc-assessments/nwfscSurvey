@@ -1,5 +1,5 @@
 test_that("Data frame structure of PullSpp.fn() is consistent", {
-  allspp <- PullSpp.fn()
+  allspp <- pull_spp()
   expect_is(allspp, "data.frame")
   expect_equal(
     colnames(allspp),
@@ -17,7 +17,7 @@ test_that("Data frame structure of PullSpp.fn() is consistent", {
 })
 
 test_that("Information for sablefish is consistent", {
-  spp <- PullSpp.fn()
+  spp <- pull_spp()
   sablefish <- spp[grep("sablefish", spp[["common"]]), ]
   expect_length(sablefish, 4)
   expect_equal(NROW(sablefish), 2)
