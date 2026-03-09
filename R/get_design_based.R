@@ -68,18 +68,19 @@ get_design_based <- function(
   colnames(strata) <- tolower(colnames(strata))
 
   if (sum(strata_vars %in% colnames(data)) != length(strata_vars)) {
-    stop(glue::glue(
-      "The {strata_vars[1]} and/or {strata_vars[2]} were not found in the data.
-      They can be either uppper or lower case."
-    ))
+    cli::cli_abort(
+      "The {strata_vars[1]} and/or {strata_vars[2]} were not found in the data. They can be either uppper or lower case."
+    )
   }
 
   if (nrow(strata) == 1) {
-    warning("It is recommended to have more than one strata, consider revising strata.")
+    cli::cli_alert_warning(
+      "It is recommended to have more than one strata, consider revising strata."
+    )
   }
 
   if (is.null(data[, "cpue_kg_km2"])) {
-    stop("There must be a column called cpue_kg_km2 in the data")
+    cli::cli_abort("There must be a column called cpue_kg_km2 in the data.")
   }
   data[, "cpue_mt_km2"] <- data[, "cpue_kg_km2"] / 1000
 
@@ -90,8 +91,10 @@ get_design_based <- function(
     ind <- rep(TRUE, nrow(data))
     for (s in 1:length(strata_vars)) {
       ind <- ind &
-        data[, strata_vars[s]] >= strata[n, paste(strata_vars[s], ".1", sep = "")] &
-        data[, strata_vars[s]] < strata[n, paste(strata_vars[s], ".2", sep = "")]
+        data[, strata_vars[s]] >=
+          strata[n, paste(strata_vars[s], ".1", sep = "")] &
+        data[, strata_vars[s]] <
+          strata[n, paste(strata_vars[s], ".2", sep = "")]
     }
     stratum[ind] <- as.character(strata[n, 1])
   }

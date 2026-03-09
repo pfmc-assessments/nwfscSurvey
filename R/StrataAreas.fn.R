@@ -42,7 +42,11 @@
 #' @export
 StrataAreas.fn <- function(
   strat.df,
-  df = get(utils::data("SA3_v2021.1", overwrite = TRUE, package = "nwfscSurvey"))
+  df = get(utils::data(
+    "SA3_v2021.1",
+    overwrite = TRUE,
+    package = "nwfscSurvey"
+  ))
 ) {
   S <- strat.df
   S$area <- NA
@@ -52,30 +56,26 @@ StrataAreas.fn <- function(
     maxLat <- max(c(S$Latitude_dd.1[i], S$Latitude_dd.2[i])) == df$MAX_LAT_DD
     minLat <- min(c(S$Latitude_dd.1[i], S$Latitude_dd.2[i])) == df$MIN_LAT_DD
     if (sum(maxLat) == 0 | sum(minLat) == 0) {
-      stop(
-        "A latitude in your strata is not available.\n",
-        "  Either use an available latitude or supply your own area.\n",
-        "  Your latitude: ",
-        S$Latitude_dd.1[i],
-        " ",
-        S$Latitude_dd.2[i],
-        "\n  Available latitudes:",
-        paste(sort(unique(c(df$MAX_LAT_DD, df$MIN_LAT_DD))), collapse = " ")
+      warn <- paste(
+        sort(unique(c(df$MAX_LAT_DD, df$MIN_LAT_DD))),
+        collapse = " "
+      )
+      cli::cli_abort(
+        "A latitude in your strata is not available. Either use an available latitude or supply your own area. Your latitude:
+        {S$Latitude_dd.1[i]}-{S$Latitude_dd.2[i]}. Available latitudes: {warn}"
       )
     }
     # check that depths are from the available set
     maxDep <- max(c(S$Depth_m.1[i], S$Depth_m.2[i])) == df$MAX_DEPTH_M
     minDep <- min(c(S$Depth_m.1[i], S$Depth_m.2[i])) == df$MIN_DEPTH_M
     if (sum(maxDep) == 0 | sum(minDep) == 0) {
-      stop(
-        "A depth in your strata is not available.\n",
-        "  Either use an available depth or supply your own area.\n",
-        "  Your depths: ",
-        S$Depth_m.1[i],
-        " ",
-        S$Depth_m.2[i],
-        "\n  Available depths: ",
-        paste(sort(unique(c(df$MAX_DEPTH_M, df$MIN_DEPTH_M))), collapse = " ")
+      warn <- paste(
+        sort(unique(c(df$MAX_DEPTH_M, df$MIN_DEPTH_M))),
+        collapse = " "
+      )
+      cli::cli_abort(
+        "A depth in your strata is not available. Either use an available depth or supply your own area. Your depths:
+        {S$Depth_m.1[i]}-{S$Depth_m.2[i]}. Available depths: {warn}"
       )
     }
     # now index all rows that meet criteria for subsetting to determine area

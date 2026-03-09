@@ -54,17 +54,21 @@ plot_index <- function(
     if ("biomass" %in% names(data)) {
       data_1 <- data$biomass
     } else {
-      warning("Biomass not present in the data list. Annual biomass will not be plotted.")
+      warning(
+        "Biomass not present in the data list. Annual biomass will not be plotted."
+      )
       plot <- plot[plot != 1]
     }
     if ("biomass_by_strata" %in% names(data)) {
       data_2 <- data$biomass_by_strata
     } else {
-      warning("Biomass by strata not present in the data list. Biomass by strata will not be plotted.")
+      cli::cli_alert_warning(
+        "Biomass by strata not present in the data list. Biomass by strata will not be plotted."
+      )
       plot <- plot[plot != 2]
     }
   } else {
-    stop("Data should be a list created by [get_design_based()].")
+    cli::cli_abort("Data should be a list created by [get_design_based()].")
   }
 
   igroup <- 1
@@ -89,8 +93,12 @@ plot_index <- function(
 
     if (!is.null(dir)) {
       ggplot2::ggsave(
-        filename = plot_names[1], plot = gg,
-        height = height, width = width, units = "in", dpi = dpi
+        filename = plot_names[1],
+        plot = gg,
+        height = height,
+        width = width,
+        units = "in",
+        dpi = dpi
       )
     } else {
       print(gg)
@@ -114,13 +122,19 @@ plot_index <- function(
       ggplot2::ylab("Design Based Index by Strata (mt)") +
       ggplot2::expand_limits(y = 0) +
       ggplot2::facet_wrap(
-        facets = "stratum", scales = "free", ncol = 2
+        facets = "stratum",
+        scales = "free",
+        ncol = 2
       )
 
     if (!is.null(dir)) {
       ggplot2::ggsave(
-        filename = plot_names[2], plot = g2,
-        height = height, width = width, units = "in", dpi = dpi
+        filename = plot_names[2],
+        plot = g2,
+        height = height,
+        width = width,
+        units = "in",
+        dpi = dpi
       )
     } else {
       print(g2)

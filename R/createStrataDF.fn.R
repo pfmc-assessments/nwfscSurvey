@@ -31,7 +31,7 @@
 #' @param lats.south vector of the southern latitude splits for each strata
 #' @param lats.north vector of the northern latitude splits for each strata
 #'
-#' @return Returns the data frame formatted for use by \code{\link{Biomass.fn}}
+#' @return Returns the data frame formatted for use by \code{\link{get_design_based}}
 #' and additional prediction functions in other downstream packages.
 #' The data frame will have six columns,
 #' (1) name, (2) area, (3) Depth_m.1, (4) Depth_m.2,
@@ -41,7 +41,7 @@
 #' @export
 #' @seealso
 #' See \code{\link{StrataAreas.fn}} for how areas are calculated.
-#' See \code{\link{Biomass.fn}} for how the areas are used to create design-based biomass estimates.
+#' See \code{\link{get_design_based}} for how the areas are used to create design-based biomass estimates.
 #'
 CreateStrataDF.fn <- function(
   names = NA,
@@ -51,9 +51,11 @@ CreateStrataDF.fn <- function(
   lats.north
 ) {
   SA3_v2021.1 <- NULL
-  utils::data("SA3_v2021.1",
+  utils::data(
+    "SA3_v2021.1",
     envir = environment(),
-    overwrite = TRUE, package = "nwfscSurvey"
+    overwrite = TRUE,
+    package = "nwfscSurvey"
   )
 
   out <- data.frame(
@@ -73,10 +75,9 @@ CreateStrataDF.fn <- function(
     if (is.na(names)) {
       names <- rep(NA, NROW(out))
     } else {
-      stop(
-        "The length of names needs to be the same as other input arguments, i.e., ",
-        NROW(out), ",\ninstead the single value of ", names, " that you supplied.",
-        "\nA single value will only be repeated if it is 'NA', which leads to LETTERS for names."
+      nrows <- NROW(out)
+      cli::cli_abort(
+        "The length of names needs to be the same as other input arguments, i.e. {nrows} instead the single value of {names} that you supplied. A single value will only be repeated if it is 'NA', which leads to LETTERS for names."
       )
     }
   }

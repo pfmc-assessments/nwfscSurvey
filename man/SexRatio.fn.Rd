@@ -16,7 +16,7 @@ SexRatio.fn(
 \arguments{
 \item{x}{A data frame or a nested list depending on \code{sexRatioStage}
 which will dictate where this function is called inside code that
-expands the data such as \code{\link[=SurveyLFs.fn]{SurveyLFs.fn()}} or \code{\link[=SurveyAFs.fn]{SurveyAFs.fn()}}.}
+expands the data such as \code{\link[=get_expanded_comps]{get_expanded_comps()}}.}
 
 \item{sexRatioStage}{An integer specifying the stage of the expansion in
 which the sex ratio should be applied. There is no default value and only

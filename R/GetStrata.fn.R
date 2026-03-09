@@ -40,10 +40,15 @@ GetStrata.fn <- function(
     # order both sides of "_" descending
     orderhere <- as.data.frame(do.call("rbind", strsplit(data[, "name"], "_")))
     colnames(orderhere) <- c("a", "b")
-    out <- data[do.call(order, c(lapply(
-      orderhere[c("a", "b")],
-      function(x) -xtfrm(x)
-    ))), ]
+    out <- data[
+      do.call(
+        order,
+        c(lapply(
+          orderhere[c("a", "b")],
+          function(x) -xtfrm(x)
+        ))
+      ),
+    ]
     return(out)
   }
   # internal values
@@ -56,17 +61,26 @@ GetStrata.fn <- function(
 
   area <- tolower(area)
   if (length(area) > 1) {
-    stop("The argument area must be a single character value.", call. = FALSE)
+    cli::cli_abort(
+      "The argument area must be a single character value.",
+      call. = FALSE
+    )
   }
 
   #### (1)
   defaults <- c(
     # coastwide strata
-    "coast", "deep", "medium",
+    "coast",
+    "deep",
+    "medium",
     # states
-    "wa", "or", "ca",
+    "wa",
+    "or",
+    "ca",
     # areas
-    "north", "south", "north_south",
+    "north",
+    "south",
+    "north_south",
     # spp specific
     "sablefish"
   )
@@ -100,7 +114,9 @@ GetStrata.fn <- function(
 
   # standard species-based strata
   sablefish <- CreateStrataDF.fn(
-    names = c(outer(c("shallow", "deep"), c("coast", "north", "south"),
+    names = c(outer(
+      c("shallow", "deep"),
+      c("coast", "north", "south"),
       paste,
       sep = "_"
     )),
@@ -111,7 +127,9 @@ GetStrata.fn <- function(
   )
 
   north_south <- CreateStrataDF.fn(
-    names = c(outer(c("shallow", "deep"), c("coast", "north", "south"),
+    names = c(outer(
+      c("shallow", "deep"),
+      c("coast", "north", "south"),
       paste,
       sep = "_"
     )),
@@ -154,9 +172,8 @@ GetStrata.fn <- function(
   # get and return the needed strata
   areasp <- unlist(strsplit(area, "_"))
   if (!any(areasp %in% defaults)) {
-    stop("Unrecognized area provided, please use '_' to separate these defaults",
-      "\n", knitr::combine_words(defaults, and = " or "),
-      call. = FALSE
+    cli::cli_abort(
+      "Unrecognized area provided, please use '_' to separate these defaults"
     )
   }
   thisenv <- current_env()
