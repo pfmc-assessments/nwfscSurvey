@@ -15,9 +15,7 @@ check_survey <- function(survey) {
   if (sum(!survey %in% survey_options[, 1]) > 0) {
     options <- paste(survey_options[, 1], collapse = "\n")
     cli::cli_abort(
-      glue::glue(
-        "The survey argument does not match one of the available options: {options}"
-      )
+      "The survey argument does not match one of the available options: {options}"
     )
   }
 
@@ -25,18 +23,14 @@ check_survey <- function(survey) {
     if (!survey %in% survey_options[, 1]) {
       options <- survey_options[, 1]
       cli::cli_abort(
-        glue::glue(
-          "The survey name does not match one of the available options: {options}"
-        )
+        "The survey name does not match one of the available options: {options}"
       )
     }
   } else {
     if (length(which(survey %in% survey_options[, 1])) != length(survey)) {
       options <- survey_options[, 1]
       cli::cli_abort(
-        glue::glue(
-          "One or more of the survey fields does not match one of the available options: {options}"
-        )
+        "One or more of the survey fields does not match one of the available options: {options}"
       )
     }
   }

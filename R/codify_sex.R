@@ -68,9 +68,8 @@ codify_sex <- function(x) {
   unknowns <- table(x[is.na(out)], useNA = "ifany")
   errormessage <- glue::glue("'{names(unknowns)}' (n = {unknowns})")
   if (length(unknowns) > 0) {
-    message(
-      "The following unmatched values were found n times in `codify_sex()`:\n",
-      glue::glue_collapse(errormessage, "\n")
+    cli::cli_inform(
+      "The following unmatched values were found n times in codify_sex() {errormessage}"
     )
   }
 

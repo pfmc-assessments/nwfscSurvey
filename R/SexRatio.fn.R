@@ -10,7 +10,7 @@
 #'
 #' @param x A data frame or a nested list depending on `sexRatioStage`
 #'   which will dictate where this function is called inside code that
-#'   expands the data such as [SurveyLFs.fn()] or [SurveyAFs.fn()].
+#'   expands the data such as [get_expanded_comps()].
 #' @param sexRatioStage An integer specifying the stage of the expansion in
 #'   which the sex ratio should be applied. There is no default value and only
 #'   values of `1L`` or `2L` are appropriate.
@@ -91,9 +91,11 @@ SexRatio.fn <- function(
     # incorporate unsexed fish using sex ratios
     if (length(sexRatioUnsexed) == 1 & !is.na(sexRatioUnsexed)) {
       if (verbose) {
-        cli::cli_alert_info("Sex ratio for unsexed fish being applied to the expanded numbers within a tow (stage 1) when possible.
+        cli::cli_alert_info(
+          "Sex ratio for unsexed fish being applied to the expanded numbers within a tow (stage 1) when possible.
             If no data within a tow for bin then the sex ratio for the bin across all years applied to unsexed fish.
-            If no data for that bin across all years then the sex ratio for nearby bins was applied to unsexed fish.")
+            If no data for that bin across all years then the sex ratio for nearby bins was applied to unsexed fish."
+        )
       }
 
       x$sexRatio <- x$expF / (x$expF + x$expM)
@@ -148,7 +150,10 @@ SexRatio.fn <- function(
       }
 
       for (i in noRatio) {
-        nearLens <- bins[c(which(bins == x$allLs[i]) - 1, which(bins == x$allLs[i]) + 1)]
+        nearLens <- bins[c(
+          which(bins == x$allLs[i]) - 1,
+          which(bins == x$allLs[i]) + 1
+        )]
         inds <- x$allLs %in% nearLens
         tmpF <- sum(x$expF[inds])
         tmpM <- sum(x$expM[inds])
@@ -263,7 +268,10 @@ SexRatio.fn <- function(
           nearLens <- which(out$LENGTH == unq.len[find - 1])
         }
         if (out$LENGTH[i] != unq.len[length(unq.len)]) {
-          nearLens <- c(which(out$LENGTH == unq.len[find - 1]), which(out$LENGTH == unq.len[find + 1]))
+          nearLens <- c(
+            which(out$LENGTH == unq.len[find - 1]),
+            which(out$LENGTH == unq.len[find + 1])
+          )
         }
         tmpF <- sum(out$TotalLjhF[nearLens])
         tmpM <- sum(out$TotalLjhM[nearLens])
@@ -281,7 +289,12 @@ SexRatio.fn <- function(
     # out$TotalLjhAll <- out$TotalLjhAll
     out$TotalLjhF <- out$TotalLjhF + out$TotalLjhU * out$sexRatio
     out$TotalLjhM <- out$TotalLjhM + out$TotalLjhU * (1 - out$sexRatio)
-    out$TotalLjhU <- round(out$TotalLjhU - out$TotalLjhU * out$sexRatio - out$TotalLjhU * (1 - out$sexRatio), 0)
+    out$TotalLjhU <- round(
+      out$TotalLjhU -
+        out$TotalLjhU * out$sexRatio -
+        out$TotalLjhU * (1 - out$sexRatio),
+      0
+    )
 
     # sum over strata within year
     list.yr <- split(out, as.character(out$Year))

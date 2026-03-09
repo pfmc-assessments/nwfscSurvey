@@ -14,7 +14,7 @@
 stopifnotcolumn <- function(data, string) {
   if (is.na(match(string, colnames(data)))) {
     cli::cli_abort(
-      glue::glue("{string} was not found in your data frame.")
+      "{string} was not found in your data frame."
     )
   }
   return(invisible(TRUE))
