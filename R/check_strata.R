@@ -8,7 +8,7 @@
 #' based index using the [get_design_based()]. In earlier
 #' versions of the code, there needed to be more than one
 #' positive observations within each strata to calculate
-#' a design based index using [Biomass.fn()]. The new
+#' a design based index. The new
 #' [get_design_based()] function is more robust and will
 #' return zeros in each strata-year combination with no
 #' observations. However, it can be useful to review how
