@@ -4,6 +4,7 @@
 
 [![R-CMD-check](https://github.com/pfmc-assessments/nwfscSurvey/workflows/R-CMD-check/badge.svg)](https://github.com/pfmc-assessments/nwfscSurvey/actions)
 [![DOI](https://zenodo.org/badge/26344817.svg)](https://zenodo.org/badge/latestdoi/26344817)
+[![R-CMD-check](https://github.com/pfmc-assessments/nwfscSurvey/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/pfmc-assessments/nwfscSurvey/actions/workflows/R-CMD-check.yaml)
 <!-- badges: end -->
 
 ## Installation
