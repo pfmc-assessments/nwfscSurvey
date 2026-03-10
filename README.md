@@ -1,9 +1,11 @@
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
 <!-- badges: start -->
+[![release date](https://img.shields.io/github/last-commit/pfmc-assessments/nwfscSurvey)](https://github.com/pfmc-assessments/nwfscSurvey/commits/main)
 [![R-CMD-check](https://github.com/pfmc-assessments/nwfscSurvey/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/pfmc-assessments/nwfscSurvey/actions/workflows/R-CMD-check.yaml)
+[![codecov](https://codecov.io/gh/pfmc-assessments/nwfscSurvey/branch/main/graph/badge.svg)](https://app.codecov.io/gh/pfmc-assessments/nwfscSurvey)
+[![DOI](https://zenodo.org/badge/26344817.svg)](https://doi.org/10.5281/zenodo.15235956)
 <!-- badges: end -->
-[![DOI](https://zenodo.org/badge/26344817.svg)](https://zenodo.org/badge/latestdoi/26344817)
 
 ## Installation
 
