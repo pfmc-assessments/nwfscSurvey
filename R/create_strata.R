@@ -1,0 +1,88 @@
+#' Create strata data frame using \code{\link{get_strata_areas}}
+#'
+#' @details
+#' Create a data frame of strata formatted for use by models that need
+#' estimates of the area for each strata to expand estimates of abundance.
+#' Strata limits are provided by the user in terms of
+#' and east and west ranges using depth (shallow and deep, respectively) and
+#' north and south ranges using latitudes.
+#'
+#' @param names A vector of character values providing a name for each strata;
+#' if left at the default value of \code{NA}, then names will be created
+#' using capital letters starting with \code{A} for each \code{NA} value.
+#' @param depths_shallow  vector of the shallow depths splits for each strata
+#' @param depths_deep  vector of the deep depths splits for each strata
+#' @param lats_south vector of the southern latitude splits for each strata
+#' @param lats_north vector of the northern latitude splits for each strata
+#'
+#' @return Returns the data frame formatted for use by \code{\link{get_design_based}}
+#' and additional prediction functions in other downstream packages.
+#' The data frame will have six columns,
+#' (1) name, (2) area, (3) Depth_m.1, (4) Depth_m.2,
+#' (5) Latitude_dd.1, and (6) Latitude_dd.2.
+#'
+#' @author Chantel Wetzel and Kelli Johnson
+#' @examples
+#' strata <- create_strata(
+#'   names          = c("deep_s", "shallow_s", "deep_m", "shallow_m", "shallow_n"),
+#'   depths_shallow = c(183, 55, 183, 55, 55),
+#'   depths_deep    = c(549, 183, 549, 183, 183),
+#'   lats_south     = c(32, 32, 40, 40, 44),
+#'   lats_north     = c(40, 40, 49, 44, 49)
+#' )
+#' # Which returns a data frame that looks like the following:
+#' #      name      area Depth_m.1 Depth_m.2 Latitude_dd.1 Latitude_dd.2
+#' #    deep_s 16468.110       183       549            32            40
+#' # shallow_s 16109.711        55       183            32            40
+#' #   deep_mn 12478.575       183       549            40            49
+#' # shallow_m  7042.491        55       183            40            44
+#' # shallow_n 16390.383        55       183            44            49
+#' @export
+#' @seealso
+#' See \code{\link{get_strata_areas}} for how areas are calculated.
+#' See \code{\link{get_design_based}} for how the areas are used to create design-based biomass estimates.
+#'
+create_strata <- function(
+  names = NA,
+  depths_shallow,
+  depths_deep,
+  lats_south,
+  lats_north
+) {
+  SA3_v2021.1 <- NULL
+  utils::data(
+    "SA3_v2021.1",
+    envir = environment(),
+    overwrite = TRUE,
+    package = "nwfscSurvey"
+  )
+
+  out <- data.frame(
+    name = NA,
+    area = NA,
+    Depth_m.1 = depths_shallow,
+    Depth_m.2 = depths_deep,
+    Latitude_dd.1 = lats_south,
+    Latitude_dd.2 = lats_north
+  )
+
+  # Check that users supplied either
+  # (1) one NA (default) and repeat it the appropriate # of times
+  # (2) correct # of names
+  stopifnot(length(names) == 1 | length(names) == NROW(out))
+  if (length(names) == 1) {
+    if (is.na(names)) {
+      names <- rep(NA, NROW(out))
+    } else {
+      nrows <- NROW(out)
+      cli::cli_abort(
+        "The length of names needs to be the same as other input arguments, i.e. {nrows} instead the single value of {names} that you supplied. A single value will only be repeated if it is 'NA', which leads to LETTERS for names."
+      )
+    }
+  }
+  nanames <- which(is.na(names))
+  names[nanames] <- LETTERS[seq_along(nanames)]
+  out[["name"]] <- names
+
+  out <- get_strata_areas(strata_df = out, df = SA3_v2021.1)
+}
