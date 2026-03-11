@@ -9,7 +9,7 @@
 #'
 check_survey <- function(survey) {
   # Survey options available in the data warehouse
-  survey_options <- createMatrix()
+  survey_options <- get_survey_names_long()
 
   # Check the input survey name against available options
   if (sum(!survey %in% survey_options[, 1]) > 0) {
