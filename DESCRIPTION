@@ -33,7 +33,8 @@ Imports:
     rlang,
     stringr,
     tibble,
-    tidyr
+    tidyr,
+    viridis
 Suggests:
     kableExtra,
     knitr,
