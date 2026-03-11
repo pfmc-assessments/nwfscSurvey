@@ -60,9 +60,15 @@ get_input_n <- function(
     "thorny",
     "other"
   ),
-  printfolder = "forSS3",
+  printfolder = lifecycle::deprecated(),
   verbose = TRUE
 ) {
+  if (lifecycle::is_present(printfolder)) {
+    lifecycle::deprecate_warn(
+      when = "1.8.0",
+      what = "nwfscSurvey::get_input_n(printfolder =)"
+    )
+  }
   plotdir <- file.path(dir, printfolder)
   check_dir(dir = plotdir, verbose = verbose)
 

@@ -30,7 +30,7 @@ PlotSexRatioStrata.fn <- function(
   if (lifecycle::is_present(dopng)) {
     lifecycle::deprecate_warn(
       when = "2.1",
-      what = "nwfscSurvey::PlotMap.fn(dopng =)"
+      what = "nwfscSurvey::PlotSexRatioStrata.fn(dopng =)"
     )
   }
   lifecycle::deprecate_warn(

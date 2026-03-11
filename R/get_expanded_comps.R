@@ -121,7 +121,7 @@ get_expanded_comps <- function(
   age_low = lifecycle::deprecated(),
   age_high = lifecycle::deprecated(),
   age_error = lifecycle::deprecated(),
-  printfolder = "forSS3",
+  printfolder = lifecycle::deprecated(),
   verbose = TRUE
 ) {
   # arguments deprecated to be consistent with output column names
@@ -146,6 +146,12 @@ get_expanded_comps <- function(
       when = "2.2",
       what = "nwfscSurvey::get_expanded_comps(age_error =)",
       with = "nwfscSurvey::get_expanded_comps(ageerr =)"
+    )
+  }
+  if (lifecycle::is_present(printfolder)) {
+    lifecycle::deprecate_warn(
+      when = "1.8.0",
+      what = "nwfscSurvey::get_expanded_comps(printfolder =)"
     )
   }
 

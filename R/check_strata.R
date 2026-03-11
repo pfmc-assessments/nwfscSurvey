@@ -35,10 +35,16 @@ check_strata <- function(
   data,
   strata,
   dir = NULL,
-  printfolder = "forSS3",
+  printfolder = lifecycle::deprecated(),
   verbose = TRUE
 ) {
-  plotdir <- file.path(dir, printfolder)
+  if (lifecycle::is_present(printfolder)) {
+    lifecycle::deprecate_warn(
+      when = "1.8.0",
+      what = "nwfscSurvey::check_strata(printfolder =)"
+    )
+  }
+  plotdir <- file.path(dir)
   check_dir(dir = plotdir, verbose = verbose)
 
   # Grab the strata  rownames to index later

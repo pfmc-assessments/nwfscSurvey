@@ -15,7 +15,7 @@ get_raw_caal(
   fleet = "Enter Fleet",
   partition = 0,
   ageerr = "Enter Numeric",
-  printfolder = "forSS3",
+  printfolder = lifecycle::deprecated(),
   verbose = TRUE
 )
 }
@@ -64,7 +64,8 @@ fish only. Default of 0.}
 \item{ageerr}{Number of ageing error vector to apply to the age data based on
 Stock Synthesis. Default "Enter Numeric".}
 
-\item{printfolder}{A string that will be appended to \code{dir}, creating a folder
+\item{printfolder}{eprecated with {nwfscSurvey} 1.8.0 to give users greater
+control on where to save files. A string that will be appended to \code{dir}, creating a folder
 where the output will be saved. If specified as \code{""},
 the output will just be saved directly in \code{dir}. The default is \code{"forSS3"}.}
 

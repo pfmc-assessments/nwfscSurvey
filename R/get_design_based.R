@@ -57,9 +57,15 @@ get_design_based <- function(
   dir = NULL,
   month = NA,
   fleet = NA,
-  printfolder = "forSS3",
+  printfolder = lifecycle::deprecated(),
   verbose = TRUE
 ) {
+  if (lifecycle::is_present(printfolder)) {
+    lifecycle::deprecate_warn(
+      when = "1.8.0",
+      what = "nwfscSurvey::get_design_based(printfolder =)"
+    )
+  }
   plotdir <- file.path(dir, printfolder)
   check_dir(dir = plotdir, verbose = verbose)
 

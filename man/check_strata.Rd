@@ -4,7 +4,13 @@
 \alias{check_strata}
 \title{Calculate the number of observations by year and strata}
 \usage{
-check_strata(data, strata, dir = NULL, printfolder = "forSS3", verbose = TRUE)
+check_strata(
+  data,
+  strata,
+  dir = NULL,
+  printfolder = lifecycle::deprecated(),
+  verbose = TRUE
+)
 }
 \arguments{
 \item{data}{Data frame of catch data that has been created by the \code{\link[=pull_catch]{pull_catch()}}.}
@@ -15,7 +21,8 @@ calculated areas for each strata returned from \code{\link[=createStrataDF.fn]{c
 \item{dir}{Directory where output will be saved. The directory where the file should be saved.
 If dir = NULL no output will be saved.}
 
-\item{printfolder}{A string that will be appended to \code{dir}, creating a folder
+\item{printfolder}{eprecated with {nwfscSurvey} 1.8.0 to give users greater
+control on where to save files. A string that will be appended to \code{dir}, creating a folder
 where the output will be saved. If specified as \code{""},
 the output will just be saved directly in \code{dir}. The default is \code{"forSS3"}.}
 
