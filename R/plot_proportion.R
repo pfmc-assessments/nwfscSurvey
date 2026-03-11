@@ -194,7 +194,7 @@ plot_proportion <- function(
 wh_plot_proportion <- function(
   data_catch,
   data_bio,
-  dir = file.path(getwd(), "plots"),
+  dir = file.path(getwd()),
   bar_width = c("n", "equal")
 ) {
   # Input checks

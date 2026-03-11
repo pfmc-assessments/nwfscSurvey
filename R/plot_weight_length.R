@@ -46,7 +46,7 @@ plot_weight_length <- function(
   width = 7,
   dpi = 300
 ) {
-  plotdir <- file.path(dir, "plots")
+  plotdir <- file.path(dir)
   check_dir(plotdir)
   plot_names <- file.path(
     plotdir,
@@ -99,7 +99,12 @@ plot_weight_length <- function(
       ) |>
       dplyr::group_by(sex) |>
       dplyr::summarize(
-        label = paste0("a = ", format(unique(a), digits = 3, scientific = TRUE), "; ", paste0("b = ", round(unique(b), 2))),
+        label = paste0(
+          "a = ",
+          format(unique(a), digits = 3, scientific = TRUE),
+          "; ",
+          paste0("b = ", round(unique(b), 2))
+        ),
         x = quantile(plot_length, 0.30),
         y = unique(max_y) * unique(multiplier)
       )
@@ -121,7 +126,11 @@ plot_weight_length <- function(
   }
 
   p1 <- ggplot2::ggplot(data_to_plot) +
-    ggplot2::geom_point(aes(x = length_column, y = weight_column, color = sex), alpha = point_alpha, size = 1) +
+    ggplot2::geom_point(
+      aes(x = length_column, y = weight_column, color = sex),
+      alpha = point_alpha,
+      size = 1
+    ) +
     ggplot2::ylab("Weight (kg)") +
     ggplot2::xlab("Length (cm)") +
     ggplot2::xlim(xlims[1], xlims[2]) +
@@ -129,32 +138,65 @@ plot_weight_length <- function(
     ggplot2::theme_bw() +
     ggplot2::scale_color_manual(name = "Sex", values = colors) +
     ggplot2::scale_fill_manual(name = "Sex", values = colors) +
-    ggplot2::guides(color = guide_legend(override.aes = list(alpha = 1, size = 3)))
+    ggplot2::guides(
+      color = guide_legend(override.aes = list(alpha = 1, size = 3))
+    )
 
   if (!is.null(estimates)) {
     if (two_sex) {
       p1 <- p1 +
-        ggplot2::geom_text(data = label, show.legend = FALSE, ggplot2::aes(x = x, y = y, label = label, color = sex)) +
+        ggplot2::geom_text(
+          data = label,
+          show.legend = FALSE,
+          ggplot2::aes(x = x, y = y, label = label, color = sex)
+        ) +
         ggplot2::geom_line(
           data = lines_to_plot,
-          ggplot2::aes(x = plot_length, y = plot_weight, linetype = sex, color = sex), linewidth = 1.0
+          ggplot2::aes(
+            x = plot_length,
+            y = plot_weight,
+            linetype = sex,
+            color = sex
+          ),
+          linewidth = 1.0
         ) +
-        ggplot2::guides(color = guide_legend(override.aes = list(alpha = 1, size = 3, linetype = 0)), shape = "none")
+        ggplot2::guides(
+          color = guide_legend(
+            override.aes = list(alpha = 1, size = 3, linetype = 0)
+          ),
+          shape = "none"
+        )
     } else {
       p1 <- p1 +
-        ggplot2::geom_text(data = label, show.legend = FALSE, ggplot2::aes(x = x, y = y, label = label), color = line_colors) +
+        ggplot2::geom_text(
+          data = label,
+          show.legend = FALSE,
+          ggplot2::aes(x = x, y = y, label = label),
+          color = line_colors
+        ) +
         ggplot2::geom_line(
           data = lines_to_plot,
-          ggplot2::aes(x = plot_length, y = plot_weight, linetype = sex), color = line_colors, linewidth = 1.0
+          ggplot2::aes(x = plot_length, y = plot_weight, linetype = sex),
+          color = line_colors,
+          linewidth = 1.0
         ) +
-        ggplot2::guides(color = guide_legend(override.aes = list(alpha = 1, size = 3, linetype = 0)), shape = "none")
+        ggplot2::guides(
+          color = guide_legend(
+            override.aes = list(alpha = 1, size = 3, linetype = 0)
+          ),
+          shape = "none"
+        )
     }
   }
 
   if (!is.null(dir)) {
     ggplot2::ggsave(
-      filename = plot_names, plot = p1,
-      height = height, width = width, units = "in", dpi = dpi
+      filename = plot_names,
+      plot = p1,
+      height = height,
+      width = width,
+      units = "in",
+      dpi = dpi
     )
   } else {
     print(p1)

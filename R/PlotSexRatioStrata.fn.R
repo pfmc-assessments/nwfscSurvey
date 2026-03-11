@@ -33,7 +33,12 @@ PlotSexRatioStrata.fn <- function(
       what = "nwfscSurvey::PlotMap.fn(dopng =)"
     )
   }
-  plotdir <- file.path(dir, "plots")
+  lifecycle::deprecate_warn(
+    when = "1.8.0",
+    what = "PlotSexRatioStrata.fn",
+    details = "This function is no longer needed and will be removed in a future versions. Please use plot_sex_ratio_strata() instead."
+  )
+  plotdir <- file.path(dir)
   check_dir(dir = plotdir)
   main_ <- ifelse(is.null(main), "", paste0(main, "_"))
   if (!is.null(dir)) {

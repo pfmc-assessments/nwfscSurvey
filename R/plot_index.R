@@ -36,7 +36,7 @@ plot_index <- function(
   width = 7,
   dpi = 300
 ) {
-  plotdir <- file.path(dir, "plots")
+  plotdir <- file.path(dir)
   check_dir(plotdir)
   plot_names <- file.path(
     plotdir,

@@ -51,9 +51,9 @@ PlotMap.fn <- function(
   lifecycle::deprecate_warn(
     when = "1.8.0",
     what = "PlotMap.fn()",
-    details = "This function is no longer needed and will be removed in a future version. Please use plot_cpue_map() instead."
+    details = "This function is no longer needed and will be removed in a future versions. Please use plot_cpue_map() instead."
   )
-  plotdir <- file.path(dir, "plots")
+  plotdir <- file.path(dir)
   check_dir(dir = plotdir)
 
   plot_names <- file.path(

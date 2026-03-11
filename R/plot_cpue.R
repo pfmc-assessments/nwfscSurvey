@@ -113,7 +113,6 @@ plot_cpue <- function(
     if (!is.null(dir)) {
       l$filename <- file.path(
         dir,
-        "plots",
         paste0("cpue_by_lat_depth.", l$device)
       )
       do.call(ggsave, l)
@@ -149,7 +148,6 @@ plot_cpue <- function(
     if (!is.null(dir)) {
       l$filename <- file.path(
         dir,
-        "plots",
         paste0("cpue_by_year_lat.", l$device)
       )
       l2 <- l
@@ -188,7 +186,6 @@ plot_cpue <- function(
     if (!is.null(dir)) {
       l$filename <- file.path(
         dir,
-        "plots",
         paste0("cpue_by_year_depth.", l$device)
       )
       l2 <- l
