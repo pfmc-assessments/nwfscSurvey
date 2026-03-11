@@ -67,12 +67,12 @@ catch <- pull_catch(
   survey = "NWFSC.Combo"
 )
 
-strata <- CreateStrataDF.fn(
+strata <- create_strata(
   names = c("shallow_wa", "shallow_or", "shallow_ca", "deep_wa", "deep_or", "deep_ca"),
-  depths.shallow = c(55, 55, 55, 183, 183, 183),
-  depths.deep = c(183, 183, 183, 549, 549, 549),
-  lats.south = c(46.0, 42.0, 32.0, 46.0, 42.0, 32.0),
-  lats.north = c(49.0, 46.0, 42.0, 49.0, 46.0, 42.0)
+  depths_shallow = c(55, 55, 55, 183, 183, 183),
+  depths_deep = c(183, 183, 183, 549, 549, 549),
+  lats_south = c(46.0, 42.0, 32.0, 46.0, 42.0, 32.0),
+  lats_north = c(49.0, 46.0, 42.0, 49.0, 46.0, 42.0)
 )
 
 biommass <- get_design_based(
