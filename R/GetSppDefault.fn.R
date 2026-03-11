@@ -12,6 +12,11 @@
 #' @examples
 #' GetSppDefault.fn()
 GetSppDefault.fn <- function() {
+  lifecycle::deprecate_warn(
+    when = "1.8.0",
+    what = "GetSppDefault.fn()",
+    details = "This function is no longer needed and will be removed in a future version. Please use get_spp_list() instead."
+  )
   sp.list <- c(
     "arrowtooth_flounder",
     "aurora_rockfish",

@@ -19,19 +19,11 @@
 #' @export
 
 ReadInAges.fn <- function(dat, subset_years = NULL, verbose = TRUE) {
-  if (length(subset_years) > 0) {
-    dat <- dat[dat$Year %in% subset_years, ]
-  }
-
-  totRows <- nrow(dat)
-  dat <- dat[!is.na(dat$Age), ]
-  dat$Weight <- as.numeric(as.character(dat$Weight_kg))
-  dat$year <- as.numeric(as.character(dat$Year))
-
-  if (verbose) {
-    cat("There are ", nrow(dat), " of length kept out of", totRows, "after removing fish without ages\n")
-  }
-
+  lifecycle::deprecate_stop(
+    when = "1.8.0",
+    what = "ReadInAges.fn()",
+    details = "This function is no longer used.  Please use pull_bio() to get properly formatted and filtered data."
+  )
 
   return(dat)
 }

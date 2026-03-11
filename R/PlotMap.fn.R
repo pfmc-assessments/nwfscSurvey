@@ -20,7 +20,7 @@
 #' @author Chantel R. Wetzel
 #' @export
 #' @seealso
-#' * `PullCatch.fn()`
+#' * `pull_catch()`
 #' * `plot_westcoast()`
 #' @return Figures are saved to the disk according to which plots are asked
 #' for in `plot`. Each of the specified files are saved to a directory called
@@ -48,7 +48,11 @@ PlotMap.fn <- function(
       what = "nwfscSurvey::PlotMap.fn(dopng =)"
     )
   }
-
+  lifecycle::deprecate_warn(
+    when = "1.8.0",
+    what = "PlotMap.fn()",
+    details = "This function is no longer needed and will be removed in a future version. Please use plot_cpue_map() instead."
+  )
   plotdir <- file.path(dir, "plots")
   check_dir(dir = plotdir)
 
@@ -77,8 +81,10 @@ PlotMap.fn <- function(
       geom_point(
         data = neg,
         aes(
-          x = Longitude_dd, y = Latitude_dd,
-          color = cpue_kg_km2, size = cpue_kg_km2
+          x = Longitude_dd,
+          y = Latitude_dd,
+          color = cpue_kg_km2,
+          size = cpue_kg_km2
         ),
         pch = 1,
         col = "lightgrey",
@@ -87,8 +93,10 @@ PlotMap.fn <- function(
       geom_point(
         data = pos.cat,
         aes(
-          x = Longitude_dd, y = Latitude_dd,
-          color = cpue_kg_km2, size = cpue_kg_km2
+          x = Longitude_dd,
+          y = Latitude_dd,
+          color = cpue_kg_km2,
+          size = cpue_kg_km2
         ),
         pch = 16,
         alpha = 0.7
@@ -131,8 +139,10 @@ PlotMap.fn <- function(
       geom_point(
         data = neg,
         aes(
-          x = Longitude_dd, y = Latitude_dd,
-          color = cpue_kg_km2, size = cpue_kg_km2
+          x = Longitude_dd,
+          y = Latitude_dd,
+          color = cpue_kg_km2,
+          size = cpue_kg_km2
         ),
         pch = 1,
         col = "lightgrey",
@@ -141,8 +151,10 @@ PlotMap.fn <- function(
       geom_point(
         data = pos.cat,
         aes(
-          x = Longitude_dd, y = Latitude_dd,
-          color = cpue_kg_km2, size = cpue_kg_km2
+          x = Longitude_dd,
+          y = Latitude_dd,
+          color = cpue_kg_km2,
+          size = cpue_kg_km2
         ),
         pch = 16,
         alpha = 0.7

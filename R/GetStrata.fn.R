@@ -31,6 +31,11 @@
 GetStrata.fn <- function(
   area = "coast"
 ) {
+  lifecycle::deprecate_warn(
+    when = "1.8.0",
+    what = "GetStrata.fn()",
+    details = "This function is no longer needed and will be removed in a future version. Please use get_strata_default() instead."
+  )
   # development instructions ... find the numbers for each comment
   # (1) Add your area here in lower-case text
   # (2) make a new strata and name the object the same lower-case text

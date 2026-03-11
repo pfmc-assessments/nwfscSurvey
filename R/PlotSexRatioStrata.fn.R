@@ -20,9 +20,9 @@
 PlotSexRatioStrata.fn <- function(
   dir = NULL,
   dat,
+  strat.df,
   type = "length",
   strat.vars = c("Depth_m", "Latitude_dd"),
-  strat.df = NULL,
   circleSize = 0.05,
   dopng = lifecycle::deprecated(),
   ...
@@ -53,9 +53,24 @@ PlotSexRatioStrata.fn <- function(
   row.names(strat.df) <- strat.df[, 1] # put in rownames to make easier to index later
   numStrata <- nrow(strat.df)
   ind <- !duplicated(dat$Trawl_id)
-  datB <- dat[ind, c("Trawl_id", "Weight", strat.vars, "Longitude_dd", "Year", "Length_cm", "Age", "Sex")]
+  datB <- dat[
+    ind,
+    c(
+      "Trawl_id",
+      "Weight",
+      strat.vars,
+      "Longitude_dd",
+      "Year",
+      "Length_cm",
+      "Age",
+      "Sex"
+    )
+  ]
 
-  datB <- data.frame(datB, stratum = StrataFactors.fn(datB, strat.vars, strat.df)) # create a new column for the stratum factor
+  datB <- data.frame(
+    datB,
+    stratum = StrataFactors.fn(datB, strat.vars, strat.df)
+  ) # create a new column for the stratum factor
 
   par(mfrow = c(3, 3))
 
@@ -74,7 +89,22 @@ PlotSexRatioStrata.fn <- function(
 
     ratioF <- temp[, "F"] / (temp[, "M"] + temp[, "F"])
     nobs <- temp[, "F"] + temp[, "M"]
-    plot(ratioF, type = "l", col = "red", xlab = axis.name, ylab = "Fraction female", main = row.names(strat.df)[i], ylim = c(0, 1)) # ,...)
-    symbols(ratioF, circles = nobs, inches = circleSize, fg = "red", bg = rgb(1, 0, 0, alpha = 0.5), add = T)
+    plot(
+      ratioF,
+      type = "l",
+      col = "red",
+      xlab = axis.name,
+      ylab = "Fraction female",
+      main = row.names(strat.df)[i],
+      ylim = c(0, 1)
+    ) # ,...)
+    symbols(
+      ratioF,
+      circles = nobs,
+      inches = circleSize,
+      fg = "red",
+      bg = rgb(1, 0, 0, alpha = 0.5),
+      add = T
+    )
   }
 }

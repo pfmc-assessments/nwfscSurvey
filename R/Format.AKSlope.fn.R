@@ -45,6 +45,12 @@ Format.AKSlope.fn <- function(
   start.year = 1997,
   verbose = TRUE
 ) {
+  lifecycle::deprecate_stop(
+    when = "1.8.0",
+    what = "Format.AKSlope.fn()",
+    details = "This function is no longer used.  Please use the pull_catch() and
+    pull_bio() to get properly formatted and filtered data."
+  )
   check_dir(dir = dir, verbose)
 
   # Filter for only the AKFSC Slope survey
@@ -71,12 +77,26 @@ Format.AKSlope.fn <- function(
   datTows$total_catch_numbers <- datTows$Subsample_count
   datTows$total_catch_wt_kg <- datTows$Subsample_wt_kg
   datTows$Area_swept_ha <- (datTows$DISTANCE_FISHED * datTows$NET_WIDTH) / 10 # area swept for each tow in hectare
-  datTows$cpue_kg_km2 <- datTows$Subsample_wt_kg / (0.01 * datTows$Area_swept_ha)
+  datTows$cpue_kg_km2 <- datTows$Subsample_wt_kg /
+    (0.01 * datTows$Area_swept_ha)
 
   datTows <- datTows[, c(
-    "Project", "Trawl_id", "Year", "Pass", "Vessel", "Tow", "Date", "Depth_m", "Longitude_dd", "Latitude_dd",
-    "Area_swept_ha", "cpue_kg_km2", "Subsample_count", "Subsample_wt_kg",
-    "total_catch_numbers", "total_catch_wt_kg"
+    "Project",
+    "Trawl_id",
+    "Year",
+    "Pass",
+    "Vessel",
+    "Tow",
+    "Date",
+    "Depth_m",
+    "Longitude_dd",
+    "Latitude_dd",
+    "Area_swept_ha",
+    "cpue_kg_km2",
+    "Subsample_count",
+    "Subsample_wt_kg",
+    "total_catch_numbers",
+    "total_catch_wt_kg"
   )]
 
   # Deal with the biological length data file
@@ -107,10 +127,21 @@ Format.AKSlope.fn <- function(
   tmp1$Pass <- tmp1$Tow <- NA
   tmp1$Date <- paste0(tmp1$Year, "-", tmp1$MONTH, "-", tmp1$DAY)
 
-
   tmp1 <- tmp1[, c(
-    "Project", "Trawl_id", "Year", "Pass", "Vessel", "Tow", "Date", "Depth_m", "Longitude_dd", "Latitude_dd",
-    "Weight", "Length_cm", "Sex", "Age"
+    "Project",
+    "Trawl_id",
+    "Year",
+    "Pass",
+    "Vessel",
+    "Tow",
+    "Date",
+    "Depth_m",
+    "Longitude_dd",
+    "Latitude_dd",
+    "Weight",
+    "Length_cm",
+    "Sex",
+    "Age"
   )]
 
   # Deal with the biological age data file
@@ -146,8 +177,20 @@ Format.AKSlope.fn <- function(
     tmp2$Date <- paste0(tmp2$Year, "-", tmp2$MONTH, "-", tmp2$DAY)
 
     tmp2 <- tmp2[, c(
-      "Project", "Trawl_id", "Year", "Pass", "Vessel", "Tow", "Date", "Depth_m", "Longitude_dd", "Latitude_dd",
-      "Weight", "Length_cm", "Sex", "Age"
+      "Project",
+      "Trawl_id",
+      "Year",
+      "Pass",
+      "Vessel",
+      "Tow",
+      "Date",
+      "Depth_m",
+      "Longitude_dd",
+      "Latitude_dd",
+      "Weight",
+      "Length_cm",
+      "Sex",
+      "Age"
     )]
   }
 

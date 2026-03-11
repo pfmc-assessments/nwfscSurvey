@@ -52,7 +52,7 @@ PlotMap.fn(dat = catch_nwfsc_combo, plot = 2)
 }
 \seealso{
 \itemize{
-\item \code{PullCatch.fn()}
+\item \code{pull_catch()}
 \item \code{plot_westcoast()}
 }
 }
