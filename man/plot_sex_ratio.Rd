@@ -5,8 +5,8 @@
 \title{Function to plot sex ratio data in a barplot form}
 \usage{
 plot_sex_ratio(
-  dir,
   data,
+  dir = NULL,
   comp_column_name = "length_cm",
   main = NULL,
   bin_width = ifelse(comp_column_name == "length_cm", 2, 1),
@@ -15,11 +15,11 @@ plot_sex_ratio(
 )
 }
 \arguments{
-\item{dir}{Directory where output will be saved. The directory where the file should be saved.
-If dir = NULL no output will be saved.}
-
 \item{data}{Data object with biological data from \code{\link[=pull_bio]{pull_bio()}} with a column
 named \code{Sex} or \code{sex} is present.}
+
+\item{dir}{Directory where output will be saved. The directory where the file should be saved.
+If dir = NULL no output will be saved.}
 
 \item{comp_column_name}{The name of the column to create composition data for that
 must be a string. This column can be is used to determine whether to format the
