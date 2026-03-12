@@ -35,7 +35,7 @@
 #' @importFrom stats optim qnorm sd var
 #' @importFrom utils write.csv
 #' @export
-#' @family biommass function
+#' @family biomass function
 #'
 #' @examples
 #' \dontrun{
