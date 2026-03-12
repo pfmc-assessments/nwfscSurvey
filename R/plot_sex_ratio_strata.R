@@ -27,9 +27,9 @@
 #' \code{\link{create_strata}}
 #'
 plot_sex_ratio_strata <- function(
-  dir = NULL,
   data,
   strata_df,
+  dir = NULL,
   comp_column_name = "length_cm",
   strata_vars = c("depth_m", "latitude_dd"),
   bin_width = ifelse(comp_column_name == "length_cm", 2, 1),
@@ -50,7 +50,7 @@ plot_sex_ratio_strata <- function(
       stratum = NA
     )
   comp_column_name <- tolower(comp_column_name)
-  if (!comp_column_name %in% colnames(data)) {
+  if (!comp_column_name %in% colnames(data_mod)) {
     cli::cli_abort(
       "The following column is missing in the data: {comp_column_name}."
     )

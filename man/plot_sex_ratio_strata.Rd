@@ -5,9 +5,9 @@
 \title{Function to plot sex ratio by strata}
 \usage{
 plot_sex_ratio_strata(
-  dir = NULL,
   data,
   strata_df,
+  dir = NULL,
   comp_column_name = "length_cm",
   strata_vars = c("depth_m", "latitude_dd"),
   bin_width = ifelse(comp_column_name == "length_cm", 2, 1),
@@ -17,13 +17,13 @@ plot_sex_ratio_strata(
 )
 }
 \arguments{
-\item{dir}{Directory where output will be saved. The directory where the file should be saved.
-If dir = NULL no output will be saved.}
-
 \item{data}{Data object with biological data from \code{\link[=pull_bio]{pull_bio()}} with a column
 named \code{Sex} or \code{sex} is present.}
 
 \item{strata_df}{Strata dataframe created by \code{\link[=create_strata]{create_strata()}}}
+
+\item{dir}{Directory where output will be saved. The directory where the file should be saved.
+If dir = NULL no output will be saved.}
 
 \item{comp_column_name}{The name of the column to create composition data for that
 must be a string. This column can be is used to determine whether to format the

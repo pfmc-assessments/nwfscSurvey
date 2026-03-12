@@ -21,8 +21,8 @@
 #' @export
 #'
 plot_sex_ratio <- function(
-  dir,
   data,
+  dir = NULL,
   comp_column_name = "length_cm",
   main = NULL,
   bin_width = ifelse(comp_column_name == "length_cm", 2, 1),
@@ -39,7 +39,7 @@ plot_sex_ratio <- function(
   data_tolower <- data |>
     dplyr::rename_all(tolower)
   comp_column_name <- tolower(comp_column_name)
-  if (!comp_column_name %in% colnames(data)) {
+  if (!comp_column_name %in% colnames(data_tolower)) {
     cli::cli_abort(
       "The following column is missing in the data: {comp_column_name}."
     )
