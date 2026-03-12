@@ -86,4 +86,4 @@ biomass <- get_design_based(
 \author{
 Allan Hicks and Chantel Wetzel
 }
-\concept{biommass function}
+\concept{biomass function}
