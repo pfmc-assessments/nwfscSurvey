@@ -32,7 +32,6 @@ Imports:
     reshape2,
     rlang,
     stringr,
-    tibble,
     tidyr,
     viridis
 Suggests:
