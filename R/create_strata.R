@@ -22,22 +22,16 @@
 #' (5) Latitude_dd.1, and (6) Latitude_dd.2.
 #'
 #' @author Chantel Wetzel and Kelli Johnson
-#' @examples
 #' @family strata function
+#' @examples
 #' strata <- create_strata(
-#'   names          = c("deep_s", "shallow_s", "deep_m", "shallow_m", "shallow_n"),
+#'   names          = c("deep_south", "shallow_south", "deep_central_north", "shallow_central", "shallow_north"),
 #'   depths_shallow = c(183, 55, 183, 55, 55),
 #'   depths_deep    = c(549, 183, 549, 183, 183),
 #'   lats_south     = c(32, 32, 40, 40, 44),
 #'   lats_north     = c(40, 40, 49, 44, 49)
 #' )
-#' # Which returns a data frame that looks like the following:
-#' #      name      area Depth_m.1 Depth_m.2 Latitude_dd.1 Latitude_dd.2
-#' #    deep_s 16468.110       183       549            32            40
-#' # shallow_s 16109.711        55       183            32            40
-#' #   deep_mn 12478.575       183       549            40            49
-#' # shallow_m  7042.491        55       183            40            44
-#' # shallow_n 16390.383        55       183            44            49
+#'
 #' @export
 #' @seealso
 #' See \code{\link{get_strata_areas}} for how areas are calculated.
