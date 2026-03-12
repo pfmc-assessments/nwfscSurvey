@@ -19,10 +19,10 @@ get_design_based(
 \item{data}{Data frame of catch data that has been created by the \code{\link[=pull_catch]{pull_catch()}}.}
 
 \item{strata}{A data frame that defines the strata and provides the
-calculated areas for each strata returned from \code{\link[=createStrataDF.fn]{createStrataDF.fn()}}.}
+calculated areas for each strata returned from \code{\link[=create_strata]{create_strata()}}.}
 
 \item{CI}{A numerical value that specifies the confidence interval to return.
-Values should be between 0.01 to 0.99.}
+Values should be between 0.01 to 0.99. The default is 0.95.}
 
 \item{dir}{Directory where output will be saved. The directory where the file should be saved.
 If dir = NULL no output will be saved.}
@@ -76,7 +76,7 @@ strata <- create_strata(
   lats_north = c(49.0, 46.0, 42.0, 49.0, 46.0, 42.0)
 )
 
-biommass <- get_design_based(
+biomass <- get_design_based(
   data = catch,
   strata = strata
 )
@@ -86,3 +86,4 @@ biommass <- get_design_based(
 \author{
 Allan Hicks and Chantel Wetzel
 }
+\concept{biommass function}

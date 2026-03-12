@@ -42,11 +42,6 @@ testthat::expect_message(
 )
 
 }
-\seealso{
-See
-\code{\link{PullSpp.fn}} for information on common and scientific names;
-and \code{\link{GetStrata.fn}} for the different stratifications.
-}
 \author{
 Kelli Faye Johnson
 }

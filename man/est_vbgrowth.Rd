@@ -39,7 +39,13 @@ parameterization
 }
 \seealso{
 \code{\link[=fit_vbgrowth]{fit_vbgrowth()}}
+
+Other biology function: 
+\code{\link{est_growth}()},
+\code{\link{estimate_weight_length}()},
+\code{\link{fit_vbgrowth}()}
 }
 \author{
 Chantel Wetzel
 }
+\concept{biology function}

@@ -59,6 +59,24 @@ with many figures. The default is 300.}
 \description{
 Plots the weight-at-length data and estimates
 }
+\seealso{
+\code{\link{est_weight_length}}
+
+Other plot_: 
+\code{\link{PlotSexRatio.fn}()},
+\code{\link{PlotVarLengthAtAge.fn}()},
+\code{\link{plot_comps}()},
+\code{\link{plot_cpue}()},
+\code{\link{plot_cpue_map}()},
+\code{\link{plot_index}()},
+\code{\link{plot_length_age}()},
+\code{\link{plot_proportion}()},
+\code{\link{plot_sex_ratio}()},
+\code{\link{plot_sex_ratio_strata}()},
+\code{\link{plot_varlenage}()},
+\code{\link{plot_westcoast}()}
+}
 \author{
 Chantel Wetzel
 }
+\concept{plot_}

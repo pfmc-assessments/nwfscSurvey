@@ -10,15 +10,22 @@
 #' See: Gunderson, D.R. and Sample, T.M. 1980. Distribution and abundance of rockfish off Washington,
 #' Oregon, and California during 1977. Marine Fisheries Review: March - April.
 #'
+#' @inheritParams pull_catch
+#' @inheritParams check_strata
 #' @param data Data frame of catch data that has been created by the [pull_catch()].
-#' @template strata
 #' @param CI A numerical value that specifies the confidence interval to return.
-#'   Values should be between 0.01 to 0.99.
-#' @template dir
-#' @template printfolder
-#' @template month
-#' @template fleet
-#' @template verbose
+#'   Values should be between 0.01 to 0.99. The default is 0.95.
+#' @param printfolder Deprecated with {nwfscSurvey} 2.8 to give users greater
+#'   control on where to save files. A string that will be appended to `dir`, creating a folder
+#'   where the output will be saved. If specified as `""`,
+#'   the output will just be saved directly in `dir`. The default is `"forSS3"`.
+#' @param month A single integer value between 1-12. A user input fleet
+#' number to assign to the month column based on the expected
+#' format for Stock Synthesis. See the Stock Synthesis manual for
+#' more information. Default "Enter Month".
+#' @param fleet A single integer value. A user input fleet
+#' number to assign to the fleet column based on the expected
+#' format for Stock Synthesis. Default "Enter Fleet".
 #'
 #' @returns List of biomass estimates by year and biomass estimates by year and
 #' strata. The biomass estimates are in metric tons.
@@ -28,6 +35,7 @@
 #' @importFrom stats optim qnorm sd var
 #' @importFrom utils write.csv
 #' @export
+#' @family biommass function
 #'
 #' @examples
 #' \dontrun{
@@ -44,7 +52,7 @@
 #'   lats_north = c(49.0, 46.0, 42.0, 49.0, 46.0, 42.0)
 #' )
 #'
-#' biommass <- get_design_based(
+#' biomass <- get_design_based(
 #'   data = catch,
 #'   strata = strata
 #' )

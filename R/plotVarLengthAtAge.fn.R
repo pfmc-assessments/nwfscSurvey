@@ -3,7 +3,7 @@
 #' Plots the SD and CV of age at observed and predicted length
 #'
 #'
-#' @template dir
+#' @inheritParams pull_catch
 #' @param dat A data frame of length-composition data returned from
 #'   [pull_bio()].
 #' @param main Name that will be used to name the saved png
@@ -21,6 +21,7 @@
 #' @param ...      Additional arguments for the plots
 #'
 #' @author Allan Hicks and Chantel Wetzel
+#' @family plot_
 #' @export
 
 PlotVarLengthAtAge.fn <- function(

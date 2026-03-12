@@ -5,8 +5,8 @@
 #' and the design based biomass estimates by year and strata with no confidence
 #' intervals.
 #'
+#' @inheritParams pull_catch
 #' @param data List of design based biomass estimates created by the [get_design_based()]
-#' @template dir
 #' @param add_save_name Option to add text to a saved figure name. This option
 #'   can be useful if creating plots across multiple species and saving them
 #'   into a single folder. The default is `NULL`. Note that the biomass estimate,
@@ -24,6 +24,7 @@
 #'    with many figures. The default is 300.
 #'
 #' @author Chantel Wetzel
+#' @family plot_
 #' @import ggplot2
 #' @export
 #'

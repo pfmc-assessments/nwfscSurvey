@@ -23,6 +23,7 @@
 #'
 #' @author Chantel Wetzel and Kelli Johnson
 #' @examples
+#' @family strata function
 #' strata <- create_strata(
 #'   names          = c("deep_s", "shallow_s", "deep_m", "shallow_m", "shallow_n"),
 #'   depths_shallow = c(183, 55, 183, 55, 55),

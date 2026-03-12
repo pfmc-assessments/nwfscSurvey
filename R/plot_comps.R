@@ -1,6 +1,6 @@
 #' Plot frequency data as bubble plots
 #'
-#' @template dir
+#' @inheritParams pull_catch
 #' @param data Data file object created by [get_expanded_comps()] or [get_raw_comps()].
 #' @param add_save_name Option to add text to a saved figure name. This option
 #'   can be useful if creating plots across multiple species and saving them
@@ -25,6 +25,7 @@
 #'
 #' @author Chantel Wetzel
 #' @export
+#' @family plot_
 #'
 #' @examples
 #' \dontrun{

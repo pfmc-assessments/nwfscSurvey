@@ -1,11 +1,14 @@
 #' Function to plot sex ratio by strata
 #'
-#' @template dir
+#' @inheritParams pull_catch
 #' @param dat A data frame of length-composition data returned from
 #'   [pull_bio()].
 #' @param type Specify where to calculate the sex ration by length or age.
-#' @template strat.vars
-#' @template strat.df
+#' @param strat.vars Variables in both data frame that are used to
+#'   define the strata. Default is bottom depth (m) and latitudes (decimal
+#'   degrees), i.e., `c("Depth_m", "Latitude_dd")`.
+#' @param strat.df #' @param strat.df A data frame that defines the strata and provides the
+#'   calculated areas for each strata returned from [createStrataDF.fn()].
 #' @param circleSize circle size
 #' @param dopng Deprecated with {nwfscSurvey} 2.1 because providing a non-NULL
 #'   value to `dir` can serve the same purpose as `dopng = TRUE` without the
@@ -15,8 +18,10 @@
 #'
 #' @author Allan Hicks and Chantel Wetzel
 #' @export
-#' @seealso \code{\link{StrataFactors.fn}}
-
+#' @seealso
+#' \code{\link{StrataFactors.fn}}
+#' \code{\link{createStrataDF.fn}}
+#'
 PlotSexRatioStrata.fn <- function(
   dir = NULL,
   dat,

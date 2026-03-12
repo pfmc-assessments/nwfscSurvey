@@ -9,3 +9,4 @@ draw_land()
 \description{
 Mapping function to draw land areas
 }
+\concept{plot function}

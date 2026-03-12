@@ -8,7 +8,7 @@
 #' package functions. Output from this function will be list
 #' of containing catch, length, and age data.
 #'
-#' @template dir
+#' @inheritParams pull_catch
 #' @param datTows A data frame of catch data for the
 #' AKFSC slope survey with incorrect column names.
 #' prior to the creation of the data warehouse.
@@ -18,10 +18,10 @@
 #' @param start.year The first year of data to retain within
 #' the data frame. The first year typically used from this
 #' survey is 1997.
-#' @template verbose
 #'
 #' @author Chantel Wetzel
 #' @export
+#' @family helper function
 #'
 #' @examples
 #' \dontrun{

@@ -1,3 +1,9 @@
+#' Function to label axis for map plotting
+#'
+#' @author Kelli Johnson
+#' @export
+#'
+#'
 label_axes <- function() {
   list(
     ggplot2::xlab("Longitude"),

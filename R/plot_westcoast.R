@@ -4,11 +4,12 @@
 #' figure or as a base to plot data points on.
 #'
 #' @author Kelli F. Johnson
+#' @family plot_
 #' @export
 #' @return A {ggplot2} object.
 #'
 #' @seealso
-#' * `PlotMap.fn()` uses this function as the base map.
+#' * `plot_cpue_map()` uses this function as the base map.
 #'
 #' @examples
 #' \dontrun{

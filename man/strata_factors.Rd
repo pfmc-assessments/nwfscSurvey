@@ -7,9 +7,9 @@
 strata_factors(data, strata_df, strata_vars = c("Latitude_dd", "Depth_m"))
 }
 \arguments{
-\item{data}{Catch dataframe created by \link{pull_catch()}}
+\item{data}{Catch dataframe created by [pull_catch()]}
 
-\item{strata_df}{Strata dataframe created by \link{create_strata()}}
+\item{strata_df}{Strata dataframe created by \code{\link[=create_strata]{create_strata()}}}
 
 \item{strata_vars}{Column names in \code{data} to define the stratas by.  The
 default columns are \code{Depth_m} or \code{depth_m} and \code{Latitude_dd} or \code{latitude_dd}.}

@@ -7,9 +7,8 @@
 #' Necessary column names
 #'    SPECIES_CODE
 #'    LENGTH
-#'
+#' @inheritParams pull_catch
 #' @param dat data file name
-#' @template verbose
 #'
 #' @author Allan Hicks and Chantel Wetzel
 #' @export

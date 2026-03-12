@@ -1,6 +1,6 @@
 #' Function to plot sex ratio
 #'
-#' @template dir
+#' @inheritParams pull_catch
 #' @param dat Data object with biological data from [pull_bio()] with a column
 #' named `Sex` present.
 #' @param data.type Specify where to calculate the sex ration by length or age.
@@ -13,6 +13,7 @@
 #' @param ...      Additional arguments for the plots
 #'
 #' @author Allan Hicks and Chantel Wetzel
+#' @family plot_
 #' @importFrom graphics abline
 #' @export
 

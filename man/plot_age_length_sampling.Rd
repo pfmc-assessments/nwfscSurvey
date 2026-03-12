@@ -24,3 +24,6 @@ by year and sex}
 \description{
 Plot the representativeness of age sampling based on lengths
 }
+\author{
+Chantel Wetzel
+}

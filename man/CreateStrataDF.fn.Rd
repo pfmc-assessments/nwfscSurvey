@@ -66,3 +66,4 @@ See \code{\link{get_design_based}} for how the areas are used to create design-b
 \author{
 Chantel Wetzel and Kelli Johnson
 }
+\concept{strata function}

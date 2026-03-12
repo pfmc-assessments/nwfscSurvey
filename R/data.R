@@ -61,9 +61,9 @@
 #'
 #' @format A data frame with four columns,
 #' latin, common, common_name, and scientific_name.
-#' @seealso \code{\link{PullSpp.fn}} for more information.
+#' @seealso \code{\link{pull_spp}} for more information.
 #'
-"PullSpp"
+"pull_spp"
 
 #' Available grid cell locations for the survey
 #'

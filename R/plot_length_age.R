@@ -1,8 +1,7 @@
 #' Plots the length-at-age data and estimates
 #'
-#'
+#' @inheritParams pull_catch
 #' @param data Data frame created by [pull_bio()]
-#' @template dir
 #' @param estimates Data frame of age-at-length estimates from [est_vbgrowth()].
 #'   If passed to the function the estimated parameter values will be added to
 #'   the plot. The default is `NULL` and will not add parameters to the plot.
@@ -27,6 +26,7 @@
 #'    with many figures. The default is 300.
 #'
 #' @author Chantel Wetzel
+#' @family plot_
 #' @import ggplot2
 #' @export
 #'

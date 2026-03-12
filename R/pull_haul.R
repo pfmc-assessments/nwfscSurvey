@@ -2,17 +2,11 @@
 #'
 #' This function can be used to pull haul data and associated covariates.
 #'
-#' @template years
-#' @template survey
-#' @template dir
-#' @template verbose
-#' @param standard_filtering A logical TRUE/FALSE that specifies whether data
-#'   should be filtered using the standard filtering which removes tows with bad
-#'   performance (water haul or poor net performance), or stations that have been
-#'   removed from the survey sampling protocol.
+#' @inheritParams pull_catch
 #'
 #' @return Returns a data frame of haul characteristics for satisfactory hauls
 #' @author Eric Ward and Chantel Wetzel
+#' @family data pulling functions
 #' @export
 #'
 #' @import cli

@@ -44,8 +44,6 @@ specifies which survey to pull the data for. The input options are:
 \item NWFSC.Hook.Line (not yet working),
 \item NWFSC.Video,
 \item Triennial.Canada
-}
-
 The National Marine Fishery Service Alaska Fisheries Science Center (AFSC)
 Triennial survey was conducted between 1977 - 2004 occurring every 3rd year.
 The initial year, 1977, survey is not traditionally used in calculating
@@ -63,7 +61,8 @@ annually starting in 2003 (excluding 2020) and samples both the U.S. west coast
 shelf and slope between 55 - 1,280 meters.
 Data can only be pulled from one survey at a time, though we are working on
 allowing for a vector of survey names.
-Currently, \code{NWFSC.Shelf.Rockfish} and \code{NWFSC.Hook.Line} are not supported.}
+Currently, \code{NWFSC.Shelf.Rockfish} and \code{NWFSC.Hook.Line} are not supported.
+}}
 
 \item{years}{An integer vector of length two with the
 range of years to pull data for (e.g., c(2003, 2024)).
@@ -93,6 +92,14 @@ In order to pull all species leave common_name or sci_name as NULL
 }
 
 }
+\seealso{
+Other data pulling functions: 
+\code{\link{pull_biological_samples}()},
+\code{\link{pull_catch}()},
+\code{\link{pull_gemm}()},
+\code{\link{pull_haul}()}
+}
 \author{
 Chantel Wetzel
 }
+\concept{data pulling functions}

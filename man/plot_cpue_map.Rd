@@ -4,13 +4,13 @@
 \alias{plot_cpue_map}
 \title{Plot two figures showing catch-per-unit-effort data}
 \usage{
-plot_cpue_map(dir = NULL, data, main = NULL, plot = 1:2)
+plot_cpue_map(data, dir = NULL, main = NULL, plot = 1:2)
 }
 \arguments{
+\item{data}{A dataframe of catch data created by \code{\link[=pull_catch]{pull_catch()}}.}
+
 \item{dir}{Directory where output will be saved. The directory where the file should be saved.
 If dir = NULL no output will be saved.}
-
-\item{data}{A dataframe of catch data created by \code{\link[=pull_catch]{pull_catch()}}.}
 
 \item{main}{A string that will be prepended to the name of the saved png
 (i.e., "NWFSC" results in a file called "NWFSC_CPUE_Map.png").}
@@ -45,7 +45,22 @@ plot_cpue_map (data = catch_nwfsc_combo, plot = 2)
 \item \code{pull_catch()}
 \item \code{plot_westcoast()}
 }
+
+Other plot_: 
+\code{\link{PlotSexRatio.fn}()},
+\code{\link{PlotVarLengthAtAge.fn}()},
+\code{\link{plot_comps}()},
+\code{\link{plot_cpue}()},
+\code{\link{plot_index}()},
+\code{\link{plot_length_age}()},
+\code{\link{plot_proportion}()},
+\code{\link{plot_sex_ratio}()},
+\code{\link{plot_sex_ratio_strata}()},
+\code{\link{plot_varlenage}()},
+\code{\link{plot_weight_length}()},
+\code{\link{plot_westcoast}()}
 }
 \author{
 Chantel R. Wetzel
 }
+\concept{plot_}

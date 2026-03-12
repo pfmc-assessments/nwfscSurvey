@@ -5,7 +5,8 @@
 #' @param ylim y limits for plot, defaults to (0, 0.049)
 #' @param dir Defaults to NULL (plot made, but not saved to file). Can alternatively be a string filename
 #' by year and sex
-
+#'
+#' @author Chantel Wetzel
 #' @importFrom graphics grid hist
 #' @export
 

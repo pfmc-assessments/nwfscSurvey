@@ -26,6 +26,7 @@
 #'
 #' @importFrom stats dnorm
 #' @export
+#' @family biology function
 #' @return
 #' Depending on ReturnType, either the negative log likelihood is returned based
 #' on fits to the data or a matrix of three columns with low, predicted, and high

@@ -40,6 +40,22 @@ inches. The defaults are 7 by 7 inches.}
 \description{
 Function to plot sex ratio data in a barplot form
 }
+\seealso{
+Other plot_: 
+\code{\link{PlotSexRatio.fn}()},
+\code{\link{PlotVarLengthAtAge.fn}()},
+\code{\link{plot_comps}()},
+\code{\link{plot_cpue}()},
+\code{\link{plot_cpue_map}()},
+\code{\link{plot_index}()},
+\code{\link{plot_length_age}()},
+\code{\link{plot_proportion}()},
+\code{\link{plot_sex_ratio_strata}()},
+\code{\link{plot_varlenage}()},
+\code{\link{plot_weight_length}()},
+\code{\link{plot_westcoast}()}
+}
 \author{
 Chantel Wetzel
 }
+\concept{plot_}

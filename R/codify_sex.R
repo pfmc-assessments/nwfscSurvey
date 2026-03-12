@@ -41,7 +41,7 @@
 #' respectively.
 #' @author Kelli F. Johnson
 #' @export
-#' @family codify functions
+#' @family helper functions
 #' @examples
 #' # All values are successfully coded
 #' codify_sex(c("U", "F", "M", 1, 2))
@@ -52,7 +52,7 @@
 #' codify_sex(c("both", rep(5, 10), "both", 1, 2, NA))
 #'
 #' # Change codified sex from letters to integers for Stock Synthesis
-#' codify_sex_SS3(c("M", "U", "K"))
+#' codify_sex_ss3(c("M", "U", "K"))
 codify_sex <- function(x) {
   out <- dplyr::case_when(
     grepl(pattern = "^\\s*[fF].*", x) ~ "F",
@@ -83,7 +83,7 @@ codify_sex <- function(x) {
 #'
 #' @export
 #' @rdname codify_sex
-codify_sex_SS3 <- function(x) {
+codify_sex_ss3 <- function(x) {
   # overwrite the input with FMU values
   x <- codify_sex(x)
 

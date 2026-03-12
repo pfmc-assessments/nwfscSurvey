@@ -3,19 +3,10 @@
 #' This function can be used to pull a single species or all observed species
 #' In order to pull all species leave common_name or sci_name as NULL
 #'
-#' @template common_name
-#' @template sci_name
-#' @template years
-#' @template survey
-#' @template dir
-#' @template convert
-#' @template verbose
-#' @param standard_filtering A logical TRUE/FALSE that specifies whether data
-#'   should be filtered using the standard filtering which removes tows with bad
-#'   performance (water haul or poor net performance), or stations that have been
-#'   removed from the survey sampling protocol.
+#' @inheritParams pull_catch
 #'
 #' @author Chantel Wetzel
+#' @family data pulling functions
 #' @export
 #'
 #' @import chron

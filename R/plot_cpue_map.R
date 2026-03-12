@@ -4,7 +4,7 @@
 #' and save them to the disk. Figures are created using {ggplot2}.
 #'
 #'
-#' @template dir
+#' @inheritParams pull_catch
 #' @param data A dataframe of catch data created by [pull_catch()].
 #' @param main A string that will be prepended to the name of the saved png
 #'   (i.e., "NWFSC" results in a file called "NWFSC_CPUE_Map.png").
@@ -15,6 +15,7 @@
 #'
 #' @author Chantel R. Wetzel
 #' @export
+#' @family plot_
 #' @seealso
 #' * `pull_catch()`
 #' * `plot_westcoast()`
@@ -31,8 +32,8 @@
 #' }
 #'
 plot_cpue_map <- function(
-  dir = NULL,
   data,
+  dir = NULL,
   main = NULL,
   plot = 1:2
 ) {

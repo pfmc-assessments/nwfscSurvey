@@ -2,7 +2,7 @@
 #' parameterization
 #'
 #'
-#' @template dir
+#' @inheritParams pull_catch
 #' @param data Data frame of biological data from [pull_bio()]
 #' @param col_length A character string specifying the column
 #'   to use in `data` for length information. These lengths are assumed to
@@ -18,13 +18,20 @@
 #'
 #' @author Chantel Wetzel
 #' @export
+#' @family biology function
 #'
 est_vbgrowth <- function(
   data,
   dir = NULL,
   col_length = "length_cm",
   col_age = "age",
-  init_params = data.frame(K = 0.13, Linf = 55, L0 = 15, CV0 = 0.10, CV1 = 0.10),
+  init_params = data.frame(
+    K = 0.13,
+    Linf = 55,
+    L0 = 15,
+    CV0 = 0.10,
+    CV1 = 0.10
+  ),
   bins = NULL
 ) {
   check_dir(dir = dir)
@@ -91,7 +98,10 @@ est_vbgrowth <- function(
 
   vbgrowth_ests <- c(xpar, out)
   if (!is.null(dir)) {
-    save(vbgrowth_ests, file = file.path(dir, "von_bert_growth_estimates.Rdata"))
+    save(
+      vbgrowth_ests,
+      file = file.path(dir, "von_bert_growth_estimates.Rdata")
+    )
   }
   return(vbgrowth_ests)
 }

@@ -4,7 +4,7 @@
 #' and save them to the disk. Figures are created using {ggplot2}.
 #'
 #'
-#' @template dir
+#' @inheritParams pull_catch
 #' @param dat An object created by [pull_catch()].
 #' @param main A string that will be prepended to the name of the saved png
 #'   (i.e., "NWFSC" results in a file called "NWFSC_CPUE_Map.png").

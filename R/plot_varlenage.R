@@ -5,7 +5,7 @@
 #' and predicted length
 #'
 #'
-#' @template dir
+#' @inheritParams pull_catch
 #' @param dat The data loaded from [pull_bio()]
 #' @param main Name that will be used to name the saved png
 #' @param bySex Logical to indicate if plot by sex
@@ -24,11 +24,12 @@
 #' @param ... Additional arguments for the plots.
 #'
 #' @author Chantel Wetzel
+#' @family plot_
 #' @export
 
 plot_varlenage <- function(
-  dir = NULL,
   dat,
+  dir = NULL,
   main = NULL,
   Par = data.frame(K = 0.13, Linf = 55, L0 = 15, CV0 = 0.10, CV1 = 0.10),
   bySex = TRUE,

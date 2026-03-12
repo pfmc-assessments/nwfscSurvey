@@ -36,9 +36,8 @@ the number of unique samples per tow. See the function call for
 allowed values, where the default is \code{"all"}.}
 
 \item{printfolder}{Deprecated with {nwfscSurvey} 2.8 to give users greater
-control on where to save files. A string that will be appended to \code{dir}, creating a folder
-where the output will be saved. If specified as \code{""},
-the output will just be saved directly in \code{dir}. The default is \code{"forSS3"}.}
+control on where to save files. A string that will be appended to \code{dir},
+creating a folder where the output will be saved.}
 
 \item{verbose}{A logical that specifies if you want to print messages and
 warnings to the console. The default is \code{TRUE}.}

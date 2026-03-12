@@ -1,8 +1,7 @@
 #' Plots the weight-at-length data and estimates
 #'
-#'
+#' @inheritParams pull_catch
 #' @param data Data frame created by [pull_bio()]
-#' @template dir
 #' @param estimates Data frame of weight-at-length estimates from [est_weight_length()].
 #'   If passed to the function the estimated parameter values will be added to
 #'   the plot. The default is `NULL` and will not add parameters to the plot.
@@ -31,8 +30,11 @@
 #'    with many figures. The default is 300.
 #'
 #' @author Chantel Wetzel
+#' @family plot_
 #' @import ggplot2
 #' @export
+#' @seealso
+#' \code{\link{est_weight_length}}
 #'
 plot_weight_length <- function(
   data,

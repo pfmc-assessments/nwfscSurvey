@@ -43,7 +43,7 @@ would create 2 cm bins where fish length between [0, 11.99) would be included in
 all fish [50- Inf) would be included in the 50 cm plus bin.}
 
 \item{strata}{A data frame that defines the strata and provides the
-calculated areas for each strata returned from \code{\link[=createStrataDF.fn]{createStrataDF.fn()}}.}
+calculated areas for each strata returned from \code{\link[=create_strata]{create_strata()}}.}
 
 \item{dir}{Directory where output will be saved. The directory where the file should be saved.
 If dir = NULL no output will be saved.}
@@ -100,9 +100,8 @@ format for Stock Synthesis. Default value of -1 which translates to the highest}
 \item{age_error}{Deprecated with {nwfscSurvey} 2.2. Use Lbin_hi instead.}
 
 \item{printfolder}{Deprecated with {nwfscSurvey} 2.8 to give users greater
-control on where to save files. A string that will be appended to \code{dir}, creating a folder
-where the output will be saved. If specified as \code{""},
-the output will just be saved directly in \code{dir}. The default is \code{"forSS3"}.}
+control on where to save files. A string that will be appended to \code{dir},
+creating a folder where the output will be saved.}
 
 \item{verbose}{A logical that specifies if you want to print messages and
 warnings to the console. The default is \code{TRUE}.}
@@ -159,3 +158,4 @@ See
 \author{
 Chantel Wetzel and Allan Hicks
 }
+\concept{composition function}

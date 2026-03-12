@@ -9,6 +9,15 @@ createMatrix()
 \description{
 Survey name matching function used when pull from the data warehouse
 }
+\seealso{
+Other helper function: 
+\code{\link{Format.AKSlope.fn}()},
+\code{\link{check_dir}()},
+\code{\link{check_survey}()},
+\code{\link{combine_tows}()},
+\code{\link{filter_pull}()}
+}
 \author{
 Chantel Wetzel based on code by John Wallace
 }
+\concept{helper function}

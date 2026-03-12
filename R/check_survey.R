@@ -1,11 +1,12 @@
 #' Check and create survey string
 #'
 #'
-#' @template survey
+#' @inheritParams pull_catch
 #'
 #'
 #' @author Chantel Wetzel
 #' @export
+#' @family helper function
 #'
 check_survey <- function(survey) {
   # Survey options available in the data warehouse

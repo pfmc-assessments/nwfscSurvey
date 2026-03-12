@@ -7,8 +7,7 @@
 combine_tows(data, dir = NULL, single_species = TRUE, verbose = TRUE)
 }
 \arguments{
-\item{data}{A data frame of catches obtained by using the \code{pull_catch}
-function.}
+\item{data}{A data frame of catches obtained by using \code{\link[=pull_catch]{pull_catch()}}.}
 
 \item{dir}{Directory where output will be saved. The directory where the file should be saved.
 If dir = NULL no output will be saved.}
@@ -31,6 +30,15 @@ for the sample data to be combined for each unique \code{trawl_id}.
 This also occurs if cryptic species pairs are all returned
 (e.g., rougheye rockfish and blackspotted rockfish)
 }
+\seealso{
+Other helper function: 
+\code{\link{Format.AKSlope.fn}()},
+\code{\link{check_dir}()},
+\code{\link{check_survey}()},
+\code{\link{createMatrix}()},
+\code{\link{filter_pull}()}
+}
 \author{
 Chantel Wetzel
 }
+\concept{helper function}

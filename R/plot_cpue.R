@@ -1,6 +1,6 @@
 #' This function plots cpue and length by latitude and depth
 #'
-#' @template dir
+#' @inheritParams pull_catch
 #' @param catch Data catch file pulled using [pull_catch()]
 #' @param plot A vector of integers to specify which plots to return. The
 #'   default is to print or save all figures, i.e., `plot = 1:3`. Integers
@@ -10,21 +10,20 @@
 #'   3. log(CPUE) by depth and year
 #' @param width,height Numeric values for the figure width and height in
 #'   inches. The defaults are 7 by 7 inches.
-#' @param ... Additional arguments to [ggsave()]
 #'
 #' @import ggplot2
 #' @import cowplot
 #'
 #' @author Chantel Wetzel
 #' @export
+#' @family plot_
 #'
 plot_cpue <- function(
   catch,
   dir = NULL,
   plot = 1:3,
   width = 7,
-  height = 7,
-  ...
+  height = 7
 ) {
   plotdir <- file.path(dir)
   check_dir(dir = plotdir)

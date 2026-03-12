@@ -36,22 +36,6 @@ Strata limits are provided by the user in terms of
 and east and west ranges using depth (shallow and deep, respectively) and
 north and south ranges using latitudes.
 }
-\examples{
-strata <- create_strata(
-  names          = c("deep_s", "shallow_s", "deep_m", "shallow_m", "shallow_n"),
-  depths_shallow = c(183, 55, 183, 55, 55),
-  depths_deep    = c(549, 183, 549, 183, 183),
-  lats_south     = c(32, 32, 40, 40, 44),
-  lats_north     = c(40, 40, 49, 44, 49)
-)
-# Which returns a data frame that looks like the following:
-#      name      area Depth_m.1 Depth_m.2 Latitude_dd.1 Latitude_dd.2
-#    deep_s 16468.110       183       549            32            40
-# shallow_s 16109.711        55       183            32            40
-#   deep_mn 12478.575       183       549            40            49
-# shallow_m  7042.491        55       183            40            44
-# shallow_n 16390.383        55       183            44            49
-}
 \seealso{
 See \code{\link{get_strata_areas}} for how areas are calculated.
 See \code{\link{get_design_based}} for how the areas are used to create design-based biomass estimates.
@@ -59,3 +43,11 @@ See \code{\link{get_design_based}} for how the areas are used to create design-b
 \author{
 Chantel Wetzel and Kelli Johnson
 }
+\concept{strata function
+strata <- create_strata(
+names          = c("deep_s", "shallow_s", "deep_m", "shallow_m", "shallow_n"),
+depths_shallow = c(183, 55, 183, 55, 55),
+depths_deep    = c(549, 183, 549, 183, 183),
+lats_south     = c(32, 32, 40, 40, 44),
+lats_north     = c(40, 40, 49, 44, 49)
+)Which returns a data frame that looks like the following:name      area Depth_m.1 Depth_m.2 Latitude_dd.1 Latitude_dd.2deep_s 16468.110       183       549            32            40shallow_s 16109.711        55       183            32            40deep_mn 12478.575       183       549            40            49shallow_m  7042.491        55       183            40            44shallow_n 16390.383        55       183            44            49}

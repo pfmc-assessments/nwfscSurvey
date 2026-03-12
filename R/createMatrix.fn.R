@@ -3,6 +3,7 @@
 #'
 #' @author Chantel Wetzel based on code by John Wallace
 #' @export
+#' @family helper function
 #'
 createMatrix <- function() {
   lifecycle::deprecate_warn(

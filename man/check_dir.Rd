@@ -30,6 +30,15 @@ check_dir(getwd(), verbose = FALSE)
 check_dir(getwd())
 
 }
+\seealso{
+Other helper function: 
+\code{\link{Format.AKSlope.fn}()},
+\code{\link{check_survey}()},
+\code{\link{combine_tows}()},
+\code{\link{createMatrix}()},
+\code{\link{filter_pull}()}
+}
 \author{
 Chantel R. Wetzel
 }
+\concept{helper function}

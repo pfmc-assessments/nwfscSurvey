@@ -58,6 +58,15 @@ filter.dat <- Format.AKSlope.fn(
 }
 
 }
+\seealso{
+Other helper function: 
+\code{\link{check_dir}()},
+\code{\link{check_survey}()},
+\code{\link{combine_tows}()},
+\code{\link{createMatrix}()},
+\code{\link{filter_pull}()}
+}
 \author{
 Chantel Wetzel
 }
+\concept{helper function}

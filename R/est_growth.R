@@ -2,7 +2,7 @@
 #' parameterization
 #'
 #'
-#' @template dir
+#' @inheritParams pull_catch
 #' @param dat Data frame of biological data from [pull_bio()]
 #' @param return_df TRUE/FALSE If set to TRUE the dat data frame is
 #' returned with added columns for the estimated Lhat_low, Lhat_pred, and Lhat_high.
@@ -22,11 +22,17 @@
 #'
 #' @author Chantel Wetzel
 #' @export
-
+#' @family biology function
+#'
 est_growth <- function(
-  dir = NULL, dat, return_df = TRUE,
+  dir = NULL,
+  dat,
+  return_df = TRUE,
   Par = data.frame(K = 0.13, Linf = 55, L0 = 15, CV0 = 0.10, CV1 = 0.10),
-  bySex = TRUE, estVB = TRUE, bins = NULL, sdFactor = 1,
+  bySex = TRUE,
+  estVB = TRUE,
+  bins = NULL,
+  sdFactor = 1,
   dopng = lifecycle::deprecated()
 ) {
   if (lifecycle::is_present(dopng)) {
@@ -54,19 +60,23 @@ est_growth <- function(
     )
     la_data <- dat[use_data, ]
 
-    sex_list <- list(which(
-      !is.na(dat$Length_cm) &
-        !is.na(dat$Age) &
-        dat$Sex %in% c("F")
-    ), which(
-      !is.na(dat$Length_cm) &
-        !is.na(dat$Age) &
-        dat$Sex %in% c("M")
-    ), which(
-      !is.na(dat$Length_cm) &
-        !is.na(dat$Age) &
-        dat$Sex %in% c("U")
-    ))
+    sex_list <- list(
+      which(
+        !is.na(dat$Length_cm) &
+          !is.na(dat$Age) &
+          dat$Sex %in% c("F")
+      ),
+      which(
+        !is.na(dat$Length_cm) &
+          !is.na(dat$Age) &
+          dat$Sex %in% c("M")
+      ),
+      which(
+        !is.na(dat$Length_cm) &
+          !is.na(dat$Age) &
+          dat$Sex %in% c("U")
+      )
+    )
 
     la_data_list <- list(
       female = la_data[la_data$Sex == "F", ],

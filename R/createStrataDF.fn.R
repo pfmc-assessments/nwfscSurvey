@@ -39,6 +39,7 @@
 #'
 #' @author Chantel Wetzel and Kelli Johnson
 #' @export
+#' @family strata function
 #' @seealso
 #' See \code{\link{StrataAreas.fn}} for how areas are calculated.
 #' See \code{\link{get_design_based}} for how the areas are used to create design-based biomass estimates.

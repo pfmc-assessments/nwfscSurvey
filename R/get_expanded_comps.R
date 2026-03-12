@@ -5,6 +5,9 @@
 #' up the user-defined strata areas. This function is designed to be used with
 #' catch pulled using [pull_catch()] and biological data pulled using [pull_bio()].
 #'
+#' @inheritParams pull_catch
+#' @inheritParams check_strata
+#' @inheritParams get_design_based
 #' @param bio_data A data frame of length-composition data returned from
 #'   [pull_bio()].
 #' @param catch_data A data frame of catch data returned from [pull_catch()].
@@ -15,8 +18,6 @@
 #'   would create 2 cm bins where fish length between [0, 11.99) would be included in the
 #'   10 cm bin, fish of length [12, 13.99) would be included in the 12 cm bin, and
 #'   all fish [50- Inf) would be included in the 50 cm plus bin.
-#' @template strata
-#' @template dir
 #' @param comp_column_name The name of the column to create composition data for that
 #'   must be a string. This column can be is used to determine whether to format the
 #'   composition data for length or age compositions by looking for either age
@@ -41,7 +42,10 @@
 #'   "Enter Month".
 #' @param fleet A fleet number to assign the composition data to based on the expected
 #'   format for Stock Synthesis. Default "Enter Fleet".
-#' @template partition
+#' @param partition Partition to assign the composition data based on the expected
+#' format for Stock Synthesis. Partition of 0 indicates that the composition data
+#' include all composition data, 1 for discarded composition data, and 2 for retained
+#' fish only. Default of 0.
 #' @param ageerr Number of ageing error vector to apply to the age data based on
 #'   Stock Synthesis. Default "Enter Numeric".
 #' @param Lbin_lo Lower age bin for all age composition data based on the expected
@@ -53,8 +57,6 @@
 #' @param age_error Deprecated with {nwfscSurvey} 2.2. Use Lbin_hi instead.
 #' @param age_low Deprecated with {nwfscSurvey} 2.2. Use Lbin_lo instead.
 #' @param age_high Deprecated with {nwfscSurvey} 2.2. Use Lbin_hi instead.
-#' @template printfolder
-#' @template verbose
 #'
 #' @seealso See
 #' \code{\link{get_input_n}} for information on input sample size calculations.
@@ -68,6 +70,7 @@
 #' `output = "tow_expansion_only"` a dataframe is returned with the composition
 #' data only expanded to the tow level (first stage expansion only).
 #' @export
+#' @family composition function
 #'
 #' @examples
 #' \dontrun{

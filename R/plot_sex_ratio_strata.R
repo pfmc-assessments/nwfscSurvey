@@ -1,6 +1,6 @@
 #' Function to plot sex ratio by strata
 #'
-#' @template dir
+#' @inheritParams pull_catch
 #' @param data Data object with biological data from [pull_bio()] with a column
 #' named `Sex` or `sex` is present.
 #' @param comp_column_name The name of the column to create composition data for that
@@ -11,7 +11,7 @@
 #'   is not case sensitive.The default is `length_cm`.
 #' @param strata_vars Column names in `data` to define the stratas by.  The
 #'   default columns are `Depth_m` or `depth_m` and `Latitude_dd` or `latitude_dd`.
-#' @param strata_df Strata dataframe created by \link{create_strata()}
+#' @param strata_df Strata dataframe created by [create_strata()]
 #' @param main Unique string that will be added to the saved png name.  This can
 #'   be useful when plotting data for various data sets separately.
 #' @param bin_width Width to bin the data by.  The default is 2 cm for lengths
@@ -20,8 +20,11 @@
 #'   inches. The defaults are 7 by 7 inches.
 #'
 #' @author Chantel Wetzel
+#' @family plot_
 #' @export
-#' @seealso \code{\link{strata_factors()}}
+#' @seealso
+#' \code{\link{strata_factors}}
+#' \code{\link{create_strata}}
 #'
 plot_sex_ratio_strata <- function(
   dir = NULL,

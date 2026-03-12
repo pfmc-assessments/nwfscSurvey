@@ -23,7 +23,7 @@ If dir = NULL no output will be saved.}
 \item{data}{Data object with biological data from \code{\link[=pull_bio]{pull_bio()}} with a column
 named \code{Sex} or \code{sex} is present.}
 
-\item{strata_df}{Strata dataframe created by \link{create_strata()}}
+\item{strata_df}{Strata dataframe created by \code{\link[=create_strata]{create_strata()}}}
 
 \item{comp_column_name}{The name of the column to create composition data for that
 must be a string. This column can be is used to determine whether to format the
@@ -48,8 +48,24 @@ inches. The defaults are 7 by 7 inches.}
 Function to plot sex ratio by strata
 }
 \seealso{
-\code{\link{strata_factors()}}
+\code{\link{strata_factors}}
+\code{\link{create_strata}}
+
+Other plot_: 
+\code{\link{PlotSexRatio.fn}()},
+\code{\link{PlotVarLengthAtAge.fn}()},
+\code{\link{plot_comps}()},
+\code{\link{plot_cpue}()},
+\code{\link{plot_cpue_map}()},
+\code{\link{plot_index}()},
+\code{\link{plot_length_age}()},
+\code{\link{plot_proportion}()},
+\code{\link{plot_sex_ratio}()},
+\code{\link{plot_varlenage}()},
+\code{\link{plot_weight_length}()},
+\code{\link{plot_westcoast}()}
 }
 \author{
 Chantel Wetzel
 }
+\concept{plot_}

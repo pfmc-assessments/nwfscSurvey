@@ -1,36 +1,38 @@
 #' Calculate the number of observations by year and strata
 #'
+#' @description
+#' Provides a summary of total and positive tows across different strata and years
+#' to help evaluate the suitability of the selected stratification.
+#'
 #' @details
 #' Calculates and returns the total number of tows and
 #' positive tows conducted in each strata by year. The
 #' selected strata are used to expand the length and
-#' marginal age compositions and to calculate a design
-#' based index using the [get_design_based()]. In earlier
-#' versions of the code, there needed to be more than one
-#' positive observations within each strata to calculate
-#' a design based index. The new
-#' [get_design_based()] function is more robust and will
-#' return zeros in each strata-year combination with no
-#' observations. However, it can be useful to review how
-#' many tows and positive tows are present by year and
-#' strata in your data to ensure that the selected strata
-#' for expanding the data is reasonable (e.g., avoiding
+#' marginal age compositions and to calculate a design-based
+#' index using [get_design_based()].
+#'
+#' In earlier versions of the code, more than one positive observation
+#' within each strata was required to calculate a design-based index.
+#' The current [get_design_based()] function is more robust and returns
+#' zeros in strata-year combinations with no observations. However,
+#' reviewing the frequency of tows and positive tows is recommended
+#' to ensure that the selected strata are reasonable (e.g., avoiding
 #' limited observations in large areas).
 #'
+#' @inheritParams pull_catch
+#' @param data Data frame of catch data created by [pull_catch()].
+#' @param strata A data frame that defines the strata and provides the
+#'   calculated areas for each strata returned from [create_strata()].
+#' @param printfolder Deprecated with {nwfscSurvey} 2.8 to give users greater
+#'   control on where to save files. A string that will be appended to `dir`,
+#'   creating a folder where the output will be saved.
 #'
-#' @param data Data frame of catch data that has been created by the [pull_catch()].
-#' @template strata
-#' @template dir
-#' @template printfolder
-#' @template verbose
-#'
-#' @return A matrix with the number of tows and positive tows within each strata
-#' by year and the number of positive tows by strata and year.
+#' @return A matrix containing the total number of tows and positive tows
+#'   cross-tabulated by year and strata.
 #'
 #' @author Chantel Wetzel
 #' @export
-#'
-#'
+#' @family helper functions
 check_strata <- function(
   data,
   strata,

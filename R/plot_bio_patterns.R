@@ -1,12 +1,18 @@
 #' This function plots length by latitude and depth
 #'
-#' @param dir Directory to save files to
-#' @param bio Data biological sample file
+#' @param dir Directory where output will be saved. The directory where the file should be saved.
+#' If dir = NULL no output will be saved.
+#' @param bio Biological data frame from [pull_bio()]
 #' @param col_name Option to switch between plotting lengths or ages.
 #' Options are "Length_cm", "Width_cm", or "Age".
-#' @param plot A vector of integers specifying the figures you want.
-#' @param width Numeric figure width in inches, defaults to 7
-#' @param height Numeric figure height in inches, defaults to 7
+#' @param plot A vector of integers to specify which plots you would like. The
+#'   default is to print or save both figures, i.e., `plot = 1:3`. Integers
+#'   correspond to the following figures:
+#'   1. length/age by latitude and depth
+#'   2. length/age by depth and year
+#'   3. length/age by lat and year
+#' @param width,height Numeric values for the figure width and height in
+#'   inches. The defaults are 10 by 7 inches.
 #'
 #' @import ggplot2
 #' @import cowplot
@@ -23,10 +29,6 @@ plot_bio_patterns <- function(
   width = 7,
   height = 7
 ) {
-  # plot 1 = length/age by latitude and depth
-  # plot 2 = length/age by depth and year
-  # plot 3 = length/age by lat and year
-
   round_any <- function(x, accuracy, f = round) {
     f(x / accuracy) * accuracy
   }

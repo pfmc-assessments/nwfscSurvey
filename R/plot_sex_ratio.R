@@ -1,6 +1,6 @@
 #' Function to plot sex ratio data in a barplot form
 #'
-#' @template dir
+#' @inheritParams pull_catch
 #' @param data Data object with biological data from [pull_bio()] with a column
 #' named `Sex` or `sex` is present.
 #' @param comp_column_name The name of the column to create composition data for that
@@ -17,6 +17,7 @@
 #'   inches. The defaults are 7 by 7 inches.
 #'
 #' @author Chantel Wetzel
+#' @family plot_
 #' @export
 #'
 plot_sex_ratio <- function(
