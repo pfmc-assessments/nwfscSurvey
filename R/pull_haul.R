@@ -12,19 +12,19 @@
 #'   removed from the survey sampling protocol.
 #'
 #' @return Returns a data frame of haul characteristics for satisfactory hauls
-#' @author Eric Ward, Chantel Wetzel
+#' @author Eric Ward and Chantel Wetzel
 #' @export
 #'
 #' @import cli
 #'
 #' @examples
 #' \dontrun{
-#' haul_data <- pull_haul(survey = "NWFSC.Combo", years = c(2003, 2007))
-#' haul_data <- pull_haul()
+#' haul_data <- pull_haul(years = c(2003, 2007))
+#' haul_data <- pull_haul(survey = "Triennial", years = c(1980, 2004))
 #' }
 #'
 pull_haul <- function(
-  survey,
+  survey = "NWFSC.Combo",
   years = c(1970, 2050),
   dir = NULL,
   verbose = TRUE,

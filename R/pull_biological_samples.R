@@ -25,9 +25,9 @@
 #'
 #'
 pull_biological_samples <- function(
-  survey,
   common_name = NULL,
   sci_name = NULL,
+  survey = "NWFSC.Combo",
   years = c(1980, 2050),
   dir = NULL,
   verbose = TRUE,

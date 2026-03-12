@@ -38,21 +38,19 @@
 #'
 #' # Example with specified common name
 #' catch_data <- pull_catch(
-#'   common_name = "vermilion rockfish",
-#'   survey = "NWFSC.Combo"
+#'   common_name = "vermilion rockfish"
 #' )
 #'
 #' # Example with specified scientific name
 #' catch_data <- pull_catch(
-#'   sci_name = "Eopsetta jordani",
-#'   survey = "NWFSC.Combo"
+#'   sci_name = "Eopsetta jordani"
 #' )
 #'
 #' # Example with multiple names
 #' catch_data <- pull_catch(common_name = c(
 #'   "vermilion rockfish",
-#'   "vermilion and sunset rockfish"
-#' ), survey = "NWFSC.Combo")
+#'   "vermilion and sunset rockfish")
+#' )
 #'
 #' catch_data <- pull_catch(
 #'   sci_name = c(
@@ -60,14 +58,14 @@
 #'     "Sebastes sp. (crocotulus)",
 #'     "Sebastes sp. (miniatus / crocotulus)"
 #'   ),
-#'   survey = "NWFSC.Combo"
+#'   survey = "Triennial"
 #' )
 #' }
 #'
 pull_catch <- function(
-  survey,
   common_name = NULL,
   sci_name = NULL,
+  survey = "NWFSC.Combo",
   years = c(1970, 2050),
   dir = NULL,
   convert = TRUE,
@@ -191,8 +189,7 @@ pull_catch <- function(
   )
 
   bad_sample_types <- which(
-    !positive_tows[
-      ,
+    !positive_tows[,
       "statistical_partition_dim$statistical_partition_type"
     ] %in%
       sample_types

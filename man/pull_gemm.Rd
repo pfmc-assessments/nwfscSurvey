@@ -4,7 +4,7 @@
 \alias{pull_gemm}
 \title{Pull Groundfish Expanded Multiyear Mortality data}
 \usage{
-pull_gemm(common_name, years, dir = NULL, verbose = TRUE)
+pull_gemm(common_name, years = NULL, dir = NULL, verbose = TRUE)
 }
 \arguments{
 \item{common_name}{A character entry with the desired common name of the

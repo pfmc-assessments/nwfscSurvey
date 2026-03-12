@@ -5,7 +5,7 @@
 \title{Pull haul data from the NWFSC data warehouse.}
 \usage{
 pull_haul(
-  survey,
+  survey = "NWFSC.Combo",
   years = c(1970, 2050),
   dir = NULL,
   verbose = TRUE,
@@ -71,11 +71,11 @@ This function can be used to pull haul data and associated covariates.
 }
 \examples{
 \dontrun{
-haul_data <- pull_haul(survey = "NWFSC.Combo", years = c(2003, 2007))
-haul_data <- pull_haul()
+haul_data <- pull_haul(years = c(2003, 2007))
+haul_data <- pull_haul(survey = "Triennial", years = c(1980, 2004))
 }
 
 }
 \author{
-Eric Ward, Chantel Wetzel
+Eric Ward and Chantel Wetzel
 }

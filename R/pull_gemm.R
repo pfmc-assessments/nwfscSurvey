@@ -38,7 +38,7 @@
 #'
 pull_gemm <- function(
   common_name,
-  years,
+  years = NULL,
   dir = NULL,
   verbose = TRUE
 ) {
@@ -71,7 +71,7 @@ pull_gemm <- function(
   }
 
   # Check the years if provided
-  if (!missing(years)) {
+  if (!null(years)) {
     if (sum(years %in% gemm$year) == 0) {
       cli::cli_abort(
         "The input years were not found in the available gemm years: {years}."
