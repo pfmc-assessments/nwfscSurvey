@@ -150,7 +150,7 @@ get_expanded_comps <- function(
   }
   if (lifecycle::is_present(printfolder)) {
     lifecycle::deprecate_warn(
-      when = "1.8.0",
+      when = "2.8",
       what = "nwfscSurvey::get_expanded_comps(printfolder =)"
     )
   }

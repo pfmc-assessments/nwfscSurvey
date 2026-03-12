@@ -20,7 +20,7 @@
 
 ReadInAges.fn <- function(dat, subset_years = NULL, verbose = TRUE) {
   lifecycle::deprecate_stop(
-    when = "1.8.0",
+    when = "2.8",
     what = "ReadInAges.fn()",
     details = "This function is no longer used.  Please use pull_bio() to get properly formatted and filtered data."
   )

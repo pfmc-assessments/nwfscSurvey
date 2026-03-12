@@ -62,7 +62,7 @@ get_design_based <- function(
 ) {
   if (lifecycle::is_present(printfolder)) {
     lifecycle::deprecate_warn(
-      when = "1.8.0",
+      when = "2.8",
       what = "nwfscSurvey::get_design_based(printfolder =)"
     )
   }

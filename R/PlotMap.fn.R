@@ -49,7 +49,7 @@ PlotMap.fn <- function(
     )
   }
   lifecycle::deprecate_warn(
-    when = "1.8.0",
+    when = "2.8",
     what = "PlotMap.fn()",
     details = "This function is no longer needed and will be removed in a future versions. Please use plot_cpue_map() instead."
   )

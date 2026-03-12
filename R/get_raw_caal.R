@@ -74,7 +74,7 @@ get_raw_caal <- function(
 ) {
   if (lifecycle::is_present(printfolder)) {
     lifecycle::deprecate_warn(
-      when = "1.8.0",
+      when = "2.8",
       what = "nwfscSurvey::get_raw_caal(printfolder =)"
     )
   }

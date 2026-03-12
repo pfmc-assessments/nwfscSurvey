@@ -86,7 +86,7 @@ format for Stock Synthesis. Default value of -1 which translates to the highest}
 \item{dir}{Directory where output will be saved. The directory where the file should be saved.
 If dir = NULL no output will be saved.}
 
-\item{printfolder}{eprecated with {nwfscSurvey} 1.8.0 to give users greater
+\item{printfolder}{Deprecated with {nwfscSurvey} 2.8 to give users greater
 control on where to save files. A string that will be appended to \code{dir}, creating a folder
 where the output will be saved. If specified as \code{""},
 the output will just be saved directly in \code{dir}. The default is \code{"forSS3"}.}

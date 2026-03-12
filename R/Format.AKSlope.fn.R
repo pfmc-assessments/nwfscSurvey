@@ -46,7 +46,7 @@ Format.AKSlope.fn <- function(
   verbose = TRUE
 ) {
   lifecycle::deprecate_stop(
-    when = "1.8.0",
+    when = "2.8",
     what = "Format.AKSlope.fn()",
     details = "This function is no longer used.  Please use the pull_catch() and
     pull_bio() to get properly formatted and filtered data."

@@ -65,7 +65,7 @@ get_input_n <- function(
 ) {
   if (lifecycle::is_present(printfolder)) {
     lifecycle::deprecate_warn(
-      when = "1.8.0",
+      when = "2.8",
       what = "nwfscSurvey::get_input_n(printfolder =)"
     )
   }

@@ -51,7 +51,7 @@ CreateStrataDF.fn <- function(
   lats.north
 ) {
   lifecycle::deprecate_warn(
-    when = "1.8.0",
+    when = "2.8",
     what = "CreateStrataDF.fn()",
     details = "This function is no longer needed and will be removed in a future version. Please use create_strata() instead."
   )

@@ -6,7 +6,7 @@
 #'
 createMatrix <- function() {
   lifecycle::deprecate_warn(
-    when = "1.8.0",
+    when = "2.8",
     what = "createMatrix()",
     details = "This function is no longer needed and will be removed in a future version. Please use get_survey_names_long() instead."
   )

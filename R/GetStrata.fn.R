@@ -32,7 +32,7 @@ GetStrata.fn <- function(
   area = "coast"
 ) {
   lifecycle::deprecate_warn(
-    when = "1.8.0",
+    when = "2.8",
     what = "GetStrata.fn()",
     details = "This function is no longer needed and will be removed in a future version. Please use get_strata_default() instead."
   )

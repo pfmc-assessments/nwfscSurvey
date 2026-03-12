@@ -40,7 +40,7 @@ check_strata <- function(
 ) {
   if (lifecycle::is_present(printfolder)) {
     lifecycle::deprecate_warn(
-      when = "1.8.0",
+      when = "2.8",
       what = "nwfscSurvey::check_strata(printfolder =)"
     )
   }

@@ -64,7 +64,7 @@ fish only. Default of 0.}
 \item{ageerr}{Number of ageing error vector to apply to the age data based on
 Stock Synthesis. Default "Enter Numeric".}
 
-\item{printfolder}{eprecated with {nwfscSurvey} 1.8.0 to give users greater
+\item{printfolder}{Deprecated with {nwfscSurvey} 2.8 to give users greater
 control on where to save files. A string that will be appended to \code{dir}, creating a folder
 where the output will be saved. If specified as \code{""},
 the output will just be saved directly in \code{dir}. The default is \code{"forSS3"}.}
