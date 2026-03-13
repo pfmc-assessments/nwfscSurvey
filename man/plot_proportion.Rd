@@ -16,12 +16,12 @@ plot_proportion(
 \arguments{
 \item{data}{A data frame.}
 
-\item{column_factor}{<\code{\link[=dplyr_data_masking]{data-masking}}> Variable in
+\item{column_factor}{<\code{\link[dplyr:dplyr_data_masking]{data-masking}}> Variable in
 \code{data} for the grouping structure. Should be a variable in \code{data} that
 contains a factor but it can also be a variable in \code{data} that stores
 characters. See the examples for ideas.}
 
-\item{column_bin}{<\code{\link[=dplyr_data_masking]{data-masking}}> Variable in \code{data}
+\item{column_bin}{<\code{\link[dplyr:dplyr_data_masking]{data-masking}}> Variable in \code{data}
 for the binning structure. If this is not already a factor or character,
 then \code{\link[ggplot2:cut_interval]{ggplot2::cut_width()}} will be used to create bins. The bins are saved
 in \code{bin} in the returned {ggplot2} object.}

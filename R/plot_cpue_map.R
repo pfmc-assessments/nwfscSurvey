@@ -27,8 +27,8 @@
 #'
 #' @examples
 #' \dontrun{
-#' plot_cpue_map (data = catch_nwfsc_combo, plot = 1)
-#' plot_cpue_map (data = catch_nwfsc_combo, plot = 2)
+#' plot_cpue_map(data = catch_nwfsc_combo, plot = 1)
+#' plot_cpue_map(data = catch_nwfsc_combo, plot = 2)
 #' }
 #'
 plot_cpue_map <- function(
