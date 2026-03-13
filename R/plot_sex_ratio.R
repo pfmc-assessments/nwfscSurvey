@@ -33,7 +33,7 @@ plot_sex_ratio <- function(
   check_dir(dir = plotdir)
   main_ <- ifelse(is.null(main), "", paste0(main, "_"))
   if (!is.null(dir)) {
-    filename <- paste0(main_, data.type, "_sex_ratio.png")
+    filename <- paste0(main_, comp_column_name, "_sex_ratio.png")
   }
 
   data_tolower <- data |>
