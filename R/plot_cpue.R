@@ -91,7 +91,7 @@ plot_cpue <- function(
         y = "ln(CPUE)",
         size = "ln(CPUE)",
         fill = "darkorange",
-        colour = "darkorange",
+        colour = "darkorange"
       ) +
       scale_x_continuous(n.breaks = 7) +
       scale_y_continuous(n.breaks = 7) +
@@ -134,7 +134,7 @@ plot_cpue <- function(
         y = "ln(CPUE)",
         size = "ln(CPUE)",
         fill = "darkorange",
-        colour = "darkorange",
+        colour = "darkorange"
       ) +
       guides(size = "legend", color = "none", fill = "none") +
       theme(
