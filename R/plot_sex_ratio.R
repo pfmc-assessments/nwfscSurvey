@@ -44,7 +44,6 @@ plot_sex_ratio <- function(
       "The following column is missing in the data: {comp_column_name}."
     )
   }
-  data_tolower$column_to_use <- data_tolower[, tolower(comp_column_name)]
   binned_data <- data_tolower |>
     dplyr::mutate(bin = plyr::round_any(column_to_use, bin_width, floor)) |>
     dplyr::count(bin, sex) |>
