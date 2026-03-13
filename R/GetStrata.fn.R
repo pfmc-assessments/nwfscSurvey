@@ -32,7 +32,7 @@ GetStrata.fn <- function(
   lifecycle::deprecate_warn(
     when = "2.8",
     what = "GetStrata.fn()",
-    details = "This function is no longer needed and will be removed in a future version. Please use get_strata_default() instead."
+    details = "This function is no longer needed and will be removed in a future version. Please use get_strata_areas_default() instead."
   )
   # development instructions ... find the numbers for each comment
   # (1) Add your area here in lower-case text
