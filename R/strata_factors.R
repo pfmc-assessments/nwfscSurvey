@@ -15,13 +15,15 @@ strata_factors <- function(
 ) {
   strata_vars <- tolower(strata_vars)
   strata_df <- strata_df |>
-    dplyr::rename_all(tolower)
+    dplyr::rename_all(tolower) |>
+    as.data.frame()
 
   data <- data |>
     dplyr::rename_all(tolower) |>
     dplyr::mutate(
       stratum = NA
-    )
+    ) |>
+    as.data.frame()
 
   data$stratum <- NA
   for (s in 1:nrow(strata_df)) {
