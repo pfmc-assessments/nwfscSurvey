@@ -88,7 +88,7 @@ In order to pull all species leave common_name or sci_name as NULL
 }
 \examples{
 \dontrun{
-  bio_data <- pull_bio(common_name = "sablefish")
+bio_data <- pull_bio(common_name = "sablefish")
 }
 
 }

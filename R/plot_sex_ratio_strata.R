@@ -41,7 +41,7 @@ plot_sex_ratio_strata <- function(
   check_dir(dir = plotdir)
   main_ <- ifelse(is.null(main), "", paste0(main, "_"))
   if (!is.null(dir)) {
-    filename = paste0(main_, data.type, "_sex_ratio_strata.png")
+    filename <- paste0(main_, data.type, "_sex_ratio_strata.png")
   }
 
   data_mod <- data |>

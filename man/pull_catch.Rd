@@ -122,8 +122,8 @@ catch_data <- pull_catch(
 # Example with multiple names
 catch_data <- pull_catch(common_name = c(
   "vermilion rockfish",
-  "vermilion and sunset rockfish")
-)
+  "vermilion and sunset rockfish"
+))
 
 catch_data <- pull_catch(
   sci_name = c(
