@@ -24,10 +24,9 @@ default is to print both figures.
 }
 \value{
 Figures are saved to the disk according to which plots are asked
-for in \code{plot}. Each of the specified files are saved to a directory called
-\code{map_plots} inside of \code{dir}, the specified directory. No objects are
-returned to the user. But, the figures are printed to new windows if they
-are not saved to the disk.
+for in \code{plot}. Each of the specified files are saved to \code{dir}, the specified
+directory. No objects are returned to the user. But, the figures are printed
+to new windows if they are not saved to the disk.
 }
 \description{
 Plot catch-per-unit-effort (CPUE) data across all years and by year

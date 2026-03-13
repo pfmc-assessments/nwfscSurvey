@@ -99,7 +99,7 @@ format for Stock Synthesis. Default value of -1 which translates to the highest}
 
 \item{age_error}{Deprecated with {nwfscSurvey} 2.2. Use Lbin_hi instead.}
 
-\item{printfolder}{Deprecated with {nwfscSurvey} 2.8 to give users greater
+\item{printfolder}{Deprecated with {nwfscSurvey} 2.8.0 to give users greater
 control on where to save files. A string that will be appended to \code{dir},
 creating a folder where the output will be saved.}
 

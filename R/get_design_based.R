@@ -15,7 +15,7 @@
 #' @param data Data frame of catch data that has been created by the [pull_catch()].
 #' @param CI A numerical value that specifies the confidence interval to return.
 #'   Values should be between 0.01 to 0.99. The default is 0.95.
-#' @param printfolder Deprecated with {nwfscSurvey} 2.8 to give users greater
+#' @param printfolder Deprecated with {nwfscSurvey} 2.8.0 to give users greater
 #'   control on where to save files. A string that will be appended to `dir`, creating a folder
 #'   where the output will be saved. If specified as `""`,
 #'   the output will just be saved directly in `dir`. The default is `"forSS3"`.
@@ -70,7 +70,7 @@ get_design_based <- function(
 ) {
   if (lifecycle::is_present(printfolder)) {
     lifecycle::deprecate_warn(
-      when = "2.8",
+      when = "2.8.0",
       what = "nwfscSurvey::get_design_based(printfolder =)"
     )
   }

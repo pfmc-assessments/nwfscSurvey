@@ -33,7 +33,7 @@ PlotSexRatio.fn <- function(
     )
   }
   lifecycle::deprecate_warn(
-    when = "2.8",
+    when = "2.8.0",
     what = "PlotSexRatio.fn",
     details = "This function is no longer needed and will be removed in a future versions. Please use plot_sex_ratio() instead."
   )

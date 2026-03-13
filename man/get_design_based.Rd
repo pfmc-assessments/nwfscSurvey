@@ -36,7 +36,7 @@ more information. Default "Enter Month".}
 number to assign to the fleet column based on the expected
 format for Stock Synthesis. Default "Enter Fleet".}
 
-\item{printfolder}{Deprecated with {nwfscSurvey} 2.8 to give users greater
+\item{printfolder}{Deprecated with {nwfscSurvey} 2.8.0 to give users greater
 control on where to save files. A string that will be appended to \code{dir}, creating a folder
 where the output will be saved. If specified as \code{""},
 the output will just be saved directly in \code{dir}. The default is \code{"forSS3"}.}

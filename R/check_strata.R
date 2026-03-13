@@ -23,7 +23,7 @@
 #' @param data Data frame of catch data created by [pull_catch()].
 #' @param strata A data frame that defines the strata and provides the
 #'   calculated areas for each strata returned from [create_strata()].
-#' @param printfolder Deprecated with {nwfscSurvey} 2.8 to give users greater
+#' @param printfolder Deprecated with {nwfscSurvey} 2.8.0 to give users greater
 #'   control on where to save files. A string that will be appended to `dir`,
 #'   creating a folder where the output will be saved.
 #'
@@ -42,7 +42,7 @@ check_strata <- function(
 ) {
   if (lifecycle::is_present(printfolder)) {
     lifecycle::deprecate_warn(
-      when = "2.8",
+      when = "2.8.0",
       what = "nwfscSurvey::check_strata(printfolder =)"
     )
   }

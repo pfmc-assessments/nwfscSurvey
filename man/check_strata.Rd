@@ -21,7 +21,7 @@ calculated areas for each strata returned from \code{\link[=create_strata]{creat
 \item{dir}{Directory where output will be saved. The directory where the file should be saved.
 If dir = NULL no output will be saved.}
 
-\item{printfolder}{Deprecated with {nwfscSurvey} 2.8 to give users greater
+\item{printfolder}{Deprecated with {nwfscSurvey} 2.8.0 to give users greater
 control on where to save files. A string that will be appended to \code{dir},
 creating a folder where the output will be saved.}
 
