@@ -33,7 +33,6 @@ plot_cpue <- function(
   size_adj <- 100 / floor(sum(pos))
 
   # ggsave arguments
-  l <- as.list(substitute(...()))
   l$width <- width
   l$height <- height
   if (is.null(l$units)) {
