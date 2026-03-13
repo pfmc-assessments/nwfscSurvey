@@ -3,8 +3,14 @@
 #'
 #' @author Chantel Wetzel based on code by John Wallace
 #' @export
+#' @family helper function
 #'
 createMatrix <- function() {
+  lifecycle::deprecate_warn(
+    when = "2.8.0",
+    what = "createMatrix()",
+    details = "This function is no longer needed and will be removed in a future version. Please use get_survey_names_long() instead."
+  )
   # Survey options available in the data warehouse
   # Triennial - Groundfish Triennial Shelf Survey - Conducted between 1977 - 2004 every 3rd year
   # AFSC.slope - not yet in warehouse - Conducted between 1988 - 2001, full sampling in the 1997, 1999, 2000, and 2001 years

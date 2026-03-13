@@ -14,18 +14,25 @@ plot_bio_patterns(
 )
 }
 \arguments{
-\item{dir}{Directory to save files to}
+\item{dir}{Directory where output will be saved. The directory where the file should be saved.
+If dir = NULL no output will be saved.}
 
-\item{bio}{Data biological sample file}
+\item{bio}{Biological data frame from \code{\link[=pull_bio]{pull_bio()}}}
 
 \item{col_name}{Option to switch between plotting lengths or ages.
 Options are "Length_cm", "Width_cm", or "Age".}
 
-\item{plot}{A vector of integers specifying the figures you want.}
+\item{plot}{A vector of integers to specify which plots you would like. The
+default is to print or save both figures, i.e., \code{plot = 1:3}. Integers
+correspond to the following figures:
+\enumerate{
+\item length/age by latitude and depth
+\item length/age by depth and year
+\item length/age by lat and year
+}}
 
-\item{width}{Numeric figure width in inches, defaults to 7}
-
-\item{height}{Numeric figure height in inches, defaults to 7}
+\item{width, height}{Numeric values for the figure width and height in
+inches. The defaults are 10 by 7 inches.}
 }
 \description{
 This function plots length by latitude and depth

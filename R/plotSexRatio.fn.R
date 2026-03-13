@@ -1,6 +1,6 @@
 #' Function to plot sex ratio
 #'
-#' @template dir
+#' @inheritParams pull_catch
 #' @param dat Data object with biological data from [pull_bio()] with a column
 #' named `Sex` present.
 #' @param data.type Specify where to calculate the sex ration by length or age.
@@ -13,6 +13,7 @@
 #' @param ...      Additional arguments for the plots
 #'
 #' @author Allan Hicks and Chantel Wetzel
+#' @family plot_
 #' @importFrom graphics abline
 #' @export
 
@@ -31,8 +32,12 @@ PlotSexRatio.fn <- function(
       what = "nwfscSurvey::PlotMap.fn(dopng =)"
     )
   }
-
-  plotdir <- file.path(dir, "plots")
+  lifecycle::deprecate_warn(
+    when = "2.8.0",
+    what = "PlotSexRatio.fn",
+    details = "This function is no longer needed and will be removed in a future versions. Please use plot_sex_ratio() instead."
+  )
+  plotdir <- file.path(dir)
   check_dir(dir = plotdir)
   main_ <- ifelse(is.null(main), "", paste0(main, "_"))
   if (!is.null(dir)) {
@@ -70,13 +75,25 @@ PlotSexRatio.fn <- function(
 
   par(mfrow = c(1, 1))
   plot(
-    x = names(ratioF), y = ratioF, type = "l", col = "red", lty = 2,
-    xlab = axis.name, ylim = c(0, 1), main = main, ylab = "Fraction female", ...
+    x = names(ratioF),
+    y = ratioF,
+    type = "l",
+    col = "red",
+    lty = 2,
+    xlab = axis.name,
+    ylim = c(0, 1),
+    main = main,
+    ylab = "Fraction female",
+    ...
   )
   abline(h = 0.50, col = "grey", lty = 2, lwd = 2)
   symbols(
-    x = names(ratioF), y = ratioF, circles = nobs,
-    inches = circleSize, fg = "red", bg = rgb(1, 0, 0, alpha = 0.5),
+    x = names(ratioF),
+    y = ratioF,
+    circles = nobs,
+    inches = circleSize,
+    fg = "red",
+    bg = rgb(1, 0, 0, alpha = 0.5),
     add = TRUE
   )
 
@@ -86,7 +103,9 @@ PlotSexRatio.fn <- function(
   p <- ggplot(test, aes(x = bin, y = Proportion, fill = Sex)) +
     geom_bar(position = "fill", stat = "identity") +
     geom_hline(yintercept = 0.50, col = "white", lwd = 2) +
-    scale_fill_manual(values = c("F" = "red", "M" = "blue", "U" = "forestgreen")) +
+    scale_fill_manual(
+      values = c("F" = "red", "M" = "blue", "U" = "forestgreen")
+    ) +
     labs(y = "Proportion by Sex", x = axis.name) +
     theme(
       panel.border = element_rect(colour = "black", fill = NA, size = 1),
@@ -100,8 +119,13 @@ PlotSexRatio.fn <- function(
 
   if (!is.null(dir)) {
     ggsave(
-      filename = file.path(dir, "plots", paste0("proportion_by_", data.type, "_sex.png")),
-      width = 7, height = 7, units = "in"
+      filename = file.path(
+        dir,
+        paste0("proportion_by_", data.type, "_sex.png")
+      ),
+      width = 7,
+      height = 7,
+      units = "in"
     )
   }
 }

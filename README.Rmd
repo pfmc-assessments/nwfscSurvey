@@ -3,7 +3,6 @@
 <!-- badges: start -->
 [![release date](https://img.shields.io/github/last-commit/pfmc-assessments/nwfscSurvey)](https://github.com/pfmc-assessments/nwfscSurvey/commits/main)
 [![R-CMD-check](https://github.com/pfmc-assessments/nwfscSurvey/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/pfmc-assessments/nwfscSurvey/actions/workflows/R-CMD-check.yaml)
-[![Test coverage](https://github.com/chantelwetzel-noaa/nwfscSurvey/actions/workflows/test-coverage.yaml/badge.svg)](https://github.com/chantelwetzel-noaa/nwfscSurvey/actions/workflows/test-coverage.yaml)
 [![DOI](https://zenodo.org/badge/26344817.svg)](https://doi.org/10.5281/zenodo.15235956)
 <!-- badges: end -->
 

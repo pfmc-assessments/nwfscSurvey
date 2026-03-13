@@ -27,9 +27,24 @@ if (require("maps") && require("mapproj")) {
 }
 \seealso{
 \itemize{
-\item \code{PlotMap.fn()} uses this function as the base map.
+\item \code{plot_cpue_map()} uses this function as the base map.
 }
+
+Other plot_: 
+\code{\link{PlotSexRatio.fn}()},
+\code{\link{PlotVarLengthAtAge.fn}()},
+\code{\link{plot_comps}()},
+\code{\link{plot_cpue}()},
+\code{\link{plot_cpue_map}()},
+\code{\link{plot_index}()},
+\code{\link{plot_length_age}()},
+\code{\link{plot_proportion}()},
+\code{\link{plot_sex_ratio}()},
+\code{\link{plot_sex_ratio_strata}()},
+\code{\link{plot_varlenage}()},
+\code{\link{plot_weight_length}()}
 }
 \author{
 Kelli F. Johnson
 }
+\concept{plot_}

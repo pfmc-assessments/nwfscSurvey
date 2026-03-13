@@ -1,13 +1,12 @@
 #' Function to create url to pull data from the data warehouse
 #'
 #'
-#'
+#' @inheritParams pull_catch
 #' @param data_table table to pull from the data warehouse, options =
 #' trawl.catch_fact, trawl.operation_haul_fact
 #' @param project_long survey project name
-#' @param add_species string of species name created by the pull_catch or pull_bio
+#' @param add_species string of species name created by the [pull_catch()] or [pull_bio()]
 #' functions.
-#' @template years
 #' @param vars_long string of fields to pull from the data warehouse
 #'
 #' @author Chantel Wetzel
@@ -26,8 +25,14 @@ get_url <- function(data_table, project_long, add_species, years, vars_long) {
     add_species <- paste0(add_species, ",")
   }
 
-
-  if (data_table %in% c("trawl.individual_fact", "trawl.triennial_length_fact", "trawl.operation_haul_fact")) {
+  if (
+    data_table %in%
+      c(
+        "trawl.individual_fact",
+        "trawl.triennial_length_fact",
+        "trawl.operation_haul_fact"
+      )
+  ) {
     year_str <- glue::glue("year>={years[1]},year<={years[2]}")
   }
 

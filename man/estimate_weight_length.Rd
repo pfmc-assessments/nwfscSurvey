@@ -43,6 +43,13 @@ Calculate weight-length relationship parameters
 Estimate parameters of the weight-length relationship for each
 sex and all sexes combined, where the latter includes unsexed fish.
 }
+\seealso{
+Other biology function: 
+\code{\link{est_growth}()},
+\code{\link{est_vbgrowth}()},
+\code{\link{fit_vbgrowth}()}
+}
 \author{
 Kelli F. Johnson and Chantel Wetzel
 }
+\concept{biology function}

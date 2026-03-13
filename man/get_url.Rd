@@ -12,7 +12,7 @@ trawl.catch_fact, trawl.operation_haul_fact}
 
 \item{project_long}{survey project name}
 
-\item{add_species}{string of species name created by the pull_catch or pull_bio
+\item{add_species}{string of species name created by the \code{\link[=pull_catch]{pull_catch()}} or \code{\link[=pull_bio]{pull_bio()}}
 functions.}
 
 \item{years}{An integer vector of length two with the

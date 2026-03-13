@@ -10,17 +10,15 @@
 #' This also occurs if cryptic species pairs are all returned
 #' (e.g., rougheye rockfish and blackspotted rockfish)
 #'
-#'
-#' @param data A data frame of catches obtained by using the `pull_catch`
-#' function.
-#' @template dir
+#' @inheritParams pull_catch
+#' @param data A data frame of catches obtained by using [pull_catch()].
 #' @param single_species TRUE/FALSE Logical that indicates whether data should be
 #' grouped by `trawl_id` alone (TRUE, e.g., rougheye rockfish and blackspotted rockfish)
 #' or data should be grouped by `common name` and `trawl_id` (FALSE).
-#' @template verbose
 #'
 #' @author Chantel Wetzel
 #' @export
+#' @family helper function
 #'
 #' @importFrom dplyr group_by reframe
 #'

@@ -1,15 +1,12 @@
 #' Save an object in an `.rdata` file
 #'
+#' @inheritParams pull_catch
 #' @param x An object.
-#' @template dir
 #' @param name_base A string that will be appended to with the system time and
 #'   the file extension (i.e., `".rdata"`).
-#' @template verbose
+#'
 #' @return Nothing is returned, instead a file is saved in `dir`.
-save_rdata <- function(x,
-                       dir = NULL,
-                       name_base,
-                       verbose = TRUE) {
+save_rdata <- function(x, name_base, dir = NULL, verbose = TRUE) {
   if (is.null(dir)) {
     return()
   }

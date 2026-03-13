@@ -21,8 +21,6 @@ specifies which survey to pull the data for. The input options are:
 \item NWFSC.Hook.Line (not yet working),
 \item NWFSC.Video,
 \item Triennial.Canada
-}
-
 The National Marine Fishery Service Alaska Fisheries Science Center (AFSC)
 Triennial survey was conducted between 1977 - 2004 occurring every 3rd year.
 The initial year, 1977, survey is not traditionally used in calculating
@@ -40,11 +38,21 @@ annually starting in 2003 (excluding 2020) and samples both the U.S. west coast
 shelf and slope between 55 - 1,280 meters.
 Data can only be pulled from one survey at a time, though we are working on
 allowing for a vector of survey names.
-Currently, \code{NWFSC.Shelf.Rockfish} and \code{NWFSC.Hook.Line} are not supported.}
+Currently, \code{NWFSC.Shelf.Rockfish} and \code{NWFSC.Hook.Line} are not supported.
+}}
 }
 \description{
 Check and create survey string
 }
+\seealso{
+Other helper function: 
+\code{\link{Format.AKSlope.fn}()},
+\code{\link{check_dir}()},
+\code{\link{combine_tows}()},
+\code{\link{createMatrix}()},
+\code{\link{filter_pull}()}
+}
 \author{
 Chantel Wetzel
 }
+\concept{helper function}

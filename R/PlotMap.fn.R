@@ -4,7 +4,7 @@
 #' and save them to the disk. Figures are created using {ggplot2}.
 #'
 #'
-#' @template dir
+#' @inheritParams pull_catch
 #' @param dat An object created by [pull_catch()].
 #' @param main A string that will be prepended to the name of the saved png
 #'   (i.e., "NWFSC" results in a file called "NWFSC_CPUE_Map.png").
@@ -20,13 +20,12 @@
 #' @author Chantel R. Wetzel
 #' @export
 #' @seealso
-#' * `PullCatch.fn()`
+#' * `pull_catch()`
 #' * `plot_westcoast()`
 #' @return Figures are saved to the disk according to which plots are asked
-#' for in `plot`. Each of the specified files are saved to a directory called
-#' `map_plots` inside of `dir`, the specified directory. No objects are
-#' returned to the user. But, the figures are printed to new windows if they
-#' are not saved to the disk.
+#' for in `plot`. Each of the specified files are saved to `dir`, the specified
+#' directory. No objects are returned to the user. But, the figures are printed
+#' to new windows if they are not saved to the disk.
 #'
 #' @examples
 #' \dontrun{
@@ -48,8 +47,12 @@ PlotMap.fn <- function(
       what = "nwfscSurvey::PlotMap.fn(dopng =)"
     )
   }
-
-  plotdir <- file.path(dir, "plots")
+  lifecycle::deprecate_warn(
+    when = "2.8.0",
+    what = "PlotMap.fn()",
+    details = "This function is no longer needed and will be removed in a future versions. Please use plot_cpue_map() instead."
+  )
+  plotdir <- file.path(dir)
   check_dir(dir = plotdir)
 
   plot_names <- file.path(
@@ -77,8 +80,10 @@ PlotMap.fn <- function(
       geom_point(
         data = neg,
         aes(
-          x = Longitude_dd, y = Latitude_dd,
-          color = cpue_kg_km2, size = cpue_kg_km2
+          x = Longitude_dd,
+          y = Latitude_dd,
+          color = cpue_kg_km2,
+          size = cpue_kg_km2
         ),
         pch = 1,
         col = "lightgrey",
@@ -87,8 +92,10 @@ PlotMap.fn <- function(
       geom_point(
         data = pos.cat,
         aes(
-          x = Longitude_dd, y = Latitude_dd,
-          color = cpue_kg_km2, size = cpue_kg_km2
+          x = Longitude_dd,
+          y = Latitude_dd,
+          color = cpue_kg_km2,
+          size = cpue_kg_km2
         ),
         pch = 16,
         alpha = 0.7
@@ -131,8 +138,10 @@ PlotMap.fn <- function(
       geom_point(
         data = neg,
         aes(
-          x = Longitude_dd, y = Latitude_dd,
-          color = cpue_kg_km2, size = cpue_kg_km2
+          x = Longitude_dd,
+          y = Latitude_dd,
+          color = cpue_kg_km2,
+          size = cpue_kg_km2
         ),
         pch = 1,
         col = "lightgrey",
@@ -141,8 +150,10 @@ PlotMap.fn <- function(
       geom_point(
         data = pos.cat,
         aes(
-          x = Longitude_dd, y = Latitude_dd,
-          color = cpue_kg_km2, size = cpue_kg_km2
+          x = Longitude_dd,
+          y = Latitude_dd,
+          color = cpue_kg_km2,
+          size = cpue_kg_km2
         ),
         pch = 16,
         alpha = 0.7

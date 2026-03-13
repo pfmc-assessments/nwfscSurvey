@@ -6,11 +6,11 @@
 #' 2. The directory exists if it can be created.
 #' 3. The function fails if the directory cannot be created.
 #'
-#' @template dir
-#' @template verbose
+#' @inheritParams pull_catch
 #'
 #' @author Chantel R. Wetzel
 #' @export
+#' @family helper function
 #'
 #' @examples
 #' check_dir(getwd(), verbose = FALSE)

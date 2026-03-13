@@ -12,7 +12,8 @@
 #' Canadian Journal of Fishery and Aquatic Science, 71(4): 581--588.
 #' [10.1139/cjfas-2013-0289](https://doi.org/10.1139/cjfas-2013-0289).
 #'
-#' @template dir
+#' @inheritParams pull_catch
+#' @inheritParams get_expanded_comps
 #' @param data A data frame of composition data created using [pull_bio()].
 #' @param comp_column_name The column name to create composition data for. This column can be
 #'   is used to determine whether to format the composition data for length or age
@@ -26,8 +27,6 @@
 #'   will lead to the use of the correct species-specific value for
 #'   the number of unique samples per tow. See the function call for
 #'   allowed values, where the default is `"all"`.
-#' @template printfolder
-#' @template verbose
 #'
 #' @author Chantel R. Wetzel
 #' @export
@@ -60,9 +59,15 @@ get_input_n <- function(
     "thorny",
     "other"
   ),
-  printfolder = "forSS3",
+  printfolder = lifecycle::deprecated(),
   verbose = TRUE
 ) {
+  if (lifecycle::is_present(printfolder)) {
+    lifecycle::deprecate_warn(
+      when = "2.8.0",
+      what = "nwfscSurvey::get_input_n(printfolder =)"
+    )
+  }
   plotdir <- file.path(dir, printfolder)
   check_dir(dir = plotdir, verbose = verbose)
 

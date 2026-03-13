@@ -9,20 +9,17 @@
 #' function also allows you to subset the data by year using the years input and
 #' to save the object if the dir function input is given.
 #'
-#' @template common_name
-#' @template years
-#' @template dir
-#' @template verbose
+#' @inheritParams pull_catch
 #'
 #' @author Chantel Wetzel
 #' @export
+#' @family data pulling functions
 #'
 #' @import dplyr
 #' @import stringr
 #' @import janitor
 #'
 #' @examples
-#' \dontrun{
 #' # Pull all GEMM data
 #' all_data <- pull_gemm()
 #'
@@ -34,11 +31,10 @@
 #'
 #' # Pull species and subset years
 #' widow_recent <- pull_gemm(common_name = "Widow Rockfish", years = 2014:2019)
-#' }
 #'
 pull_gemm <- function(
   common_name,
-  years,
+  years = NULL,
   dir = NULL,
   verbose = TRUE
 ) {
@@ -71,7 +67,7 @@ pull_gemm <- function(
   }
 
   # Check the years if provided
-  if (!missing(years)) {
+  if (!is.null(years)) {
     if (sum(years %in% gemm$year) == 0) {
       cli::cli_abort(
         "The input years were not found in the available gemm years: {years}."

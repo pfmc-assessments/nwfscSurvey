@@ -4,7 +4,7 @@
 \alias{plot_cpue}
 \title{This function plots cpue and length by latitude and depth}
 \usage{
-plot_cpue(catch, dir = NULL, plot = 1:3, width = 7, height = 7, ...)
+plot_cpue(catch, dir = NULL, plot = 1:3, width = 7, height = 7)
 }
 \arguments{
 \item{catch}{Data catch file pulled using \code{\link[=pull_catch]{pull_catch()}}}
@@ -23,12 +23,26 @@ correspond to the following figures:
 
 \item{width, height}{Numeric values for the figure width and height in
 inches. The defaults are 7 by 7 inches.}
-
-\item{...}{Additional arguments to \code{\link[ggplot2:ggsave]{ggplot2::ggsave()}}}
 }
 \description{
 This function plots cpue and length by latitude and depth
 }
+\seealso{
+Other plot_: 
+\code{\link{PlotSexRatio.fn}()},
+\code{\link{PlotVarLengthAtAge.fn}()},
+\code{\link{plot_comps}()},
+\code{\link{plot_cpue_map}()},
+\code{\link{plot_index}()},
+\code{\link{plot_length_age}()},
+\code{\link{plot_proportion}()},
+\code{\link{plot_sex_ratio}()},
+\code{\link{plot_sex_ratio_strata}()},
+\code{\link{plot_varlenage}()},
+\code{\link{plot_weight_length}()},
+\code{\link{plot_westcoast}()}
+}
 \author{
 Chantel Wetzel
 }
+\concept{plot_}

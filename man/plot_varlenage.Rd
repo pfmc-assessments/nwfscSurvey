@@ -5,8 +5,8 @@
 \title{Plot variability of length at age}
 \usage{
 plot_varlenage(
-  dir = NULL,
   dat,
+  dir = NULL,
   main = NULL,
   Par = data.frame(K = 0.13, Linf = 55, L0 = 15, CV0 = 0.1, CV1 = 0.1),
   bySex = TRUE,
@@ -19,10 +19,10 @@ plot_varlenage(
 )
 }
 \arguments{
+\item{dat}{The data loaded from \code{\link[=pull_bio]{pull_bio()}}}
+
 \item{dir}{Directory where output will be saved. The directory where the file should be saved.
 If dir = NULL no output will be saved.}
-
-\item{dat}{The data loaded from \code{\link[=pull_bio]{pull_bio()}}}
 
 \item{main}{Name that will be used to name the saved png}
 
@@ -55,6 +55,22 @@ Plot variability of length at age
 Plots the standard deviation and coefficient of variation of age at observed
 and predicted length
 }
+\seealso{
+Other plot_: 
+\code{\link{PlotSexRatio.fn}()},
+\code{\link{PlotVarLengthAtAge.fn}()},
+\code{\link{plot_comps}()},
+\code{\link{plot_cpue}()},
+\code{\link{plot_cpue_map}()},
+\code{\link{plot_index}()},
+\code{\link{plot_length_age}()},
+\code{\link{plot_proportion}()},
+\code{\link{plot_sex_ratio}()},
+\code{\link{plot_sex_ratio_strata}()},
+\code{\link{plot_weight_length}()},
+\code{\link{plot_westcoast}()}
+}
 \author{
 Chantel Wetzel
 }
+\concept{plot_}

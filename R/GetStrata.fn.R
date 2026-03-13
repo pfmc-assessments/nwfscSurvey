@@ -22,15 +22,18 @@
 #' \item Latitude_dd.1 (decimal degrees; southern border), and
 #' \item Latitude_dd.2 (decimal degrees; northern border).}
 #' @seealso This function uses \code{\link{CreateStrataDF.fn}}
-#' to generate the strata returned by this function. Also, see
-#' convert_strata4vast function in the VASTWestCoast package that converts results
-#' from this function to strata that can be used within the VAST package.
+#' to generate the strata returned by this function.
 #'
 #' @author Chantel Wetzel and Kelli Faye Johnson
 #'
 GetStrata.fn <- function(
   area = "coast"
 ) {
+  lifecycle::deprecate_warn(
+    when = "2.8.0",
+    what = "GetStrata.fn()",
+    details = "This function is no longer needed and will be removed in a future version. Please use get_strata_areas_default() instead."
+  )
   # development instructions ... find the numbers for each comment
   # (1) Add your area here in lower-case text
   # (2) make a new strata and name the object the same lower-case text

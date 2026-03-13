@@ -11,7 +11,7 @@ get_design_based(
   dir = NULL,
   month = NA,
   fleet = NA,
-  printfolder = "forSS3",
+  printfolder = lifecycle::deprecated(),
   verbose = TRUE
 )
 }
@@ -19,10 +19,10 @@ get_design_based(
 \item{data}{Data frame of catch data that has been created by the \code{\link[=pull_catch]{pull_catch()}}.}
 
 \item{strata}{A data frame that defines the strata and provides the
-calculated areas for each strata returned from \code{\link[=createStrataDF.fn]{createStrataDF.fn()}}.}
+calculated areas for each strata returned from \code{\link[=create_strata]{create_strata()}}.}
 
 \item{CI}{A numerical value that specifies the confidence interval to return.
-Values should be between 0.01 to 0.99.}
+Values should be between 0.01 to 0.99. The default is 0.95.}
 
 \item{dir}{Directory where output will be saved. The directory where the file should be saved.
 If dir = NULL no output will be saved.}
@@ -36,7 +36,8 @@ more information. Default "Enter Month".}
 number to assign to the fleet column based on the expected
 format for Stock Synthesis. Default "Enter Fleet".}
 
-\item{printfolder}{A string that will be appended to \code{dir}, creating a folder
+\item{printfolder}{Deprecated with {nwfscSurvey} 2.8.0 to give users greater
+control on where to save files. A string that will be appended to \code{dir}, creating a folder
 where the output will be saved. If specified as \code{""},
 the output will just be saved directly in \code{dir}. The default is \code{"forSS3"}.}
 
@@ -67,15 +68,15 @@ catch <- pull_catch(
   survey = "NWFSC.Combo"
 )
 
-strata <- CreateStrataDF.fn(
+strata <- create_strata(
   names = c("shallow_wa", "shallow_or", "shallow_ca", "deep_wa", "deep_or", "deep_ca"),
-  depths.shallow = c(55, 55, 55, 183, 183, 183),
-  depths.deep = c(183, 183, 183, 549, 549, 549),
-  lats.south = c(46.0, 42.0, 32.0, 46.0, 42.0, 32.0),
-  lats.north = c(49.0, 46.0, 42.0, 49.0, 46.0, 42.0)
+  depths_shallow = c(55, 55, 55, 183, 183, 183),
+  depths_deep = c(183, 183, 183, 549, 549, 549),
+  lats_south = c(46.0, 42.0, 32.0, 46.0, 42.0, 32.0),
+  lats_north = c(49.0, 46.0, 42.0, 49.0, 46.0, 42.0)
 )
 
-biommass <- get_design_based(
+biomass <- get_design_based(
   data = catch,
   strata = strata
 )
@@ -85,3 +86,4 @@ biommass <- get_design_based(
 \author{
 Allan Hicks and Chantel Wetzel
 }
+\concept{biomass function}

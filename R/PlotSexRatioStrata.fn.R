@@ -1,11 +1,14 @@
 #' Function to plot sex ratio by strata
 #'
-#' @template dir
+#' @inheritParams pull_catch
 #' @param dat A data frame of length-composition data returned from
 #'   [pull_bio()].
 #' @param type Specify where to calculate the sex ration by length or age.
-#' @template strat.vars
-#' @template strat.df
+#' @param strat.vars Variables in both data frame that are used to
+#'   define the strata. Default is bottom depth (m) and latitudes (decimal
+#'   degrees), i.e., `c("Depth_m", "Latitude_dd")`.
+#' @param strat.df A data frame that defines the strata and provides the
+#'   calculated areas for each strata returned from [createStrataDF.fn()].
 #' @param circleSize circle size
 #' @param dopng Deprecated with {nwfscSurvey} 2.1 because providing a non-NULL
 #'   value to `dir` can serve the same purpose as `dopng = TRUE` without the
@@ -15,14 +18,16 @@
 #'
 #' @author Allan Hicks and Chantel Wetzel
 #' @export
-#' @seealso \code{\link{StrataFactors.fn}}
-
+#' @seealso
+#' \code{\link{StrataFactors.fn}}
+#' \code{\link{createStrataDF.fn}}
+#'
 PlotSexRatioStrata.fn <- function(
   dir = NULL,
   dat,
+  strat.df,
   type = "length",
   strat.vars = c("Depth_m", "Latitude_dd"),
-  strat.df = NULL,
   circleSize = 0.05,
   dopng = lifecycle::deprecated(),
   ...
@@ -30,10 +35,15 @@ PlotSexRatioStrata.fn <- function(
   if (lifecycle::is_present(dopng)) {
     lifecycle::deprecate_warn(
       when = "2.1",
-      what = "nwfscSurvey::PlotMap.fn(dopng =)"
+      what = "nwfscSurvey::PlotSexRatioStrata.fn(dopng =)"
     )
   }
-  plotdir <- file.path(dir, "plots")
+  lifecycle::deprecate_warn(
+    when = "2.8.0",
+    what = "PlotSexRatioStrata.fn",
+    details = "This function is no longer needed and will be removed in a future versions. Please use plot_sex_ratio_strata() instead."
+  )
+  plotdir <- file.path(dir)
   check_dir(dir = plotdir)
   main_ <- ifelse(is.null(main), "", paste0(main, "_"))
   if (!is.null(dir)) {
@@ -53,9 +63,24 @@ PlotSexRatioStrata.fn <- function(
   row.names(strat.df) <- strat.df[, 1] # put in rownames to make easier to index later
   numStrata <- nrow(strat.df)
   ind <- !duplicated(dat$Trawl_id)
-  datB <- dat[ind, c("Trawl_id", "Weight", strat.vars, "Longitude_dd", "Year", "Length_cm", "Age", "Sex")]
+  datB <- dat[
+    ind,
+    c(
+      "Trawl_id",
+      "Weight",
+      strat.vars,
+      "Longitude_dd",
+      "Year",
+      "Length_cm",
+      "Age",
+      "Sex"
+    )
+  ]
 
-  datB <- data.frame(datB, stratum = StrataFactors.fn(datB, strat.vars, strat.df)) # create a new column for the stratum factor
+  datB <- data.frame(
+    datB,
+    stratum = StrataFactors.fn(datB, strat.vars, strat.df)
+  ) # create a new column for the stratum factor
 
   par(mfrow = c(3, 3))
 
@@ -74,7 +99,22 @@ PlotSexRatioStrata.fn <- function(
 
     ratioF <- temp[, "F"] / (temp[, "M"] + temp[, "F"])
     nobs <- temp[, "F"] + temp[, "M"]
-    plot(ratioF, type = "l", col = "red", xlab = axis.name, ylab = "Fraction female", main = row.names(strat.df)[i], ylim = c(0, 1)) # ,...)
-    symbols(ratioF, circles = nobs, inches = circleSize, fg = "red", bg = rgb(1, 0, 0, alpha = 0.5), add = T)
+    plot(
+      ratioF,
+      type = "l",
+      col = "red",
+      xlab = axis.name,
+      ylab = "Fraction female",
+      main = row.names(strat.df)[i],
+      ylim = c(0, 1)
+    ) # ,...)
+    symbols(
+      ratioF,
+      circles = nobs,
+      inches = circleSize,
+      fg = "red",
+      bg = rgb(1, 0, 0, alpha = 0.5),
+      add = T
+    )
   }
 }

@@ -32,7 +32,7 @@ warehouse, do not always match the name agreed upon within the
 Population Ecology Program. So, standard abbreviations are returned for
 a given warehouse name.
 Partial matches are allowed, and are searched
-for using the first two columns of \code{\link{createMatrix}()}, so be
+for using the first two columns of \code{\link{createMatrix}}, so be
 weary of using terms used for multiple surveys as only the first match
 will be returned for each input value.
 }
@@ -51,7 +51,7 @@ testthat::expect_equal(c("Triennial Survey", NA), test)
 
 }
 \seealso{
-See \code{\link{createMatrix}()} for a list of available surveys.
+See \code{\link{createMatrix}} for a list of available surveys.
 }
 \author{
 Kelli Faye Johnson

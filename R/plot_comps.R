@@ -1,6 +1,6 @@
 #' Plot frequency data as bubble plots
 #'
-#' @template dir
+#' @inheritParams pull_catch
 #' @param data Data file object created by [get_expanded_comps()] or [get_raw_comps()].
 #' @param add_save_name Option to add text to a saved figure name. This option
 #'   can be useful if creating plots across multiple species and saving them
@@ -25,6 +25,7 @@
 #'
 #' @author Chantel Wetzel
 #' @export
+#' @family plot_
 #'
 #' @examples
 #' \dontrun{
@@ -43,7 +44,9 @@ plot_comps <- function(
   # if data is a list with both sexed and unsexed fish, choose sexed fish
   if ("sexed" %in% names(data) & "unsexed" %in% names(data)) {
     data <- data$sexed
-    message("data input includes both sexed and unsexed comps, plotting sexed comps only")
+    message(
+      "data input includes both sexed and unsexed comps, plotting sexed comps only"
+    )
   }
   # if data is just sexed or unsexed, pull that dataframe from the list
   if (length(data) == 1 && names(data) %in% c("sexed", "unsexed")) {
@@ -60,7 +63,7 @@ plot_comps <- function(
     N <- rep(1, nrow(data))
   }
 
-  plotdir <- file.path(dir, "plots")
+  plotdir <- file.path(dir)
   check_dir(dir = plotdir)
 
   plot_names <- file.path(
@@ -78,10 +81,12 @@ plot_comps <- function(
   year <- as.numeric(as.character(data$year))
   sex <- unique(data$sex)
   if (length(sex) > 1) {
-    cli::cli_abort("This function does not work on processed composition
+    cli::cli_abort(
+      "This function does not work on processed composition
       files with multiple Stock Synthesis sex specifications
       (sex = 0, sex = 1, sex = 3). Please filter file down to
-      a single SS3 sex type and re-run.")
+      a single SS3 sex type and re-run."
+    )
   }
   if (data_type == "length") {
     comps <- data[, -c(1:6)]
@@ -104,7 +109,9 @@ plot_comps <- function(
 
   # Determine if entries are proportions (e.g., sum to 1 or 100)
   # and convert if needed
-  if (sum(as.numeric(comps[1, ])) > 0.999 & sum(as.numeric(comps[1, ])) < 1.001) {
+  if (
+    sum(as.numeric(comps[1, ])) > 0.999 & sum(as.numeric(comps[1, ])) < 1.001
+  ) {
     comps <- 100 * comps
   }
   if (sum(as.numeric(comps[1, ])) != 100) {
@@ -119,7 +126,10 @@ plot_comps <- function(
   df$sex <- replace(df$sex, df$sex %in% c("m", "M"), "MALE")
   df$sex <- replace(df$sex, df$sex %in% c("u", "U"), "UNSEXED")
   df$sex <- factor(df$sex, levels = unique(df$sex))
-  df$variable <- utils::type.convert(gsub("[FMUfmu]", "", df$variable), as.is = TRUE)
+  df$variable <- utils::type.convert(
+    gsub("[FMUfmu]", "", df$variable),
+    as.is = TRUE
+  )
   df$n <- 0
   a <- 1
   for (y in year) {
@@ -151,11 +161,25 @@ plot_comps <- function(
       data = df |> dplyr::filter(value > 0),
       aes(x = year, y = variable)
     ) +
-      geom_point(aes(size = value, fill = sex, colour = sex),
-        alpha = 0.75, shape = 21
+      geom_point(
+        aes(size = value, fill = sex, colour = sex),
+        alpha = 0.75,
+        shape = 21
       ) +
-      scale_fill_manual(values = c("FEMALE" = "red", "MALE" = "blue", "UNSEXED" = "darkseagreen")) +
-      scale_color_manual(values = c("FEMALE" = "darkred", "MALE" = "darkblue", "UNSEXED" = "darkgreen")) +
+      scale_fill_manual(
+        values = c(
+          "FEMALE" = "red",
+          "MALE" = "blue",
+          "UNSEXED" = "darkseagreen"
+        )
+      ) +
+      scale_color_manual(
+        values = c(
+          "FEMALE" = "darkred",
+          "MALE" = "darkblue",
+          "UNSEXED" = "darkgreen"
+        )
+      ) +
       scale_size_continuous(
         range = c(1, 15),
         breaks = bub_range
@@ -169,12 +193,23 @@ plot_comps <- function(
           c(NA, max(y_axis))
         }
       ) +
-      labs(x = "Year", y = ylabel, size = "Relative\nAbundance (%)", fill = "") +
+      labs(
+        x = "Year",
+        y = ylabel,
+        size = "Relative\nAbundance (%)",
+        fill = ""
+      ) +
       theme(
         legend.key = element_blank(),
         axis.title.x = element_text(size = 12),
         axis.title.y = element_text(size = 12),
-        axis.text.x = element_text(colour = "black", size = 12, angle = 90, vjust = 0.3, hjust = 1),
+        axis.text.x = element_text(
+          colour = "black",
+          size = 12,
+          angle = 90,
+          vjust = 0.3,
+          hjust = 1
+        ),
         axis.text.y = element_text(colour = "black", size = 12),
         legend.text = element_text(size = 10, colour = "black"),
         legend.title = element_text(size = 12),
@@ -185,8 +220,11 @@ plot_comps <- function(
       guides(size = "legend", color = "none", fill = "none")
     if (!is.null(dir)) {
       ggsave(
-        filename = plot_names[1], plot = p,
-        width = width, height = height, units = "in"
+        filename = plot_names[1],
+        plot = p,
+        width = width,
+        height = height,
+        units = "in"
       )
     } else {
       print(p)
@@ -198,9 +236,14 @@ plot_comps <- function(
     df2 <- df
     df2$value <- df2$value / 100
     df2[df2$sex == "MALE", "value"] <- -1 * df2[df2$sex == "MALE", "value"]
-    values <- c("FEMALE" = "red", "MALE" = "blue", "UNSEXED" = "darkseagreen")[which(c("FEMALE", "MALE", "UNSEXED") %in% df2$sex)]
+    values <- c(
+      "FEMALE" = "red",
+      "MALE" = "blue",
+      "UNSEXED" = "darkseagreen"
+    )[which(c("FEMALE", "MALE", "UNSEXED") %in% df2$sex)]
     p2 <- ggplot2::ggplot(df2, aes(x = variable, y = value)) +
-      geom_line(aes(colour = sex), # add alpha = n inside the aes to shade by annual sample size
+      geom_line(
+        aes(colour = sex), # add alpha = n inside the aes to shade by annual sample size
         lwd = 1.1
       ) +
       facet_wrap(facets = "year") +
@@ -212,7 +255,13 @@ plot_comps <- function(
         legend.key = element_blank(),
         axis.title.x = element_text(size = 12),
         axis.title.y = element_text(size = 12),
-        axis.text.x = element_text(colour = "black", size = 12, angle = 90, vjust = 0.3, hjust = 1),
+        axis.text.x = element_text(
+          colour = "black",
+          size = 12,
+          angle = 90,
+          vjust = 0.3,
+          hjust = 1
+        ),
         axis.text.y = element_text(colour = "black", size = 12),
         legend.text = element_text(size = 10, colour = "black"),
         legend.title = element_text(size = 12),
@@ -222,8 +271,11 @@ plot_comps <- function(
       )
     if (!is.null(dir)) {
       ggsave(
-        filename = plot_names[2], plot = p2,
-        width = width, height = height, units = "in"
+        filename = plot_names[2],
+        plot = p2,
+        width = width,
+        height = height,
+        units = "in"
       )
     } else {
       print(p2)

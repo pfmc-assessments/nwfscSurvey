@@ -4,7 +4,7 @@
 \alias{pull_gemm}
 \title{Pull Groundfish Expanded Multiyear Mortality data}
 \usage{
-pull_gemm(common_name, years, dir = NULL, verbose = TRUE)
+pull_gemm(common_name, years = NULL, dir = NULL, verbose = TRUE)
 }
 \arguments{
 \item{common_name}{A character entry with the desired common name of the
@@ -35,7 +35,6 @@ function also allows you to subset the data by year using the years input and
 to save the object if the dir function input is given.
 }
 \examples{
-\dontrun{
 # Pull all GEMM data
 all_data <- pull_gemm()
 
@@ -47,9 +46,16 @@ data <- pull_gemm(common_name = c("Widow Rockfish", "Canary Rockfish"))
 
 # Pull species and subset years
 widow_recent <- pull_gemm(common_name = "Widow Rockfish", years = 2014:2019)
-}
 
+}
+\seealso{
+Other data pulling functions: 
+\code{\link{pull_bio}()},
+\code{\link{pull_biological_samples}()},
+\code{\link{pull_catch}()},
+\code{\link{pull_haul}()}
 }
 \author{
 Chantel Wetzel
 }
+\concept{data pulling functions}

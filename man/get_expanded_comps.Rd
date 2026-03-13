@@ -24,7 +24,7 @@ get_expanded_comps(
   age_low = lifecycle::deprecated(),
   age_high = lifecycle::deprecated(),
   age_error = lifecycle::deprecated(),
-  printfolder = "forSS3",
+  printfolder = lifecycle::deprecated(),
   verbose = TRUE
 )
 }
@@ -43,7 +43,7 @@ would create 2 cm bins where fish length between [0, 11.99) would be included in
 all fish [50- Inf) would be included in the 50 cm plus bin.}
 
 \item{strata}{A data frame that defines the strata and provides the
-calculated areas for each strata returned from \code{\link[=createStrataDF.fn]{createStrataDF.fn()}}.}
+calculated areas for each strata returned from \code{\link[=create_strata]{create_strata()}}.}
 
 \item{dir}{Directory where output will be saved. The directory where the file should be saved.
 If dir = NULL no output will be saved.}
@@ -99,9 +99,9 @@ format for Stock Synthesis. Default value of -1 which translates to the highest}
 
 \item{age_error}{Deprecated with {nwfscSurvey} 2.2. Use Lbin_hi instead.}
 
-\item{printfolder}{A string that will be appended to \code{dir}, creating a folder
-where the output will be saved. If specified as \code{""},
-the output will just be saved directly in \code{dir}. The default is \code{"forSS3"}.}
+\item{printfolder}{Deprecated with {nwfscSurvey} 2.8.0 to give users greater
+control on where to save files. A string that will be appended to \code{dir},
+creating a folder where the output will be saved.}
 
 \item{verbose}{A logical that specifies if you want to print messages and
 warnings to the console. The default is \code{TRUE}.}
@@ -133,12 +133,12 @@ catch <- pull_catch(
   survey = "NWFSC.Combo"
 )
 
-strata <- CreateStrataDF.fn(
+strata <- create_strata(
   names = c("shallow_wa", "shallow_or", "shallow_nca", "shelf_wa", "shelf_or", "shelf_nca"),
-  depths.shallow = c(55, 55, 55, 183, 183, 183),
-  depths.deep = c(183, 183, 183, 350, 350, 350),
-  lats.south = c(46.0, 42.0, 40.10, 46.0, 42.0, 40.10),
-  lats.north = c(49.0, 46.0, 42.0, 49.0, 46.0, 42.0)
+  depths_shallow = c(55, 55, 55, 183, 183, 183),
+  depths_deep = c(183, 183, 183, 350, 350, 350),
+  lats_south = c(46.0, 42.0, 40.10, 46.0, 42.0, 40.10),
+  lats_north = c(49.0, 46.0, 42.0, 49.0, 46.0, 42.0)
 )
 
 length_comps <- get_expanded_comps(
@@ -158,3 +158,4 @@ See
 \author{
 Chantel Wetzel and Allan Hicks
 }
+\concept{composition function}

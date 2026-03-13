@@ -4,13 +4,13 @@
 #' Get the scientific name, common name, and strata group for
 #' a vector of species.
 #'
+#' @inheritParams pull_catch
 #' @param species A vector of species names. The words can be separated
 #' using spaces or underscores. Full names are not required but they will
 #' increase the consistency of the results should partial matches return
 #' multiple matches.
 #' @param unident A logical entry with the default value of \code{FALSE},
 #' to match historical output that did not include unidentified groups.
-#' @template verbose
 #'
 #' @export
 #' @return A data frame with the
@@ -20,9 +20,7 @@
 #' that has spaces replaced with underscores;
 #' species values used as input in the input column; and
 #' strata used to assess its status in the strata column.
-#' @seealso See
-#' \code{\link{PullSpp.fn}} for information on common and scientific names;
-#' and \code{\link{GetStrata.fn}} for the different stratifications.
+#'
 #' @author Kelli Faye Johnson
 #' @examples
 #' get_species_info(c("sablefish"))

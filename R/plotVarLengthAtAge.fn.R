@@ -3,7 +3,7 @@
 #' Plots the SD and CV of age at observed and predicted length
 #'
 #'
-#' @template dir
+#' @inheritParams pull_catch
 #' @param dat A data frame of length-composition data returned from
 #'   [pull_bio()].
 #' @param main Name that will be used to name the saved png
@@ -21,6 +21,7 @@
 #' @param ...      Additional arguments for the plots
 #'
 #' @author Allan Hicks and Chantel Wetzel
+#' @family plot_
 #' @export
 
 PlotVarLengthAtAge.fn <- function(
@@ -60,7 +61,6 @@ PlotVarLengthAtAge.fn <- function(
   dat <- dat[!is.na(dat$Age), ]
   dat <- dat[dat$Sex %in% c("F", "M"), ]
 
-
   datL <- dat[!is.na(dat$Age), ]
   if (is.null(bins)) {
     datL$Age_2 <- datL$Age
@@ -81,7 +81,7 @@ PlotVarLengthAtAge.fn <- function(
     nn <- 2
   }
 
-  plotdir <- file.path(dir, "plots")
+  plotdir <- file.path(dir)
   check_dir(dir = plotdir)
   main_ <- ifelse(is.null(main), "", paste0(main, "_"))
   if (!is.null(dir)) {
@@ -104,7 +104,12 @@ PlotVarLengthAtAge.fn <- function(
   names(out) <- names(datL)
   for (i in 1:length(datL)) {
     if (estVB) {
-      xpar <- optim(parStart, VBopt.fn, age = datL[[i]]$Age, lengths = datL[[i]]$Length_cm)$par
+      xpar <- optim(
+        parStart,
+        VBopt.fn,
+        age = datL[[i]]$Age,
+        lengths = datL[[i]]$Length_cm
+      )$par
       cat("Estimated VB parameters for", names(datL)[i], xpar, "\n")
     }
     if (!estVB) {
@@ -124,16 +129,56 @@ PlotVarLengthAtAge.fn <- function(
     }
     out[[i]] <- data.frame(ages = ages, sd = xsd, cv = xcv)
 
-    plot(ages, xsd, xlab = "Age", ylab = "SD of L@A", type = "b", pch = 16, lty = 1, main = names(datL)[i], ...)
+    plot(
+      ages,
+      xsd,
+      xlab = "Age",
+      ylab = "SD of L@A",
+      type = "b",
+      pch = 16,
+      lty = 1,
+      main = names(datL)[i],
+      ...
+    )
     par(new = T)
-    plot(ages, xcv, xlab = "", ylab = "", yaxt = "n", type = "b", pch = 3, lty = 2, ...)
+    plot(
+      ages,
+      xcv,
+      xlab = "",
+      ylab = "",
+      yaxt = "n",
+      type = "b",
+      pch = 3,
+      lty = 2,
+      ...
+    )
     axis(4)
     mtext("CV", side = 4, line = 2.6)
     legend(x = legX, y = legY, c("SD", "CV"), pch = c(16, 3), lty = c(1, 2))
 
-    plot(VB.fn(ages, xpar[1], xpar[2], xpar[3]), xsd, xlab = "Predicted Length at Age", ylab = "SD of L@A", type = "b", pch = 16, lty = 1, main = names(datL)[i], ...)
+    plot(
+      VB.fn(ages, xpar[1], xpar[2], xpar[3]),
+      xsd,
+      xlab = "Predicted Length at Age",
+      ylab = "SD of L@A",
+      type = "b",
+      pch = 16,
+      lty = 1,
+      main = names(datL)[i],
+      ...
+    )
     par(new = T)
-    plot(VB.fn(ages, xpar[1], xpar[2], xpar[3]), xcv, xlab = "", ylab = "", yaxt = "n", type = "b", pch = 3, lty = 2, ...)
+    plot(
+      VB.fn(ages, xpar[1], xpar[2], xpar[3]),
+      xcv,
+      xlab = "",
+      ylab = "",
+      yaxt = "n",
+      type = "b",
+      pch = 3,
+      lty = 2,
+      ...
+    )
     axis(4)
     mtext("CV", side = 4, line = 2.6)
     legend(x = legX, y = legY, c("SD", "CV"), pch = c(16, 3), lty = c(1, 2))

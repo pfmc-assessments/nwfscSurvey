@@ -1,6 +1,7 @@
 #' Mapping function to draw land areas
 #'
 #' @export
+#' @family plot function
 draw_land <- function() {
   # Get world data so islands are plotted
   info_world <- ggplot2::map_data(
@@ -17,7 +18,8 @@ draw_land <- function() {
   )
   info_state[, "subregion"] <- "inland"
   info_state[info_state[, "region"] == "oregon", ][
-    71:144, "subregion"
+    71:144,
+    "subregion"
   ] <- "coast"
 
   list(
@@ -83,8 +85,7 @@ draw_theme <- function(size = 0.25) {
 #' @param lon,lat Vectors of two real numbers specifying the longitudinal and
 #'   latitudinal limits for the x and y axes.
 #' @export
-draw_USEEZ <- function(lon = c(-129.15, -116.50),
-                       lat = c(31.90, 49.50)) {
+draw_USEEZ <- function(lon = c(-129.15, -116.50), lat = c(31.90, 49.50)) {
   list(
     ggplot2::coord_sf(
       xlim = lon,

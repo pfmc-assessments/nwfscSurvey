@@ -7,7 +7,7 @@
 #' was not selected in the original data pull.
 #'
 #' @param data Data frame of pulled data created by the [pull_catch()], [pull_bio()],
-#'   [pull_haul()], or [pull_biological_samples].
+#'   [pull_haul()], or [pull_biological_samples()].
 #' @param data_type Character string to include within data filtering messages
 #'   to indicate the type of data being filtered such as "biological samples".
 #'   Default is "samples".
@@ -15,9 +15,11 @@
 #'   should be filtered using the standard filtering which removes tows with bad
 #'   performance (water haul or poor net performance), or stations that have been
 #'   removed from the survey sampling protocol.
-#' @template verbose
+#' @param verbose A logical that specifies if you want to print messages and
+#'   warnings to the console. The default is `TRUE`.
 #'
 #' @author Chantel Wetzel
+#' @family helper function
 #' @export
 #'
 #' @import cli
@@ -33,7 +35,9 @@ filter_pull <- function(
   if (length(good_performance) != dim(data)[1]) {
     if (verbose) {
       if ("total_catch_numbers" %in% colnames(data)) {
-        n <- length(which(data$performance != "Satisfactory" & data$total_catch_numbers > 0))
+        n <- length(which(
+          data$performance != "Satisfactory" & data$total_catch_numbers > 0
+        ))
       } else {
         n <- length(which(data$performance != "Satisfactory"))
       }
@@ -81,7 +85,10 @@ filter_pull <- function(
     if (standard_filtering) {
       data <- data[-water_hauls, ]
     } else {
-      data[water_hauls, "operation_dim$legacy_performance_code"] <- "water_hauls"
+      data[
+        water_hauls,
+        "operation_dim$legacy_performance_code"
+      ] <- "water_hauls"
     }
   }
 

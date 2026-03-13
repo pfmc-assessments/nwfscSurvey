@@ -37,6 +37,22 @@ no longer have to specify \code{dopng} to save the plot as a png.}
 \description{
 Function to plot sex ratio
 }
+\seealso{
+Other plot_: 
+\code{\link{PlotVarLengthAtAge.fn}()},
+\code{\link{plot_comps}()},
+\code{\link{plot_cpue}()},
+\code{\link{plot_cpue_map}()},
+\code{\link{plot_index}()},
+\code{\link{plot_length_age}()},
+\code{\link{plot_proportion}()},
+\code{\link{plot_sex_ratio}()},
+\code{\link{plot_sex_ratio_strata}()},
+\code{\link{plot_varlenage}()},
+\code{\link{plot_weight_length}()},
+\code{\link{plot_westcoast}()}
+}
 \author{
 Allan Hicks and Chantel Wetzel
 }
+\concept{plot_}

@@ -5,6 +5,9 @@
 #' up the user-defined strata areas. This function is designed to be used with
 #' catch pulled using [pull_catch()] and biological data pulled using [pull_bio()].
 #'
+#' @inheritParams pull_catch
+#' @inheritParams check_strata
+#' @inheritParams get_design_based
 #' @param bio_data A data frame of length-composition data returned from
 #'   [pull_bio()].
 #' @param catch_data A data frame of catch data returned from [pull_catch()].
@@ -15,8 +18,6 @@
 #'   would create 2 cm bins where fish length between [0, 11.99) would be included in the
 #'   10 cm bin, fish of length [12, 13.99) would be included in the 12 cm bin, and
 #'   all fish [50- Inf) would be included in the 50 cm plus bin.
-#' @template strata
-#' @template dir
 #' @param comp_column_name The name of the column to create composition data for that
 #'   must be a string. This column can be is used to determine whether to format the
 #'   composition data for length or age compositions by looking for either age
@@ -41,7 +42,10 @@
 #'   "Enter Month".
 #' @param fleet A fleet number to assign the composition data to based on the expected
 #'   format for Stock Synthesis. Default "Enter Fleet".
-#' @template partition
+#' @param partition Partition to assign the composition data based on the expected
+#' format for Stock Synthesis. Partition of 0 indicates that the composition data
+#' include all composition data, 1 for discarded composition data, and 2 for retained
+#' fish only. Default of 0.
 #' @param ageerr Number of ageing error vector to apply to the age data based on
 #'   Stock Synthesis. Default "Enter Numeric".
 #' @param Lbin_lo Lower age bin for all age composition data based on the expected
@@ -53,8 +57,6 @@
 #' @param age_error Deprecated with {nwfscSurvey} 2.2. Use Lbin_hi instead.
 #' @param age_low Deprecated with {nwfscSurvey} 2.2. Use Lbin_lo instead.
 #' @param age_high Deprecated with {nwfscSurvey} 2.2. Use Lbin_hi instead.
-#' @template printfolder
-#' @template verbose
 #'
 #' @seealso See
 #' \code{\link{get_input_n}} for information on input sample size calculations.
@@ -68,6 +70,7 @@
 #' `output = "tow_expansion_only"` a dataframe is returned with the composition
 #' data only expanded to the tow level (first stage expansion only).
 #' @export
+#' @family composition function
 #'
 #' @examples
 #' \dontrun{
@@ -81,12 +84,12 @@
 #'   survey = "NWFSC.Combo"
 #' )
 #'
-#' strata <- CreateStrataDF.fn(
+#' strata <- create_strata(
 #'   names = c("shallow_wa", "shallow_or", "shallow_nca", "shelf_wa", "shelf_or", "shelf_nca"),
-#'   depths.shallow = c(55, 55, 55, 183, 183, 183),
-#'   depths.deep = c(183, 183, 183, 350, 350, 350),
-#'   lats.south = c(46.0, 42.0, 40.10, 46.0, 42.0, 40.10),
-#'   lats.north = c(49.0, 46.0, 42.0, 49.0, 46.0, 42.0)
+#'   depths_shallow = c(55, 55, 55, 183, 183, 183),
+#'   depths_deep = c(183, 183, 183, 350, 350, 350),
+#'   lats_south = c(46.0, 42.0, 40.10, 46.0, 42.0, 40.10),
+#'   lats_north = c(49.0, 46.0, 42.0, 49.0, 46.0, 42.0)
 #' )
 #'
 #' length_comps <- get_expanded_comps(
@@ -105,7 +108,11 @@ get_expanded_comps <- function(
   strata,
   dir = NULL,
   comp_column_name = "length_cm",
-  output = c("full_expansion_ss3_format", "tow_expansion_only", "full_expansion_unformatted"),
+  output = c(
+    "full_expansion_ss3_format",
+    "tow_expansion_only",
+    "full_expansion_unformatted"
+  ),
   two_sex_comps = TRUE,
   input_n_method = c("stewart_hamel", "tows", "total_samples"),
   month = "Enter Month",
@@ -117,7 +124,7 @@ get_expanded_comps <- function(
   age_low = lifecycle::deprecated(),
   age_high = lifecycle::deprecated(),
   age_error = lifecycle::deprecated(),
-  printfolder = "forSS3",
+  printfolder = lifecycle::deprecated(),
   verbose = TRUE
 ) {
   # arguments deprecated to be consistent with output column names
@@ -142,6 +149,12 @@ get_expanded_comps <- function(
       when = "2.2",
       what = "nwfscSurvey::get_expanded_comps(age_error =)",
       with = "nwfscSurvey::get_expanded_comps(ageerr =)"
+    )
+  }
+  if (lifecycle::is_present(printfolder)) {
+    lifecycle::deprecate_warn(
+      when = "2.8.0",
+      what = "nwfscSurvey::get_expanded_comps(printfolder =)"
     )
   }
 
@@ -181,13 +194,17 @@ get_expanded_comps <- function(
     "total_catch_numbers"
   )
   if (any(!required_bio_columns %in% colnames(bio_data))) {
-    missing_columns <- required_bio_columns[!required_bio_columns %in% colnames(bio_data)]
+    missing_columns <- required_bio_columns[
+      !required_bio_columns %in% colnames(bio_data)
+    ]
     cli::cli_abort(
       "The following column(s) are missing in the bio_data: {missing_columns}"
     )
   }
   if (any(!required_catch_columns %in% colnames(catch_data))) {
-    missing_columns <- required_catch_columns[!required_catch_columns %in% colnames(catch_data)]
+    missing_columns <- required_catch_columns[
+      !required_catch_columns %in% colnames(catch_data)
+    ]
     cli::cli_abort(
       "The following column(s) are missing in the catch_data: {missing_columns}"
     )
@@ -211,10 +228,20 @@ get_expanded_comps <- function(
   }
 
   bins <- c(-999, comp_bins, Inf)
-  bio_data[, "bin"] <- bins[findInterval(as.numeric(bio_data[, "comp_column"]), bins, all.inside = TRUE)]
+  bio_data[, "bin"] <- bins[findInterval(
+    as.numeric(bio_data[, "comp_column"]),
+    bins,
+    all.inside = TRUE
+  )]
   if (verbose) {
-    percent_min <- round(100 * sum(bio_data[, "bin"] == -999) / dim(bio_data)[1], 2)
-    percent_max <- round(100 * sum(bio_data[, "comp_column"] >= max(comp_bins)) / dim(bio_data)[1], 2)
+    percent_min <- round(
+      100 * sum(bio_data[, "bin"] == -999) / dim(bio_data)[1],
+      2
+    )
+    percent_max <- round(
+      100 * sum(bio_data[, "comp_column"] >= max(comp_bins)) / dim(bio_data)[1],
+      2
+    )
     cli::cli_bullets(c(
       i = "There are {percent_min}% of records that are less than the minimum
      composition bin. These fish will be added to the minimum bin.",
@@ -238,7 +265,11 @@ get_expanded_comps <- function(
   }
 
   strata[, "strata"] <- strata[, "name"]
-  catch_data[, "strata"] <- StrataFactors.fn(catch_data, strata_vars, strata)
+  catch_data[, "strata"] <- strata_factors(
+    data = catch_data,
+    strata_vars = strata_vars,
+    strata_df = strata
+  )
   catch_data <- dplyr::left_join(
     catch_data,
     strata[, c("strata", "area")],
@@ -252,7 +283,11 @@ get_expanded_comps <- function(
       tows = n()
     )
 
-  bio_data[, "strata"] <- StrataFactors.fn(bio_data, strata_vars, strata)
+  bio_data[, "strata"] <- strata_factors(
+    data = bio_data,
+    strata_vars = strata_vars,
+    strata_df = strata
+  )
   if (verbose) {
     n <- sum(is.na(bio_data[, "strata"]))
     cli::cli_alert_info(
@@ -268,7 +303,14 @@ get_expanded_comps <- function(
 
   bio_catch <- dplyr::left_join(
     bio_data[, c("year", "trawl_id", "comp_column", "sex", "bin", "all_fish")],
-    catch_data[, c("trawl_id", "area_swept", "strata", "area", "tows", "total_catch_numbers")],
+    catch_data[, c(
+      "trawl_id",
+      "area_swept",
+      "strata",
+      "area",
+      "tows",
+      "total_catch_numbers"
+    )],
     by = "trawl_id"
   ) |>
     dplyr::filter(!is.na(strata)) |>
@@ -303,14 +345,25 @@ get_expanded_comps <- function(
       save_rdata(
         x = bio_catch,
         dir = dir,
-        name_base = paste0(comp_column_name, "_tow_expanded_comps_", species, "_", project),
+        name_base = paste0(
+          comp_column_name,
+          "_tow_expanded_comps_",
+          species,
+          "_",
+          project
+        ),
         verbose = verbose
       )
       metadata <- bio_catch |> labelled::generate_dictionary()
       save_rdata(
         x = metadata,
         dir = dir,
-        name_base = paste0("metadata_tow_expanded_comps_", species, "_", project),
+        name_base = paste0(
+          "metadata_tow_expanded_comps_",
+          species,
+          "_",
+          project
+        ),
         verbose = verbose
       )
     }
@@ -362,7 +415,9 @@ get_expanded_comps <- function(
     dplyr::right_join(grid)
   # Fill in any missing combinations that have NA or NaN with 0:
   comps_by_year <- full_comps |>
-    tidyr::complete(year, bin,
+    tidyr::complete(
+      year,
+      bin,
       fill = list(
         total_female = 0,
         total_male = 0,
@@ -378,7 +433,13 @@ get_expanded_comps <- function(
       save_rdata(
         x = comps_by_year,
         dir = dir,
-        name_base = paste0(comp_column_name, "_expanded_comps", species, "_", project),
+        name_base = paste0(
+          comp_column_name,
+          "_expanded_comps",
+          species,
+          "_",
+          project
+        ),
         verbose = verbose
       )
     }
@@ -437,10 +498,18 @@ get_expanded_comps <- function(
       fleet = fleet,
       sex = 3,
       partition = partition,
-      input_n = samples |> dplyr::filter(sex_grouped == "sexed") |> dplyr::select(input_n)
+      input_n = samples |>
+        dplyr::filter(sex_grouped == "sexed") |>
+        dplyr::select(input_n)
     )
-    sexed_formatted <- cbind(sexed_formatted, female_comps[, dimensions], male_comps[, dimensions])
-    remove <- which(apply(sexed_formatted[, 7:ncol(sexed_formatted)], 1, sum) == 0)
+    sexed_formatted <- cbind(
+      sexed_formatted,
+      female_comps[, dimensions],
+      male_comps[, dimensions]
+    )
+    remove <- which(
+      apply(sexed_formatted[, 7:ncol(sexed_formatted)], 1, sum) == 0
+    )
     if (length(remove) > 0) {
       sexed_formatted <- sexed_formatted[-remove, ]
     }
@@ -463,29 +532,73 @@ get_expanded_comps <- function(
     )
     unsexed_comps_good <- unsexed_comps[, dimensions]
     placeholder_comps <- 0 * unsexed_comps[, dimensions]
-    unsexed_formatted <- cbind(unsexed_formatted, unsexed_comps_good, placeholder_comps)
-    remove <- which(apply(unsexed_formatted[, 7:ncol(unsexed_formatted)], 1, sum) == 0)
+    unsexed_formatted <- cbind(
+      unsexed_formatted,
+      unsexed_comps_good,
+      placeholder_comps
+    )
+    remove <- which(
+      apply(unsexed_formatted[, 7:ncol(unsexed_formatted)], 1, sum) == 0
+    )
     if (length(remove) > 0) {
       unsexed_formatted <- unsexed_formatted[-remove, ]
     }
 
     if (length(grep("age", comp_column_name, ignore.case = TRUE)) > 0) {
-      sexed_formatted <- cbind(sexed_formatted[, 1:5], ageerr, Lbin_lo, Lbin_hi, sexed_formatted[, 6:dim(sexed_formatted)[2]])
+      sexed_formatted <- cbind(
+        sexed_formatted[, 1:5],
+        ageerr,
+        Lbin_lo,
+        Lbin_hi,
+        sexed_formatted[, 6:dim(sexed_formatted)[2]]
+      )
       if (dim(unsexed_formatted)[1] > 0) {
-        unsexed_formatted <- cbind(unsexed_formatted[, 1:5], ageerr, Lbin_lo, Lbin_hi, unsexed_formatted[, 6:dim(unsexed_formatted)[2]])
+        unsexed_formatted <- cbind(
+          unsexed_formatted[, 1:5],
+          ageerr,
+          Lbin_lo,
+          Lbin_hi,
+          unsexed_formatted[, 6:dim(unsexed_formatted)[2]]
+        )
       }
     }
 
     if (!is.null(dir)) {
       write.csv(
         x = sexed_formatted,
-        file = file.path(dir, printfolder, paste0(comp_column_name, "_sexed_expanded_", bin_range, "_", species, "_", project, ".csv")),
+        file = file.path(
+          dir,
+          printfolder,
+          paste0(
+            comp_column_name,
+            "_sexed_expanded_",
+            bin_range,
+            "_",
+            species,
+            "_",
+            project,
+            ".csv"
+          )
+        ),
         row.names = FALSE
       )
       if (dim(unsexed_formatted)[1] > 0) {
         write.csv(
           x = unsexed_formatted,
-          file = file.path(dir, printfolder, paste0(comp_column_name, "_unsexed_expanded_", bin_range, "_", species, "_", project, ".csv")),
+          file = file.path(
+            dir,
+            printfolder,
+            paste0(
+              comp_column_name,
+              "_unsexed_expanded_",
+              bin_range,
+              "_",
+              species,
+              "_",
+              project,
+              ".csv"
+            )
+          ),
           row.names = FALSE
         )
       }
@@ -499,7 +612,9 @@ get_expanded_comps <- function(
       fleet = fleet,
       sex = 0,
       partition = partition,
-      input_n = samples |> dplyr::filter(sex_grouped == "unsexed") |> dplyr::select(input_n)
+      input_n = samples |>
+        dplyr::filter(sex_grouped == "unsexed") |>
+        dplyr::select(input_n)
     )
     all_formatted <- cbind(all_formatted, unsexed_comps[, dimensions])
     remove <- which(apply(all_formatted[, 7:ncol(all_formatted)], 1, sum) == 0)
@@ -508,13 +623,32 @@ get_expanded_comps <- function(
     }
 
     if (length(grep("age", comp_column_name, ignore.case = TRUE)) > 0) {
-      all_formatted <- cbind(all_formatted[, 1:5], ageerr, Lbin_lo, Lbin_hi, all_formatted[, 6:dim(all_formatted)[2]])
+      all_formatted <- cbind(
+        all_formatted[, 1:5],
+        ageerr,
+        Lbin_lo,
+        Lbin_hi,
+        all_formatted[, 6:dim(all_formatted)[2]]
+      )
     }
 
     if (!is.null(dir)) {
       write.csv(
         x = all_formatted,
-        file = file.path(dir, printfolder, paste0(comp_column_name, "_unsexed_expanded_", bin_range, "_", species, "_", project, ".csv")),
+        file = file.path(
+          dir,
+          printfolder,
+          paste0(
+            comp_column_name,
+            "_unsexed_expanded_",
+            bin_range,
+            "_",
+            species,
+            "_",
+            project,
+            ".csv"
+          )
+        ),
         row.names = FALSE
       )
     }

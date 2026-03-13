@@ -5,9 +5,9 @@
 \title{Pull biological data (age, length, weight) from the NWFSC data warehouse}
 \usage{
 pull_bio(
-  survey,
   common_name = NULL,
   sci_name = NULL,
+  survey = "NWFSC.Combo",
   years = c(1970, 2050),
   dir = NULL,
   convert = TRUE,
@@ -16,6 +16,20 @@ pull_bio(
 )
 }
 \arguments{
+\item{common_name}{A character entry with the desired common name of the
+species you want to pull data for from the data warehouse.
+Use a vector of names if you want information for more than one species or
+if the desired species is included in the database using more than one name,
+e.g., vermilion rockfish (see the example below).
+Use the \code{sci_name} argument if you know the latin name.}
+
+\item{sci_name}{A character entry with the desired scientific name of the
+species you want to pull data for from the data warehouse.
+Use a vector of names if you want information for more than one species or
+if the desired species is included in the database using more than one name,
+e.g., vermilion rockfish (see the example below).
+Use the \code{common_name} argument if you know the common name.}
+
 \item{survey}{A character entry from one of the following options that
 specifies which survey to pull the data for. The input options are:
 \itemize{
@@ -30,8 +44,6 @@ specifies which survey to pull the data for. The input options are:
 \item NWFSC.Hook.Line (not yet working),
 \item NWFSC.Video,
 \item Triennial.Canada
-}
-
 The National Marine Fishery Service Alaska Fisheries Science Center (AFSC)
 Triennial survey was conducted between 1977 - 2004 occurring every 3rd year.
 The initial year, 1977, survey is not traditionally used in calculating
@@ -49,21 +61,8 @@ annually starting in 2003 (excluding 2020) and samples both the U.S. west coast
 shelf and slope between 55 - 1,280 meters.
 Data can only be pulled from one survey at a time, though we are working on
 allowing for a vector of survey names.
-Currently, \code{NWFSC.Shelf.Rockfish} and \code{NWFSC.Hook.Line} are not supported.}
-
-\item{common_name}{A character entry with the desired common name of the
-species you want to pull data for from the data warehouse.
-Use a vector of names if you want information for more than one species or
-if the desired species is included in the database using more than one name,
-e.g., vermilion rockfish (see the example below).
-Use the \code{sci_name} argument if you know the latin name.}
-
-\item{sci_name}{A character entry with the desired scientific name of the
-species you want to pull data for from the data warehouse.
-Use a vector of names if you want information for more than one species or
-if the desired species is included in the database using more than one name,
-e.g., vermilion rockfish (see the example below).
-Use the \code{common_name} argument if you know the common name.}
+Currently, \code{NWFSC.Shelf.Rockfish} and \code{NWFSC.Hook.Line} are not supported.
+}}
 
 \item{years}{An integer vector of length two with the
 range of years to pull data for (e.g., c(2003, 2024)).
@@ -89,29 +88,18 @@ In order to pull all species leave common_name or sci_name as NULL
 }
 \examples{
 \dontrun{
-# SurveyName is only arg that has to be specified
-bio_dat <- PullBio.fn(SurveyName = "NWFSC.Combo")
-
-# Example with specified common name
-bio_dat <- PullBio.fn(
-  Name = "vermilion rockfish",
-  SurveyName = "NWFSC.Combo"
-)
-
-# Example with specified scientific name
-bio_dat <- PullBio.fn(
-  SciName = "Eopsetta jordani",
-  SurveyName = "NWFSC.Combo"
-)
-
-# Example with multiple names
-bio_dat <- PullBio.fn(
-  SciName = c("Sebastes aurora", "Eopsetta jordani"),
-  SurveyName = "NWFSC.Combo"
-)
+bio_data <- pull_bio(common_name = "sablefish")
 }
 
+}
+\seealso{
+Other data pulling functions: 
+\code{\link{pull_biological_samples}()},
+\code{\link{pull_catch}()},
+\code{\link{pull_gemm}()},
+\code{\link{pull_haul}()}
 }
 \author{
 Chantel Wetzel
 }
+\concept{data pulling functions}

@@ -5,7 +5,7 @@
 #' and predicted length
 #'
 #'
-#' @template dir
+#' @inheritParams pull_catch
 #' @param dat The data loaded from [pull_bio()]
 #' @param main Name that will be used to name the saved png
 #' @param bySex Logical to indicate if plot by sex
@@ -24,11 +24,12 @@
 #' @param ... Additional arguments for the plots.
 #'
 #' @author Chantel Wetzel
+#' @family plot_
 #' @export
 
 plot_varlenage <- function(
-  dir = NULL,
   dat,
+  dir = NULL,
   main = NULL,
   Par = data.frame(K = 0.13, Linf = 55, L0 = 15, CV0 = 0.10, CV1 = 0.10),
   bySex = TRUE,
@@ -51,7 +52,7 @@ plot_varlenage <- function(
     return(out)
   }
 
-  plotdir <- file.path(dir, "plots")
+  plotdir <- file.path(dir)
   check_dir(dir = plotdir)
   main_ <- ifelse(is.null(main), "", paste0(main, "_"))
 
@@ -72,8 +73,13 @@ plot_varlenage <- function(
   par(mfcol = c(2, nn), mar = c(4, 4, 4, 4), oma = c(2, 2, 2, 2))
 
   ests <- est_growth(
-    dir = dir, dat = dat, Par = Par, return_df = FALSE,
-    bySex = bySex, estVB = estVB, bins = bins
+    dir = dir,
+    dat = dat,
+    Par = Par,
+    return_df = FALSE,
+    bySex = bySex,
+    estVB = estVB,
+    bins = bins
   )
   if (length(ests) > 2) {
     sex_names <- c("female", "male")
@@ -89,7 +95,11 @@ plot_varlenage <- function(
 
   # Loop by sex
   for (i in 1:max_loop) {
-    xpar <- c(as.numeric(ests[[i]][1]), as.numeric(ests[[i]][2]), as.numeric(ests[[i]][3]))
+    xpar <- c(
+      as.numeric(ests[[i]][1]),
+      as.numeric(ests[[i]][2]),
+      as.numeric(ests[[i]][3])
+    )
     xsd <- ests[[num[i]]][, 2]
     xcv <- ests[[num[i]]][, 3]
     if (is.null(bins)) {
@@ -98,24 +108,82 @@ plot_varlenage <- function(
       ages <- bin[as.numeric(rownames(ests[[num[i]]]))]
     }
 
-    plot(ages, xsd, col = colors[1], cex = 1.1, xlab = "Age", ylab = "SD of L@A", type = "b", pch = 16, lty = 1, main = names(la_data_list)[i], ...)
-    par(new = T)
-    plot(ages, xcv, col = colors[2], cex = 1.1, xlab = "", ylab = "", yaxt = "n", type = "b", pch = 3, lty = 2, ...)
-    axis(4)
-    mtext("CV", side = 4, line = 2.6)
-    legend(bty = "n", x = legX, y = legY, c("SD", "CV"), col = colors, pch = c(16, 3), lty = c(1, 2))
-    plot(calc_vb(age = ages, k = xpar[1], Linf = xpar[2], L0 = xpar[3]), xsd,
-      xlab = "Predicted Length at Age", ylab = "SD of L@A",
-      col = colors[1], cex = 1.1, type = "b", pch = 16, lty = 1, main = sex_names[i], ...
+    plot(
+      ages,
+      xsd,
+      col = colors[1],
+      cex = 1.1,
+      xlab = "Age",
+      ylab = "SD of L@A",
+      type = "b",
+      pch = 16,
+      lty = 1,
+      main = names(la_data_list)[i],
+      ...
     )
     par(new = T)
-    plot(calc_vb(age = ages, k = xpar[1], Linf = xpar[2], L0 = xpar[3]), xcv,
+    plot(
+      ages,
+      xcv,
+      col = colors[2],
+      cex = 1.1,
       xlab = "",
-      col = colors[2], cex = 1.1, ylab = "", yaxt = "n", type = "b", pch = 3, lty = 2, ...
+      ylab = "",
+      yaxt = "n",
+      type = "b",
+      pch = 3,
+      lty = 2,
+      ...
     )
     axis(4)
     mtext("CV", side = 4, line = 2.6)
-    legend(bty = "n", col = colors, x = legX, y = legY, c("SD", "CV"), pch = c(16, 3), lty = c(1, 2))
+    legend(
+      bty = "n",
+      x = legX,
+      y = legY,
+      c("SD", "CV"),
+      col = colors,
+      pch = c(16, 3),
+      lty = c(1, 2)
+    )
+    plot(
+      calc_vb(age = ages, k = xpar[1], Linf = xpar[2], L0 = xpar[3]),
+      xsd,
+      xlab = "Predicted Length at Age",
+      ylab = "SD of L@A",
+      col = colors[1],
+      cex = 1.1,
+      type = "b",
+      pch = 16,
+      lty = 1,
+      main = sex_names[i],
+      ...
+    )
+    par(new = T)
+    plot(
+      calc_vb(age = ages, k = xpar[1], Linf = xpar[2], L0 = xpar[3]),
+      xcv,
+      xlab = "",
+      col = colors[2],
+      cex = 1.1,
+      ylab = "",
+      yaxt = "n",
+      type = "b",
+      pch = 3,
+      lty = 2,
+      ...
+    )
+    axis(4)
+    mtext("CV", side = 4, line = 2.6)
+    legend(
+      bty = "n",
+      col = colors,
+      x = legX,
+      y = legY,
+      c("SD", "CV"),
+      pch = c(16, 3),
+      lty = c(1, 2)
+    )
   } # end sex loop
 
   if (!is.null(dir)) {

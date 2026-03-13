@@ -2,12 +2,12 @@
 % Please edit documentation in R/codify_sex.R
 \name{codify_sex}
 \alias{codify_sex}
-\alias{codify_sex_SS3}
+\alias{codify_sex_ss3}
 \title{Code sexes into standardized strings}
 \usage{
 codify_sex(x)
 
-codify_sex_SS3(x)
+codify_sex_ss3(x)
 }
 \arguments{
 \item{x}{A vector of values used to store sex information.
@@ -67,9 +67,13 @@ codify_sex(c("U", "F", "M", "both", 1, 2, NA))
 codify_sex(c("both", rep(5, 10), "both", 1, 2, NA))
 
 # Change codified sex from letters to integers for Stock Synthesis
-codify_sex_SS3(c("M", "U", "K"))
+codify_sex_ss3(c("M", "U", "K"))
+}
+\seealso{
+Other helper functions: 
+\code{\link{check_strata}()}
 }
 \author{
 Kelli F. Johnson
 }
-\concept{codify functions}
+\concept{helper functions}

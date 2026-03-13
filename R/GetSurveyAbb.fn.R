@@ -7,7 +7,7 @@
 #' Population Ecology Program. So, standard abbreviations are returned for
 #' a given warehouse name.
 #' Partial matches are allowed, and are searched
-#' for using the first two columns of \code{\link{createMatrix}()}, so be
+#' for using the first two columns of \code{\link{createMatrix}}, so be
 #' weary of using terms used for multiple surveys as only the first match
 #' will be returned for each input value.
 #'
@@ -25,7 +25,7 @@
 #' returned. The function returns \code{""} for surveys not found in the
 #' matrix by default, but this return value for unmatched surveys can
 #' be changed by altering \code{na.return}.
-#' @seealso See \code{\link{createMatrix}()} for a list of available surveys.
+#' @seealso See \code{\link{createMatrix}} for a list of available surveys.
 #' @examples
 #' # Return a vector of agreed upon abbreviations for the
 #' # Triennial Survey and the West Coast Groundfish Bottom Trawl Survey.
@@ -40,8 +40,14 @@
 #' }
 #'
 GetSurveyAbb.fn <- function(surveys = "Combo", na.return = "") {
+  lifecycle::deprecate_warn(
+    when = "2.8.0",
+    what = "GetSurveyAbb.fn()",
+    details = "This function is no longer needed and will be removed in a future version. Please use get_survey_names_abb() instead."
+  )
   data <- createMatrix()
-  index <- mapply(c,
+  index <- mapply(
+    c,
     lapply(surveys, grep, x = data[, 1], ignore.case = TRUE),
     lapply(surveys, grep, x = data[, 2], ignore.case = TRUE),
     SIMPLIFY = FALSE

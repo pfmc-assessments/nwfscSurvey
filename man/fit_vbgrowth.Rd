@@ -83,3 +83,10 @@ plot(bio_dat$Age, predictions[, "Lhat_pred"],
 exp(solve$par)
 }
 }
+\seealso{
+Other biology function: 
+\code{\link{est_growth}()},
+\code{\link{est_vbgrowth}()},
+\code{\link{estimate_weight_length}()}
+}
+\concept{biology function}

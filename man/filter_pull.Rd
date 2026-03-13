@@ -13,7 +13,7 @@ filter_pull(
 }
 \arguments{
 \item{data}{Data frame of pulled data created by the \code{\link[=pull_catch]{pull_catch()}}, \code{\link[=pull_bio]{pull_bio()}},
-\code{\link[=pull_haul]{pull_haul()}}, or \link{pull_biological_samples}.}
+\code{\link[=pull_haul]{pull_haul()}}, or \code{\link[=pull_biological_samples]{pull_biological_samples()}}.}
 
 \item{data_type}{Character string to include within data filtering messages
 to indicate the type of data being filtered such as "biological samples".
@@ -34,6 +34,15 @@ for tow performance, valid stations, and depth range. This function is called
 within the pull functions, but can be called on pulled data frames if filtering
 was not selected in the original data pull.
 }
+\seealso{
+Other helper function: 
+\code{\link{Format.AKSlope.fn}()},
+\code{\link{check_dir}()},
+\code{\link{check_survey}()},
+\code{\link{combine_tows}()},
+\code{\link{createMatrix}()}
+}
 \author{
 Chantel Wetzel
 }
+\concept{helper function}

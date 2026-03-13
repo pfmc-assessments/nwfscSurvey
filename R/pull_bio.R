@@ -3,19 +3,10 @@
 #' This function can be used to pull a single species or all observed species
 #' In order to pull all species leave common_name or sci_name as NULL
 #'
-#' @template common_name
-#' @template sci_name
-#' @template years
-#' @template survey
-#' @template dir
-#' @template convert
-#' @template verbose
-#' @param standard_filtering A logical TRUE/FALSE that specifies whether data
-#'   should be filtered using the standard filtering which removes tows with bad
-#'   performance (water haul or poor net performance), or stations that have been
-#'   removed from the survey sampling protocol.
+#' @inheritParams pull_catch
 #'
 #' @author Chantel Wetzel
+#' @family data pulling functions
 #' @export
 #'
 #' @import chron
@@ -25,34 +16,13 @@
 #'
 #' @examples
 #' \dontrun{
-#' # SurveyName is only arg that has to be specified
-#' bio_dat <- PullBio.fn(SurveyName = "NWFSC.Combo")
-#'
-#' # Example with specified common name
-#' bio_dat <- PullBio.fn(
-#'   Name = "vermilion rockfish",
-#'   SurveyName = "NWFSC.Combo"
-#' )
-#'
-#' # Example with specified scientific name
-#' bio_dat <- PullBio.fn(
-#'   SciName = "Eopsetta jordani",
-#'   SurveyName = "NWFSC.Combo"
-#' )
-#'
-#' # Example with multiple names
-#' bio_dat <- PullBio.fn(
-#'   SciName = c("Sebastes aurora", "Eopsetta jordani"),
-#'   SurveyName = "NWFSC.Combo"
-#' )
-# bio_dat <- PullBio.fn(Name = c("Sunset rockfish", "vermilion rockfish",
-# "vermilion and sunset rockfish"), SurveyName = "NWFSC.Combo")
+#' bio_data <- pull_bio(common_name = "sablefish")
 #' }
 #'
 pull_bio <- function(
-  survey,
   common_name = NULL,
   sci_name = NULL,
+  survey = "NWFSC.Combo",
   years = c(1970, 2050),
   dir = NULL,
   convert = TRUE,

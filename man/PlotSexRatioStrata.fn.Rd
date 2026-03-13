@@ -7,9 +7,9 @@
 PlotSexRatioStrata.fn(
   dir = NULL,
   dat,
+  strat.df,
   type = "length",
   strat.vars = c("Depth_m", "Latitude_dd"),
-  strat.df = NULL,
   circleSize = 0.05,
   dopng = lifecycle::deprecated(),
   ...
@@ -22,14 +22,14 @@ If dir = NULL no output will be saved.}
 \item{dat}{A data frame of length-composition data returned from
 \code{\link[=pull_bio]{pull_bio()}}.}
 
+\item{strat.df}{A data frame that defines the strata and provides the
+calculated areas for each strata returned from \code{\link[=createStrataDF.fn]{createStrataDF.fn()}}.}
+
 \item{type}{Specify where to calculate the sex ration by length or age.}
 
 \item{strat.vars}{Variables in both data frame that are used to
 define the strata. Default is bottom depth (m) and latitudes (decimal
 degrees), i.e., \code{c("Depth_m", "Latitude_dd")}.}
-
-\item{strat.df}{A data frame that defines the strata and provides the
-calculated areas for each strata returned from \code{\link[=createStrataDF.fn]{createStrataDF.fn()}}.}
 
 \item{circleSize}{circle size}
 
@@ -45,6 +45,7 @@ Function to plot sex ratio by strata
 }
 \seealso{
 \code{\link{StrataFactors.fn}}
+\code{\link{createStrataDF.fn}}
 }
 \author{
 Allan Hicks and Chantel Wetzel

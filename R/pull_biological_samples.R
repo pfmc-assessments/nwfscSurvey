@@ -5,29 +5,21 @@
 #' include the sample numbers which allows the lab analysis to be linked back to
 #' the sampled fish.
 #'
-#' @template common_name
-#' @template sci_name
-#' @template years
-#' @template survey
-#' @template dir
-#' @template verbose
-#' @param standard_filtering A logical TRUE/FALSE that specifies whether data
-#'   should be filtered using the standard filtering which removes tows with bad
-#'   performance (water haul or poor net performance), or stations that have been
-#'   removed from the survey sampling protocol.
+#' @inheritParams pull_catch
 #'
 #' @return Returns a data frame of special biological samples with sample number
 #' @author Chantel Wetzel
 #' @export
+#' @family data pulling functions
 #'
 #' @import cli
 #' @import glue
 #'
 #'
 pull_biological_samples <- function(
-  survey,
   common_name = NULL,
   sci_name = NULL,
+  survey = "NWFSC.Combo",
   years = c(1980, 2050),
   dir = NULL,
   verbose = TRUE,

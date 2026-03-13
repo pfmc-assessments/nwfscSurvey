@@ -39,6 +39,7 @@
 #'
 #' @author Chantel Wetzel and Kelli Johnson
 #' @export
+#' @family strata function
 #' @seealso
 #' See \code{\link{StrataAreas.fn}} for how areas are calculated.
 #' See \code{\link{get_design_based}} for how the areas are used to create design-based biomass estimates.
@@ -50,6 +51,11 @@ CreateStrataDF.fn <- function(
   lats.south,
   lats.north
 ) {
+  lifecycle::deprecate_warn(
+    when = "2.8.0",
+    what = "CreateStrataDF.fn()",
+    details = "This function is no longer needed and will be removed in a future version. Please use create_strata() instead."
+  )
   SA3_v2021.1 <- NULL
   utils::data(
     "SA3_v2021.1",

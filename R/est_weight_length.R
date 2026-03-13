@@ -12,10 +12,12 @@
 #' @param col_weight A numeric or character value specifying the column
 #'   to use in `data` for weight information. These weights are assumed to
 #'   be in kilograms The default value is `weight_kg`.
-#' @template verbose
+#' @param verbose A logical that specifies if you want to print messages and
+#'   warnings to the console. The default is `TRUE`.
 #'
 #' @author Kelli F. Johnson and Chantel Wetzel
 #' @export
+#' @family biology function
 #' @return A data frame of weight-length parameters by sex.
 #' Parameters A and B are in the appropriate units to input
 #' into Stock Synthesis Wtlen_1_Fem and Wtlen_2_Fem, or
@@ -57,12 +59,14 @@ estimate_weight_length <- function(
   mresults <- list(
     female = dplyr::filter(data, sex %in% c("F", "Female", "f")),
     male = dplyr::filter(data, sex %in% c("M", "Male", "m")),
-    all = dplyr::filter(data, sex %in% c(NA, "F", "M", "U", "H", "Male", "Female", "Unsexed", "m", "f", "u"))
+    all = dplyr::filter(
+      data,
+      sex %in%
+        c(NA, "F", "M", "U", "H", "Male", "Female", "Unsexed", "m", "f", "u")
+    )
   ) |>
     purrr::map_dfr(
-      ~ tidyr::nest(.x,
-        data = everything()
-      ),
+      ~ tidyr::nest(.x, data = everything()),
       .id = "group"
     ) |>
     dplyr::mutate(
@@ -81,7 +85,10 @@ estimate_weight_length <- function(
       sex = group,
       median_intercept = purrr::map_dbl(fits, ~ exp(.x$coefficients[1])),
       SD = purrr::map_dbl(fits, ~ sd(.x$residuals)),
-      A = purrr::map_dbl(fits, ~ exp(.x$coefficients[1]) * exp(0.5 * sd(.x$residuals)^2)),
+      A = purrr::map_dbl(
+        fits,
+        ~ exp(.x$coefficients[1]) * exp(0.5 * sd(.x$residuals)^2)
+      ),
       B = purrr::map_dbl(fits, ~ .x$coefficients[2])
     ) |>
     data.frame()

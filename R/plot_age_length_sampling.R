@@ -5,18 +5,24 @@
 #' @param ylim y limits for plot, defaults to (0, 0.049)
 #' @param dir Defaults to NULL (plot made, but not saved to file). Can alternatively be a string filename
 #' by year and sex
-
+#'
+#' @author Chantel Wetzel
 #' @importFrom graphics grid hist
 #' @export
 
-plot_age_length_sampling <- function(data,
-                                     xlim = c(0, 120),
-                                     ylim = c(0, 0.049),
-                                     dir = NULL) {
+plot_age_length_sampling <- function(
+  data,
+  xlim = c(0, 120),
+  ylim = c(0, 0.049),
+  dir = NULL
+) {
   if (!is.null(dir)) {
     png(
-      filename = file.path(dir, "plots", "age_length_comparison.png"),
-      width = 10, height = 7, units = "in", res = 300
+      filename = file.path(dir, "age_length_comparison.png"),
+      width = 10,
+      height = 7,
+      units = "in",
+      res = 300
     )
   }
   # make multi-panel plot comparing length samples to the subset with ages
@@ -31,7 +37,8 @@ plot_age_length_sampling <- function(data,
 
   # empty plot for legend
   plot(0, type = "n", axes = FALSE)
-  legend("left",
+  legend(
+    "left",
     bty = "n",
     fill = colvec,
     cex = 1.5,
@@ -45,7 +52,8 @@ plot_age_length_sampling <- function(data,
 
   for (y in years) {
     # make empty plot (note: xlim and ylim were set by trial and error)
-    plot(0,
+    plot(
+      0,
       type = "n",
       xlim = xlim,
       xaxs = "i",
@@ -61,16 +69,20 @@ plot_age_length_sampling <- function(data,
       axis(1)
     }
     lengths.y <- data$Length_cm[data$Year == y]
-    ages.y <- data$Length_cm[data$Year == y &
-      !is.na(data$Age)]
-    hist(lengths.y,
+    ages.y <- data$Length_cm[
+      data$Year == y &
+        !is.na(data$Age)
+    ]
+    hist(
+      lengths.y,
       breaks = seq(0, 120, 5),
       freq = FALSE,
       col = colvec[1],
       add = TRUE
     )
     if (length(ages.y > 0)) {
-      hist(ages.y,
+      hist(
+        ages.y,
         breaks = seq(0, 120, 5),
         freq = FALSE,
         col = colvec[2],
@@ -78,8 +90,10 @@ plot_age_length_sampling <- function(data,
       )
     }
     legend("topleft", legend = NA, bty = "n", title = y, cex = 1.5)
-    legend("right",
-      legend = NA, bty = "n",
+    legend(
+      "right",
+      legend = NA,
+      bty = "n",
       title = paste0(
         "N lens = ",
         length(lengths.y),

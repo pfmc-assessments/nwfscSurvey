@@ -8,6 +8,7 @@
 #' The definition of what classifies as "like fish" depends on the
 #' stage of the expansion, see the Details section.
 #'
+#' @inheritParams pull_catch
 #' @param x A data frame or a nested list depending on `sexRatioStage`
 #'   which will dictate where this function is called inside code that
 #'   expands the data such as [get_expanded_comps()].
@@ -30,7 +31,6 @@
 #'   the bin is missing.
 #'   TODO: This argument could be avoided if the bins were factors where all
 #'         of the levels are documented.
-#' @template verbose
 #'
 #' @author Allan C. Hicks and Chantel R. Wetzel
 #' @export
