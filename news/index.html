@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">nwfscSurvey</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">2.2</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">2.8.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -32,6 +32,18 @@
 
     </div>
 
+    <div class="section level2">
+<h2 class="pkg-version" data-toc-text="2.8.0" id="nwfscsurvey-280">nwfscSurvey 2.8.0<a class="anchor" aria-label="anchor" href="#nwfscsurvey-280"></a></h2>
+<ul><li>Add replacement functions for a number of existing functions with standardized naming structure and add soft deprecation warning to the older functions. The new functions are: <code><a href="../reference/create_strata.html">create_strata()</a></code> to replace <code>creatStrataDF.fn()</code>, <code><a href="../reference/get_spp_list.html">get_spp_list()</a></code> to replace <code><a href="../reference/GetSppDefault.fn.html">GetSppDefault.fn()</a></code>, <code><a href="../reference/get_strata_areas.html">get_strata_areas()</a></code> to replace <code>createStrataDF.fn()</code>, <code>get_strata_areas_default()</code> to replace <code><a href="../reference/GetStrata.fn.html">GetStrata.fn()</a></code>, <code><a href="../reference/get_survey_names_abb.html">get_survey_names_abb()</a></code> to replace <code><a href="../reference/GetSurveyAbb.fn.html">GetSurveyAbb.fn()</a></code>, <code><a href="../reference/get_survey_names_long.html">get_survey_names_long()</a></code> to replace <code><a href="../reference/createMatrix.html">createMatrix()</a></code>, <code><a href="../reference/plot_cpue_map.html">plot_cpue_map()</a></code> to replace <code><a href="../reference/PlotMap.fn.html">PlotMap.fn()</a></code>, <code><a href="../reference/plot_sex_ratio.html">plot_sex_ratio()</a></code> to replace <code><a href="../reference/PlotSexRatio.fn.html">PlotSexRatio.fn()</a></code>, <code><a href="../reference/plot_sex_ratio_strata.html">plot_sex_ratio_strata()</a></code> to replace <code><a href="../reference/PlotSexRatioStrata.fn.html">PlotSexRatioStrata.fn()</a></code>, and <code><a href="../reference/strata_factors.html">strata_factors()</a></code> to replace <code><a href="../reference/StrataAreas.fn.html">StrataAreas.fn()</a></code>.</li>
+<li>Hard deprecate functions that should no longer be used: <code>ReadInLengths()</code>, <code>ReadInAges()</code>, and <code><a href="../reference/Format.AKSlope.fn.html">Format.AKSlope.fn()</a></code>.</li>
+<li>Eliminate the hardwired functionality of all plots being saved to <code>file.path(dir, "plots")</code> and move to save files to the user specified <code>dir</code>.</li>
+<li>Eliminate the hardwired functionality of all ss3 output being saved to <code>file.path(dir, printfolder)</code> with the default of <code>printfolder = forss3</code> and move to save files to the user specified <code>dir</code>.</li>
+<li>Make <code>survey = NWFSC.Combo</code> the default argument for all <code>pull_</code> functions.</li>
+<li>Move to <code>@inheritParams</code> from <code>@template</code>
+</li>
+<li>Removes 17 deprecated functions (and their corresponding man pages) including <code>Biomass.fn</code>, <code>PullCatch.fn</code>, <code>PullBio.fn</code>, <code>SurveyLFs.fn</code>, <code>SurveyAFs.fn</code>, <code>GetN.fn</code>, and others, along with cleaning up the NAMESPACE of their exports and unused imports.</li>
+<li>Converts <code><a href="https://rdrr.io/r/base/stop.html" class="external-link">stop()</a></code> and warning() calls to <code><a href="https://cli.r-lib.org/reference/cli_abort.html" class="external-link">cli::cli_abort()</a></code> and <code><a href="https://cli.r-lib.org/reference/cli_alert.html" class="external-link">cli::cli_alert_warning()</a></code>.</li>
+</ul></div>
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="2.2" id="nwfscsurvey-22">nwfscSurvey 2.2<a class="anchor" aria-label="anchor" href="#nwfscsurvey-22"></a></h2>
 <div class="sourceCode" id="cb1"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" tabindex="-1"></a><span class="sc">*</span> Correct unit issues throughout the package</span></code></pre></div>

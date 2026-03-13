@@ -8,9 +8,9 @@ NULL
 
 ``` r
 pull_bio(
-  survey,
   common_name = NULL,
   sci_name = NULL,
+  survey = "NWFSC.Combo",
   years = c(1970, 2050),
   dir = NULL,
   convert = TRUE,
@@ -20,6 +20,24 @@ pull_bio(
 ```
 
 ## Arguments
+
+- common_name:
+
+  A character entry with the desired common name of the species you want
+  to pull data for from the data warehouse. Use a vector of names if you
+  want information for more than one species or if the desired species
+  is included in the database using more than one name, e.g., vermilion
+  rockfish (see the example below). Use the `sci_name` argument if you
+  know the latin name.
+
+- sci_name:
+
+  A character entry with the desired scientific name of the species you
+  want to pull data for from the data warehouse. Use a vector of names
+  if you want information for more than one species or if the desired
+  species is included in the database using more than one name, e.g.,
+  vermilion rockfish (see the example below). Use the `common_name`
+  argument if you know the common name.
 
 - survey:
 
@@ -46,46 +64,27 @@ pull_bio(
 
   - NWFSC.Video,
 
-  - Triennial.Canada
-
-  The National Marine Fishery Service Alaska Fisheries Science Center
-  (AFSC) Triennial survey was conducted between 1977 - 2004 occurring
-  every 3rd year. The initial year, 1977, survey is not traditionally
-  used in calculating indices of abundance. The Triennial survey sampled
-  areas within the Canadian EEZ on the West Coast of Vancouver Island in
-  1980 - 2001 but these data are associated with a different survey name
-  "Triennial.Canada". The AFSC Slope Survey (AFSC.Slope) along the west
-  coast of the U.S. began in 1984 and occurred annually from 1988-2001,
-  with the exception of 1994 and 1998, when surveys were not conducted.
-  Prior to 1997, only a limited portion of the coast was covered in each
-  year. U.S. West Coast groundfish stock assessments only use the four
-  years of consistent and complete survey coverage (1997, 1999-2001).
-  The Northwest Fisheries Science Center (NWFSC) Slope survey
-  (NWFSC.Slope) was conducted between 1998 - 2001. The NWFSC West Coast
-  Groundfish Bottom Trawl survey (NWFSC.Combo) is conducted annually
-  starting in 2003 (excluding 2020) and samples both the U.S. west coast
-  shelf and slope between 55 - 1,280 meters. Data can only be pulled
-  from one survey at a time, though we are working on allowing for a
-  vector of survey names. Currently, `NWFSC.Shelf.Rockfish` and
-  `NWFSC.Hook.Line` are not supported.
-
-- common_name:
-
-  A character entry with the desired common name of the species you want
-  to pull data for from the data warehouse. Use a vector of names if you
-  want information for more than one species or if the desired species
-  is included in the database using more than one name, e.g., vermilion
-  rockfish (see the example below). Use the `sci_name` argument if you
-  know the latin name.
-
-- sci_name:
-
-  A character entry with the desired scientific name of the species you
-  want to pull data for from the data warehouse. Use a vector of names
-  if you want information for more than one species or if the desired
-  species is included in the database using more than one name, e.g.,
-  vermilion rockfish (see the example below). Use the `common_name`
-  argument if you know the common name.
+  - Triennial.Canada The National Marine Fishery Service Alaska
+    Fisheries Science Center (AFSC) Triennial survey was conducted
+    between 1977 - 2004 occurring every 3rd year. The initial year,
+    1977, survey is not traditionally used in calculating indices of
+    abundance. The Triennial survey sampled areas within the Canadian
+    EEZ on the West Coast of Vancouver Island in 1980 - 2001 but these
+    data are associated with a different survey name "Triennial.Canada".
+    The AFSC Slope Survey (AFSC.Slope) along the west coast of the U.S.
+    began in 1984 and occurred annually from 1988-2001, with the
+    exception of 1994 and 1998, when surveys were not conducted. Prior
+    to 1997, only a limited portion of the coast was covered in each
+    year. U.S. West Coast groundfish stock assessments only use the four
+    years of consistent and complete survey coverage (1997, 1999-2001).
+    The Northwest Fisheries Science Center (NWFSC) Slope survey
+    (NWFSC.Slope) was conducted between 1998 - 2001. The NWFSC West
+    Coast Groundfish Bottom Trawl survey (NWFSC.Combo) is conducted
+    annually starting in 2003 (excluding 2020) and samples both the U.S.
+    west coast shelf and slope between 55 - 1,280 meters. Data can only
+    be pulled from one survey at a time, though we are working on
+    allowing for a vector of survey names. Currently,
+    `NWFSC.Shelf.Rockfish` and `NWFSC.Hook.Line` are not supported.
 
 - years:
 
@@ -114,6 +113,13 @@ pull_bio(
   (water haul or poor net performance), or stations that have been
   removed from the survey sampling protocol.
 
+## See also
+
+Other data pulling functions:
+[`pull_biological_samples()`](pull_biological_samples.md),
+[`pull_catch()`](pull_catch.md), [`pull_gemm()`](pull_gemm.md),
+[`pull_haul()`](pull_haul.md)
+
 ## Author
 
 Chantel Wetzel
@@ -122,25 +128,6 @@ Chantel Wetzel
 
 ``` r
 if (FALSE) { # \dontrun{
-# SurveyName is only arg that has to be specified
-bio_dat <- PullBio.fn(SurveyName = "NWFSC.Combo")
-
-# Example with specified common name
-bio_dat <- PullBio.fn(
-  Name = "vermilion rockfish",
-  SurveyName = "NWFSC.Combo"
-)
-
-# Example with specified scientific name
-bio_dat <- PullBio.fn(
-  SciName = "Eopsetta jordani",
-  SurveyName = "NWFSC.Combo"
-)
-
-# Example with multiple names
-bio_dat <- PullBio.fn(
-  SciName = c("Sebastes aurora", "Eopsetta jordani"),
-  SurveyName = "NWFSC.Combo"
-)
+bio_data <- pull_bio(common_name = "sablefish")
 } # }
 ```

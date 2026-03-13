@@ -51,6 +51,11 @@ are no females in your data set, for example.
 Estimate parameters of the weight-length relationship for each sex and
 all sexes combined, where the latter includes unsexed fish.
 
+## See also
+
+Other biology function: [`est_growth()`](est_growth.md),
+[`est_vbgrowth()`](est_vbgrowth.md), [`fit_vbgrowth()`](fit_vbgrowth.md)
+
 ## Author
 
 Kelli F. Johnson and Chantel Wetzel

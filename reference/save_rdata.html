@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">nwfscSurvey</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">2.2</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">2.8.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -39,7 +39,7 @@
 
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">save_rdata</span><span class="op">(</span><span class="va">x</span>, dir <span class="op">=</span> <span class="cn">NULL</span>, <span class="va">name_base</span>, verbose <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">save_rdata</span><span class="op">(</span><span class="va">x</span>, <span class="va">name_base</span>, dir <span class="op">=</span> <span class="cn">NULL</span>, verbose <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
@@ -50,14 +50,14 @@
 <dd><p>An object.</p></dd>
 
 
-<dt id="arg-dir">dir<a class="anchor" aria-label="anchor" href="#arg-dir"></a></dt>
-<dd><p>Directory where output will be saved. The directory where the file should be saved.
-If dir = NULL no output will be saved.</p></dd>
-
-
 <dt id="arg-name-base">name_base<a class="anchor" aria-label="anchor" href="#arg-name-base"></a></dt>
 <dd><p>A string that will be appended to with the system time and
 the file extension (i.e., <code>".rdata"</code>).</p></dd>
+
+
+<dt id="arg-dir">dir<a class="anchor" aria-label="anchor" href="#arg-dir"></a></dt>
+<dd><p>Directory where output will be saved. The directory where the file should be saved.
+If dir = NULL no output will be saved.</p></dd>
 
 
 <dt id="arg-verbose">verbose<a class="anchor" aria-label="anchor" href="#arg-verbose"></a></dt>

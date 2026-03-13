@@ -13,7 +13,7 @@ input and to save the object if the dir function input is given.
 ## Usage
 
 ``` r
-pull_gemm(common_name, years, dir = NULL, verbose = TRUE)
+pull_gemm(common_name, years = NULL, dir = NULL, verbose = TRUE)
 ```
 
 ## Arguments
@@ -42,6 +42,12 @@ pull_gemm(common_name, years, dir = NULL, verbose = TRUE)
   A logical that specifies if you want to print messages and warnings to
   the console. The default is `TRUE`.
 
+## See also
+
+Other data pulling functions: [`pull_bio()`](pull_bio.md),
+[`pull_biological_samples()`](pull_biological_samples.md),
+[`pull_catch()`](pull_catch.md), [`pull_haul()`](pull_haul.md)
+
 ## Author
 
 Chantel Wetzel
@@ -49,17 +55,20 @@ Chantel Wetzel
 ## Examples
 
 ``` r
-if (FALSE) { # \dontrun{
 # Pull all GEMM data
 all_data <- pull_gemm()
+#> ℹ Output will not be saved in dir because dir = NULL.
 
 # Pull for a specific specis
 widow_data <- pull_gemm(common_name = "widow rockfish")
+#> ℹ Output will not be saved in dir because dir = NULL.
 
 # Pull multiple species
 data <- pull_gemm(common_name = c("Widow Rockfish", "Canary Rockfish"))
+#> ℹ Output will not be saved in dir because dir = NULL.
+#> Multiple species or species-areas are being returned.
 
 # Pull species and subset years
 widow_recent <- pull_gemm(common_name = "Widow Rockfish", years = 2014:2019)
-} # }
+#> ℹ Output will not be saved in dir because dir = NULL.
 ```

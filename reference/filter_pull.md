@@ -25,7 +25,7 @@ filter_pull(
   Data frame of pulled data created by the
   [`pull_catch()`](pull_catch.md), [`pull_bio()`](pull_bio.md),
   [`pull_haul()`](pull_haul.md), or
-  [pull_biological_samples](pull_biological_samples.md).
+  [`pull_biological_samples()`](pull_biological_samples.md).
 
 - data_type:
 
@@ -44,6 +44,12 @@ filter_pull(
 
   A logical that specifies if you want to print messages and warnings to
   the console. The default is `TRUE`.
+
+## See also
+
+Other helper function: [`Format.AKSlope.fn()`](Format.AKSlope.fn.md),
+[`check_dir()`](check_dir.md), [`check_survey()`](check_survey.md),
+[`combine_tows()`](combine_tows.md), [`createMatrix()`](createMatrix.md)
 
 ## Author
 

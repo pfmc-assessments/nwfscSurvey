@@ -30,7 +30,7 @@ get_expanded_comps(
   age_low = lifecycle::deprecated(),
   age_high = lifecycle::deprecated(),
   age_error = lifecycle::deprecated(),
-  printfolder = "forSS3",
+  printfolder = lifecycle::deprecated(),
   verbose = TRUE
 )
 ```
@@ -61,7 +61,7 @@ get_expanded_comps(
 - strata:
 
   A data frame that defines the strata and provides the calculated areas
-  for each strata returned from `createStrataDF.fn()`.
+  for each strata returned from [`create_strata()`](create_strata.md).
 
 - dir:
 
@@ -150,9 +150,9 @@ get_expanded_comps(
 
 - printfolder:
 
-  A string that will be appended to `dir`, creating a folder where the
-  output will be saved. If specified as `""`, the output will just be
-  saved directly in `dir`. The default is `"forSS3"`.
+  Deprecated with nwfscSurvey 2.8.0 to give users greater control on
+  where to save files. A string that will be appended to `dir`, creating
+  a folder where the output will be saved.
 
 - verbose:
 
@@ -194,12 +194,12 @@ catch <- pull_catch(
   survey = "NWFSC.Combo"
 )
 
-strata <- CreateStrataDF.fn(
+strata <- create_strata(
   names = c("shallow_wa", "shallow_or", "shallow_nca", "shelf_wa", "shelf_or", "shelf_nca"),
-  depths.shallow = c(55, 55, 55, 183, 183, 183),
-  depths.deep = c(183, 183, 183, 350, 350, 350),
-  lats.south = c(46.0, 42.0, 40.10, 46.0, 42.0, 40.10),
-  lats.north = c(49.0, 46.0, 42.0, 49.0, 46.0, 42.0)
+  depths_shallow = c(55, 55, 55, 183, 183, 183),
+  depths_deep = c(183, 183, 183, 350, 350, 350),
+  lats_south = c(46.0, 42.0, 40.10, 46.0, 42.0, 40.10),
+  lats_north = c(49.0, 46.0, 42.0, 49.0, 46.0, 42.0)
 )
 
 length_comps <- get_expanded_comps(

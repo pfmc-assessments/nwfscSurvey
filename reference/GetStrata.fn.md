@@ -43,10 +43,7 @@ areas, as well as combinations using `"_"` in the argument `area`.
 ## See also
 
 This function uses [`CreateStrataDF.fn`](CreateStrataDF.fn.md) to
-generate the strata returned by this function. Also, see
-convert_strata4vast function in the VASTWestCoast package that converts
-results from this function to strata that can be used within the VAST
-package.
+generate the strata returned by this function.
 
 ## Author
 

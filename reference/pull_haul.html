@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">nwfscSurvey</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">2.2</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">2.8.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -40,7 +40,7 @@
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">pull_haul</span><span class="op">(</span></span>
-<span>  <span class="va">survey</span>,</span>
+<span>  survey <span class="op">=</span> <span class="st">"NWFSC.Combo"</span>,</span>
 <span>  years <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1970</span>, <span class="fl">2050</span><span class="op">)</span>,</span>
 <span>  dir <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  verbose <span class="op">=</span> <span class="cn">TRUE</span>,</span>
@@ -64,8 +64,8 @@ specifies which survey to pull the data for. The input options are:</p><ul><li><
 <li><p>NWFSC.Shelf.Rockfish (not yet working),</p></li>
 <li><p>NWFSC.Hook.Line (not yet working),</p></li>
 <li><p>NWFSC.Video,</p></li>
-<li><p>Triennial.Canada</p></li>
-</ul><p>The National Marine Fishery Service Alaska Fisheries Science Center (AFSC)
+<li><p>Triennial.Canada
+The National Marine Fishery Service Alaska Fisheries Science Center (AFSC)
 Triennial survey was conducted between 1977 - 2004 occurring every 3rd year.
 The initial year, 1977, survey is not traditionally used in calculating
 indices of abundance. The Triennial survey sampled areas within the Canadian
@@ -82,7 +82,8 @@ annually starting in 2003 (excluding 2020) and samples both the U.S. west coast
 shelf and slope between 55 - 1,280 meters.
 Data can only be pulled from one survey at a time, though we are working on
 allowing for a vector of survey names.
-Currently, <code>NWFSC.Shelf.Rockfish</code> and <code>NWFSC.Hook.Line</code> are not supported.</p></dd>
+Currently, <code>NWFSC.Shelf.Rockfish</code> and <code>NWFSC.Hook.Line</code> are not supported.</p></li>
+</ul></dd>
 
 
 <dt id="arg-years">years<a class="anchor" aria-label="anchor" href="#arg-years"></a></dt>
@@ -113,15 +114,23 @@ removed from the survey sampling protocol.</p></dd>
     <p>Returns a data frame of haul characteristics for satisfactory hauls</p>
     </div>
     <div class="section level2">
+    <h2 id="see-also">See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>
+    <div class="dont-index"><p>Other data pulling functions:
+<code><a href="pull_bio.html">pull_bio()</a></code>,
+<code><a href="pull_biological_samples.html">pull_biological_samples()</a></code>,
+<code><a href="pull_catch.html">pull_catch()</a></code>,
+<code><a href="pull_gemm.html">pull_gemm()</a></code></p></div>
+    </div>
+    <div class="section level2">
     <h2 id="author">Author<a class="anchor" aria-label="anchor" href="#author"></a></h2>
-    <p>Eric Ward, Chantel Wetzel</p>
+    <p>Eric Ward and Chantel Wetzel</p>
     </div>
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span> <span class="co"># \dontrun{</span></span></span>
-<span class="r-in"><span><span class="va">haul_data</span> <span class="op">&lt;-</span> <span class="fu">pull_haul</span><span class="op">(</span>survey <span class="op">=</span> <span class="st">"NWFSC.Combo"</span>, years <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">2003</span>, <span class="fl">2007</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="va">haul_data</span> <span class="op">&lt;-</span> <span class="fu">pull_haul</span><span class="op">(</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">haul_data</span> <span class="op">&lt;-</span> <span class="fu">pull_haul</span><span class="op">(</span>years <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">2003</span>, <span class="fl">2007</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">haul_data</span> <span class="op">&lt;-</span> <span class="fu">pull_haul</span><span class="op">(</span>survey <span class="op">=</span> <span class="st">"Triennial"</span>, years <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1980</span>, <span class="fl">2004</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">}</span> <span class="co"># }</span></span></span>
 <span class="r-in"><span></span></span>
 </code></pre></div>

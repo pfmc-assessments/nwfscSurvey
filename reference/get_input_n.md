@@ -15,7 +15,7 @@ get_input_n(
   comp_column_name = "length_cm",
   input_n_method = c("stewart_hamel", "tows", "total_samples"),
   species_group = c("all", "flatfish", "shelfrock", "sloperock", "thorny", "other"),
-  printfolder = "forSS3",
+  printfolder = lifecycle::deprecated(),
   verbose = TRUE
 )
 ```
@@ -56,9 +56,9 @@ get_input_n(
 
 - printfolder:
 
-  A string that will be appended to `dir`, creating a folder where the
-  output will be saved. If specified as `""`, the output will just be
-  saved directly in `dir`. The default is `"forSS3"`.
+  Deprecated with nwfscSurvey 2.8.0 to give users greater control on
+  where to save files. A string that will be appended to `dir`, creating
+  a folder where the output will be saved.
 
 - verbose:
 

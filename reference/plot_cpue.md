@@ -5,7 +5,7 @@ This function plots cpue and length by latitude and depth
 ## Usage
 
 ``` r
-plot_cpue(catch, dir = NULL, plot = 1:3, width = 7, height = 7, ...)
+plot_cpue(catch, dir = NULL, plot = 1:3, width = 7, height = 7)
 ```
 
 ## Arguments
@@ -36,10 +36,19 @@ plot_cpue(catch, dir = NULL, plot = 1:3, width = 7, height = 7, ...)
   Numeric values for the figure width and height in inches. The defaults
   are 7 by 7 inches.
 
-- ...:
+## See also
 
-  Additional arguments to
-  [`ggplot2::ggsave()`](https://ggplot2.tidyverse.org/reference/ggsave.html)
+Other plot\_: [`PlotSexRatio.fn()`](PlotSexRatio.fn.md),
+[`PlotVarLengthAtAge.fn()`](PlotVarLengthAtAge.fn.md),
+[`plot_comps()`](plot_comps.md), [`plot_cpue_map()`](plot_cpue_map.md),
+[`plot_index()`](plot_index.md),
+[`plot_length_age()`](plot_length_age.md),
+[`plot_proportion()`](plot_proportion.md),
+[`plot_sex_ratio()`](plot_sex_ratio.md),
+[`plot_sex_ratio_strata()`](plot_sex_ratio_strata.md),
+[`plot_varlenage()`](plot_varlenage.md),
+[`plot_weight_length()`](plot_weight_length.md),
+[`plot_westcoast()`](plot_westcoast.md)
 
 ## Author
 

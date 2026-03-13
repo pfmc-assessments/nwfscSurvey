@@ -21,8 +21,8 @@ get_url(data_table, project_long, add_species, years, vars_long)
 
 - add_species:
 
-  string of species name created by the pull_catch or pull_bio
-  functions.
+  string of species name created by the [`pull_catch()`](pull_catch.md)
+  or [`pull_bio()`](pull_bio.md) functions.
 
 - years:
 

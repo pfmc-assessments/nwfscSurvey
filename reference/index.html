@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">nwfscSurvey</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">2.2</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">2.8.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -113,13 +113,6 @@
 
         <dt>
 
-          <code><a href="PullSpp.html">PullSpp</a></code>
-
-        </dt>
-        <dd>Sql pull of species names</dd>
-
-        <dt>
-
           <code><a href="ReadInAges.fn.html">ReadInAges.fn()</a></code>
 
         </dt>
@@ -211,7 +204,7 @@
 
         <dt>
 
-          <code><a href="codify_sex.html">codify_sex()</a></code> <code><a href="codify_sex.html">codify_sex_SS3()</a></code>
+          <code><a href="codify_sex.html">codify_sex()</a></code> <code><a href="codify_sex.html">codify_sex_ss3()</a></code>
 
         </dt>
         <dd>Code sexes into standardized strings</dd>
@@ -236,6 +229,13 @@
 
         </dt>
         <dd>Survey name matching function used when pull from the data warehouse</dd>
+
+        <dt>
+
+          <code><a href="create_strata.html">create_strata()</a></code>
+
+        </dt>
+        <dd>Create strata data frame using <code>get_strata_areas</code></dd>
 
         <dt>
 
@@ -351,10 +351,52 @@
 
         <dt>
 
+          <code><a href="get_spp_list.html">get_spp_list()</a></code>
+
+        </dt>
+        <dd>Get Vector of Default Species Names for US West Coast</dd>
+
+        <dt>
+
+          <code><a href="get_strata_area_default.html">get_strata_area_default()</a></code>
+
+        </dt>
+        <dd>Get Default Strata</dd>
+
+        <dt>
+
+          <code><a href="get_strata_areas.html">get_strata_areas()</a></code>
+
+        </dt>
+        <dd>Calculate strata area</dd>
+
+        <dt>
+
+          <code><a href="get_survey_names_abb.html">get_survey_names_abb()</a></code>
+
+        </dt>
+        <dd>Get Survey Abbreviation</dd>
+
+        <dt>
+
+          <code><a href="get_survey_names_long.html">get_survey_names_long()</a></code>
+
+        </dt>
+        <dd>Survey name matching function used when pull from the data warehouse</dd>
+
+        <dt>
+
           <code><a href="get_url.html">get_url()</a></code>
 
         </dt>
         <dd>Function to create url to pull data from the data warehouse</dd>
+
+        <dt>
+
+          <code><a href="label_axes.html">label_axes()</a></code>
+
+        </dt>
+        <dd>Function to label axis for map plotting</dd>
 
         <dt>
 
@@ -393,6 +435,13 @@
 
         <dt>
 
+          <code><a href="plot_cpue_map.html">plot_cpue_map()</a></code>
+
+        </dt>
+        <dd>Plot two figures showing catch-per-unit-effort data</dd>
+
+        <dt>
+
           <code><a href="plot_index.html">plot_index()</a></code>
 
         </dt>
@@ -411,6 +460,20 @@
 
         </dt>
         <dd>Plot proportions of factor levels (y axis) by bins (x axis)</dd>
+
+        <dt>
+
+          <code><a href="plot_sex_ratio.html">plot_sex_ratio()</a></code>
+
+        </dt>
+        <dd>Function to plot sex ratio data in a barplot form</dd>
+
+        <dt>
+
+          <code><a href="plot_sex_ratio_strata.html">plot_sex_ratio_strata()</a></code>
+
+        </dt>
+        <dd>Function to plot sex ratio by strata</dd>
 
         <dt>
 
@@ -470,10 +533,10 @@
 
         <dt>
 
-          <code><a href="pull_spp.html">pull_spp()</a></code>
+          <code><a href="pull_spp.html">pull_spp</a></code> <code><a href="pull_spp.html">pull_spp()</a></code>
 
         </dt>
-        <dd>Pull species names from the warehouse</dd>
+        <dd>Sql pull of species names</dd>
 
         <dt>
 
@@ -488,6 +551,13 @@
 
         </dt>
         <dd>Stop if column name is not present in the data</dd>
+
+        <dt>
+
+          <code><a href="strata_factors.html">strata_factors()</a></code>
+
+        </dt>
+        <dd>Creates a vector of strata factors by request column names</dd>
 
         <dt>
 

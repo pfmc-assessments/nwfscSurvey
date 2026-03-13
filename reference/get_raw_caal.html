@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">nwfscSurvey</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">2.2</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">2.8.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -50,7 +50,7 @@
 <span>  fleet <span class="op">=</span> <span class="st">"Enter Fleet"</span>,</span>
 <span>  partition <span class="op">=</span> <span class="fl">0</span>,</span>
 <span>  ageerr <span class="op">=</span> <span class="st">"Enter Numeric"</span>,</span>
-<span>  printfolder <span class="op">=</span> <span class="st">"forSS3"</span>,</span>
+<span>  printfolder <span class="op">=</span> <span class="fu">lifecycle</span><span class="fu">::</span><span class="fu"><a href="https://lifecycle.r-lib.org/reference/deprecated.html" class="external-link">deprecated</a></span><span class="op">(</span><span class="op">)</span>,</span>
 <span>  verbose <span class="op">=</span> <span class="cn">TRUE</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
@@ -124,9 +124,9 @@ Stock Synthesis. Default "Enter Numeric".</p></dd>
 
 
 <dt id="arg-printfolder">printfolder<a class="anchor" aria-label="anchor" href="#arg-printfolder"></a></dt>
-<dd><p>A string that will be appended to <code>dir</code>, creating a folder
-where the output will be saved. If specified as <code>""</code>,
-the output will just be saved directly in <code>dir</code>. The default is <code>"forSS3"</code>.</p></dd>
+<dd><p>Deprecated with nwfscSurvey 2.8.0 to give users greater
+control on where to save files. A string that will be appended to <code>dir</code>,
+creating a folder where the output will be saved.</p></dd>
 
 
 <dt id="arg-verbose">verbose<a class="anchor" aria-label="anchor" href="#arg-verbose"></a></dt>

@@ -5,7 +5,7 @@ Save an object in an `.rdata` file
 ## Usage
 
 ``` r
-save_rdata(x, dir = NULL, name_base, verbose = TRUE)
+save_rdata(x, name_base, dir = NULL, verbose = TRUE)
 ```
 
 ## Arguments
@@ -14,15 +14,15 @@ save_rdata(x, dir = NULL, name_base, verbose = TRUE)
 
   An object.
 
-- dir:
-
-  Directory where output will be saved. The directory where the file
-  should be saved. If dir = NULL no output will be saved.
-
 - name_base:
 
   A string that will be appended to with the system time and the file
   extension (i.e., `".rdata"`).
+
+- dir:
+
+  Directory where output will be saved. The directory where the file
+  should be saved. If dir = NULL no output will be saved.
 
 - verbose:
 

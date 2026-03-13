@@ -40,11 +40,6 @@ column; and strata used to assess its status in the strata column.
 Get the scientific name, common name, and strata group for a vector of
 species.
 
-## See also
-
-See `PullSpp.fn` for information on common and scientific names; and
-[`GetStrata.fn`](GetStrata.fn.md) for the different stratifications.
-
 ## Author
 
 Kelli Faye Johnson

@@ -6,7 +6,7 @@ This function can be used to pull haul data and associated covariates.
 
 ``` r
 pull_haul(
-  survey,
+  survey = "NWFSC.Combo",
   years = c(1970, 2050),
   dir = NULL,
   verbose = TRUE,
@@ -41,28 +41,27 @@ pull_haul(
 
   - NWFSC.Video,
 
-  - Triennial.Canada
-
-  The National Marine Fishery Service Alaska Fisheries Science Center
-  (AFSC) Triennial survey was conducted between 1977 - 2004 occurring
-  every 3rd year. The initial year, 1977, survey is not traditionally
-  used in calculating indices of abundance. The Triennial survey sampled
-  areas within the Canadian EEZ on the West Coast of Vancouver Island in
-  1980 - 2001 but these data are associated with a different survey name
-  "Triennial.Canada". The AFSC Slope Survey (AFSC.Slope) along the west
-  coast of the U.S. began in 1984 and occurred annually from 1988-2001,
-  with the exception of 1994 and 1998, when surveys were not conducted.
-  Prior to 1997, only a limited portion of the coast was covered in each
-  year. U.S. West Coast groundfish stock assessments only use the four
-  years of consistent and complete survey coverage (1997, 1999-2001).
-  The Northwest Fisheries Science Center (NWFSC) Slope survey
-  (NWFSC.Slope) was conducted between 1998 - 2001. The NWFSC West Coast
-  Groundfish Bottom Trawl survey (NWFSC.Combo) is conducted annually
-  starting in 2003 (excluding 2020) and samples both the U.S. west coast
-  shelf and slope between 55 - 1,280 meters. Data can only be pulled
-  from one survey at a time, though we are working on allowing for a
-  vector of survey names. Currently, `NWFSC.Shelf.Rockfish` and
-  `NWFSC.Hook.Line` are not supported.
+  - Triennial.Canada The National Marine Fishery Service Alaska
+    Fisheries Science Center (AFSC) Triennial survey was conducted
+    between 1977 - 2004 occurring every 3rd year. The initial year,
+    1977, survey is not traditionally used in calculating indices of
+    abundance. The Triennial survey sampled areas within the Canadian
+    EEZ on the West Coast of Vancouver Island in 1980 - 2001 but these
+    data are associated with a different survey name "Triennial.Canada".
+    The AFSC Slope Survey (AFSC.Slope) along the west coast of the U.S.
+    began in 1984 and occurred annually from 1988-2001, with the
+    exception of 1994 and 1998, when surveys were not conducted. Prior
+    to 1997, only a limited portion of the coast was covered in each
+    year. U.S. West Coast groundfish stock assessments only use the four
+    years of consistent and complete survey coverage (1997, 1999-2001).
+    The Northwest Fisheries Science Center (NWFSC) Slope survey
+    (NWFSC.Slope) was conducted between 1998 - 2001. The NWFSC West
+    Coast Groundfish Bottom Trawl survey (NWFSC.Combo) is conducted
+    annually starting in 2003 (excluding 2020) and samples both the U.S.
+    west coast shelf and slope between 55 - 1,280 meters. Data can only
+    be pulled from one survey at a time, though we are working on
+    allowing for a vector of survey names. Currently,
+    `NWFSC.Shelf.Rockfish` and `NWFSC.Hook.Line` are not supported.
 
 - years:
 
@@ -90,15 +89,21 @@ pull_haul(
 
 Returns a data frame of haul characteristics for satisfactory hauls
 
+## See also
+
+Other data pulling functions: [`pull_bio()`](pull_bio.md),
+[`pull_biological_samples()`](pull_biological_samples.md),
+[`pull_catch()`](pull_catch.md), [`pull_gemm()`](pull_gemm.md)
+
 ## Author
 
-Eric Ward, Chantel Wetzel
+Eric Ward and Chantel Wetzel
 
 ## Examples
 
 ``` r
 if (FALSE) { # \dontrun{
-haul_data <- pull_haul(survey = "NWFSC.Combo", years = c(2003, 2007))
-haul_data <- pull_haul()
+haul_data <- pull_haul(years = c(2003, 2007))
+haul_data <- pull_haul(survey = "Triennial", years = c(1980, 2004))
 } # }
 ```

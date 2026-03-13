@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">nwfscSurvey</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">2.2</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">2.8.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -74,13 +74,13 @@ warehouse, do not always match the name agreed upon within the
 Population Ecology Program. So, standard abbreviations are returned for
 a given warehouse name.
 Partial matches are allowed, and are searched
-for using the first two columns of <code><a href="createMatrix.html">createMatrix()</a></code>, so be
+for using the first two columns of <code><a href="createMatrix.html">createMatrix</a></code>, so be
 weary of using terms used for multiple surveys as only the first match
 will be returned for each input value.</p>
     </div>
     <div class="section level2">
     <h2 id="see-also">See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>
-    <div class="dont-index"><p>See <code><a href="createMatrix.html">createMatrix()</a></code> for a list of available surveys.</p></div>
+    <div class="dont-index"><p>See <code><a href="createMatrix.html">createMatrix</a></code> for a list of available surveys.</p></div>
     </div>
     <div class="section level2">
     <h2 id="author">Author<a class="anchor" aria-label="anchor" href="#author"></a></h2>
@@ -92,6 +92,14 @@ will be returned for each input value.</p>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># Return a vector of agreed upon abbreviations for the</span></span></span>
 <span class="r-in"><span><span class="co"># Triennial Survey and the West Coast Groundfish Bottom Trawl Survey.</span></span></span>
 <span class="r-in"><span><span class="fu">GetSurveyAbb.fn</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Triennial"</span>, <span class="st">"Combo"</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>`GetSurveyAbb.fn()` was deprecated in nwfscSurvey 2.8.0.</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> This function is no longer needed and will be removed in a future version.</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span>   Please use get_survey_names_abb() instead.</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>`createMatrix()` was deprecated in nwfscSurvey 2.8.0.</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> This function is no longer needed and will be removed in a future version.</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span>   Please use get_survey_names_long() instead.</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> The deprecated feature was likely used in the <span style="color: #0000BB;">nwfscSurvey</span> package.</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span>   Please report the issue to the authors.</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "Triennial Survey" "NWFSC WCGBTS"    </span>
 <span class="r-in"><span></span></span>
 </code></pre></div>

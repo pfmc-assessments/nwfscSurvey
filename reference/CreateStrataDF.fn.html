@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">nwfscSurvey</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">2.2</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">2.8.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -93,7 +93,9 @@ north and south ranges using latitudes.</p>
     <div class="section level2">
     <h2 id="see-also">See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>
     <div class="dont-index"><p>See <code><a href="StrataAreas.fn.html">StrataAreas.fn</a></code> for how areas are calculated.
-See <code><a href="get_design_based.html">get_design_based</a></code> for how the areas are used to create design-based biomass estimates.</p></div>
+See <code><a href="get_design_based.html">get_design_based</a></code> for how the areas are used to create design-based biomass estimates.</p>
+<p>Other strata function:
+<code><a href="create_strata.html">create_strata()</a></code></p></div>
     </div>
     <div class="section level2">
     <h2 id="author">Author<a class="anchor" aria-label="anchor" href="#author"></a></h2>
@@ -109,6 +111,14 @@ See <code><a href="get_design_based.html">get_design_based</a></code> for how th
 <span class="r-in"><span>  lats.south     <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">32</span>, <span class="fl">32</span>, <span class="fl">40</span>, <span class="fl">40</span>, <span class="fl">44</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>  lats.north     <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">40</span>, <span class="fl">40</span>, <span class="fl">49</span>, <span class="fl">44</span>, <span class="fl">49</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>`CreateStrataDF.fn()` was deprecated in nwfscSurvey 2.8.0.</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> This function is no longer needed and will be removed in a future version.</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span>   Please use create_strata() instead.</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>`StrataAreas.fn()` was deprecated in nwfscSurvey 2.8.0.</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> This function is no longer needed and will be removed in a future version.</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span>   Please use get_strata_areas() instead.</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> The deprecated feature was likely used in the <span style="color: #0000BB;">nwfscSurvey</span> package.</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span>   Please report the issue to the authors.</span>
 <span class="r-in"><span><span class="co"># Which returns a data frame that looks like the following:</span></span></span>
 <span class="r-in"><span><span class="co">#      name      area Depth_m.1 Depth_m.2 Latitude_dd.1 Latitude_dd.2</span></span></span>
 <span class="r-in"><span><span class="co">#    deep_s 16468.110       183       549            32            40</span></span></span>

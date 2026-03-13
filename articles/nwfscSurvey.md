@@ -87,12 +87,12 @@ southward to about 32 degrees and as deep as 1280 m):
 
 ``` r
 
-strata <- CreateStrataDF.fn(
+strata <- create_strata(
   names = c("shallow_s", "deep_s", "shallow_n", "deep_n"), 
-  depths.shallow = c(  55,  183,  55, 183),
-  depths.deep    = c( 183,  400, 183, 400),
-  lats.south     = c(34.5, 34.5,  42,  42),
-  lats.north     = c(  42,   42,  49,  49)
+  depths_shallow = c(  55,  183,  55, 183),
+  depths_deep    = c( 183,  400, 183, 400),
+  lats_south     = c(34.5, 34.5,  42,  42),
+  lats_north     = c(  42,   42,  49,  49)
 )
 ```
 
@@ -252,8 +252,8 @@ To make a map showing the distribution of density in aggregate and by
 year:
 
 ``` r
-PlotMap.fn(
-  dat = catch)
+plot_cpue_map(
+  data = catch)
 ```
 
 #### Additional data visualization

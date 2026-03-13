@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">nwfscSurvey</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">2.2</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">2.8.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -40,8 +40,8 @@
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">plot_varlenage</span><span class="op">(</span></span>
-<span>  dir <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  <span class="va">dat</span>,</span>
+<span>  dir <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  main <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  Par <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>K <span class="op">=</span> <span class="fl">0.13</span>, Linf <span class="op">=</span> <span class="fl">55</span>, L0 <span class="op">=</span> <span class="fl">15</span>, CV0 <span class="op">=</span> <span class="fl">0.1</span>, CV1 <span class="op">=</span> <span class="fl">0.1</span><span class="op">)</span>,</span>
 <span>  bySex <span class="op">=</span> <span class="cn">TRUE</span>,</span>
@@ -58,13 +58,13 @@
     <h2 id="arguments">Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h2>
 
 
-<dl><dt id="arg-dir">dir<a class="anchor" aria-label="anchor" href="#arg-dir"></a></dt>
+<dl><dt id="arg-dat">dat<a class="anchor" aria-label="anchor" href="#arg-dat"></a></dt>
+<dd><p>The data loaded from <code><a href="pull_bio.html">pull_bio()</a></code></p></dd>
+
+
+<dt id="arg-dir">dir<a class="anchor" aria-label="anchor" href="#arg-dir"></a></dt>
 <dd><p>Directory where output will be saved. The directory where the file should be saved.
 If dir = NULL no output will be saved.</p></dd>
-
-
-<dt id="arg-dat">dat<a class="anchor" aria-label="anchor" href="#arg-dat"></a></dt>
-<dd><p>The data loaded from <code><a href="pull_bio.html">pull_bio()</a></code></p></dd>
 
 
 <dt id="arg-main">main<a class="anchor" aria-label="anchor" href="#arg-main"></a></dt>
@@ -113,6 +113,22 @@ no longer have to specify <code>dopng</code> to save the plot as a png.</p></dd>
     <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
     <p>Plots the standard deviation and coefficient of variation of age at observed
 and predicted length</p>
+    </div>
+    <div class="section level2">
+    <h2 id="see-also">See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>
+    <div class="dont-index"><p>Other plot_:
+<code><a href="PlotSexRatio.fn.html">PlotSexRatio.fn()</a></code>,
+<code><a href="PlotVarLengthAtAge.fn.html">PlotVarLengthAtAge.fn()</a></code>,
+<code><a href="plot_comps.html">plot_comps()</a></code>,
+<code><a href="plot_cpue.html">plot_cpue()</a></code>,
+<code><a href="plot_cpue_map.html">plot_cpue_map()</a></code>,
+<code><a href="plot_index.html">plot_index()</a></code>,
+<code><a href="plot_length_age.html">plot_length_age()</a></code>,
+<code><a href="plot_proportion.html">plot_proportion()</a></code>,
+<code><a href="plot_sex_ratio.html">plot_sex_ratio()</a></code>,
+<code><a href="plot_sex_ratio_strata.html">plot_sex_ratio_strata()</a></code>,
+<code><a href="plot_weight_length.html">plot_weight_length()</a></code>,
+<code><a href="plot_westcoast.html">plot_westcoast()</a></code></p></div>
     </div>
     <div class="section level2">
     <h2 id="author">Author<a class="anchor" aria-label="anchor" href="#author"></a></h2>

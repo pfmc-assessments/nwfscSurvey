@@ -52,6 +52,10 @@ est_vbgrowth(
 
 [`fit_vbgrowth()`](fit_vbgrowth.md)
 
+Other biology function: [`est_growth()`](est_growth.md),
+[`estimate_weight_length()`](estimate_weight_length.md),
+[`fit_vbgrowth()`](fit_vbgrowth.md)
+
 ## Author
 
 Chantel Wetzel

@@ -12,7 +12,7 @@ for Stock Synthesis.
 ``` r
 codify_sex(x)
 
-codify_sex_SS3(x)
+codify_sex_ss3(x)
 ```
 
 ## Arguments
@@ -60,6 +60,10 @@ screen via `message` and `happy` would be coded to `U` such that the
 returned value is still viable but the user is made aware that something
 is potentially wrong in `x`. See for yourself in the examples.
 
+## See also
+
+Other helper functions: [`check_strata()`](check_strata.md)
+
 ## Author
 
 Kelli F. Johnson
@@ -83,7 +87,7 @@ codify_sex(c("both", rep(5, 10), "both", 1, 2, NA))
 #>  [1] "U" "U" "U" "U" "U" "U" "U" "U" "U" "U" "U" "U" "M" "F" "U"
 
 # Change codified sex from letters to integers for Stock Synthesis
-codify_sex_SS3(c("M", "U", "K"))
+codify_sex_ss3(c("M", "U", "K"))
 #> The following unmatched values were found n times in codify_sex() 'K' (n = 1)
 #> [1] 3 0 0
 ```

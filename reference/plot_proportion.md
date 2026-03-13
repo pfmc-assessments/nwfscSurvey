@@ -25,16 +25,15 @@ plot_proportion(
 
 - column_factor:
 
-  \<[`data-masking`](https://dplyr.tidyverse.org/reference/dplyr_data_masking.html)\>
-  Variable in `data` for the grouping structure. Should be a variable in
-  `data` that contains a factor but it can also be a variable in `data`
-  that stores characters. See the examples for ideas.
+  \<`data-masking`\> Variable in `data` for the grouping structure.
+  Should be a variable in `data` that contains a factor but it can also
+  be a variable in `data` that stores characters. See the examples for
+  ideas.
 
 - column_bin:
 
-  \<[`data-masking`](https://dplyr.tidyverse.org/reference/dplyr_data_masking.html)\>
-  Variable in `data` for the binning structure. If this is not already a
-  factor or character, then
+  \<`data-masking`\> Variable in `data` for the binning structure. If
+  this is not already a factor or character, then
   [`ggplot2::cut_width()`](https://ggplot2.tidyverse.org/reference/cut_interval.html)
   will be used to create bins. The bins are saved in `bin` in the
   returned ggplot2 object.
@@ -85,6 +84,17 @@ ggplot2 object for categorical data that can be modified upon return.
 - [`ggmosaic::geom_mosaic()`](https://haleyjeppson.github.io/ggmosaic/reference/geom_mosaic.html)
 
 - [`factor()`](https://rdrr.io/r/base/factor.html)
+
+Other plot\_: [`PlotSexRatio.fn()`](PlotSexRatio.fn.md),
+[`PlotVarLengthAtAge.fn()`](PlotVarLengthAtAge.fn.md),
+[`plot_comps()`](plot_comps.md), [`plot_cpue()`](plot_cpue.md),
+[`plot_cpue_map()`](plot_cpue_map.md), [`plot_index()`](plot_index.md),
+[`plot_length_age()`](plot_length_age.md),
+[`plot_sex_ratio()`](plot_sex_ratio.md),
+[`plot_sex_ratio_strata()`](plot_sex_ratio_strata.md),
+[`plot_varlenage()`](plot_varlenage.md),
+[`plot_weight_length()`](plot_weight_length.md),
+[`plot_westcoast()`](plot_westcoast.md)
 
 ## Author
 

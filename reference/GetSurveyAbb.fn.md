@@ -38,13 +38,13 @@ names, which are typically names used to pull the data from the
 warehouse, do not always match the name agreed upon within the
 Population Ecology Program. So, standard abbreviations are returned for
 a given warehouse name. Partial matches are allowed, and are searched
-for using the first two columns of [`createMatrix()`](createMatrix.md),
-so be weary of using terms used for multiple surveys as only the first
+for using the first two columns of [`createMatrix`](createMatrix.md), so
+be weary of using terms used for multiple surveys as only the first
 match will be returned for each input value.
 
 ## See also
 
-See [`createMatrix()`](createMatrix.md) for a list of available surveys.
+See [`createMatrix`](createMatrix.md) for a list of available surveys.
 
 ## Author
 
@@ -56,5 +56,13 @@ Kelli Faye Johnson
 # Return a vector of agreed upon abbreviations for the
 # Triennial Survey and the West Coast Groundfish Bottom Trawl Survey.
 GetSurveyAbb.fn(c("Triennial", "Combo"))
+#> Warning: `GetSurveyAbb.fn()` was deprecated in nwfscSurvey 2.8.0.
+#> ℹ This function is no longer needed and will be removed in a future version.
+#>   Please use get_survey_names_abb() instead.
+#> Warning: `createMatrix()` was deprecated in nwfscSurvey 2.8.0.
+#> ℹ This function is no longer needed and will be removed in a future version.
+#>   Please use get_survey_names_long() instead.
+#> ℹ The deprecated feature was likely used in the nwfscSurvey package.
+#>   Please report the issue to the authors.
 #> [1] "Triennial Survey" "NWFSC WCGBTS"    
 ```

@@ -11,7 +11,7 @@ like sex, by x-axis bins."></head><body>
 
     <a class="navbar-brand me-2" href="../index.html">nwfscSurvey</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">2.2</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">2.8.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -64,14 +64,14 @@ like sex, by x-axis bins.</p>
 
 
 <dt id="arg-column-factor">column_factor<a class="anchor" aria-label="anchor" href="#arg-column-factor"></a></dt>
-<dd><p>&lt;<code><a href="https://dplyr.tidyverse.org/reference/dplyr_data_masking.html" class="external-link">data-masking</a></code>&gt; Variable in
+<dd><p>&lt;<code>data-masking</code>&gt; Variable in
 <code>data</code> for the grouping structure. Should be a variable in <code>data</code> that
 contains a factor but it can also be a variable in <code>data</code> that stores
 characters. See the examples for ideas.</p></dd>
 
 
 <dt id="arg-column-bin">column_bin<a class="anchor" aria-label="anchor" href="#arg-column-bin"></a></dt>
-<dd><p>&lt;<code><a href="https://dplyr.tidyverse.org/reference/dplyr_data_masking.html" class="external-link">data-masking</a></code>&gt; Variable in <code>data</code>
+<dd><p>&lt;<code>data-masking</code>&gt; Variable in <code>data</code>
 for the binning structure. If this is not already a factor or character,
 then <code><a href="https://ggplot2.tidyverse.org/reference/cut_interval.html" class="external-link">ggplot2::cut_width()</a></code> will be used to create bins. The bins are saved
 in <code>bin</code> in the returned ggplot2 object.</p></dd>
@@ -120,7 +120,19 @@ return.</p>
 <ul><li><p><code><a href="https://ggplot2.tidyverse.org/reference/cut_interval.html" class="external-link">ggplot2::cut_width()</a></code></p></li>
 <li><p><code><a href="https://haleyjeppson.github.io/ggmosaic/reference/geom_mosaic.html" class="external-link">ggmosaic::geom_mosaic()</a></code></p></li>
 <li><p><code><a href="https://rdrr.io/r/base/factor.html" class="external-link">factor()</a></code></p></li>
-</ul></div>
+</ul><p>Other plot_:
+<code><a href="PlotSexRatio.fn.html">PlotSexRatio.fn()</a></code>,
+<code><a href="PlotVarLengthAtAge.fn.html">PlotVarLengthAtAge.fn()</a></code>,
+<code><a href="plot_comps.html">plot_comps()</a></code>,
+<code><a href="plot_cpue.html">plot_cpue()</a></code>,
+<code><a href="plot_cpue_map.html">plot_cpue_map()</a></code>,
+<code><a href="plot_index.html">plot_index()</a></code>,
+<code><a href="plot_length_age.html">plot_length_age()</a></code>,
+<code><a href="plot_sex_ratio.html">plot_sex_ratio()</a></code>,
+<code><a href="plot_sex_ratio_strata.html">plot_sex_ratio_strata()</a></code>,
+<code><a href="plot_varlenage.html">plot_varlenage()</a></code>,
+<code><a href="plot_weight_length.html">plot_weight_length()</a></code>,
+<code><a href="plot_westcoast.html">plot_westcoast()</a></code></p></div>
     </div>
     <div class="section level2">
     <h2 id="author">Author<a class="anchor" aria-label="anchor" href="#author"></a></h2>

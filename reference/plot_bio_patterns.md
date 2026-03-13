@@ -19,11 +19,12 @@ plot_bio_patterns(
 
 - dir:
 
-  Directory to save files to
+  Directory where output will be saved. The directory where the file
+  should be saved. If dir = NULL no output will be saved.
 
 - bio:
 
-  Data biological sample file
+  Biological data frame from [`pull_bio()`](pull_bio.md)
 
 - col_name:
 
@@ -32,15 +33,20 @@ plot_bio_patterns(
 
 - plot:
 
-  A vector of integers specifying the figures you want.
+  A vector of integers to specify which plots you would like. The
+  default is to print or save both figures, i.e., `plot = 1:3`. Integers
+  correspond to the following figures:
 
-- width:
+  1.  length/age by latitude and depth
 
-  Numeric figure width in inches, defaults to 7
+  2.  length/age by depth and year
 
-- height:
+  3.  length/age by lat and year
 
-  Numeric figure height in inches, defaults to 7
+- width, height:
+
+  Numeric values for the figure width and height in inches. The defaults
+  are 10 by 7 inches.
 
 ## Author
 

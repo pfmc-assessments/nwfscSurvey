@@ -74,6 +74,19 @@ plot_length_age(
   can reduce file size which can be helpful when creating large
   documents with many figures. The default is 300.
 
+## See also
+
+Other plot\_: [`PlotSexRatio.fn()`](PlotSexRatio.fn.md),
+[`PlotVarLengthAtAge.fn()`](PlotVarLengthAtAge.fn.md),
+[`plot_comps()`](plot_comps.md), [`plot_cpue()`](plot_cpue.md),
+[`plot_cpue_map()`](plot_cpue_map.md), [`plot_index()`](plot_index.md),
+[`plot_proportion()`](plot_proportion.md),
+[`plot_sex_ratio()`](plot_sex_ratio.md),
+[`plot_sex_ratio_strata()`](plot_sex_ratio_strata.md),
+[`plot_varlenage()`](plot_varlenage.md),
+[`plot_weight_length()`](plot_weight_length.md),
+[`plot_westcoast()`](plot_westcoast.md)
+
 ## Author
 
 Chantel Wetzel

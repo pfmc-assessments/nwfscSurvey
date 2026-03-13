@@ -19,7 +19,8 @@ combine_tows(data, dir = NULL, single_species = TRUE, verbose = TRUE)
 
 - data:
 
-  A data frame of catches obtained by using the `pull_catch` function.
+  A data frame of catches obtained by using
+  [`pull_catch()`](pull_catch.md).
 
 - dir:
 
@@ -37,6 +38,12 @@ combine_tows(data, dir = NULL, single_species = TRUE, verbose = TRUE)
 
   A logical that specifies if you want to print messages and warnings to
   the console. The default is `TRUE`.
+
+## See also
+
+Other helper function: [`Format.AKSlope.fn()`](Format.AKSlope.fn.md),
+[`check_dir()`](check_dir.md), [`check_survey()`](check_survey.md),
+[`createMatrix()`](createMatrix.md), [`filter_pull()`](filter_pull.md)
 
 ## Author
 

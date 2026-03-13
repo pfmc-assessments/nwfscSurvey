@@ -15,7 +15,6 @@
 <url><loc>/reference/PlotSexRatio.fn.html</loc></url>
 <url><loc>/reference/PlotSexRatioStrata.fn.html</loc></url>
 <url><loc>/reference/PlotVarLengthAtAge.fn.html</loc></url>
-<url><loc>/reference/PullSpp.html</loc></url>
 <url><loc>/reference/ReadInAges.fn.html</loc></url>
 <url><loc>/reference/ReadInLengths.fn.html</loc></url>
 <url><loc>/reference/SA3.html</loc></url>
@@ -33,6 +32,7 @@
 <url><loc>/reference/combine_tows.html</loc></url>
 <url><loc>/reference/convert_to_hex_string.html</loc></url>
 <url><loc>/reference/createMatrix.html</loc></url>
+<url><loc>/reference/create_strata.html</loc></url>
 <url><loc>/reference/draw_USEEZ.html</loc></url>
 <url><loc>/reference/draw_land.html</loc></url>
 <url><loc>/reference/draw_projection.html</loc></url>
@@ -49,16 +49,25 @@
 <url><loc>/reference/get_raw_caal.html</loc></url>
 <url><loc>/reference/get_raw_comps.html</loc></url>
 <url><loc>/reference/get_species_info.html</loc></url>
+<url><loc>/reference/get_spp_list.html</loc></url>
+<url><loc>/reference/get_strata_area_default.html</loc></url>
+<url><loc>/reference/get_strata_areas.html</loc></url>
+<url><loc>/reference/get_survey_names_abb.html</loc></url>
+<url><loc>/reference/get_survey_names_long.html</loc></url>
 <url><loc>/reference/get_url.html</loc></url>
 <url><loc>/reference/index.html</loc></url>
+<url><loc>/reference/label_axes.html</loc></url>
 <url><loc>/reference/label_tow_expansion.html</loc></url>
 <url><loc>/reference/plot_age_length_sampling.html</loc></url>
 <url><loc>/reference/plot_bio_patterns.html</loc></url>
 <url><loc>/reference/plot_comps.html</loc></url>
 <url><loc>/reference/plot_cpue.html</loc></url>
+<url><loc>/reference/plot_cpue_map.html</loc></url>
 <url><loc>/reference/plot_index.html</loc></url>
 <url><loc>/reference/plot_length_age.html</loc></url>
 <url><loc>/reference/plot_proportion.html</loc></url>
+<url><loc>/reference/plot_sex_ratio.html</loc></url>
+<url><loc>/reference/plot_sex_ratio_strata.html</loc></url>
 <url><loc>/reference/plot_varlenage.html</loc></url>
 <url><loc>/reference/plot_weight_length.html</loc></url>
 <url><loc>/reference/plot_westcoast.html</loc></url>
@@ -70,6 +79,7 @@
 <url><loc>/reference/pull_spp.html</loc></url>
 <url><loc>/reference/save_rdata.html</loc></url>
 <url><loc>/reference/stopifnotcolumn.html</loc></url>
+<url><loc>/reference/strata_factors.html</loc></url>
 <url><loc>/reference/wh_plot_proportion.html</loc></url>
 </urlset>
 

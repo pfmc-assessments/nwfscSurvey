@@ -16,7 +16,7 @@ get_raw_caal(
   fleet = "Enter Fleet",
   partition = 0,
   ageerr = "Enter Numeric",
-  printfolder = "forSS3",
+  printfolder = lifecycle::deprecated(),
   verbose = TRUE
 )
 ```
@@ -91,9 +91,9 @@ get_raw_caal(
 
 - printfolder:
 
-  A string that will be appended to `dir`, creating a folder where the
-  output will be saved. If specified as `""`, the output will just be
-  saved directly in `dir`. The default is `"forSS3"`.
+  Deprecated with nwfscSurvey 2.8.0 to give users greater control on
+  where to save files. A string that will be appended to `dir`, creating
+  a folder where the output will be saved.
 
 - verbose:
 

@@ -23,6 +23,9 @@ instead it is strictly a list of species for which analyses take place.
 
 ``` r
 GetSppDefault.fn()
+#> Warning: `GetSppDefault.fn()` was deprecated in nwfscSurvey 2.8.0.
+#> ℹ This function is no longer needed and will be removed in a future version.
+#>   Please use get_spp_list() instead.
 #>  [1] "arrowtooth_flounder"   "aurora_rockfish"       "big_skate"            
 #>  [4] "blackgill_rockfish"    "bocaccio"              "canary_rockfish"      
 #>  [7] "chilipepper"           "darkblotched_rockfish" "dover_sole"           

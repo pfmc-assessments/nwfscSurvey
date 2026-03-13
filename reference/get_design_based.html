@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">nwfscSurvey</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">2.2</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">2.8.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -46,7 +46,7 @@
 <span>  dir <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  month <span class="op">=</span> <span class="cn">NA</span>,</span>
 <span>  fleet <span class="op">=</span> <span class="cn">NA</span>,</span>
-<span>  printfolder <span class="op">=</span> <span class="st">"forSS3"</span>,</span>
+<span>  printfolder <span class="op">=</span> <span class="fu">lifecycle</span><span class="fu">::</span><span class="fu"><a href="https://lifecycle.r-lib.org/reference/deprecated.html" class="external-link">deprecated</a></span><span class="op">(</span><span class="op">)</span>,</span>
 <span>  verbose <span class="op">=</span> <span class="cn">TRUE</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
@@ -61,12 +61,12 @@
 
 <dt id="arg-strata">strata<a class="anchor" aria-label="anchor" href="#arg-strata"></a></dt>
 <dd><p>A data frame that defines the strata and provides the
-calculated areas for each strata returned from <code>createStrataDF.fn()</code>.</p></dd>
+calculated areas for each strata returned from <code><a href="create_strata.html">create_strata()</a></code>.</p></dd>
 
 
 <dt id="arg-ci">CI<a class="anchor" aria-label="anchor" href="#arg-ci"></a></dt>
 <dd><p>A numerical value that specifies the confidence interval to return.
-Values should be between 0.01 to 0.99.</p></dd>
+Values should be between 0.01 to 0.99. The default is 0.95.</p></dd>
 
 
 <dt id="arg-dir">dir<a class="anchor" aria-label="anchor" href="#arg-dir"></a></dt>
@@ -88,7 +88,8 @@ format for Stock Synthesis. Default "Enter Fleet".</p></dd>
 
 
 <dt id="arg-printfolder">printfolder<a class="anchor" aria-label="anchor" href="#arg-printfolder"></a></dt>
-<dd><p>A string that will be appended to <code>dir</code>, creating a folder
+<dd><p>Deprecated with nwfscSurvey 2.8.0 to give users greater
+control on where to save files. A string that will be appended to <code>dir</code>, creating a folder
 where the output will be saved. If specified as <code>""</code>,
 the output will just be saved directly in <code>dir</code>. The default is <code>"forSS3"</code>.</p></dd>
 
@@ -127,15 +128,15 @@ Oregon, and California during 1977. Marine Fisheries Review: March - April.</p>
 <span class="r-in"><span>  survey <span class="op">=</span> <span class="st">"NWFSC.Combo"</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="va">strata</span> <span class="op">&lt;-</span> <span class="fu"><a href="CreateStrataDF.fn.html">CreateStrataDF.fn</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span><span class="va">strata</span> <span class="op">&lt;-</span> <span class="fu"><a href="create_strata.html">create_strata</a></span><span class="op">(</span></span></span>
 <span class="r-in"><span>  names <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"shallow_wa"</span>, <span class="st">"shallow_or"</span>, <span class="st">"shallow_ca"</span>, <span class="st">"deep_wa"</span>, <span class="st">"deep_or"</span>, <span class="st">"deep_ca"</span><span class="op">)</span>,</span></span>
-<span class="r-in"><span>  depths.shallow <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">55</span>, <span class="fl">55</span>, <span class="fl">55</span>, <span class="fl">183</span>, <span class="fl">183</span>, <span class="fl">183</span><span class="op">)</span>,</span></span>
-<span class="r-in"><span>  depths.deep <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">183</span>, <span class="fl">183</span>, <span class="fl">183</span>, <span class="fl">549</span>, <span class="fl">549</span>, <span class="fl">549</span><span class="op">)</span>,</span></span>
-<span class="r-in"><span>  lats.south <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">46.0</span>, <span class="fl">42.0</span>, <span class="fl">32.0</span>, <span class="fl">46.0</span>, <span class="fl">42.0</span>, <span class="fl">32.0</span><span class="op">)</span>,</span></span>
-<span class="r-in"><span>  lats.north <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">49.0</span>, <span class="fl">46.0</span>, <span class="fl">42.0</span>, <span class="fl">49.0</span>, <span class="fl">46.0</span>, <span class="fl">42.0</span><span class="op">)</span></span></span>
+<span class="r-in"><span>  depths_shallow <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">55</span>, <span class="fl">55</span>, <span class="fl">55</span>, <span class="fl">183</span>, <span class="fl">183</span>, <span class="fl">183</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>  depths_deep <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">183</span>, <span class="fl">183</span>, <span class="fl">183</span>, <span class="fl">549</span>, <span class="fl">549</span>, <span class="fl">549</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>  lats_south <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">46.0</span>, <span class="fl">42.0</span>, <span class="fl">32.0</span>, <span class="fl">46.0</span>, <span class="fl">42.0</span>, <span class="fl">32.0</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>  lats_north <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">49.0</span>, <span class="fl">46.0</span>, <span class="fl">42.0</span>, <span class="fl">49.0</span>, <span class="fl">46.0</span>, <span class="fl">42.0</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="va">biommass</span> <span class="op">&lt;-</span> <span class="fu">get_design_based</span><span class="op">(</span></span></span>
+<span class="r-in"><span><span class="va">biomass</span> <span class="op">&lt;-</span> <span class="fu">get_design_based</span><span class="op">(</span></span></span>
 <span class="r-in"><span>  data <span class="op">=</span> <span class="va">catch</span>,</span></span>
 <span class="r-in"><span>  strata <span class="op">=</span> <span class="va">strata</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>

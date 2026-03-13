@@ -67,6 +67,12 @@ other theories to be created.
 Estimate von Bertanlaffy growth parameters from length and age data or
 predicted lengths given ages and input parameters.
 
+## See also
+
+Other biology function: [`est_growth()`](est_growth.md),
+[`est_vbgrowth()`](est_vbgrowth.md),
+[`estimate_weight_length()`](estimate_weight_length.md)
+
 ## Examples
 
 ``` r

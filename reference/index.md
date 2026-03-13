@@ -30,8 +30,6 @@
 - [`PlotVarLengthAtAge.fn()`](PlotVarLengthAtAge.fn.md) : Plot
   variability of length at age
 
-- [`PullSpp`](PullSpp.md) : Sql pull of species names
-
 - [`ReadInAges.fn()`](ReadInAges.fn.md) : Cleans triennial survey data
   by year and area
 
@@ -75,7 +73,7 @@
 
 - [`check_survey()`](check_survey.md) : Check and create survey string
 
-- [`codify_sex()`](codify_sex.md) [`codify_sex_SS3()`](codify_sex.md) :
+- [`codify_sex()`](codify_sex.md) [`codify_sex_ss3()`](codify_sex.md) :
   Code sexes into standardized strings
 
 - [`combine_tows()`](combine_tows.md) : Combine data with multiple
@@ -86,6 +84,10 @@
 
 - [`createMatrix()`](createMatrix.md) : Survey name matching function
   used when pull from the data warehouse
+
+- [`create_strata()`](create_strata.md) :
+
+  Create strata data frame using `get_strata_areas`
 
 - [`draw_USEEZ()`](draw_USEEZ.md) : Bounds the figure with the limits of
   the U.S. EEZ
@@ -128,8 +130,25 @@
 
 - [`get_species_info()`](get_species_info.md) : Get Species Information
 
+- [`get_spp_list()`](get_spp_list.md) : Get Vector of Default Species
+  Names for US West Coast
+
+- [`get_strata_area_default()`](get_strata_area_default.md) : Get
+  Default Strata
+
+- [`get_strata_areas()`](get_strata_areas.md) : Calculate strata area
+
+- [`get_survey_names_abb()`](get_survey_names_abb.md) : Get Survey
+  Abbreviation
+
+- [`get_survey_names_long()`](get_survey_names_long.md) : Survey name
+  matching function used when pull from the data warehouse
+
 - [`get_url()`](get_url.md) : Function to create url to pull data from
   the data warehouse
+
+- [`label_axes()`](label_axes.md) : Function to label axis for map
+  plotting
 
 - [`label_tow_expansion()`](label_tow_expansion.md) : Label tow expanded
   compositions
@@ -145,6 +164,9 @@
 - [`plot_cpue()`](plot_cpue.md) : This function plots cpue and length by
   latitude and depth
 
+- [`plot_cpue_map()`](plot_cpue_map.md) : Plot two figures showing
+  catch-per-unit-effort data
+
 - [`plot_index()`](plot_index.md) : Plots the design based biomass
   estimates with confidence intervals
 
@@ -153,6 +175,12 @@
 
 - [`plot_proportion()`](plot_proportion.md) : Plot proportions of factor
   levels (y axis) by bins (x axis)
+
+- [`plot_sex_ratio()`](plot_sex_ratio.md) : Function to plot sex ratio
+  data in a barplot form
+
+- [`plot_sex_ratio_strata()`](plot_sex_ratio_strata.md) : Function to
+  plot sex ratio by strata
 
 - [`plot_varlenage()`](plot_varlenage.md) : Plot variability of length
   at age
@@ -184,7 +212,8 @@
 - [`pull_haul()`](pull_haul.md) : Pull haul data from the NWFSC data
   warehouse.
 
-- [`pull_spp()`](pull_spp.md) : Pull species names from the warehouse
+- [`pull_spp`](pull_spp.md) [`pull_spp()`](pull_spp.md) : Sql pull of
+  species names
 
 - [`save_rdata()`](save_rdata.md) :
 
@@ -192,6 +221,9 @@
 
 - [`stopifnotcolumn()`](stopifnotcolumn.md) : Stop if column name is not
   present in the data
+
+- [`strata_factors()`](strata_factors.md) : Creates a vector of strata
+  factors by request column names
 
 - [`wh_plot_proportion()`](wh_plot_proportion.md) : Save figures of
   proportions by depth and latitude using warehouse data

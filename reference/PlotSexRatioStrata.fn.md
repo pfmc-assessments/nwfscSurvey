@@ -8,9 +8,9 @@ Function to plot sex ratio by strata
 PlotSexRatioStrata.fn(
   dir = NULL,
   dat,
+  strat.df,
   type = "length",
   strat.vars = c("Depth_m", "Latitude_dd"),
-  strat.df = NULL,
   circleSize = 0.05,
   dopng = lifecycle::deprecated(),
   ...
@@ -29,6 +29,11 @@ PlotSexRatioStrata.fn(
   A data frame of length-composition data returned from
   [`pull_bio()`](pull_bio.md).
 
+- strat.df:
+
+  A data frame that defines the strata and provides the calculated areas
+  for each strata returned from `createStrataDF.fn()`.
+
 - type:
 
   Specify where to calculate the sex ration by length or age.
@@ -38,11 +43,6 @@ PlotSexRatioStrata.fn(
   Variables in both data frame that are used to define the strata.
   Default is bottom depth (m) and latitudes (decimal degrees), i.e.,
   `c("Depth_m", "Latitude_dd")`.
-
-- strat.df:
-
-  A data frame that defines the strata and provides the calculated areas
-  for each strata returned from `createStrataDF.fn()`.
 
 - circleSize:
 
@@ -61,7 +61,7 @@ PlotSexRatioStrata.fn(
 
 ## See also
 
-[`StrataFactors.fn`](StrataFactors.fn.md)
+[`StrataFactors.fn`](StrataFactors.fn.md) `createStrataDF.fn`
 
 ## Author
 

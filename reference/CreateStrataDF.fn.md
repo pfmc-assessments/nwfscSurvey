@@ -60,6 +60,8 @@ See [`StrataAreas.fn`](StrataAreas.fn.md) for how areas are calculated.
 See [`get_design_based`](get_design_based.md) for how the areas are used
 to create design-based biomass estimates.
 
+Other strata function: [`create_strata()`](create_strata.md)
+
 ## Author
 
 Chantel Wetzel and Kelli Johnson
@@ -74,6 +76,14 @@ strata <- CreateStrataDF.fn(
   lats.south     = c(32, 32, 40, 40, 44),
   lats.north     = c(40, 40, 49, 44, 49)
 )
+#> Warning: `CreateStrataDF.fn()` was deprecated in nwfscSurvey 2.8.0.
+#> ℹ This function is no longer needed and will be removed in a future version.
+#>   Please use create_strata() instead.
+#> Warning: `StrataAreas.fn()` was deprecated in nwfscSurvey 2.8.0.
+#> ℹ This function is no longer needed and will be removed in a future version.
+#>   Please use get_strata_areas() instead.
+#> ℹ The deprecated feature was likely used in the nwfscSurvey package.
+#>   Please report the issue to the authors.
 # Which returns a data frame that looks like the following:
 #      name      area Depth_m.1 Depth_m.2 Latitude_dd.1 Latitude_dd.2
 #    deep_s 16468.110       183       549            32            40
