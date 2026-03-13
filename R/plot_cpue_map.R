@@ -20,10 +20,9 @@
 #' * `pull_catch()`
 #' * `plot_westcoast()`
 #' @return Figures are saved to the disk according to which plots are asked
-#' for in `plot`. Each of the specified files are saved to a directory called
-#' `map_plots` inside of `dir`, the specified directory. No objects are
-#' returned to the user. But, the figures are printed to new windows if they
-#' are not saved to the disk.
+#' for in `plot`. Each of the specified files are saved to `dir`, the specified
+#' directory. No objects are returned to the user. But, the figures are printed
+#' to new windows if they are not saved to the disk.
 #'
 #' @examples
 #' \dontrun{
