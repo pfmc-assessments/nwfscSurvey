@@ -31,6 +31,7 @@ This function plots cpue and length by latitude and depth
 Other plot_: 
 \code{\link{PlotSexRatio.fn}()},
 \code{\link{PlotVarLengthAtAge.fn}()},
+\code{\link{plot_age_length_sampling}()},
 \code{\link{plot_comps}()},
 \code{\link{plot_cpue_map}()},
 \code{\link{plot_index}()},

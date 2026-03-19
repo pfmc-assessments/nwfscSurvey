@@ -65,6 +65,7 @@ Plots the weight-at-length data and estimates
 Other plot_: 
 \code{\link{PlotSexRatio.fn}()},
 \code{\link{PlotVarLengthAtAge.fn}()},
+\code{\link{plot_age_length_sampling}()},
 \code{\link{plot_comps}()},
 \code{\link{plot_cpue}()},
 \code{\link{plot_cpue_map}()},

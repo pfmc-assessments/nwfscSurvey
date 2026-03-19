@@ -29,7 +29,7 @@ get_expanded_comps(
 )
 }
 \arguments{
-\item{bio_data}{A data frame of length-composition data returned from
+\item{bio_data}{A data frame of composition data returned from
 \code{\link[=pull_bio]{pull_bio()}}.}
 
 \item{catch_data}{A data frame of catch data returned from \code{\link[=pull_catch]{pull_catch()}}.}

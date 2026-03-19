@@ -7,6 +7,7 @@
 plot_age_length_sampling(
   data,
   dir = NULL,
+  plot = 1:2,
   height = 7,
   width = 7,
   xlim = lifecycle::deprecated(),
@@ -14,23 +15,47 @@ plot_age_length_sampling(
 )
 }
 \arguments{
-\item{data}{data frame}
+\item{data}{A data frame of composition data returned from
+\code{\link[=pull_bio]{pull_bio()}}.}
 
 \item{dir}{Defaults to NULL (plot made, but not saved to file). Can alternatively be a string filename
-by year and sex}
+by year and sex.}
+
+\item{plot}{A vector of integers to specify which plots to return. The
+default is to print or save all figures, i.e., \code{plot = 1:2}. Integers
+correspond to the following figures:
+\enumerate{
+\item Compare distribution of all lengths and lengths from aged fish across all years
+\item Compare distribution of all lengths and lengths from aged fish across by year
+}}
 
 \item{width, height}{Numeric values for the figure width and height in
 inches. The defaults are 7 by 7 inches.}
 
-\item{xlim}{Deprecated with {nwfscSurvey} version 2.8.0.1 because the limits
-are now automatically determined. x limits for plot, defaults to c(0,120)}
+\item{xlim}{Deprecated as of v.2.8.1. x limits for plot, defaults to c(0,120)}
 
-\item{ylim}{Deprecated with {nwfscSurvey} version 2.8.0.1 because the limits
-are now automatically determined. y limits for plot, defaults to (0, 0.049)}
+\item{ylim}{Deprecated as of v.2.8.1. y limits for plot, defaults to (0, 0.049)}
 }
 \description{
 Plot the representativeness of age sampling based on lengths
 }
+\seealso{
+Other plot_: 
+\code{\link{PlotSexRatio.fn}()},
+\code{\link{PlotVarLengthAtAge.fn}()},
+\code{\link{plot_comps}()},
+\code{\link{plot_cpue}()},
+\code{\link{plot_cpue_map}()},
+\code{\link{plot_index}()},
+\code{\link{plot_length_age}()},
+\code{\link{plot_proportion}()},
+\code{\link{plot_sex_ratio}()},
+\code{\link{plot_sex_ratio_strata}()},
+\code{\link{plot_varlenage}()},
+\code{\link{plot_weight_length}()},
+\code{\link{plot_westcoast}()}
+}
 \author{
 Chantel Wetzel
 }
+\concept{plot_}
