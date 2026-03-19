@@ -1,113 +1,133 @@
 #' Plot the representativeness of age sampling based on lengths
 #'
-#' @param data data frame
-#' @param xlim x limits for plot, defaults to c(0,120)
-#' @param ylim y limits for plot, defaults to (0, 0.049)
+#' @param data A data frame of composition data returned from
+#'   [pull_bio()].
+#' @param xlim Deprecated as of v.2.8.1. x limits for plot, defaults to c(0,120)
+#' @param ylim Deprecated as of v.2.8.1. y limits for plot, defaults to (0, 0.049)
+#' @param plot A vector of integers to specify which plots to return. The
+#'   default is to print or save all figures, i.e., `plot = 1:2`. Integers
+#'   correspond to the following figures:
+#'   1. Compare distribution of all lengths and lengths from aged fish across all years
+#'   2. Compare distribution of all lengths and lengths from aged fish across by year
 #' @param dir Defaults to NULL (plot made, but not saved to file). Can alternatively be a string filename
-#' by year and sex
+#' by year and sex.
+#' @param width,height Numeric values for the figure width and height in
+#'   inches. The defaults are 7 by 7 inches.
 #'
 #' @author Chantel Wetzel
-#' @importFrom graphics grid hist
+#' @family plot_
 #' @export
-
 plot_age_length_sampling <- function(
   data,
-  xlim = c(0, 120),
-  ylim = c(0, 0.049),
-  dir = NULL
+  dir = NULL,
+  plot = 1:2,
+  height = 7,
+  width = 7,
+  xlim = lifecycle::deprecated(),
+  ylim = lifecycle::deprecated()
 ) {
+  if (lifecycle::is_present(xlim)) {
+    lifecycle::deprecate_warn(
+      when = "2.8.1",
+      what = "nwfscSurvey::plot_age_length_sampling(xlim =)"
+    )
+  }
+  if (lifecycle::is_present(ylim)) {
+    lifecycle::deprecate_warn(
+      when = "2.8.1",
+      what = "nwfscSurvey::plot_age_length_sampling(ylim =)"
+    )
+  }
   if (!is.null(dir)) {
-    png(
-      filename = file.path(dir, "age_length_comparison.png"),
-      width = 10,
-      height = 7,
-      units = "in",
-      res = 300
+    filename <- file.path(dir, "age_length_comparison.png")
+  }
+  plotdir <- file.path(dir)
+  check_dir(dir = plotdir)
+  plot_names <- file.path(
+    plotdir,
+    c(
+      "length_age_distribution_comparison.png",
+      "length_age_distribution_comparison_by_year.png"
+    )
+  )
+
+  data_tolower <- data |> dplyr::rename_all(tolower)
+  if (any(c("length_cm", "age_years", "year") %in% colnames(data_tolower))) {
+    cli::cli_abort(
+      "Missing column in the data object: must include a column called length_cm, age_years, and year."
     )
   }
-  # make multi-panel plot comparing length samples to the subset with ages
-  par(
-    mfcol = c(5, 4),
-    mar = c(0.2, 0.2, 0.2, 0.2),
-    oma = c(4, 4, 1, 1)
-  )
-  # vector of years with age samples
-  years <- sort(unique(data$Year))
-  colvec <- c(rgb(1, 0, 0, alpha = 0.8), rgb(0, 0, 1, alpha = 0.5))
-
-  # empty plot for legend
-  plot(0, type = "n", axes = FALSE)
-  legend(
-    "left",
-    bty = "n",
-    fill = colvec,
-    cex = 1.5,
-    legend = c(
-      "All length samples",
-      "Lengths of aged fish"
+  if (sum(!is.na(data_tolower[, "age_years"])) == 0) {
+    cli::cli_abort(
+      "All values in the age_years column are NA.  Must have age data available."
     )
-  )
+  }
 
-  mtext("Length (cm)", side = 1, line = 2.5, outer = TRUE)
+  length_data <- data_tolower |>
+    dplyr::rename_all(tolower) |>
+    dplyr::filter(!is.na(length_cm)) |>
+    dplyr::mutate(Type = "All Fish")
 
-  for (y in years) {
-    # make empty plot (note: xlim and ylim were set by trial and error)
-    plot(
-      0,
-      type = "n",
-      xlim = xlim,
-      xaxs = "i",
-      ylim = ylim,
-      yaxs = "i",
-      axes = FALSE
-    )
-    grid()
-    if (par()$mfg[2] == 1) {
-      axis(2, las = 1)
-    }
-    if (par()$mfg[1] == par()$mfg[3] | y == max(years)) {
-      axis(1)
-    }
-    lengths.y <- data$Length_cm[data$Year == y]
-    ages.y <- data$Length_cm[
-      data$Year == y &
-        !is.na(data$Age)
-    ]
-    hist(
-      lengths.y,
-      breaks = seq(0, 120, 5),
-      freq = FALSE,
-      col = colvec[1],
-      add = TRUE
-    )
-    if (length(ages.y > 0)) {
-      hist(
-        ages.y,
-        breaks = seq(0, 120, 5),
-        freq = FALSE,
-        col = colvec[2],
-        add = TRUE
+  age_data <- data_tolower |>
+    dplyr::rename_all(tolower) |>
+    dplyr::filter(!is.na(age_years), !is.na(length_cm)) |>
+    dplyr::mutate(Type = "Aged Fish")
+  years_to_keep <- unique(length_data[, "year"])[which(
+    unique(length_data[, "year"]) %in% unique(age_data[, "year"])
+  )]
+
+  both_data_types <- dplyr::bind_rows(
+    length_data,
+    age_data
+  ) |>
+    dplyr::filter(year %in% years_to_keep)
+
+  if (1 %in% plot) {
+    p1 <- ggplot2::ggplot(
+      both_data_types,
+      ggplot2::aes(x = length_cm, color = Type, linetype = Type)
+    ) +
+      ggplot2::geom_density(linewidth = 1) +
+      ggplot2::scale_color_viridis_d(begin = 0.0, end = 0.5) +
+      ggplot2::ylab("Density") +
+      ggplot2::xlab("Length (cm)") +
+      ggplot2::theme_bw()
+
+    if (!is.null(dir)) {
+      ggsave(
+        filename = plot_names[1],
+        plot = p1,
+        width = width,
+        height = height,
+        units = "in"
       )
+    } else {
+      print(p1)
     }
-    legend("topleft", legend = NA, bty = "n", title = y, cex = 1.5)
-    legend(
-      "right",
-      legend = NA,
-      bty = "n",
-      title = paste0(
-        "N lens = ",
-        length(lengths.y),
-        "\nN ages = ",
-        length(ages.y),
-        " (",
-        round(100 * length(ages.y) / length(lengths.y)),
-        "%)"
-      ),
-      cex = 1.0
-    )
   }
 
-  if (!is.null(file)) {
-    dev.off()
+  if (2 %in% plot) {
+    p2 <- ggplot2::ggplot(
+      both_data_types,
+      ggplot2::aes(x = length_cm, color = Type, linetype = Type)
+    ) +
+      ggplot2::geom_density(linewidth = 1) +
+      ggplot2::scale_color_viridis_d(begin = 0.0, end = 0.5) +
+      ggplot2::ylab("Density") +
+      ggplot2::xlab("Length (cm)") +
+      ggplot2::theme_bw() +
+      ggplot2::facet_wrap(facets = "year")
+
+    if (!is.null(dir)) {
+      ggsave(
+        filename = plot_names[2],
+        plot = p2,
+        width = width,
+        height = height,
+        units = "in"
+      )
+    } else {
+      print(p2)
+    }
   }
 }
