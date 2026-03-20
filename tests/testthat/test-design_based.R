@@ -69,4 +69,8 @@ test_that("get_design_based_index with create_strata", {
   expect_equal(nrow(biomass$biomass_by_strata), 48)
   expect_equal(biomass$biomass_by_strata$ntows[1], 142)
   expect_equal(round(biomass$biomass_by_strata$area[1], 0), 25793)
+
+  p <- plot_index(data = biomass)
+  expect_equal(is(p[[1]]), "ggplot2::ggplot")
+  expect_equal(is(p[[2]]), "ggplot2::ggplot")
 })

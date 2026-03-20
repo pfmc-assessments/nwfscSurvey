@@ -34,14 +34,17 @@ test_that("get_raw_comps", {
   )
 
   # confirm that plot_comps works when providing the full list
-  # comp_plot <- plot_comps(length_comps)
-  # expect_equal(is(comp_plot), "gg")
+  comp_plot <- plot_comps(length_comps)
+  expect_equal(is(comp_plot[[1]]), "ggplot2::ggplot")
+  expect_equal(is(comp_plot[[2]]), "ggplot2::ggplot")
   # confirm that plot_comps works when providing sexed comps
-  # comp_plot <- plot_comps(length_comps$sexed)
-  # expect_equal(is(comp_plot), "gg")
+  comp_plot <- plot_comps(length_comps$sexed)
+  expect_equal(is(comp_plot[[1]]), "ggplot2::ggplot")
+  expect_equal(is(comp_plot[[2]]), "ggplot2::ggplot")
   # confirm that plot_comps works when providing unsexed comps
-  # comp_plot <- plot_comps(length_comps$unsexed)
-  # expect_equal(is(comp_plot), "gg")
+  comp_plot <- plot_comps(length_comps$unsexed)
+  expect_equal(is(comp_plot[[1]]), "ggplot2::ggplot")
+  expect_equal(is(comp_plot[[2]]), "ggplot2::ggplot")
 
   length_unsexed_comps <- get_raw_comps(
     data = dat,
@@ -153,7 +156,7 @@ test_that("get_expanded_comps", {
     survey = "NWFSC.Combo",
     verbose = TRUE
   )
-  strata <- CreateStrataDF.fn(
+  strata <- create_strata(
     names = c(
       "shallow_wa",
       "shallow_or",
@@ -162,10 +165,10 @@ test_that("get_expanded_comps", {
       "shelf_or",
       "shelf_nca"
     ),
-    depths.shallow = c(55, 55, 55, 183, 183, 183),
-    depths.deep = c(183, 183, 183, 300, 300, 300),
-    lats.south = c(46.0, 42.0, 40.0, 46.0, 42.0, 40.0),
-    lats.north = c(49.0, 46.0, 42.0, 49.0, 46.0, 42.0)
+    depths_shallow = c(55, 55, 55, 183, 183, 183),
+    depths_deep = c(183, 183, 183, 300, 300, 300),
+    lats_south = c(46.0, 42.0, 40.0, 46.0, 42.0, 40.0),
+    lats_north = c(49.0, 46.0, 42.0, 49.0, 46.0, 42.0)
   )
 
   length_comps <- get_expanded_comps(
@@ -200,8 +203,9 @@ test_that("get_expanded_comps", {
   expect_equal(nrow(length_comps_sexed$unsexed), 0)
 
   # confirm that plot_comps works for expanded length comps
-  # comp_plot <- plot_comps(length_comps)
-  # expect_equal(is(comp_plot), "gg")
+  comp_plot <- plot_comps(length_comps)
+  expect_equal(is(comp_plot[[1]]), "ggplot2::ggplot")
+  expect_equal(is(comp_plot[[1]]), "ggplot2::ggplot")
 
   age_comps <- get_expanded_comps(
     bio_data = bio,
@@ -219,8 +223,9 @@ test_that("get_expanded_comps", {
   expect_equal(sum(age_comps$unsexed$input_n), 45)
 
   # confirm that plot_comps works for expanded age comps
-  # comp_plot <- plot_comps(age_comps)
-  # expect_equal(is(comp_plot), "gg")
+  comp_plot <- plot_comps(age_comps)
+  expect_equal(is(comp_plot[[1]]), "ggplot2::ggplot")
+  expect_equal(is(comp_plot[[1]]), "ggplot2::ggplot")
 })
 
 test_that("tow_expansions", {
