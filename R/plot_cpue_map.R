@@ -12,6 +12,8 @@
 #'   default is to print both figures.
 #'   1. coastwide data across all years
 #'   2. coastwide data by year
+#' @param width,height Numeric values for the figure width and height in
+#'   inches. The defaults are 7 by 10 inches.
 #'
 #' @author Chantel R. Wetzel
 #' @export
@@ -34,7 +36,9 @@ plot_cpue_map <- function(
   data,
   dir = NULL,
   main = NULL,
-  plot = 1:2
+  plot = 1:2,
+  height = 10,
+  width = 7
 ) {
   plotdir <- file.path(dir)
   check_dir(dir = plotdir)
@@ -112,13 +116,13 @@ plot_cpue_map <- function(
       label_land() +
       label_axes() +
       ggplot2::theme(legend.position = "right")
-    print(g)
 
     if (!is.null(dir)) {
       ggplot2::ggsave(
+        plot = g,
         filename = plot_names[1],
-        width = 7,
-        height = 10,
+        width = width,
+        height = height,
         units = "in"
       )
     }
@@ -176,15 +180,27 @@ plot_cpue_map <- function(
       label_axes() +
       ggplot2::theme(legend.position = "right") +
       ggplot2::facet_wrap(~year, ncol = 6)
-    print(h)
 
     if (!is.null(dir)) {
       ggplot2::ggsave(
+        plot = h,
         filename = plot_names[2],
-        width = 7,
-        height = 10,
+        width = width,
+        height = height,
         units = "in"
       )
+    }
+  }
+
+  if (is.null(dir)) {
+    if (length(plot) == 1) {
+      if (plot == 1) {
+        return(g)
+      } else {
+        return(h)
+      }
+    } else {
+      return(list(g, h))
     }
   }
 }
