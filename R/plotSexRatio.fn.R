@@ -115,10 +115,10 @@ PlotSexRatio.fn <- function(
       axis.text.x = element_text(size = 15),
       axis.text.y = element_text(size = 15)
     )
-  print(p)
 
   if (!is.null(dir)) {
     ggsave(
+      plot = p,
       filename = file.path(
         dir,
         paste0("proportion_by_", data.type, "_sex.png")
@@ -127,5 +127,7 @@ PlotSexRatio.fn <- function(
       height = 7,
       units = "in"
     )
+  } else {
+    return(p)
   }
 }
