@@ -4,10 +4,10 @@
 \alias{plot_cpue}
 \title{This function plots cpue and length by latitude and depth}
 \usage{
-plot_cpue(catch, dir = NULL, plot = 1:3, width = 7, height = 7)
+plot_cpue(data, dir = NULL, plot = 1:3, width = 7, height = 7)
 }
 \arguments{
-\item{catch}{Data catch file pulled using \code{\link[=pull_catch]{pull_catch()}}}
+\item{data}{Data catch file pulled using \code{\link[=pull_catch]{pull_catch()}}}
 
 \item{dir}{Directory where output will be saved. The directory where the file should be saved.
 If dir = NULL no output will be saved.}
