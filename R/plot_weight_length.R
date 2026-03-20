@@ -2,7 +2,7 @@
 #'
 #' @inheritParams pull_catch
 #' @param data Data frame created by [pull_bio()]
-#' @param estimates Data frame of weight-at-length estimates from [est_weight_length()].
+#' @param estimates Data frame of weight-at-length estimates from [estimate_weight_length()].
 #'   If passed to the function the estimated parameter values will be added to
 #'   the plot. The default is `NULL` and will not add parameters to the plot.
 #' @param col_length A numeric or character value specifying the column
