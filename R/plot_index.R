@@ -74,7 +74,7 @@ plot_index <- function(
 
   igroup <- 1
   if (igroup %in% plot) {
-    gg <- ggplot2::ggplot(
+    g1 <- ggplot2::ggplot(
       data = data_1,
       ggplot2::aes(
         x = year,
@@ -95,14 +95,12 @@ plot_index <- function(
     if (!is.null(dir)) {
       ggplot2::ggsave(
         filename = plot_names[1],
-        plot = gg,
+        plot = g1,
         height = height,
         width = width,
         units = "in",
         dpi = dpi
       )
-    } else {
-      print(gg)
     }
   }
 
@@ -137,8 +135,17 @@ plot_index <- function(
         units = "in",
         dpi = dpi
       )
+    }
+  }
+  if (is.null(dir)) {
+    if (length(plot) == 1) {
+      if (plot == 1) {
+        return(g1)
+      } else {
+        return(g2)
+      }
     } else {
-      print(g2)
+      return(list(g1, g2))
     }
   }
 }

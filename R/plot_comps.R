@@ -226,8 +226,6 @@ plot_comps <- function(
         height = height,
         units = "in"
       )
-    } else {
-      print(p)
     }
   }
 
@@ -277,8 +275,18 @@ plot_comps <- function(
         height = height,
         units = "in"
       )
+    }
+  }
+
+  if (is.null(dir)) {
+    if (length(plot) == 1) {
+      if (plot == 1) {
+        return(p)
+      } else {
+        return(p2)
+      }
     } else {
-      print(p2)
+      return(list(p, p2))
     }
   }
 }

@@ -201,6 +201,6 @@ plot_weight_length <- function(
       dpi = dpi
     )
   } else {
-    print(p1)
+    return(p1)
   }
 }

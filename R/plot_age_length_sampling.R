@@ -111,8 +111,6 @@ plot_age_length_sampling <- function(
         height = height,
         units = "in"
       )
-    } else {
-      print(p1)
     }
   }
 
@@ -135,8 +133,8 @@ plot_age_length_sampling <- function(
         axis.title.x = ggplot2::element_text(size = 14),
         axis.text.y = ggplot2::element_text(size = 14),
         legend.text = ggplot2::element_text(size = 14)
-      )
-    ggplot2::facet_wrap(facets = "year")
+      ) +
+      ggplot2::facet_wrap(facets = "year")
 
     if (!is.null(dir)) {
       ggsave(
@@ -146,8 +144,18 @@ plot_age_length_sampling <- function(
         height = height,
         units = "in"
       )
+    }
+  }
+
+  if (is.null(dir)) {
+    if (length(plot) == 1) {
+      if (plot == 1) {
+        return(p1)
+      } else {
+        return(p2)
+      }
     } else {
-      print(p2)
+      return(list(p1, p2))
     }
   }
 }

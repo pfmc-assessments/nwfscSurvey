@@ -95,10 +95,10 @@ plot_sex_ratio_strata <- function(
       axis.text.y = ggplot2::element_text(size = 15)
     ) +
     ggplot2::facet_wrap("stratum")
-  print(p)
 
   if (!is.null(dir)) {
     ggplot2::ggsave(
+      plot = p,
       filename = file.path(
         dir,
         filename
@@ -107,5 +107,7 @@ plot_sex_ratio_strata <- function(
       height = height,
       units = "in"
     )
+  } else {
+    return(p)
   }
 }

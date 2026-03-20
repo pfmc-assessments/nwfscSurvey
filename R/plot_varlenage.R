@@ -136,6 +136,6 @@ plot_var_length_at_age <- function(
       units = "in"
     )
   } else {
-    print(cowplot::plot_grid(p1, p2, nrow = 2))
+    return(cowplot::plot_grid(p1, p2, nrow = 2))
   }
 }

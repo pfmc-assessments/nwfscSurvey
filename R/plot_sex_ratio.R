@@ -73,10 +73,10 @@ plot_sex_ratio <- function(
       axis.text.x = ggplot2::element_text(size = 15),
       axis.text.y = ggplot2::element_text(size = 15)
     )
-  print(p)
 
   if (!is.null(dir)) {
     ggplot2::ggsave(
+      plot = p,
       filename = file.path(
         dir,
         filename
@@ -85,5 +85,7 @@ plot_sex_ratio <- function(
       height = height,
       units = "in"
     )
+  } else {
+    return(p)
   }
 }

@@ -189,6 +189,6 @@ plot_length_age <- function(
       dpi = dpi
     )
   } else {
-    print(p1)
+    return(p1)
   }
 }
