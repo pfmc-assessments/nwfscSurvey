@@ -88,7 +88,7 @@ plot_sex_ratio_strata <- function(
     ggplot2::scale_fill_manual(
       values = c("F" = colors[1], "M" = colors[2], "U" = colors[3])
     ) +
-    ggplot2::labs(y = "Proportion by Sex", x = axis.name) +
+    ggplot2::labs(y = "Proportion by Sex", x = axis_name) +
     ggplot2::theme(
       panel.border = ggplot2::element_rect(
         colour = "black",
