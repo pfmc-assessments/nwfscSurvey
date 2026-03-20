@@ -105,7 +105,7 @@ plot_proportion <- function(
 ) {
   # Set up
   # Create a character string of input column name
-  character_bin <- as.character(ensym(column_bin))
+  character_bin <- as.character(rlang::ensym(column_bin))
   # match.arg allows for the default arg to be the first of the vector
   # in the function definition
   bar_width <- match.arg(bar_width)
@@ -117,7 +117,11 @@ plot_proportion <- function(
   data_plot <- dplyr::mutate(
     .data = data,
     calc_bin = if ("width" %in% names(list(...))) {
-      ggplot2::cut_width(round(.data[[character_bin]], digits = digits), ...)
+      ggplot2::cut_width(
+        round(.data[[character_bin]], digits = digits),
+        dig.lab = 10,
+        ...
+      )
     } else {
       .data[[character_bin]]
     }
@@ -155,14 +159,14 @@ plot_proportion <- function(
     ggplot2::ylab("Proportion") +
     ggplot2::scale_y_continuous(expand = c(0, 0)) +
     ggplot2::theme(
-      axis.text.x = ggplot2::element_text(angle = 90, vjust = 0.5),
+      axis.text.x = ggplot2::element_text(angle = 90, vjust = 0.75, hjust = 1),
       axis.ticks.x = ggplot2::element_blank(),
       legend.position = "top",
       legend.title = ggplot2::element_blank()
     ) +
     ggplot2::coord_cartesian(expand = FALSE) +
     ggokabeito::scale_fill_okabe_ito() + # color-blind friendly
-    ggmosaic::scale_x_productlist()
+    ggmosaic::scale_x_productlist(labels = scales::label_comma())
 
   return(gg)
 }
