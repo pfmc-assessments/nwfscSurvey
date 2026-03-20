@@ -52,7 +52,7 @@ plot_age_length_sampling <- function(
   )
 
   data_tolower <- data |> dplyr::rename_all(tolower)
-  if (any(c("length_cm", "age_years", "year") %in% colnames(data_tolower))) {
+  if (!any(c("length_cm", "age_years", "year") %in% colnames(data_tolower))) {
     cli::cli_abort(
       "Missing column in the data object: must include a column called length_cm, age_years, and year."
     )
@@ -91,7 +91,17 @@ plot_age_length_sampling <- function(
       ggplot2::scale_color_viridis_d(begin = 0.0, end = 0.5) +
       ggplot2::ylab("Density") +
       ggplot2::xlab("Length (cm)") +
-      ggplot2::theme_bw()
+      ggplot2::theme(
+        axis.text = ggplot2::element_text(size = 12),
+        panel.border = ggplot2::element_rect(
+          colour = "black",
+          fill = NA,
+          linewidth = 1
+        ),
+        axis.title.x = ggplot2::element_text(size = 14),
+        axis.text.y = ggplot2::element_text(size = 14),
+        legend.text = ggplot2::element_text(size = 14)
+      )
 
     if (!is.null(dir)) {
       ggsave(
@@ -115,8 +125,18 @@ plot_age_length_sampling <- function(
       ggplot2::scale_color_viridis_d(begin = 0.0, end = 0.5) +
       ggplot2::ylab("Density") +
       ggplot2::xlab("Length (cm)") +
-      ggplot2::theme_bw() +
-      ggplot2::facet_wrap(facets = "year")
+      ggplot2::theme(
+        axis.text = ggplot2::element_text(size = 12),
+        panel.border = ggplot2::element_rect(
+          colour = "black",
+          fill = NA,
+          linewidth = 1
+        ),
+        axis.title.x = ggplot2::element_text(size = 14),
+        axis.text.y = ggplot2::element_text(size = 14),
+        legend.text = ggplot2::element_text(size = 14)
+      )
+    ggplot2::facet_wrap(facets = "year")
 
     if (!is.null(dir)) {
       ggsave(
