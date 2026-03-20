@@ -44,11 +44,19 @@ plot_sex_ratio <- function(
       "The following column is missing in the data: {comp_column_name}."
     )
   }
+  data_tolower$bin <- plyr::round_any(
+    data_tolower[, comp_column_name],
+    bin_width,
+    floor
+  )
   binned_data <- data_tolower |>
-    dplyr::mutate(bin = plyr::round_any(column_to_use, bin_width, floor)) |>
     dplyr::count(bin, sex) |>
     dplyr::mutate(proportion = n / sum(n)) |>
     dplyr::rename(Sex = sex)
+  axis_name <- dplyr::case_when(
+    tolower(comp_column_name) == "length_cm" ~ "Length (cm)",
+    .default = "Age (years)"
+  )
 
   colors <- viridis::viridis(n = 3)
   p <- ggplot2::ggplot(
@@ -60,7 +68,7 @@ plot_sex_ratio <- function(
     ggplot2::scale_fill_manual(
       values = c("F" = colors[1], "M" = colors[2], "U" = colors[3])
     ) +
-    ggplot2::labs(y = "Proportion by Sex", x = axis.name) +
+    ggplot2::labs(y = "Proportion by Sex", x = axis_name) +
     ggplot2::theme(
       panel.border = ggplot2::element_rect(
         colour = "black",

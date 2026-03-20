@@ -61,15 +61,23 @@ plot_sex_ratio_strata <- function(
     strata_vars = strata_vars,
     strata_df = strata_df
   )
+  data_mod$bin <- plyr::round_any(
+    data_mod[, comp_column_name],
+    bin_width,
+    floor
+  )
   binned_data <- data_mod |>
     dplyr::filter(!is.na(stratum)) |>
-    dplyr::mutate(bin = plyr::round_any(column_to_use, bin_width, floor)) |>
     dplyr::group_by(stratum) |>
     dplyr::count(bin, sex) |>
     dplyr::group_by(stratum) |>
     dplyr::mutate(proportion = n / sum(n)) |>
     dplyr::rename(Sex = sex)
 
+  axis_name <- dplyr::case_when(
+    tolower(comp_column_name) == "length_cm" ~ "Length (cm)",
+    .default = "Age (years)"
+  )
   colors <- viridis::viridis(n = 3)
   p <- ggplot2::ggplot(
     binned_data,
