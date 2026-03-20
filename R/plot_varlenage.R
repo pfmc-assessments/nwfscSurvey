@@ -1,193 +1,141 @@
 #' Plot variability of length at age
 #'
-#' @details
-#' Plots the standard deviation and coefficient of variation of age at observed
-#' and predicted length
 #'
-#'
-#' @inheritParams pull_catch
-#' @param dat The data loaded from [pull_bio()]
+#' @param data A data frame of length-composition data returned from
+#'   [pull_bio()].
+#' @param age_bins Vector of integers to bin age data.Values above or below the minimum or maximum
+#'   values in the vector are grouped into the first size or plus group size, respectively.
+#' @param dir Defaults to NULL (plot made, but not saved to file). Can alternatively be a string filename
+#' by year and sex.
 #' @param main Name that will be used to name the saved png
-#' @param bySex Logical to indicate if plot by sex
-#' @param Par Starting parameters for K, Linf, L0, CV0, and CV2 based on the
-#'   Stock Synthesis parameterization of von Bertanlaffy growth.
-#' @param estVB Logical. Estimate vonB growth to plot against predicted length.
-#'   If F, it uses the parameters in \code{parStart}.
-#' @param bins The bins to put ages into. If NULL then simply uses the ages as
-#'   recorded.
-#' @param legX legend location for x axis, defaults to "bottomleft"
-#' @param legY legend location for y axis, defaults to NULL
-#' @param dopng Deprecated with {nwfscSurvey} 2.1 because providing a non-NULL
-#'   value to `dir` can serve the same purpose as `dopng = TRUE` without the
-#'   potential for errors when `dopng = TRUE` and `dir = NULL`. Thus, users
-#'   no longer have to specify `dopng` to save the plot as a png.
-#' @param ... Additional arguments for the plots.
+#' @param two_sex Logical to indicate if plot by sex. Default is TRUE and will only plot females and males.
+#' @param width,height Numeric values for the figure width and height in
+#'   inches. The defaults are 7 by 7 inches.
 #'
 #' @author Chantel Wetzel
 #' @family plot_
 #' @export
 
-plot_varlenage <- function(
-  dat,
+plot_var_length_at_age <- function(
+  data,
+  age_bins,
   dir = NULL,
   main = NULL,
-  Par = data.frame(K = 0.13, Linf = 55, L0 = 15, CV0 = 0.10, CV1 = 0.10),
-  bySex = TRUE,
-  estVB = TRUE,
-  bins = NULL,
-  legX = "bottomleft",
-  legY = NULL,
-  dopng = lifecycle::deprecated(),
-  ...
+  two_sex = TRUE,
+  height = 7,
+  width = 7
 ) {
-  if (lifecycle::is_present(dopng)) {
-    lifecycle::deprecate_warn(
-      when = "2.1",
-      what = "nwfscSurvey::PlotMap.fn(dopng =)"
-    )
-  }
-
-  calc_vb <- function(age, k, Linf, L0) {
-    out <- Linf - (Linf - L0) * exp(-age * k)
-    return(out)
-  }
-
   plotdir <- file.path(dir)
   check_dir(dir = plotdir)
-  main_ <- ifelse(is.null(main), "", paste0(main, "_"))
-
-  if (!is.null(dir)) {
-    png(
-      filename = file.path(
-        plotdir,
-        paste0(main_, "VarLengthAtAge_.png")
-      ),
-      height = 7,
-      width = 7,
-      units = "in",
-      res = 300
-    )
-    on.exit(dev.off(), add = TRUE)
+  if (!is.null(main)) {
+    main <- paste0(main, "_")
   }
 
-  par(mfcol = c(2, nn), mar = c(4, 4, 4, 4), oma = c(2, 2, 2, 2))
+  tolower_data <- data |>
+    dplyr::rename_all(tolower) |>
+    dplyr::filter(!is.na(length_cm), !is.na(age_years)) |>
+    dplyr::mutate(sex = codify_sex(sex))
 
-  ests <- est_growth(
-    dir = dir,
-    dat = dat,
-    Par = Par,
-    return_df = FALSE,
-    bySex = bySex,
-    estVB = estVB,
-    bins = bins
-  )
-  if (length(ests) > 2) {
-    sex_names <- c("female", "male")
+  if (!any(c("length_cm", "age_years", "sex") %in% colnames(tolower_data))) {
+    cli::cli_abort(
+      "Missing column in the data object: must include a column called length_cm, age_years, and sex."
+    )
+  }
+  if (sum(!is.na(tolower_data[, "age_years"])) == 0) {
+    cli::cli_abort(
+      "All values in the age_years column are NA.  Must have age data available."
+    )
+  }
+
+  if (two_sex) {
+    tolower_data <- tolower_data |> dplyr::filter(sex != "U")
   } else {
-    sex_names <- "unsexed"
+    tolower_data[, "sex"] <- "U"
   }
-  num <- grep("sd_cv", names(ests))
 
-  colors <- c("#440154FF", "#1F998AFF", "#CBE11EFF")
-  # These colors correspond to viridis::viridis(14)[c(1, 8)]
+  bins <- c(-999, age_bins, Inf)
+  tolower_data[, "bin"] <- bins[findInterval(
+    as.numeric(tolower_data[, "age_years"]),
+    bins,
+    all.inside = TRUE
+  )]
+  tolower_data <- tolower_data |>
+    dplyr::mutate(
+      bin = dplyr::case_when(bin == -999 ~ min(length_bins), .default = bin)
+    )
 
-  max_loop <- ifelse(length(num) > 1, 2, 1)
+  variation <- tolower_data |>
+    dplyr::group_by(sex, bin) |>
+    dplyr::summarise(
+      mean = mean(length_cm),
+      sd = sd(length_cm),
+      cv = (sd / mean),
+      .groups = 'drop'
+    ) |>
+    dplyr::rename(Sex = sex)
 
-  # Loop by sex
-  for (i in 1:max_loop) {
-    xpar <- c(
-      as.numeric(ests[[i]][1]),
-      as.numeric(ests[[i]][2]),
-      as.numeric(ests[[i]][3])
+  p1 <- ggplot2::ggplot(variation) +
+    ggplot2::geom_point(
+      ggplot2::aes(x = bin, y = sd, color = Sex, pch = Sex),
+      size = 2
+    ) +
+    ggplot2::geom_line(
+      ggplot2::aes(x = bin, y = sd, color = Sex),
+      linetype = 2
+    ) +
+    #ggokabeito::scale_color_okabe_ito() +
+    ggplot2::scale_color_viridis_d(begin = 0.0, end = 0.5) +
+    ggplot2::xlab("Age (years)") +
+    ggplot2::ylab("SD of Length-at-Age") +
+    ggplot2::theme(
+      axis.text = ggplot2::element_text(size = 12),
+      panel.border = ggplot2::element_rect(
+        colour = "black",
+        fill = NA,
+        linewidth = 1
+      ),
+      axis.title.x = ggplot2::element_text(size = 14),
+      axis.text.y = ggplot2::element_text(size = 14),
+      legend.text = ggplot2::element_text(size = 14)
     )
-    xsd <- ests[[num[i]]][, 2]
-    xcv <- ests[[num[i]]][, 3]
-    if (is.null(bins)) {
-      ages <- as.numeric(rownames(ests[[num[i]]]))
-    } else {
-      ages <- bin[as.numeric(rownames(ests[[num[i]]]))]
-    }
 
-    plot(
-      ages,
-      xsd,
-      col = colors[1],
-      cex = 1.1,
-      xlab = "Age",
-      ylab = "SD of L@A",
-      type = "b",
-      pch = 16,
-      lty = 1,
-      main = names(la_data_list)[i],
-      ...
+  p2 <- ggplot2::ggplot(variation) +
+    ggplot2::geom_point(
+      ggplot2::aes(x = bin, y = cv, color = Sex, pch = Sex),
+      size = 2
+    ) +
+    ggplot2::geom_line(
+      ggplot2::aes(x = bin, y = cv, color = Sex),
+      linetype = 2
+    ) +
+    #ggokabeito::scale_color_okabe_ito() +
+    ggplot2::scale_color_viridis_d(begin = 0.0, end = 0.5) +
+    ggplot2::xlab("Age (years)") +
+    ggplot2::ylab("CV of Length-at-Age") +
+    ggplot2::theme(
+      axis.text = ggplot2::element_text(size = 12),
+      panel.border = ggplot2::element_rect(
+        colour = "black",
+        fill = NA,
+        linewidth = 1
+      ),
+      axis.title.x = ggplot2::element_text(size = 14),
+      axis.text.y = ggplot2::element_text(size = 14),
+      legend.text = ggplot2::element_text(size = 14)
     )
-    par(new = T)
-    plot(
-      ages,
-      xcv,
-      col = colors[2],
-      cex = 1.1,
-      xlab = "",
-      ylab = "",
-      yaxt = "n",
-      type = "b",
-      pch = 3,
-      lty = 2,
-      ...
-    )
-    axis(4)
-    mtext("CV", side = 4, line = 2.6)
-    legend(
-      bty = "n",
-      x = legX,
-      y = legY,
-      c("SD", "CV"),
-      col = colors,
-      pch = c(16, 3),
-      lty = c(1, 2)
-    )
-    plot(
-      calc_vb(age = ages, k = xpar[1], Linf = xpar[2], L0 = xpar[3]),
-      xsd,
-      xlab = "Predicted Length at Age",
-      ylab = "SD of L@A",
-      col = colors[1],
-      cex = 1.1,
-      type = "b",
-      pch = 16,
-      lty = 1,
-      main = sex_names[i],
-      ...
-    )
-    par(new = T)
-    plot(
-      calc_vb(age = ages, k = xpar[1], Linf = xpar[2], L0 = xpar[3]),
-      xcv,
-      xlab = "",
-      col = colors[2],
-      cex = 1.1,
-      ylab = "",
-      yaxt = "n",
-      type = "b",
-      pch = 3,
-      lty = 2,
-      ...
-    )
-    axis(4)
-    mtext("CV", side = 4, line = 2.6)
-    legend(
-      bty = "n",
-      col = colors,
-      x = legX,
-      y = legY,
-      c("SD", "CV"),
-      pch = c(16, 3),
-      lty = c(1, 2)
-    )
-  } # end sex loop
 
   if (!is.null(dir)) {
-    dev.off()
-    save(ests, file = file.path(dir, "growth_variance_vonB_estimates.Rdata"))
+    ggsave(
+      plot = cowplot::plot_grid(p1, p2, nrow = 2),
+      filename = file.path(
+        dir,
+        paste0(main, "length_at_age_variation.png")
+      ),
+      width = width,
+      height = height,
+      units = "in"
+    )
+  } else {
+    print(cowplot::plot_grid(p1, p2, nrow = 2))
   }
 }
