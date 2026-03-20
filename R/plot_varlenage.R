@@ -61,7 +61,7 @@ plot_var_length_at_age <- function(
   )]
   tolower_data <- tolower_data |>
     dplyr::mutate(
-      bin = dplyr::case_when(bin == -999 ~ min(length_bins), .default = bin)
+      bin = dplyr::case_when(bin == -999 ~ min(age_bins), .default = bin)
     )
 
   variation <- tolower_data |>
