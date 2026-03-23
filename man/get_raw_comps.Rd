@@ -20,7 +20,7 @@ get_raw_comps(
   age_high = lifecycle::deprecated(),
   age_error = lifecycle::deprecated(),
   dir = NULL,
-  printfolder = "forSS3",
+  printfolder = lifecycle::deprecated(),
   verbose = TRUE
 )
 }

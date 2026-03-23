@@ -29,7 +29,23 @@
 #'
 #' @examples
 #' \dontrun{
-#' plot_comps(data = LFs)
+#' catch <- pull_catch(common_name = "lingcod")
+#' bio <- pull_bio(common_name = "lingcod")
+#'
+#' strata <- create_strata(
+#'   names = c("deep_s", "shallow_s", "deep_mn", "shallow_m", "shallow_n"),
+#'   depths_shallow = c(183, 55, 183, 55, 55),
+#'   depths_deep = c(549, 183, 549, 183, 183),
+#'   lats_south = c(32, 32, 40, 40, 44),
+#'   lats_north = c(40, 40, 49, 44, 49)
+#' )
+#' length_comps <- get_expanded_comps(
+#'   bio_data = bio,
+#'   catch_data = catch,
+#'   comp_bins = seq(10, 40, 2),
+#'   strata = strata
+#' )
+#' plot_comps(data = length_comps)
 #' }
 #'
 plot_comps <- function(
