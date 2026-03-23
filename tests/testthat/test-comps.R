@@ -182,7 +182,7 @@ test_that("get_expanded_comps", {
   # confirm that plot_comps works for expanded length comps
   comp_plot <- plot_comps(length_comps)
   expect_equal(is(comp_plot[[1]]), "ggplot2::ggplot")
-  expect_equal(is(comp_plot[[1]]), "ggplot2::ggplot")
+  expect_equal(is(comp_plot[[2]]), "ggplot2::ggplot")
 
   age_comps <- get_expanded_comps(
     bio_data = bio_nwfsc_combo,
@@ -202,7 +202,7 @@ test_that("get_expanded_comps", {
   # confirm that plot_comps works for expanded age comps
   comp_plot <- plot_comps(age_comps)
   expect_equal(is(comp_plot[[1]]), "ggplot2::ggplot")
-  expect_equal(is(comp_plot[[1]]), "ggplot2::ggplot")
+  expect_equal(is(comp_plot[[2]]), "ggplot2::ggplot")
 })
 
 test_that("tow_expansions", {
