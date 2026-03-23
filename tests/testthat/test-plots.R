@@ -23,6 +23,12 @@ test_that("plot_cpue_map", {
   expect_equal(is(p[[2]]), "ggplot2::ggplot")
 })
 
+test_that("plot_length_age", {
+  p <- plot_length_age(
+    data = bio_nwfsc_combo
+  )
+})
+
 test_that("plot_proportions", {
   temp <- catch_nwfsc_combo |>
     dplyr::mutate(

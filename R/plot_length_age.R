@@ -72,49 +72,56 @@ plot_length_age <- function(
   ylims <- c(0, ceiling(max(data_to_plot[, "length_column"])))
   xlims <- c(0, max(data_to_plot[, "age_column"]))
 
-  para <- as.data.frame(do.call(rbind, estimates[1:3]))
-  para[, "sex"] <- c("F", "M", "U")
-  para[, "amin"] <- 0
-  para[, "amax"] <- xlims[2]
+  if (!is.null(estimates)) {
+    para <- as.data.frame(do.call(rbind, estimates[1:3]))
+    para[, "sex"] <- c("F", "M", "U")
+    para[, "amin"] <- 0
+    para[, "amax"] <- xlims[2]
 
-  lines_to_plot <- para |>
-    dplyr::group_by(sex) |>
-    dplyr::reframe(
-      k = K,
-      Linf = Linf,
-      L0 = L0,
-      age = seq(amin, amax, 1),
-      length_cm = Linf + (L0 - Linf) * exp(-K * age)
-    )
-  label <- lines_to_plot |>
-    dplyr::mutate(
-      max_x = quantile(age, 0.60),
-      multiplier = ifelse(sex == "M", 0.10, 0.20)
-    ) |>
-    dplyr::group_by(sex) |>
-    dplyr::summarize(
-      label = paste0(
-        "k = ",
-        round(unique(k), 2),
-        "; ",
-        paste0("Lmin = ", round(unique(L0), 1)),
-        "; ",
-        paste0("Linf = ", round(unique(Linf), 1))
-      ),
-      x = unique(max_x),
-      y = unique(max(length_cm)) * unique(multiplier)
-    )
+    lines_to_plot <- para |>
+      dplyr::group_by(sex) |>
+      dplyr::reframe(
+        k = K,
+        Linf = Linf,
+        L0 = L0,
+        age = seq(amin, amax, 1),
+        length_cm = Linf + (L0 - Linf) * exp(-K * age)
+      )
+    label <- lines_to_plot |>
+      dplyr::mutate(
+        max_x = quantile(age, 0.60),
+        multiplier = ifelse(sex == "M", 0.10, 0.20)
+      ) |>
+      dplyr::group_by(sex) |>
+      dplyr::summarize(
+        label = paste0(
+          "k = ",
+          round(unique(k), 2),
+          "; ",
+          paste0("Lmin = ", round(unique(L0), 1)),
+          "; ",
+          paste0("Linf = ", round(unique(Linf), 1))
+        ),
+        x = unique(max_x),
+        y = unique(max(length_cm)) * unique(multiplier)
+      )
+  }
 
   if (two_sex) {
     data_to_plot <- data_to_plot |> dplyr::filter(sex != "U")
-    label <- label |> dplyr::filter(sex != "U")
-    lines_to_plot <- lines_to_plot |> dplyr::filter(sex != "U")
+    if (!is.null(estimates)) {
+      label <- label |> dplyr::filter(sex != "U")
+      lines_to_plot <- lines_to_plot |> dplyr::filter(sex != "U")
+    }
     colors <- line_colors <- c("#414487FF", "#22A884FF")
     point_alpha <- 0.10
   } else {
     data_to_plot[, "sex"] <- "U"
-    label <- label |> dplyr::filter(sex == "U")
-    lines_to_plot <- lines_to_plot |> dplyr::filter(sex == "U")
+
+    if (!is.null(estimates)) {
+      label <- label |> dplyr::filter(sex == "U")
+      lines_to_plot <- lines_to_plot |> dplyr::filter(sex == "U")
+    }
     colors <- "darkgrey"
     point_alpha <- 0.10
     line_colors <- "black"
@@ -124,7 +131,8 @@ plot_length_age <- function(
     ggplot2::geom_point(
       aes(y = length_column, x = age_column, color = sex),
       alpha = point_alpha,
-      size = 1
+      size = 1,
+      position = "jitter"
     ) +
     ggplot2::xlab("Age (years)") +
     ggplot2::ylab("Length (cm)") +
