@@ -27,6 +27,7 @@ test_that("plot_length_age", {
   p <- plot_length_age(
     data = bio_nwfsc_combo
   )
+  expect_equal(is(p[[1]]), "ggplot2::ggplot")
 })
 
 test_that("plot_proportions", {
