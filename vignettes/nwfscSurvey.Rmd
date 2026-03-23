@@ -77,7 +77,7 @@ bio <- pull_bio(common_name = "lingcod")
 
 Pull both the catch and biological data for the NWFSC WCGBTS:
 
-```{r}
+```{r, eval=FALSE}
 catch <- pull_catch(common_name = "sablefish")
 
 bio <- pull_bio(common_name = "sablefish")
@@ -89,7 +89,7 @@ the default survey input for each of the `pull_` functions is `survey = "NWFSC.C
 
 Depth and latitude strata are required to calculate a design-based index of abundance as well as length and age compositions. The strata should be specific to the range where the species in question has been observed. Note that the WCGBTS sampling design has changes in sampling intensity at 183 and 549 meters and north and south of 34.5 degrees latitude, so these should generally be included as strata breaks if the range spans these values. 
 
-```{r}
+```{r, eval=FALSE}
 strata <- create_strata(
   names = paste(
     sep = "_",
@@ -107,7 +107,7 @@ strata <- create_strata(
 
 Calculate the design based index of abundance:
 
-```{r}
+```{r, eval=FALSE}
 biomass <- get_design_based(
   data = catch,  
   strata = strata
@@ -117,7 +117,7 @@ biomass <- get_design_based(
 
 
 Plot the coastwide design based index of abundance with uncertainty intervals:
-```{r}
+```{r, eval=FALSE}
 plot_index(
   data = biomass,
   plot = 1
@@ -127,7 +127,7 @@ plot_index(
 #### Length composition data
 
 `get_expanded_comps()` calculates and formats the length-composition data for Stock Synthesis:
-```{r}
+```{r, eval=FALSE}
 length_comps <- get_expanded_comps(
     bio_data = bio,
     catch_data = catch,
@@ -142,7 +142,7 @@ length_comps <- get_expanded_comps(
 The above call will calculate the length frequencies for use in Stock Synthesis. This function returns a list of sexed and unsexed length composition data formatted for Stock Synthesis. If the `dir` function input is specified, it will write these dataframes to separate csv files inside the dir input location to a "forSS3" folder. In the above example the input sample size is calculated based on the Stewart and Hamel approach (e.g., unique samples calculated as a function of species type and tows).
 
 To plot the length frequency data:
-```{r}
+```{r, eval=FALSE}
 p <- plot_comps(
   data = length_comps
 )
@@ -155,7 +155,7 @@ If the `dir` function input is specified, then a png of the plot will be saved t
 There is also a function to create raw or unexpanded composition data that works
 for either length or age data.
 
-```{r}
+```{r, eval=FALSE}
 raw_length_comps <- get_raw_comps(
     data = bio,
     comp_bins = seq(10, 40, 2),
@@ -167,7 +167,7 @@ This function returns a list of sexed and unsexed length composition data format
 
 #### Marginal age composition data
 
-```{r}
+```{r, eval=FALSE}
 age_comps <- get_expanded_comps(
     bio_data = bio,
     catch_data = catch,
@@ -182,7 +182,7 @@ age_comps <- get_expanded_comps(
 The above call will calculate the marginal age-composition data for the age data in a format for Stock Synthesis. This function returns a list of sexed and unsexed age composition data formatted for Stock Synthesis. If the `dir` function input is specified, it will write these dataframes to separate csv files as well. In the above example the input sample size is calculated based on the Stewart and Hamel approach (e.g., unique samples calculated as a function of species type and tows). 
 
 To plot the age frequency data:
-```{r}
+```{r, eval=FALSE}
 p <- plot_comps(
   data = age_comps
 )
@@ -193,7 +193,7 @@ If the `dir` function input is specified, then a "plot" folder will be created i
 There is also a function to create raw or unexpanded composition data that works
 for either length or age data.
 
-```{r}
+```{r, eval=FALSE}
 raw_age_comps <- get_raw_comps(
     data = bio,
     comp_bins = 1:40,
@@ -206,7 +206,7 @@ This function returns a list of sexed and unsexed marginal age composition data 
 #### Conditional-age-at-length data
 
 To calculate conditional-age-at-length data formatted for Stock Synthesis:
-```{r}
+```{r, eval=FALSE}
 caal <- get_raw_caal(
   data = bio, 
   len_bins = seq(10, 40, 2),
@@ -218,7 +218,7 @@ Creates unexpanded conditional-age-at-length data for each sex with input sample
 #### Maps
 
 To make a map showing the distribution of density in aggregate and by year:
-```{r}
+```{r, eval=FALSE}
 p <- plot_cpue_map(
   data = catch
 )
