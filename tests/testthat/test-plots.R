@@ -50,7 +50,7 @@ test_that("plot_sex_ratio", {
   )
   expect_equal(is(p), "ggplot2::ggplot")
   p <- plot_sex_ratio(
-    data = data,
+    data = bio_nwfsc_combo,
     comp_column_name = "length_cm"
   )
   expect_equal(is(p), "ggplot2::ggplot")
