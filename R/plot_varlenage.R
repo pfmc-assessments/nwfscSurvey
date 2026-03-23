@@ -27,7 +27,7 @@ plot_var_length_at_age <- function(
 ) {
   plotdir <- file.path(dir)
   check_dir(dir = plotdir)
-  if (!is.null(main)) {
+  if (!is.null(main) & !is.null(dir)) {
     main <- paste0(main, "_")
   }
 
@@ -36,7 +36,9 @@ plot_var_length_at_age <- function(
     dplyr::filter(!is.na(length_cm), !is.na(age_years)) |>
     dplyr::mutate(sex = codify_sex(sex))
 
-  if (!any(c("length_cm", "age_years", "sex") %in% colnames(tolower_data))) {
+  required_columns <- c("length_cm", "age_years", "sex")
+
+  if (any(!required_columns %in% colnames(tolower_data))) {
     cli::cli_abort(
       "Missing column in the data object: must include a column called length_cm, age_years, and sex."
     )

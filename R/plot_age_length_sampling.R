@@ -52,7 +52,9 @@ plot_age_length_sampling <- function(
   )
 
   data_tolower <- data |> dplyr::rename_all(tolower)
-  if (!any(c("length_cm", "age_years", "year") %in% colnames(data_tolower))) {
+  required_columns <- c("length_cm", "age_years", "year")
+
+  if (any(!required_columns %in% colnames(data_tolower))) {
     cli::cli_abort(
       "Missing column in the data object: must include a column called length_cm, age_years, and year."
     )
