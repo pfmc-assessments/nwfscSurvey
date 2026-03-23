@@ -85,6 +85,7 @@ draw_theme <- function(size = 0.25) {
 #' @param lon,lat Vectors of two real numbers specifying the longitudinal and
 #'   latitudinal limits for the x and y axes.
 #' @export
+#' @import sf
 draw_USEEZ <- function(lon = c(-129.15, -116.50), lat = c(31.90, 49.50)) {
   list(
     ggplot2::coord_sf(

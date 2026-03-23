@@ -31,6 +31,7 @@ Imports:
     purrr,
     reshape2,
     rlang,
+    sf,
     stringr,
     tidyr,
     viridis
