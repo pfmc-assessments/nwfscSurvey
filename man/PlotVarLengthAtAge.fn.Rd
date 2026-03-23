@@ -56,6 +56,7 @@ Plots the SD and CV of age at observed and predicted length
 Other plot_: 
 \code{\link{PlotSexRatio.fn}()},
 \code{\link{plot_age_length_sampling}()},
+\code{\link{plot_bio_patterns}()},
 \code{\link{plot_comps}()},
 \code{\link{plot_cpue}()},
 \code{\link{plot_cpue_map}()},
