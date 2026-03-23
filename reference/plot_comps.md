@@ -64,13 +64,15 @@ plot_comps(
 
 Other plot\_: [`PlotSexRatio.fn()`](PlotSexRatio.fn.md),
 [`PlotVarLengthAtAge.fn()`](PlotVarLengthAtAge.fn.md),
+[`plot_age_length_sampling()`](plot_age_length_sampling.md),
+[`plot_bio_patterns()`](plot_bio_patterns.md),
 [`plot_cpue()`](plot_cpue.md), [`plot_cpue_map()`](plot_cpue_map.md),
 [`plot_index()`](plot_index.md),
 [`plot_length_age()`](plot_length_age.md),
 [`plot_proportion()`](plot_proportion.md),
 [`plot_sex_ratio()`](plot_sex_ratio.md),
 [`plot_sex_ratio_strata()`](plot_sex_ratio_strata.md),
-[`plot_varlenage()`](plot_varlenage.md),
+[`plot_var_length_at_age()`](plot_var_length_at_age.md),
 [`plot_weight_length()`](plot_weight_length.md),
 [`plot_westcoast()`](plot_westcoast.md)
 
@@ -82,6 +84,22 @@ Chantel Wetzel
 
 ``` r
 if (FALSE) { # \dontrun{
-plot_comps(data = LFs)
+catch <- pull_catch(common_name = "lingcod")
+bio <- pull_bio(common_name = "lingcod")
+
+strata <- create_strata(
+  names = c("deep_s", "shallow_s", "deep_mn", "shallow_m", "shallow_n"),
+  depths_shallow = c(183, 55, 183, 55, 55),
+  depths_deep = c(549, 183, 549, 183, 183),
+  lats_south = c(32, 32, 40, 40, 44),
+  lats_north = c(40, 40, 49, 44, 49)
+)
+length_comps <- get_expanded_comps(
+  bio_data = bio,
+  catch_data = catch,
+  comp_bins = seq(10, 40, 2),
+  strata = strata
+)
+plot_comps(data = length_comps)
 } # }
 ```

@@ -39,7 +39,7 @@ get_expanded_comps(
 
 - bio_data:
 
-  A data frame of length-composition data returned from
+  A data frame of composition data returned from
   [`pull_bio()`](pull_bio.md).
 
 - catch_data:

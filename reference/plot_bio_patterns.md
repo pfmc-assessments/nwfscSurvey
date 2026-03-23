@@ -6,8 +6,8 @@ This function plots length by latitude and depth
 
 ``` r
 plot_bio_patterns(
+  data,
   dir = NULL,
-  bio,
   col_name = "Length_cm",
   plot = 1:3,
   width = 7,
@@ -17,14 +17,14 @@ plot_bio_patterns(
 
 ## Arguments
 
+- data:
+
+  Biological data frame from [`pull_bio()`](pull_bio.md)
+
 - dir:
 
   Directory where output will be saved. The directory where the file
   should be saved. If dir = NULL no output will be saved.
-
-- bio:
-
-  Biological data frame from [`pull_bio()`](pull_bio.md)
 
 - col_name:
 
@@ -47,6 +47,21 @@ plot_bio_patterns(
 
   Numeric values for the figure width and height in inches. The defaults
   are 10 by 7 inches.
+
+## See also
+
+Other plot\_: [`PlotSexRatio.fn()`](PlotSexRatio.fn.md),
+[`PlotVarLengthAtAge.fn()`](PlotVarLengthAtAge.fn.md),
+[`plot_age_length_sampling()`](plot_age_length_sampling.md),
+[`plot_comps()`](plot_comps.md), [`plot_cpue()`](plot_cpue.md),
+[`plot_cpue_map()`](plot_cpue_map.md), [`plot_index()`](plot_index.md),
+[`plot_length_age()`](plot_length_age.md),
+[`plot_proportion()`](plot_proportion.md),
+[`plot_sex_ratio()`](plot_sex_ratio.md),
+[`plot_sex_ratio_strata()`](plot_sex_ratio_strata.md),
+[`plot_var_length_at_age()`](plot_var_length_at_age.md),
+[`plot_weight_length()`](plot_weight_length.md),
+[`plot_westcoast()`](plot_westcoast.md)
 
 ## Author
 

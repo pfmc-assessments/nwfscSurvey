@@ -182,8 +182,8 @@
 - [`plot_sex_ratio_strata()`](plot_sex_ratio_strata.md) : Function to
   plot sex ratio by strata
 
-- [`plot_varlenage()`](plot_varlenage.md) : Plot variability of length
-  at age
+- [`plot_var_length_at_age()`](plot_var_length_at_age.md) : Plot
+  variability of length at age
 
 - [`plot_weight_length()`](plot_weight_length.md) : Plots the
   weight-at-length data and estimates

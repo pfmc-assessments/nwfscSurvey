@@ -4,8 +4,8 @@
 
 The **nwfscSurvey** package was written by scientists at the Northwest
 Fisheries Science Center (NWFSC) to explore and process survey
-composition data for use in groundfish stockassessments. The package can
-be used for the NWFSC West Coast Groundfish Bottom Trawl (WCGBT) survey,
+composition data for use in groundfish stock assessments. The package
+can be used for the NWFSC West Coast Groundfish Bottom Trawl (WCGBTS),
 the NWFSC slope survey, the Alaska Fisheries Science Center (AFSC) slope
 survey, and the AFSC Triennial survey. The package includes functions
 that query the NWFSC data warehouse (currently, unavailable), visualize,
@@ -39,60 +39,75 @@ A list of all functions in the packages can be viewed by:
 ls("package:nwfscSurvey")
 ```
 
+## Available Surveys
+
+There are a number of trawl survey data sets available, but they need to
+be requested using specific a string to the `survey` argument for data
+`pull_` functions. The required strings are:
+
+``` r
+surveys
+#>      string        full-survey-name                               
+#> [1,] "Triennial"   "Groundfish Triennial Shelf Survey"            
+#> [2,] "AFSC.Slope"  "AFSC/RACE Slope Survey"                       
+#> [3,] "NWFSC.Combo" "Groundfish Slope and Shelf Combination Survey"
+#> [4,] "NWFSC.Slope" "Groundfish Slope Survey"
+```
+
+## Species Names
+
+Data for specific species can be queried using either a common name
+(`common_name`) or a scientific name (`sci_name`). Lower case is
+required for querying via a common name, unless the common name includes
+a proper noun:
+
+``` r
+catch <- pull_catch(common_name = "yelloweye rockfish")
+catch <- pull_catch(common_name = "Dover sole")
+
+bio <- pull_bio(common_name = "Pacific ocean perch")
+bio <- pull_bio(common_name = "lingcod")
+```
+
 ## Examples
 
 ### NWFSC WCGBT Survey
 
 #### Pull data
 
-Pull both the catch and biological data:
+Pull both the catch and biological data for the NWFSC WCGBTS:
 
 ``` r
-catch = pull_catch(
-  common_name = "Pacific ocean perch", 
-  survey = "NWFSC.Combo")
+catch <- pull_catch(common_name = "sablefish")
 
-bio = pull_bio(
-  common_name = "Pacific ocean perch", 
-  survey = "NWFSC.Combo")
+bio <- pull_bio(common_name = "sablefish")
 ```
 
-#### Initial data visualization
-
-There are a range of functions to create visualizations of the data by
-examining catch rates by latitude or depth, lengths or ages by latitude
-and depth, presence/absence in tows, and observed sex ratios.
-
-``` r
-plot_cpue(
-  catch = catch)
-
-plot_bio_patterns(
-  bio = bio, 
-  col_name = "Length_cm")
-```
+the default survey input for each of the `pull_` functions is
+`survey = "NWFSC.Combo"` and does not need to be specified if the goal
+is the query WCGBTS data.
 
 #### Define strata
 
 Depth and latitude strata are required to calculate a design-based index
 of abundance as well as length and age compositions. The strata should
 be specific to the range where the species in question has been
-observed. Note that the WCGBT Survey sampling design has changes in
-sampling intensity at 183 and 549 meters and north and south of 34.5
-degrees latitude, so these should generally be included as strata breaks
-if the range spans these values. Pacific ocean perch are rarely observed
-south of 34.5 degrees or deeper than 540 m, so there’s no need to
-include strata that have very few observations (the survey extends
-southward to about 32 degrees and as deep as 1280 m):
+observed. Note that the WCGBTS sampling design has changes in sampling
+intensity at 183 and 549 meters and north and south of 34.5 degrees
+latitude, so these should generally be included as strata breaks if the
+range spans these values.
 
 ``` r
-
 strata <- create_strata(
-  names = c("shallow_s", "deep_s", "shallow_n", "deep_n"), 
-  depths_shallow = c(  55,  183,  55, 183),
-  depths_deep    = c( 183,  400, 183, 400),
-  lats_south     = c(34.5, 34.5,  42,  42),
-  lats_north     = c(  42,   42,  49,  49)
+  names = paste(
+    sep = "_",
+    rep(times = 4, c("55m-183m", "183m-549m", "549m-900m", "900m-1280m")),
+    rep(each = 4, c("32-34.5", "34.5-42.0", "42.0-46.0", "46.0-49"))
+  ),
+  depths_shallow = rep(times = 4, x = c(55, 183, 549, 900)),
+  depths_deep = rep(times = 4, x = c(183, 549, 900, 1280)),
+  lats_south = rep(each = 4, x = c(32, 34.5, 42, 46.0)),
+  lats_north = rep(each = 4, x = c(34.5, 42.0, 46.0, 49))
 )
 ```
 
@@ -101,9 +116,10 @@ strata <- create_strata(
 Calculate the design based index of abundance:
 
 ``` r
-biomass = get_design_based(
+biomass <- get_design_based(
   data = catch,  
-  strata = strata)
+  strata = strata
+)
 ```
 
 [`get_design_based()`](../reference/get_design_based.md) returns a list
@@ -118,16 +134,8 @@ intervals:
 ``` r
 plot_index(
   data = biomass,
-  plot = 1)
-```
-
-Plot the design based index of abundance for each strata without
-uncertainty intervals:
-
-``` r
-plot_index(
-  data = biomass,
-  plot = 2)
+  plot = 1
+)
 ```
 
 #### Length composition data
@@ -144,7 +152,8 @@ length_comps <- get_expanded_comps(
     comp_column_name = "length_cm",
     output = "full_expansion_ss3_format",
     two_sex_comps = TRUE,
-    input_n_method = "stewart_hamel")
+    input_n_method = "stewart_hamel"
+)
 ```
 
 The above call will calculate the length frequencies for use in Stock
@@ -159,12 +168,13 @@ and tows).
 To plot the length frequency data:
 
 ``` r
-plot_comps(
-  data = length_comps)
+p <- plot_comps(
+  data = length_comps
+)
 ```
 
-If the `dir` function input is specified, then a “plot” folder will be
-created in the directory location and a png of the plot will be saved.
+If the `dir` function input is specified, then a png of the plot will be
+saved to the `dir` location.
 
 There is also a function to create raw or unexpanded composition data
 that works for either length or age data.
@@ -174,7 +184,8 @@ raw_length_comps <- get_raw_comps(
     data = bio,
     comp_bins = seq(10, 40, 2),
     comp_column_name = "length_cm",
-    two_sex_comps = TRUE)
+    two_sex_comps = TRUE
+)
 ```
 
 This function returns a list of sexed and unsexed length composition
@@ -192,7 +203,8 @@ age_comps <- get_expanded_comps(
     comp_column_name = "age",
     output = "full_expansion_ss3_format",
     two_sex_comps = TRUE,
-    input_n_method = "stewart_hamel")
+    input_n_method = "stewart_hamel"
+)
 ```
 
 The above call will calculate the marginal age-composition data for the
@@ -206,8 +218,9 @@ samples calculated as a function of species type and tows).
 To plot the age frequency data:
 
 ``` r
-plot_comps(
-  data = age_comps)
+p <- plot_comps(
+  data = age_comps
+)
 ```
 
 If the `dir` function input is specified, then a “plot” folder will be
@@ -221,7 +234,8 @@ raw_age_comps <- get_raw_comps(
     data = bio,
     comp_bins = 1:40,
     comp_column_name = "age",
-    two_sex_comps = TRUE)
+    two_sex_comps = TRUE
+)
 ```
 
 This function returns a list of sexed and unsexed marginal age
@@ -237,14 +251,15 @@ Synthesis:
 caal <- get_raw_caal(
   data = bio, 
   len_bins = seq(10, 40, 2),
-  age_bins = 1:40)
+  age_bins = 1:40
+)
 ```
 
 Creates unexpanded conditional-age-at-length data for each sex with
 input sample sizes based on the observed number of fish in each length
-bin by year. It returns a dataframe with conditional-age-at-length data
+bin by year. It returns a data frame with conditional-age-at-length data
 by sex (sex = 0, sex = 1, sex = 2). If the `dir` function input is
-specified, it will write the dataframe to a csv file.
+specified, it will write the data frame to a csv file.
 
 #### Maps
 
@@ -252,13 +267,19 @@ To make a map showing the distribution of density in aggregate and by
 year:
 
 ``` r
-plot_cpue_map(
-  data = catch)
+p <- plot_cpue_map(
+  data = catch
+)
 ```
 
 #### Additional data visualization
 
-There are a couple of additional plotting functions that are included in
-the
-package:[`PlotVarLengthAtAge.fn()`](../reference/PlotVarLengthAtAge.fn.md)
-and [`PlotSexRatio.fn()`](../reference/PlotSexRatio.fn.md).
+There are a number of additional plotting functions that users should
+explore to understand their data:
+[`plot_bio_patterns()`](../reference/plot_bio_patterns.md),
+[`plot_cpue()`](../reference/plot_cpue.md),
+[`plot_length_age()`](../reference/plot_length_age.md),
+[`plot_sex_ratio()`](../reference/plot_sex_ratio.md),
+[`plot_sex_ratio_strata()`](../reference/plot_sex_ratio_strata.md),
+`plot_var_length_age()`, and
+[`plot_weight_length()`](../reference/plot_weight_length.md).

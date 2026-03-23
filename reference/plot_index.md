@@ -67,13 +67,15 @@ no confidence intervals.
 
 Other plot\_: [`PlotSexRatio.fn()`](PlotSexRatio.fn.md),
 [`PlotVarLengthAtAge.fn()`](PlotVarLengthAtAge.fn.md),
+[`plot_age_length_sampling()`](plot_age_length_sampling.md),
+[`plot_bio_patterns()`](plot_bio_patterns.md),
 [`plot_comps()`](plot_comps.md), [`plot_cpue()`](plot_cpue.md),
 [`plot_cpue_map()`](plot_cpue_map.md),
 [`plot_length_age()`](plot_length_age.md),
 [`plot_proportion()`](plot_proportion.md),
 [`plot_sex_ratio()`](plot_sex_ratio.md),
 [`plot_sex_ratio_strata()`](plot_sex_ratio_strata.md),
-[`plot_varlenage()`](plot_varlenage.md),
+[`plot_var_length_at_age()`](plot_var_length_at_age.md),
 [`plot_weight_length()`](plot_weight_length.md),
 [`plot_westcoast()`](plot_westcoast.md)
 

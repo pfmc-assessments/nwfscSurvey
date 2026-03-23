@@ -1,18 +1,18 @@
-# Plot the representativeness of age sampling based on lengths
+# Plot variability of length at age
 
-Plot the representativeness of age sampling based on lengths
+Plot variability of length at age
 
 ## Usage
 
 ``` r
-plot_age_length_sampling(
+plot_var_length_at_age(
   data,
+  age_bins,
   dir = NULL,
-  plot = 1:2,
+  main = NULL,
+  two_sex = TRUE,
   height = 7,
-  width = 7,
-  xlim = lifecycle::deprecated(),
-  ylim = lifecycle::deprecated()
+  width = 7
 )
 ```
 
@@ -20,43 +20,39 @@ plot_age_length_sampling(
 
 - data:
 
-  A data frame of composition data returned from
+  A data frame of length-composition data returned from
   [`pull_bio()`](pull_bio.md).
+
+- age_bins:
+
+  Vector of integers to bin age data.Values above or below the minimum
+  or maximum values in the vector are grouped into the first size or
+  plus group size, respectively.
 
 - dir:
 
   Defaults to NULL (plot made, but not saved to file). Can alternatively
   be a string filename by year and sex.
 
-- plot:
+- main:
 
-  A vector of integers to specify which plots to return. The default is
-  to print or save all figures, i.e., `plot = 1:2`. Integers correspond
-  to the following figures:
+  Name that will be used to name the saved png
 
-  1.  Compare distribution of all lengths and lengths from aged fish
-      across all years
+- two_sex:
 
-  2.  Compare distribution of all lengths and lengths from aged fish
-      across by year
+  Logical to indicate if plot by sex. Default is TRUE and will only plot
+  females and males.
 
 - width, height:
 
   Numeric values for the figure width and height in inches. The defaults
   are 7 by 7 inches.
 
-- xlim:
-
-  Deprecated as of v.2.8.1. x limits for plot, defaults to c(0,120)
-
-- ylim:
-
-  Deprecated as of v.2.8.1. y limits for plot, defaults to (0, 0.049)
-
 ## See also
 
 Other plot\_: [`PlotSexRatio.fn()`](PlotSexRatio.fn.md),
 [`PlotVarLengthAtAge.fn()`](PlotVarLengthAtAge.fn.md),
+[`plot_age_length_sampling()`](plot_age_length_sampling.md),
 [`plot_bio_patterns()`](plot_bio_patterns.md),
 [`plot_comps()`](plot_comps.md), [`plot_cpue()`](plot_cpue.md),
 [`plot_cpue_map()`](plot_cpue_map.md), [`plot_index()`](plot_index.md),
@@ -64,7 +60,6 @@ Other plot\_: [`PlotSexRatio.fn()`](PlotSexRatio.fn.md),
 [`plot_proportion()`](plot_proportion.md),
 [`plot_sex_ratio()`](plot_sex_ratio.md),
 [`plot_sex_ratio_strata()`](plot_sex_ratio_strata.md),
-[`plot_var_length_at_age()`](plot_var_length_at_age.md),
 [`plot_weight_length()`](plot_weight_length.md),
 [`plot_westcoast()`](plot_westcoast.md)
 
