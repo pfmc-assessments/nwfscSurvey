@@ -28,16 +28,17 @@ plot_cpue <- function(
   plotdir <- file.path(dir)
   check_dir(dir = plotdir)
 
-  data$log_cpue <- log(data$cpue_kg_km2)
-  pos <- data$cpue_kg_km2 != 0
+  data_tolower <- data |> dplyr::rename_all(tolower)
+  data_tolower$log_cpue <- log(data_tolower$cpue_kg_km2)
+  pos <- data_tolower$cpue_kg_km2 != 0
   size_adj <- 100 / floor(sum(pos))
 
   # plot 1 - marginal log(cpue) by depth and latitude
   if (1 %in% plot) {
     # log(cpue) by depth
     cd <- ggplot2::ggplot(
-      data[pos, ],
-      ggplot2::aes(x = Depth_m, y = log_cpue)
+      data_tolower[pos, ],
+      ggplot2::aes(x = depth_m, y = log_cpue)
     ) +
       ggplot2::geom_point(
         ggplot2::aes(size = log_cpue / size_adj),
@@ -71,8 +72,8 @@ plot_cpue <- function(
 
     # log(cpue) by latitude
     cl <- ggplot2::ggplot(
-      data[pos, ],
-      ggplot2::aes(x = Latitude_dd, y = log_cpue)
+      data_tolower[pos, ],
+      ggplot2::aes(x = latitude_dd, y = log_cpue)
     ) +
       ggplot2::geom_point(
         ggplot2::aes(size = log_cpue / size_adj),
@@ -120,15 +121,15 @@ plot_cpue <- function(
   # plot 2 - log(cpue) by latitude and year
   if (2 %in% plot) {
     cly <- ggplot2::ggplot(
-      data[pos, ],
-      ggplot2::aes(x = Latitude_dd, y = log_cpue)
+      data_tolower[pos, ],
+      ggplot2::aes(x = latitude_dd, y = log_cpue)
     ) +
       ggplot2::geom_point(
         ggplot2::aes(size = log_cpue / (100 * size_adj)),
         alpha = 0.4,
         shape = 21
       ) +
-      ggplot2::facet_wrap(facets = "Year") +
+      ggplot2::facet_wrap(facets = "year") +
       ggplot2::geom_smooth(
         method = "loess",
         formula = y ~ x,
@@ -162,15 +163,15 @@ plot_cpue <- function(
   # plot 3 - log(cpue) by depth and year
   if (3 %in% plot) {
     cdy <- ggplot2::ggplot(
-      data[pos, ],
-      ggplot2::aes(x = Depth_m, y = log_cpue)
+      data_tolower[pos, ],
+      ggplot2::aes(x = depth_m, y = log_cpue)
     ) +
       ggplot2::geom_point(
         ggplot2::aes(size = log_cpue / (100 * size_adj)),
         alpha = 0.40,
         shape = 21
       ) +
-      ggplot2::facet_wrap(facets = "Year") +
+      ggplot2::facet_wrap(facets = "year") +
       ggplot2::geom_smooth(
         method = "loess",
         formula = y ~ x,

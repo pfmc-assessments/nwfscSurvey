@@ -18,6 +18,7 @@
 #' @import cowplot
 #'
 #' @author Chantel Wetzel
+#' @family plot_
 #' @export
 #'
 #'
@@ -35,54 +36,59 @@ plot_bio_patterns <- function(
 
   plotdir <- file.path(dir)
   check_dir(dir = plotdir)
+  data_tolower <- data |> dplyr::rename_all(tolower)
 
   lab_name <- col_name
-  if (col_name == "Length_cm") {
+  if (tolower(col_name) == "length_cm") {
     lab_name <- "Length (cm)"
-    data$x <- data$Length_cm
+    data_tolower$x <- data_tolower$length_cm
   }
-  if (col_name == "Width_cm") {
+  if (tolower(col_name) == "width_cm") {
     lab_name <- "Width (cm)"
-    data$x <- data$Width_cm
+    data_tolower$x <- data_tolower$width_cm
   }
-  if (col_name == "Age") {
+  if (tolower(col_name) %in% c("age", "age_years")) {
     lab_name <- "Age (yrs)"
-    data$x <- data$Age
+    if (tolower(col_name) == "age") {
+      data_tolower$x <- data_tolower$age
+    } else {
+      data_tolower$x <- data_tolower$age_years
+    }
   }
 
   alpha_set <- 0.30
   alpha_by_year <- 0.40
-  if (dim(data)[1] > 10000) {
+  if (dim(data_tolower)[1] > 10000) {
     alpha_set <- 0.05
     alpha_by_year <- 0.20
-    if (dim(data)[1] > 50000) {
+    if (dim(data_tolower)[1] > 50000) {
       alpha_set <- 0.01
       alpha_by_year <- 0.10
     }
   }
   bin_size <- ifelse(
-    max(data$Depth_m) - min(data$Depth_m) > 500,
+    max(data_tolower$depth_m) - min(data_tolower$depth_m) > 500,
     100,
-    ifelse(max(data$Depth_m) - min(data$Depth_m) > 250, 50, 25)
+    ifelse(max(data_tolower$depth_m) - min(data_tolower$depth_m) > 250, 50, 25)
   )
-  data <- data |>
+  data_tolower <- data_tolower |>
     dplyr::mutate(
-      depth_bin = round_any(Depth_m, bin_size, f = floor),
-      lat_bin = round_any(Latitude_dd, 0.25)
+      depth_bin = round_any(depth_m, bin_size, f = floor),
+      lat_bin = round_any(latitude_dd, 0.25)
     )
 
   # Length by depth for each sex
   ld <- ggplot2::ggplot(
-    data,
-    aes(x = Depth_m, y = x, color = Sex)
+    data_tolower,
+    aes(x = depth_m, y = x, color = sex)
   ) +
     geom_point(
-      aes(fill = Sex, colour = Sex, shape = Sex),
+      aes(fill = sex, colour = sex, shape = sex),
       alpha = alpha_set,
       size = 1
     ) +
     stat_summary(
-      aes(y = x, x = depth_bin, colour = Sex, linetype = Sex),
+      aes(y = x, x = depth_bin, colour = sex, linetype = sex),
       fun = mean,
       geom = "line",
       lwd = 1,
@@ -109,14 +115,14 @@ plot_bio_patterns <- function(
     )
 
   # Length by latitude
-  ll <- ggplot2::ggplot(data, aes(x = Latitude_dd, y = x)) +
+  ll <- ggplot2::ggplot(data_tolower, aes(x = latitude_dd, y = x)) +
     geom_point(
-      aes(fill = Sex, colour = Sex, shape = Sex),
+      aes(fill = sex, colour = sex, shape = sex),
       alpha = alpha_set,
       size = 1
     ) +
     stat_summary(
-      aes(y = x, x = lat_bin, colour = Sex, linetype = Sex),
+      aes(y = x, x = lat_bin, colour = sex, linetype = sex),
       fun = mean,
       geom = "line",
       lwd = 1,
@@ -143,13 +149,13 @@ plot_bio_patterns <- function(
     )
 
   # Length by latitude and sex by year
-  lly <- ggplot2::ggplot(data, aes(x = Latitude_dd, y = x)) +
+  lly <- ggplot2::ggplot(data_tolower, aes(x = latitude_dd, y = x)) +
     geom_point(
-      aes(fill = Sex, colour = Sex, shape = Sex),
+      aes(fill = sex, colour = sex, shape = sex),
       alpha = alpha_by_year,
       size = 1
     ) +
-    facet_wrap(facets = "Year") +
+    facet_wrap(facets = "year") +
     scale_fill_manual(
       values = c("F" = "#440154FF", "M" = "#21908CFF", "U" = "#FDE725FF")
     ) +
@@ -163,13 +169,13 @@ plot_bio_patterns <- function(
     )
 
   # Length by depth and sex by year
-  ldy <- ggplot2::ggplot(data, aes(x = Depth_m, y = x)) +
+  ldy <- ggplot2::ggplot(data_tolower, aes(x = depth_m, y = x)) +
     geom_point(
-      aes(fill = Sex, colour = Sex, shape = Sex),
+      aes(fill = sex, colour = sex, shape = sex),
       alpha = alpha_by_year,
       size = 1
     ) +
-    facet_wrap(facets = "Year") +
+    facet_wrap(facets = "year") +
     scale_fill_manual(
       values = c("F" = "#440154FF", "M" = "#21908CFF", "U" = "#FDE725FF")
     ) +
