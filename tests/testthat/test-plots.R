@@ -83,3 +83,14 @@ test_that("plot_weight_length", {
   p <- plot_weight_length(data = bio_nwfsc_combo)
   expect_equal(is(p), "ggplot2::ggplot")
 })
+
+test_that("plot_bio_patterns", {
+  p <- plot_bio_patterns(
+    data = bio_nwfsc_combo |>
+      dplyr::filter(Sex %in% c("F", "M"), Year %in% 2003:2005),
+    col_name = "Age"
+  )
+  expect_equal(is(p[[1]]), "ggplot2::ggplot")
+  expect_equal(is(p[[2]]), "ggplot2::ggplot")
+  expect_equal(is(p[[3]]), "ggplot2::ggplot")
+})
