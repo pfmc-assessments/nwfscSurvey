@@ -93,7 +93,7 @@ plot_cpue <- function(
       ) +
       ggplot2::scale_x_continuous(n.breaks = 7) +
       ggplot2::scale_y_continuous(n.breaks = 7) +
-      theme(
+      ggplot2::theme(
         legend.key = ggplot2::element_blank(),
         axis.text.x = ggplot2::element_text(colour = "black", size = 12),
         axis.text.y = ggplot2::element_text(colour = "black", size = 11),
@@ -104,10 +104,9 @@ plot_cpue <- function(
         legend.position = "right"
       )
     if (!is.null(dir)) {
-      filename <- f
       ggplot2::ggsave(
-        plot = cl,
-        filename = ile.path(
+        plot = cowplot::plot_grid(cl, cd, nrow = 2),
+        filename = file.path(
           dir,
           paste0("cpue_by_lat_depth.png")
         ),
@@ -222,7 +221,7 @@ plot_cpue <- function(
         return(list(cly, cdy))
       }
       if (sum(c(1, 3) %in% plot) == 2) {
-        return(list(cowplot::plot_grid(ll, ld, nrow = 2), cdy))
+        return(list(cowplot::plot_grid(cl, cd, nrow = 2), cdy))
       }
     }
     if (length(plot) == 3) {
