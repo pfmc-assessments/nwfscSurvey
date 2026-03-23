@@ -4,7 +4,14 @@
 \alias{plot_cpue_map}
 \title{Plot two figures showing catch-per-unit-effort data}
 \usage{
-plot_cpue_map(data, dir = NULL, main = NULL, plot = 1:2)
+plot_cpue_map(
+  data,
+  dir = NULL,
+  main = NULL,
+  plot = 1:2,
+  height = 10,
+  width = 7
+)
 }
 \arguments{
 \item{data}{A dataframe of catch data created by \code{\link[=pull_catch]{pull_catch()}}.}
@@ -21,6 +28,9 @@ default is to print both figures.
 \item coastwide data across all years
 \item coastwide data by year
 }}
+
+\item{width, height}{Numeric values for the figure width and height in
+inches. The defaults are 7 by 10 inches.}
 }
 \value{
 Figures are saved to the disk according to which plots are asked
@@ -48,6 +58,8 @@ plot_cpue_map(data = catch_nwfsc_combo, plot = 2)
 Other plot_: 
 \code{\link{PlotSexRatio.fn}()},
 \code{\link{PlotVarLengthAtAge.fn}()},
+\code{\link{plot_age_length_sampling}()},
+\code{\link{plot_bio_patterns}()},
 \code{\link{plot_comps}()},
 \code{\link{plot_cpue}()},
 \code{\link{plot_index}()},
@@ -55,7 +67,7 @@ Other plot_:
 \code{\link{plot_proportion}()},
 \code{\link{plot_sex_ratio}()},
 \code{\link{plot_sex_ratio_strata}()},
-\code{\link{plot_varlenage}()},
+\code{\link{plot_var_length_at_age}()},
 \code{\link{plot_weight_length}()},
 \code{\link{plot_westcoast}()}
 }

@@ -8,12 +8,6 @@ if (interactive()) {
 test_that("get_design_based_index", {
   skip_on_cran()
 
-  dat <- pull_catch(
-    common_name = "lingcod",
-    years = c(2003, 2018),
-    survey = "NWFSC.Combo",
-    verbose = TRUE
-  )
   strata <- CreateStrataDF.fn(
     names = c("wa", "or", "ca"),
     depths.shallow = c(55, 55, 55),
@@ -26,14 +20,14 @@ test_that("get_design_based_index", {
   expect_equal(sum(round(strata$area, 0)), 52067)
 
   biomass <- get_design_based(
-    data = dat,
+    data = catch_nwfsc_combo,
     strata = strata
   )
 
   expect_equal(length(biomass), 2)
-  expect_equal(nrow(biomass$biomass), 16)
+  expect_equal(nrow(biomass$biomass), 17)
   expect_equal(round(biomass$biomass$est[1], 0), 38889)
-  expect_equal(nrow(biomass$biomass_by_strata), 48)
+  expect_equal(nrow(biomass$biomass_by_strata), 51)
   expect_equal(biomass$biomass_by_strata$ntows[1], 142)
   expect_equal(round(biomass$biomass_by_strata$area[1], 0), 25793)
 })
@@ -41,12 +35,6 @@ test_that("get_design_based_index", {
 test_that("get_design_based_index with create_strata", {
   skip_on_cran()
 
-  dat <- pull_catch(
-    common_name = "lingcod",
-    years = c(2003, 2018),
-    survey = "NWFSC.Combo",
-    verbose = TRUE
-  )
   strata <- create_strata(
     names = c("wa", "or", "ca"),
     depths_shallow = c(55, 55, 55),
@@ -59,14 +47,18 @@ test_that("get_design_based_index with create_strata", {
   expect_equal(sum(round(strata$area, 0)), 52067)
 
   biomass <- get_design_based(
-    data = dat,
+    data = catch_nwfsc_combo,
     strata = strata
   )
 
   expect_equal(length(biomass), 2)
-  expect_equal(nrow(biomass$biomass), 16)
+  expect_equal(nrow(biomass$biomass), 17)
   expect_equal(round(biomass$biomass$est[1], 0), 38889)
-  expect_equal(nrow(biomass$biomass_by_strata), 48)
+  expect_equal(nrow(biomass$biomass_by_strata), 51)
   expect_equal(biomass$biomass_by_strata$ntows[1], 142)
   expect_equal(round(biomass$biomass_by_strata$area[1], 0), 25793)
+
+  p <- plot_index(data = biomass)
+  expect_equal(is(p[[1]]), "ggplot2::ggplot")
+  expect_equal(is(p[[2]]), "ggplot2::ggplot")
 })

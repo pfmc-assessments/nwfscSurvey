@@ -33,6 +33,8 @@ if (require("maps") && require("mapproj")) {
 Other plot_: 
 \code{\link{PlotSexRatio.fn}()},
 \code{\link{PlotVarLengthAtAge.fn}()},
+\code{\link{plot_age_length_sampling}()},
+\code{\link{plot_bio_patterns}()},
 \code{\link{plot_comps}()},
 \code{\link{plot_cpue}()},
 \code{\link{plot_cpue_map}()},
@@ -41,7 +43,7 @@ Other plot_:
 \code{\link{plot_proportion}()},
 \code{\link{plot_sex_ratio}()},
 \code{\link{plot_sex_ratio_strata}()},
-\code{\link{plot_varlenage}()},
+\code{\link{plot_var_length_at_age}()},
 \code{\link{plot_weight_length}()}
 }
 \author{

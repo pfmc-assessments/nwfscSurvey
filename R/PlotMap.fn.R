@@ -116,10 +116,15 @@ PlotMap.fn <- function(
       label_land() +
       label_axes() +
       theme(legend.position = "right")
-    print(g)
 
     if (!is.null(dir)) {
-      ggsave(filename = plot_names[1], width = 7, height = 10, units = "in")
+      ggsave(
+        plot = g,
+        filename = plot_names[1],
+        width = 7,
+        height = 10,
+        units = "in"
+      )
     }
   }
 
@@ -175,10 +180,26 @@ PlotMap.fn <- function(
       label_axes() +
       theme(legend.position = "right") +
       facet_wrap(~Year, ncol = 6)
-    print(h)
 
     if (!is.null(dir)) {
-      ggsave(filename = plot_names[2], width = 7, height = 10, units = "in")
+      ggsave(
+        plot = h,
+        filename = plot_names[2],
+        width = 7,
+        height = 10,
+        units = "in"
+      )
+    }
+  }
+  if (is.null(dir)) {
+    if (length(plot) == 1) {
+      if (plot == 1) {
+        return(g)
+      } else {
+        return(h)
+      }
+    } else {
+      return(list(g, h))
     }
   }
 }

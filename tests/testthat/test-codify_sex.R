@@ -8,7 +8,7 @@ test_that("AFSC Slope pull biological table of Pacific ocean perch sexes", {
   )
   originaltable <- table(dat[["length_data"]][["Sex"]])
   testthat::expect_equal(
-    c(2395, 3126, 600), # Values calculated on 2022-11-10 by CRW
+    c(2395, 3126, 600),
     as.numeric(originaltable)
   )
   # Check that recoding doesn't do anything

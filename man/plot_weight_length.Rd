@@ -23,7 +23,7 @@ plot_weight_length(
 \item{dir}{Directory where output will be saved. The directory where the file should be saved.
 If dir = NULL no output will be saved.}
 
-\item{estimates}{Data frame of weight-at-length estimates from \code{\link[=est_weight_length]{est_weight_length()}}.
+\item{estimates}{Data frame of weight-at-length estimates from \code{\link[=estimate_weight_length]{estimate_weight_length()}}.
 If passed to the function the estimated parameter values will be added to
 the plot. The default is \code{NULL} and will not add parameters to the plot.}
 
@@ -65,6 +65,8 @@ Plots the weight-at-length data and estimates
 Other plot_: 
 \code{\link{PlotSexRatio.fn}()},
 \code{\link{PlotVarLengthAtAge.fn}()},
+\code{\link{plot_age_length_sampling}()},
+\code{\link{plot_bio_patterns}()},
 \code{\link{plot_comps}()},
 \code{\link{plot_cpue}()},
 \code{\link{plot_cpue_map}()},
@@ -73,7 +75,7 @@ Other plot_:
 \code{\link{plot_proportion}()},
 \code{\link{plot_sex_ratio}()},
 \code{\link{plot_sex_ratio_strata}()},
-\code{\link{plot_varlenage}()},
+\code{\link{plot_var_length_at_age}()},
 \code{\link{plot_westcoast}()}
 }
 \author{

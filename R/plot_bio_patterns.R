@@ -1,8 +1,8 @@
 #' This function plots length by latitude and depth
 #'
+#' @param data Biological data frame from [pull_bio()]
 #' @param dir Directory where output will be saved. The directory where the file should be saved.
 #' If dir = NULL no output will be saved.
-#' @param bio Biological data frame from [pull_bio()]
 #' @param col_name Option to switch between plotting lengths or ages.
 #' Options are "Length_cm", "Width_cm", or "Age".
 #' @param plot A vector of integers to specify which plots you would like. The
@@ -18,12 +18,13 @@
 #' @import cowplot
 #'
 #' @author Chantel Wetzel
+#' @family plot_
 #' @export
 #'
 #'
 plot_bio_patterns <- function(
+  data,
   dir = NULL,
-  bio,
   col_name = "Length_cm",
   plot = 1:3,
   width = 7,
@@ -35,59 +36,69 @@ plot_bio_patterns <- function(
 
   plotdir <- file.path(dir)
   check_dir(dir = plotdir)
+  data_tolower <- data |> dplyr::rename_all(tolower)
 
   lab_name <- col_name
-  if (col_name == "Length_cm") {
+  if (tolower(col_name) == "length_cm") {
     lab_name <- "Length (cm)"
-    bio$x <- bio$Length_cm
+    data_tolower$x <- data_tolower$length_cm
   }
-  if (col_name == "Width_cm") {
+  if (tolower(col_name) == "width_cm") {
     lab_name <- "Width (cm)"
-    bio$x <- bio$Width_cm
+    data_tolower$x <- data_tolower$width_cm
   }
-  if (col_name == "Age") {
+  if (tolower(col_name) %in% c("age", "age_years")) {
     lab_name <- "Age (yrs)"
-    bio$x <- bio$Age
+    if (tolower(col_name) == "age") {
+      data_tolower$x <- data_tolower$age
+    } else {
+      data_tolower$x <- data_tolower$age_years
+    }
   }
 
   alpha_set <- 0.30
   alpha_by_year <- 0.40
-  if (dim(bio)[1] > 10000) {
+  if (dim(data_tolower)[1] > 10000) {
     alpha_set <- 0.05
     alpha_by_year <- 0.20
-    if (dim(bio)[1] > 50000) {
+    if (dim(data_tolower)[1] > 50000) {
       alpha_set <- 0.01
       alpha_by_year <- 0.10
     }
   }
   bin_size <- ifelse(
-    max(bio$Depth_m) - min(bio$Depth_m) > 500,
+    max(data_tolower$depth_m) - min(data_tolower$depth_m) > 500,
     100,
-    ifelse(max(bio$Depth_m) - min(bio$Depth_m) > 250, 50, 25)
+    ifelse(max(data_tolower$depth_m) - min(data_tolower$depth_m) > 250, 50, 25)
   )
-  bio$depth_bin <- round_any(bio$Depth_m, bin_size, f = floor)
-  bio$lat <- round_any(bio$Latitude_dd, 0.25)
+  data_tolower <- data_tolower |>
+    dplyr::mutate(
+      depth_bin = round_any(depth_m, bin_size, f = floor),
+      lat_bin = round_any(latitude_dd, 0.25)
+    )
 
   # Length by depth for each sex
-  ld <- ggplot2::ggplot(bio, aes(x = Depth_m, y = x, color = Sex)) +
+  ld <- ggplot2::ggplot(
+    data_tolower,
+    aes(x = depth_m, y = x, color = sex)
+  ) +
     geom_point(
-      aes(fill = Sex, colour = Sex),
+      aes(fill = sex, colour = sex, shape = sex),
       alpha = alpha_set,
-      shape = 21,
-      size = 3
+      size = 1
     ) +
     stat_summary(
-      aes(y = x, x = depth_bin),
+      aes(y = x, x = depth_bin, colour = sex, linetype = sex),
       fun = mean,
       geom = "line",
-      lwd = 2,
+      lwd = 1,
       alpha = 1
     ) +
     scale_fill_manual(
-      values = c("F" = "red", "M" = "blue", "U" = "darkseagreen")
+      values = c("F" = "#440154FF", "M" = "#21908CFF", "U" = "#FDE725FF")
     ) +
     scale_color_manual(
-      values = c("F" = "darkred", "M" = "darkblue", "U" = "darkgreen")
+      values = c("F" = "#440154FF", "M" = "#21908CFF", "U" = "#FDE725FF")
     ) +
     labs(x = "Depth (m)", y = lab_name) +
     scale_x_continuous(n.breaks = 7) +
@@ -104,25 +115,24 @@ plot_bio_patterns <- function(
     )
 
   # Length by latitude
-  ll <- ggplot2::ggplot(bio, aes(x = Latitude_dd, y = x)) +
+  ll <- ggplot2::ggplot(data_tolower, aes(x = latitude_dd, y = x)) +
     geom_point(
-      aes(fill = Sex, colour = Sex),
+      aes(fill = sex, colour = sex, shape = sex),
       alpha = alpha_set,
-      shape = 21,
-      size = 3
+      size = 1
     ) +
     stat_summary(
-      aes(y = x, x = lat, colour = Sex),
+      aes(y = x, x = lat_bin, colour = sex, linetype = sex),
       fun = mean,
       geom = "line",
-      lwd = 2,
+      lwd = 1,
       alpha = 1
     ) +
     scale_fill_manual(
-      values = c("F" = "red", "M" = "blue", "U" = "darkseagreen")
+      values = c("F" = "#440154FF", "M" = "#21908CFF", "U" = "#FDE725FF")
     ) +
     scale_color_manual(
-      values = c("F" = "darkred", "M" = "darkblue", "U" = "darkgreen")
+      values = c("F" = "#440154FF", "M" = "#21908CFF", "U" = "#FDE725FF")
     ) +
     labs(x = "Latitude", y = lab_name) +
     scale_x_continuous(n.breaks = 7) +
@@ -139,19 +149,18 @@ plot_bio_patterns <- function(
     )
 
   # Length by latitude and sex by year
-  lly <- ggplot2::ggplot(bio, aes(x = Latitude_dd, y = x)) +
+  lly <- ggplot2::ggplot(data_tolower, aes(x = latitude_dd, y = x)) +
     geom_point(
-      aes(fill = Sex, colour = Sex),
+      aes(fill = sex, colour = sex, shape = sex),
       alpha = alpha_by_year,
-      shape = 21,
-      size = 3
+      size = 1
     ) +
-    facet_wrap(facets = "Year") +
+    facet_wrap(facets = "year") +
     scale_fill_manual(
-      values = c("F" = "red", "M" = "blue", "U" = "darkseagreen")
+      values = c("F" = "#440154FF", "M" = "#21908CFF", "U" = "#FDE725FF")
     ) +
     scale_color_manual(
-      values = c("F" = "darkred", "M" = "darkblue", "U" = "darkgreen")
+      values = c("F" = "#440154FF", "M" = "#21908CFF", "U" = "#FDE725FF")
     ) +
     labs(x = "Latitude", y = lab_name) +
     theme(
@@ -160,19 +169,18 @@ plot_bio_patterns <- function(
     )
 
   # Length by depth and sex by year
-  ldy <- ggplot2::ggplot(bio, aes(x = Depth_m, y = x)) +
+  ldy <- ggplot2::ggplot(data_tolower, aes(x = depth_m, y = x)) +
     geom_point(
-      aes(fill = Sex, colour = Sex),
+      aes(fill = sex, colour = sex, shape = sex),
       alpha = alpha_by_year,
-      shape = 21,
-      size = 3
+      size = 1
     ) +
-    facet_wrap(facets = "Year") +
+    facet_wrap(facets = "year") +
     scale_fill_manual(
-      values = c("F" = "red", "M" = "blue", "U" = "darkseagreen")
+      values = c("F" = "#440154FF", "M" = "#21908CFF", "U" = "#FDE725FF")
     ) +
     scale_color_manual(
-      values = c("F" = "darkred", "M" = "darkblue", "U" = "darkgreen")
+      values = c("F" = "#440154FF", "M" = "#21908CFF", "U" = "#FDE725FF")
     ) +
     labs(x = "Depth (m)", y = lab_name) +
     theme(
@@ -182,9 +190,9 @@ plot_bio_patterns <- function(
 
   # plot 1
   if (1 %in% plot) {
-    print(cowplot::plot_grid(ll, ld, nrow = 2))
     if (!is.null(dir)) {
       ggsave(
+        plot = cowplot::plot_grid(ll, ld, nrow = 2),
         filename = file.path(
           dir,
           paste0(col_name, "_by_lat_depth.png")
@@ -198,9 +206,9 @@ plot_bio_patterns <- function(
 
   # plot 2
   if (2 %in% plot) {
-    print(ldy)
     if (!is.null(dir)) {
       ggsave(
+        plot = ldy,
         filename = file.path(
           dir,
           paste0(col_name, "_by_year_depth.png")
@@ -214,9 +222,9 @@ plot_bio_patterns <- function(
 
   # plot 3
   if (3 %in% plot) {
-    print(lly)
     if (!is.null(dir)) {
       ggsave(
+        plot = lly,
         filename = file.path(
           dir,
           paste0(col_name, "_by_year_lat.png")
@@ -225,6 +233,34 @@ plot_bio_patterns <- function(
         height = height + 3,
         units = "in"
       )
+    }
+  }
+
+  if (is.null(dir)) {
+    if (length(plot) == 1) {
+      if (plot == 1) {
+        return(cowplot::plot_grid(ll, ld, nrow = 2))
+      }
+      if (plot == 2) {
+        return(ldy)
+      }
+      if (plot == 3) {
+        return(lly)
+      }
+    }
+    if (length(plot) == 2) {
+      if (sum(1:2 %in% plot) == 2) {
+        return(list(cowplot::plot_grid(ll, ld, nrow = 2), ldy))
+      }
+      if (sum(2:3 %in% plot) == 2) {
+        return(list(ldy, lly))
+      }
+      if (sum(c(1, 3) %in% plot) == 2) {
+        return(list(cowplot::plot_grid(ll, ld, nrow = 2), lly))
+      }
+    }
+    if (length(plot) == 3) {
+      return(list(cowplot::plot_grid(ll, ld, nrow = 2), ldy, lly))
     }
   }
 }

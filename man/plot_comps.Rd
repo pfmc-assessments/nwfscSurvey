@@ -48,7 +48,23 @@ Plot frequency data as bubble plots
 }
 \examples{
 \dontrun{
-plot_comps(data = LFs)
+catch <- pull_catch(common_name = "lingcod")
+bio <- pull_bio(common_name = "lingcod")
+
+strata <- create_strata(
+  names = c("deep_s", "shallow_s", "deep_mn", "shallow_m", "shallow_n"),
+  depths_shallow = c(183, 55, 183, 55, 55),
+  depths_deep = c(549, 183, 549, 183, 183),
+  lats_south = c(32, 32, 40, 40, 44),
+  lats_north = c(40, 40, 49, 44, 49)
+)
+length_comps <- get_expanded_comps(
+  bio_data = bio,
+  catch_data = catch,
+  comp_bins = seq(10, 40, 2),
+  strata = strata
+)
+plot_comps(data = length_comps)
 }
 
 }
@@ -56,6 +72,8 @@ plot_comps(data = LFs)
 Other plot_: 
 \code{\link{PlotSexRatio.fn}()},
 \code{\link{PlotVarLengthAtAge.fn}()},
+\code{\link{plot_age_length_sampling}()},
+\code{\link{plot_bio_patterns}()},
 \code{\link{plot_cpue}()},
 \code{\link{plot_cpue_map}()},
 \code{\link{plot_index}()},
@@ -63,7 +81,7 @@ Other plot_:
 \code{\link{plot_proportion}()},
 \code{\link{plot_sex_ratio}()},
 \code{\link{plot_sex_ratio_strata}()},
-\code{\link{plot_varlenage}()},
+\code{\link{plot_var_length_at_age}()},
 \code{\link{plot_weight_length}()},
 \code{\link{plot_westcoast}()}
 }

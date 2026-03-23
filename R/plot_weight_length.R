@@ -2,7 +2,7 @@
 #'
 #' @inheritParams pull_catch
 #' @param data Data frame created by [pull_bio()]
-#' @param estimates Data frame of weight-at-length estimates from [est_weight_length()].
+#' @param estimates Data frame of weight-at-length estimates from [estimate_weight_length()].
 #'   If passed to the function the estimated parameter values will be added to
 #'   the plot. The default is `NULL` and will not add parameters to the plot.
 #' @param col_length A numeric or character value specifying the column
@@ -114,14 +114,18 @@ plot_weight_length <- function(
 
   if (two_sex) {
     data_to_plot <- data_to_plot |> dplyr::filter(sex != "U")
-    lines_to_plot <- lines_to_plot |> dplyr::filter(sex != "U")
-    label <- label |> dplyr::filter(sex != "U")
+    if (!is.null(estimates)) {
+      lines_to_plot <- lines_to_plot |> dplyr::filter(sex != "U")
+      label <- label |> dplyr::filter(sex != "U")
+    }
     colors <- line_colors <- c("#414487FF", "#22A884FF")
     point_alpha <- 0.10
   } else {
     data_to_plot[, "sex"] <- "U"
-    lines_to_plot <- lines_to_plot |> dplyr::filter(sex == "U")
-    label <- label |> dplyr::filter(sex == "U")
+    if (!is.null(estimates)) {
+      lines_to_plot <- lines_to_plot |> dplyr::filter(sex == "U")
+      label <- label |> dplyr::filter(sex == "U")
+    }
     colors <- "grey"
     point_alpha <- 0.10
     line_colors <- "black"
@@ -137,11 +141,21 @@ plot_weight_length <- function(
     ggplot2::xlab("Length (cm)") +
     ggplot2::xlim(xlims[1], xlims[2]) +
     ggplot2::ylim(ylims[1], ylims[2]) +
-    ggplot2::theme_bw() +
     ggplot2::scale_color_manual(name = "Sex", values = colors) +
     ggplot2::scale_fill_manual(name = "Sex", values = colors) +
     ggplot2::guides(
       color = guide_legend(override.aes = list(alpha = 1, size = 3))
+    ) +
+    ggplot2::theme(
+      axis.text = ggplot2::element_text(size = 12),
+      panel.border = ggplot2::element_rect(
+        colour = "black",
+        fill = NA,
+        linewidth = 1
+      ),
+      axis.title.x = ggplot2::element_text(size = 14),
+      axis.text.y = ggplot2::element_text(size = 14),
+      legend.text = ggplot2::element_text(size = 14)
     )
 
   if (!is.null(estimates)) {
@@ -201,6 +215,6 @@ plot_weight_length <- function(
       dpi = dpi
     )
   } else {
-    print(p1)
+    return(p1)
   }
 }

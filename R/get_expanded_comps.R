@@ -8,7 +8,7 @@
 #' @inheritParams pull_catch
 #' @inheritParams check_strata
 #' @inheritParams get_design_based
-#' @param bio_data A data frame of length-composition data returned from
+#' @param bio_data A data frame of composition data returned from
 #'   [pull_bio()].
 #' @param catch_data A data frame of catch data returned from [pull_catch()].
 #' @param comp_bins Vector of integers to bin length or age data by

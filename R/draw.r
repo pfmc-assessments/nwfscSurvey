@@ -29,13 +29,13 @@ draw_land <- function() {
       ggplot2::aes(x = long, y = lat, group = group),
       color = "black",
       fill = "lightgray",
-      size = 0.25,
+      linewidth = 0.25,
       inherit.aes = FALSE
     ),
     ggplot2::geom_path(
       data = info_state,
       ggplot2::aes(x = long, y = lat, group = group, color = subregion),
-      size = 0.25,
+      linewidth = 0.25,
       show.legend = FALSE,
       inherit.aes = FALSE
     ),
@@ -74,7 +74,7 @@ draw_theme <- function(size = 0.25) {
       panel.border = ggplot2::element_rect(
         colour = "black",
         fill = NA,
-        size = size
+        linewidth = size
       )
     )
   )
@@ -85,6 +85,7 @@ draw_theme <- function(size = 0.25) {
 #' @param lon,lat Vectors of two real numbers specifying the longitudinal and
 #'   latitudinal limits for the x and y axes.
 #' @export
+#' @import sf
 draw_USEEZ <- function(lon = c(-129.15, -116.50), lat = c(31.90, 49.50)) {
   list(
     ggplot2::coord_sf(

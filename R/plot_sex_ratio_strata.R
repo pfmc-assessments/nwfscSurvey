@@ -61,15 +61,23 @@ plot_sex_ratio_strata <- function(
     strata_vars = strata_vars,
     strata_df = strata_df
   )
+  data_mod$bin <- plyr::round_any(
+    data_mod[, comp_column_name],
+    bin_width,
+    floor
+  )
   binned_data <- data_mod |>
     dplyr::filter(!is.na(stratum)) |>
-    dplyr::mutate(bin = plyr::round_any(column_to_use, bin_width, floor)) |>
     dplyr::group_by(stratum) |>
     dplyr::count(bin, sex) |>
     dplyr::group_by(stratum) |>
     dplyr::mutate(proportion = n / sum(n)) |>
     dplyr::rename(Sex = sex)
 
+  axis_name <- dplyr::case_when(
+    tolower(comp_column_name) == "length_cm" ~ "Length (cm)",
+    .default = "Age (years)"
+  )
   colors <- viridis::viridis(n = 3)
   p <- ggplot2::ggplot(
     binned_data,
@@ -80,7 +88,7 @@ plot_sex_ratio_strata <- function(
     ggplot2::scale_fill_manual(
       values = c("F" = colors[1], "M" = colors[2], "U" = colors[3])
     ) +
-    ggplot2::labs(y = "Proportion by Sex", x = axis.name) +
+    ggplot2::labs(y = "Proportion by Sex", x = axis_name) +
     ggplot2::theme(
       panel.border = ggplot2::element_rect(
         colour = "black",
@@ -95,10 +103,10 @@ plot_sex_ratio_strata <- function(
       axis.text.y = ggplot2::element_text(size = 15)
     ) +
     ggplot2::facet_wrap("stratum")
-  print(p)
 
   if (!is.null(dir)) {
     ggplot2::ggsave(
+      plot = p,
       filename = file.path(
         dir,
         filename
@@ -107,5 +115,7 @@ plot_sex_ratio_strata <- function(
       height = height,
       units = "in"
     )
+  } else {
+    return(p)
   }
 }

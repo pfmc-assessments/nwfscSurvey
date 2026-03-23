@@ -98,7 +98,7 @@ PlotVarLengthAtAge.fn <- function(
     on.exit(dev.off(), add = TRUE)
   }
 
-  par(mfcol = c(2, nn), mar = c(3, 5, 3, 5))
+  par(mfcol = c(2, nn), mar = c(5, 5, 5, 5))
 
   out <- vector(mode = "list", length = nn)
   names(out) <- names(datL)

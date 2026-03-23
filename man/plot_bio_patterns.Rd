@@ -5,8 +5,8 @@
 \title{This function plots length by latitude and depth}
 \usage{
 plot_bio_patterns(
+  data,
   dir = NULL,
-  bio,
   col_name = "Length_cm",
   plot = 1:3,
   width = 7,
@@ -14,10 +14,10 @@ plot_bio_patterns(
 )
 }
 \arguments{
+\item{data}{Biological data frame from \code{\link[=pull_bio]{pull_bio()}}}
+
 \item{dir}{Directory where output will be saved. The directory where the file should be saved.
 If dir = NULL no output will be saved.}
-
-\item{bio}{Biological data frame from \code{\link[=pull_bio]{pull_bio()}}}
 
 \item{col_name}{Option to switch between plotting lengths or ages.
 Options are "Length_cm", "Width_cm", or "Age".}
@@ -37,6 +37,24 @@ inches. The defaults are 10 by 7 inches.}
 \description{
 This function plots length by latitude and depth
 }
+\seealso{
+Other plot_: 
+\code{\link{PlotSexRatio.fn}()},
+\code{\link{PlotVarLengthAtAge.fn}()},
+\code{\link{plot_age_length_sampling}()},
+\code{\link{plot_comps}()},
+\code{\link{plot_cpue}()},
+\code{\link{plot_cpue_map}()},
+\code{\link{plot_index}()},
+\code{\link{plot_length_age}()},
+\code{\link{plot_proportion}()},
+\code{\link{plot_sex_ratio}()},
+\code{\link{plot_sex_ratio_strata}()},
+\code{\link{plot_var_length_at_age}()},
+\code{\link{plot_weight_length}()},
+\code{\link{plot_westcoast}()}
+}
 \author{
 Chantel Wetzel
 }
+\concept{plot_}
