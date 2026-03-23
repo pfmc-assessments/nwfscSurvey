@@ -109,7 +109,7 @@ Calculate the design based index of abundance:
 
 ```{r, eval=FALSE}
 biomass <- get_design_based(
-  data = catch,  
+  data = catch,
   strata = strata
 )
 ```
@@ -129,14 +129,14 @@ plot_index(
 `get_expanded_comps()` calculates and formats the length-composition data for Stock Synthesis:
 ```{r, eval=FALSE}
 length_comps <- get_expanded_comps(
-    bio_data = bio,
-    catch_data = catch,
-    comp_bins = seq(10, 40, 2),
-    strata = strata,
-    comp_column_name = "length_cm",
-    output = "full_expansion_ss3_format",
-    two_sex_comps = TRUE,
-    input_n_method = "stewart_hamel"
+  bio_data = bio,
+  catch_data = catch,
+  comp_bins = seq(10, 40, 2),
+  strata = strata,
+  comp_column_name = "length_cm",
+  output = "full_expansion_ss3_format",
+  two_sex_comps = TRUE,
+  input_n_method = "stewart_hamel"
 )
 ```
 The above call will calculate the length frequencies for use in Stock Synthesis. This function returns a list of sexed and unsexed length composition data formatted for Stock Synthesis. If the `dir` function input is specified, it will write these dataframes to separate csv files inside the dir input location to a "forSS3" folder. In the above example the input sample size is calculated based on the Stewart and Hamel approach (e.g., unique samples calculated as a function of species type and tows).
@@ -146,8 +146,6 @@ To plot the length frequency data:
 p <- plot_comps(
   data = length_comps
 )
-
-
 ```
 
 If the `dir` function input is specified, then a png of the plot will be saved to the `dir` location. 
@@ -157,10 +155,10 @@ for either length or age data.
 
 ```{r, eval=FALSE}
 raw_length_comps <- get_raw_comps(
-    data = bio,
-    comp_bins = seq(10, 40, 2),
-    comp_column_name = "length_cm",
-    two_sex_comps = TRUE
+  data = bio,
+  comp_bins = seq(10, 40, 2),
+  comp_column_name = "length_cm",
+  two_sex_comps = TRUE
 )
 ```
 This function returns a list of sexed and unsexed length composition data formatted for Stock Synthesis. The input sample size is set equal to the number of samples in the data frame.
@@ -169,14 +167,14 @@ This function returns a list of sexed and unsexed length composition data format
 
 ```{r, eval=FALSE}
 age_comps <- get_expanded_comps(
-    bio_data = bio,
-    catch_data = catch,
-    comp_bins = 1:40,
-    strata = strata,
-    comp_column_name = "age",
-    output = "full_expansion_ss3_format",
-    two_sex_comps = TRUE,
-    input_n_method = "stewart_hamel"
+  bio_data = bio,
+  catch_data = catch,
+  comp_bins = 1:40,
+  strata = strata,
+  comp_column_name = "age",
+  output = "full_expansion_ss3_format",
+  two_sex_comps = TRUE,
+  input_n_method = "stewart_hamel"
 )
 ```
 The above call will calculate the marginal age-composition data for the age data in a format for Stock Synthesis. This function returns a list of sexed and unsexed age composition data formatted for Stock Synthesis. If the `dir` function input is specified, it will write these dataframes to separate csv files as well. In the above example the input sample size is calculated based on the Stewart and Hamel approach (e.g., unique samples calculated as a function of species type and tows). 
@@ -186,7 +184,6 @@ To plot the age frequency data:
 p <- plot_comps(
   data = age_comps
 )
-
 ```
 If the `dir` function input is specified, then a "plot" folder will be created in the directory location and a png of the plot will be saved.
 
@@ -195,10 +192,10 @@ for either length or age data.
 
 ```{r, eval=FALSE}
 raw_age_comps <- get_raw_comps(
-    data = bio,
-    comp_bins = 1:40,
-    comp_column_name = "age",
-    two_sex_comps = TRUE
+  data = bio,
+  comp_bins = 1:40,
+  comp_column_name = "age",
+  two_sex_comps = TRUE
 )
 ```
 This function returns a list of sexed and unsexed marginal age composition data formatted for Stock Synthesis. The input sample size is set equal to the number of samples in the data frame.
@@ -208,7 +205,7 @@ This function returns a list of sexed and unsexed marginal age composition data 
 To calculate conditional-age-at-length data formatted for Stock Synthesis:
 ```{r, eval=FALSE}
 caal <- get_raw_caal(
-  data = bio, 
+  data = bio,
   len_bins = seq(10, 40, 2),
   age_bins = 1:40
 )
