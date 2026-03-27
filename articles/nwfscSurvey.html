@@ -54,7 +54,7 @@
                         <h4 data-toc-skip class="author">Chantel
 Wetzel</h4>
             
-            <h4 data-toc-skip class="date">2026-03-23</h4>
+            <h4 data-toc-skip class="date">2026-03-27</h4>
       
 
       <div class="d-none name"><code>nwfscSurvey.Rmd</code></div>
@@ -175,7 +175,7 @@ range spans these values.</p>
 <p>Calculate the design based index of abundance:</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">biomass</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/get_design_based.html">get_design_based</a></span><span class="op">(</span></span>
-<span>  data <span class="op">=</span> <span class="va">catch</span>,  </span>
+<span>  data <span class="op">=</span> <span class="va">catch</span>,</span>
 <span>  strata <span class="op">=</span> <span class="va">strata</span></span>
 <span><span class="op">)</span></span></code></pre></div>
 <p><code><a href="../reference/get_design_based.html">get_design_based()</a></code> returns a list with elements
@@ -199,14 +199,14 @@ intervals:</p>
 length-composition data for Stock Synthesis:</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">length_comps</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/get_expanded_comps.html">get_expanded_comps</a></span><span class="op">(</span></span>
-<span>    bio_data <span class="op">=</span> <span class="va">bio</span>,</span>
-<span>    catch_data <span class="op">=</span> <span class="va">catch</span>,</span>
-<span>    comp_bins <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="fl">10</span>, <span class="fl">40</span>, <span class="fl">2</span><span class="op">)</span>,</span>
-<span>    strata <span class="op">=</span> <span class="va">strata</span>,</span>
-<span>    comp_column_name <span class="op">=</span> <span class="st">"length_cm"</span>,</span>
-<span>    output <span class="op">=</span> <span class="st">"full_expansion_ss3_format"</span>,</span>
-<span>    two_sex_comps <span class="op">=</span> <span class="cn">TRUE</span>,</span>
-<span>    input_n_method <span class="op">=</span> <span class="st">"stewart_hamel"</span></span>
+<span>  bio_data <span class="op">=</span> <span class="va">bio</span>,</span>
+<span>  catch_data <span class="op">=</span> <span class="va">catch</span>,</span>
+<span>  comp_bins <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="fl">10</span>, <span class="fl">40</span>, <span class="fl">2</span><span class="op">)</span>,</span>
+<span>  strata <span class="op">=</span> <span class="va">strata</span>,</span>
+<span>  comp_column_name <span class="op">=</span> <span class="st">"length_cm"</span>,</span>
+<span>  output <span class="op">=</span> <span class="st">"full_expansion_ss3_format"</span>,</span>
+<span>  two_sex_comps <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  input_n_method <span class="op">=</span> <span class="st">"stewart_hamel"</span></span>
 <span><span class="op">)</span></span></code></pre></div>
 <p>The above call will calculate the length frequencies for use in Stock
 Synthesis. This function returns a list of sexed and unsexed length
@@ -227,10 +227,10 @@ the plot will be saved to the <code>dir</code> location.</p>
 that works for either length or age data.</p>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">raw_length_comps</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/get_raw_comps.html">get_raw_comps</a></span><span class="op">(</span></span>
-<span>    data <span class="op">=</span> <span class="va">bio</span>,</span>
-<span>    comp_bins <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="fl">10</span>, <span class="fl">40</span>, <span class="fl">2</span><span class="op">)</span>,</span>
-<span>    comp_column_name <span class="op">=</span> <span class="st">"length_cm"</span>,</span>
-<span>    two_sex_comps <span class="op">=</span> <span class="cn">TRUE</span></span>
+<span>  data <span class="op">=</span> <span class="va">bio</span>,</span>
+<span>  comp_bins <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="fl">10</span>, <span class="fl">40</span>, <span class="fl">2</span><span class="op">)</span>,</span>
+<span>  comp_column_name <span class="op">=</span> <span class="st">"length_cm"</span>,</span>
+<span>  two_sex_comps <span class="op">=</span> <span class="cn">TRUE</span></span>
 <span><span class="op">)</span></span></code></pre></div>
 <p>This function returns a list of sexed and unsexed length composition
 data formatted for Stock Synthesis. The input sample size is set equal
@@ -241,14 +241,14 @@ to the number of samples in the data frame.</p>
 </h4>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">age_comps</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/get_expanded_comps.html">get_expanded_comps</a></span><span class="op">(</span></span>
-<span>    bio_data <span class="op">=</span> <span class="va">bio</span>,</span>
-<span>    catch_data <span class="op">=</span> <span class="va">catch</span>,</span>
-<span>    comp_bins <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">40</span>,</span>
-<span>    strata <span class="op">=</span> <span class="va">strata</span>,</span>
-<span>    comp_column_name <span class="op">=</span> <span class="st">"age"</span>,</span>
-<span>    output <span class="op">=</span> <span class="st">"full_expansion_ss3_format"</span>,</span>
-<span>    two_sex_comps <span class="op">=</span> <span class="cn">TRUE</span>,</span>
-<span>    input_n_method <span class="op">=</span> <span class="st">"stewart_hamel"</span></span>
+<span>  bio_data <span class="op">=</span> <span class="va">bio</span>,</span>
+<span>  catch_data <span class="op">=</span> <span class="va">catch</span>,</span>
+<span>  comp_bins <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">40</span>,</span>
+<span>  strata <span class="op">=</span> <span class="va">strata</span>,</span>
+<span>  comp_column_name <span class="op">=</span> <span class="st">"age"</span>,</span>
+<span>  output <span class="op">=</span> <span class="st">"full_expansion_ss3_format"</span>,</span>
+<span>  two_sex_comps <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  input_n_method <span class="op">=</span> <span class="st">"stewart_hamel"</span></span>
 <span><span class="op">)</span></span></code></pre></div>
 <p>The above call will calculate the marginal age-composition data for
 the age data in a format for Stock Synthesis. This function returns a
@@ -270,10 +270,10 @@ will be saved.</p>
 that works for either length or age data.</p>
 <div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">raw_age_comps</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/get_raw_comps.html">get_raw_comps</a></span><span class="op">(</span></span>
-<span>    data <span class="op">=</span> <span class="va">bio</span>,</span>
-<span>    comp_bins <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">40</span>,</span>
-<span>    comp_column_name <span class="op">=</span> <span class="st">"age"</span>,</span>
-<span>    two_sex_comps <span class="op">=</span> <span class="cn">TRUE</span></span>
+<span>  data <span class="op">=</span> <span class="va">bio</span>,</span>
+<span>  comp_bins <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">40</span>,</span>
+<span>  comp_column_name <span class="op">=</span> <span class="st">"age"</span>,</span>
+<span>  two_sex_comps <span class="op">=</span> <span class="cn">TRUE</span></span>
 <span><span class="op">)</span></span></code></pre></div>
 <p>This function returns a list of sexed and unsexed marginal age
 composition data formatted for Stock Synthesis. The input sample size is
@@ -286,7 +286,7 @@ set equal to the number of samples in the data frame.</p>
 Synthesis:</p>
 <div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">caal</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/get_raw_caal.html">get_raw_caal</a></span><span class="op">(</span></span>
-<span>  data <span class="op">=</span> <span class="va">bio</span>, </span>
+<span>  data <span class="op">=</span> <span class="va">bio</span>,</span>
 <span>  len_bins <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="fl">10</span>, <span class="fl">40</span>, <span class="fl">2</span><span class="op">)</span>,</span>
 <span>  age_bins <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">40</span></span>
 <span><span class="op">)</span></span></code></pre></div>

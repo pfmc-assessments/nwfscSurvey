@@ -117,7 +117,7 @@ Calculate the design based index of abundance:
 
 ``` r
 biomass <- get_design_based(
-  data = catch,  
+  data = catch,
   strata = strata
 )
 ```
@@ -145,14 +145,14 @@ and formats the length-composition data for Stock Synthesis:
 
 ``` r
 length_comps <- get_expanded_comps(
-    bio_data = bio,
-    catch_data = catch,
-    comp_bins = seq(10, 40, 2),
-    strata = strata,
-    comp_column_name = "length_cm",
-    output = "full_expansion_ss3_format",
-    two_sex_comps = TRUE,
-    input_n_method = "stewart_hamel"
+  bio_data = bio,
+  catch_data = catch,
+  comp_bins = seq(10, 40, 2),
+  strata = strata,
+  comp_column_name = "length_cm",
+  output = "full_expansion_ss3_format",
+  two_sex_comps = TRUE,
+  input_n_method = "stewart_hamel"
 )
 ```
 
@@ -181,10 +181,10 @@ that works for either length or age data.
 
 ``` r
 raw_length_comps <- get_raw_comps(
-    data = bio,
-    comp_bins = seq(10, 40, 2),
-    comp_column_name = "length_cm",
-    two_sex_comps = TRUE
+  data = bio,
+  comp_bins = seq(10, 40, 2),
+  comp_column_name = "length_cm",
+  two_sex_comps = TRUE
 )
 ```
 
@@ -196,14 +196,14 @@ to the number of samples in the data frame.
 
 ``` r
 age_comps <- get_expanded_comps(
-    bio_data = bio,
-    catch_data = catch,
-    comp_bins = 1:40,
-    strata = strata,
-    comp_column_name = "age",
-    output = "full_expansion_ss3_format",
-    two_sex_comps = TRUE,
-    input_n_method = "stewart_hamel"
+  bio_data = bio,
+  catch_data = catch,
+  comp_bins = 1:40,
+  strata = strata,
+  comp_column_name = "age",
+  output = "full_expansion_ss3_format",
+  two_sex_comps = TRUE,
+  input_n_method = "stewart_hamel"
 )
 ```
 
@@ -231,10 +231,10 @@ that works for either length or age data.
 
 ``` r
 raw_age_comps <- get_raw_comps(
-    data = bio,
-    comp_bins = 1:40,
-    comp_column_name = "age",
-    two_sex_comps = TRUE
+  data = bio,
+  comp_bins = 1:40,
+  comp_column_name = "age",
+  two_sex_comps = TRUE
 )
 ```
 
@@ -249,7 +249,7 @@ Synthesis:
 
 ``` r
 caal <- get_raw_caal(
-  data = bio, 
+  data = bio,
   len_bins = seq(10, 40, 2),
   age_bins = 1:40
 )
