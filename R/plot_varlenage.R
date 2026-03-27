@@ -72,7 +72,7 @@ plot_var_length_at_age <- function(
       mean = mean(length_cm),
       sd = sd(length_cm),
       cv = (sd / mean),
-      .groups = 'drop'
+      .groups = "drop"
     ) |>
     dplyr::rename(Sex = sex)
 
@@ -85,7 +85,7 @@ plot_var_length_at_age <- function(
       ggplot2::aes(x = bin, y = sd, color = Sex),
       linetype = 2
     ) +
-    #ggokabeito::scale_color_okabe_ito() +
+    # ggokabeito::scale_color_okabe_ito() +
     ggplot2::scale_color_viridis_d(begin = 0.0, end = 0.5) +
     ggplot2::xlab("Age (years)") +
     ggplot2::ylab("SD of Length-at-Age") +
@@ -110,7 +110,7 @@ plot_var_length_at_age <- function(
       ggplot2::aes(x = bin, y = cv, color = Sex),
       linetype = 2
     ) +
-    #ggokabeito::scale_color_okabe_ito() +
+    # ggokabeito::scale_color_okabe_ito() +
     ggplot2::scale_color_viridis_d(begin = 0.0, end = 0.5) +
     ggplot2::xlab("Age (years)") +
     ggplot2::ylab("CV of Length-at-Age") +
