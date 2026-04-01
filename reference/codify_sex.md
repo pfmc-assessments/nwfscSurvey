@@ -78,16 +78,14 @@ codify_sex(c("U", "F", "M", 1, 2))
 # warning messages are printed to the screen prior to
 # changing the uncoded values to "U"
 codify_sex(c("U", "F", "M", "both", 1, 2, NA))
-#> The following unmatched values were found n times in codify_sex() 'both' (n =
-#> 1) and 'NA' (n = 1)
+#> ℹ The following unmatched values were found n times in codify_sex() 'both' (n = 1) and 'NA' (n = 1)
 #> [1] "U" "F" "M" "U" "M" "F" "U"
 codify_sex(c("both", rep(5, 10), "both", 1, 2, NA))
-#> The following unmatched values were found n times in codify_sex() '5' (n = 10),
-#> 'both' (n = 2), and 'NA' (n = 1)
+#> ℹ The following unmatched values were found n times in codify_sex() '5' (n = 10), 'both' (n = 2), and 'NA' (n = 1)
 #>  [1] "U" "U" "U" "U" "U" "U" "U" "U" "U" "U" "U" "U" "M" "F" "U"
 
 # Change codified sex from letters to integers for Stock Synthesis
 codify_sex_ss3(c("M", "U", "K"))
-#> The following unmatched values were found n times in codify_sex() 'K' (n = 1)
+#> ℹ The following unmatched values were found n times in codify_sex() 'K' (n = 1)
 #> [1] 3 0 0
 ```
