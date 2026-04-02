@@ -5,13 +5,16 @@
 \alias{codify_sex_ss3}
 \title{Code sexes into standardized strings}
 \usage{
-codify_sex(x)
+codify_sex(x, verbose = TRUE)
 
 codify_sex_ss3(x)
 }
 \arguments{
 \item{x}{A vector of values used to store sex information.
 Can be any combination of integers, single characters, or \code{NA} values.}
+
+\item{verbose}{A logical that specifies if you want to print messages and
+warnings to the console. The default is \code{TRUE}. description}
 }
 \value{
 A vector of \code{F}, \code{M}, or \code{U} values the same length as \code{x} or

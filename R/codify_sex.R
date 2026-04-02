@@ -36,6 +36,8 @@
 #'
 #' @param x A vector of values used to store sex information.
 #'   Can be any combination of integers, single characters, or `NA` values.
+#' @param verbose A logical that specifies if you want to print messages and
+#'   warnings to the console. The default is `TRUE`. description
 #' @return A vector of `F`, `M`, or `U` values the same length as `x` or
 #' a vector of `0L` or `3L` for `codify_sex()` and `codify_sex_SS3()`,
 #' respectively.
@@ -53,7 +55,7 @@
 #'
 #' # Change codified sex from letters to integers for Stock Synthesis
 #' codify_sex_ss3(c("M", "U", "K"))
-codify_sex <- function(x) {
+codify_sex <- function(x, verbose = TRUE) {
   out <- dplyr::case_when(
     grepl(pattern = "^\\s*[fF].*", x) ~ "F",
     grepl(pattern = "^\\s*[mM].*", x) ~ "M",
@@ -64,18 +66,17 @@ codify_sex <- function(x) {
     is.na(x) ~ NA_character_,
     TRUE ~ NA_character_
   )
-
   unknowns <- table(x[is.na(out)], useNA = "ifany")
-  errormessage <- glue::glue("'{names(unknowns)}' (n = {unknowns})")
-  if (length(unknowns) > 0) {
-    cli::cli_alert_info(
-      "The following unmatched values were found n times in codify_sex() {errormessage}"
-    )
+  if (verbose) {
+    errormessage <- glue::glue("'{names(unknowns)}' (n = {unknowns})")
+    if (length(unknowns) > 0) {
+      cli::cli_alert_info(
+        "The following unmatched values were found n times in codify_sex() {errormessage}"
+      )
+    }
   }
-
   # Code all NA_character_ to "U" before returning
   out[is.na(out)] <- "U"
-
   return(out)
 }
 
