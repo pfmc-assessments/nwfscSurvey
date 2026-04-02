@@ -10,7 +10,7 @@ for Stock Synthesis.
 ## Usage
 
 ``` r
-codify_sex(x)
+codify_sex(x, verbose = TRUE)
 
 codify_sex_ss3(x)
 ```
@@ -21,6 +21,11 @@ codify_sex_ss3(x)
 
   A vector of values used to store sex information. Can be any
   combination of integers, single characters, or `NA` values.
+
+- verbose:
+
+  A logical that specifies if you want to print messages and warnings to
+  the console. The default is `TRUE`. description
 
 ## Value
 
