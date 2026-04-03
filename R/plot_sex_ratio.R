@@ -84,7 +84,6 @@ plot_sex_ratio <- function(
     )
 
   if (!is.null(dir)) {
-    browser()
     ggplot2::ggsave(
       plot = p,
       filename = file.path(
