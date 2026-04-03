@@ -78,6 +78,14 @@ test_that("plot_sex_ratio_strata", {
   expect_equal(is(p), "ggplot2::ggplot")
 })
 
+test_that("plot_var_length_at_age", {
+  p <- plot_var_length_at_age(
+    data = bio_nwfsc_combo,
+    age_bins = 1:10
+  )
+  expect_equal(is(p), "ggplot2::ggplot")
+})
+
 test_that("plot_weight_length", {
   p <- plot_weight_length(data = bio_nwfsc_combo)
   expect_equal(is(p), "ggplot2::ggplot")
