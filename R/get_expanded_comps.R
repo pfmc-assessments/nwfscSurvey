@@ -471,12 +471,17 @@ get_expanded_comps <- function(
   male_comps[is.na(male_comps)] <- 0
 
   # Calculate input sample size based on existing function
-  species_type <- get_species_info(
-    species = species,
-    unident = FALSE,
-    verbose = FALSE
-  )$species_type
-
+  if (input_n_method == "stewart_hamel") {
+    species_type <- get_species_info(
+      species = species,
+      unident = FALSE,
+      verbose = FALSE
+    )$species_type
+  } else {
+    # species type won't matter if not using the Stewart and Hamel method,
+    # but set to "other" to avoid errors in get_input_n
+    species_type <- "other"
+  }
   samples <- get_input_n(
     dir = dir,
     data = bio_data,
