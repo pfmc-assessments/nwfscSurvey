@@ -223,4 +223,4 @@ p <- plot_cpue_map(
 
 #### Additional data visualization
 
-There are a number of additional plotting functions that users should explore to understand their data: `plot_bio_patterns()`, `plot_cpue()`, `plot_length_age()`, `plot_sex_ratio()`, `plot_sex_ratio_strata()`, `plot_var_length_age()`, and `plot_weight_length()`.
+There are a number of additional plotting functions that users should explore to understand their data: `plot_bio_patterns()`, `plot_cpue()`, `plot_length_age()`, `plot_sex_ratio()`, `plot_sex_ratio_strata()`, and `plot_weight_length()`.
