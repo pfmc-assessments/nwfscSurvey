@@ -41,7 +41,7 @@ plot_sex_ratio_strata <- function(
   check_dir(dir = plotdir)
   main_ <- ifelse(is.null(main), "", paste0(main, "_"))
   if (!is.null(dir)) {
-    filename <- paste0(main_, data.type, "_sex_ratio_strata.png")
+    filename <- paste0(main_, comp_column_name, "_sex_ratio_strata.png")
   }
 
   data_mod <- data |>
@@ -76,6 +76,7 @@ plot_sex_ratio_strata <- function(
 
   axis_name <- dplyr::case_when(
     tolower(comp_column_name) == "length_cm" ~ "Length (cm)",
+    tolower(comp_column_name) == "width_cm" ~ "Width (cm)",
     .default = "Age (years)"
   )
   colors <- viridis::viridis(n = 3)
