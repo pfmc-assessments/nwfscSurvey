@@ -281,5 +281,5 @@ explore to understand their data:
 [`plot_length_age()`](../reference/plot_length_age.md),
 [`plot_sex_ratio()`](../reference/plot_sex_ratio.md),
 [`plot_sex_ratio_strata()`](../reference/plot_sex_ratio_strata.md),
-`plot_var_length_age()`, and
+[`plot_var_length_at_age()`](../reference/plot_var_length_at_age.md)and
 [`plot_weight_length()`](../reference/plot_weight_length.md).
