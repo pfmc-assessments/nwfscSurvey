@@ -55,6 +55,7 @@ plot_sex_ratio <- function(
     dplyr::rename(Sex = sex)
   axis_name <- dplyr::case_when(
     tolower(comp_column_name) == "length_cm" ~ "Length (cm)",
+    tolower(comp_column_name) == "width_cm" ~ "Width (cm)",
     .default = "Age (years)"
   )
 

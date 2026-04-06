@@ -60,7 +60,7 @@ plot_comps <- function(
   # if data is a list with both sexed and unsexed fish, choose sexed fish
   if ("sexed" %in% names(data) & "unsexed" %in% names(data)) {
     data <- data$sexed
-    message(
+    cli::cli_alert_warning(
       "data input includes both sexed and unsexed comps, plotting sexed comps only"
     )
   }

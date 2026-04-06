@@ -55,11 +55,13 @@ plot_weight_length <- function(
     paste0(
       add_save_name,
       ifelse(test = is.null(add_save_name), yes = "", no = "_"),
-      "weigth_at_length.png"
+      "weight_at_length.png"
     )
   )
 
   colnames(data) <- tolower(colnames(data))
+  col_length <- tolower(col_length)
+  col_weight <- tolower(col_weight)
   stopifnotcolumn(data = data, string = col_length)
   stopifnotcolumn(data = data, string = col_weight)
   stopifnotcolumn(data = data, string = "sex")
