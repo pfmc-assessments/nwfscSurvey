@@ -34,9 +34,9 @@ filter_pull <- function(
   good_performance <- which(data$performance == "Satisfactory")
   if (length(good_performance) != dim(data)[1]) {
     if (verbose) {
-      if ("total_catch_numbers" %in% colnames(data)) {
+      if ("cpue_kg_km2" %in% colnames(data)) {
         n <- length(which(
-          data$performance != "Satisfactory" & data$total_catch_numbers > 0
+          data$performance != "Satisfactory" & data$cpue_kg_km2 > 0
         ))
       } else {
         n <- length(which(data$performance != "Satisfactory"))
@@ -53,7 +53,7 @@ filter_pull <- function(
   good_station <- which(data$station_invalid == 0)
   if (length(good_station) != dim(data)[1]) {
     if (verbose) {
-      n <- sum(!is.na(data[-good_station, "total_catch_numbers"]))
+      n <- sum(!is.na(data[-good_station, "cpue_kg_km2"]))
       if (any(c("net_height_m_der", "length_cm") %in% colnames(data))) {
         n <- dim(data)[1] - length(good_station)
       }
