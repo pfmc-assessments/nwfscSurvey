@@ -14,6 +14,7 @@ est_growth(
   estVB = TRUE,
   bins = NULL,
   sdFactor = 1,
+  verbose = TRUE,
   dopng = lifecycle::deprecated()
 )
 }
@@ -37,6 +38,9 @@ Stock Synthesis parameterization of von Bertanlaffy growth.}
 
 \item{sdFactor}{The number of standard deviations to include in the
 low and high calculations. The default is 1.0.}
+
+\item{verbose}{A logical that specifies if you want to print messages and
+warnings to the console. The default is \code{TRUE}.}
 
 \item{dopng}{Deprecated with {nwfscSurvey} 2.1 because providing a non-NULL
 value to \code{dir} can serve the same purpose as \code{dopng = TRUE} without the

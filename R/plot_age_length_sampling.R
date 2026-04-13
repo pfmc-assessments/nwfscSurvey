@@ -23,6 +23,7 @@ plot_age_length_sampling <- function(
   plot = 1:2,
   height = 7,
   width = 7,
+  verbose = TRUE,
   xlim = lifecycle::deprecated(),
   ylim = lifecycle::deprecated()
 ) {
@@ -42,7 +43,7 @@ plot_age_length_sampling <- function(
     filename <- file.path(dir, "age_length_comparison.png")
   }
   plotdir <- file.path(dir)
-  check_dir(dir = plotdir)
+  check_dir(dir = plotdir, verbose = verbose)
   plot_names <- file.path(
     plotdir,
     c(

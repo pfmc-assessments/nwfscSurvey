@@ -24,6 +24,7 @@ PlotSexRatio.fn <- function(
   main = NULL,
   circleSize = 0.1,
   dopng = lifecycle::deprecated(),
+  verbose = TRUE,
   ...
 ) {
   if (lifecycle::is_present(dopng)) {
@@ -38,7 +39,7 @@ PlotSexRatio.fn <- function(
     details = "This function is no longer needed and will be removed in a future versions. Please use plot_sex_ratio() instead."
   )
   plotdir <- file.path(dir)
-  check_dir(dir = plotdir)
+  check_dir(dir = plotdir, verbose = verbose)
   main_ <- ifelse(is.null(main), "", paste0(main, "_"))
   if (!is.null(dir)) {
     png(

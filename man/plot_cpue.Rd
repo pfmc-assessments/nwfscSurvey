@@ -4,7 +4,7 @@
 \alias{plot_cpue}
 \title{This function plots cpue and length by latitude and depth}
 \usage{
-plot_cpue(data, dir = NULL, plot = 1:3, width = 7, height = 7)
+plot_cpue(data, dir = NULL, plot = 1:3, width = 7, height = 7, verbose = TRUE)
 }
 \arguments{
 \item{data}{Data catch file pulled using \code{\link[=pull_catch]{pull_catch()}}}
@@ -23,6 +23,9 @@ correspond to the following figures:
 
 \item{width, height}{Numeric values for the figure width and height in
 inches. The defaults are 7 by 7 inches.}
+
+\item{verbose}{A logical that specifies if you want to print messages and
+warnings to the console. The default is \code{TRUE}.}
 }
 \description{
 This function plots cpue and length by latitude and depth

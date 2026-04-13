@@ -12,6 +12,7 @@ PlotSexRatioStrata.fn(
   strat.vars = c("Depth_m", "Latitude_dd"),
   circleSize = 0.05,
   dopng = lifecycle::deprecated(),
+  verbose = TRUE,
   ...
 )
 }
@@ -37,6 +38,9 @@ degrees), i.e., \code{c("Depth_m", "Latitude_dd")}.}
 value to \code{dir} can serve the same purpose as \code{dopng = TRUE} without the
 potential for errors when \code{dopng = TRUE} and \code{dir = NULL}. Thus, users
 no longer have to specify \code{dopng} to save the plot as a png.}
+
+\item{verbose}{A logical that specifies if you want to print messages and
+warnings to the console. The default is \code{TRUE}.}
 
 \item{...}{Additional arguments for the plots}
 }

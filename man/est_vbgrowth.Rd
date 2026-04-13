@@ -11,7 +11,8 @@ est_vbgrowth(
   col_length = "length_cm",
   col_age = "age",
   init_params = data.frame(K = 0.13, Linf = 55, L0 = 15, CV0 = 0.1, CV1 = 0.1),
-  bins = NULL
+  bins = NULL,
+  verbose = TRUE
 )
 }
 \arguments{
@@ -32,6 +33,9 @@ be in years. The default value is \code{age}.}
 Stock Synthesis parameterization of von Bertanlaffy growth.}
 
 \item{bins}{The bins to put ages into. If NULL then simply uses the ages as recorded.}
+
+\item{verbose}{A logical that specifies if you want to print messages and
+warnings to the console. The default is \code{TRUE}.}
 }
 \description{
 Estimate length-at-age using the von Bertanlaffy

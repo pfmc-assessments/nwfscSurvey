@@ -11,6 +11,7 @@ PlotSexRatio.fn(
   main = NULL,
   circleSize = 0.1,
   dopng = lifecycle::deprecated(),
+  verbose = TRUE,
   ...
 )
 }
@@ -31,6 +32,9 @@ named \code{Sex} present.}
 value to \code{dir} can serve the same purpose as \code{dopng = TRUE} without the
 potential for errors when \code{dopng = TRUE} and \code{dir = NULL}. Thus, users
 no longer have to specify \code{dopng} to save the plot as a png.}
+
+\item{verbose}{A logical that specifies if you want to print messages and
+warnings to the console. The default is \code{TRUE}.}
 
 \item{...}{Additional arguments for the plots}
 }

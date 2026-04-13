@@ -15,6 +15,7 @@ PlotVarLengthAtAge.fn(
   bins = NULL,
   legX = "bottomleft",
   legY = NULL,
+  verbose = verbose,
   dopng = lifecycle::deprecated(),
   ...
 )
@@ -41,6 +42,9 @@ If dir = NULL no output will be saved.}
 \item{legX}{legend location for x axis, defaults to "bottomleft"}
 
 \item{legY}{legend location for y axis, defaults to NULL}
+
+\item{verbose}{A logical that specifies if you want to print messages and
+warnings to the console. The default is \code{TRUE}.}
 
 \item{dopng}{Deprecated with {nwfscSurvey} 2.1 because providing a non-NULL
 value to \code{dir} can serve the same purpose as \code{dopng = TRUE} without the
