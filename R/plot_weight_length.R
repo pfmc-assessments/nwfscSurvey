@@ -34,7 +34,7 @@
 #' @import ggplot2
 #' @export
 #' @seealso
-#' \code{\link{est_weight_length}}
+#' [estimate_weight_length()]
 #'
 plot_weight_length <- function(
   data,

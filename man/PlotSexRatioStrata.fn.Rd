@@ -23,7 +23,7 @@ If dir = NULL no output will be saved.}
 \code{\link[=pull_bio]{pull_bio()}}.}
 
 \item{strat.df}{A data frame that defines the strata and provides the
-calculated areas for each strata returned from \code{\link[=createStrataDF.fn]{createStrataDF.fn()}}.}
+calculated areas for each strata returned from \code{\link[=CreateStrataDF.fn]{CreateStrataDF.fn()}}.}
 
 \item{type}{Specify where to calculate the sex ration by length or age.}
 
@@ -44,8 +44,8 @@ no longer have to specify \code{dopng} to save the plot as a png.}
 Function to plot sex ratio by strata
 }
 \seealso{
-\code{\link{StrataFactors.fn}}
-\code{\link{createStrataDF.fn}}
+\code{\link[=StrataFactors.fn]{StrataFactors.fn()}}
+\code{\link[=CreateStrataDF.fn]{CreateStrataDF.fn()}}
 }
 \author{
 Allan Hicks and Chantel Wetzel

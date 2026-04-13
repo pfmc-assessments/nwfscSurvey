@@ -60,7 +60,7 @@ with many figures. The default is 300.}
 Plots the weight-at-length data and estimates
 }
 \seealso{
-\code{\link{est_weight_length}}
+\code{\link[=estimate_weight_length]{estimate_weight_length()}}
 
 Other plot_: 
 \code{\link{PlotSexRatio.fn}()},
