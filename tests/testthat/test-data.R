@@ -29,7 +29,7 @@ test_that("pull_catch-multispecies", {
   )
   expect_is(dat, "data.frame")
   expect_equal(nrow(dat), 395792)
-  expect_equal(length(which(dat$cpue_kg_km2 == 0)), 376542)
+  expect_equal(sum(dat$cpue_kg_km2 == 0), 376542)
 
   dat_lingcod <- pull_catch(
     common_name = "lingcod",
@@ -70,7 +70,7 @@ test_that("pull-sample-types", {
   )
   expect_is(data_hake, "data.frame")
   expect_equal(nrow(data_hake), 3559)
-  expect_equal(length(which(data_hake$cpue_kg_km2 == 0)), 1625)
+  expect_equal(sum(data_hake$cpue_kg_km2 == 0), 1625)
   expect_equal(length(unique(data_hake$Trawl_id)), 3445)
 
   combine_hake <- combine_tows(
@@ -78,8 +78,8 @@ test_that("pull-sample-types", {
   )
   expect_equal(length(unique(data_hake$Trawl_id)), nrow(combine_hake))
   expect_equal(
-    sum(data_hake$total_catch_numbers),
-    sum(combine_hake$total_catch_numbers)
+    sum(data_hake$total_catch_numbers, na.rm = TRUE),
+    sum(combine_hake$total_catch_numbers, na.rm = TRUE)
   )
 
   data_hake_3_types <- pull_catch(
@@ -115,11 +115,28 @@ test_that("pull-sample-types", {
     nrow(combine_eggs)
   )
   expect_equal(
-    sum(data_eggs$total_catch_numbers[which(
-      !data_eggs$Partition %in% c("Eggs", "Egg Cases")
-    )]),
-    sum(combine_eggs$total_catch_numbers)
+    sum(
+      data_eggs$total_catch_numbers[which(
+        !data_eggs$Partition %in% c("Eggs", "Egg Cases")
+      )],
+      na.rm = TRUE
+    ),
+    sum(combine_eggs$total_catch_numbers, na.rm = TRUE)
   )
+})
+
+test_that("pull_catch_filtered", {
+  skip_on_cran()
+
+  dat <- pull_catch(
+    common_name = "lingcod",
+    years = c(2003, 2018),
+    survey = "NWFSC.Combo",
+    dir = NULL,
+    verbose = FALSE
+  )
+  expect_is(dat, "data.frame")
+  expect_equal(nrow(dat), 10358)
 })
 
 test_that("pull_catch_unfiltered", {
