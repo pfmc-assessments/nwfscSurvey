@@ -394,10 +394,7 @@ pull_catch <- function(
         is.na(cpue_kg_per_ha_der) ~ 0,
         .default = cpue_kg_per_ha_der
       ),
-      cpue_kg_km2 = dplyr::case_when(
-        is.na(cpue_kg_per_ha_der) ~ 0,
-        .default = cpue_kg_per_ha_der * 100
-      ),
+      cpue_kg_km2 = cpue_kg_per_ha_der * 100,
       total_catch_numbers = dplyr::case_when(
         is.na(total_catch_numbers) & is.na(total_catch_wt_kg) ~ 0,
         .default = total_catch_numbers
