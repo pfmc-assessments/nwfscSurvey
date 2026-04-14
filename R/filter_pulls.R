@@ -53,7 +53,7 @@ filter_pull <- function(
   good_station <- which(data$station_invalid == 0)
   if (length(good_station) != dim(data)[1]) {
     if (verbose) {
-      n <- sum(!is.na(data[-good_station, "cpue_kg_km2"]))
+      n <- sum(!is.na(data[-good_station, "total_catch_numbers"]))
       if (any(c("net_height_m_der", "length_cm") %in% colnames(data))) {
         n <- dim(data)[1] - length(good_station)
       }
