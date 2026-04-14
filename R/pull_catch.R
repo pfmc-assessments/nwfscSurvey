@@ -229,7 +229,7 @@ pull_catch <- function(
     )
   } else {
     if (verbose) {
-      cli::cli_inform(
+      cli::cli_alert_info(
         "There are {nrow(positive_tows)} positive tows across all years pulled."
       )
     }
@@ -243,8 +243,7 @@ pull_catch <- function(
   )
 
   bad_sample_types <- which(
-    !positive_tows[
-      ,
+    !positive_tows[,
       "statistical_partition_dim$statistical_partition_type"
     ] %in%
       sample_types
@@ -298,7 +297,7 @@ pull_catch <- function(
   colnames(all_tows)[(colnames(all_tows) == "depth_hi_prec_m")] <- "depth_m"
 
   if (standard_filtering == TRUE & verbose == TRUE) {
-    cli::cli_inform(
+    cli::cli_alert_info(
       "There are {nrow(positive_tows)} positive tows remaining across all years after standard filtering."
     )
   }
@@ -389,25 +388,40 @@ pull_catch <- function(
   }
 
   # Fill in zeros where needed
-  catch[is.na(catch)] <- 0
-  catch[catch[, "partition_sample_types"] == 0, "partition_sample_types"] <- NA
-  catch[catch[, "partition"] == 0, "partition"] <- NA
-
-  catch$date <- chron::chron(
-    format(
-      as.POSIXlt(catch$datetime_utc_iso, format = "%Y-%m-%dT%H:%M:%S"),
-      "%Y-%m-%d"
-    ),
-    format = "y-m-d",
-    out.format = "YYYY-m-d"
-  )
-
-  catch$trawl_id <- as.character(catch$trawl_id)
-  # kg / km2 <- (100 hectare / 1 *km2) * (kg / hectare)
-  catch$cpue_kg_km2 <- catch$cpue_kg_per_ha_der * 100
-  colnames(catch)[which(
-    colnames(catch) == "area_swept_ha_der"
-  )] <- "area_swept_ha"
+  catch <- catch |>
+    dplyr::mutate(
+      cpue_kg_per_ha_der = dplyr::case_when(
+        is.na(cpue_kg_per_ha_der) ~ 0,
+        .default = cpue_kg_per_ha_der
+      ),
+      cpue_kg_km2 = cpue_kg_per_ha_der * 100,
+      total_catch_numbers = dplyr::case_when(
+        is.na(total_catch_numbers) & is.na(total_catch_wt_kg) ~ 0,
+        .default = total_catch_numbers
+      ),
+      total_catch_wt_kg = dplyr::case_when(
+        total_catch_numbers == 0 & is.na(total_catch_wt_kg) ~ 0,
+        .default = total_catch_wt_kg
+      ),
+      subsample_count = dplyr::case_when(
+        is.na(subsample_count) & is.na(subsample_wt_kg) ~ 0,
+        .default = subsample_count
+      ),
+      subsample_wt_kg = dplyr::case_when(
+        subsample_count == 0 & is.na(subsample_wt_kg) ~ 0,
+        .default = subsample_wt_kg
+      ),
+      trawl_id = as.character(trawl_id),
+      date = chron::chron(
+        format(
+          as.POSIXlt(datetime_utc_iso, format = "%Y-%m-%dT%H:%M:%S"),
+          "%Y-%m-%d"
+        ),
+        format = "y-m-d",
+        out.format = "YYYY-m-d"
+      )
+    ) |>
+    dplyr::rename(area_swept_ha = area_swept_ha_der)
 
   find <- grep("trawl_id", colnames(catch), ignore.case = TRUE)
   n_id <- table(catch[, find])

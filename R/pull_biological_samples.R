@@ -148,7 +148,7 @@ pull_biological_samples <- function(
   bio_samples <- bio_samples[keep, ]
 
   if (verbose) {
-    cli::cli_inform(
+    cli::cli_alert_info(
       "There are {nrow(bio_samples)} biological samples in the pulled data."
     )
   }
@@ -186,7 +186,7 @@ pull_biological_samples <- function(
   ] <- "reason_station_invalid"
 
   if (standard_filtering == TRUE & verbose == TRUE) {
-    cli::cli_inform(
+    cli::cli_alert_info(
       "There are {nrow(bio_samples)} biological samples remain after standard filtering."
     )
   }

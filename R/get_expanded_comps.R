@@ -251,15 +251,16 @@ get_expanded_comps <- function(
   }
   bio_data[which(bio_data$bin == -999), "bin"] <- min(comp_bins)
 
-  positive_tows <- catch_data[which(catch_data$total_catch_numbers > 0), ]
+  positive_tows <- catch_data[which(catch_data$cpue_kg_km2 > 0), ]
   find <- !(positive_tows$trawl_id %in% bio_data$trawl_id)
   no_samples_taken <- sum(find)
-  missing <- sum(positive_tows[find, "total_catch_numbers"])
-  percent <- 100 * round(missing / sum(catch_data[, "total_catch_numbers"]), 3)
+  missing <- sum(positive_tows[find, "total_catch_numbers"], na.rm = TRUE)
+  percent <- 100 *
+    round(missing / sum(catch_data[, "total_catch_numbers"], na.rm = TRUE), 3)
   if (verbose) {
     cli::cli_alert_info(
       "There are {no_samples_taken} tows where fish were observed but not sampled.
-      These tows comprise {percent} percent of the total catch numbers.
+      These tows comprise {percent} percent of the available total catch numbers.
       Only measured fished in the bio_data file are used for composition expansions."
     )
   }
@@ -401,7 +402,7 @@ get_expanded_comps <- function(
   # that are not observed in the data across all years
   check_bin_width <- diff(comp_bins)
   if (any(check_bin_width != check_bin_width[1])) {
-    cli::cli_inform(
+    cli::cli_alert_info(
       "The output should be careful checked to ensure correctness when unequal
       bin intervals are used."
     )
@@ -475,7 +476,7 @@ get_expanded_comps <- function(
     species_type <- get_species_info(
       species = species,
       unident = FALSE,
-      verbose = FALSE
+      verbose = verbose
     )$species_type
   } else {
     # species type won't matter if not using the Stewart and Hamel method,

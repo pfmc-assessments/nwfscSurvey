@@ -10,7 +10,8 @@ plot_bio_patterns(
   col_name = "Length_cm",
   plot = 1:3,
   width = 7,
-  height = 7
+  height = 7,
+  verbose = TRUE
 )
 }
 \arguments{

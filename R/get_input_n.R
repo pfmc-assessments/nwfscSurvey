@@ -74,7 +74,7 @@ get_input_n <- function(
   input_n_method <- rlang::arg_match(input_n_method)
   species_group <- rlang::arg_match(species_group)
   if (verbose) {
-    cli::cli_inform(
+    cli::cli_alert_info(
       "Sample size will be calculated based on {input_n_method}. "
     )
   }
@@ -97,7 +97,7 @@ get_input_n <- function(
     TRUE ~ 2.73
   )
   if (input_n_method == "stewart_hamel" & verbose == TRUE) {
-    cli::cli_inform(
+    cli::cli_alert_info(
       "The unique samples by tow for {species_group} is {multiplier}."
     )
   }

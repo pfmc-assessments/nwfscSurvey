@@ -10,7 +10,8 @@ plot_cpue_map(
   main = NULL,
   plot = 1:2,
   height = 10,
-  width = 7
+  width = 7,
+  verbose = TRUE
 )
 }
 \arguments{
@@ -31,6 +32,9 @@ default is to print both figures.
 
 \item{width, height}{Numeric values for the figure width and height in
 inches. The defaults are 7 by 10 inches.}
+
+\item{verbose}{A logical that specifies if you want to print messages and
+warnings to the console. The default is \code{TRUE}.}
 }
 \value{
 Figures are saved to the disk according to which plots are asked

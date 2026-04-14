@@ -60,7 +60,7 @@ pull_gemm <- function(
       )
     }
     if (length(unique(gemm$species)) > 1) {
-      cli::cli_inform(
+      cli::cli_alert_info(
         "Multiple species or species-areas are being returned."
       )
     }
@@ -74,7 +74,7 @@ pull_gemm <- function(
       )
     }
     if (length(years) == 2 & (max(years) - min(years)) > 1) {
-      cli::cli_inform(
+      cli::cli_alert_info(
         "Only two years of data being returned: {years}.
         The expected form of years is a vector (e.g., 2012:2018) which will return all years within the vector."
       )

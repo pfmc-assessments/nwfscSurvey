@@ -23,10 +23,11 @@ plot_var_length_at_age <- function(
   main = NULL,
   two_sex = TRUE,
   height = 7,
-  width = 7
+  width = 7,
+  verbose = TRUE
 ) {
   plotdir <- file.path(dir)
-  check_dir(dir = plotdir)
+  check_dir(dir = plotdir, verbose = verbose)
   if (!is.null(main) & !is.null(dir)) {
     main <- paste0(main, "_")
   }

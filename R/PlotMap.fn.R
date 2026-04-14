@@ -39,7 +39,8 @@ PlotMap.fn <- function(
   dat,
   main = NULL,
   dopng = lifecycle::deprecated(),
-  plot = 1:2
+  plot = 1:2,
+  verbose = TRUE
 ) {
   if (lifecycle::is_present(dopng)) {
     lifecycle::deprecate_warn(
@@ -53,7 +54,7 @@ PlotMap.fn <- function(
     details = "This function is no longer needed and will be removed in a future versions. Please use plot_cpue_map() instead."
   )
   plotdir <- file.path(dir)
-  check_dir(dir = plotdir)
+  check_dir(dir = plotdir, verbose = verbose)
 
   plot_names <- file.path(
     plotdir,

@@ -58,12 +58,12 @@ combine_tows <- function(
       dplyr::mutate(
         common_name = paste0(common_name, collapse = "_"),
         scientific_name = paste0(scientific_name, collapse = "_"),
-        total_catch_numbers = sum(total_catch_numbers),
-        total_catch_wt_kg = sum(total_catch_wt_kg),
-        subsample_count = sum(subsample_count),
-        subsample_wt_kg = sum(subsample_wt_kg),
-        cpue_kg_per_ha_der = sum(cpue_kg_per_ha_der),
-        cpue_kg_km2 = sum(cpue_kg_km2),
+        total_catch_numbers = sum(total_catch_numbers, na.rm = TRUE),
+        total_catch_wt_kg = sum(total_catch_wt_kg, na.rm = TRUE),
+        subsample_count = sum(subsample_count, na.rm = TRUE),
+        subsample_wt_kg = sum(subsample_wt_kg, na.rm = TRUE),
+        cpue_kg_per_ha_der = sum(cpue_kg_per_ha_der, na.rm = TRUE),
+        cpue_kg_km2 = sum(cpue_kg_km2, na.rm = TRUE),
         partition_sample_types = paste0(partition_sample_types, collapse = "_"),
         partition = paste0(partition, collapse = "_")
       ) |>
@@ -74,11 +74,12 @@ combine_tows <- function(
       dplyr::group_by(common_name, trawl_id) |>
       dplyr::mutate(
         total_catch_numbers = sum(total_catch_numbers),
-        total_catch_wt_kg = sum(total_catch_wt_kg),
-        subsample_count = sum(subsample_count),
-        subsample_wt_kg = sum(subsample_wt_kg),
-        cpue_kg_per_ha_der = sum(cpue_kg_per_ha_der),
-        cpue_kg_km2 = sum(cpue_kg_km2),
+        na.rm = TRUE,
+        total_catch_wt_kg = sum(total_catch_wt_kg, na.rm = TRUE),
+        subsample_count = sum(subsample_count, na.rm = TRUE),
+        subsample_wt_kg = sum(subsample_wt_kg, na.rm = TRUE),
+        cpue_kg_per_ha_der = sum(cpue_kg_per_ha_der, na.rm = TRUE),
+        cpue_kg_km2 = sum(cpue_kg_km2, na.rm = TRUE),
         partition_sample_types = paste0(partition_sample_types, collapse = "_"),
         partition = paste0(partition, collapse = "_")
       ) |>

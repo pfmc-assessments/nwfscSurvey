@@ -38,10 +38,11 @@ plot_cpue_map <- function(
   main = NULL,
   plot = 1:2,
   height = 10,
-  width = 7
+  width = 7,
+  verbose = TRUE
 ) {
   plotdir <- file.path(dir)
-  check_dir(dir = plotdir)
+  check_dir(dir = plotdir, verbose = verbose)
 
   plot_names <- file.path(
     plotdir,

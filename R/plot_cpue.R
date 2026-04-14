@@ -23,10 +23,11 @@ plot_cpue <- function(
   dir = NULL,
   plot = 1:3,
   width = 7,
-  height = 7
+  height = 7,
+  verbose = TRUE
 ) {
   plotdir <- file.path(dir)
-  check_dir(dir = plotdir)
+  check_dir(dir = plotdir, verbose = verbose)
 
   data_tolower <- data |> dplyr::rename_all(tolower)
   data_tolower$log_cpue <- log(data_tolower$cpue_kg_km2)
