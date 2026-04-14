@@ -229,7 +229,7 @@ pull_catch <- function(
     )
   } else {
     if (verbose) {
-      cli::cli_inform(
+      cli::cli_alert_info(
         "There are {nrow(positive_tows)} positive tows across all years pulled."
       )
     }
@@ -297,7 +297,7 @@ pull_catch <- function(
   colnames(all_tows)[(colnames(all_tows) == "depth_hi_prec_m")] <- "depth_m"
 
   if (standard_filtering == TRUE & verbose == TRUE) {
-    cli::cli_inform(
+    cli::cli_alert_info(
       "There are {nrow(positive_tows)} positive tows remaining across all years after standard filtering."
     )
   }
@@ -425,25 +425,6 @@ pull_catch <- function(
       )
     ) |>
     dplyr::rename(area_swept_ha = area_swept_ha_der)
-  #catch[catch[, "cpue_kg_km2"] == 0, "cpue_kg_km2"] <- 0
-  #catch[catch[, "partition_sample_types"] == 0, "partition_sample_types"] <- NA
-  #catch[catch[, "partition"] == 0, "partition"] <- NA
-
-  #catch$date <- chron::chron(
-  #  format(
-  #    as.POSIXlt(catch$datetime_utc_iso, format = "%Y-%m-%dT%H:%M:%S"),
-  #    "%Y-%m-%d"
-  #  ),
-  #  format = "y-m-d",
-  #  out.format = "YYYY-m-d"
-  #)
-
-  #catch$trawl_id <- as.character(catch$trawl_id)
-  # kg / km2 <- (100 hectare / 1 *km2) * (kg / hectare)
-  #catch$cpue_kg_km2 <- catch$cpue_kg_per_ha_der * 100
-  #colnames(catch)[which(
-  #  colnames(catch) == "area_swept_ha_der"
-  #)] <- "area_swept_ha"
 
   find <- grep("trawl_id", colnames(catch), ignore.case = TRUE)
   n_id <- table(catch[, find])
