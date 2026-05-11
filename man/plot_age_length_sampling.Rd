@@ -10,6 +10,7 @@ plot_age_length_sampling(
   plot = 1:2,
   height = 7,
   width = 7,
+  verbose = TRUE,
   xlim = lifecycle::deprecated(),
   ylim = lifecycle::deprecated()
 )

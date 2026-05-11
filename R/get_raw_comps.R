@@ -157,7 +157,7 @@ get_raw_comps <- function(
     species_type <- get_species_info(
       species = species,
       unident = FALSE,
-      verbose = FALSE
+      verbose = verbose
     )$species_type
   } else {
     species_type <- "all"

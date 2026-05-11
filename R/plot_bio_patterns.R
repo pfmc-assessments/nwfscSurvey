@@ -28,14 +28,15 @@ plot_bio_patterns <- function(
   col_name = "Length_cm",
   plot = 1:3,
   width = 7,
-  height = 7
+  height = 7,
+  verbose = TRUE
 ) {
   round_any <- function(x, accuracy, f = round) {
     f(x / accuracy) * accuracy
   }
 
   plotdir <- file.path(dir)
-  check_dir(dir = plotdir)
+  check_dir(dir = plotdir, verbose = verbose)
   data_tolower <- data |> dplyr::rename_all(tolower)
 
   lab_name <- col_name

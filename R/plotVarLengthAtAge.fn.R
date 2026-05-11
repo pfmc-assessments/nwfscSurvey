@@ -35,6 +35,7 @@ PlotVarLengthAtAge.fn <- function(
   bins = NULL,
   legX = "bottomleft",
   legY = NULL,
+  verbose = verbose,
   dopng = lifecycle::deprecated(),
   ...
 ) {
@@ -81,7 +82,7 @@ PlotVarLengthAtAge.fn <- function(
     nn <- 2
   }
 
-  plotdir <- file.path(dir)
+  plotdir <- file.path(dir, verbose = verbose)
   check_dir(dir = plotdir)
   main_ <- ifelse(is.null(main), "", paste0(main, "_"))
   if (!is.null(dir)) {

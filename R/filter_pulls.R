@@ -34,9 +34,9 @@ filter_pull <- function(
   good_performance <- which(data$performance == "Satisfactory")
   if (length(good_performance) != dim(data)[1]) {
     if (verbose) {
-      if ("total_catch_numbers" %in% colnames(data)) {
+      if ("cpue_kg_km2" %in% colnames(data)) {
         n <- length(which(
-          data$performance != "Satisfactory" & data$total_catch_numbers > 0
+          data$performance != "Satisfactory" & data$cpue_kg_km2 > 0
         ))
       } else {
         n <- length(which(data$performance != "Satisfactory"))

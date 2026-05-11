@@ -32,9 +32,10 @@ est_vbgrowth <- function(
     CV0 = 0.10,
     CV1 = 0.10
   ),
-  bins = NULL
+  bins = NULL,
+  verbose = TRUE
 ) {
-  check_dir(dir = dir)
+  check_dir(dir = dir, verbose = verbose)
   col_length <- tolower(col_length)
   col_age <- tolower(col_age)
   colnames(data) <- tolower(colnames(data))

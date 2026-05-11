@@ -8,7 +8,7 @@
 #'   define the strata. Default is bottom depth (m) and latitudes (decimal
 #'   degrees), i.e., `c("Depth_m", "Latitude_dd")`.
 #' @param strat.df A data frame that defines the strata and provides the
-#'   calculated areas for each strata returned from [createStrataDF.fn()].
+#'   calculated areas for each strata returned from [CreateStrataDF.fn()].
 #' @param circleSize circle size
 #' @param dopng Deprecated with {nwfscSurvey} 2.1 because providing a non-NULL
 #'   value to `dir` can serve the same purpose as `dopng = TRUE` without the
@@ -19,8 +19,8 @@
 #' @author Allan Hicks and Chantel Wetzel
 #' @export
 #' @seealso
-#' \code{\link{StrataFactors.fn}}
-#' \code{\link{createStrataDF.fn}}
+#' [StrataFactors.fn()]
+#' [CreateStrataDF.fn()]
 #'
 PlotSexRatioStrata.fn <- function(
   dir = NULL,
@@ -30,6 +30,7 @@ PlotSexRatioStrata.fn <- function(
   strat.vars = c("Depth_m", "Latitude_dd"),
   circleSize = 0.05,
   dopng = lifecycle::deprecated(),
+  verbose = TRUE,
   ...
 ) {
   if (lifecycle::is_present(dopng)) {
@@ -44,7 +45,7 @@ PlotSexRatioStrata.fn <- function(
     details = "This function is no longer needed and will be removed in a future versions. Please use plot_sex_ratio_strata() instead."
   )
   plotdir <- file.path(dir)
-  check_dir(dir = plotdir)
+  check_dir(dir = plotdir, verbose = verbose)
   main_ <- ifelse(is.null(main), "", paste0(main, "_"))
   if (!is.null(dir)) {
     png(

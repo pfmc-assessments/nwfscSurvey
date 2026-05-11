@@ -13,7 +13,8 @@ plot_sex_ratio_strata(
   bin_width = ifelse(comp_column_name == "length_cm", 2, 1),
   main = NULL,
   height = 7,
-  width = 7
+  width = 7,
+  verbose = TRUE
 )
 }
 \arguments{
@@ -43,6 +44,9 @@ be useful when plotting data for various data sets separately.}
 
 \item{width, height}{Numeric values for the figure width and height in
 inches. The defaults are 7 by 7 inches.}
+
+\item{verbose}{A logical that specifies if you want to print messages and
+warnings to the console. The default is \code{TRUE}.}
 }
 \description{
 Function to plot sex ratio by strata

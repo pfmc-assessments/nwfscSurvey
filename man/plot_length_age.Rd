@@ -14,7 +14,8 @@ plot_length_age(
   add_save_name = NULL,
   height = 7,
   width = 7,
-  dpi = 300
+  dpi = 300,
+  verbose = TRUE
 )
 }
 \arguments{
@@ -51,6 +52,9 @@ inches. The defaults are 7 by 7 inches.}
 \item{dpi}{The resolution to apply when saving figures.  Lower resolution values
 can reduce file size which can be helpful when creating large documents
 with many figures. The default is 300.}
+
+\item{verbose}{A logical that specifies if you want to print messages and
+warnings to the console. The default is \code{TRUE}.}
 }
 \description{
 Plots the length-at-age data and estimates

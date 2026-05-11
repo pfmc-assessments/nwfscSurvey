@@ -407,7 +407,7 @@ get_expanded_comps <- function(
   # that are not observed in the data across all years
   check_bin_width <- diff(comp_bins)
   if (any(check_bin_width != check_bin_width[1])) {
-    cli::cli_inform(
+    cli::cli_alert_info(
       "The output should be careful checked to ensure correctness when unequal
       bin intervals are used."
     )
@@ -481,7 +481,7 @@ get_expanded_comps <- function(
     species_type <- get_species_info(
       species = species,
       unident = FALSE,
-      verbose = FALSE
+      verbose = verbose
     )$species_type
   } else {
     # species type won't matter if not using the Stewart and Hamel method,

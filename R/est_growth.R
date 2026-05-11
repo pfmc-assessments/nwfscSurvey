@@ -33,6 +33,7 @@ est_growth <- function(
   estVB = TRUE,
   bins = NULL,
   sdFactor = 1,
+  verbose = TRUE,
   dopng = lifecycle::deprecated()
 ) {
   if (lifecycle::is_present(dopng)) {
@@ -97,7 +98,7 @@ est_growth <- function(
     nn <- 1
   }
 
-  check_dir(dir = dir)
+  check_dir(dir = dir, verbose = verbose)
 
   out <- vector(mode = "list", length = nn)
   xpar <- vector(mode = "list", length = nn)

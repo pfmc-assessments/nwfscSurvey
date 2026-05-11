@@ -27,10 +27,11 @@ plot_sex_ratio <- function(
   main = NULL,
   bin_width = ifelse(comp_column_name == "length_cm", 2, 1),
   width = 7,
-  height = 7
+  height = 7,
+  verbose = TRUE
 ) {
   plotdir <- file.path(dir)
-  check_dir(dir = plotdir)
+  check_dir(dir = plotdir, verbose = verbose)
   main_ <- ifelse(is.null(main), "", paste0(main, "_"))
   if (!is.null(dir)) {
     filename <- paste0(main_, comp_column_name, "_sex_ratio.png")

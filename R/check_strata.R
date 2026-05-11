@@ -76,7 +76,7 @@ check_strata <- function(
     dplyr::group_by(year, stratum) |>
     dplyr::summarise(
       tows = dplyr::n(),
-      positive_tows = sum(total_catch_numbers > 0)
+      positive_tows = sum(cpue_kg_km2 > 0, na.rm = TRUE)
     ) |>
     dplyr::ungroup()
 

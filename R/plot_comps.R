@@ -55,7 +55,8 @@ plot_comps <- function(
   plot = 1:2,
   add_0_ylim = TRUE,
   width = 10,
-  height = 7
+  height = 7,
+  verbose = TRUE
 ) {
   # if data is a list with both sexed and unsexed fish, choose sexed fish
   if ("sexed" %in% names(data) & "unsexed" %in% names(data)) {
@@ -80,7 +81,7 @@ plot_comps <- function(
   }
 
   plotdir <- file.path(dir)
-  check_dir(dir = plotdir)
+  check_dir(dir = plotdir, verbose = verbose)
 
   plot_names <- file.path(
     plotdir,

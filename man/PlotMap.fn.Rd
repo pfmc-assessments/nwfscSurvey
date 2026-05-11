@@ -9,7 +9,8 @@ PlotMap.fn(
   dat,
   main = NULL,
   dopng = lifecycle::deprecated(),
-  plot = 1:2
+  plot = 1:2,
+  verbose = TRUE
 )
 }
 \arguments{
@@ -32,6 +33,9 @@ default is to print both figures.
 \item coastwide data across all years
 \item coastwide data by year
 }}
+
+\item{verbose}{A logical that specifies if you want to print messages and
+warnings to the console. The default is \code{TRUE}.}
 }
 \value{
 Figures are saved to the disk according to which plots are asked

@@ -74,7 +74,7 @@ get_design_based <- function(
       what = "nwfscSurvey::get_design_based(printfolder =)"
     )
   }
-  plotdir <- file.path(dir, printfolder)
+  plotdir <- file.path(dir)
   check_dir(dir = plotdir, verbose = verbose)
 
   colnames(data) <- tolower(colnames(data))
@@ -87,10 +87,12 @@ get_design_based <- function(
     )
   }
 
-  if (nrow(strata) == 1) {
-    cli::cli_alert_warning(
-      "It is recommended to have more than one strata, consider revising strata."
-    )
+  if (verbose) {
+    if (nrow(strata) == 1) {
+      cli::cli_alert_warning(
+        "It is recommended to have more than one strata, consider revising strata."
+      )
+    }
   }
 
   if (is.null(data[, "cpue_kg_km2"])) {
@@ -123,8 +125,8 @@ get_design_based <- function(
     dplyr::summarize(
       ntows = dplyr::n(),
       area = unique(area),
-      mean_cpue = mean(cpue_mt_km2),
-      var_cpue = var(cpue_mt_km2),
+      mean_cpue = mean(cpue_mt_km2, na.rm = TRUE),
+      var_cpue = var(cpue_mt_km2, na.rm = TRUE),
       est = area * mean_cpue,
       var = var_cpue * (area * area) / ntows
     ) |>
