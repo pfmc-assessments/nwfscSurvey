@@ -93,11 +93,11 @@ bio_data <- pull_bio(common_name = "sablefish")
 
 }
 \seealso{
-Other data pulling functions: 
-\code{\link{pull_biological_samples}()},
-\code{\link{pull_catch}()},
-\code{\link{pull_gemm}()},
-\code{\link{pull_haul}()}
+Other data pulling functions:
+\code{\link[=pull_biological_samples]{pull_biological_samples()}},
+\code{\link[=pull_catch]{pull_catch()}},
+\code{\link[=pull_gemm]{pull_gemm()}},
+\code{\link[=pull_haul]{pull_haul()}}
 }
 \author{
 Chantel Wetzel

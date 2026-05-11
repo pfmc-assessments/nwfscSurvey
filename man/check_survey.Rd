@@ -45,12 +45,12 @@ Currently, \code{NWFSC.Shelf.Rockfish} and \code{NWFSC.Hook.Line} are not suppor
 Check and create survey string
 }
 \seealso{
-Other helper function: 
-\code{\link{Format.AKSlope.fn}()},
-\code{\link{check_dir}()},
-\code{\link{combine_tows}()},
-\code{\link{createMatrix}()},
-\code{\link{filter_pull}()}
+Other helper function:
+\code{\link[=Format.AKSlope.fn]{Format.AKSlope.fn()}},
+\code{\link[=check_dir]{check_dir()}},
+\code{\link[=combine_tows]{combine_tows()}},
+\code{\link[=createMatrix]{createMatrix()}},
+\code{\link[=filter_pull]{filter_pull()}}
 }
 \author{
 Chantel Wetzel
