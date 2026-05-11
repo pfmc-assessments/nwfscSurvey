@@ -251,18 +251,23 @@ get_expanded_comps <- function(
   }
   bio_data[which(bio_data$bin == -999), "bin"] <- min(comp_bins)
 
-  positive_tows <- catch_data[which(catch_data$cpue_kg_km2 > 0), ]
-  find <- !(positive_tows$trawl_id %in% bio_data$trawl_id)
-  no_samples_taken <- sum(find)
-  missing <- sum(positive_tows[find, "total_catch_numbers"], na.rm = TRUE)
+  positive_tows <- catch_data[which(catch_data$total_catch_numbers > 0), ]
+  # fish were caught but no samples were taken
+  find_catch <- !(positive_tows$trawl_id %in% bio_data$trawl_id)
+  no_samples_taken <- sum(find_catch)
+  missing <- sum(positive_tows[find_catch, "total_catch_numbers"])
   percent <- 100 *
     round(missing / sum(catch_data[, "total_catch_numbers"], na.rm = TRUE), 3)
+  # samples were measured but no catch numbers were available
+  find_bio <- !(bio_data$trawl_id %in% positive_tows$trawl_id)
+  samples_taken <- length(as.matrix(unique(bio_data[find_bio, "trawl_id"])))
   if (verbose) {
-    cli::cli_alert_info(
-      "There are {no_samples_taken} tows where fish were observed but not sampled.
-      These tows comprise {percent} percent of the available total catch numbers.
-      Only measured fished in the bio_data file are used for composition expansions."
-    )
+    cli::cli_bullets(c(
+      "i" = "There are {no_samples_taken} tows where fish were observed in the catch but not sampled in the biological data.",
+      "i" = "There are {samples_taken} tows were samples were taken but catch numbers
+      are not available in the catch data file.",
+      "i" = "Only data included in the biological samples and catch data are used for composition expansions."
+    ))
   }
 
   strata[, "strata"] <- strata[, "name"]
@@ -281,7 +286,7 @@ get_expanded_comps <- function(
     ) |>
     dplyr::group_by(year, strata) |>
     dplyr::mutate(
-      tows = n()
+      tows = dplyr::n()
     )
 
   bio_data[, "strata"] <- strata_factors(
@@ -299,7 +304,7 @@ get_expanded_comps <- function(
     dplyr::filter(!is.na(strata)) |>
     dplyr::group_by(trawl_id) |>
     dplyr::mutate(
-      all_fish = n()
+      all_fish = dplyr::n()
     )
 
   bio_catch <- dplyr::left_join(
@@ -314,7 +319,7 @@ get_expanded_comps <- function(
     )],
     by = "trawl_id"
   ) |>
-    dplyr::filter(!is.na(strata)) |>
+    dplyr::filter(!is.na(strata), !is.na(total_catch_numbers)) |>
     dplyr::group_by(trawl_id, comp_column) |>
     dplyr::summarize(
       year = unique(year),
@@ -331,14 +336,14 @@ get_expanded_comps <- function(
       multiplier = total_catch_numbers / all_fish,
       exp_f = n_female * multiplier,
       exp_m = n_male * multiplier,
-      exp_u = n_unsexed * multiplier
+      exp_u = n_unsexed * multiplier,
+      .groups = "keep"
     )
 
   if (output == "tow_expansion_only") {
     if (verbose) {
       cli::cli_alert_info(
-        "Composition data only expanded to the tow level.
-        Formatted composition data file not written for SS3."
+        "Composition data only expanded to the tow level. Formatted composition data file not written for SS3."
       )
     }
     bio_catch <- label_tow_expansion(x = bio_catch)
@@ -394,9 +399,9 @@ get_expanded_comps <- function(
       total_unsexed = sum(unsexed),
       prop_female = 100 * total_female / unique(prop_total_fm),
       prop_male = 100 * total_male / unique(prop_total_fm),
-      prop_unsexed = 100 * total_unsexed / unique(prop_total_unsexed)
-    ) |>
-    dplyr::ungroup()
+      prop_unsexed = 100 * total_unsexed / unique(prop_total_unsexed),
+      .groups = "drop"
+    )
 
   # Create grid of all combinations of year and bin that includes combinations
   # that are not observed in the data across all years
@@ -413,7 +418,7 @@ get_expanded_comps <- function(
   colnames(grid)[2] <- "bin"
   # Join the grid with the composition data by year:
   full_comps <- init_comps_by_year |>
-    dplyr::right_join(grid)
+    dplyr::right_join(grid, by = c("year", "bin"))
   # Fill in any missing combinations that have NA or NaN with 0:
   comps_by_year <- full_comps |>
     tidyr::complete(
