@@ -11,3 +11,5 @@ README.Rmd
 ^_pkgdown\.yml$
 ^docs$
 ^pkgdown$
+^\.positai$
+^\.claude$
