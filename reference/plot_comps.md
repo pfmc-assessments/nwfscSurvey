@@ -12,7 +12,8 @@ plot_comps(
   plot = 1:2,
   add_0_ylim = TRUE,
   width = 10,
-  height = 7
+  height = 7,
+  verbose = TRUE
 )
 ```
 
@@ -59,6 +60,11 @@ plot_comps(
 
   Numeric values for the figure width and height in inches. The defaults
   are 10 by 7 inches.
+
+- verbose:
+
+  A logical that specifies if you want to print messages and warnings to
+  the console. The default is `TRUE`.
 
 ## See also
 

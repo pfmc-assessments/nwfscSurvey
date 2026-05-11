@@ -12,6 +12,7 @@ PlotSexRatio.fn(
   main = NULL,
   circleSize = 0.1,
   dopng = lifecycle::deprecated(),
+  verbose = TRUE,
   ...
 )
 ```
@@ -46,6 +47,11 @@ PlotSexRatio.fn(
   `dir` can serve the same purpose as `dopng = TRUE` without the
   potential for errors when `dopng = TRUE` and `dir = NULL`. Thus, users
   no longer have to specify `dopng` to save the plot as a png.
+
+- verbose:
+
+  A logical that specifies if you want to print messages and warnings to
+  the console. The default is `TRUE`.
 
 - ...:
 

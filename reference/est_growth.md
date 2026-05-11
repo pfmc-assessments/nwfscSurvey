@@ -14,6 +14,7 @@ est_growth(
   estVB = TRUE,
   bins = NULL,
   sdFactor = 1,
+  verbose = TRUE,
   dopng = lifecycle::deprecated()
 )
 ```
@@ -57,6 +58,11 @@ est_growth(
 
   The number of standard deviations to include in the low and high
   calculations. The default is 1.0.
+
+- verbose:
+
+  A logical that specifies if you want to print messages and warnings to
+  the console. The default is `TRUE`.
 
 - dopng:
 

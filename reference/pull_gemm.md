@@ -66,7 +66,7 @@ widow_data <- pull_gemm(common_name = "widow rockfish")
 # Pull multiple species
 data <- pull_gemm(common_name = c("Widow Rockfish", "Canary Rockfish"))
 #> ℹ Output will not be saved in dir because dir = NULL.
-#> Multiple species or species-areas are being returned.
+#> ℹ Multiple species or species-areas are being returned.
 
 # Pull species and subset years
 widow_recent <- pull_gemm(common_name = "Widow Rockfish", years = 2014:2019)

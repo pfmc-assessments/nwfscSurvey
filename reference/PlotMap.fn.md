@@ -11,7 +11,8 @@ PlotMap.fn(
   dat,
   main = NULL,
   dopng = lifecycle::deprecated(),
-  plot = 1:2
+  plot = 1:2,
+  verbose = TRUE
 )
 ```
 
@@ -46,6 +47,11 @@ PlotMap.fn(
   1.  coastwide data across all years
 
   2.  coastwide data by year
+
+- verbose:
+
+  A logical that specifies if you want to print messages and warnings to
+  the console. The default is `TRUE`.
 
 ## Value
 

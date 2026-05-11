@@ -14,7 +14,8 @@ plot_sex_ratio_strata(
   bin_width = ifelse(comp_column_name == "length_cm", 2, 1),
   main = NULL,
   height = 7,
-  width = 7
+  width = 7,
+  verbose = TRUE
 )
 ```
 
@@ -62,6 +63,11 @@ plot_sex_ratio_strata(
 
   Numeric values for the figure width and height in inches. The defaults
   are 7 by 7 inches.
+
+- verbose:
+
+  A logical that specifies if you want to print messages and warnings to
+  the console. The default is `TRUE`.
 
 ## See also
 

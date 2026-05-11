@@ -12,7 +12,8 @@ plot_var_length_at_age(
   main = NULL,
   two_sex = TRUE,
   height = 7,
-  width = 7
+  width = 7,
+  verbose = TRUE
 )
 ```
 

@@ -5,7 +5,7 @@ This function plots cpue and length by latitude and depth
 ## Usage
 
 ``` r
-plot_cpue(data, dir = NULL, plot = 1:3, width = 7, height = 7)
+plot_cpue(data, dir = NULL, plot = 1:3, width = 7, height = 7, verbose = TRUE)
 ```
 
 ## Arguments
@@ -35,6 +35,11 @@ plot_cpue(data, dir = NULL, plot = 1:3, width = 7, height = 7)
 
   Numeric values for the figure width and height in inches. The defaults
   are 7 by 7 inches.
+
+- verbose:
+
+  A logical that specifies if you want to print messages and warnings to
+  the console. The default is `TRUE`.
 
 ## See also
 

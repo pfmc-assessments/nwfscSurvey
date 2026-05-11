@@ -12,7 +12,8 @@ plot_cpue_map(
   main = NULL,
   plot = 1:2,
   height = 10,
-  width = 7
+  width = 7,
+  verbose = TRUE
 )
 ```
 
@@ -45,6 +46,11 @@ plot_cpue_map(
 
   Numeric values for the figure width and height in inches. The defaults
   are 7 by 10 inches.
+
+- verbose:
+
+  A logical that specifies if you want to print messages and warnings to
+  the console. The default is `TRUE`.
 
 ## Value
 

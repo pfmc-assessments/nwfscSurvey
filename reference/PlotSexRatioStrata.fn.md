@@ -13,6 +13,7 @@ PlotSexRatioStrata.fn(
   strat.vars = c("Depth_m", "Latitude_dd"),
   circleSize = 0.05,
   dopng = lifecycle::deprecated(),
+  verbose = TRUE,
   ...
 )
 ```
@@ -32,7 +33,8 @@ PlotSexRatioStrata.fn(
 - strat.df:
 
   A data frame that defines the strata and provides the calculated areas
-  for each strata returned from `createStrataDF.fn()`.
+  for each strata returned from
+  [`CreateStrataDF.fn()`](CreateStrataDF.fn.md).
 
 - type:
 
@@ -55,13 +57,19 @@ PlotSexRatioStrata.fn(
   potential for errors when `dopng = TRUE` and `dir = NULL`. Thus, users
   no longer have to specify `dopng` to save the plot as a png.
 
+- verbose:
+
+  A logical that specifies if you want to print messages and warnings to
+  the console. The default is `TRUE`.
+
 - ...:
 
   Additional arguments for the plots
 
 ## See also
 
-[`StrataFactors.fn`](StrataFactors.fn.md) `createStrataDF.fn`
+[`StrataFactors.fn()`](StrataFactors.fn.md)
+[`CreateStrataDF.fn()`](CreateStrataDF.fn.md)
 
 ## Author
 

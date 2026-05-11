@@ -11,7 +11,8 @@ est_vbgrowth(
   col_length = "length_cm",
   col_age = "age",
   init_params = data.frame(K = 0.13, Linf = 55, L0 = 15, CV0 = 0.1, CV1 = 0.1),
-  bins = NULL
+  bins = NULL,
+  verbose = TRUE
 )
 ```
 
@@ -47,6 +48,11 @@ est_vbgrowth(
 
   The bins to put ages into. If NULL then simply uses the ages as
   recorded.
+
+- verbose:
+
+  A logical that specifies if you want to print messages and warnings to
+  the console. The default is `TRUE`.
 
 ## See also
 
