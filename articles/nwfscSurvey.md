@@ -36,6 +36,7 @@ and process the data for use in groundfish assessments.
 A list of all functions in the packages can be viewed by:
 
 ``` r
+
 ls("package:nwfscSurvey")
 ```
 
@@ -46,6 +47,7 @@ be requested using specific a string to the `survey` argument for data
 `pull_` functions. The required strings are:
 
 ``` r
+
 surveys
 #>      string        full-survey-name                               
 #> [1,] "Triennial"   "Groundfish Triennial Shelf Survey"            
@@ -62,6 +64,7 @@ required for querying via a common name, unless the common name includes
 a proper noun:
 
 ``` r
+
 catch <- pull_catch(common_name = "yelloweye rockfish")
 catch <- pull_catch(common_name = "Dover sole")
 
@@ -78,6 +81,7 @@ bio <- pull_bio(common_name = "lingcod")
 Pull both the catch and biological data for the NWFSC WCGBTS:
 
 ``` r
+
 catch <- pull_catch(common_name = "sablefish")
 
 bio <- pull_bio(common_name = "sablefish")
@@ -98,6 +102,7 @@ latitude, so these should generally be included as strata breaks if the
 range spans these values.
 
 ``` r
+
 strata <- create_strata(
   names = paste(
     sep = "_",
@@ -116,6 +121,7 @@ strata <- create_strata(
 Calculate the design based index of abundance:
 
 ``` r
+
 biomass <- get_design_based(
   data = catch,
   strata = strata
@@ -132,6 +138,7 @@ Plot the coastwide design based index of abundance with uncertainty
 intervals:
 
 ``` r
+
 plot_index(
   data = biomass,
   plot = 1
@@ -144,6 +151,7 @@ plot_index(
 and formats the length-composition data for Stock Synthesis:
 
 ``` r
+
 length_comps <- get_expanded_comps(
   bio_data = bio,
   catch_data = catch,
@@ -168,6 +176,7 @@ and tows).
 To plot the length frequency data:
 
 ``` r
+
 p <- plot_comps(
   data = length_comps
 )
@@ -180,6 +189,7 @@ There is also a function to create raw or unexpanded composition data
 that works for either length or age data.
 
 ``` r
+
 raw_length_comps <- get_raw_comps(
   data = bio,
   comp_bins = seq(10, 40, 2),
@@ -195,6 +205,7 @@ to the number of samples in the data frame.
 #### Marginal age composition data
 
 ``` r
+
 age_comps <- get_expanded_comps(
   bio_data = bio,
   catch_data = catch,
@@ -218,6 +229,7 @@ samples calculated as a function of species type and tows).
 To plot the age frequency data:
 
 ``` r
+
 p <- plot_comps(
   data = age_comps
 )
@@ -230,6 +242,7 @@ There is also a function to create raw or unexpanded composition data
 that works for either length or age data.
 
 ``` r
+
 raw_age_comps <- get_raw_comps(
   data = bio,
   comp_bins = 1:40,
@@ -248,6 +261,7 @@ To calculate conditional-age-at-length data formatted for Stock
 Synthesis:
 
 ``` r
+
 caal <- get_raw_caal(
   data = bio,
   len_bins = seq(10, 40, 2),
@@ -267,6 +281,7 @@ To make a map showing the distribution of density in aggregate and by
 year:
 
 ``` r
+
 p <- plot_cpue_map(
   data = catch
 )
