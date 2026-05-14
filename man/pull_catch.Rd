@@ -139,9 +139,12 @@ catch_data <- pull_catch(
 \seealso{
 Other data pulling functions: 
 \code{\link{pull_bio}()},
+\code{\link{pull_bio_cache}()},
 \code{\link{pull_biological_samples}()},
+\code{\link{pull_catch_cache}()},
 \code{\link{pull_gemm}()},
-\code{\link{pull_haul}()}
+\code{\link{pull_haul}()},
+\code{\link{pull_haul_cache}()}
 }
 \author{
 Chantel Wetzel
