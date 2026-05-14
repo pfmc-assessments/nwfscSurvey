@@ -123,7 +123,7 @@ pull_bio <- function(
     )
   }
   bio_pull <- try(get_json(url = url_text))
-  if (inherits(positive_tows, "try-error")) {
+  if (inherits(bio_pull, "try-error")) {
     cli::cli_alert_danger(
       "The data request failed. The data warehouse may be offline. Please use pull_catch_cache() to access data."
     )
