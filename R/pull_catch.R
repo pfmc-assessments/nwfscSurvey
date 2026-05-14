@@ -222,7 +222,13 @@ pull_catch <- function(
   }
 
   # Pull data from positive tows for selected species
-  positive_tows <- try(get_json(url = url_text))
+  positive_tows <- try(get_json(url = url_text), silent = TRUE)
+  if (inherits(positive_tows, "try-error")) {
+    cli::cli_alert_danger(
+      "The data request failed. The data warehouse may be offline. Please use pull_catch_cache() to access data."
+    )
+    cli::cli_abort("")
+  }
   if (!is.data.frame(positive_tows)) {
     cli::cli_abort(
       "There are no tows where {species} was caught."
