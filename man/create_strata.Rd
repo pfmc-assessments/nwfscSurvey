@@ -50,8 +50,8 @@ strata <- create_strata(
 See \code{\link{get_strata_areas}} for how areas are calculated.
 See \code{\link{get_design_based}} for how the areas are used to create design-based biomass estimates.
 
-Other strata function: 
-\code{\link{CreateStrataDF.fn}()}
+Other strata function:
+\code{\link[=CreateStrataDF.fn]{CreateStrataDF.fn()}}
 }
 \author{
 Chantel Wetzel and Kelli Johnson

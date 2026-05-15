@@ -95,14 +95,14 @@ include the sample numbers which allows the lab analysis to be linked back to
 the sampled fish.
 }
 \seealso{
-Other data pulling functions: 
-\code{\link{pull_bio}()},
-\code{\link{pull_bio_cache}()},
-\code{\link{pull_catch}()},
-\code{\link{pull_catch_cache}()},
-\code{\link{pull_gemm}()},
-\code{\link{pull_haul}()},
-\code{\link{pull_haul_cache}()}
+Other data pulling functions:
+\code{\link[=pull_bio]{pull_bio()}},
+\code{\link[=pull_bio_cache]{pull_bio_cache()}},
+\code{\link[=pull_catch]{pull_catch()}},
+\code{\link[=pull_catch_cache]{pull_catch_cache()}},
+\code{\link[=pull_gemm]{pull_gemm()}},
+\code{\link[=pull_haul]{pull_haul()}},
+\code{\link[=pull_haul_cache]{pull_haul_cache()}}
 }
 \author{
 Chantel Wetzel
