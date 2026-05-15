@@ -31,12 +31,12 @@ This also occurs if cryptic species pairs are all returned
 (e.g., rougheye rockfish and blackspotted rockfish)
 }
 \seealso{
-Other helper function:
-\code{\link[=Format.AKSlope.fn]{Format.AKSlope.fn()}},
-\code{\link[=check_dir]{check_dir()}},
-\code{\link[=check_survey]{check_survey()}},
-\code{\link[=createMatrix]{createMatrix()}},
-\code{\link[=filter_pull]{filter_pull()}}
+Other helper function: 
+\code{\link{Format.AKSlope.fn}()},
+\code{\link{check_dir}()},
+\code{\link{check_survey}()},
+\code{\link{createMatrix}()},
+\code{\link{filter_pull}()}
 }
 \author{
 Chantel Wetzel

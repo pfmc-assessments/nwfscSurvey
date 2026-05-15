@@ -20,7 +20,11 @@ get_json <- function(url) {
     "nwfscSurvey R package; https://github.com/pfmc-assessments/nwfscSurvey"
   )
 
-  out <- httr::GET(url, ua) |>
+  out <- httr::RETRY(
+    "GET",
+    url = url,
+    times = 3
+  ) |>
     httr::content(as = "text", encoding = "UTF-8") |>
     jsonlite::fromJSON()
 

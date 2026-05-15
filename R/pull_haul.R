@@ -89,7 +89,12 @@ pull_haul <- function(
     )
   }
   haul_data <- try(get_json(url = url_text))
-
+  if (inherits(haul_data, "try-error")) {
+    cli::cli_alert_danger(
+      "The data request failed. The data warehouse may be offline. Please use pull_haul_cache() to access data."
+    )
+    cli::cli_abort("")
+  }
   haul_data <- filter_pull(
     data = haul_data,
     data_type = "positive tows",

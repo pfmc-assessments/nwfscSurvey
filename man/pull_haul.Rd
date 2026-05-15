@@ -76,11 +76,14 @@ haul_data <- pull_haul(survey = "Triennial", years = c(1980, 2004))
 
 }
 \seealso{
-Other data pulling functions:
-\code{\link[=pull_bio]{pull_bio()}},
-\code{\link[=pull_biological_samples]{pull_biological_samples()}},
-\code{\link[=pull_catch]{pull_catch()}},
-\code{\link[=pull_gemm]{pull_gemm()}}
+Other data pulling functions: 
+\code{\link{pull_bio}()},
+\code{\link{pull_bio_cache}()},
+\code{\link{pull_biological_samples}()},
+\code{\link{pull_catch}()},
+\code{\link{pull_catch_cache}()},
+\code{\link{pull_gemm}()},
+\code{\link{pull_haul_cache}()}
 }
 \author{
 Eric Ward and Chantel Wetzel

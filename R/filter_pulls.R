@@ -50,7 +50,7 @@ filter_pull <- function(
     }
   }
 
-  good_station <- which(data$station_invalid == 0)
+  good_station <- which(data$station_invalid %in% c(0, "good_station"))
   if (length(good_station) != dim(data)[1]) {
     if (verbose) {
       n <- sum(!is.na(data[-good_station, "total_catch_numbers"]))
@@ -70,11 +70,17 @@ filter_pull <- function(
 
   # Non-NA entries are only present in older surveys (e.g., Triennial) so this fills
   # in a default value for later surveys to keep then
-  na_legacy_code <- is.na(data[, "operation_dim$legacy_performance_code"])
+  col_to_use <- colnames(data) %in%
+    c(
+      "operation_dim$legacy_performance_code",
+      "Legacy_performance_code",
+      "legacy_performance_code"
+    )
+  na_legacy_code <- is.na(data[, col_to_use])
   if (sum(na_legacy_code) > 0) {
-    data[na_legacy_code, "operation_dim$legacy_performance_code"] <- -999
+    data[na_legacy_code, col_to_use] <- -999
   }
-  water_hauls <- which(data[, "operation_dim$legacy_performance_code"] == 8)
+  water_hauls <- which(data[, col_to_use] %in% c(8, "water_hauls"))
   if (length(water_hauls) > 0) {
     if (verbose) {
       n <- length(water_hauls)
@@ -87,7 +93,7 @@ filter_pull <- function(
     } else {
       data[
         water_hauls,
-        "operation_dim$legacy_performance_code"
+        col_to_use
       ] <- "water_hauls"
     }
   }

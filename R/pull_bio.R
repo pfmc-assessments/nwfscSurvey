@@ -123,7 +123,12 @@ pull_bio <- function(
     )
   }
   bio_pull <- try(get_json(url = url_text))
-
+  if (inherits(bio_pull, "try-error")) {
+    cli::cli_alert_danger(
+      "The data request failed. The data warehouse may be offline. Please use pull_catch_cache() to access data."
+    )
+    cli::cli_abort("")
+  }
   if (!is.data.frame(bio_pull) & !survey %in% c("AFSC.Slope", "Triennial")) {
     cli::cli_abort(
       "No data returned by the warehouse for the filters given.
@@ -157,8 +162,7 @@ pull_bio <- function(
 
     # Filter out non-standard samples
     # Some early entries are NA for standard sample indicators. These should be retained.
-    standard_lengths <- bio_pull[
-      ,
+    standard_lengths <- bio_pull[,
       "standard_survey_length_or_width_indicator"
     ] %in%
       c(NA, "NA", "Standard Survey Length or Width")
