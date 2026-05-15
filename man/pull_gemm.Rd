@@ -49,11 +49,11 @@ widow_recent <- pull_gemm(common_name = "Widow Rockfish", years = 2014:2019)
 
 }
 \seealso{
-Other data pulling functions: 
-\code{\link{pull_bio}()},
-\code{\link{pull_biological_samples}()},
-\code{\link{pull_catch}()},
-\code{\link{pull_haul}()}
+Other data pulling functions:
+\code{\link[=pull_bio]{pull_bio()}},
+\code{\link[=pull_biological_samples]{pull_biological_samples()}},
+\code{\link[=pull_catch]{pull_catch()}},
+\code{\link[=pull_haul]{pull_haul()}}
 }
 \author{
 Chantel Wetzel
