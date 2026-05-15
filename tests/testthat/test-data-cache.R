@@ -84,7 +84,7 @@ test_that("pull_bio_cache_triennial", {
   expect_equal(nrow(data[[2]]), nrow(api_data[[2]]))
 })
 
-test_that("pull_haul_cache", {
+test_that("pull_haul_cache_triennial", {
   skip_on_cran()
   data <- pull_haul_cache(
     survey = "Triennial",
