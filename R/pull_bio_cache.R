@@ -32,10 +32,10 @@ pull_bio_cache <- function(
     var_name <- c("scientific_name", "common_name")
     species <- "pull all"
   }
-  #data_list <- pins::pin_read(
+  # data_list <- pins::pin_read(
   #  pins::board_connect(),
   #  "chantel.wetzel/nwfsc_trawl_survey_biological_data"
-  #)
+  # )
   board <- pins::board_url(
     c(
       dataset = "https://connect.fisheries.noaa.gov/nwfsc_trawl_survey_biological_data/"

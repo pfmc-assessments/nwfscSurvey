@@ -54,10 +54,10 @@ parameterization
 \seealso{
 \code{\link[=fit_vbgrowth]{fit_vbgrowth()}}
 
-Other biology function: 
-\code{\link{est_vbgrowth}()},
-\code{\link{estimate_weight_length}()},
-\code{\link{fit_vbgrowth}()}
+Other biology function:
+\code{\link[=est_vbgrowth]{est_vbgrowth()}},
+\code{\link[=estimate_weight_length]{estimate_weight_length()}},
+\code{\link[=fit_vbgrowth]{fit_vbgrowth()}}
 }
 \author{
 Chantel Wetzel

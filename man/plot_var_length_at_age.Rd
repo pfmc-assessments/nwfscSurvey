@@ -36,21 +36,21 @@ inches. The defaults are 7 by 7 inches.}
 Plot variability of length at age
 }
 \seealso{
-Other plot_: 
-\code{\link{PlotSexRatio.fn}()},
-\code{\link{PlotVarLengthAtAge.fn}()},
-\code{\link{plot_age_length_sampling}()},
-\code{\link{plot_bio_patterns}()},
-\code{\link{plot_comps}()},
-\code{\link{plot_cpue}()},
-\code{\link{plot_cpue_map}()},
-\code{\link{plot_index}()},
-\code{\link{plot_length_age}()},
-\code{\link{plot_proportion}()},
-\code{\link{plot_sex_ratio}()},
-\code{\link{plot_sex_ratio_strata}()},
-\code{\link{plot_weight_length}()},
-\code{\link{plot_westcoast}()}
+Other plot_:
+\code{\link[=PlotSexRatio.fn]{PlotSexRatio.fn()}},
+\code{\link[=PlotVarLengthAtAge.fn]{PlotVarLengthAtAge.fn()}},
+\code{\link[=plot_age_length_sampling]{plot_age_length_sampling()}},
+\code{\link[=plot_bio_patterns]{plot_bio_patterns()}},
+\code{\link[=plot_comps]{plot_comps()}},
+\code{\link[=plot_cpue]{plot_cpue()}},
+\code{\link[=plot_cpue_map]{plot_cpue_map()}},
+\code{\link[=plot_index]{plot_index()}},
+\code{\link[=plot_length_age]{plot_length_age()}},
+\code{\link[=plot_proportion]{plot_proportion()}},
+\code{\link[=plot_sex_ratio]{plot_sex_ratio()}},
+\code{\link[=plot_sex_ratio_strata]{plot_sex_ratio_strata()}},
+\code{\link[=plot_weight_length]{plot_weight_length()}},
+\code{\link[=plot_westcoast]{plot_westcoast()}}
 }
 \author{
 Chantel Wetzel
