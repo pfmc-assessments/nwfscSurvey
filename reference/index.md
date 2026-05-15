@@ -194,6 +194,9 @@
 - [`pull_bio()`](pull_bio.md) : Pull biological data (age, length,
   weight) from the NWFSC data warehouse
 
+- [`pull_bio_cache()`](pull_bio_cache.md) : Pull biological data (age,
+  length, weight) from pinned data list on posit connect
+
 - [`pull_biological_samples()`](pull_biological_samples.md) : Pull
   biological sample information from the NWFSC data warehouse for
   biological collections taken at sea. Generally these are samples that
@@ -206,11 +209,17 @@
 - [`pull_catch()`](pull_catch.md) : Pull catch data for satisfactory
   tows from the NWFSC data warehouse
 
+- [`pull_catch_cache()`](pull_catch_cache.md) : Pull catch data from
+  pinned data list on posit connect
+
 - [`pull_gemm()`](pull_gemm.md) : Pull Groundfish Expanded Multiyear
   Mortality data
 
 - [`pull_haul()`](pull_haul.md) : Pull haul data from the NWFSC data
   warehouse.
+
+- [`pull_haul_cache()`](pull_haul_cache.md) : Pull haul data from pinned
+  data list on posit connect
 
 - [`pull_spp`](pull_spp.md) [`pull_spp()`](pull_spp.md) : Sql pull of
   species names

@@ -1,43 +1,21 @@
-# Pull biological data (age, length, weight) from the NWFSC data warehouse
+# Pull haul data from pinned data list on posit connect
 
-This function can be used to pull a single species or all observed
-species In order to pull all species leave common_name or sci_name as
-NULL
+This function can be used to return pinned data for trawl haul
+information.
 
 ## Usage
 
 ``` r
-pull_bio(
-  common_name = NULL,
-  sci_name = NULL,
+pull_haul_cache(
   survey = "NWFSC.Combo",
   years = c(1970, 2050),
   dir = NULL,
-  convert = TRUE,
   verbose = TRUE,
   standard_filtering = TRUE
 )
 ```
 
 ## Arguments
-
-- common_name:
-
-  A character entry with the desired common name of the species you want
-  to pull data for from the data warehouse. Use a vector of names if you
-  want information for more than one species or if the desired species
-  is included in the database using more than one name, e.g., vermilion
-  rockfish (see the example below). Use the `sci_name` argument if you
-  know the latin name.
-
-- sci_name:
-
-  A character entry with the desired scientific name of the species you
-  want to pull data for from the data warehouse. Use a vector of names
-  if you want information for more than one species or if the desired
-  species is included in the database using more than one name, e.g.,
-  vermilion rockfish (see the example below). Use the `common_name`
-  argument if you know the common name.
 
 - survey:
 
@@ -96,11 +74,6 @@ pull_bio(
   Directory where output will be saved. The directory where the file
   should be saved. If dir = NULL no output will be saved.
 
-- convert:
-
-  TRUE/FALSE to convert column names to first letter uppercase which
-  aligns with the expected names in data processing functions.
-
 - verbose:
 
   A logical that specifies if you want to print messages and warnings to
@@ -113,23 +86,19 @@ pull_bio(
   (water haul or poor net performance), or stations that have been
   removed from the survey sampling protocol.
 
+## Value
+
+Returns a data frame of haul characteristics for satisfactory hauls
+
 ## See also
 
-Other data pulling functions: [`pull_bio_cache()`](pull_bio_cache.md),
+Other data pulling functions: [`pull_bio()`](pull_bio.md),
+[`pull_bio_cache()`](pull_bio_cache.md),
 [`pull_biological_samples()`](pull_biological_samples.md),
 [`pull_catch()`](pull_catch.md),
 [`pull_catch_cache()`](pull_catch_cache.md),
-[`pull_gemm()`](pull_gemm.md), [`pull_haul()`](pull_haul.md),
-[`pull_haul_cache()`](pull_haul_cache.md)
+[`pull_gemm()`](pull_gemm.md), [`pull_haul()`](pull_haul.md)
 
 ## Author
 
 Chantel Wetzel
-
-## Examples
-
-``` r
-if (FALSE) { # \dontrun{
-bio_data <- pull_bio(common_name = "sablefish")
-} # }
-```

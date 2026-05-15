@@ -45,8 +45,11 @@ pull_gemm(common_name, years = NULL, dir = NULL, verbose = TRUE)
 ## See also
 
 Other data pulling functions: [`pull_bio()`](pull_bio.md),
+[`pull_bio_cache()`](pull_bio_cache.md),
 [`pull_biological_samples()`](pull_biological_samples.md),
-[`pull_catch()`](pull_catch.md), [`pull_haul()`](pull_haul.md)
+[`pull_catch()`](pull_catch.md),
+[`pull_catch_cache()`](pull_catch_cache.md),
+[`pull_haul()`](pull_haul.md), [`pull_haul_cache()`](pull_haul_cache.md)
 
 ## Author
 

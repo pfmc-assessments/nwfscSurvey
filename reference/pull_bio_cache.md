@@ -1,13 +1,12 @@
-# Pull catch data for satisfactory tows from the NWFSC data warehouse
+# Pull biological data (age, length, weight) from pinned data list on posit connect
 
-Pull catch data from the NWFSC data warehouse for a single species or
-all observed species, where the latter is specified by leaving both
-`common_name = NULL` and `sci_name = NULL`.
+This function can be used to return pinned data for biological samples
+from NWFSC trawl surveys.
 
 ## Usage
 
 ``` r
-pull_catch(
+pull_bio_cache(
   common_name = NULL,
   sci_name = NULL,
   survey = "NWFSC.Combo",
@@ -15,7 +14,6 @@ pull_catch(
   dir = NULL,
   convert = TRUE,
   verbose = TRUE,
-  sample_types = c("NA", NA, "Life Stage", "Size")[1:2],
   standard_filtering = TRUE
 )
 ```
@@ -107,20 +105,6 @@ pull_catch(
   A logical that specifies if you want to print messages and warnings to
   the console. The default is `TRUE`.
 
-- sample_types:
-
-  A character vector of sample types, i.e.,
-  `"statistical_partition_dim"`, that you would like to keep. The
-  default is to only keep `NA` values, both real and character NA. But,
-  for some instances you may want to keep Life Stage and Size samples.
-  The majority of samples with `"statistical_partition_dim"` of Size and
-  Life Stage are Pacific hake and should not be considered different
-  than regular survey samples. The other types of samples that may be
-  designated Life Stage are egg cases that can be caught and identified
-  for select elasmobranch species. These type of samples should not be
-  included in the data used to estimate indices of abundance and are
-  omitted by default.
-
 - standard_filtering:
 
   A logical TRUE/FALSE that specifies whether data should be filtered
@@ -128,17 +112,11 @@ pull_catch(
   (water haul or poor net performance), or stations that have been
   removed from the survey sampling protocol.
 
-## Details
-
-The data available in the warehouse are cleaned prior to being
-downloaded with the intent that they provide the best available
-information for use in an index-standardization procedure.
-
 ## See also
 
 Other data pulling functions: [`pull_bio()`](pull_bio.md),
-[`pull_bio_cache()`](pull_bio_cache.md),
 [`pull_biological_samples()`](pull_biological_samples.md),
+[`pull_catch()`](pull_catch.md),
 [`pull_catch_cache()`](pull_catch_cache.md),
 [`pull_gemm()`](pull_gemm.md), [`pull_haul()`](pull_haul.md),
 [`pull_haul_cache()`](pull_haul_cache.md)
@@ -146,37 +124,3 @@ Other data pulling functions: [`pull_bio()`](pull_bio.md),
 ## Author
 
 Chantel Wetzel
-
-## Examples
-
-``` r
-if (FALSE) { # \dontrun{
-# survey is only arg that has to be specified
-catch_data <- pull_catch(survey = "NWFSC.Combo")
-
-# Example with specified common name
-catch_data <- pull_catch(
-  common_name = "vermilion rockfish"
-)
-
-# Example with specified scientific name
-catch_data <- pull_catch(
-  sci_name = "Eopsetta jordani"
-)
-
-# Example with multiple names
-catch_data <- pull_catch(common_name = c(
-  "vermilion rockfish",
-  "vermilion and sunset rockfish"
-))
-
-catch_data <- pull_catch(
-  sci_name = c(
-    "Sebastes miniatus",
-    "Sebastes sp. (crocotulus)",
-    "Sebastes sp. (miniatus / crocotulus)"
-  ),
-  survey = "Triennial"
-)
-} # }
-```

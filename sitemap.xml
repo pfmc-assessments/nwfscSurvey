@@ -72,10 +72,13 @@
 <url><loc>/reference/plot_weight_length.html</loc></url>
 <url><loc>/reference/plot_westcoast.html</loc></url>
 <url><loc>/reference/pull_bio.html</loc></url>
+<url><loc>/reference/pull_bio_cache.html</loc></url>
 <url><loc>/reference/pull_biological_samples.html</loc></url>
 <url><loc>/reference/pull_catch.html</loc></url>
+<url><loc>/reference/pull_catch_cache.html</loc></url>
 <url><loc>/reference/pull_gemm.html</loc></url>
 <url><loc>/reference/pull_haul.html</loc></url>
+<url><loc>/reference/pull_haul_cache.html</loc></url>
 <url><loc>/reference/pull_spp.html</loc></url>
 <url><loc>/reference/save_rdata.html</loc></url>
 <url><loc>/reference/stopifnotcolumn.html</loc></url>
