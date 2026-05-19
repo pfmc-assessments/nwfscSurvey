@@ -99,3 +99,10 @@ test_that("pull_haul_cache_triennial", {
   )
   expect_equal(nrow(data), nrow(api_data))
 })
+
+test_that("pull_hkl_cache", {
+  skip_on_cran()
+  data <- pull_hkl_cache()
+  expect_is(data, "data.frame")
+  expect_equal(nrow(data), 234082)
+})
