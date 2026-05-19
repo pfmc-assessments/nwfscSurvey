@@ -84,9 +84,9 @@ exp(solve$par)
 }
 }
 \seealso{
-Other biology function:
-\code{\link[=est_growth]{est_growth()}},
-\code{\link[=est_vbgrowth]{est_vbgrowth()}},
-\code{\link[=estimate_weight_length]{estimate_weight_length()}}
+Other biology function: 
+\code{\link{est_growth}()},
+\code{\link{est_vbgrowth}()},
+\code{\link{estimate_weight_length}()}
 }
 \concept{biology function}
