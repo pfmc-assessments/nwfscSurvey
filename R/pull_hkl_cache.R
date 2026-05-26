@@ -13,7 +13,9 @@
 #'
 pull_hkl_cache <- function(
   years = c(1970, 2050),
+  common_name = NULL,
   dir = NULL,
+  return_positive_sites_only = TRUE,
   verbose = TRUE
 ) {
   board <- pins::board_url(
@@ -28,10 +30,24 @@ pull_hkl_cache <- function(
   year_range <- years[1]:years[2]
   hkl_data <- data |>
     dplyr::filter(year %in% year_range)
+  catch_data <- format_hkl_catch_data(
+    data = hkl_data,
+    common_name = common_name,
+    return_positive_sites_only = return_positive_sites_only,
+    verbose = verbose
+  )
+  bio_data <- format_hkl_bio_data(
+    data = catch_data,
+    common_name = common_name,
+    verbose = verbose
+  )
+  hkl_data <- list()
+  hkl_data$catch_data <- catch_data
+  hkl_data$bio_data <- bio_data
   save_rdata(
     x = hkl_data,
     dir = dir,
-    name_base = "nwfsc_hkl_data",
+    name_base = "nwfsc_hkl_catch_and_bio_data",
     verbose = verbose
   )
   return(hkl_data)

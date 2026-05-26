@@ -100,9 +100,23 @@ test_that("pull_haul_cache_triennial", {
   expect_equal(nrow(data), nrow(api_data))
 })
 
-test_that("pull_hkl_cache", {
+test_that("pull_hkl_cache_bocaccio", {
   skip_on_cran()
-  data <- pull_hkl_cache()
-  expect_is(data, "data.frame")
-  expect_equal(nrow(data), 234082)
+  data <- pull_hkl_cache(
+    common_name = "Bocaccio",
+    years = c(2004, 2023)
+  )
+  expect_is(data, "list")
+  expect_equal(nrow(data$catch_data), 200471)
+  expect_equal(nrow(data$bio_data), 20394)
+})
+
+test_that("pull_hkl_cache_all_species", {
+  skip_on_cran()
+  data <- pull_hkl_cache(
+    years = c(2004, 2023)
+  )
+  expect_is(data, "list")
+  expect_equal(nrow(data$catch_data), 204499)
+  expect_equal(nrow(data$bio_data), 90554)
 })
