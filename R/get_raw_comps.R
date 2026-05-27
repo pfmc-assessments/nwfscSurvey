@@ -153,7 +153,7 @@ get_raw_comps <- function(
     unique(data[, "common_name"]),
     ""
   )
-  if ("common_name" %in% colnames(data)) {
+  if (input_n_method == "stewart_hamel" & "common_name" %in% colnames(data)) {
     species_type <- get_species_info(
       species = species,
       unident = FALSE,
@@ -173,7 +173,6 @@ get_raw_comps <- function(
     comp_column_name = comp_column_name,
     input_n_method = input_n_method,
     species_group = species_type,
-    printfolder = printfolder,
     verbose = verbose
   )
 
@@ -290,6 +289,8 @@ get_raw_comps <- function(
     )
 
     if (two_sex_comps) {
+      Results <- Results |>
+        dplyr::mutate(dplyr::across(dplyr::everything(), as.numeric))
       out_u <- cbind(tmp, Results[, -c(1:2)], 0 * Results[, -c(1:2)])
       colnames(out_u)[-c(1:6)] <- c(
         paste0("f", comp_bins),
