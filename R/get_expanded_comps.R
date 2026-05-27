@@ -174,6 +174,12 @@ get_expanded_comps <- function(
   species <- gsub(" ", "_", tolower(unique(bio_data[, "common_name"])))[1]
   project <- project <- gsub(" ", "_", tolower(unique(bio_data[, "project"])))
 
+  # Check to make sure it is not hkl data
+  if ("hook_number" %in% colnames(bio_data)) {
+    cli::cli_abort(
+      "There is currently no process for expanding biological data from the NWFSC Hook-and-Line Survey."
+    )
+  }
   # Check for needed columns
   required_bio_columns <- c(
     tolower(comp_column_name),
