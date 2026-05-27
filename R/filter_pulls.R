@@ -50,23 +50,19 @@ filter_pull <- function(
     }
   }
 
-  good_station <- which(data$station_invalid %in% c(0, "good_station"))
-  if (length(good_station) != dim(data)[1]) {
-    if (verbose) {
-      n <- sum(!is.na(data[-good_station, "total_catch_numbers"]))
-      if (any(c("net_height_m_der", "length_cm") %in% colnames(data))) {
-        n <- dim(data)[1] - length(good_station)
-      }
-      cli::cli_alert_info(
-        "There were {n} {data_type} from stations that have been removed from the standard station list."
-      )
+  good_station <- which(data$station_invalid %in% c(0, "standard_station"))
+  if (verbose) {
+    n <- sum(!is.na(data[-good_station, "total_catch_numbers"]))
+    if (any(c("net_height_m_der", "length_cm") %in% colnames(data))) {
+      n <- dim(data)[1] - length(good_station)
     }
-    if (standard_filtering) {
-      data <- data[good_station, ]
-    } else {
-      data[good_station, "station_invalid"] <- "good_station"
-    }
+    cli::cli_alert_info(
+      "There were {n} {data_type} from stations that are no longer included as standard survey stations.
+      Prior to June 2026, data from these stations were removed when standard_filtering = TRUE, but are
+      now being retained in the data. These tows can be identified using the station_invalid column."
+    )
   }
+  data$station_invalid[good_station] <- "standard_station"
 
   # Non-NA entries are only present in older surveys (e.g., Triennial) so this fills
   # in a default value for later surveys to keep then
