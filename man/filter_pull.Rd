@@ -35,12 +35,12 @@ within the pull functions, but can be called on pulled data frames if filtering
 was not selected in the original data pull.
 }
 \seealso{
-Other helper function:
-\code{\link[=Format.AKSlope.fn]{Format.AKSlope.fn()}},
-\code{\link[=check_dir]{check_dir()}},
-\code{\link[=check_survey]{check_survey()}},
-\code{\link[=combine_tows]{combine_tows()}},
-\code{\link[=createMatrix]{createMatrix()}}
+Other helper function: 
+\code{\link{Format.AKSlope.fn}()},
+\code{\link{check_dir}()},
+\code{\link{check_survey}()},
+\code{\link{combine_tows}()},
+\code{\link{createMatrix}()}
 }
 \author{
 Chantel Wetzel

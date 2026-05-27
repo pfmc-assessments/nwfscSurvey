@@ -23,7 +23,7 @@ characters. See the examples for ideas.}
 
 \item{column_bin}{<\code{\link[dplyr:dplyr_data_masking]{data-masking}}> Variable in \code{data}
 for the binning structure. If this is not already a factor or character,
-then \code{\link[ggplot2:cut_width]{ggplot2::cut_width()}} will be used to create bins. The bins are saved
+then \code{\link[ggplot2:cut_interval]{ggplot2::cut_width()}} will be used to create bins. The bins are saved
 in \code{bin} in the returned {ggplot2} object.}
 
 \item{digits}{A numeric value passed to the digits argument of \code{\link[=round]{round()}}.
@@ -41,9 +41,9 @@ option you choose. The default is to have bars of variable widths, i.e.,
 \code{"n"}.}
 
 \item{...}{Additional arguments that users want to pass to
-\code{\link[ggplot2:cut_width]{ggplot2::cut_width()}}. If \code{data[[column_bin]]} is not a factor, then at
+\code{\link[ggplot2:cut_interval]{ggplot2::cut_width()}}. If \code{data[[column_bin]]} is not a factor, then at
 least \code{width} needs to be passed to create bins. But, any argument accepted
-by \code{\link[ggplot2:cut_width]{ggplot2::cut_width()}} can be passed, where \code{boundary = 0} is common so
+by \code{\link[ggplot2:cut_interval]{ggplot2::cut_width()}} can be passed, where \code{boundary = 0} is common so
 the calculation of bins will start at zero rather than the minimum value
 present, preventing bins like (35.4, 36.4] when you really want (35, 36].}
 }
@@ -114,26 +114,26 @@ return.
 }
 \seealso{
 \itemize{
-\item \code{\link[ggplot2:cut_width]{ggplot2::cut_width()}}
+\item \code{\link[ggplot2:cut_interval]{ggplot2::cut_width()}}
 \item \code{\link[ggmosaic:geom_mosaic]{ggmosaic::geom_mosaic()}}
 \item \code{\link[=factor]{factor()}}
 }
 
-Other plot_:
-\code{\link[=PlotSexRatio.fn]{PlotSexRatio.fn()}},
-\code{\link[=PlotVarLengthAtAge.fn]{PlotVarLengthAtAge.fn()}},
-\code{\link[=plot_age_length_sampling]{plot_age_length_sampling()}},
-\code{\link[=plot_bio_patterns]{plot_bio_patterns()}},
-\code{\link[=plot_comps]{plot_comps()}},
-\code{\link[=plot_cpue]{plot_cpue()}},
-\code{\link[=plot_cpue_map]{plot_cpue_map()}},
-\code{\link[=plot_index]{plot_index()}},
-\code{\link[=plot_length_age]{plot_length_age()}},
-\code{\link[=plot_sex_ratio]{plot_sex_ratio()}},
-\code{\link[=plot_sex_ratio_strata]{plot_sex_ratio_strata()}},
-\code{\link[=plot_var_length_at_age]{plot_var_length_at_age()}},
-\code{\link[=plot_weight_length]{plot_weight_length()}},
-\code{\link[=plot_westcoast]{plot_westcoast()}}
+Other plot_: 
+\code{\link{PlotSexRatio.fn}()},
+\code{\link{PlotVarLengthAtAge.fn}()},
+\code{\link{plot_age_length_sampling}()},
+\code{\link{plot_bio_patterns}()},
+\code{\link{plot_comps}()},
+\code{\link{plot_cpue}()},
+\code{\link{plot_cpue_map}()},
+\code{\link{plot_index}()},
+\code{\link{plot_length_age}()},
+\code{\link{plot_sex_ratio}()},
+\code{\link{plot_sex_ratio_strata}()},
+\code{\link{plot_var_length_at_age}()},
+\code{\link{plot_weight_length}()},
+\code{\link{plot_westcoast}()}
 }
 \author{
 Ian G. Taylor, Chantel R. Wetzel, Kelli F. Johnson
