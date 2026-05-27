@@ -5,7 +5,7 @@ test_that("pull_catch_cache", {
     years = c(2008, 2016)
   )
   expect_is(data, "data.frame")
-  expect_equal(nrow(data), 5969)
+  expect_equal(nrow(data), 6005)
 
   api_data <- pull_catch(
     common_name = "petrale sole",
@@ -22,7 +22,7 @@ test_that("pull_bio_cache", {
     years = c(2008, 2016)
   )
   expect_is(data, "data.frame")
-  expect_equal(nrow(data), 40853)
+  expect_equal(nrow(data), 41070)
 
   api_data <- pull_bio(
     common_name = "petrale sole",
@@ -37,7 +37,7 @@ test_that("pull_haul_cache", {
     years = c(2008, 2016)
   )
   expect_is(data, "data.frame")
-  expect_equal(nrow(data), 5969)
+  expect_equal(nrow(data), 6005)
 
   api_data <- pull_haul(
     years = c(2008, 2016)
