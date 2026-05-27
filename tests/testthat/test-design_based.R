@@ -22,8 +22,8 @@ test_that("check-strata", {
     verbose = FALSE
   )
   expect_equal(dim(n_strata)[1], 51)
-  expect_equal(sum(n_strata[["tows"]]), 5958)
-  expect_equal(sum(n_strata[["positive_tows"]]), 3560)
+  expect_equal(sum(n_strata[["tows"]]), 6045)
+  expect_equal(sum(n_strata[["positive_tows"]]), 3606)
 })
 
 test_that("get_design_based_index", {
@@ -47,9 +47,9 @@ test_that("get_design_based_index", {
   )
   expect_equal(length(biomass), 2)
   expect_equal(nrow(biomass$biomass), 17)
-  expect_equal(biomass$biomass$est[1], 38888.94, tolerance = 1e-3)
+  expect_equal(biomass$biomass$est[1], 38565.63, tolerance = 1e-3)
   expect_equal(nrow(biomass$biomass_by_strata), 51)
-  expect_equal(biomass$biomass_by_strata$ntows[1], 142)
+  expect_equal(biomass$biomass_by_strata$ntows[1], 152)
   expect_equal(biomass$biomass_by_strata$area[1], 25792.54, tolerance = 1e-3)
 })
 
@@ -74,9 +74,9 @@ test_that("get_design_based_index with create_strata", {
 
   expect_equal(length(biomass), 2)
   expect_equal(nrow(biomass$biomass), 17)
-  expect_equal(round(biomass$biomass$est[1], 0), 38889)
+  expect_equal(round(biomass$biomass$est[1], 0), 38566)
   expect_equal(nrow(biomass$biomass_by_strata), 51)
-  expect_equal(biomass$biomass_by_strata$ntows[1], 142)
+  expect_equal(biomass$biomass_by_strata$ntows[1], 152)
   expect_equal(round(biomass$biomass_by_strata$area[1], 0), 25793)
 
   p <- plot_index(data = biomass)

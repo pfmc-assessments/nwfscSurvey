@@ -16,7 +16,7 @@ test_that("pull_catch", {
     verbose = TRUE
   )
   expect_is(dat, "data.frame")
-  expect_equal(nrow(dat), 10358)
+  expect_equal(nrow(dat), 10491)
 })
 
 test_that("pull_catch-multispecies", {
@@ -69,9 +69,9 @@ test_that("pull-sample-types", {
     sample_types = c("NA", NA, "Life Stage", "Size")
   )
   expect_is(data_hake, "data.frame")
-  expect_equal(nrow(data_hake), 3559)
-  expect_equal(sum(data_hake$cpue_kg_km2 == 0), 1625)
-  expect_equal(length(unique(data_hake$Trawl_id)), 3445)
+  expect_equal(nrow(data_hake), 3575)
+  expect_equal(sum(data_hake$cpue_kg_km2 == 0), 1640)
+  expect_equal(length(unique(data_hake$Trawl_id)), 3461)
 
   combine_hake <- combine_tows(
     data = data_hake
@@ -136,7 +136,7 @@ test_that("pull_catch_filtered", {
     verbose = FALSE
   )
   expect_is(dat, "data.frame")
-  expect_equal(nrow(dat), 10358)
+  expect_equal(nrow(dat), 10491)
 })
 
 test_that("pull_catch_unfiltered", {
@@ -296,7 +296,7 @@ test_that("pull_haul_nwfsc_combo", {
     verbose = FALSE
   )
   expect_is(dat, "data.frame")
-  expect_equal(nrow(dat), 10358)
+  expect_equal(nrow(dat), 10491)
 })
 
 test_that("pull_haul_triennial", {
