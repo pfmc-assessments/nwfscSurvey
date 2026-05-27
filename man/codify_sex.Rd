@@ -73,8 +73,8 @@ codify_sex(c("both", rep(5, 10), "both", 1, 2, NA))
 codify_sex_ss3(c("M", "U", "K"))
 }
 \seealso{
-Other helper functions: 
-\code{\link{check_strata}()}
+Other helper functions:
+\code{\link[=check_strata]{check_strata()}}
 }
 \author{
 Kelli F. Johnson
