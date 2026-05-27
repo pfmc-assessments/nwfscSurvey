@@ -31,7 +31,7 @@ Returns a data frame of formatted hook-and-line catch data frame
 This function will format hook-and-line catch to account for all observations
 of the \code{common_name}, if provided. If \code{return_positive_sites_only} is TRUE,
 the the data will be filtered down remove sampling sites that have never
-observered the select species.  If no \code{common_name} is provided, then an
+observed the select species.  If no \code{common_name} is provided, then an
 unfiltered data set is returned.
 }
 \author{

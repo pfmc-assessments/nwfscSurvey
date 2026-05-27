@@ -3,7 +3,7 @@
 #' This function will format hook-and-line catch to account for all observations
 #' of the `common_name`, if provided. If `return_positive_sites_only` is TRUE,
 #' the the data will be filtered down remove sampling sites that have never
-#' observered the select species.  If no `common_name` is provided, then an
+#' observed the select species.  If no `common_name` is provided, then an
 #' unfiltered data set is returned.
 #'
 #' @param data Data frame of NWFSC Hook-and-Line data.
