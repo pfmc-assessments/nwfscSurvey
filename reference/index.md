@@ -112,6 +112,12 @@
 - [`fit_vbgrowth()`](fit_vbgrowth.md) : Estimate von Bertanlaffy growth
   parameters from lengths and ages
 
+- [`format_hkl_bio_data()`](format_hkl_bio_data.md) : Format NWFSC
+  Hook-and-Line biological data
+
+- [`format_hkl_catch_data()`](format_hkl_catch_data.md) : Format NWFSC
+  Hook-and-Line catch data
+
 - [`get_design_based()`](get_design_based.md) : Calculates design based
   estimates from survey data for West Coast surveys.
 
@@ -220,6 +226,9 @@
 
 - [`pull_haul_cache()`](pull_haul_cache.md) : Pull haul data from pinned
   data list on posit connect
+
+- [`pull_hkl_cache()`](pull_hkl_cache.md) : Pull NWFSC Hook-and-Line
+  Survey data from pinned data list on posit connect
 
 - [`pull_spp`](pull_spp.md) [`pull_spp()`](pull_spp.md) : Sql pull of
   species names

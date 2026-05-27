@@ -96,7 +96,9 @@ Other data pulling functions: [`pull_bio()`](pull_bio.md),
 [`pull_biological_samples()`](pull_biological_samples.md),
 [`pull_catch()`](pull_catch.md),
 [`pull_catch_cache()`](pull_catch_cache.md),
-[`pull_gemm()`](pull_gemm.md), [`pull_haul_cache()`](pull_haul_cache.md)
+[`pull_gemm()`](pull_gemm.md),
+[`pull_haul_cache()`](pull_haul_cache.md),
+[`pull_hkl_cache()`](pull_hkl_cache.md)
 
 ## Author
 

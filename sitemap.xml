@@ -42,6 +42,8 @@
 <url><loc>/reference/estimate_weight_length.html</loc></url>
 <url><loc>/reference/filter_pull.html</loc></url>
 <url><loc>/reference/fit_vbgrowth.html</loc></url>
+<url><loc>/reference/format_hkl_bio_data.html</loc></url>
+<url><loc>/reference/format_hkl_catch_data.html</loc></url>
 <url><loc>/reference/get_design_based.html</loc></url>
 <url><loc>/reference/get_expanded_comps.html</loc></url>
 <url><loc>/reference/get_input_n.html</loc></url>
@@ -79,6 +81,7 @@
 <url><loc>/reference/pull_gemm.html</loc></url>
 <url><loc>/reference/pull_haul.html</loc></url>
 <url><loc>/reference/pull_haul_cache.html</loc></url>
+<url><loc>/reference/pull_hkl_cache.html</loc></url>
 <url><loc>/reference/pull_spp.html</loc></url>
 <url><loc>/reference/save_rdata.html</loc></url>
 <url><loc>/reference/stopifnotcolumn.html</loc></url>
