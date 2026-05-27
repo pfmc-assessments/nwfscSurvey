@@ -1,10 +1,15 @@
-#' Pull nwfsc hkl data from pinned data list on posit connect
+#' Pull NWFSC Hook-and-Line Survey data from pinned data list on posit connect
 #'
 #' This function can be used to return pinned data for NWFSC Hook-and-Line Survey.
+#' If a `common_name` is provided the data will be formatted and filtered for
+#' that species.  A list is returned with catch and biological data.
 #'
+#' @param return_positive_site_only Logical that specifies whether data from sites
+#'   that have observed common_name at least once across the time series are
+#'   returned.The default is \code{TRUE}.
 #' @inheritParams pull_catch
 #'
-#' @return Returns a data frame of all hkl data
+#' @return Returns a list of hook-and-line catch and biological data
 #' @author Chantel Wetzel
 #' @family data pulling functions
 #' @export

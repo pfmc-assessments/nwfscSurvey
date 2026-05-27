@@ -2,7 +2,7 @@
 % Please edit documentation in R/format_hkl_bio_data.R
 \name{format_hkl_bio_data}
 \alias{format_hkl_bio_data}
-\title{Format NWFSC Hook-and-Line data}
+\title{Format NWFSC Hook-and-Line biological data}
 \usage{
 format_hkl_bio_data(data, common_name = NULL, verbose = TRUE)
 }
@@ -16,10 +16,13 @@ format data for.}
 warnings to the console. The default is \code{TRUE}.}
 }
 \value{
-Returns a data frame of formatted hkl data
+Returns a data frame of formatted hook-and-line biological data
 }
 \description{
-Format NWFSC Hook-and-Line data
+This function will filter biological data to only include observations for
+the \code{common_name}.  The returned data frame will include length and age
+data for the selected species along with all the other hook-and-line survey
+information.
 }
 \author{
 Chantel Wetzel

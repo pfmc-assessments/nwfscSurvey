@@ -2,7 +2,7 @@
 % Please edit documentation in R/format_hkl_catch_data.R
 \name{format_hkl_catch_data}
 \alias{format_hkl_catch_data}
-\title{Format NWFSC Hook-and-Line data}
+\title{Format NWFSC Hook-and-Line catch data}
 \usage{
 format_hkl_catch_data(
   data,
@@ -25,10 +25,14 @@ that have observed common_name at least once across the time series are
 returned.The default is \code{TRUE}.}
 }
 \value{
-Returns a data frame of formatted hkl data
+Returns a data frame of formatted hook-and-line catch data frame
 }
 \description{
-Format NWFSC Hook-and-Line data
+This function will format hook-and-line catch to account for all observations
+of the \code{common_name}, if provided. If \code{return_positive_sites_only} is TRUE,
+the the data will be filtered down remove sampling sites that have never
+observered the select species.  If no \code{common_name} is provided, then an
+unfiltered data set is returned.
 }
 \author{
 Chantel Wetzel

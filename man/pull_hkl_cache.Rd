@@ -2,7 +2,7 @@
 % Please edit documentation in R/pull_hkl_cache.R
 \name{pull_hkl_cache}
 \alias{pull_hkl_cache}
-\title{Pull nwfsc hkl data from pinned data list on posit connect}
+\title{Pull NWFSC Hook-and-Line Survey data from pinned data list on posit connect}
 \usage{
 pull_hkl_cache(
   years = c(1970, 2050),
@@ -29,12 +29,18 @@ If dir = NULL no output will be saved.}
 
 \item{verbose}{A logical that specifies if you want to print messages and
 warnings to the console. The default is \code{TRUE}.}
+
+\item{return_positive_site_only}{Logical that specifies whether data from sites
+that have observed common_name at least once across the time series are
+returned.The default is \code{TRUE}.}
 }
 \value{
-Returns a data frame of all hkl data
+Returns a list of hook-and-line catch and biological data
 }
 \description{
 This function can be used to return pinned data for NWFSC Hook-and-Line Survey.
+If a \code{common_name} is provided the data will be formatted and filtered for
+that species.  A list is returned with catch and biological data.
 }
 \seealso{
 Other data pulling functions: 

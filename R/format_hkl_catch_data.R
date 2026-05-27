@@ -1,5 +1,10 @@
-#' Format NWFSC Hook-and-Line data
+#' Format NWFSC Hook-and-Line catch data
 #'
+#' This function will format hook-and-line catch to account for all observations
+#' of the `common_name`, if provided. If `return_positive_sites_only` is TRUE,
+#' the the data will be filtered down remove sampling sites that have never
+#' observered the select species.  If no `common_name` is provided, then an
+#' unfiltered data set is returned.
 #'
 #' @param data Data frame of NWFSC Hook-and-Line data.
 #' @param common_name Species names as given in the hook and line data set to
@@ -10,7 +15,7 @@
 #' @param verbose A logical that specifies if you want to print messages and
 #'   warnings to the console. The default is \code{TRUE}.
 #'
-#' @return Returns a data frame of formatted hkl data
+#' @return Returns a data frame of formatted hook-and-line catch data frame
 #' @author Chantel Wetzel
 #' @export
 #'

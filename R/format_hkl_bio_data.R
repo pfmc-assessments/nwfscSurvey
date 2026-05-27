@@ -1,4 +1,9 @@
-#' Format NWFSC Hook-and-Line data
+#' Format NWFSC Hook-and-Line biological data
+#'
+#' This function will filter biological data to only include observations for
+#' the `common_name`.  The returned data frame will include length and age
+#' data for the selected species along with all the other hook-and-line survey
+#' information.
 #'
 #'
 #' @param common_name Species names as given in the hook and line data set to
@@ -7,7 +12,7 @@
 #' @param verbose A logical that specifies if you want to print messages and
 #'   warnings to the console. The default is \code{TRUE}.
 #'
-#' @return Returns a data frame of formatted hkl data
+#' @return Returns a data frame of formatted hook-and-line biological data
 #' @author Chantel Wetzel
 #' @export
 #'
