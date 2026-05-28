@@ -28,10 +28,10 @@ pull_hkl_cache <- function(
       dataset = "https://connect.fisheries.noaa.gov/nwfsc_hkl_survey_data/"
     )
   )
-  data <- pins::pin_read(
+  data <- suppressMessages(pins::pin_read(
     board,
     "dataset"
-  )
+  ))
   year_range <- years[1]:years[2]
   hkl_data <- data |>
     dplyr::filter(year %in% year_range)

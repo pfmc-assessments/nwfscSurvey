@@ -41,10 +41,10 @@ pull_bio_cache <- function(
       dataset = "https://connect.fisheries.noaa.gov/nwfsc_trawl_survey_biological_data/"
     )
   )
-  data_list <- pins::pin_read(
+  data_list <- suppressMessages(pins::pin_read(
     board,
     "dataset"
-  )
+  ))
   if (survey == "Triennial") {
     data <- data_list$triennial
   }
