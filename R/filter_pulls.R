@@ -50,19 +50,25 @@ filter_pull <- function(
     }
   }
 
-  good_station <- which(data$station_invalid %in% c(0, "standard_station"))
+  good_station <- which(
+    data$station_invalid %in% c(0, "standard_station", "good_station")
+  )
   if (
     verbose &
       unique(data$project) == "Groundfish Slope and Shelf Combination Survey"
   ) {
-    n <- sum(!is.na(data[-good_station, "total_catch_numbers"]))
+    n_positive <- sum(
+      data[-good_station, "total_catch_numbers"] > 0,
+      na.rm = TRUE
+    )
+    n_tows <- dim(data[-good_station, ])[1]
     if (any(c("net_height_m_der", "length_cm") %in% colnames(data))) {
       n <- dim(data)[1] - length(good_station)
     }
     cli::cli_alert_info(
-      "There were {n} {data_type} from stations that are no longer included as standard survey stations.
-      Prior to June 2026, data from these stations were removed when standard_filtering = TRUE, but are
-      now being retained in the data. These tows can be identified using the station_invalid column."
+      "There are {n_tows} tows with {n} {data_type} from stations that are not standard
+      survey stations that are retained in the data. Prior to June 2026, data from these stations were
+      removed when standard_filtering = TRUE. These tows can be identified using the station_invalid column."
     )
   }
   data$station_invalid[good_station] <- "standard_station"
