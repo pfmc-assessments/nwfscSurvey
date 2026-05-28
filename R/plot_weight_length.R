@@ -28,6 +28,8 @@
 #' @param dpi The resolution to apply when saving figures.  Lower resolution values
 #'    can reduce file size which can be helpful when creating large documents
 #'    with many figures. The default is 300.
+#' @param verbose A logical that specifies if you want to print messages and
+#'   warnings to the console. The default is `TRUE`.
 #'
 #' @author Chantel Wetzel
 #' @family plot_

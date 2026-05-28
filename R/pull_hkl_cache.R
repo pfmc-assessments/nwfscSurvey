@@ -4,7 +4,7 @@
 #' If a `common_name` is provided the data will be formatted and filtered for
 #' that species.  A list is returned with catch and biological data.
 #'
-#' @param return_positive_site_only Logical that specifies whether data from sites
+#' @param return_positive_sites_only Logical that specifies whether data from sites
 #'   that have observed common_name at least once across the time series are
 #'   returned.The default is \code{TRUE}.
 #' @inheritParams pull_catch

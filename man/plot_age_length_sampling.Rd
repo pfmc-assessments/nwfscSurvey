@@ -33,6 +33,9 @@ correspond to the following figures:
 \item{width, height}{Numeric values for the figure width and height in
 inches. The defaults are 7 by 7 inches.}
 
+\item{verbose}{A logical that specifies if you want to print messages and
+warnings to the console. The default is \code{TRUE}.}
+
 \item{xlim}{Deprecated as of v.2.8.1. x limits for plot, defaults to c(0,120)}
 
 \item{ylim}{Deprecated as of v.2.8.1. y limits for plot, defaults to (0, 0.049)}

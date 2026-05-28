@@ -17,12 +17,12 @@ format_hkl_catch_data(
 \item{common_name}{Species names as given in the hook and line data set to
 format data for.}
 
-\item{verbose}{A logical that specifies if you want to print messages and
-warnings to the console. The default is \code{TRUE}.}
-
-\item{return_positive_site_only}{Logical that specifies whether data from sites
+\item{return_positive_sites_only}{Logical that specifies whether data from sites
 that have observed common_name at least once across the time series are
 returned.The default is \code{TRUE}.}
+
+\item{verbose}{A logical that specifies if you want to print messages and
+warnings to the console. The default is \code{TRUE}.}
 }
 \value{
 Returns a data frame of formatted hook-and-line catch data frame

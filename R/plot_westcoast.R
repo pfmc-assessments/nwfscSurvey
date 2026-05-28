@@ -1,4 +1,4 @@
-#' Plot the United States west coast using {ggplot2}
+#' Plot the United States west coast using \code{\link[ggplot2]{ggplot}}
 #'
 #' Plot the United States west coast such that it can used as a standalone
 #' figure or as a base to plot data points on.
@@ -6,7 +6,7 @@
 #' @author Kelli F. Johnson
 #' @family plot_
 #' @export
-#' @return A {ggplot2} object.
+#' @return A \code{\link[ggplot2]{ggplot}} object.
 #'
 #' @seealso
 #' * `plot_cpue_map()` uses this function as the base map.

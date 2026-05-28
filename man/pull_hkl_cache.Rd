@@ -27,12 +27,12 @@ Use the \code{sci_name} argument if you know the latin name.}
 \item{dir}{Directory where output will be saved. The directory where the file should be saved.
 If dir = NULL no output will be saved.}
 
-\item{verbose}{A logical that specifies if you want to print messages and
-warnings to the console. The default is \code{TRUE}.}
-
-\item{return_positive_site_only}{Logical that specifies whether data from sites
+\item{return_positive_sites_only}{Logical that specifies whether data from sites
 that have observed common_name at least once across the time series are
 returned.The default is \code{TRUE}.}
+
+\item{verbose}{A logical that specifies if you want to print messages and
+warnings to the console. The default is \code{TRUE}.}
 }
 \value{
 Returns a list of hook-and-line catch and biological data

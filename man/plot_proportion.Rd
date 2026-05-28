@@ -48,7 +48,7 @@ the calculation of bins will start at zero rather than the minimum value
 present, preventing bins like (35.4, 36.4] when you really want (35, 36].}
 }
 \value{
-A {ggplot2} object created with {ggmosaic} features.
+A \code{\link[ggplot2]{ggplot}} object created with \code{\link[ggmosaic]{geom_mosaic}} features.
 }
 \description{
 Bin a numerical column for the categorical x axis. Calculate the proportion
@@ -56,9 +56,8 @@ of the rows that are present for each level of an additional factor column,
 like sex, by x-axis bins.
 }
 \details{
-\href{https://haleyjeppson.github.io/ggmosaic/}{{ggmosaic}} is used to
-create a {ggplot2} object for categorical data that can be modified upon
-return.
+Create a plot object using \code{\link[ggplot2]{ggplot}} for categorical
+data that can be modified upon return.
 }
 \examples{
 \dontrun{

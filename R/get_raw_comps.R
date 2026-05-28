@@ -73,23 +73,26 @@ get_raw_comps <- function(
   if (lifecycle::is_present(age_low)) {
     lifecycle::deprecate_warn(
       when = "2.2",
-      what = "nwfscSurvey::get_expanded_comps(age_low =)",
-      with = "nwfscSurvey::get_expanded_comps(Lbin_lo =)"
+      what = "get_expanded_comps(age_low)",
+      with = "get_expanded_comps(Lbin_lo)"
     )
+    Lbin_lo <- age_low
   }
   if (lifecycle::is_present(age_high)) {
     lifecycle::deprecate_warn(
       when = "2.2",
-      what = "nwfscSurvey::get_expanded_comps(age_high =)",
-      with = "nwfscSurvey::get_expanded_comps(Lbin_hi =)"
+      what = "get_expanded_comps(age_high)",
+      with = "get_expanded_comps(Lbin_hi)"
     )
+    Lbin_hi <- age_high
   }
   if (lifecycle::is_present(age_error)) {
     lifecycle::deprecate_warn(
       when = "2.2",
-      what = "nwfscSurvey::get_expanded_comps(age_error =)",
-      with = "nwfscSurvey::get_expanded_comps(ageerr =)"
+      what = "get_expanded_comps(age_error)",
+      with = "get_expanded_comps(ageerr)"
     )
+    ageerr <- age_error
   }
 
   plotdir <- file.path(dir, printfolder)
