@@ -1,4 +1,4 @@
-# Plot the United States west coast using ggplot2
+# Plot the United States west coast using [`ggplot`](https://ggplot2.tidyverse.org/reference/ggplot.html)
 
 Plot the United States west coast such that it can used as a standalone
 figure or as a base to plot data points on.
@@ -11,7 +11,8 @@ plot_westcoast()
 
 ## Value
 
-A ggplot2 object.
+A [`ggplot`](https://ggplot2.tidyverse.org/reference/ggplot.html)
+object.
 
 ## See also
 

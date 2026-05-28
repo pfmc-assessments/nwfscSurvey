@@ -224,8 +224,10 @@ tab provides a detailed list of all available functions.
 - [`plot_weight_length()`](plot_weight_length.md) : Plots the
   weight-at-length data and estimates
 
-- [`plot_westcoast()`](plot_westcoast.md) : Plot the United States west
-  coast using ggplot2
+- [`plot_westcoast()`](plot_westcoast.md) :
+
+  Plot the United States west coast using
+  [`ggplot`](https://ggplot2.tidyverse.org/reference/ggplot.html)
 
 - [`pull_bio()`](pull_bio.md) : Pull biological data (age, length,
   weight) from the NWFSC data warehouse

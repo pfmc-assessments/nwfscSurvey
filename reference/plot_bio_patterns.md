@@ -49,6 +49,11 @@ plot_bio_patterns(
   Numeric values for the figure width and height in inches. The defaults
   are 10 by 7 inches.
 
+- verbose:
+
+  A logical that specifies if you want to print messages and warnings to
+  the console. The default is `TRUE`.
+
 ## See also
 
 Other plot\_: [`PlotSexRatio.fn()`](PlotSexRatio.fn.md),

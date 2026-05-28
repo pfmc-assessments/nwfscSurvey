@@ -38,16 +38,16 @@ pull_hkl_cache(
   Directory where output will be saved. The directory where the file
   should be saved. If dir = NULL no output will be saved.
 
-- verbose:
-
-  A logical that specifies if you want to print messages and warnings to
-  the console. The default is `TRUE`.
-
-- return_positive_site_only:
+- return_positive_sites_only:
 
   Logical that specifies whether data from sites that have observed
   common_name at least once across the time series are returned.The
   default is `TRUE`.
+
+- verbose:
+
+  A logical that specifies if you want to print messages and warnings to
+  the console. The default is `TRUE`.
 
 ## Value
 

@@ -71,12 +71,16 @@ plot_proportion(
 
 ## Value
 
-A ggplot2 object created with ggmosaic features.
+A [`ggplot`](https://ggplot2.tidyverse.org/reference/ggplot.html) object
+created with
+[`geom_mosaic`](https://haleyjeppson.github.io/ggmosaic/reference/geom_mosaic.html)
+features.
 
 ## Details
 
-[ggmosaic](https://haleyjeppson.github.io/ggmosaic/) is used to create a
-ggplot2 object for categorical data that can be modified upon return.
+Create a plot object using
+[`ggplot`](https://ggplot2.tidyverse.org/reference/ggplot.html) for
+categorical data that can be modified upon return.
 
 ## See also
 
