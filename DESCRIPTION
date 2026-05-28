@@ -32,7 +32,7 @@ Imports:
     purrr,
     reshape2,
     rlang,
-    rsconnect,
+    scales,
     sf,
     stringr,
     tidyr,

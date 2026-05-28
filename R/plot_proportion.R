@@ -4,9 +4,8 @@
 #' of the rows that are present for each level of an additional factor column,
 #' like sex, by x-axis bins.
 #'
-#' @details [{ggmosaic}](https://haleyjeppson.github.io/ggmosaic/) is used to
-#' create a {ggplot2} object for categorical data that can be modified upon
-#' return.
+#' @details Create a plot object using \code{\link[ggplot2]{ggplot}} for categorical
+#' data that can be modified upon return.
 #'
 #' @param data A data frame.
 #' @param column_factor <[`data-masking`][dplyr_data_masking]> Variable in
@@ -38,7 +37,7 @@
 #'
 #' @author Ian G. Taylor, Chantel R. Wetzel, Kelli F. Johnson
 #' @export
-#' @return A {ggplot2} object created with {ggmosaic} features.
+#' @return A \code{\link[ggplot2]{ggplot}} object created with \code{\link[ggmosaic]{geom_mosaic}} features.
 #' @seealso
 #' * [ggplot2::cut_width()]
 #' * [ggmosaic::geom_mosaic()]

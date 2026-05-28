@@ -2,12 +2,12 @@
 % Please edit documentation in R/plot_westcoast.R
 \name{plot_westcoast}
 \alias{plot_westcoast}
-\title{Plot the United States west coast using {ggplot2}}
+\title{Plot the United States west coast using \code{\link[ggplot2]{ggplot}}}
 \usage{
 plot_westcoast()
 }
 \value{
-A {ggplot2} object.
+A \code{\link[ggplot2]{ggplot}} object.
 }
 \description{
 Plot the United States west coast such that it can used as a standalone

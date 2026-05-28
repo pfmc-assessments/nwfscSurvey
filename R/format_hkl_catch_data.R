@@ -9,7 +9,7 @@
 #' @param data Data frame of NWFSC Hook-and-Line data.
 #' @param common_name Species names as given in the hook and line data set to
 #'   format data for.
-#' @param return_positive_site_only Logical that specifies whether data from sites
+#' @param return_positive_sites_only Logical that specifies whether data from sites
 #'   that have observed common_name at least once across the time series are
 #'   returned.The default is \code{TRUE}.
 #' @param verbose A logical that specifies if you want to print messages and

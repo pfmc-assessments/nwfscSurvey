@@ -19,7 +19,7 @@ test_that("estimate_growth", {
   growth <- est_growth(
     dat = bio_nwfsc_combo
   )
-  expect_equal(nrow(growth), 25256)
+  expect_equal(nrow(growth), 25619)
   expect_equal(ncol(growth), 33)
 
   growth <- est_growth(

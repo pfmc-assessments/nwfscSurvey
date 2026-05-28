@@ -4,7 +4,7 @@
 #' If a `common_name` is provided the data will be formatted and filtered for
 #' that species.  A list is returned with catch and biological data.
 #'
-#' @param return_positive_site_only Logical that specifies whether data from sites
+#' @param return_positive_sites_only Logical that specifies whether data from sites
 #'   that have observed common_name at least once across the time series are
 #'   returned.The default is \code{TRUE}.
 #' @inheritParams pull_catch
@@ -28,10 +28,10 @@ pull_hkl_cache <- function(
       dataset = "https://connect.fisheries.noaa.gov/nwfsc_hkl_survey_data/"
     )
   )
-  data <- pins::pin_read(
+  data <- suppressMessages(pins::pin_read(
     board,
     "dataset"
-  )
+  ))
   year_range <- years[1]:years[2]
   hkl_data <- data |>
     dplyr::filter(year %in% year_range)

@@ -11,6 +11,8 @@
 #' @param two_sex Logical to indicate if plot by sex. Default is TRUE and will only plot females and males.
 #' @param width,height Numeric values for the figure width and height in
 #'   inches. The defaults are 7 by 7 inches.
+#' @param verbose A logical that specifies if you want to print messages and
+#'   warnings to the console. The default is `TRUE`.
 #'
 #' @author Chantel Wetzel
 #' @family plot_
