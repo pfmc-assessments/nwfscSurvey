@@ -61,14 +61,13 @@ filter_pull <- function(
       data[-good_station, "total_catch_numbers"] > 0,
       na.rm = TRUE
     )
-    n_tows <- dim(data[-good_station, ])[1]
     if (any(c("net_height_m_der", "length_cm") %in% colnames(data))) {
       n <- dim(data)[1] - length(good_station)
     }
     cli::cli_alert_info(
-      "There are {n_tows} tows with {n} {data_type} from stations that are not standard
-      survey stations that are retained in the data. Prior to June 2026, data from these stations were
-      removed when standard_filtering = TRUE. These tows can be identified using the station_invalid column."
+      "There are {n_positive} {data_type} from stations that are not standard survey stations that are retained in the data.
+      Prior to June 2026, data from these stations were removed when standard_filtering = TRUE.
+      These tows can be identified using the station_invalid column."
     )
   }
   data$station_invalid[good_station] <- "standard_station"
