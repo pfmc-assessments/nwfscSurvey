@@ -62,53 +62,56 @@ data that can be modified upon return.
 \examples{
 \dontrun{
 # Add presence/absence factor to data
-# temp <- catch_nwfsc_combo |>
-#   dplyr::mutate(new = factor(
-#    cpue_kg_km2 <= 0,
-#     levels = c(FALSE, TRUE),
-#     labels = c("Present", "Absent")
-#   ))
+catch_data <- pull_catch(
+  common_name = "petrale sole"
+)
+temp <- catch_data |>
+  dplyr::mutate(new = factor(
+    cpue_kg_km2 <= 0,
+    levels = c(FALSE, TRUE),
+    labels = c("Present", "Absent")
+  ))
 
 # Plot depth bins (50 m) by presence/absence with default colors
-# plot_proportion(
-#  data = temp,
-#  column_factor = new,
-#  column_bin = Depth_m,
-#  width = 50,
-#  boundary = 0
-# )
-# Plot latitude bins (1 decimal degree) by presence/absence with custom
-# colors
-# plot_proportion(
-#  data = temp,
-#  column_factor = new,
-#  column_bin = Latitude_dd,
-#  width = 1,
-#  boundary = 0
-# ) +
-#  ggplot2::scale_fill_manual(values = c(
-#    "darkorchid3",
-#    grDevices::gray(0.7)
-#  ))
+plot_proportion(
+  data = temp,
+  column_factor = new,
+  column_bin = Depth_m,
+  width = 50,
+  boundary = 0
+)
+# Plot latitude bins (1 decimal degree) by presence/absence
+# with custom colors
+plot_proportion(
+  data = temp,
+  column_factor = new,
+  column_bin = Latitude_dd,
+  width = 1,
+  boundary = 0
+) +
+  ggplot2::scale_fill_manual(values = c(
+    "darkorchid3",
+    grDevices::gray(0.7)
+  ))
 # Plot depth bins (25 m) by sex (F, M, U)
-# plot_proportion(
-#  data = bio_nwfsc_combo |>
-#    dplyr::mutate(Sex = codify_sex(Sex)),
-#  column_factor = Sex,
-#  column_bin = Depth_m,
-#  width = 25,
-#  boundary = 0
-# )
+plot_proportion(
+  data = bio_nwfsc_combo |>
+    dplyr::mutate(Sex = codify_sex(Sex)),
+  column_factor = Sex,
+  column_bin = Depth_m,
+  width = 25,
+  boundary = 0
+)
 # Change to equal sized bars
-# plot_proportion(
-#  data = bio_nwfsc_combo |>
-#    dplyr::mutate(Sex = codify_sex(Sex)),
-#  column_factor = Sex,
-#  column_bin = Depth_m,
-#  width = 25,
-#  boundary = 0,
-#  bar_width = "equal"
-# )
+plot_proportion(
+  data = bio_nwfsc_combo |>
+    dplyr::mutate(Sex = codify_sex(Sex)),
+  column_factor = Sex,
+  column_bin = Depth_m,
+  width = 25,
+  boundary = 0,
+  bar_width = "equal"
+)
 }
 }
 \seealso{

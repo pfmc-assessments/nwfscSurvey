@@ -87,8 +87,8 @@
 #'
 #' @examples
 #' \dontrun{
-#' # survey is only arg that has to be specified
-#' catch_data <- pull_catch(survey = "NWFSC.Combo")
+#' # Pull catch for all species
+#' catch_data <- pull_catch()
 #'
 #' # Example with specified common name
 #' catch_data <- pull_catch(
