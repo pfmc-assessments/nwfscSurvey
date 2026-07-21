@@ -1,11 +1,6 @@
-# Reads in the compositional survey data and filters the data into what is necessary It reads in catch and station data and makes sure only the species necessary are kept
+# Deprecated function replaced by pull_bio()
 
-### may want to keep NA (blank in Excel) to select the zero tows
-
-removeCAN is a flag if you want tows in Canadian waters removed need the
-file called foreign_hauls.csv
-
-Necessary column names SPECIES_CODE LENGTH
+Deprecated function replaced by pull_bio()
 
 ## Usage
 

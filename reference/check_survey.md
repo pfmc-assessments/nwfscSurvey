@@ -59,8 +59,8 @@ check_survey(survey)
 
 ## See also
 
-Other helper function: [`Format.AKSlope.fn()`](Format.AKSlope.fn.md),
-[`check_dir()`](check_dir.md), [`combine_tows()`](combine_tows.md),
+Other helper function: [`check_dir()`](check_dir.md),
+[`combine_tows()`](combine_tows.md),
 [`createMatrix()`](createMatrix.md), [`filter_pull()`](filter_pull.md)
 
 ## Author

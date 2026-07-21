@@ -1,6 +1,6 @@
-# Cleans triennial survey data by year and area
+# Deprecated function replaced by pull_bio()
 
-Cleans triennial survey data by year and area
+Deprecated function replaced by pull_bio()
 
 ## Usage
 
@@ -23,16 +23,6 @@ ReadInAges.fn(dat, subset_years = NULL, verbose = TRUE)
 
   A logical that specifies if you want to print messages and warnings to
   the console. The default is `TRUE`.
-
-## Details
-
-Reads in the West Coast Triennial survey data and filters the data into
-what is necessary. It reads in data and makes sure only the species
-necessary are kept may want to keep NA (blank in Excel) to select the
-zero tows removeCAN is a flag if you want tows in Canadian waters
-removed.
-
-Necessary column names SPECIES_CODE AGE
 
 ## Author
 
