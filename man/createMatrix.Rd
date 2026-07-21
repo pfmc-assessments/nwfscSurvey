@@ -11,7 +11,6 @@ Survey name matching function used when pull from the data warehouse
 }
 \seealso{
 Other helper function:
-\code{\link[=Format.AKSlope.fn]{Format.AKSlope.fn()}},
 \code{\link[=check_dir]{check_dir()}},
 \code{\link[=check_survey]{check_survey()}},
 \code{\link[=combine_tows]{combine_tows()}},

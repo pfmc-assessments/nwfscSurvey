@@ -46,7 +46,6 @@ Check and create survey string
 }
 \seealso{
 Other helper function:
-\code{\link[=Format.AKSlope.fn]{Format.AKSlope.fn()}},
 \code{\link[=check_dir]{check_dir()}},
 \code{\link[=combine_tows]{combine_tows()}},
 \code{\link[=createMatrix]{createMatrix()}},
