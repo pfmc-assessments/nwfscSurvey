@@ -2,13 +2,7 @@
 % Please edit documentation in R/ReadInLengths.R
 \name{ReadInLengths.fn}
 \alias{ReadInLengths.fn}
-\title{Reads in the compositional survey data and filters the data into what is necessary
-It reads in catch and station data and makes sure only the species necessary are kept
-\subsection{may want to keep NA (blank in Excel) to select the zero tows}{
-
-removeCAN is a flag if you want tows in Canadian waters removed
-need the file called foreign_hauls.csv
-}}
+\title{Deprecated function replaced by pull_bio()}
 \usage{
 ReadInLengths.fn(dat, verbose = TRUE)
 }
@@ -19,9 +13,7 @@ ReadInLengths.fn(dat, verbose = TRUE)
 warnings to the console. The default is \code{TRUE}.}
 }
 \description{
-Necessary column names
-SPECIES_CODE
-LENGTH
+Deprecated function replaced by pull_bio()
 }
 \author{
 Allan Hicks and Chantel Wetzel

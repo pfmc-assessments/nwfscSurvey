@@ -32,7 +32,6 @@ This also occurs if cryptic species pairs are all returned
 }
 \seealso{
 Other helper function:
-\code{\link[=Format.AKSlope.fn]{Format.AKSlope.fn()}},
 \code{\link[=check_dir]{check_dir()}},
 \code{\link[=check_survey]{check_survey()}},
 \code{\link[=createMatrix]{createMatrix()}},

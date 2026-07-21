@@ -2,7 +2,7 @@
 % Please edit documentation in R/Format.AKSlope.fn.R
 \name{Format.AKSlope.fn}
 \alias{Format.AKSlope.fn}
-\title{Rename AFSC slope survey columns from data pulled before 2017}
+\title{Deprecated function replaced by pull_catch() and pull_bio()}
 \usage{
 Format.AKSlope.fn(
   dir = NULL,
@@ -32,41 +32,11 @@ survey is 1997.}
 warnings to the console. The default is \code{TRUE}.}
 }
 \description{
-Rename AFSC slope survey columns from data pulled before 2017
+Deprecated function replaced by pull_catch() and pull_bio()
 }
 \details{
-Rename columns in the AFSC slope survey data file
-received prior to the creation of the NWFSC data
-warehouse. This function converts the older data files
-to create the needed column names to work within survey
-package functions. Output from this function will be list
-of containing catch, length, and age data.
-}
-\examples{
-\dontrun{
-# load data files for catch and biological data
-load("Tri.Shelf.and.AFSC.Slope.canary.Catch.24.May.11.dmp")
-catch <- Tri.Shelf.and.AFSC.Slope.canary.Catch.24.May.11
-load("AFSC.Slope.Shelf.sable.bio.5.24.11.dmp")
-bio <- AK.Surveys.Bio.sablefish.24.May.11
-# call function and reformat the data
-filter.dat <- Format.AKSlope.fn(
-  datTows = catch,
-  datL = bio,
-  start.year = 1997
-)
-}
-
-}
-\seealso{
-Other helper function:
-\code{\link[=check_dir]{check_dir()}},
-\code{\link[=check_survey]{check_survey()}},
-\code{\link[=combine_tows]{combine_tows()}},
-\code{\link[=createMatrix]{createMatrix()}},
-\code{\link[=filter_pull]{filter_pull()}}
+This function is no longer used.  Please use pull_catch() and pull_bio() to get properly formatted and filtered data.
 }
 \author{
 Chantel Wetzel
 }
-\concept{helper function}

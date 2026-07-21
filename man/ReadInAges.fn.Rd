@@ -2,7 +2,7 @@
 % Please edit documentation in R/ReadInAges.fn.R
 \name{ReadInAges.fn}
 \alias{ReadInAges.fn}
-\title{Cleans triennial survey data by year and area}
+\title{Deprecated function replaced by pull_bio()}
 \usage{
 ReadInAges.fn(dat, subset_years = NULL, verbose = TRUE)
 }
@@ -16,17 +16,7 @@ provide 1977, alternative input would be 1980:2002 to remove only 1977.}
 warnings to the console. The default is \code{TRUE}.}
 }
 \description{
-Cleans triennial survey data by year and area
-}
-\details{
-Reads in the West Coast Triennial survey data and filters the data into what
-is necessary. It reads in data and makes sure only the species necessary are
-kept may want to keep NA (blank in Excel) to select the zero tows
-removeCAN is a flag if you want tows in Canadian waters removed.
-
-Necessary column names
-SPECIES_CODE
-AGE
+Deprecated function replaced by pull_bio()
 }
 \author{
 Allan Hicks and Chantel Wetzel
