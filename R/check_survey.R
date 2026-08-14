@@ -13,35 +13,21 @@ check_survey <- function(survey) {
   survey_options <- get_survey_names_long()
 
   # Check the input survey name against available options
-  if (sum(!survey %in% survey_options[, 1]) > 0) {
-    options <- paste(survey_options[, 1], collapse = "\n")
+  if (!any(survey %in% survey_options)) {
     cli::cli_abort(
-      "The survey argument does not match one of the available options: {options}"
+      "The survey argument does not match one of the available options: {survey_options}"
     )
-  }
-
-  if (length(survey) == 1) {
-    if (!survey %in% survey_options[, 1]) {
-      options <- survey_options[, 1]
-      cli::cli_abort(
-        "The survey name does not match one of the available options: {options}"
-      )
-    }
-  } else {
-    if (length(which(survey %in% survey_options[, 1])) != length(survey)) {
-      options <- survey_options[, 1]
-      cli::cli_abort(
-        "One or more of the survey fields does not match one of the available options: {options}"
-      )
-    }
   }
 
   # Find the long project name to extract data from the warehouse
   project_long <- NULL
   for (i in 1:length(survey)) {
-    tmp <- survey_options[which(survey_options[, 1] %in% survey[i]), 2]
+    find <- c(
+      grep(survey[i], survey_options[, "old_names"]),
+      grep(survey[i], survey_options[, "new_names"])
+    )
+    tmp <- survey_options[find, "new_names"]
     project_long <- c(project_long, tmp)
   }
-
-  return(project_long)
+  return(unname(project_long))
 }
