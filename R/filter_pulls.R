@@ -51,16 +51,21 @@ filter_pull <- function(
   }
 
   good_station <- which(
-    data$station_invalid %in% c(0, "standard_station", "good_station")
+    data$station_invalid == TRUE
   )
   if (
     verbose &
-      unique(data$project) == "Groundfish Slope and Shelf Combination Survey"
+      unique(data$project) ==
+        "West Coast Groundfish Bottom Trawl Slope/Shelf Combination Survey"
   ) {
-    n_positive <- sum(
-      data[-good_station, "total_catch_numbers"] > 0,
-      na.rm = TRUE
-    )
+    if (data_type == "tows") {
+      n_positive <- dim(data)[1] - length(good_station)
+    } else {
+      n_positive <- sum(
+        data[-good_station, "total_catch_numbers"] > 0,
+        na.rm = TRUE
+      )
+    }
     if (any(c("net_height_m_der", "length_cm") %in% colnames(data))) {
       n <- dim(data)[1] - length(good_station)
     }
@@ -72,49 +77,20 @@ filter_pull <- function(
   }
   data$station_invalid[good_station] <- "standard_station"
 
-  # Non-NA entries are only present in older surveys (e.g., Triennial) so this fills
-  # in a default value for later surveys to keep then
-  col_to_use <- colnames(data) %in%
-    c(
-      "operation_dim$legacy_performance_code",
-      "Legacy_performance_code",
-      "legacy_performance_code"
-    )
-  na_legacy_code <- is.na(data[, col_to_use])
-  if (sum(na_legacy_code) > 0) {
-    data[na_legacy_code, col_to_use] <- -999
-  }
-  water_hauls <- which(data[, col_to_use] %in% c(8, "water_hauls"))
-  if (length(water_hauls) > 0) {
-    if (verbose) {
-      n <- length(water_hauls)
-      cli::cli_alert_info(
-        "There were {n} {data_type} that were determined to be water hauls (net not on the bottom)."
-      )
-    }
-    if (standard_filtering) {
-      data <- data[-water_hauls, ]
-    } else {
-      data[
-        water_hauls,
-        col_to_use
-      ] <- "water_hauls"
-    }
-  }
-
   # Remove tows outside of standard depths 55-1,280 m
-  col_to_use <- which(colnames(data) %in% c("depth_hi_prec_m", "depth_m"))
-  # data[, col_to_use] <- as.numeric(data[, col_to_use])
-  good_depth <- which(data[, col_to_use] >= 55 & data[, col_to_use] <= 1280)
-  if (length(good_depth) != dim(data)[1]) {
-    if (verbose) {
-      n <- dim(data)[1] - length(good_depth)
-      cli::cli_alert_info(
-        "There were {n} {data_type} that are outside the standard depth range."
-      )
-    }
-    if (standard_filtering) {
-      data <- data[good_depth, ]
+  if (any(c("depth_m") %in% colnames(data))) {
+    col_to_use <- which(colnames(data) %in% "depth_m")
+    good_depth <- which(data[, col_to_use] >= 55 & data[, col_to_use] <= 1280)
+    if (length(good_depth) != dim(data)[1]) {
+      if (verbose) {
+        n <- dim(data)[1] - length(good_depth)
+        cli::cli_alert_info(
+          "There were {n} {data_type} that are outside the standard depth range."
+        )
+      }
+      if (standard_filtering) {
+        data <- data[good_depth, ]
+      }
     }
   }
 
