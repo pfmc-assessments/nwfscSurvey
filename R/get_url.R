@@ -16,49 +16,41 @@
 #'
 #'
 get_url <- function(data_table, project_long, add_species, years, vars_long) {
-  year_str <- glue::glue("date_dim$year>={years[1]},date_dim$year<={years[2]}")
+  if (years[1] != years[2]) {
+    year_str <- glue::glue(
+      "survey_year=bw:{years[1]}~{years[2]}"
+    )
+  } else {
+    year_str <- glue::glue("survey_year=eq:{years[1]}")
+  }
 
   if (missing(add_species)) {
     add_species <- ""
-  }
-  if (add_species != "") {
-    add_species <- paste0(add_species, ",")
-  }
-
-  if (
-    data_table %in%
-      c(
-        "trawl.individual_fact",
-        "trawl.triennial_length_fact",
-        "trawl.operation_haul_fact"
-      )
-  ) {
-    year_str <- glue::glue("year>={years[1]},year<={years[2]}")
+  } else {
+    add_species <- paste0(add_species, collapse = "&")
   }
 
   if (missing(project_long)) {
     project_str <- ""
   } else {
     project_str <- paste0(
-      "project=",
-      paste(strsplit(project_long, " ")[[1]], collapse = "%20")
+      "nmfs_project_name=eq:",
+      paste(strsplit(project_long, " ")[[1]], collapse = "+")
     )
   }
 
   url_text <- paste0(
-    "https://www.webapps.nwfsc.noaa.gov/trips/api/v1/source/",
-    # pre-april 2025 site with final data
-    # "https://www.webapps.nwfsc.noaa.gov/data/api/v1/source/",
-    # pre-april 2025 development site when data are being qaqcd
-    # "https://www.devwebapps.nwfsc.noaa.gov/data/api/v1/source/",
+    "https://www.webapps.nwfsc.noaa.gov/data-catalog/api/v1/bottom-trawl/",
     data_table,
-    "/selection.json?filters=",
+    "?$data_format=json",
+    "&fields=",
+    glue::glue_collapse(vars_long, sep = ","),
+    "&",
     project_str,
-    ",",
+    "&",
     add_species,
-    year_str,
-    "&variables=",
-    glue::glue_collapse(vars_long, sep = ",")
+    "&",
+    year_str
   )
 
   return(url_text)
