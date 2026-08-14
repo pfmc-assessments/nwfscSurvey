@@ -124,13 +124,13 @@ pull_catch <- function(
   dir = NULL,
   convert = TRUE,
   verbose = TRUE,
-  sample_types = c("NA", NA, "Life Stage", "Size")[1:2],
+  sample_types = c("Not Recorded / Unspecified", "Life Stage", "Size")[1],
   standard_filtering = TRUE
 ) {
   if (survey %in% c("NWFSC.Shelf.Rockfish", "NWFSC.Hook.Line")) {
     cli::cli_abort(
       "The catch pull currently does not work for NWFSC Hook & Line Survey data.",
-      "Contact John Harms (john.harms@noaa.gov) for the full data set."
+      "These data can be accessed by using pull_hkl_cache()."
     )
   }
 
@@ -147,14 +147,14 @@ pull_catch <- function(
   check_dir(dir = dir, verbose = verbose)
 
   if (is.null(common_name)) {
-    var_name <- "scientific_name"
+    var_name <- "best_available_taxon_scientific_name"
     species <- sci_name
   } else {
-    var_name <- "common_name"
+    var_name <- "best_available_taxon_common_name"
     species <- common_name
   }
   if (is.null(sci_name) & is.null(common_name)) {
-    var_name <- "common_name"
+    var_name <- "best_available_taxon_common_name"
     species <- "pull all"
   }
 
@@ -170,37 +170,29 @@ pull_catch <- function(
   # the main table fields are specified. Could pull separate and then join which
   # would allow us to eliminate vars_long form the main pull
   vars_long <- c(
-    "common_name",
-    "scientific_name",
-    "project",
-    "year",
-    "vessel",
-    "tow",
-    "total_catch_numbers",
-    "total_catch_wt_kg",
-    "trawl_id",
-    "subsample_count",
-    "subsample_wt_kg",
-    "cpue_kg_per_ha_der",
-    "statistical_partition_dim$statistical_partition_type",
-    "partition",
-    "operation_dim$legacy_performance_code",
-    "performance",
-    "station_invalid",
-    "actual_station_design_dim$reason_station_invalid",
-    "depth_m"
+    "best_available_taxon_common_name",
+    "best_available_taxon_scientific_name",
+    "nmfs_project_name",
+    "survey_year",
+    "vessel_name",
+    "pass_number",
+    "total_catch_individuals_count",
+    "total_catch_weight_kg",
+    "bottom_trawl_operation_key",
+    "sampled_catch_individuals_count",
+    "sampled_catch_weight_kg",
+    "catch_per_unit_effort_kg_per_ha",
+    "tow_performance_name",
+    "actual_station_current_deactivation_reasons",
+    "is_actual_station_currently_active",
+    "life_stage_name"
   )
-
-  # These are the retained and returned fields
-  # vars_short <- vars_long[!vars_long %in% perf_codes]
 
   species_str <- convert_to_hex_string(species)
   add_species <- paste0(
-    "field_identified_taxonomy_dim$",
     var_name,
-    "|=[",
-    species_str,
-    "]"
+    "=",
+    species_str
   )
 
   if (any(species == "pull all")) {
@@ -208,7 +200,7 @@ pull_catch <- function(
   }
 
   url_text <- get_url(
-    data_table = "trawl.catch_fact",
+    data_table = "catch",
     project_long = project_long,
     add_species = add_species,
     years = years,
@@ -240,18 +232,19 @@ pull_catch <- function(
       )
     }
   }
-
-  positive_tows <- filter_pull(
-    data = positive_tows,
+  positive_tows_convert <- convert_colnames(
+    x = positive_tows
+  )
+  positive_tows_filtered <- filter_pull(
+    data = positive_tows_convert,
     data_type = "positive tows",
     standard_filtering = standard_filtering,
     verbose = verbose
   )
 
   bad_sample_types <- which(
-    !positive_tows[
-      ,
-      "statistical_partition_dim$statistical_partition_type"
+    !positive_tows_filtered[,
+      "partition_sample_types"
     ] %in%
       sample_types
   )
@@ -261,72 +254,58 @@ pull_catch <- function(
         "There were {length(bad_sample_types)} positive tows where the sample type was not requested (e.g., Life Stage, Size)."
       )
     }
-    positive_tows <- positive_tows[-bad_sample_types, ]
+    positive_tows_filtered <- positive_tows_filtered[-bad_sample_types, ]
   }
-  if (sum(is.na(positive_tows[, "common_name"])) > 0) {
-    replace <- which(is.na(positive_tows[, "common_name"]))
-    positive_tows[replace, "common_name"] <- positive_tows[
+
+  if (sum(is.na(positive_tows_filtered[, "common_name"])) > 0) {
+    replace <- which(is.na(positive_tows_filtered[, "common_name"]))
+    positive_tows_filtered[replace, "common_name"] <- positive_tows_filtered[
       replace,
       "scientific_name"
     ]
   }
 
-  positive_tows <- positive_tows[, colnames(positive_tows) != "depth_m"]
-
   # Pull all tow data including tows where the species was not observed
   vars_long <- c(
-    "project",
-    "year",
-    "vessel",
-    "pass",
-    "tow",
-    "datetime_utc_iso",
-    "depth_hi_prec_m",
-    "longitude_dd",
-    "latitude_dd",
-    "area_swept_ha_der",
-    "trawl_id",
-    "operation_dim$legacy_performance_code",
-    "performance",
-    "station_invalid",
-    "actual_station_design_dim$reason_station_invalid"
+    "nmfs_project_name",
+    "survey_year",
+    "vessel_name",
+    "pass_number",
+    "tow_sequence_number",
+    "bottom_trawl_operation_key",
+    "sampling_date",
+    "on_bottom_seafloor_depth_m",
+    "best_tow_longitude_dd",
+    "best_tow_latitude_dd",
+    "seafloor_area_swept_ha",
+    "tow_performance_name",
+    "actual_station_current_deactivation_reasons",
+    "is_actual_station_currently_active"
   )
 
   url_text <- get_url(
-    data_table = "trawl.operation_haul_fact",
+    data_table = "tows",
     project_long = project_long,
     years = years,
     vars_long = vars_long
   )
-
   all_tows <- try(get_json(url = url_text))
-
-  colnames(all_tows)[(colnames(all_tows) == "depth_hi_prec_m")] <- "depth_m"
-
-  if (standard_filtering == TRUE & verbose == TRUE) {
-    cli::cli_alert_info(
-      "There are {nrow(positive_tows)} positive tows remaining across all years after standard filtering."
-    )
-  }
-
-  all_tows <- filter_pull(
-    data = all_tows,
+  all_tows_convert <- convert_colnames(
+    x = all_tows
+  )
+  all_tows_filtered <- filter_pull(
+    data = all_tows_convert,
     data_type = "tows",
     standard_filtering = standard_filtering,
     verbose = FALSE
   )
 
-  all_tows <- all_tows[
-    !duplicated(paste(
-      all_tows$year,
-      all_tows$pass,
-      all_tows$vessel,
-      all_tows$tow
-    )),
+  all_tows_filtered <- all_tows_filtered[
+    !duplicated(all_tows_filtered$trawl_id),
   ]
 
   positive_tows_grouped <- dplyr::group_by(
-    .data = positive_tows,
+    .data = positive_tows_filtered,
     common_name,
     scientific_name
   )
@@ -341,10 +320,15 @@ pull_catch <- function(
   # in positive_tows and join them into a single data frame
   # Give them the appropriate common and scientific names using .id then split
   # the concatenated column out into the two original columns
-  names_intersect <- intersect(colnames(all_tows), colnames(positive_tows))
+  names_intersect <- intersect(
+    colnames(all_tows_filtered),
+    colnames(positive_tows_filtered)
+  )
   zero_tows <- purrr::map_df(
     .x = positive_tows_split,
-    .f = \(y) dplyr::anti_join(x = all_tows, y = y, by = names_intersect),
+    .f = \(y) {
+      dplyr::anti_join(x = all_tows_filtered, y = y, by = names_intersect)
+    },
     .id = "groups"
   ) |>
     tidyr::separate_wider_delim(
@@ -355,16 +339,19 @@ pull_catch <- function(
 
   # Join the positive tows with the tow information
   positive_tows_with_tow_info <- dplyr::left_join(
-    x = positive_tows,
-    y = all_tows,
-    by = intersect(colnames(all_tows), colnames(positive_tows))
+    x = positive_tows_filtered,
+    y = all_tows_filtered,
+    by = intersect(
+      colnames(all_tows_filtered),
+      colnames(positive_tows_filtered)
+    )
   )
   # Join the augmented positive tow information with the zero tows
   # arrange by common_name and tow_id
   catch <- dplyr::full_join(
     x = positive_tows_with_tow_info,
     y = zero_tows,
-    by = c(colnames(group_names), colnames(all_tows))
+    by = c(colnames(group_names), colnames(all_tows_filtered))
   ) |>
     dplyr::arrange(common_name, trawl_id)
   colnames(catch)[
@@ -377,6 +364,19 @@ pull_catch <- function(
     colnames(catch) == "operation_dim$legacy_performance_code"
   ] <- "legacy_performance_code"
 
+  good_depth <- which(catch[, "depth_m"] >= 55 & catch[, "depth_m"] <= 1280)
+  if (length(good_depth) != dim(catch)[1]) {
+    if (verbose) {
+      n <- length(catch[-good_depth, "total_catch_numbers"] > 0)
+      cli::cli_alert_info(
+        "There were {n} positive tows that are outside the standard depth range."
+      )
+    }
+    if (standard_filtering) {
+      catch <- catch[good_depth, ]
+    }
+  }
+
   no_area <- which(is.na(catch$area_swept_ha_der))
   if (length(no_area) > 0) {
     if (verbose) {
@@ -385,48 +385,45 @@ pull_catch <- function(
         "There were {n} tows with no area swept calculation and will be filled with the mean swept area across all tows."
       )
     }
-    if (standard_filtering) {
-      catch[no_area, "area_swept_ha_der"] <- mean(
-        catch$area_swept_ha_der,
-        trim = 0.05,
-        na.rm = TRUE
-      )
-    }
+    #if (standard_filtering) {
+    #  catch[no_area, "area_swept_ha_der"] <- mean(
+    #    catch$area_swept_ha_der,
+    #    trim = 0.05,
+    #    na.rm = TRUE
+    #  )
+    #}
   }
 
   # Fill in zeros where needed
   catch <- catch |>
     dplyr::mutate(
-      cpue_kg_per_ha_der = dplyr::case_when(
-        is.na(cpue_kg_per_ha_der) ~ 0,
-        .default = cpue_kg_per_ha_der
+      cpue_kg_per_ha_der = dplyr::if_else(
+        condition = is.na(cpue_kg_per_ha_der),
+        true = 0,
+        false = cpue_kg_per_ha_der
       ),
       cpue_kg_km2 = cpue_kg_per_ha_der * 100,
-      total_catch_numbers = dplyr::case_when(
-        is.na(total_catch_numbers) & is.na(total_catch_wt_kg) ~ 0,
-        .default = total_catch_numbers
+      total_catch_numbers = dplyr::if_else(
+        condition = is.na(total_catch_numbers) & is.na(total_catch_wt_kg),
+        true = 0,
+        false = total_catch_numbers
       ),
-      total_catch_wt_kg = dplyr::case_when(
-        total_catch_numbers == 0 & is.na(total_catch_wt_kg) ~ 0,
-        .default = total_catch_wt_kg
+      total_catch_wt_kg = dplyr::if_else(
+        condition = total_catch_numbers == 0 & is.na(total_catch_wt_kg),
+        true = 0,
+        false = total_catch_wt_kg
       ),
-      subsample_count = dplyr::case_when(
-        is.na(subsample_count) & is.na(subsample_wt_kg) ~ 0,
-        .default = subsample_count
+      subsample_count = dplyr::if_else(
+        condition = is.na(subsample_count) & is.na(subsample_wt_kg),
+        true = 0,
+        false = subsample_count
       ),
-      subsample_wt_kg = dplyr::case_when(
-        subsample_count == 0 & is.na(subsample_wt_kg) ~ 0,
-        .default = subsample_wt_kg
+      subsample_wt_kg = dplyr::if_else(
+        condition = subsample_count == 0 & is.na(subsample_wt_kg),
+        true = 0,
+        false = subsample_wt_kg
       ),
-      trawl_id = as.character(trawl_id),
-      date = chron::chron(
-        format(
-          as.POSIXlt(datetime_utc_iso, format = "%Y-%m-%dT%H:%M:%S"),
-          "%Y-%m-%d"
-        ),
-        format = "y-m-d",
-        out.format = "YYYY-m-d"
-      )
+      trawl_id = as.character(trawl_id)
     ) |>
     dplyr::rename(area_swept_ha = area_swept_ha_der)
 
@@ -462,6 +459,13 @@ pull_catch <- function(
     colnames(catch)[
       colnames(catch) == "Total_catch_wt_kg"
     ] <- "total_catch_wt_kg"
+  }
+
+  if (standard_filtering == TRUE & verbose == TRUE) {
+    n <- sum(catch[, "total_catch_wt_kg"] > 0)
+    cli::cli_alert_info(
+      "There are {n} positive tows remaining across all years after standard filtering."
+    )
   }
 
   save_rdata(

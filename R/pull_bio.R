@@ -32,8 +32,8 @@ pull_bio <- function(
   options(timeout = 4000000)
   if (survey %in% c("NWFSC.Shelf.Rockfish", "NWFSC.Hook.Line")) {
     cli::cli_abort(
-      "The catch pull currently does not work for NWFSC Hook & Line Survey data.",
-      "Contact John Harms (john.harms@noaa.gov) for the full data set."
+      "The biological data pull currently does not work for NWFSC Hook & Line Survey data.",
+      "These data can be accessed by using pull_hkl_cache()."
     )
   }
 
@@ -50,14 +50,17 @@ pull_bio <- function(
   check_dir(dir = dir, verbose = verbose)
 
   if (is.null(common_name)) {
-    var_name <- "scientific_name"
+    var_name <- "best_available_taxon_scientific_name"
     species <- sci_name
   } else {
-    var_name <- "common_name"
+    var_name <- "best_available_taxon_common_name"
     species <- common_name
   }
   if (is.null(sci_name) & is.null(common_name)) {
-    var_name <- c("scientific_name", "common_name")
+    var_name <- c(
+      "best_available_taxon_scientific_name",
+      "best_available_taxon_common_name"
+    )
     species <- "pull all"
   }
 
@@ -68,41 +71,40 @@ pull_bio <- function(
   }
 
   vars_long <- c(
-    "project",
-    "trawl_id",
-    "common_name",
-    "scientific_name",
-    "year",
-    "vessel",
-    "pass",
-    "tow",
-    "datetime_utc_iso",
-    "depth_m",
-    "weight_kg",
-    "ageing_lab",
-    "otosag_id",
-    "length_cm",
-    "width_cm",
-    "sex",
-    "age_years",
-    "latitude_dd",
-    "longitude_dd",
-    "performance",
-    "station_invalid",
-    "standard_survey_age_indicator",
-    "standard_survey_length_or_width_indicator",
-    "standard_survey_weight_indicator",
-    "operation_dim$legacy_performance_code",
-    "actual_station_design_dim$reason_station_invalid"
+    "best_available_taxon_common_name",
+    "best_available_taxon_scientific_name",
+    "nmfs_project_name",
+    "survey_year",
+    "vessel_name",
+    "pass_number",
+    "bottom_trawl_operation_key",
+    "sampling_date",
+    #"depth_m",
+    "specimen_weight_kg", #"weight_kg",
+    "ageing_lab_name", #"ageing_lab",
+    "specimen_age_sample_label", #"otosag_id",
+    "specimen_size_cm", #"length_cm",
+    #"width_cm",
+    "specimen_sex_code", #"sex",
+    "specimen_age_years", #"age_years"
+    "best_tow_latitude_dd",
+    "best_tow_longitude_dd",
+    #"standard_survey_age_indicator",
+    #"standard_survey_length_or_width_indicator",
+    #"standard_survey_weight_indicator",
+    "tow_performance_name",
+    "actual_station_current_deactivation_reasons",
+    "is_actual_station_currently_active"
   )
+
+  #NEED TO FIGURE OUT HOW TO ADD DEPTH IN AND FILTER OUT SAMPLES OUTSIDE THE STANDARD DEPTHS
+  #NEED TO FIGURE OUT HOW TO IDENTIFY WATER HAULS
 
   species_str <- convert_to_hex_string(species)
   add_species <- paste0(
-    "field_identified_taxonomy_dim$",
     var_name,
-    "|=[",
-    species_str,
-    "]"
+    "=",
+    species_str
   )
 
   if (any(species == "pull all")) {
@@ -110,7 +112,7 @@ pull_bio <- function(
   }
 
   url_text <- get_url(
-    data_table = "trawl.individual_fact",
+    data_table = "specimens",
     project_long = project_long,
     add_species = add_species,
     years = years,
@@ -129,7 +131,21 @@ pull_bio <- function(
     )
     cli::cli_abort("")
   }
-  if (!is.data.frame(bio_pull) & !survey %in% c("AFSC.Slope", "Triennial")) {
+  bio_pulls_convert <- convert_colnames(
+    x = bio_pull
+  )
+
+  if (
+    !is.data.frame(bio_pulls_convert) &
+      !survey %in%
+        c(
+          "Triennial",
+          "AFSC.Slope",
+          "AFSC/RACE Triennial Groundfish Shelf Survey",
+          "AFSC/RACE Triennial Groundfish Shelf Survey (by NWFSC)",
+          "AFSC/RACE Slope Survey"
+        )
+  ) {
     cli::cli_abort(
       "No data returned by the warehouse for the filters given.
       Make sure the year range is correct (cannot include -Inf or Inf) for the
@@ -142,8 +158,17 @@ pull_bio <- function(
   # This check is needed to proceed on for species where there were no age from
   # the AFSC.Slope and Triennial survey since lengths are checked later in the
   # length_fact data table.
-  if (!is.null(dim(bio_pull))) {
-    if (survey %in% c("Triennial", "AFSC.Slope")) {
+  if (!is.null(dim(bio_pulls_convert))) {
+    if (
+      survey %in%
+        c(
+          "Triennial",
+          "AFSC.Slope",
+          "AFSC/RACE Triennial Groundfish Shelf Survey",
+          "AFSC/RACE Triennial Groundfish Shelf Survey (by NWFSC)",
+          "AFSC/RACE Slope Survey"
+        )
+    ) {
       data_text <- "age/otolith samples"
     } else {
       data_text <- "biological samples"
@@ -153,8 +178,8 @@ pull_bio <- function(
         "There were {nrow(bio_pull)} {data_text} pulled."
       )
     }
-    bio_pull <- filter_pull(
-      data = bio_pull,
+    bio_pull_filtered <- filter_pull(
+      data = bio_pulls_convert,
       data_type = data_text,
       standard_filtering = standard_filtering,
       verbose = verbose
@@ -162,86 +187,96 @@ pull_bio <- function(
 
     # Filter out non-standard samples
     # Some early entries are NA for standard sample indicators. These should be retained.
-    standard_lengths <- bio_pull[
-      ,
-      "standard_survey_length_or_width_indicator"
-    ] %in%
-      c(NA, "NA", "Standard Survey Length or Width")
-    if (length(standard_lengths) != dim(bio_pull)[1]) {
-      if (verbose) {
-        n <- dim(bio_pull)[1] - length(standard_lengths)
-        cli::cli_alert_info(
-          "There were {n} lengths that were collected outside standard sampling protocol."
-        )
-      }
-      if (standard_filtering) {
-        bio_pull <- bio_pull[standard_lengths, ]
-      }
-    }
+    # standard_lengths <- bio_pull_filtered[,
+    #   "standard_survey_length_or_width_indicator"
+    # ] %in%
+    #   c(NA, "NA", "Standard Survey Length or Width")
+    # if (length(standard_lengths) != dim(bio_pull_filtered)[1]) {
+    #   if (verbose) {
+    #     n <- dim(bio_pull_filtered)[1] - length(standard_lengths)
+    #     cli::cli_alert_info(
+    #       "There were {n} lengths that were collected outside standard sampling protocol."
+    #     )
+    #   }
+    #   if (standard_filtering) {
+    #     bio_pull_filtered<- bio_pull_filtered[standard_lengths, ]
+    #   }
+    # }
 
     # Remove non-standard ages
-    nonstandard_age <- which(
-      bio_pull[, "standard_survey_age_indicator"] == "Not Standard Survey Age"
-    )
-    if (length(nonstandard_age) > 0) {
-      if (verbose) {
-        cli::cli_alert_info(
-          "There were {length(nonstandard_age)} ages that were collected outside standard sampling protocol."
-        )
-      }
-      if (standard_filtering) {
-        bio_pull[nonstandard_age, "age_years"] <- NA
-      }
-    }
+    # nonstandard_age <- which(
+    #   bio_pull_filtered[, "standard_survey_age_indicator"] == "Not Standard Survey Age"
+    # )
+    # if (length(nonstandard_age) > 0) {
+    #   if (verbose) {
+    #     cli::cli_alert_info(
+    #       "There were {length(nonstandard_age)} ages that were collected outside standard sampling protocol."
+    #     )
+    #   }
+    #   if (standard_filtering) {
+    #     bio_pull_filtered[nonstandard_age, "age_years"] <- NA
+    #   }
+    # }
 
     # Remove non-standard weights
-    nonstandard_wgt <- which(
-      bio_pull[, "standard_survey_weight_indicator"] ==
-        "Not Standard Survey Weight"
-    )
-    if (length(nonstandard_wgt) > 0) {
-      if (verbose) {
-        cli::cli_alert_info(
-          "There were {length(nonstandard_wgt)} weights that were collected outside standard sampling protocol."
-        )
-      }
-      if (standard_filtering) {
-        bio_pull[nonstandard_wgt, "weight_kg"] <- NA
-      }
-    }
+    # nonstandard_wgt <- which(
+    #   bio_pull[, "standard_survey_weight_indicator"] ==
+    #     "Not Standard Survey Weight"
+    # )
+    # if (length(nonstandard_wgt) > 0) {
+    #   if (verbose) {
+    #     cli::cli_alert_info(
+    #       "There were {length(nonstandard_wgt)} weights that were collected outside standard sampling protocol."
+    #     )
+    #   }
+    #   if (standard_filtering) {
+    #     bio_pull_filtered[nonstandard_wgt, "weight_kg"] <- NA
+    #   }
+    # }
 
-    colnames(bio_pull)[
-      colnames(bio_pull) == "actual_station_design_dim$reason_station_invalid"
+    colnames(bio_pull_filtered)[
+      colnames(bio_pull_filtered) ==
+        "actual_station_design_dim$reason_station_invalid"
     ] <- "reason_station_invalid"
-    colnames(bio_pull)[
-      colnames(bio_pull) == "operation_dim$legacy_performance_code"
-    ] <- "legacy_performance_code"
-    bio_pull$weight <- bio_pull$weight_kg
-    bio_pull$age <- bio_pull$age_years
-    bio_pull$date <- chron::chron(
-      format(
-        as.POSIXlt(bio_pull$datetime_utc_iso, format = "%Y-%m-%dT%H:%M:%S"),
-        "%Y-%m-%d"
-      ),
-      format = "y-m-d",
-      out.format = "YYYY-m-d"
-    )
-    bio_pull$trawl_id <- as.character(bio_pull$trawl_id)
+    bio_pull_filtered$weight <- bio_pull_filtered$weight_kg
+    bio_pull_filtered$age <- bio_pull_filtered$age_years
+    bio_pull_filtered$trawl_id <- as.character(bio_pull_filtered$trawl_id)
   }
+  bio <- bio_pull_filtered
 
-  bio <- bio_pull
-
-  if (survey %in% c("Triennial", "AFSC.Slope")) {
+  if (
+    survey %in%
+      c(
+        "Triennial",
+        "AFSC.Slope",
+        "AFSC/RACE Triennial Groundfish Shelf Survey",
+        "AFSC/RACE Triennial Groundfish Shelf Survey (by NWFSC)",
+        "AFSC/RACE Slope Survey"
+      )
+  ) {
     url_text <- get_url(
-      data_table = "trawl.triennial_length_fact",
+      data_table = "triennial-specimen-lengths",
       project_long = project_long,
       add_species = add_species,
       years = years,
       vars_long = vars_long
     )
     len_pull <- try(get_json(url = url_text))
-
-    if (is.null(dim(len_pull))) {
+    len_pull_convert <- convert_colnames(
+      x = len_pull
+    )
+    len_pull_convert[, "datetime_utc_iso"] <- chron::chron(
+      format(
+        as.POSIXlt(
+          len_pull_convert[, "datetime_utc_iso"],
+          format = "%Y-%m-%dT%H:%M:%S"
+        ),
+        "%Y-%m-%d"
+      ),
+      format = "y-m-d",
+      out.format = "YYYY-m-d"
+    )
+    if (is.null(dim(len_pull_convert))) {
       cli::cli_abort(
         "len_pull: No data returned by the warehouse for the filters given.
         Make sure the year range is correct (cannot include -Inf or Inf) for the
@@ -251,45 +286,35 @@ pull_bio <- function(
       )
     }
 
-    if (is.data.frame(len_pull)) {
+    if (is.data.frame(len_pull_convert)) {
       if (verbose) {
         cli::cli_alert_info(
           "There were {nrow(len_pull)} length samples pulled."
         )
       }
-      len_pull <- filter_pull(
-        data = len_pull,
+      len_pull_filtered <- filter_pull(
+        data = len_pull_convert,
         data_type = "length samples",
         standard_filtering = standard_filtering,
         verbose = verbose
       )
 
-      len_pull$weight_kg <- len_pull$weight <- NA
-      len_pull$date <- chron::chron(
-        format(
-          as.POSIXlt(len_pull$datetime_utc_iso, format = "%Y-%m-%dT%H:%M:%S"),
-          "%Y-%m-%d"
-        ),
-        format = "y-m-d",
-        out.format = "YYYY-m-d"
-      )
-      len_pull$trawl_id <- as.character(len_pull$trawl_id)
-      colnames(len_pull)[
-        colnames(len_pull) == "actual_station_design_dim$reason_station_invalid"
+      len_pull_filtered$weight_kg <- len_pull_filtered$weight <- NA
+      len_pull_filtered$trawl_id <- as.character(len_pull_filtered$trawl_id)
+      colnames(len_pull_filtered)[
+        colnames(len_pull_filtered) ==
+          "actual_station_design_dim$reason_station_invalid"
       ] <- "reason_station_invalid"
-      colnames(len_pull)[
-        colnames(len_pull) == "operation_dim$legacy_performance_code"
-      ] <- "legacy_performance_code"
     }
 
     bio <- list()
-    if (is.data.frame(len_pull)) {
-      bio$length_data <- len_pull
+    if (is.data.frame(len_pull_filtered)) {
+      bio$length_data <- len_pull_filtered
     } else {
       bio$length_data <- "no_lengths_available"
     }
-    if (is.data.frame(bio_pull)) {
-      bio$age_data <- bio_pull
+    if (is.data.frame(bio_pull_filtered)) {
+      bio$age_data <- bio_pull_filtered
     } else {
       bio$age_data <- "no_ages_available"
     }
@@ -305,7 +330,16 @@ pull_bio <- function(
       substr(x, 1, 1) <- toupper(substr(x, 1, 1))
       x
     }
-    if (survey %in% c("Triennial", "AFSC.Slope")) {
+    if (
+      survey %in%
+        c(
+          "Triennial",
+          "AFSC.Slope",
+          "AFSC/RACE Triennial Groundfish Shelf Survey",
+          "AFSC/RACE Triennial Groundfish Shelf Survey (by NWFSC)",
+          "AFSC/RACE Slope Survey"
+        )
+    ) {
       if (!is.null(nrow(bio[["length_data"]]))) {
         colnames(bio[["length_data"]]) <- firstup(colnames(bio[[
           "length_data"
@@ -320,7 +354,16 @@ pull_bio <- function(
     }
   }
 
-  if (survey %in% c("Triennial", "AFSC.Slope")) {
+  if (
+    survey %in%
+      c(
+        "Triennial",
+        "AFSC.Slope",
+        "AFSC/RACE Triennial Groundfish Shelf Survey",
+        "AFSC/RACE Triennial Groundfish Shelf Survey (by NWFSC)",
+        "AFSC/RACE Slope Survey"
+      )
+  ) {
     if (standard_filtering == TRUE & verbose == TRUE) {
       n_len <- ifelse(
         length(nrow(bio[["length_data"]])) > 0,
