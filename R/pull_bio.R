@@ -265,10 +265,10 @@ pull_bio <- function(
     len_pull_convert <- convert_colnames(
       x = len_pull
     )
-    len_pull_convert[, "datetime_utc_iso"] <- chron::chron(
+    len_pull_convert[, "date"] <- chron::chron(
       format(
         as.POSIXlt(
-          len_pull_convert[, "datetime_utc_iso"],
+          len_pull_convert[, "date"],
           format = "%Y-%m-%dT%H:%M:%S"
         ),
         "%Y-%m-%d"
