@@ -52,8 +52,8 @@ to ensure that the selected strata are reasonable (e.g., avoiding
 limited observations in large areas).
 }
 \seealso{
-Other helper functions:
-\code{\link[=codify_sex]{codify_sex()}}
+Other helper functions: 
+\code{\link{codify_sex}()}
 }
 \author{
 Chantel Wetzel

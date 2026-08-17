@@ -31,11 +31,11 @@ check_dir(getwd())
 
 }
 \seealso{
-Other helper function:
-\code{\link[=check_survey]{check_survey()}},
-\code{\link[=combine_tows]{combine_tows()}},
-\code{\link[=createMatrix]{createMatrix()}},
-\code{\link[=filter_pull]{filter_pull()}}
+Other helper function: 
+\code{\link{check_survey}()},
+\code{\link{combine_tows}()},
+\code{\link{createMatrix}()},
+\code{\link{filter_pull}()}
 }
 \author{
 Chantel R. Wetzel
