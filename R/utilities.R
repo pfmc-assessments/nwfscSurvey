@@ -48,7 +48,7 @@ convert_colnames <- function(x) {
           vessel_name  vessel
           pass_number  pass
           tow_sequence_number tow
-          sampling_date  datetime_utc_iso
+          sampling_date  date
           total_catch_individuals_count total_catch_numbers
           total_catch_weight_kg  total_catch_wt_kg
           bottom_trawl_operation_key  trawl_id
