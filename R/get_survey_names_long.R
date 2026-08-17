@@ -14,43 +14,51 @@ get_survey_names_long <- function() {
     data = c(
       "Triennial",
       "AFSC/RACE Triennial Groundfish Shelf Survey",
+      "triennial",
 
       "Triennial",
       "AFSC/RACE Triennial Groundfish Shelf Survey (by NWFSC)",
+      "triennial",
 
       "AFSC.Slope",
       "AFSC/RACE Slope Survey",
+      "afsc_slope",
 
       "NWFSC.Slope",
       "West Coast Groundfish Bottom Trawl Slope Survey",
+      "nwfsc_slope",
 
       "NWFSC.Combo",
       "West Coast Groundfish Bottom Trawl Slope/Shelf Combination Survey",
+      "wcgbt",
 
       "NWFSC.Shelf",
       "West Coast Groundfish Bottom Trawl Shelf Survey",
+      "nwfsc_shelf",
 
       "NWFSC.Hypoxia",
       "West Coast Groundfish Bottom Trawl Hypoxia Study",
+      "nwfsc_hypoxia",
 
       "NWFSC.Santa.Barb.Basin",
       "West Coast Groundfish Bottom Trawl Santa Barbara Basin Study",
-
-      "NWFSC.Shelf.Rockfish",
-      "Shelf Rockfish [2004-2015]",
+      "nwfsc_sb_basin",
 
       "NWFSC.Hook.Line",
       "Hook and Line",
+      "nwfsc_hkl",
 
       "NWFSC.Video",
       "West Coast Groundfish Bottom Trawl Video Study",
+      "nwfsc_video",
 
       "Triennial.Canada",
-      "AFSC/RACE Triennial Groundfish Shelf Survey: Canada"
+      "AFSC/RACE Triennial Groundfish Shelf Survey: Canada",
+      "triennial_canada"
     ),
-    ncol = 2,
+    ncol = 3,
     byrow = TRUE
   )
-  colnames(a) <- c("old_names", "new_names")
+  colnames(a) <- c("old_names", "new_names", "alt_names")
   return(a)
 }
