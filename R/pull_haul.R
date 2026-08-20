@@ -19,7 +19,7 @@
 #'
 pull_haul <- function(
   survey = "NWFSC.Combo",
-  years = c(1970, 2050),
+  years = c(1980, 2050),
   dir = NULL,
   verbose = TRUE,
   standard_filtering = TRUE
@@ -120,5 +120,5 @@ pull_haul <- function(
     verbose = verbose
   )
 
-  return(haul_data)
+  return(haul_data_filtered)
 }

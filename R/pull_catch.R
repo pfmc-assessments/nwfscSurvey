@@ -120,11 +120,11 @@ pull_catch <- function(
   common_name = NULL,
   sci_name = NULL,
   survey = "NWFSC.Combo",
-  years = c(1970, 2050),
+  years = c(1980, 2050),
   dir = NULL,
   convert = TRUE,
   verbose = TRUE,
-  sample_types = c("Not Recorded / Unspecified", "Life Stage", "Size")[1],
+  sample_types = c(NA, "Not Recorded / Unspecified", "Life Stage", "Size")[1:2],
   standard_filtering = TRUE
 ) {
   if (survey %in% c("NWFSC.Shelf.Rockfish", "NWFSC.Hook.Line")) {
@@ -444,10 +444,6 @@ pull_catch <- function(
   }
 
   if (convert) {
-    firstup <- function(x) {
-      substr(x, 1, 1) <- toupper(substr(x, 1, 1))
-      x
-    }
     colnames(catch) <- firstup(colnames(catch))
     colnames(catch)[colnames(catch) == "Cpue_kg_km2"] <- "cpue_kg_km2"
     colnames(catch)[
@@ -462,7 +458,7 @@ pull_catch <- function(
   }
 
   if (standard_filtering == TRUE & verbose == TRUE) {
-    n <- sum(catch[, "total_catch_wt_kg"] > 0)
+    n <- sum(catch[, "total_catch_wt_kg"] > 0, na.rm = TRUE)
     cli::cli_alert_info(
       "There are {n} positive tows remaining across all years after standard filtering."
     )
