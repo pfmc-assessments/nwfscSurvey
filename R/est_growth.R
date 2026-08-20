@@ -49,32 +49,32 @@ est_growth <- function(
   dat$Lhat_high <- NA
 
   if (is.null(bins)) {
-    dat$Age_2 <- dat$Age
+    dat$Age_2 <- dat$Age_years
   } else {
-    dat$Age_2 <- findInterval(dat$Age, bins)
+    dat$Age_2 <- findInterval(dat$Age_years, bins)
   }
 
   if (bySex) {
     use_data <- which(
       !is.na(dat$Length_cm) &
-        !is.na(dat$Age)
+        !is.na(dat$Age_years)
     )
     la_data <- dat[use_data, ]
 
     sex_list <- list(
       which(
         !is.na(dat$Length_cm) &
-          !is.na(dat$Age) &
+          !is.na(dat$Age_years) &
           dat$Sex %in% c("F")
       ),
       which(
         !is.na(dat$Length_cm) &
-          !is.na(dat$Age) &
+          !is.na(dat$Age_years) &
           dat$Sex %in% c("M")
       ),
       which(
         !is.na(dat$Length_cm) &
-          !is.na(dat$Age) &
+          !is.na(dat$Age_years) &
           dat$Sex %in% c("U")
       )
     )
@@ -89,7 +89,7 @@ est_growth <- function(
   } else {
     use_data <- which(
       !is.na(dat$Length_cm) &
-        !is.na(dat$Age)
+        !is.na(dat$Age_years)
     )
     la_data <- dat[use_data, ]
     sex_list <- list(use_data)
@@ -113,7 +113,7 @@ est_growth <- function(
         par = log(Par),
         hessian = FALSE,
         par_logspace = TRUE,
-        Ages = la_data_list[[i]]$Age,
+        Ages = la_data_list[[i]]$Age_years,
         Lengths = la_data_list[[i]]$Length_cm
       )$par
       xpar[[i]] <- exp(ests_log)
@@ -127,12 +127,12 @@ est_growth <- function(
     predL <- fit_vbgrowth(
       Par = xpar[[i]],
       par_logspace = FALSE,
-      Ages = la_data_list[[i]]$Age,
+      Ages = la_data_list[[i]]$Age_years,
       Lengths = la_data_list[[i]]$Length_cm,
       ReturnType = "Pred",
       sdFactor = sdFactor
     )
-    rownames(predL) <- as.character(la_data_list[[i]]$Age)
+    rownames(predL) <- as.character(la_data_list[[i]]$Age_years)
     dat[sex_list[[i]], c("Lhat_low", "Lhat_pred", "Lhat_high")] <- predL
 
     x <- split(la_data_list[[i]]$Length_cm, la_data_list[[i]]$Age_2)
