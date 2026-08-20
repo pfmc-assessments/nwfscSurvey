@@ -21,7 +21,11 @@ convert_to_hex_string <- function(x) {
   eq_symbol <- "eq:"
   hex_space <- "+"
   stopifnot(inherits(x, "character"))
-  x_no_spaces <- gsub(pattern = " ", replacement = hex_space, x)
+  x_no_spaces <- firstup(gsub(pattern = " ", replacement = hex_space, x))
+  if (length(x_no_spaces) > 1) {
+    x_no_spaces <- paste(x_no_spaces, collapse = "~")
+    eq_symbol <- "in:"
+  }
   out <- paste0(eq_symbol, x_no_spaces)
   return(out)
 }
@@ -92,7 +96,7 @@ convert_colnames <- function(x) {
           specimen_age_sample_label otosag_id
           specimen_size_cm length_cm
           specimen_sex_code sex
-          specimen_age_years age_year
+          specimen_age_years age_years
       ",
       quiet = TRUE,
       what = "",
@@ -109,4 +113,18 @@ convert_colnames <- function(x) {
     converted_df[matches, "old_names"]
   )
   return(x)
+}
+#' Capitalize first letter in a string
+#'
+#' @details
+#' Function that converts the first letter in a
+#' string to a capital letter
+#'
+#' @param x A data frame with named columns
+#' @return A data frame with renamed columns
+#' @author Chantel Wetzel
+#'
+firstup <- function(x) {
+  substr(x, 1, 1) <- toupper(substr(x, 1, 1))
+  x
 }
