@@ -23,7 +23,7 @@ pull_bio <- function(
   common_name = NULL,
   sci_name = NULL,
   survey = "NWFSC.Combo",
-  years = c(1970, 2050),
+  years = c(1980, 2050),
   dir = NULL,
   convert = TRUE,
   verbose = TRUE,
@@ -79,25 +79,33 @@ pull_bio <- function(
     "pass_number",
     "bottom_trawl_operation_key",
     "sampling_date",
-    #"depth_m",
-    "specimen_weight_kg", #"weight_kg",
-    "ageing_lab_name", #"ageing_lab",
-    "specimen_age_sample_label", #"otosag_id",
-    "specimen_size_cm", #"length_cm",
-    #"width_cm",
-    "specimen_sex_code", #"sex",
-    "specimen_age_years", #"age_years"
+    "on_bottom_seafloor_depth_m",
     "best_tow_latitude_dd",
     "best_tow_longitude_dd",
+    "tow_performance_name",
+    "actual_station_current_deactivation_reasons",
+    "is_actual_station_currently_active",
+    "specimen_size_cm",
+    "specimen_size_sample_type_name",
+    #"width_cm",
+    "specimen_weight_kg",
+    "specimen_sex_code",
+    "specimen_age_years",
+    "ageing_lab_name",
+    "specimen_age_sample_label",
     #"standard_survey_age_indicator",
     #"standard_survey_length_or_width_indicator",
     #"standard_survey_weight_indicator",
-    "tow_performance_name",
-    "actual_station_current_deactivation_reasons",
-    "is_actual_station_currently_active"
+    "specimen_ovary_sample_label",
+    "ovary_last_analyzed_at",
+    "ovary_proportion_atresia",
+    "lab_analyzed_maturity_stage_name",
+    "specimen_finclip_sample_label",
+    "specimen_tissue_sample_label",
+    "specimen_stomach_sample_label",
+    "specimen_life_stage_name"
   )
 
-  #NEED TO FIGURE OUT HOW TO ADD DEPTH IN AND FILTER OUT SAMPLES OUTSIDE THE STANDARD DEPTHS
   #NEED TO FIGURE OUT HOW TO IDENTIFY WATER HAULS
 
   species_str <- convert_to_hex_string(species)
@@ -131,12 +139,9 @@ pull_bio <- function(
     )
     cli::cli_abort("")
   }
-  bio_pulls_convert <- convert_colnames(
-    x = bio_pull
-  )
 
   if (
-    !is.data.frame(bio_pulls_convert) &
+    !is.data.frame(bio_pull) &
       !survey %in%
         c(
           "Triennial",
@@ -155,10 +160,18 @@ pull_bio <- function(
     )
   }
 
+  if (is.data.frame(bio_pull)) {
+    bio_pulls_convert <- convert_colnames(
+      x = bio_pull
+    )
+  } else {
+    bio_pulls_convert <- NULL
+  }
+
   # This check is needed to proceed on for species where there were no age from
   # the AFSC.Slope and Triennial survey since lengths are checked later in the
   # length_fact data table.
-  if (!is.null(dim(bio_pulls_convert))) {
+  if (is.null(bio_pulls_convert)) {
     if (
       survey %in%
         c(
@@ -170,12 +183,19 @@ pull_bio <- function(
         )
     ) {
       data_text <- "age/otolith samples"
-    } else {
-      data_text <- "biological samples"
+      bio_pull_filtered <- NULL
     }
     if (verbose) {
       cli::cli_alert_info(
-        "There were {nrow(bio_pull)} {data_text} pulled."
+        "There were 0 {data_text} pulled."
+      )
+    }
+  } else {
+    data_text <- "biological samples"
+
+    if (verbose) {
+      cli::cli_alert_info(
+        "There were {nrow(bio_pulls_convert)} {data_text} pulled."
       )
     }
     bio_pull_filtered <- filter_pull(
@@ -238,8 +258,6 @@ pull_bio <- function(
       colnames(bio_pull_filtered) ==
         "actual_station_design_dim$reason_station_invalid"
     ] <- "reason_station_invalid"
-    bio_pull_filtered$weight <- bio_pull_filtered$weight_kg
-    bio_pull_filtered$age <- bio_pull_filtered$age_years
     bio_pull_filtered$trawl_id <- as.character(bio_pull_filtered$trawl_id)
   }
   bio <- bio_pull_filtered
@@ -299,7 +317,7 @@ pull_bio <- function(
         verbose = verbose
       )
 
-      len_pull_filtered$weight_kg <- len_pull_filtered$weight <- NA
+      len_pull_filtered$weight_kg <- NA
       len_pull_filtered$trawl_id <- as.character(len_pull_filtered$trawl_id)
       colnames(len_pull_filtered)[
         colnames(len_pull_filtered) ==
