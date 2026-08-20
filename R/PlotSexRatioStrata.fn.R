@@ -68,12 +68,12 @@ PlotSexRatioStrata.fn <- function(
     ind,
     c(
       "Trawl_id",
-      "Weight",
+      "Weight_kg",
       strat.vars,
       "Longitude_dd",
       "Year",
       "Length_cm",
-      "Age",
+      "Age_years",
       "Sex"
     )
   ]

@@ -34,7 +34,7 @@ plot_length_age <- function(
   data,
   dir = NULL,
   col_length = "length_cm",
-  col_age = "age",
+  col_age = "age_years",
   estimates = NULL,
   two_sex = TRUE,
   add_save_name = NULL,

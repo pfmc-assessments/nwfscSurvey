@@ -24,7 +24,7 @@ est_vbgrowth <- function(
   data,
   dir = NULL,
   col_length = "length_cm",
-  col_age = "age",
+  col_age = "age_years",
   init_params = data.frame(
     K = 0.13,
     Linf = 55,

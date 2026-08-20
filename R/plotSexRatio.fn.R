@@ -66,7 +66,7 @@ PlotSexRatio.fn <- function(
   }
   if (data.type == "age") {
     bin_width <- 1
-    dat$bin <- round_any(dat$Age, bin_width, floor)
+    dat$bin <- round_any(dat$Age_years, bin_width, floor)
     axis.name <- "Age (yr)"
   }
   temp <- table(dat$bin, dat$Sex)
