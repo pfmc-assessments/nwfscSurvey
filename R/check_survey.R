@@ -21,11 +21,12 @@ check_survey <- function(survey) {
 
   # Find the long project name to extract data from the warehouse
   project_long <- NULL
+  survey_exact <- paste0("^", survey, "$")
   for (i in 1:length(survey)) {
     find <- c(
-      grep(survey[i], survey_options[, "old_names"]),
-      grep(survey[i], survey_options[, "new_names"]),
-      grep(survey[i], survey_options[, "alt_names"])
+      grep(survey_exact[i], survey_options[, "old_names"]),
+      grep(survey_exact[i], survey_options[, "new_names"]),
+      grep(survey_exact[i], survey_options[, "alt_names"])
     )
     tmp <- survey_options[find, "new_names"]
     project_long <- c(project_long, tmp)

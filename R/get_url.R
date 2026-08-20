@@ -27,15 +27,16 @@ get_url <- function(data_table, project_long, add_species, years, vars_long) {
   if (missing(add_species)) {
     add_species <- ""
   } else {
-    add_species <- paste0(add_species, collapse = "&")
+    add_species <- paste0(add_species, collapse = "~")
   }
 
   if (missing(project_long)) {
     project_str <- ""
   } else {
+    x_no_spaces <- gsub(pattern = " ", replacement = "+", project_long)
     project_str <- paste0(
-      "nmfs_project_name=eq:",
-      paste(strsplit(project_long, " ")[[1]], collapse = "+")
+      "nmfs_project_name=in:",
+      paste0(x_no_spaces, collapse = "~")
     )
   }
 
