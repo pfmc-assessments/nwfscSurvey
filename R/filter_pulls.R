@@ -54,9 +54,10 @@ filter_pull <- function(
     data$station_invalid == TRUE
   )
   if (
-    verbose &
-      unique(data$project) ==
+    any(
+      data$project ==
         "West Coast Groundfish Bottom Trawl Slope/Shelf Combination Survey"
+    )
   ) {
     if (data_type == "tows") {
       n_positive <- dim(data)[1] - length(good_station)
@@ -69,27 +70,37 @@ filter_pull <- function(
     if (any(c("net_height_m_der", "length_cm") %in% colnames(data))) {
       n <- dim(data)[1] - length(good_station)
     }
-    cli::cli_alert_info(
-      "There are {n_positive} {data_type} from stations that are not standard survey stations that are retained in the data.
+    if (verbose) {
+      cli::cli_alert_info(
+        "There are {n_positive} {data_type} from stations that are not standard survey stations that are retained in the data.
       Prior to June 2026, data from these stations were removed when standard_filtering = TRUE.
       These tows can be identified using the station_invalid column."
-    )
+      )
+    }
   }
   data$station_invalid[good_station] <- "standard_station"
 
   # Remove tows outside of standard depths 55-1,280 m
   if (any(c("depth_m") %in% colnames(data))) {
-    col_to_use <- which(colnames(data) %in% "depth_m")
-    good_depth <- which(data[, col_to_use] >= 55 & data[, col_to_use] <= 1280)
-    if (length(good_depth) != dim(data)[1]) {
+    if (sum(is.na(data[, "depth_m"])) == nrow(data)) {
       if (verbose) {
-        n <- dim(data)[1] - length(good_depth)
         cli::cli_alert_info(
-          "There were {n} {data_type} that are outside the standard depth range."
+          "All depth_m values were NA. No records were removed but data should be investigated."
         )
       }
-      if (standard_filtering) {
-        data <- data[good_depth, ]
+    } else {
+      col_to_use <- which(colnames(data) %in% "depth_m")
+      good_depth <- which(data[, col_to_use] >= 55 & data[, col_to_use] <= 1280)
+      if (length(good_depth) != dim(data)[1]) {
+        if (verbose) {
+          n <- dim(data)[1] - length(good_depth)
+          cli::cli_alert_info(
+            "There were {n} {data_type} that are outside the standard depth range."
+          )
+        }
+        if (standard_filtering) {
+          data <- data[good_depth, ]
+        }
       }
     }
   }
