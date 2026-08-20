@@ -25,6 +25,12 @@ pull_biological_samples <- function(
   verbose = TRUE,
   standard_filtering = FALSE
 ) {
+  lifecycle::deprecate_stop(
+    when = "2.8.0",
+    what = "pull_biological_samples()",
+    details = "This function is no longer used. pull_bio() now returns
+    biological sample information."
+  )
   # increase the timeout period to avoid errors when pulling data
   options(timeout = 4000000)
 
