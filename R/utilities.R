@@ -61,7 +61,7 @@ convert_colnames <- function(x) {
           catch_per_unit_effort_kg_per_ha  cpue_kg_per_ha_der
           tow_performance_name  performance
           actual_station_current_deactivation_reasons  actual_station_design_dim$reason_station_invalid
-          is_actual_station_currently_active  station_invalid
+          #is_actual_station_currently_active  station_invalid
           on_bottom_seafloor_depth_m  depth_m
           seafloor_area_swept_ha area_swept_ha_der
           tow_sea_surface_fluorescence_mg_per_m3 fluorescence_at_surface_mg_per_m3_der
