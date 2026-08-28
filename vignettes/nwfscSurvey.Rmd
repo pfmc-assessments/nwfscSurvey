@@ -46,27 +46,22 @@ ls("package:nwfscSurvey")
 ## Available Surveys
 
 ```{r, echo=FALSE}
-surveys <- get_survey_names_long()
-colnames(surveys) <- c("string", "full-survey-name", "other-name")
-surveys <- surveys[1:4, 1:2]
+get_survey_names_long()
+
 ```
 
-There are a number of trawl survey data sets available, but they need to be requested using specific a string to the `survey` argument for data `pull_` functions. The required strings are:
-
-```{r, echo=TRUE}
-surveys
-```
+There are a number of trawl survey data sets available. Data from each survey can be accessed using the original API name (old_name), the new API name (new_names), or via other lower case strings (alt_names).
 
 ## Species Names
 
-Data for specific species can be queried using either a common name (`common_name`) or a scientific name (`sci_name`). Lower case is required for querying via a common name, unless the common name includes a proper noun:
+Data for specific species can be queried using either a common name (`common_name`) or a scientific name (`sci_name`). The common name can be all lower case or the first letter capitalized.
 
 ```{r, eval=FALSE}
-catch <- pull_catch(common_name = "yelloweye rockfish")
+catch <- pull_catch(common_name = "dover sole")
 catch <- pull_catch(common_name = "Dover sole")
 
 bio <- pull_bio(common_name = "Pacific ocean perch")
-bio <- pull_bio(common_name = "lingcod")
+bio <- pull_bio(common_name = "pacific ocean perch")
 ```
 
 ## Examples
@@ -83,7 +78,7 @@ catch <- pull_catch(common_name = "sablefish")
 bio <- pull_bio(common_name = "sablefish")
 ```
 
-the default survey input for each of the `pull_` functions is `survey = "NWFSC.Combo"` and does not need to be specified if the goal is the query WCGBTS data.
+the default survey input for each of the `pull_` functions is to return data from the NWFSC West Coast Groundfish Bottom Trawl Survey (WCGBTS) and does not need to be specified if the goal is the query WCGBTS data.
 
 #### Define strata
 
@@ -171,7 +166,7 @@ age_comps <- get_expanded_comps(
   catch_data = catch,
   comp_bins = 1:40,
   strata = strata,
-  comp_column_name = "age",
+  comp_column_name = "age_years",
   output = "full_expansion_ss3_format",
   two_sex_comps = TRUE,
   input_n_method = "stewart_hamel"
@@ -194,7 +189,7 @@ for either length or age data.
 raw_age_comps <- get_raw_comps(
   data = bio,
   comp_bins = 1:40,
-  comp_column_name = "age",
+  comp_column_name = "age_years",
   two_sex_comps = TRUE
 )
 ```
