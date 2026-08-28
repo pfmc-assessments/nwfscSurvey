@@ -9,7 +9,7 @@ est_vbgrowth(
   data,
   dir = NULL,
   col_length = "length_cm",
-  col_age = "age",
+  col_age = "age_years",
   init_params = data.frame(K = 0.13, Linf = 55, L0 = 15, CV0 = 0.1, CV1 = 0.1),
   bins = NULL,
   verbose = TRUE

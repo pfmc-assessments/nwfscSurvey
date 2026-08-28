@@ -48,12 +48,11 @@ combine_tows <- function(
       "All trawl_ids are unique and there is no need to combine data."
     )
   }
-
-  partition_to_keep <- c("NA", NA, "Large", "Small", "Unspecified", "YOY")
+  #partition_to_keep <- c("NA", NA, "Large", "Small", "Unspecified", "YOY")
 
   if (single_species) {
     catch <- data |>
-      dplyr::filter(partition %in% partition_to_keep) |>
+      #dplyr::filter(partition%in% partition_to_keep) |>
       dplyr::group_by(trawl_id) |>
       dplyr::mutate(
         common_name = paste0(common_name, collapse = "_"),
@@ -64,13 +63,13 @@ combine_tows <- function(
         subsample_wt_kg = sum(subsample_wt_kg, na.rm = TRUE),
         cpue_kg_per_ha_der = sum(cpue_kg_per_ha_der, na.rm = TRUE),
         cpue_kg_km2 = sum(cpue_kg_km2, na.rm = TRUE),
-        partition_sample_types = paste0(partition_sample_types, collapse = "_"),
-        partition = paste0(partition, collapse = "_")
+        partition_sample_types = paste0(partition_sample_types, collapse = "_")
+        # partition = paste0(partition, collapse = "_")
       ) |>
       dplyr::distinct(trawl_id, .keep_all = TRUE)
   } else {
     catch <- data |>
-      dplyr::filter(partition %in% partition_to_keep) |>
+      #dplyr::filter(partition %in% partition_to_keep) |>
       dplyr::group_by(common_name, trawl_id) |>
       dplyr::mutate(
         total_catch_numbers = sum(total_catch_numbers),
@@ -80,8 +79,8 @@ combine_tows <- function(
         subsample_wt_kg = sum(subsample_wt_kg, na.rm = TRUE),
         cpue_kg_per_ha_der = sum(cpue_kg_per_ha_der, na.rm = TRUE),
         cpue_kg_km2 = sum(cpue_kg_km2, na.rm = TRUE),
-        partition_sample_types = paste0(partition_sample_types, collapse = "_"),
-        partition = paste0(partition, collapse = "_")
+        partition_sample_types = paste0(partition_sample_types, collapse = "_") #,
+        #partition = paste0(partition, collapse = "_")
       ) |>
       dplyr::distinct(trawl_id, .keep_all = TRUE)
   }

@@ -8,7 +8,7 @@ pull_bio(
   common_name = NULL,
   sci_name = NULL,
   survey = "NWFSC.Combo",
-  years = c(1970, 2050),
+  years = c(1980, 2050),
   dir = NULL,
   convert = TRUE,
   verbose = TRUE,

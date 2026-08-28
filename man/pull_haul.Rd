@@ -6,7 +6,7 @@
 \usage{
 pull_haul(
   survey = "NWFSC.Combo",
-  years = c(1970, 2050),
+  years = c(1980, 2050),
   dir = NULL,
   verbose = TRUE,
   standard_filtering = TRUE
