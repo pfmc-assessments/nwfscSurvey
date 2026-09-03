@@ -16,7 +16,7 @@
 #'   lats.north     = c(40, 40, 49, 44, 49)
 #' )
 #' # Which returns a data frame that looks like the following:
-#' #      name      area Depth_m.1 Depth_m.2 Latitude_dd.1 Latitude_dd.2
+#' #      name      area depth_m.1 depth_m.2 latitude_dd.1 latitude_dd.2
 #' #    deep_s 16468.110       183       549            32            40
 #' # shallow_s 16109.711        55       183            32            40
 #' #   deep_mn 12478.575       183       549            40            49
@@ -34,8 +34,8 @@
 #' @return Returns the data frame formatted for use by \code{\link{get_design_based}}
 #' and additional prediction functions in other downstream packages.
 #' The data frame will have six columns,
-#' (1) name, (2) area, (3) Depth_m.1, (4) Depth_m.2,
-#' (5) Latitude_dd.1, and (6) Latitude_dd.2.
+#' (1) name, (2) area, (3) depth_m.1, (4) depth_m.2,
+#' (5) latitude_dd.1, and (6) latitude_dd.2.
 #'
 #' @author Chantel Wetzel and Kelli Johnson
 #' @export
@@ -67,10 +67,10 @@ CreateStrataDF.fn <- function(
   out <- data.frame(
     name = NA,
     area = NA,
-    Depth_m.1 = depths.shallow,
-    Depth_m.2 = depths.deep,
-    Latitude_dd.1 = lats.south,
-    Latitude_dd.2 = lats.north
+    depth_m.1 = depths.shallow,
+    depth_m.2 = depths.deep,
+    latitude_dd.1 = lats.south,
+    latitude_dd.2 = lats.north
   )
 
   # Check that users supplied either

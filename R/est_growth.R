@@ -43,53 +43,54 @@ est_growth <- function(
     )
   }
 
+  colnames(dat) <- tolower(colnames(dat))
   #### Initialize the three new columns
   dat$Lhat_pred <- NA
   dat$Lhat_low <- NA
   dat$Lhat_high <- NA
 
   if (is.null(bins)) {
-    dat$Age_2 <- dat$Age_years
+    dat$age_2 <- dat$age_years
   } else {
-    dat$Age_2 <- findInterval(dat$Age_years, bins)
+    dat$age_2 <- findInterval(dat$age_years, bins)
   }
 
   if (bySex) {
     use_data <- which(
-      !is.na(dat$Length_cm) &
-        !is.na(dat$Age_years)
+      !is.na(dat$length_cm) &
+        !is.na(dat$age_years)
     )
     la_data <- dat[use_data, ]
 
     sex_list <- list(
       which(
-        !is.na(dat$Length_cm) &
-          !is.na(dat$Age_years) &
-          dat$Sex %in% c("F")
+        !is.na(dat$length_cm) &
+          !is.na(dat$age_years) &
+          dat$sex %in% c("F")
       ),
       which(
-        !is.na(dat$Length_cm) &
-          !is.na(dat$Age_years) &
-          dat$Sex %in% c("M")
+        !is.na(dat$length_cm) &
+          !is.na(dat$age_years) &
+          dat$sex %in% c("M")
       ),
       which(
-        !is.na(dat$Length_cm) &
-          !is.na(dat$Age_years) &
-          dat$Sex %in% c("U")
+        !is.na(dat$length_cm) &
+          !is.na(dat$age_years) &
+          dat$sex %in% c("U")
       )
     )
 
     la_data_list <- list(
-      female = la_data[la_data$Sex == "F", ],
-      male = la_data[la_data$Sex == "M", ],
-      unsexed = la_data[la_data$Sex == "U", ]
+      female = la_data[la_data$sex == "F", ],
+      male = la_data[la_data$sex == "M", ],
+      unsexed = la_data[la_data$sex == "U", ]
     )
     sex_vec <- c("F", "M", "U")
     nn <- 3
   } else {
     use_data <- which(
-      !is.na(dat$Length_cm) &
-        !is.na(dat$Age_years)
+      !is.na(dat$length_cm) &
+        !is.na(dat$age_years)
     )
     la_data <- dat[use_data, ]
     sex_list <- list(use_data)
@@ -113,8 +114,8 @@ est_growth <- function(
         par = log(Par),
         hessian = FALSE,
         par_logspace = TRUE,
-        Ages = la_data_list[[i]]$Age_years,
-        Lengths = la_data_list[[i]]$Length_cm
+        Ages = la_data_list[[i]]$age_years,
+        Lengths = la_data_list[[i]]$length_cm
       )$par
       xpar[[i]] <- exp(ests_log)
       # cat("Estimated VB parameters for", names(la_data_list)[i], xpar, "\n")
@@ -127,15 +128,15 @@ est_growth <- function(
     predL <- fit_vbgrowth(
       Par = xpar[[i]],
       par_logspace = FALSE,
-      Ages = la_data_list[[i]]$Age_years,
-      Lengths = la_data_list[[i]]$Length_cm,
+      Ages = la_data_list[[i]]$age_years,
+      Lengths = la_data_list[[i]]$length_cm,
       ReturnType = "Pred",
       sdFactor = sdFactor
     )
-    rownames(predL) <- as.character(la_data_list[[i]]$Age_years)
+    rownames(predL) <- as.character(la_data_list[[i]]$age_years)
     dat[sex_list[[i]], c("Lhat_low", "Lhat_pred", "Lhat_high")] <- predL
 
-    x <- split(la_data_list[[i]]$Length_cm, la_data_list[[i]]$Age_2)
+    x <- split(la_data_list[[i]]$length_cm, la_data_list[[i]]$age_2)
     xsd <- unlist(lapply(x, sd))
     xcv <- xsd / predL[names(xsd), "Lhat_pred"]
     if (is.null(bins)) {

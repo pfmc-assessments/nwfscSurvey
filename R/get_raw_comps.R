@@ -21,7 +21,7 @@
 #'   is used to determine whether to format the composition data for length or age
 #'   compositions by looking for either age (e.g., `age_years`, `Age`, `best_age`) or length
 #'   (e.g., `Length`, `length`, `Length_cm`) in the comp_column_name. The default
-#'   is `Length_cm`.
+#'   is `length_cm`.
 #'
 #' @returns A list of length or marginal age compositions for sexed and
 #' unsexed fish formatted for Stock Synthesis.
@@ -44,14 +44,14 @@
 #' age_comps <- get_raw_comps(
 #'   data = bio,
 #'   comp_bins = 1:20,
-#'   comp_column_name = "Age"
+#'   comp_column_name = "age_years"
 #' )
 #' }
 #'
 get_raw_comps <- function(
   data,
   comp_bins,
-  comp_column_name = "Length_cm",
+  comp_column_name = "length_cm",
   input_n_method = c("stewart_hamel", "tows", "total_samples"),
   two_sex_comps = TRUE,
   month = "Enter Month",

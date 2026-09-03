@@ -53,7 +53,7 @@ test_that("plot_proportions", {
 test_that("plot_sex_ratio", {
   p <- plot_sex_ratio(
     data = bio_nwfsc_combo,
-    comp_column_name = "age"
+    comp_column_name = "age_years"
   )
   expect_equal(is(p), "ggplot2::ggplot")
   p <- plot_sex_ratio(
@@ -94,8 +94,8 @@ test_that("plot_weight_length", {
 test_that("plot_bio_patterns", {
   p <- plot_bio_patterns(
     data = bio_nwfsc_combo |>
-      dplyr::filter(Sex %in% c("F", "M"), Year %in% 2003:2005),
-    col_name = "Age"
+      dplyr::filter(sex %in% c("F", "M"), Year %in% 2003:2005),
+    col_name = "age_years"
   )
   expect_equal(is(p[[1]]), "ggplot2::ggplot")
   expect_equal(is(p[[2]]), "ggplot2::ggplot")

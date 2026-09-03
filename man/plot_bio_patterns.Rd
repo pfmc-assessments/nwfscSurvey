@@ -7,7 +7,7 @@
 plot_bio_patterns(
   data,
   dir = NULL,
-  col_name = "Length_cm",
+  col_name = "length_cm",
   plot = 1:3,
   width = 7,
   height = 7,
@@ -21,7 +21,7 @@ plot_bio_patterns(
 If dir = NULL no output will be saved.}
 
 \item{col_name}{Option to switch between plotting lengths or ages.
-Options are "Length_cm", "Width_cm", or "Age".}
+Options are "Length_cm" or "age_years".}
 
 \item{plot}{A vector of integers to specify which plots you would like. The
 default is to print or save both figures, i.e., \code{plot = 1:3}. Integers

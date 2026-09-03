@@ -76,7 +76,7 @@ temp <- catch_data |>
 plot_proportion(
   data = temp,
   column_factor = new,
-  column_bin = Depth_m,
+  column_bin = depth_m,
   width = 50,
   boundary = 0
 )
@@ -85,7 +85,7 @@ plot_proportion(
 plot_proportion(
   data = temp,
   column_factor = new,
-  column_bin = Latitude_dd,
+  column_bin = latitude_dd,
   width = 1,
   boundary = 0
 ) +
@@ -96,18 +96,18 @@ plot_proportion(
 # Plot depth bins (25 m) by sex (F, M, U)
 plot_proportion(
   data = bio_nwfsc_combo |>
-    dplyr::mutate(Sex = codify_sex(Sex)),
-  column_factor = Sex,
-  column_bin = Depth_m,
+    dplyr::mutate(sex = codify_sex(sex)),
+  column_factor = sex,
+  column_bin = depth_m,
   width = 25,
   boundary = 0
 )
 # Change to equal sized bars
 plot_proportion(
   data = bio_nwfsc_combo |>
-    dplyr::mutate(Sex = codify_sex(Sex)),
-  column_factor = Sex,
-  column_bin = Depth_m,
+    dplyr::mutate(sex = codify_sex(sex)),
+  column_factor = sex,
+  column_bin = depth_m,
   width = 25,
   boundary = 0,
   bar_width = "equal"

@@ -18,10 +18,10 @@ A data frame with six columns,
 \itemize{
 \item name,
 \item area,
-\item Depth_m.1 (m; the shallow depth border),
-\item Depth_m.2 (m; the deep depth border),
-\item Latitude_dd.1 (decimal degrees; southern border), and
-\item Latitude_dd.2 (decimal degrees; northern border).}
+\item depth_m.1 (m; the shallow depth border),
+\item depth_m.2 (m; the deep depth border),
+\item latitude_dd.1 (decimal degrees; southern border), and
+\item latitude_dd.2 (decimal degrees; northern border).}
 }
 \description{
 Get Default Strata

@@ -59,17 +59,18 @@ PlotSexRatio.fn <- function(
     f(x / accuracy) * accuracy
   }
 
+  colnames(dat) <- tolower(colnames(dat))
   if (data.type == "length") {
     bin_width <- 2
-    dat$bin <- round_any(dat$Length_cm, bin_width, floor)
+    dat$bin <- round_any(dat$length_cm, bin_width, floor)
     axis.name <- "Length (cm)"
   }
   if (data.type == "age") {
     bin_width <- 1
-    dat$bin <- round_any(dat$Age_years, bin_width, floor)
+    dat$bin <- round_any(dat$age_years, bin_width, floor)
     axis.name <- "Age (yr)"
   }
-  temp <- table(dat$bin, dat$Sex)
+  temp <- table(dat$bin, dat$sex)
 
   ratioF <- temp[, "F"] / (temp[, "M"] + temp[, "F"])
   nobs <- temp[, "F"] + temp[, "M"]
@@ -98,10 +99,10 @@ PlotSexRatio.fn <- function(
     add = TRUE
   )
 
-  test <- dplyr::count(dat, bin, Sex) |>
+  test <- dplyr::count(dat, bin, sex) |>
     mutate(Proportion = n / sum(n))
 
-  p <- ggplot(test, aes(x = bin, y = Proportion, fill = Sex)) +
+  p <- ggplot(test, aes(x = bin, y = Proportion, fill = sex)) +
     geom_bar(position = "fill", stat = "identity") +
     geom_hline(yintercept = 0.50, col = "white", lwd = 2) +
     scale_fill_manual(

@@ -7,8 +7,8 @@
 #' @param Par A list of von Bertanlaffy growth parameters in log space ordered
 #' as follows: K, Linf, L0, CV0, and CV1.
 #' Names will be assigned if they are not provided.
-#' @param Ages A vector of ages in years. Values of \code{NA} are accepted.
-#' @param Lengths A vector of Lengths in cm. Lengths can be \code{NULL} if
+#' @param age_years A vector of ages in years. Values of \code{NA} are accepted.
+#' @param length_cm A vector of lengths in cm. Lengths can be \code{NULL} if
 #' \code{ReturnType == "Pred"} because you are only predicting using ages, where
 #' the lengths are just needed for estimation purposes. If not \code{NULL},
 #' ensure that there is one length measurement for every age measurement.
@@ -37,8 +37,8 @@
 #' @examples
 #' \dontrun{
 #' bio_dat <- data.frame(
-#'   Age = rep(0:30, each = 20),
-#'   Length_cm = rnorm(n = 31 * 20, mean = 50, sd = 5)
+#'   age_years = rep(0:30, each = 20),
+#'   length_cm = rnorm(n = 31 * 20, mean = 50, sd = 5)
 #' )
 #' pars_in <- lapply(FUN = log, X = list(
 #'   "K" = 0.13,
@@ -49,14 +49,14 @@
 #' ))
 #' solve <- optim(
 #'   fn = estgrowth.vb, par = unlist(pars_in), hessian = FALSE,
-#'   Ages = bio_dat[, "Age"],
-#'   Lengths = bio_dat[, "Length_cm"]
+#'   age_years = bio_dat[, "age_years"],
+#'   length_cm = bio_dat[, "length_cm"]
 #' )
 #' predictions <- estgrowth.vb(
 #'   Par = solve$par, ReturnType = "Pred",
 #'   sdFactor = 1,
-#'   Ages = bio_dat[, "Age"],
-#'   Lengths = bio_dat[, "Length_cm"]
+#'   age_years = bio_dat[, "age_years"],
+#'   length_cm = bio_dat[, "length_cm"]
 #' )
 #' plot(bio_dat$Age, predictions[, "Lhat_pred"],
 #'   xlab = "Age (years)", ylab = "Predicted length (cm)"
@@ -65,8 +65,8 @@
 #' }
 fit_vbgrowth <- function(
   Par,
-  Ages,
-  Lengths,
+  age_years,
+  length_cm,
   par_logspace = TRUE,
   ReturnType = c("NLL", "Pred"),
   sdFactor = 1
@@ -75,9 +75,10 @@ fit_vbgrowth <- function(
   if (is.null(names(Par))) {
     names(Par) <- c("K", "Linf", "L0", "CV0", "CV1")
   }
-  if (!is.null(Lengths)) {
+  if (!is.null(length_cm)) {
     stopifnot(
-      "Ages & Lengths are not the same length" = length(Ages) == length(Lengths)
+      "age_years & length_cm are not the same length" = length(ages_years) ==
+        length(length_cm)
     )
   }
   ReturnType <- match.arg(ReturnType, several.ok = FALSE)
@@ -91,14 +92,14 @@ fit_vbgrowth <- function(
   # Parameterized in terms of L0 instead of t0, where this parameterization was taken from
   # PacFIN.Utilities.
   # See Ogle and Isermann (2017) 10.1080/02755947.2017.1342725
-  lhat.L0 <- function(Par, Ages, variability = 0) {
+  lhat.L0 <- function(Par, age_years, variability = 0) {
     Par[["Linf"]] -
-      (Par[["Linf"]] - Par[["L0"]]) * exp(-Ages * Par[["K"]]) +
+      (Par[["Linf"]] - Par[["L0"]]) * exp(-age_years * Par[["K"]]) +
       variability
   }
   if ("L0" %in% names(Par)) {
     lhat.here <- lhat.L0
-    Lhat <- lhat.here(Par, Ages)
+    Lhat <- lhat.here(Par, age_years)
     CV <- Par[["CV0"]] +
       (Par[["CV1"]] - Par[["CV0"]]) * (Lhat - Par[["L0"]]) / Par[["Linf"]]
     SD <- CV * Lhat
@@ -108,15 +109,17 @@ fit_vbgrowth <- function(
   # below
 
   # Parameterized in terms of t0
-  lhat.t0 <- function(Par, Ages, variability = 0) {
-    Par[["Linf"]] * (1 - exp(-Par[["K"]] * (Ages - Par[["t0"]]))) + variability
+  lhat.t0 <- function(Par, age_years, variability = 0) {
+    Par[["Linf"]] *
+      (1 - exp(-Par[["K"]] * (age_years - Par[["t0"]]))) +
+      variability
   }
   if ("t0" %in% names(Par)) {
     cli::cli_abort(
       "t0 parameterization is not complete, please contact developers to estimate CV"
     )
     lhat.here <- lhat.t0
-    Lhat <- lhat.here(Par, Ages)
+    Lhat <- lhat.here(Par, age_years)
     CV <- Par[["CV1"]]
     SD <- abs(CV * Lhat)
   }
@@ -124,11 +127,11 @@ fit_vbgrowth <- function(
   #### Return
   if (ReturnType == "NLL") {
     Return <- -1 *
-      sum(dnorm(Lengths, mean = Lhat, sd = SD, log = TRUE), na.rm = TRUE)
+      sum(dnorm(length_cm, mean = Lhat, sd = SD, log = TRUE), na.rm = TRUE)
   }
   if (ReturnType == "Pred") {
-    Lhat_low <- lhat.here(Par, Ages, variability = (-sdFactor * SD))
-    Lhat_high <- lhat.here(Par, Ages, variability = (sdFactor * SD))
+    Lhat_low <- lhat.here(Par, age_years, variability = (-sdFactor * SD))
+    Lhat_high <- lhat.here(Par, age_years, variability = (sdFactor * SD))
     Return <- cbind(
       Lhat_low = Lhat_low,
       Lhat_pred = Lhat,

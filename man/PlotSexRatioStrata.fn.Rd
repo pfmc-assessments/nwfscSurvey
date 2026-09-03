@@ -9,7 +9,7 @@ PlotSexRatioStrata.fn(
   dat,
   strat.df,
   type = "length",
-  strat.vars = c("Depth_m", "Latitude_dd"),
+  strat.vars = c("depth_m", "latitude_dd"),
   circleSize = 0.05,
   dopng = lifecycle::deprecated(),
   verbose = TRUE,
@@ -30,7 +30,7 @@ calculated areas for each strata returned from \code{\link[=CreateStrataDF.fn]{C
 
 \item{strat.vars}{Variables in both data frame that are used to
 define the strata. Default is bottom depth (m) and latitudes (decimal
-degrees), i.e., \code{c("Depth_m", "Latitude_dd")}.}
+degrees), i.e., \code{c("depth_m", "latitude_dd")}.}
 
 \item{circleSize}{circle size}
 

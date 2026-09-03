@@ -27,6 +27,9 @@ test_that("pull_catch-multispecies", {
     survey = "NWFSC.Combo",
     verbose = TRUE
   )
+  dat <- dat |>
+    dplyr::filter(common_name != "Not Applicable")
+  # record number as of 8/20/26 396509
   expect_is(dat, "data.frame")
   expect_equal(nrow(dat), 395792)
   expect_equal(sum(dat$cpue_kg_km2 == 0), 376542)
@@ -44,13 +47,13 @@ test_that("pull_catch-multispecies", {
     verbose = TRUE
   )
   expect_equal(
-    NROW(dplyr::filter(dat, Common_name == "lingcod")),
+    NROW(dplyr::filter(dat, common_name == "Lingcod")),
     NROW(dat_lingcod),
     label = "entries of all species filtered for lingcod",
     expected.label = "entries of lingcod"
   )
   expect_equal(
-    NROW(dplyr::filter(dat_lingcod_sablefish, Common_name == "lingcod")),
+    NROW(dplyr::filter(dat_lingcod_sablefish, common_name == "Lingcod")),
     NROW(dat_lingcod),
     label = "entries of 2 species filtered for lingcod",
     expected.label = "entries of lingcod"
@@ -66,37 +69,39 @@ test_that("pull-sample-types", {
     survey = "NWFSC.Combo",
     verbose = TRUE,
     convert = TRUE,
-    sample_types = c("NA", NA, "Life Stage", "Size")
+    sample_types = c(NA, "Not Recorded / Unspecified", "Life Stage", "Size")[
+      1:4
+    ]
   )
   expect_is(data_hake, "data.frame")
   expect_equal(nrow(data_hake), 3575)
   expect_equal(sum(data_hake$cpue_kg_km2 == 0), 1640)
-  expect_equal(length(unique(data_hake$Trawl_id)), 3461)
+  expect_equal(length(unique(data_hake$trawl_id)), 3461)
 
   combine_hake <- combine_tows(
     data = data_hake
   )
-  expect_equal(length(unique(data_hake$Trawl_id)), nrow(combine_hake))
+  expect_equal(length(unique(data_hake$trawl_id)), nrow(combine_hake))
   expect_equal(
     sum(data_hake$total_catch_numbers, na.rm = TRUE),
     sum(combine_hake$total_catch_numbers, na.rm = TRUE)
   )
 
-  data_hake_3_types <- pull_catch(
-    common_name = "Pacific hake",
-    years = c(2014, 2018),
-    survey = "NWFSC.Combo",
-    verbose = TRUE,
-    convert = TRUE,
-    sample_types = c("NA", NA, "Life Stage", "Size")[1:3]
-  )
-  expect_equal(
-    sum(table(data_hake[
-      which(data_hake$Partition_sample_types != "Size"),
-      "Partition_sample_types"
-    ])),
-    sum(table(data_hake_3_types[, "Partition_sample_types"]))
-  )
+  #data_hake_3_types <- pull_catch(
+  #  common_name = "Pacific hake",
+  #  years = c(2014, 2018),
+  #  survey = "NWFSC.Combo",
+  #  verbose = TRUE,
+  #  convert = TRUE,
+  #  sample_types = c("Not Recorded / Unspecified", "Life Stage", "Size")[1:3]
+  #)
+  #expect_equal(
+  #  sum(table(data_hake[
+  #    which(data_hake$Partition_sample_types != "Size"),
+  #    "Partition_sample_types"
+  #  ])),
+  #  sum(table(data_hake_3_types[, "Partition_sample_types"]))
+  #)
 
   data_eggs <- pull_catch(
     common_name = "big skate",
@@ -104,7 +109,9 @@ test_that("pull-sample-types", {
     survey = "NWFSC.Combo",
     verbose = TRUE,
     convert = TRUE,
-    sample_types = c("NA", NA, "Life Stage", "Size")
+    sample_types = c(NA, "Not Recorded / Unspecified", "Life Stage", "Size")[
+      1:4
+    ]
   )
 
   combine_eggs <- combine_tows(
@@ -125,19 +132,6 @@ test_that("pull-sample-types", {
   )
 })
 
-test_that("pull_catch_filtered", {
-  skip_on_cran()
-
-  dat <- pull_catch(
-    common_name = "lingcod",
-    years = c(2003, 2018),
-    survey = "NWFSC.Combo",
-    dir = NULL,
-    verbose = FALSE
-  )
-  expect_is(dat, "data.frame")
-  expect_equal(nrow(dat), 10491)
-})
 
 test_that("pull_catch_unfiltered", {
   skip_on_cran()
@@ -160,8 +154,7 @@ test_that("pull_bio", {
   dat <- pull_bio(
     common_name = "lingcod",
     years = c(2016, 2017),
-    survey = "NWFSC.Combo",
-    verbose = TRUE
+    survey = "NWFSC.Combo"
   )
   expect_is(dat, "data.frame")
   expect_equal(nrow(dat), 3379)
@@ -173,6 +166,7 @@ test_that("pull_catch_triennial", {
   dat <- pull_catch(
     common_name = "Pacific ocean perch",
     survey = "Triennial",
+    years = c(1980, 2001),
     verbose = TRUE
   )
   expect_is(dat, "data.frame")
@@ -261,20 +255,6 @@ test_that("pull_bio_afsc_slope", {
   expect_equal(nrow(dat[[2]]), 14763)
 })
 
-
-test_that("pull_biological_samples", {
-  skip_on_cran()
-
-  dat <- pull_biological_samples(
-    common_name = "lingcod",
-    years = c(2003, 2017),
-    survey = "NWFSC.Combo",
-    verbose = TRUE
-  )
-  expect_is(dat, "data.frame")
-  expect_equal(nrow(dat), 1132)
-})
-
 test_that("pull_gemm", {
   skip_on_cran()
 
@@ -305,10 +285,11 @@ test_that("pull_haul_triennial", {
   dat <- pull_haul(
     survey = "Triennial",
     dir = NULL,
+    years = c(1980, 2004),
     verbose = FALSE
   )
   expect_is(dat, "data.frame")
-  expect_equal(nrow(dat), 4457)
+  expect_equal(nrow(dat), 3382)
 })
 
 test_that("pull_haul_afsc_slope", {

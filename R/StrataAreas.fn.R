@@ -53,13 +53,14 @@ StrataAreas.fn <- function(
     what = "StrataAreas.fn()",
     details = "This function is no longer needed and will be removed in a future version. Please use get_strata_areas() instead."
   )
+  colnames(strat.df) <- tolower(colnames(strat.df))
   S <- strat.df
   S$area <- NA
 
   for (i in 1:nrow(S)) {
     # check that latitudes are from the available set
-    maxLat <- max(c(S$Latitude_dd.1[i], S$Latitude_dd.2[i])) == df$MAX_LAT_DD
-    minLat <- min(c(S$Latitude_dd.1[i], S$Latitude_dd.2[i])) == df$MIN_LAT_DD
+    maxLat <- max(c(S$latitude_dd.1[i], S$latitude_dd.2[i])) == df$MAX_LAT_DD
+    minLat <- min(c(S$latitude_dd.1[i], S$latitude_dd.2[i])) == df$MIN_LAT_DD
     if (sum(maxLat) == 0 | sum(minLat) == 0) {
       warn <- paste(
         sort(unique(c(df$MAX_LAT_DD, df$MIN_LAT_DD))),
@@ -67,12 +68,12 @@ StrataAreas.fn <- function(
       )
       cli::cli_abort(
         "A latitude in your strata is not available. Either use an available latitude or supply your own area. Your latitude:
-        {S$Latitude_dd.1[i]}-{S$Latitude_dd.2[i]}. Available latitudes: {warn}"
+        {S$latitude_dd.1[i]}-{S$latitude_dd.2[i]}. Available latitudes: {warn}"
       )
     }
     # check that depths are from the available set
-    maxDep <- max(c(S$Depth_m.1[i], S$Depth_m.2[i])) == df$MAX_DEPTH_M
-    minDep <- min(c(S$Depth_m.1[i], S$Depth_m.2[i])) == df$MIN_DEPTH_M
+    maxDep <- max(c(S$depth_m.1[i], S$depth_m.2[i])) == df$MAX_DEPTH_M
+    minDep <- min(c(S$depth_m.1[i], S$depth_m.2[i])) == df$MIN_DEPTH_M
     if (sum(maxDep) == 0 | sum(minDep) == 0) {
       warn <- paste(
         sort(unique(c(df$MAX_DEPTH_M, df$MIN_DEPTH_M))),
@@ -80,14 +81,14 @@ StrataAreas.fn <- function(
       )
       cli::cli_abort(
         "A depth in your strata is not available. Either use an available depth or supply your own area. Your depths:
-        {S$Depth_m.1[i]}-{S$Depth_m.2[i]}. Available depths: {warn}"
+        {S$depth_m.1[i]}-{S$depth_m.2[i]}. Available depths: {warn}"
       )
     }
     # now index all rows that meet criteria for subsetting to determine area
-    maxLat <- max(c(S$Latitude_dd.1[i], S$Latitude_dd.2[i])) >= df$MAX_LAT_DD
-    minLat <- min(c(S$Latitude_dd.1[i], S$Latitude_dd.2[i])) <= df$MIN_LAT_DD
-    maxDep <- max(c(S$Depth_m.1[i], S$Depth_m.2[i])) >= df$MAX_DEPTH_M
-    minDep <- min(c(S$Depth_m.1[i], S$Depth_m.2[i])) <= df$MIN_DEPTH_M
+    maxLat <- max(c(S$latitude_dd.1[i], S$latitude_dd.2[i])) >= df$MAX_LAT_DD
+    minLat <- min(c(S$latitude_dd.1[i], S$latitude_dd.2[i])) <= df$MIN_LAT_DD
+    maxDep <- max(c(S$depth_m.1[i], S$depth_m.2[i])) >= df$MAX_DEPTH_M
+    minDep <- min(c(S$depth_m.1[i], S$depth_m.2[i])) <= df$MIN_DEPTH_M
 
     R <- df[maxLat & minLat & maxDep & minDep, ]
     S$area[i] <- sum(R$AREA_HECTARES) * 0.01 # km2, alternative *10000 sq meter

@@ -60,7 +60,7 @@
 #' plot_proportion(
 #'   data = temp,
 #'   column_factor = new,
-#'   column_bin = Depth_m,
+#'   column_bin = depth_m,
 #'   width = 50,
 #'   boundary = 0
 #' )
@@ -69,7 +69,7 @@
 #' plot_proportion(
 #'   data = temp,
 #'   column_factor = new,
-#'   column_bin = Latitude_dd,
+#'   column_bin = latitude_dd,
 #'   width = 1,
 #'   boundary = 0
 #' ) +
@@ -80,18 +80,18 @@
 #' # Plot depth bins (25 m) by sex (F, M, U)
 #' plot_proportion(
 #'   data = bio_nwfsc_combo |>
-#'     dplyr::mutate(Sex = codify_sex(Sex)),
-#'   column_factor = Sex,
-#'   column_bin = Depth_m,
+#'     dplyr::mutate(sex = codify_sex(sex)),
+#'   column_factor = sex,
+#'   column_bin = depth_m,
 #'   width = 25,
 #'   boundary = 0
 #' )
 #' # Change to equal sized bars
 #' plot_proportion(
 #'   data = bio_nwfsc_combo |>
-#'     dplyr::mutate(Sex = codify_sex(Sex)),
-#'   column_factor = Sex,
-#'   column_bin = Depth_m,
+#'     dplyr::mutate(sex = codify_sex(sex)),
+#'   column_factor = sex,
+#'   column_bin = depth_m,
 #'   width = 25,
 #'   boundary = 0,
 #'   bar_width = "equal"
@@ -116,6 +116,7 @@ plot_proportion <- function(
   # 1. If user supplies "width" as an argument, then turn the numeric column
   #    into a factor/character, else assign column to calc_bin. Must use
   #    .data[[string]] because I cannot use {{}} inside of the if statement.
+  colnames(data) <- tolower(colnames(data))
   data_plot <- dplyr::mutate(
     .data = data,
     calc_bin = if ("width" %in% names(list(...))) {
@@ -242,7 +243,7 @@ wh_plot_proportion <- function(
     },
     if (!missing(data_bio)) {
       1:2 |>
-        purrr::map(\(i) dplyr::mutate(data_bio, the_factor = codify_sex(Sex)))
+        purrr::map(\(i) dplyr::mutate(data_bio, the_factor = codify_sex(sex)))
     }
   )
 
@@ -253,7 +254,7 @@ wh_plot_proportion <- function(
   gg_all <- purrr::pmap(
     .l = list(
       pdata = data,
-      x = rep(ggplot2::quos(Depth_m, Latitude_dd), length(data) / 2),
+      x = rep(ggplot2::quos(depth_m, latitude_dd), length(data) / 2),
       width = rep(c(50, 1), length(data) / 2)
     ),
     .f = function(pdata, x, width, bar_width) {

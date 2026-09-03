@@ -12,7 +12,7 @@ get_strata_areas(
 \arguments{
 \item{strata_df}{A data frame describing the strata names and boundaries.
 Boundaries are determined by latitude and bottom depth with
-Latitude_dd.1 and Latitude_dd.2 being the
+latitude_dd.1 and latitude_dd.2 being the
 low and high bound for north to south and
 Depth_m.1 and Depth_m.2 being the
 low and high bound for east to west.
@@ -43,10 +43,10 @@ at that common management boundary near Cape Mendocino.
 \examples{
 area_example <- get_strata_areas(data.frame(
   name = LETTERS[1:8],
-  Latitude_dd.2 = c(49, 49, 49, 45, 45, 40.5, 40.5, 40.5),
-  Latitude_dd.1 = c(45, 45, 40.5, 40.5, 40.5, 34.5, 34.5, 34.5),
-  Depth_m.1 = c(183, 549, 900, 183, 549, 183, 549, 900),
-  Depth_m.2 = c(549, 900, 1280, 549, 900, 549, 900, 1280)
+  latitude_dd.2 = c(49, 49, 49, 45, 45, 40.5, 40.5, 40.5),
+  latitude_dd.1 = c(45, 45, 40.5, 40.5, 40.5, 34.5, 34.5, 34.5),
+  depth_m.1 = c(183, 549, 900, 183, 549, 183, 549, 900),
+  depth_m.2 = c(549, 900, 1280, 549, 900, 549, 900, 1280)
 ))
 # setNames(round(area_example[["area"]], 0), area_example[["name"]])
 #    A    B    C    D    E    F    G    H

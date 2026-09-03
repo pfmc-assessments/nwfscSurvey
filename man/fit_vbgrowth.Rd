@@ -6,8 +6,8 @@
 \usage{
 fit_vbgrowth(
   Par,
-  Ages,
-  Lengths,
+  age_years,
+  length_cm,
   par_logspace = TRUE,
   ReturnType = c("NLL", "Pred"),
   sdFactor = 1
@@ -18,9 +18,9 @@ fit_vbgrowth(
 as follows: K, Linf, L0, CV0, and CV1.
 Names will be assigned if they are not provided.}
 
-\item{Ages}{A vector of ages in years. Values of \code{NA} are accepted.}
+\item{age_years}{A vector of ages in years. Values of \code{NA} are accepted.}
 
-\item{Lengths}{A vector of Lengths in cm. Lengths can be \code{NULL} if
+\item{length_cm}{A vector of lengths in cm. Lengths can be \code{NULL} if
 \code{ReturnType == "Pred"} because you are only predicting using ages, where
 the lengths are just needed for estimation purposes. If not \code{NULL},
 ensure that there is one length measurement for every age measurement.
@@ -56,8 +56,8 @@ predicted lengths given ages and input parameters.
 \examples{
 \dontrun{
 bio_dat <- data.frame(
-  Age = rep(0:30, each = 20),
-  Length_cm = rnorm(n = 31 * 20, mean = 50, sd = 5)
+  age_years = rep(0:30, each = 20),
+  length_cm = rnorm(n = 31 * 20, mean = 50, sd = 5)
 )
 pars_in <- lapply(FUN = log, X = list(
   "K" = 0.13,
@@ -68,14 +68,14 @@ pars_in <- lapply(FUN = log, X = list(
 ))
 solve <- optim(
   fn = estgrowth.vb, par = unlist(pars_in), hessian = FALSE,
-  Ages = bio_dat[, "Age"],
-  Lengths = bio_dat[, "Length_cm"]
+  age_years = bio_dat[, "age_years"],
+  length_cm = bio_dat[, "length_cm"]
 )
 predictions <- estgrowth.vb(
   Par = solve$par, ReturnType = "Pred",
   sdFactor = 1,
-  Ages = bio_dat[, "Age"],
-  Lengths = bio_dat[, "Length_cm"]
+  age_years = bio_dat[, "age_years"],
+  length_cm = bio_dat[, "length_cm"]
 )
 plot(bio_dat$Age, predictions[, "Lhat_pred"],
   xlab = "Age (years)", ylab = "Predicted length (cm)"

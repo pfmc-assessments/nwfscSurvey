@@ -65,13 +65,14 @@ PlotMap.fn <- function(
     )
   )
 
+  colnames(data) <- tolower(colnames(data))
   ind <- dat$cpue_kg_km2 > 0
   pos.cat <- dat[ind, ]
   neg <- dat[dat[, "cpue_kg_km2"] == 0, ]
   mid <- as.numeric(stats::quantile(pos.cat[, "cpue_kg_km2"], 0.50))
   max.size <- 12
-  lon_range <- c(min(dat$Longitude_dd), max(dat$Longitude_dd))
-  lat_range <- c(min(dat$Latitude_dd), max(dat$Latitude_dd))
+  lon_range <- c(min(dat$longitude_dd), max(dat$longitude_dd))
+  lat_range <- c(min(dat$latitude_dd), max(dat$latitude_dd))
 
   color <- c("#fffa00", "#ffcc00", "#ff7700", "#B60000")
 
@@ -81,8 +82,8 @@ PlotMap.fn <- function(
       geom_point(
         data = neg,
         aes(
-          x = Longitude_dd,
-          y = Latitude_dd,
+          x = longitude_dd,
+          y = latitude_dd,
           color = cpue_kg_km2,
           size = cpue_kg_km2
         ),
@@ -93,8 +94,8 @@ PlotMap.fn <- function(
       geom_point(
         data = pos.cat,
         aes(
-          x = Longitude_dd,
-          y = Latitude_dd,
+          x = longitude_dd,
+          y = latitude_dd,
           color = cpue_kg_km2,
           size = cpue_kg_km2
         ),
@@ -144,8 +145,8 @@ PlotMap.fn <- function(
       geom_point(
         data = neg,
         aes(
-          x = Longitude_dd,
-          y = Latitude_dd,
+          x = longitude_dd,
+          y = latitude_dd,
           color = cpue_kg_km2,
           size = cpue_kg_km2
         ),
@@ -156,8 +157,8 @@ PlotMap.fn <- function(
       geom_point(
         data = pos.cat,
         aes(
-          x = Longitude_dd,
-          y = Latitude_dd,
+          x = longitude_dd,
+          y = latitude_dd,
           color = cpue_kg_km2,
           size = cpue_kg_km2
         ),
@@ -180,7 +181,7 @@ PlotMap.fn <- function(
       draw_USEEZ(lon_range, lat_range) +
       label_axes() +
       theme(legend.position = "right") +
-      facet_wrap(~Year, ncol = 6)
+      facet_wrap(~year, ncol = 6)
 
     if (!is.null(dir)) {
       ggsave(

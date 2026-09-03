@@ -10,7 +10,7 @@ pull_bio(
   survey = "NWFSC.Combo",
   years = c(1980, 2050),
   dir = NULL,
-  convert = TRUE,
+  convert = lifecycle::deprecated(),
   verbose = TRUE,
   standard_filtering = TRUE
 )
@@ -71,8 +71,7 @@ Vector can not contain -Inf or Inf.}
 \item{dir}{Directory where output will be saved. The directory where the file should be saved.
 If dir = NULL no output will be saved.}
 
-\item{convert}{TRUE/FALSE to convert column names to first letter uppercase
-which aligns with the expected names in data processing functions.}
+\item{convert}{Deprecated with {nwfscSurvey} 2.8.3.}
 
 \item{verbose}{A logical that specifies if you want to print messages and
 warnings to the console. The default is \code{TRUE}.}

@@ -57,17 +57,18 @@ PlotVarLengthAtAge.fn <- function(
     sum((lengths - VB.fn(age, Linf = x[1], k = x[2], t0 = x[3]))^2)
   }
 
-  dat <- dat[!is.na(dat$Length_cm), ]
+  colnames(dat) <- tolower(colnames(dat))
+  dat <- dat[!is.na(dat$length_cm), ]
 
-  dat <- dat[!is.na(dat$Age_year), ]
-  dat <- dat[dat$Sex %in% c("F", "M"), ]
+  dat <- dat[!is.na(dat$age_years), ]
+  dat <- dat[dat$sex %in% c("F", "M"), ]
 
-  datL <- dat[!is.na(dat$Age_year), ]
+  datL <- dat[!is.na(dat$sge_year), ]
   if (is.null(bins)) {
-    datL$Age_2 <- datL$Age_year
+    datL$age_2 <- datL$age_years
   }
   if (!is.null(bins)) {
-    datL$Age_2 <- findInterval(datL$Age_year, bins)
+    datL$age_2 <- findInterval(datL$age_years, bins)
   }
 
   if (!bySex) {
@@ -76,8 +77,8 @@ PlotVarLengthAtAge.fn <- function(
   }
 
   if (bySex) {
-    datLf <- datL[datL$Sex == "F", ]
-    datLm <- datL[datL$Sex == "M", ]
+    datLf <- datL[datL$sex == "F", ]
+    datLm <- datL[datL$sex == "M", ]
     datL <- list(female = datLf, male = datLm)
     nn <- 2
   }
@@ -108,18 +109,18 @@ PlotVarLengthAtAge.fn <- function(
       xpar <- optim(
         parStart,
         VBopt.fn,
-        age = datL[[i]]$Age_year,
-        lengths = datL[[i]]$Length_cm
+        age = datL[[i]]$age_years,
+        lengths = datL[[i]]$length_cm
       )$par
       cat("Estimated VB parameters for", names(datL)[i], xpar, "\n")
     }
     if (!estVB) {
       xpar <- parStart
     }
-    predL <- VB.fn(1:max(datL[[i]]$Age_year), xpar[1], xpar[2], xpar[3])
-    names(predL) <- as.character(1:max(datL[[i]]$Age_year))
+    predL <- VB.fn(1:max(datL[[i]]$age_years), xpar[1], xpar[2], xpar[3])
+    names(predL) <- as.character(1:max(datL[[i]]$age_years))
 
-    x <- split(datL[[i]]$Length_cm, datL[[i]]$Age_2)
+    x <- split(datL[[i]]$length_cm, datL[[i]]$age_2)
     xsd <- unlist(lapply(x, sd))
     xcv <- xsd / predL[names(xsd)]
     if (is.null(bins)) {

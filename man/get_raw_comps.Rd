@@ -7,7 +7,7 @@
 get_raw_comps(
   data,
   comp_bins,
-  comp_column_name = "Length_cm",
+  comp_column_name = "length_cm",
   input_n_method = c("stewart_hamel", "tows", "total_samples"),
   two_sex_comps = TRUE,
   month = "Enter Month",
@@ -45,7 +45,7 @@ all fish [50- Inf) would be included in the 50 cm plus bin.}
 is used to determine whether to format the composition data for length or age
 compositions by looking for either age (e.g., \code{age_years}, \code{Age}, \code{best_age}) or length
 (e.g., \code{Length}, \code{length}, \code{Length_cm}) in the comp_column_name. The default
-is \code{Length_cm}.}
+is \code{length_cm}.}
 
 \item{input_n_method}{Determines the default input sample size to add to
 the composition data for SS3. There are three options: c("stewart_hamel", "tows",
@@ -124,7 +124,7 @@ length_comps <- get_raw_comps(
 age_comps <- get_raw_comps(
   data = bio,
   comp_bins = 1:20,
-  comp_column_name = "Age"
+  comp_column_name = "age_years"
 )
 }
 

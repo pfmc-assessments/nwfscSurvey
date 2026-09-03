@@ -6,7 +6,7 @@
 #' @param type Specify where to calculate the sex ration by length or age.
 #' @param strat.vars Variables in both data frame that are used to
 #'   define the strata. Default is bottom depth (m) and latitudes (decimal
-#'   degrees), i.e., `c("Depth_m", "Latitude_dd")`.
+#'   degrees), i.e., `c("depth_m", "latitude_dd")`.
 #' @param strat.df A data frame that defines the strata and provides the
 #'   calculated areas for each strata returned from [CreateStrataDF.fn()].
 #' @param circleSize circle size
@@ -27,7 +27,7 @@ PlotSexRatioStrata.fn <- function(
   dat,
   strat.df,
   type = "length",
-  strat.vars = c("Depth_m", "Latitude_dd"),
+  strat.vars = c("depth_m", "latitude_dd"),
   circleSize = 0.05,
   dopng = lifecycle::deprecated(),
   verbose = TRUE,
@@ -61,20 +61,21 @@ PlotSexRatioStrata.fn <- function(
     on.exit(dev.off(), add = TRUE)
   }
 
+  colnames(dat) <- tolower(colnames(dat))
   row.names(strat.df) <- strat.df[, 1] # put in rownames to make easier to index later
   numStrata <- nrow(strat.df)
-  ind <- !duplicated(dat$Trawl_id)
+  ind <- !duplicated(dat$trawl_id)
   datB <- dat[
     ind,
     c(
-      "Trawl_id",
-      "Weight_kg",
+      "trawl_id",
+      "weight_kg",
       strat.vars,
-      "Longitude_dd",
-      "Year",
-      "Length_cm",
-      "Age_years",
-      "Sex"
+      "longitude_dd",
+      "year",
+      "length_cm",
+      "age_years",
+      "sex"
     )
   ]
 
@@ -90,11 +91,11 @@ PlotSexRatioStrata.fn <- function(
     subDF <- datB[z, ]
 
     if (type == "length") {
-      temp <- table(subDF$Length_cm, subDF$Sex)
+      temp <- table(subDF$length_cm, subDF$sex)
       axis.name <- "Length (cm)"
     }
     if (type == "age") {
-      temp <- table(subDF$Age, subDF$Sex)
+      temp <- table(subDF$age_years, subDF$sex)
       axis.name <- "Age"
     }
 

@@ -2,9 +2,9 @@
 #'
 #' @param data Biological data frame from [pull_bio()]
 #' @param dir Directory where output will be saved. The directory where the file should be saved.
-#' If dir = NULL no output will be saved.
+#'  If dir = NULL no output will be saved.
 #' @param col_name Option to switch between plotting lengths or ages.
-#' Options are "Length_cm", "Width_cm", or "Age".
+#'   Options are "Length_cm" or "age_years".
 #' @param plot A vector of integers to specify which plots you would like. The
 #'   default is to print or save both figures, i.e., `plot = 1:3`. Integers
 #'   correspond to the following figures:
@@ -27,7 +27,7 @@
 plot_bio_patterns <- function(
   data,
   dir = NULL,
-  col_name = "Length_cm",
+  col_name = "length_cm",
   plot = 1:3,
   width = 7,
   height = 7,
