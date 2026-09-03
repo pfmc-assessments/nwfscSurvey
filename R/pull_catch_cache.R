@@ -17,10 +17,16 @@ pull_catch_cache <- function(
   survey = "NWFSC.Combo",
   years = c(1970, 2050),
   dir = NULL,
-  convert = TRUE,
+  convert = lifecycle::deprecated(),
   verbose = TRUE,
   standard_filtering = TRUE
 ) {
+  if (lifecycle::is_present(convert)) {
+    lifecycle::deprecate_warn(
+      when = "2.8.3",
+      what = "nwfscSurvey::pull_catch_cache(convert =)"
+    )
+  }
   if (is.null(common_name)) {
     var_name <- "scientific_name"
     species <- sci_name
@@ -76,23 +82,7 @@ pull_catch_cache <- function(
     standard_filtering = standard_filtering,
     verbose = verbose
   )
-  if (convert) {
-    firstup <- function(x) {
-      substr(x, 1, 1) <- toupper(substr(x, 1, 1))
-      x
-    }
-    colnames(catch) <- firstup(colnames(catch))
-    colnames(catch)[colnames(catch) == "Cpue_kg_km2"] <- "cpue_kg_km2"
-    colnames(catch)[
-      colnames(catch) == "Cpue_kg_per_ha_der"
-    ] <- "cpue_kg_per_ha_der"
-    colnames(catch)[
-      colnames(catch) == "Total_catch_numbers"
-    ] <- "total_catch_numbers"
-    colnames(catch)[
-      colnames(catch) == "Total_catch_wt_kg"
-    ] <- "total_catch_wt_kg"
-  }
+
   save_rdata(
     x = catch,
     dir = dir,

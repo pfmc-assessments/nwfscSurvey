@@ -57,8 +57,7 @@
 #' Currently, `NWFSC.Shelf.Rockfish` and `NWFSC.Hook.Line` are not supported.
 #' @param dir Directory where output will be saved. The directory where the file should be saved.
 #' If dir = NULL no output will be saved.
-#' @param convert TRUE/FALSE to convert column names to first letter uppercase
-#' which aligns with the expected names in data processing functions.
+#' @param convert Deprecated with {nwfscSurvey} 2.8.3.
 #' @param verbose A logical that specifies if you want to print messages and
 #'   warnings to the console. The default is `TRUE`.
 #' @param sample_types A character vector of sample types, i.e.,
@@ -122,11 +121,17 @@ pull_catch <- function(
   survey = "NWFSC.Combo",
   years = c(1980, 2050),
   dir = NULL,
-  convert = TRUE,
+  convert = lifecycle::deprecated(),
   verbose = TRUE,
   sample_types = c(NA, "Not Recorded / Unspecified", "Life Stage", "Size")[1:2],
   standard_filtering = TRUE
 ) {
+  if (lifecycle::is_present(convert)) {
+    lifecycle::deprecate_warn(
+      when = "2.8.3",
+      what = "nwfscSurvey::pull_catch(convert =)"
+    )
+  }
   if (survey %in% c("NWFSC.Shelf.Rockfish", "NWFSC.Hook.Line")) {
     cli::cli_abort(
       "The catch pull currently does not work for NWFSC Hook & Line Survey data.",
@@ -441,20 +446,6 @@ pull_catch <- function(
         )
       }
     }
-  }
-
-  if (convert) {
-    colnames(catch) <- firstup(colnames(catch))
-    colnames(catch)[colnames(catch) == "Cpue_kg_km2"] <- "cpue_kg_km2"
-    colnames(catch)[
-      colnames(catch) == "Cpue_kg_per_ha_der"
-    ] <- "cpue_kg_per_ha_der"
-    colnames(catch)[
-      colnames(catch) == "Total_catch_numbers"
-    ] <- "total_catch_numbers"
-    colnames(catch)[
-      colnames(catch) == "Total_catch_wt_kg"
-    ] <- "total_catch_wt_kg"
   }
 
   if (standard_filtering == TRUE & verbose == TRUE) {

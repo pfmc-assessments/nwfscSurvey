@@ -25,10 +25,16 @@ pull_bio <- function(
   survey = "NWFSC.Combo",
   years = c(1980, 2050),
   dir = NULL,
-  convert = TRUE,
+  convert = lifecycle::deprecated(),
   verbose = TRUE,
   standard_filtering = TRUE
 ) {
+  if (lifecycle::is_present(convert)) {
+    lifecycle::deprecate_warn(
+      when = "2.8.3",
+      what = "nwfscSurvey::pull_bio(convert =)"
+    )
+  }
   options(timeout = 4000000)
   if (survey %in% c("NWFSC.Shelf.Rockfish", "NWFSC.Hook.Line")) {
     cli::cli_abort(
@@ -340,35 +346,6 @@ pull_bio <- function(
       cli::cli_alert_info(
         "Triennial & AFSC Slope data returned as a list: bio$length_data and bio$age_data"
       )
-    }
-  }
-
-  if (convert) {
-    firstup <- function(x) {
-      substr(x, 1, 1) <- toupper(substr(x, 1, 1))
-      x
-    }
-    if (
-      survey %in%
-        c(
-          "Triennial",
-          "AFSC.Slope",
-          "AFSC/RACE Triennial Groundfish Shelf Survey",
-          "AFSC/RACE Triennial Groundfish Shelf Survey (by NWFSC)",
-          "AFSC/RACE Slope Survey"
-        )
-    ) {
-      if (!is.null(nrow(bio[["length_data"]]))) {
-        colnames(bio[["length_data"]]) <- firstup(colnames(bio[[
-          "length_data"
-        ]]))
-      }
-
-      if (!is.null(nrow(bio[["age_data"]]))) {
-        colnames(bio[["age_data"]]) <- firstup(colnames(bio[["age_data"]]))
-      }
-    } else {
-      colnames(bio) <- firstup(colnames(bio))
     }
   }
 

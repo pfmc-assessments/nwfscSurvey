@@ -17,10 +17,16 @@ pull_bio_cache <- function(
   survey = "NWFSC.Combo",
   years = c(1970, 2050),
   dir = NULL,
-  convert = TRUE,
+  convert = lifecycle::deprecated(),
   verbose = TRUE,
   standard_filtering = TRUE
 ) {
+  if (lifecycle::is_present(convert)) {
+    lifecycle::deprecate_warn(
+      when = "2.8.3",
+      what = "nwfscSurvey::pull_bio_cache(convert =)"
+    )
+  }
   if (is.null(common_name)) {
     var_name <- "scientific_name"
     species <- sci_name
@@ -125,25 +131,7 @@ pull_bio_cache <- function(
       verbose = verbose
     )
   }
-  if (convert) {
-    firstup <- function(x) {
-      substr(x, 1, 1) <- toupper(substr(x, 1, 1))
-      x
-    }
-    if (survey %in% c("Triennial", "AFSC.Slope")) {
-      if (!is.null(nrow(bio[["length_data"]]))) {
-        colnames(bio[["length_data"]]) <- firstup(colnames(bio[[
-          "length_data"
-        ]]))
-      }
 
-      if (!is.null(nrow(bio[["age_data"]]))) {
-        colnames(bio[["age_data"]]) <- firstup(colnames(bio[["age_data"]]))
-      }
-    } else {
-      colnames(bio) <- firstup(colnames(bio))
-    }
-  }
   save_rdata(
     x = bio,
     dir = dir,
