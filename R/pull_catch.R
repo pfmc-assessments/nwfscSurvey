@@ -119,7 +119,7 @@ pull_catch <- function(
   common_name = NULL,
   sci_name = NULL,
   survey = "NWFSC.Combo",
-  years = c(1980, 2050),
+  years = c(1980, NA),
   dir = NULL,
   convert = lifecycle::deprecated(),
   verbose = TRUE,
@@ -139,6 +139,9 @@ pull_catch <- function(
     )
   }
 
+  if (is.na(years[2])) {
+    years[2] <- as.numeric(format(Sys.Date(), "%Y")) - 1
+  }
   if (
     length(c(common_name, sci_name)) !=
       max(c(length(common_name), length(sci_name)))

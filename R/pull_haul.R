@@ -19,7 +19,7 @@
 #'
 pull_haul <- function(
   survey = "NWFSC.Combo",
-  years = c(1980, 2050),
+  years = c(1980, NA),
   dir = NULL,
   verbose = TRUE,
   standard_filtering = TRUE
@@ -27,8 +27,10 @@ pull_haul <- function(
   # increase the timeout period to avoid errors when pulling data
   options(timeout = 4000000)
 
+  if (is.na(years[2])) {
+    years[2] <- as.numeric(format(Sys.Date(), "%Y")) - 1
+  }
   check_dir(dir = dir, verbose = verbose)
-
   project_long <- check_survey(survey = survey)
 
   if (length(years) == 1) {
