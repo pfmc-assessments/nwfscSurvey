@@ -23,7 +23,7 @@ pull_bio <- function(
   common_name = NULL,
   sci_name = NULL,
   survey = "NWFSC.Combo",
-  years = c(1980, 2050),
+  years = c(1980, NA),
   dir = NULL,
   convert = lifecycle::deprecated(),
   verbose = TRUE,
@@ -41,6 +41,9 @@ pull_bio <- function(
       "The biological data pull currently does not work for NWFSC Hook & Line Survey data.",
       "These data can be accessed by using pull_hkl_cache()."
     )
+  }
+  if (is.na(years[2])) {
+    years[2] <- as.numeric(format(Sys.Date(), "%Y")) - 1
   }
 
   if (
@@ -112,8 +115,6 @@ pull_bio <- function(
     "specimen_life_stage_name"
   )
 
-  #NEED TO FIGURE OUT HOW TO IDENTIFY WATER HAULS
-
   species_str <- convert_to_hex_string(species)
   add_species <- paste0(
     var_name,
@@ -172,6 +173,22 @@ pull_bio <- function(
     )
   } else {
     bio_pulls_convert <- NULL
+  }
+
+  # Add depth_m values for Triennial, AFSC Slope, and NWFSC Slope
+  if (sum(is.na(bio_pulls_convert[, "depth_m"])) == nrow(bio_pulls_convert)) {
+    hauls = pull_haul(
+      survey = survey,
+      verbose = FALSE,
+      standard_filtering = FALSE
+    )
+    bio_pulls_convert <- dplyr::right_join(
+      x = hauls[, c("trawl_id", "depth_m")],
+      y = bio_pulls_convert |> dplyr::select(-depth_m),
+      by = "trawl_id",
+      unmatched = "drop",
+      relationship = "one-to-many"
+    )
   }
 
   # This check is needed to proceed on for species where there were no age from
@@ -288,17 +305,6 @@ pull_bio <- function(
     len_pull <- try(get_json(url = url_text))
     len_pull_convert <- convert_colnames(
       x = len_pull
-    )
-    len_pull_convert[, "date"] <- chron::chron(
-      format(
-        as.POSIXlt(
-          len_pull_convert[, "date"],
-          format = "%Y-%m-%dT%H:%M:%S"
-        ),
-        "%Y-%m-%d"
-      ),
-      format = "y-m-d",
-      out.format = "YYYY-m-d"
     )
     if (is.null(dim(len_pull_convert))) {
       cli::cli_abort(
