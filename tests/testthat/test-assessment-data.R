@@ -30,9 +30,9 @@ test_that("petrale_sole_triennial", {
   )
   colnames(bio_data$length_data) <- tolower(colnames(bio_data$length_data))
 
-  expect_equal(nrow(catch_data), 4457)
-  expect_equal(sum(catch_data$total_catch_wt_kg > 0), 2347)
-  expect_equal(sum(catch_data$cpue_kg_km2), 282216.7, tolerance = 0.5)
+  expect_equal(nrow(catch_data), 3882)
+  expect_equal(sum(catch_data$total_catch_wt_kg > 0), 2183)
+  expect_equal(sum(catch_data$cpue_kg_km2), 262065.2, tolerance = 0.5)
 
   expect_equal(nrow(bio_data$length_data), 14705)
   expect_equal(sum(bio_data$length_data$length_cm, na.rm = TRUE), 469066)
@@ -71,12 +71,12 @@ test_that("shortspine_triennial", {
   )
   colnames(bio_data$length_data) <- tolower(colnames(bio_data$length_data))
 
-  expect_equal(nrow(catch_data), 4457)
-  expect_equal(sum(catch_data$total_catch_wt_kg > 0), 1618)
-  expect_equal(sum(catch_data$cpue_kg_km2), 438435.5, tolerance = 0.5)
+  expect_equal(nrow(catch_data), 3882)
+  expect_equal(sum(catch_data$total_catch_wt_kg > 0), 1299)
+  expect_equal(sum(catch_data$cpue_kg_km2), 376980.1, tolerance = 0.5)
 
-  expect_equal(nrow(bio_data$length_data), 41983)
-  expect_equal(sum(bio_data$length_data$length_cm, na.rm = TRUE), 915385)
+  expect_equal(nrow(bio_data$length_data), 41900)
+  expect_equal(sum(bio_data$length_data$length_cm, na.rm = TRUE), 912598)
   expect_equal(nrow(bio_data$age_data), 178)
 })
 
