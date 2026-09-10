@@ -277,10 +277,10 @@ pull_bio <- function(
     #   }
     # }
 
-    colnames(bio_pull_filtered)[
-      colnames(bio_pull_filtered) ==
-        "actual_station_design_dim$reason_station_invalid"
-    ] <- "reason_station_invalid"
+    #colnames(bio_pull_filtered)[
+    #  colnames(bio_pull_filtered) ==
+    #    "actual_station_design_dim$reason_station_invalid"
+    #] <- "reason_station_invalid"
     bio_pull_filtered$trawl_id <- as.character(bio_pull_filtered$trawl_id)
   }
   bio <- bio_pull_filtered
@@ -331,10 +331,10 @@ pull_bio <- function(
 
       len_pull_filtered$weight_kg <- NA
       len_pull_filtered$trawl_id <- as.character(len_pull_filtered$trawl_id)
-      colnames(len_pull_filtered)[
-        colnames(len_pull_filtered) ==
-          "actual_station_design_dim$reason_station_invalid"
-      ] <- "reason_station_invalid"
+      #colnames(len_pull_filtered)[
+      #  colnames(len_pull_filtered) ==
+      #    "actual_station_design_dim$reason_station_invalid"
+      #] <- "reason_station_invalid"
     }
 
     bio <- list()

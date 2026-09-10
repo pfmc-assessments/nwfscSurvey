@@ -109,10 +109,10 @@ pull_haul <- function(
     verbose = verbose
   )
 
-  colnames(haul_data_filtered)[
-    colnames(haul_data_filtered) ==
-      "actual_station_design_dim$reason_station_invalid"
-  ] <- "reason_station_invalid"
+  #colnames(haul_data_filtered)[
+  #  colnames(haul_data_filtered) ==
+  #    "actual_station_design_dim$reason_station_invalid"
+  #] <- "reason_station_invalid"
   haul_data_filtered$trawl_id <- as.character(haul_data_filtered$trawl_id)
 
   save_rdata(
