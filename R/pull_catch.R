@@ -243,27 +243,28 @@ pull_catch <- function(
   positive_tows_convert <- convert_colnames(
     x = positive_tows
   )
-  positive_tows_filtered <- filter_pull(
-    data = positive_tows_convert,
-    data_type = "positive tows",
-    standard_filtering = standard_filtering,
-    verbose = verbose
-  )
+  positive_tows_filtered <- positive_tows_convert
+  #positive_tows_filtered <- filter_pull(
+  #  data = positive_tows_convert,
+  #  data_type = "positive tows",
+  #  standard_filtering = standard_filtering,
+  #  verbose = verbose
+  #)
 
-  bad_sample_types <- which(
-    !positive_tows_filtered[,
-      "partition_sample_types"
-    ] %in%
-      sample_types
-  )
-  if (length(bad_sample_types) > 0) {
-    if (verbose) {
-      cli::cli_alert_info(
-        "There were {length(bad_sample_types)} positive tows where the sample type was not requested (e.g., Life Stage, Size)."
-      )
-    }
-    positive_tows_filtered <- positive_tows_filtered[-bad_sample_types, ]
-  }
+  #bad_sample_types <- which(
+  #  !positive_tows_filtered[,
+  #    "partition_sample_types"
+  #  ] %in%
+  #    sample_types
+  #)
+  #if (length(bad_sample_types) > 0) {
+  #  if (verbose) {
+  #    cli::cli_alert_info(
+  #      "There were {length(bad_sample_types)} positive tows where the sample type was not requested (e.g., Life Stage, Size)."
+  #    )
+  #  }
+  #  positive_tows_filtered <- positive_tows_filtered[-bad_sample_types, ]
+  #}
 
   if (sum(is.na(positive_tows_filtered[, "common_name"])) > 0) {
     replace <- which(is.na(positive_tows_filtered[, "common_name"]))
@@ -301,12 +302,13 @@ pull_catch <- function(
   all_tows_convert <- convert_colnames(
     x = all_tows
   )
-  all_tows_filtered <- filter_pull(
-    data = all_tows_convert,
-    data_type = "tows",
-    standard_filtering = standard_filtering,
-    verbose = FALSE
-  )
+  all_tows_filtered <- all_tows_convert
+  #all_tows_filtered <- filter_pull(
+  #  data = all_tows_convert,
+  #  data_type = "tows",
+  #  standard_filtering = standard_filtering,
+  #  verbose = FALSE
+  #)
 
   all_tows_filtered <- all_tows_filtered[
     !duplicated(all_tows_filtered$trawl_id),
@@ -362,44 +364,59 @@ pull_catch <- function(
     by = c(colnames(group_names), colnames(all_tows_filtered))
   ) |>
     dplyr::arrange(common_name, trawl_id)
-  colnames(catch)[
-    colnames(catch) == "actual_station_design_dim$reason_station_invalid"
-  ] <- "reason_station_invalid"
-  colnames(catch)[
-    colnames(catch) == "statistical_partition_dim$statistical_partition_type"
-  ] <- "partition_sample_types"
-  colnames(catch)[
-    colnames(catch) == "operation_dim$legacy_performance_code"
-  ] <- "legacy_performance_code"
+  # filter the catch file
+  catch <- filter_pull(
+    data = catch,
+    data_type = "tows",
+    standard_filtering = standard_filtering,
+    verbose = TRUE
+  )
 
-  good_depth <- which(catch[, "depth_m"] >= 55 & catch[, "depth_m"] <= 1280)
-  if (length(good_depth) != dim(catch)[1]) {
+  bad_sample_types <- which(
+    !positive_tows_filtered[,
+      "partition_sample_types"
+    ] %in%
+      sample_types
+  )
+  if (length(bad_sample_types) > 0) {
     if (verbose) {
-      n <- length(catch[-good_depth, "total_catch_numbers"] > 0)
       cli::cli_alert_info(
-        "There were {n} positive tows that are outside the standard depth range."
+        "There were {length(bad_sample_types)} positive tows where the sample type was not requested (e.g., Life Stage, Size)."
       )
     }
-    if (standard_filtering) {
-      catch <- catch[good_depth, ]
-    }
+    positive_tows_filtered <- positive_tows_filtered[-bad_sample_types, ]
   }
+
+  #colnames(catch)[
+  #  colnames(catch) == "actual_station_design_dim$reason_station_invalid"
+  #] <- "reason_station_invalid"
+  #colnames(catch)[
+  #  colnames(catch) == "statistical_partition_dim$statistical_partition_type"
+  #] <- "partition_sample_types"
+  #colnames(catch)[
+  #  colnames(catch) == "operation_dim$legacy_performance_code"
+  #] <- "legacy_performance_code"
 
   no_area <- which(is.na(catch$area_swept_ha_der))
   if (length(no_area) > 0) {
     if (verbose) {
       n <- length(no_area)
       cli::cli_alert_info(
-        "There were {n} tows with no area swept calculation and will be filled with the mean swept area across all tows."
+        "There were {n} tows with no area swept calculation and will be filled with the mean swept area across all tows if standard_filtering = TRUE."
       )
     }
-    #if (standard_filtering) {
-    #  catch[no_area, "area_swept_ha_der"] <- mean(
-    #    catch$area_swept_ha_der,
-    #    trim = 0.05,
-    #    na.rm = TRUE
-    #  )
-    #}
+    if (standard_filtering) {
+      catch[no_area, "area_swept_ha_der"] <- mean(
+        catch$area_swept_ha_der,
+        trim = 0.05,
+        na.rm = TRUE
+      )
+      catch[no_area, "cpue_kg_per_ha_der"] <- catch[
+        no_area,
+        "total_catch_wt_kg"
+      ] /
+        catch[no_area, "area_swept_ha_der"]
+    }
   }
 
   # Fill in zeros where needed
