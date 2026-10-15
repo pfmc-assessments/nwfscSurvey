@@ -285,3 +285,29 @@ test_that("get_input_n", {
 
   expect_equal(sum(n[n$sex_grouped == "sexed", "n_tows"]), 3500)
 })
+
+test_that("species project filename suffix handles missing metadata", {
+  expect_identical(
+    nwfscSurvey:::format_species_project_suffix(data.frame(
+      common_name = "Petrale sole",
+      project = "NWFSC Combo"
+    )),
+    "_petrale_sole_nwfsc_combo"
+  )
+  expect_identical(
+    nwfscSurvey:::format_species_project_suffix(data.frame(
+      common_name = "Petrale sole"
+    )),
+    "_petrale_sole"
+  )
+  expect_identical(
+    nwfscSurvey:::format_species_project_suffix(data.frame(
+      project = "NWFSC Combo"
+    )),
+    "_nwfsc_combo"
+  )
+  expect_identical(
+    nwfscSurvey:::format_species_project_suffix(data.frame(year = 2020)),
+    ""
+  )
+})

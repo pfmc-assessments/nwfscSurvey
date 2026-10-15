@@ -172,7 +172,8 @@ get_expanded_comps <- function(
   comp_column_name <- tolower(comp_column_name)
 
   species <- gsub(" ", "_", tolower(unique(bio_data[, "common_name"])))[1]
-  project <- project <- gsub(" ", "_", tolower(unique(bio_data[, "project"])))
+  # get suffix based on species (common name) and project (if present)
+  filename_suffix <- format_species_project_suffix(bio_data)
 
   # Check to make sure it is not hkl data
   if ("hook_number" %in% colnames(bio_data)) {
@@ -359,10 +360,8 @@ get_expanded_comps <- function(
         dir = dir,
         name_base = paste0(
           comp_column_name,
-          "_tow_expanded_comps_",
-          species,
-          "_",
-          project
+          "_tow_expanded_comps",
+          filename_suffix
         ),
         verbose = verbose
       )
@@ -371,10 +370,8 @@ get_expanded_comps <- function(
         x = metadata,
         dir = dir,
         name_base = paste0(
-          "metadata_tow_expanded_comps_",
-          species,
-          "_",
-          project
+          "metadata_tow_expanded_comps",
+          filename_suffix
         ),
         verbose = verbose
       )
@@ -448,9 +445,7 @@ get_expanded_comps <- function(
         name_base = paste0(
           comp_column_name,
           "_expanded_comps",
-          species,
-          "_",
-          project
+          filename_suffix
         ),
         verbose = verbose
       )
@@ -590,10 +585,7 @@ get_expanded_comps <- function(
             comp_column_name,
             "_sexed_expanded_",
             bin_range,
-            "_",
-            species,
-            "_",
-            project,
+            filename_suffix,
             ".csv"
           )
         ),
@@ -609,10 +601,7 @@ get_expanded_comps <- function(
               comp_column_name,
               "_unsexed_expanded_",
               bin_range,
-              "_",
-              species,
-              "_",
-              project,
+              filename_suffix,
               ".csv"
             )
           ),
@@ -659,10 +648,7 @@ get_expanded_comps <- function(
             comp_column_name,
             "_unsexed_expanded_",
             bin_range,
-            "_",
-            species,
-            "_",
-            project,
+            filename_suffix,
             ".csv"
           )
         ),

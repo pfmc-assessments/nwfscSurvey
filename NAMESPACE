@@ -84,17 +84,21 @@ import(janitor)
 import(reshape2)
 import(sf)
 import(stringr)
-importFrom(dplyr,group_by)
-importFrom(dplyr,left_join)
-importFrom(dplyr,reframe)
-importFrom(dplyr,rename)
+importFrom(dplyr,
+  group_by,
+  left_join,
+  reframe,
+  rename
+)
 importFrom(glue,glue)
 importFrom(graphics,abline)
 importFrom(rlang,current_env)
-importFrom(stats,dnorm)
-importFrom(stats,optim)
-importFrom(stats,qnorm)
-importFrom(stats,sd)
-importFrom(stats,var)
+importFrom(stats,
+  dnorm,
+  optim,
+  qnorm,
+  sd,
+  var
+)
 importFrom(stringr,str_replace_all)
 importFrom(utils,write.csv)
