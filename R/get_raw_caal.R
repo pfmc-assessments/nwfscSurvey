@@ -219,11 +219,8 @@ get_raw_caal <- function(
   }
 
   if (!is.null(dir)) {
-    project <- dplyr::if_else(
-      "project" %in% colnames(data),
-      true = gsub(" ", "_", tolower(unique(data[, "project"]))),
-      false = ""
-    )
+    # get suffix based on species (common name) and project (if present)
+    filename_suffix <- format_species_project_suffix(data)
     bin_range <- paste0(
       "a",
       min(age_bins),
@@ -234,7 +231,6 @@ get_raw_caal <- function(
       "-l",
       max(len_bins)
     )
-    species <- gsub(" ", "_", tolower(unique(data[, "common_name"])))[1]
     write.csv(
       caal,
       file = file.path(
@@ -242,10 +238,7 @@ get_raw_caal <- function(
         paste0(
           "survey_caal_bins_",
           bin_range,
-          "_",
-          species,
-          "_",
-          project,
+          filename_suffix,
           ".csv"
         )
       ),

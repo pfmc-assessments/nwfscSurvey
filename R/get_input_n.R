@@ -41,7 +41,7 @@
 #' n <- get_input_n(
 #'   data = bio,
 #'   comp_column_name = "length_cm",
-#'   input_sample_size_method = "stewart_hamel",
+#'   input_n_method = "stewart_hamel",
 #'   species_group = "flatfish"
 #' )
 #' }
@@ -148,24 +148,21 @@ get_input_n <- function(
   }
 
   if (!is.null(dir)) {
-    file_naming <- dplyr::if_else(
-      c("project", "common_name") %in% colnames(data),
-      true = gsub(" ", "_", tolower(data[1, c("common_name", "project")])),
-      false = ""
+    # get suffix based on species (common name) and project (if present)
+    filename_suffix <- format_species_project_suffix(data)
+    filename <- file.path(
+      plotdir,
+      paste0(
+        comp_column_name,
+        "_samples",
+        filename_suffix,
+        ".csv"
+      )
     )
+    # write file
     write.csv(
       x = samples,
-      file = file.path(
-        plotdir,
-        paste0(
-          comp_column_name,
-          "_samples_",
-          file_naming[1],
-          "_",
-          file_naming[2],
-          ".csv"
-        )
-      ),
+      file = filename,
       row.names = FALSE
     )
   }

@@ -340,28 +340,23 @@ get_raw_comps <- function(
   }
 
   if (!is.null(dir)) {
-    project <- ifelse(
-      "project" %in% colnames(data),
-      gsub(" ", "_", tolower(unique(data[, "project"]))),
-      ""
-    )
+    # get suffix based on species (common name) and project (if present)
+    filename_suffix <- format_species_project_suffix(data)
     bin_range <- paste0(min(comp_bins), "_", max(comp_bins))
     if (!is.null(out_comps)) {
-      write.csv(
-        out_comps,
-        file = file.path(
+      filename <- file.path(
           plotdir,
           paste0(
             comp_column_name,
             "_sexed_raw_",
             bin_range,
-            "_",
-            species,
-            "_",
-            project,
+            filename_suffix,
             ".csv"
           )
-        ),
+        )
+      write.csv(
+        out_comps,
+        file = filename,
         row.names = FALSE
       )
     }
@@ -374,10 +369,7 @@ get_raw_comps <- function(
             comp_column_name,
             "_unsexed_raw_",
             bin_range,
-            "_",
-            species,
-            "_",
-            project,
+            filename_suffix,
             ".csv"
           )
         ),

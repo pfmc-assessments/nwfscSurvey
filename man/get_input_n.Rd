@@ -58,7 +58,7 @@ bio <- pull_bio(
 n <- get_input_n(
   data = bio,
   comp_column_name = "length_cm",
-  input_sample_size_method = "stewart_hamel",
+  input_n_method = "stewart_hamel",
   species_group = "flatfish"
 )
 }
