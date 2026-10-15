@@ -345,15 +345,15 @@ get_raw_comps <- function(
     bin_range <- paste0(min(comp_bins), "_", max(comp_bins))
     if (!is.null(out_comps)) {
       filename <- file.path(
-          plotdir,
-          paste0(
-            comp_column_name,
-            "_sexed_raw_",
-            bin_range,
-            filename_suffix,
-            ".csv"
-          )
+        plotdir,
+        paste0(
+          comp_column_name,
+          "_sexed_raw_",
+          bin_range,
+          filename_suffix,
+          ".csv"
         )
+      )
       write.csv(
         out_comps,
         file = filename,
