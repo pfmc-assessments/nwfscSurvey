@@ -16,12 +16,17 @@
 #'
 #'
 get_url <- function(data_table, project_long, add_species, years, vars_long) {
-  if (years[1] != years[2]) {
-    year_str <- glue::glue(
-      "survey_year=bw:{years[1]}~{years[2]}"
-    )
-  } else {
+  if (length(years) == 1) {
     year_str <- glue::glue("survey_year=eq:{years[1]}")
+  } else {
+    if (years[1] != years[2]) {
+      year_str <- glue::glue(
+        "survey_year=bw:{years[1]}~{years[2]}"
+      )
+    }
+    if (years[1] == years[2]) {
+      year_str <- glue::glue("survey_year=eq:{years[1]}")
+    }
   }
 
   if (missing(add_species)) {
