@@ -9,26 +9,26 @@ test_that("petrale_sole_wcgbt", {
   )
   colnames(bio_data) <- tolower(colnames(bio_data))
 
-  # new api returning 14178 trawls with one less trawl from 2024: 202403020011
-  # the positive catch record is missing a depth value
+  # these two checks match as of 9/25
   expect_equal(nrow(catch_data), 14179)
+  # there is one more positive tow in 2022 10/23 (202203008059)
   expect_equal(sum(catch_data$total_catch_wt_kg > 0), 6108)
-  expect_equal(sum(catch_data$cpue_kg_km2), 7007254)
-  expect_equal(sum(catch_data$total_catch_wt_kg), 115094.4, tolerance = 0.1)
-
-  # the new api is returning a total of 87602 records, 12 more than expected
-  # the differences are greater within each year between the apis. For example, the new api
-  # has the following differences to the old api
-  # 2025: 0, 2024: -19, 2023: +1, 2022: +22, 2021: +1, 2019: +1
-  # 2018: 0, 2017: +5, 2016: 1
-  # even without standard filtering there is a difference in the number of records
-  # Most of these differences are due to na length and age records
+  # 9/25: the following two checks still don't match new api = 7009429
+  # 10/23: still don't match with the same value being returned
+  # new - old 2018: -1, 2019: -90, 2022: +2275
+  expect_equal(round(sum(catch_data$cpue_kg_km2), 0), 7007254)
+  # 9/25: new api = 115133.8 - 39.4 due to 202203008059
+  expect_equal(sum(catch_data$total_catch_wt_kg), 115094.4, tolerance = 0.01)
 
   na_records <- which(is.na(bio_data$length_cm) & is.na(bio_data$age_years))
-  bio_data <- bio_data[-na_records, ]
-
-  expect_equal(nrow(bio_data), 87569)
-  expect_equal(sum(bio_data$length_cm), 3057571, tolerance = 0.5)
+  bio_data_na <- bio_data[-na_records, ]
+  # after removing na records there are +20 more records in 2022
+  # if standard filtering is FALSE for the old api the records match for 2022
+  # need to investigate what filter is removing those data.
+  # the 87569 is the total non-na records from the old dw
+  expect_equal(nrow(bio_data_na), 87569)
+  # 10/23: 616 difference all from 2022
+  expect_equal(sum(bio_data_na$length_cm), 3057571)
 })
 
 test_that("petrale_sole_triennial", {
@@ -71,13 +71,13 @@ test_that("shortspine_wcgbt", {
   na_records <- which(is.na(bio_data$length_cm) & is.na(bio_data$age_years))
   bio_data <- bio_data[-na_records, ]
 
-  # the new api is returning 14178 records
+  # 10/23: matches
   expect_equal(nrow(catch_data), 14179)
   expect_equal(sum(catch_data$total_catch_wt_kg > 0), 7203)
   # The CPUE difference is likely due the two 2019 trawls with NA area_swept whe the
   # cpue is being calculated based on average area swept
   # expect_equal(sum(catch_data$cpue_kg_km2), 5619109)
-  expect_equal(sum(catch_data$total_catch_wt_kg), 106087.6, tolerance = 0.1)
+  expect_equal(sum(catch_data$total_catch_wt_kg), 106087.6)
 
   # the bio records match
   expect_equal(nrow(bio_data), 108408)
@@ -96,12 +96,10 @@ test_that("shortspine_triennial", {
     years = c(1980, 2004)
   )
   colnames(bio_data$length_data) <- tolower(colnames(bio_data$length_data))
-
-  # new api has 4142 tows
-  # 1980: 145, 1983: +32, 1986: +23, 1989: +32, 1992: +19, 1995: +9, 1998: 0, 2001: 0, 2004: 0
+  # 10/23: matches
   expect_equal(nrow(catch_data), 3882)
   expect_equal(sum(catch_data$total_catch_wt_kg > 0), 1299)
-  expect_equal(sum(catch_data$cpue_kg_km2), 376980.1, tolerance = 0.5)
+  expect_equal(sum(catch_data$cpue_kg_km2), 376980.1)
 
   # the bio samples match
   expect_equal(nrow(bio_data$length_data), 41900)
