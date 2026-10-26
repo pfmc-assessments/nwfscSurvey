@@ -244,12 +244,6 @@ pull_catch <- function(
     x = positive_tows
   )
   positive_tows_filtered <- positive_tows_convert
-  #positive_tows_filtered <- filter_pull(
-  #  data = positive_tows_convert,
-  #  data_type = "positive tows",
-  #  standard_filtering = standard_filtering,
-  #  verbose = verbose
-  #)
 
   #bad_sample_types <- which(
   #  !positive_tows_filtered[,
@@ -303,12 +297,6 @@ pull_catch <- function(
     x = all_tows
   )
   all_tows_filtered <- all_tows_convert
-  #all_tows_filtered <- filter_pull(
-  #  data = all_tows_convert,
-  #  data_type = "tows",
-  #  standard_filtering = standard_filtering,
-  #  verbose = FALSE
-  #)
 
   all_tows_filtered <- all_tows_filtered[
     !duplicated(all_tows_filtered$trawl_id),
@@ -369,7 +357,7 @@ pull_catch <- function(
     data = catch,
     data_type = "tows",
     standard_filtering = standard_filtering,
-    verbose = TRUE
+    verbose = verbose
   )
 
   bad_sample_types <- which(
@@ -386,16 +374,6 @@ pull_catch <- function(
     }
     positive_tows_filtered <- positive_tows_filtered[-bad_sample_types, ]
   }
-
-  #colnames(catch)[
-  #  colnames(catch) == "actual_station_design_dim$reason_station_invalid"
-  #] <- "reason_station_invalid"
-  #colnames(catch)[
-  #  colnames(catch) == "statistical_partition_dim$statistical_partition_type"
-  #] <- "partition_sample_types"
-  #colnames(catch)[
-  #  colnames(catch) == "operation_dim$legacy_performance_code"
-  #] <- "legacy_performance_code"
 
   no_area <- which(is.na(catch$area_swept_ha_der))
   if (length(no_area) > 0) {
@@ -470,9 +448,11 @@ pull_catch <- function(
 
   if (standard_filtering == TRUE & verbose == TRUE) {
     n <- sum(catch[, "total_catch_wt_kg"] > 0, na.rm = TRUE)
-    cli::cli_alert_info(
-      "There are {n} positive tows remaining across all years after standard filtering."
-    )
+    if (verbose) {
+      cli::cli_alert_info(
+        "There are {n} positive tows remaining across all years after standard filtering."
+      )
+    }
   }
 
   save_rdata(
