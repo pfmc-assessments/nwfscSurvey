@@ -176,20 +176,20 @@ pull_bio <- function(
   }
 
   # Add depth_m values for Triennial, AFSC Slope, and NWFSC Slope
-  if (sum(is.na(bio_pulls_convert[, "depth_m"])) == nrow(bio_pulls_convert)) {
-    hauls = pull_haul(
-      survey = survey,
-      verbose = FALSE,
-      standard_filtering = FALSE
-    )
-    bio_pulls_convert <- dplyr::right_join(
-      x = hauls[, c("trawl_id", "depth_m")],
-      y = bio_pulls_convert |> dplyr::select(-depth_m),
-      by = "trawl_id",
-      unmatched = "drop",
-      relationship = "one-to-many"
-    )
-  }
+  # if (sum(is.na(bio_pulls_convert[, "depth_m"])) == nrow(bio_pulls_convert)) {
+  #   hauls = pull_haul(
+  #     survey = survey,
+  #     verbose = FALSE,
+  #     standard_filtering = FALSE
+  #   )
+  #   bio_pulls_convert <- dplyr::right_join(
+  #     x = hauls[, c("trawl_id", "depth_m")],
+  #     y = bio_pulls_convert |> dplyr::select(-depth_m),
+  #     by = "trawl_id",
+  #     unmatched = "drop",
+  #     relationship = "one-to-many"
+  #   )
+  # }
 
   # This check is needed to proceed on for species where there were no age from
   # the AFSC.Slope and Triennial survey since lengths are checked later in the
