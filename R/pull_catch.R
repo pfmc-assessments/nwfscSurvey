@@ -119,7 +119,7 @@ pull_catch <- function(
   common_name = NULL,
   sci_name = NULL,
   survey = "NWFSC.Combo",
-  years = c(1980, NA),
+  years = c(1980, 2050),
   dir = NULL,
   convert = lifecycle::deprecated(),
   verbose = TRUE,
@@ -178,6 +178,7 @@ pull_catch <- function(
   # the main table fields are specified. Could pull separate and then join which
   # would allow us to eliminate vars_long form the main pull
   vars_long <- c(
+    "data_status_name",
     "best_available_taxon_common_name",
     "best_available_taxon_scientific_name",
     "nmfs_project_name",
@@ -245,21 +246,6 @@ pull_catch <- function(
   )
   positive_tows_filtered <- positive_tows_convert
 
-  #bad_sample_types <- which(
-  #  !positive_tows_filtered[,
-  #    "partition_sample_types"
-  #  ] %in%
-  #    sample_types
-  #)
-  #if (length(bad_sample_types) > 0) {
-  #  if (verbose) {
-  #    cli::cli_alert_info(
-  #      "There were {length(bad_sample_types)} positive tows where the sample type was not requested (e.g., Life Stage, Size)."
-  #    )
-  #  }
-  #  positive_tows_filtered <- positive_tows_filtered[-bad_sample_types, ]
-  #}
-
   if (sum(is.na(positive_tows_filtered[, "common_name"])) > 0) {
     replace <- which(is.na(positive_tows_filtered[, "common_name"]))
     positive_tows_filtered[replace, "common_name"] <- positive_tows_filtered[
@@ -270,6 +256,7 @@ pull_catch <- function(
 
   # Pull all tow data including tows where the species was not observed
   vars_long <- c(
+    "data_status_name",
     "nmfs_project_name",
     "survey_year",
     "vessel_name",

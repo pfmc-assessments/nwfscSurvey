@@ -19,7 +19,7 @@
 #'
 pull_haul <- function(
   survey = "NWFSC.Combo",
-  years = c(1980, NA),
+  years = c(1980, 2050),
   dir = NULL,
   verbose = TRUE,
   standard_filtering = TRUE
@@ -38,6 +38,7 @@ pull_haul <- function(
   }
 
   var_str <- c(
+    "data_status_name",
     "seafloor_area_swept_ha",
     "survey_year",
     "sampling_date",

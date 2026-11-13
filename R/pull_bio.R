@@ -23,7 +23,7 @@ pull_bio <- function(
   common_name = NULL,
   sci_name = NULL,
   survey = "NWFSC.Combo",
-  years = c(1980, NA),
+  years = c(1980, 2050),
   dir = NULL,
   convert = lifecycle::deprecated(),
   verbose = TRUE,
@@ -35,7 +35,6 @@ pull_bio <- function(
       what = "nwfscSurvey::pull_bio(convert =)"
     )
   }
-  options(timeout = 4000000)
   if (survey %in% c("NWFSC.Shelf.Rockfish", "NWFSC.Hook.Line")) {
     cli::cli_abort(
       "The biological data pull currently does not work for NWFSC Hook & Line Survey data.",
@@ -80,6 +79,7 @@ pull_bio <- function(
   }
 
   vars_long <- c(
+    "data_status_name",
     "best_available_taxon_common_name",
     "best_available_taxon_scientific_name",
     "nmfs_project_name",
@@ -174,22 +174,6 @@ pull_bio <- function(
   } else {
     bio_pulls_convert <- NULL
   }
-
-  # Add depth_m values for Triennial, AFSC Slope, and NWFSC Slope
-  # if (sum(is.na(bio_pulls_convert[, "depth_m"])) == nrow(bio_pulls_convert)) {
-  #   hauls = pull_haul(
-  #     survey = survey,
-  #     verbose = FALSE,
-  #     standard_filtering = FALSE
-  #   )
-  #   bio_pulls_convert <- dplyr::right_join(
-  #     x = hauls[, c("trawl_id", "depth_m")],
-  #     y = bio_pulls_convert |> dplyr::select(-depth_m),
-  #     by = "trawl_id",
-  #     unmatched = "drop",
-  #     relationship = "one-to-many"
-  #   )
-  # }
 
   # This check is needed to proceed on for species where there were no age from
   # the AFSC.Slope and Triennial survey since lengths are checked later in the

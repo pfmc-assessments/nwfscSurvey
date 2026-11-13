@@ -104,5 +104,16 @@ filter_pull <- function(
     }
   }
 
+  not_finalized <- which(data[["data_status_name"]] == "Under Review")
+  if (length(not_finalized) > 0) {
+    n <- length(not_finalized)
+    if (verbose) {
+      cli::cli_alert_info(
+        "There are {n} records that are not finalized and have been removed."
+      )
+    }
+    data <- data |> dplyr::filter(data_status_name == "Finalized")
+  }
+
   return(data)
 }
