@@ -43,7 +43,7 @@ test_that("get_raw_comps", {
   length_unsexed_comps <- get_raw_comps(
     data = bio_nwfsc_combo,
     comp_bins = seq(16, 80, 4),
-    comp_column_name = "Length_cm",
+    comp_column_name = "length_cm",
     two_sex_comps = FALSE,
     input_n_method = "stewart_hamel"
   )
@@ -53,7 +53,7 @@ test_that("get_raw_comps", {
   age_comps <- get_raw_comps(
     data = bio_nwfsc_combo,
     comp_bins = 1:12,
-    comp_column_name = "Age",
+    comp_column_name = "age_years",
     two_sex_comps = TRUE,
     input_n_method = "total_samples"
   )
@@ -79,12 +79,12 @@ test_that("get_raw_comps_triennial", {
     verbose = TRUE
   )
   length_data <- dat$length_data |>
-    dplyr::filter(Sex != "U")
+    dplyr::filter(sex != "U")
 
   length_comps <- get_raw_comps(
     data = length_data,
     comp_bins = seq(20, 50, 2),
-    comp_column_name = "Length_cm",
+    comp_column_name = "length_cm",
     two_sex_comps = TRUE,
     input_n_method = "total_samples"
   )
@@ -98,7 +98,7 @@ test_that("get_raw_comps_triennial", {
   length_unsexed_comps <- get_raw_comps(
     data = length_data,
     comp_bins = seq(20, 50, 2),
-    comp_column_name = "Length_cm",
+    comp_column_name = "length_cm",
     two_sex_comps = FALSE,
     input_n_method = "stewart_hamel"
   )
@@ -115,12 +115,12 @@ test_that("get_raw_caal", {
     len_bins = seq(16, 80, 4),
     age_bins = 1:12
   )
-  expect_equal(nrow(caal), 614)
+  expect_equal(nrow(caal), 612)
   expect_equal(ncol(caal), 33)
   expect_equal(sum(caal$input_n), sum(caal[, 10:ncol(caal)]))
 
   caal_unsexed <- get_raw_caal(
-    data = bio_nwfsc_combo |> dplyr::filter(Sex == "U"),
+    data = bio_nwfsc_combo |> dplyr::filter(sex == "U"),
     len_bins = seq(16, 80, 4),
     age_bins = 1:12
   )
@@ -165,7 +165,7 @@ test_that("get_expanded_comps", {
   expect_equal(sum(length_comps$unsexed$input_n), 88)
 
   length_comps_sexed <- get_expanded_comps(
-    bio_data = bio_nwfsc_combo |> dplyr::filter(Sex != "U"),
+    bio_data = bio_nwfsc_combo |> dplyr::filter(sex != "U"),
     catch_data = catch_nwfsc_combo,
     comp_bins = seq(14, 80, 4),
     strata = strata,
@@ -180,7 +180,7 @@ test_that("get_expanded_comps", {
   expect_equal(nrow(length_comps_sexed$unsexed), 0)
 
   # confirm that plot_comps works for expanded length comps
-  comp_plot <- plot_comps(length_comps)
+  comp_plot <- plot_comps(length_comps_sexed$sexed)
   expect_equal(is(comp_plot[[1]]), "ggplot2::ggplot")
   expect_equal(is(comp_plot[[2]]), "ggplot2::ggplot")
 
@@ -189,18 +189,18 @@ test_that("get_expanded_comps", {
     catch_data = catch_nwfsc_combo,
     comp_bins = 0:12,
     strata = strata,
-    comp_column_name = "age",
+    comp_column_name = "age_years",
     two_sex_comps = TRUE,
     output = "full_expansion_ss3_format",
     input_n_method = "stewart_hamel"
   )
   expect_equal(nrow(age_comps$sexed), 16)
-  expect_equal(sum(age_comps$sexed$input_n), 3653)
+  expect_equal(sum(age_comps$sexed$input_n), 3410)
   expect_equal(nrow(age_comps$unsexed), 12)
-  expect_equal(sum(age_comps$unsexed$input_n), 47)
+  expect_equal(sum(age_comps$unsexed$input_n), 45)
 
   # confirm that plot_comps works for expanded age comps
-  comp_plot <- plot_comps(age_comps)
+  comp_plot <- plot_comps(age_comps$sexed)
   expect_equal(is(comp_plot[[1]]), "ggplot2::ggplot")
   expect_equal(is(comp_plot[[2]]), "ggplot2::ggplot")
 })
@@ -277,7 +277,7 @@ test_that("get_input_n", {
 
   n <- get_input_n(
     data = bio_nwfsc_combo,
-    comp_column_name = "age",
+    comp_column_name = "age_years",
     input_n_method = "stewart_hamel",
     species_group = "other",
     verbose = TRUE

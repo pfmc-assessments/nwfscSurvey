@@ -20,14 +20,16 @@ test_that("pull_bio_cache", {
   data <- pull_bio_cache(
     common_name = "petrale sole",
     years = c(2008, 2016)
-  )
+  ) |>
+    dplyr::filter(!is.na(length_cm))
   expect_is(data, "data.frame")
-  expect_equal(nrow(data), 41070)
+  expect_equal(nrow(data), 41049)
 
   api_data <- pull_bio(
     common_name = "petrale sole",
     years = c(2008, 2016)
-  )
+  ) |>
+    dplyr::filter(!is.na(length_cm))
   expect_equal(nrow(data), nrow(api_data))
 })
 

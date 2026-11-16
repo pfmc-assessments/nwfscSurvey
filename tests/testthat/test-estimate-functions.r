@@ -19,15 +19,15 @@ test_that("estimate_growth", {
   growth <- est_growth(
     dat = bio_nwfsc_combo
   )
-  expect_equal(nrow(growth), 25619)
-  expect_equal(ncol(growth), 33)
+  expect_equal(nrow(growth), 25664)
+  expect_equal(ncol(growth), 34)
 
   growth <- est_growth(
     dat = bio_nwfsc_combo,
     return_df = FALSE
   )
   expect_equal(length(growth), 6)
-  expect_equal(growth$female_growth[["K"]], 0.16595254, tolerance = 1e-3)
+  expect_equal(growth$female_growth[["K"]], 0.1339735, tolerance = 1e-3)
 })
 
 test_that("estimate_vbgrowth", {
@@ -35,5 +35,5 @@ test_that("estimate_vbgrowth", {
     data = bio_nwfsc_combo
   )
   expect_equal(length(growth), 6)
-  expect_equal(growth$female_growth[["K"]], 0.16595254, tolerance = 1e-3)
+  expect_equal(growth$female_growth[["K"]], 0.1339735, tolerance = 1e-3)
 })

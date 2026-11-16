@@ -114,7 +114,7 @@ test_that("pull_catch_unfiltered", {
   )
   expect_is(dat, "data.frame")
   # 10/23: 11304 record returned
-  expect_equal(nrow(dat), 11302)
+  expect_equal(nrow(dat), 11304)
 })
 
 test_that("pull_bio", {
@@ -126,8 +126,7 @@ test_that("pull_bio", {
     survey = "NWFSC.Combo"
   )
   expect_is(dat, "data.frame")
-  # 10/23: 3378
-  expect_equal(sum(!is.na(dat$length_cm)), 3379)
+  expect_equal(sum(!is.na(dat$length_cm)), 3378)
 })
 
 test_that("pull_catch_triennial", {

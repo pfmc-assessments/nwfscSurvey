@@ -43,7 +43,7 @@ test_that("plot_proportions", {
   p <- plot_proportion(
     data = temp,
     column_factor = new,
-    column_bin = Depth_m,
+    column_bin = depth_m,
     width = 50,
     boundary = 0
   )
@@ -94,7 +94,11 @@ test_that("plot_weight_length", {
 test_that("plot_bio_patterns", {
   p <- plot_bio_patterns(
     data = bio_nwfsc_combo |>
-      dplyr::filter(sex %in% c("F", "M"), Year %in% 2003:2005),
+      dplyr::filter(
+        sex %in% c("F", "M"),
+        year %in% 2003:2005,
+        !is.na(age_years)
+      ),
     col_name = "age_years"
   )
   expect_equal(is(p[[1]]), "ggplot2::ggplot")
