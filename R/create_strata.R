@@ -18,8 +18,8 @@
 #' @return Returns the data frame formatted for use by \code{\link{get_design_based}}
 #' and additional prediction functions in other downstream packages.
 #' The data frame will have six columns,
-#' (1) name, (2) area, (3) Depth_m.1, (4) Depth_m.2,
-#' (5) Latitude_dd.1, and (6) Latitude_dd.2.
+#' (1) name, (2) area, (3) depth_m.1, (4) depth_m.2,
+#' (5) latitude_dd.1, and (6) latitude_dd.2.
 #'
 #' @author Chantel Wetzel and Kelli Johnson
 #' @family strata function
