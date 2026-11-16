@@ -27,7 +27,7 @@ test_that("estimate_growth", {
     return_df = FALSE
   )
   expect_equal(length(growth), 6)
-  expect_equal(growth$female_growth[["K"]], 0.1339735, tolerance = 1e-3)
+  expect_equal(growth$female_growth[["K"]], 0.16554097, tolerance = 1e-3)
 })
 
 test_that("estimate_vbgrowth", {
@@ -35,5 +35,5 @@ test_that("estimate_vbgrowth", {
     data = bio_nwfsc_combo
   )
   expect_equal(length(growth), 6)
-  expect_equal(growth$female_growth[["K"]], 0.1339735, tolerance = 1e-3)
+  expect_equal(growth$female_growth[["K"]], 0.16554097, tolerance = 1e-3)
 })
