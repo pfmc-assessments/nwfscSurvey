@@ -63,7 +63,7 @@ get_raw_caal <- function(
   len_bins,
   age_bins,
   length_column_name = "length_cm",
-  age_column_name = "age",
+  age_column_name = "age_years",
   dir = NULL,
   month = "Enter Month",
   fleet = "Enter Fleet",
