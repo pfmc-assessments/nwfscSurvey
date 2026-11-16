@@ -5,7 +5,7 @@
 \title{Estimate von Bertanlaffy growth parameters from lengths and ages}
 \usage{
 fit_vbgrowth(
-  Par,
+  par,
   age_years,
   length_cm,
   par_logspace = TRUE,
@@ -14,7 +14,7 @@ fit_vbgrowth(
 )
 }
 \arguments{
-\item{Par}{A list of von Bertanlaffy growth parameters in log space ordered
+\item{par}{A list of von Bertanlaffy growth parameters in log space ordered
 as follows: K, Linf, L0, CV0, and CV1.
 Names will be assigned if they are not provided.}
 
@@ -51,42 +51,13 @@ Estimate von Bertanlaffy growth parameters from lengths and ages
 }
 \details{
 Estimate von Bertanlaffy growth parameters from length and age data or
-predicted lengths given ages and input parameters.
-}
-\examples{
-\dontrun{
-bio_dat <- data.frame(
-  age_years = rep(0:30, each = 20),
-  length_cm = rnorm(n = 31 * 20, mean = 50, sd = 5)
-)
-pars_in <- lapply(FUN = log, X = list(
-  "K" = 0.13,
-  "Linf" = 55,
-  "L0" = 5,
-  "CV0" = 0.1,
-  "CV1" = 0.1
-))
-solve <- optim(
-  fn = estgrowth.vb, par = unlist(pars_in), hessian = FALSE,
-  age_years = bio_dat[, "age_years"],
-  length_cm = bio_dat[, "length_cm"]
-)
-predictions <- estgrowth.vb(
-  Par = solve$par, ReturnType = "Pred",
-  sdFactor = 1,
-  age_years = bio_dat[, "age_years"],
-  length_cm = bio_dat[, "length_cm"]
-)
-plot(bio_dat$Age, predictions[, "Lhat_pred"],
-  xlab = "Age (years)", ylab = "Predicted length (cm)"
-)
-exp(solve$par)
-}
+predicted lengths given ages and input parameters. This is the estimation
+function that is called by the \code{\link[=est_growth]{est_growth()}} function.
 }
 \seealso{
-Other biology function: 
-\code{\link{est_growth}()},
-\code{\link{est_vbgrowth}()},
-\code{\link{estimate_weight_length}()}
+Other biology function:
+\code{\link[=est_growth]{est_growth()}},
+\code{\link[=est_vbgrowth]{est_vbgrowth()}},
+\code{\link[=estimate_weight_length]{estimate_weight_length()}}
 }
 \concept{biology function}

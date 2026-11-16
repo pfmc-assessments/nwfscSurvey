@@ -23,8 +23,8 @@ using capital letters starting with \code{A} for each \code{NA} value.}
 Returns the data frame formatted for use by \code{\link{get_design_based}}
 and additional prediction functions in other downstream packages.
 The data frame will have six columns,
-(1) name, (2) area, (3) Depth_m.1, (4) Depth_m.2,
-(5) Latitude_dd.1, and (6) Latitude_dd.2.
+(1) name, (2) area, (3) depth_m.1, (4) depth_m.2,
+(5) latitude_dd.1, and (6) latitude_dd.2.
 }
 \description{
 Create strata data frame using \code{\link{get_strata_areas}}
@@ -50,8 +50,8 @@ strata <- create_strata(
 See \code{\link{get_strata_areas}} for how areas are calculated.
 See \code{\link{get_design_based}} for how the areas are used to create design-based biomass estimates.
 
-Other strata function: 
-\code{\link{CreateStrataDF.fn}()}
+Other strata function:
+\code{\link[=CreateStrataDF.fn]{CreateStrataDF.fn()}}
 }
 \author{
 Chantel Wetzel and Kelli Johnson

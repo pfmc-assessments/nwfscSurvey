@@ -42,11 +42,11 @@ will be returned for each input value.
 get_survey_names_abb(c("Triennial", "Combo"))
 \dontshow{
 test <- get_survey_names_abb(c("Triennial", "Combo"))
-testthat::expect_equal(c("Triennial Survey", "NWFSC WCGBTS"), test)
+testthat::expect_equal(c("triennial", "wcgbt"), test)
 test <- get_survey_names_abb(c("Triennial", "bad"))
-testthat::expect_equal(c("Triennial Survey", ""), test)
+testthat::expect_equal(c("triennial", ""), test)
 test <- get_survey_names_abb(c("Triennial", "bad"), na.return = NA)
-testthat::expect_equal(c("Triennial Survey", NA), test)
+testthat::expect_equal(c("triennial", NA), test)
 }
 
 }

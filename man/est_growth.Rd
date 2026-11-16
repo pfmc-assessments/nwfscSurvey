@@ -27,10 +27,8 @@ If dir = NULL no output will be saved.}
 \item{return_df}{TRUE/FALSE If set to TRUE the dat data frame is
 returned with added columns for the estimated Lhat_low, Lhat_pred, and Lhat_high.}
 
-\item{Par}{Data frame of starting parameters for K, Linf, L0, CV0, and CV2 based on the
+\item{bySex}{Logical to indicate if plot by sex
 Stock Synthesis parameterization of von Bertanlaffy growth.}
-
-\item{bySex}{Logical to indicate if plot by sex}
 
 \item{estVB}{Logical. Estimate vonB growth to plot against predicted length. If F, it uses the parameters in \code{parStart}.}
 
@@ -54,10 +52,10 @@ parameterization
 \seealso{
 \code{\link[=fit_vbgrowth]{fit_vbgrowth()}}
 
-Other biology function: 
-\code{\link{est_vbgrowth}()},
-\code{\link{estimate_weight_length}()},
-\code{\link{fit_vbgrowth}()}
+Other biology function:
+\code{\link[=est_vbgrowth]{est_vbgrowth()}},
+\code{\link[=estimate_weight_length]{estimate_weight_length()}},
+\code{\link[=fit_vbgrowth]{fit_vbgrowth()}}
 }
 \author{
 Chantel Wetzel
