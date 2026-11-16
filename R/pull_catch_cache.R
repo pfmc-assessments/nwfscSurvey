@@ -38,10 +38,7 @@ pull_catch_cache <- function(
     var_name <- c("scientific_name", "common_name")
     species <- "pull all"
   }
-  # data_list <- pins::pin_read(
-  #  pins::board_connect(),
-  #  "chantel.wetzel/nwfsc_trawl_survey_catch_data"
-  # )
+
   board <- pins::board_url(
     c(
       dataset = "https://connect.fisheries.noaa.gov/nwfsc_trawl_survey_catch_data/"
@@ -82,6 +79,9 @@ pull_catch_cache <- function(
     standard_filtering = standard_filtering,
     verbose = verbose
   )
+  if ("legacy_performance_code" %in% colnames(catch)) {
+    catch <- catch |> dplyr::filter(legacy_performance_code != "water_hauls")
+  }
 
   save_rdata(
     x = catch,

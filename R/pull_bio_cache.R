@@ -131,6 +131,14 @@ pull_bio_cache <- function(
       verbose = verbose
     )
   }
+  if (survey %in% c("Triennial")) {
+    if ("legacy_performance_code" %in% colnames(bio$length_data)) {
+      bio$length_data <- bio$length_data |>
+        dplyr::filter(legacy_performance_code != "water_hauls")
+      bio$age_data <- bio$age_data |>
+        dplyr::filter(legacy_performance_code != "water_hauls")
+    }
+  }
 
   save_rdata(
     x = bio,

@@ -52,6 +52,13 @@ pull_haul_cache <- function(
     standard_filtering = standard_filtering,
     verbose = verbose
   )
+  if ("operation_dim$legacy_performance_code" %in% colnames(haul_data)) {
+    haul_data <- haul_data[
+      which(
+        haul_data[["operation_dim$legacy_performance_code"]] != "water_hauls"
+      ),
+    ]
+  }
   save_rdata(
     x = haul_data,
     dir = dir,
