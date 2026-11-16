@@ -7,7 +7,6 @@
 #' @param return_df TRUE/FALSE If set to TRUE the dat data frame is
 #' returned with added columns for the estimated Lhat_low, Lhat_pred, and Lhat_high.
 #' @param bySex Logical to indicate if plot by sex
-#' @param Par  Data frame of starting parameters for K, Linf, L0, CV0, and CV2 based on the
 #' Stock Synthesis parameterization of von Bertanlaffy growth.
 #' @param estVB Logical. Estimate vonB growth to plot against predicted length. If F, it uses the parameters in \code{parStart}.
 #' @param bins The bins to put ages into. If NULL then simply uses the ages as recorded.
@@ -114,8 +113,8 @@ est_growth <- function(
         par = log(Par),
         hessian = FALSE,
         par_logspace = TRUE,
-        Ages = la_data_list[[i]]$age_years,
-        Lengths = la_data_list[[i]]$length_cm
+        age_years = la_data_list[[i]]$age_years,
+        length_cm = la_data_list[[i]]$length_cm
       )$par
       xpar[[i]] <- exp(ests_log)
       # cat("Estimated VB parameters for", names(la_data_list)[i], xpar, "\n")
@@ -126,10 +125,10 @@ est_growth <- function(
     # Predicts from 1 to the maximum observed age by sex
     # predL <- VB.fn(1:max(la_data_list[[i]]$Age), xpar[1], xpar[2], xpar[3])
     predL <- fit_vbgrowth(
-      Par = xpar[[i]],
+      par = xpar[[i]],
       par_logspace = FALSE,
-      Ages = la_data_list[[i]]$age_years,
-      Lengths = la_data_list[[i]]$length_cm,
+      age_years = la_data_list[[i]]$age_years,
+      length_cm = la_data_list[[i]]$length_cm,
       ReturnType = "Pred",
       sdFactor = sdFactor
     )

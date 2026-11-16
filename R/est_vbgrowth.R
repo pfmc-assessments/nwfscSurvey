@@ -72,16 +72,16 @@ est_vbgrowth <- function(
       par = log(init_params),
       hessian = FALSE,
       par_logspace = TRUE,
-      Ages = la_data_list[[i]]$age_column,
-      Lengths = la_data_list[[i]]$length_column
+      age_years = la_data_list[[i]]$age_column,
+      length_cm = la_data_list[[i]]$length_column
     )$par
     xpar[[i]] <- exp(ests_log)
 
     predL <- fit_vbgrowth(
-      Par = xpar[[i]],
+      par = xpar[[i]],
       par_logspace = FALSE,
-      Ages = la_data_list[[i]]$age_column,
-      Lengths = la_data_list[[i]]$length_column,
+      age_years = la_data_list[[i]]$age_column,
+      length_cm = la_data_list[[i]]$length_column,
       ReturnType = "Pred",
       sdFactor = 1
     )
