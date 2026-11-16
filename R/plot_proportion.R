@@ -119,15 +119,7 @@ plot_proportion <- function(
   colnames(data) <- tolower(colnames(data))
   data_plot <- dplyr::mutate(
     .data = data,
-    calc_bin = if ("width" %in% names(list(...))) {
-      ggplot2::cut_width(
-        round(.data[[character_bin]], digits = digits),
-        dig.lab = 10,
-        ...
-      )
-    } else {
-      .data[[character_bin]]
-    }
+    calc_bin = .data[[character_bin]]
   )
   # 2. bar_width is used to create equal-sized bars in histogram or bar widths
   #    based on the number of observations in the group. geom_mosaic will sum
