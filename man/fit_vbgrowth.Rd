@@ -26,7 +26,7 @@ the lengths are just needed for estimation purposes. If not \code{NULL},
 ensure that there is one length measurement for every age measurement.
 Values of \code{NA} are accepted.}
 
-\item{par_logspace}{TRUE/FALSE Indicates if the values in the \code{"Par"} are in
+\item{par_logspace}{TRUE/FALSE Indicates if the values in the \code{"par"} are in
 logspace and need to be converted back to normal spaces.}
 
 \item{ReturnType}{A single character value with \code{"NLL"} being the default,

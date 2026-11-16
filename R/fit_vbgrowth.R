@@ -14,7 +14,7 @@
 #' the lengths are just needed for estimation purposes. If not \code{NULL},
 #' ensure that there is one length measurement for every age measurement.
 #' Values of \code{NA} are accepted.
-#' @param par_logspace TRUE/FALSE Indicates if the values in the \code{"Par"} are in
+#' @param par_logspace TRUE/FALSE Indicates if the values in the \code{"par"} are in
 #' logspace and need to be converted back to normal spaces.
 #' @param ReturnType A single character value with \code{"NLL"} being the default,
 #' which leads to the negative log-likelihood value being returned.
@@ -67,7 +67,7 @@ fit_vbgrowth <- function(
   # See Ogle and Isermann (2017) 10.1080/02755947.2017.1342725
   lhat.L0 <- function(par, age_years, variability = 0) {
     par[["Linf"]] -
-      (par[["Linf"]] - par[["L0"]]) * exp(-age_years * Par[["K"]]) +
+      (par[["Linf"]] - par[["L0"]]) * exp(-age_years * par[["K"]]) +
       variability
   }
   if ("L0" %in% names(par)) {
