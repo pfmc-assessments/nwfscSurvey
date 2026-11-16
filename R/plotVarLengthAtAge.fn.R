@@ -87,7 +87,7 @@ PlotVarLengthAtAge.fn <- function(
   check_dir(dir = plotdir)
   main_ <- ifelse(is.null(main), "", paste0(main, "_"))
   if (!is.null(dir)) {
-    png(
+    grDevices::png(
       filename = file.path(
         plotdir,
         paste0(main_, "VarLengthAtAge.png")
@@ -97,10 +97,10 @@ PlotVarLengthAtAge.fn <- function(
       units = "in",
       res = 300
     )
-    on.exit(dev.off(), add = TRUE)
+    on.exit(grDevices::dev.off(), add = TRUE)
   }
 
-  par(mfcol = c(2, nn), mar = c(5, 5, 5, 5))
+  graphics::par(mfcol = c(2, nn), mar = c(5, 5, 5, 5))
 
   out <- vector(mode = "list", length = nn)
   names(out) <- names(datL)
@@ -154,9 +154,15 @@ PlotVarLengthAtAge.fn <- function(
       lty = 2,
       ...
     )
-    axis(4)
-    mtext("CV", side = 4, line = 2.6)
-    legend(x = legX, y = legY, c("SD", "CV"), pch = c(16, 3), lty = c(1, 2))
+    graphics::axis(4)
+    graphics::mtext("CV", side = 4, line = 2.6)
+    graphics::legend(
+      x = legX,
+      y = legY,
+      c("SD", "CV"),
+      pch = c(16, 3),
+      lty = c(1, 2)
+    )
 
     plot(
       VB.fn(ages, xpar[1], xpar[2], xpar[3]),
@@ -169,7 +175,7 @@ PlotVarLengthAtAge.fn <- function(
       main = names(datL)[i],
       ...
     )
-    par(new = T)
+    graphics::par(new = T)
     plot(
       VB.fn(ages, xpar[1], xpar[2], xpar[3]),
       xcv,
@@ -181,9 +187,15 @@ PlotVarLengthAtAge.fn <- function(
       lty = 2,
       ...
     )
-    axis(4)
-    mtext("CV", side = 4, line = 2.6)
-    legend(x = legX, y = legY, c("SD", "CV"), pch = c(16, 3), lty = c(1, 2))
+    graphics::axis(4)
+    graphics::mtext("CV", side = 4, line = 2.6)
+    graphics::legend(
+      x = legX,
+      y = legY,
+      c("SD", "CV"),
+      pch = c(16, 3),
+      lty = c(1, 2)
+    )
   }
 
   return(out)

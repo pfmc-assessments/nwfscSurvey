@@ -75,7 +75,7 @@ plot_sex_ratio <- function(
       panel.border = ggplot2::element_rect(
         colour = "black",
         fill = NA,
-        size = 1
+        linewidth = 1
       ),
       panel.background = ggplot2::element_blank(),
       axis.title.x = ggplot2::element_text(size = 15),

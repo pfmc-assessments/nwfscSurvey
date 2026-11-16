@@ -58,7 +58,7 @@ PlotSexRatioStrata.fn <- function(
       units = "in",
       res = 300
     )
-    on.exit(dev.off(), add = TRUE)
+    on.exit(grDevices::dev.off(), add = TRUE)
   }
 
   colnames(dat) <- tolower(colnames(dat))
@@ -84,7 +84,7 @@ PlotSexRatioStrata.fn <- function(
     stratum = StrataFactors.fn(datB, strat.vars, strat.df)
   ) # create a new column for the stratum factor
 
-  par(mfrow = c(3, 3))
+  graphics::par(mfrow = c(3, 3))
 
   for (i in 1:length(row.names(strat.df))) {
     z <- which(datB$stratum == row.names(strat.df)[i])
@@ -110,12 +110,12 @@ PlotSexRatioStrata.fn <- function(
       main = row.names(strat.df)[i],
       ylim = c(0, 1)
     ) # ,...)
-    symbols(
+    graphics::symbols(
       ratioF,
       circles = nobs,
       inches = circleSize,
       fg = "red",
-      bg = rgb(1, 0, 0, alpha = 0.5),
+      bg = grDevices::rgb(1, 0, 0, alpha = 0.5),
       add = T
     )
   }
