@@ -29,8 +29,12 @@ plot_cpue <- function(
   plotdir <- file.path(dir)
   check_dir(dir = plotdir, verbose = verbose)
 
-  data_tolower <- data |> dplyr::rename_all(tolower)
-  data_tolower$log_cpue <- log(data_tolower$cpue_kg_km2)
+  data_tolower <- data |>
+    dplyr::rename_all(tolower) |>
+    dplyr::mutate(
+      log_cpue = log(cpue_kg_km2),
+      latitude_dd = as.numeric(latitude_dd)
+    )
   pos <- data_tolower$cpue_kg_km2 != 0
   size_adj <- 100 / floor(sum(pos))
 
