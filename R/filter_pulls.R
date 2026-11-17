@@ -115,5 +115,33 @@ filter_pull <- function(
     data <- data |> dplyr::filter(data_status_name == "Finalized")
   }
 
+  # remove non-random samples
+  if ("age_years" %in% colnames(data)) {
+    n_length <- dim(data)[1] -
+      sum(data[["specimen_size_sampling_strategy_name"]] %in% c("random", NA))
+    n_age <- dim(data)[1] -
+      sum(data[["specimen_age_sampling_strategy_name"]] %in% c("random", NA))
+    n_weight <- dim(data)[1] -
+      sum(data[["specimen_weight_sampling_strategy_name"]] %in% c("random", NA))
+    if (verbose) {
+      cli::cli_alert_info(
+        "There are {n_length} length, {n_age} age, and {n_weight} weight records that are not
+        random samples."
+      )
+    }
+    replace <- which(
+      !data[["specimen_size_sampling_strategy_name"]] %in% c("random", NA)
+    )
+    data[replace, "length_cm"] <- NA
+    replace <- which(
+      !data[["specimen_age_sampling_strategy_name"]] %in% c("random", NA)
+    )
+    data[replace, "age_years"] <- NA
+    replace <- which(
+      !data[["specimen_weight_sampling_strategy_name"]] %in% c("random", NA)
+    )
+    data[replace, "weight_kg"] <- NA
+  }
+
   return(data)
 }

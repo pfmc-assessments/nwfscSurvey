@@ -96,15 +96,15 @@ pull_bio <- function(
     "is_actual_station_currently_active",
     "specimen_size_cm",
     "specimen_size_sample_type_name",
-    #"width_cm",
     "specimen_weight_kg",
     "specimen_sex_code",
     "specimen_age_years",
     "ageing_lab_name",
     "specimen_age_sample_label",
-    #"standard_survey_age_indicator",
-    #"standard_survey_length_or_width_indicator",
-    #"standard_survey_weight_indicator",
+    "age_sample_type_name",
+    "specimen_size_sampling_strategy_name",
+    "specimen_age_sampling_strategy_name",
+    "specimen_weight_sampling_strategy_name",
     "specimen_ovary_sample_label",
     "ovary_last_analyzed_at",
     "ovary_proportion_atresia",
@@ -211,60 +211,6 @@ pull_bio <- function(
       standard_filtering = standard_filtering,
       verbose = verbose
     )
-
-    # Filter out non-standard samples
-    # Some early entries are NA for standard sample indicators. These should be retained.
-    # standard_lengths <- bio_pull_filtered[,
-    #   "standard_survey_length_or_width_indicator"
-    # ] %in%
-    #   c(NA, "NA", "Standard Survey Length or Width")
-    # if (length(standard_lengths) != dim(bio_pull_filtered)[1]) {
-    #   if (verbose) {
-    #     n <- dim(bio_pull_filtered)[1] - length(standard_lengths)
-    #     cli::cli_alert_info(
-    #       "There were {n} lengths that were collected outside standard sampling protocol."
-    #     )
-    #   }
-    #   if (standard_filtering) {
-    #     bio_pull_filtered<- bio_pull_filtered[standard_lengths, ]
-    #   }
-    # }
-
-    # Remove non-standard ages
-    # nonstandard_age <- which(
-    #   bio_pull_filtered[, "standard_survey_age_indicator"] == "Not Standard Survey Age"
-    # )
-    # if (length(nonstandard_age) > 0) {
-    #   if (verbose) {
-    #     cli::cli_alert_info(
-    #       "There were {length(nonstandard_age)} ages that were collected outside standard sampling protocol."
-    #     )
-    #   }
-    #   if (standard_filtering) {
-    #     bio_pull_filtered[nonstandard_age, "age_years"] <- NA
-    #   }
-    # }
-
-    # Remove non-standard weights
-    # nonstandard_wgt <- which(
-    #   bio_pull[, "standard_survey_weight_indicator"] ==
-    #     "Not Standard Survey Weight"
-    # )
-    # if (length(nonstandard_wgt) > 0) {
-    #   if (verbose) {
-    #     cli::cli_alert_info(
-    #       "There were {length(nonstandard_wgt)} weights that were collected outside standard sampling protocol."
-    #     )
-    #   }
-    #   if (standard_filtering) {
-    #     bio_pull_filtered[nonstandard_wgt, "weight_kg"] <- NA
-    #   }
-    # }
-
-    #colnames(bio_pull_filtered)[
-    #  colnames(bio_pull_filtered) ==
-    #    "actual_station_design_dim$reason_station_invalid"
-    #] <- "reason_station_invalid"
     bio_pull_filtered$trawl_id <- as.character(bio_pull_filtered$trawl_id)
   }
   bio <- bio_pull_filtered
@@ -315,10 +261,6 @@ pull_bio <- function(
 
       len_pull_filtered$weight_kg <- NA
       len_pull_filtered$trawl_id <- as.character(len_pull_filtered$trawl_id)
-      #colnames(len_pull_filtered)[
-      #  colnames(len_pull_filtered) ==
-      #    "actual_station_design_dim$reason_station_invalid"
-      #] <- "reason_station_invalid"
     }
 
     bio <- list()
